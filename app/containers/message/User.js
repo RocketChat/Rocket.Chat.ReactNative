@@ -30,28 +30,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class User extends React.PureComponent {
-	static propTypes = {
-		timeFormat: PropTypes.string.isRequired,
-		username: PropTypes.string,
-		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
-		temp: PropTypes.bool
-	}
-
-	render() {
-		const {
-			username, alias, ts, temp, timeFormat
-		} = this.props;
-
-		const extraStyle = {};
-		if (temp) {
-			extraStyle.opacity = 0.3;
-		}
-
+const User = React.memo(({
+	isHeader, useRealName, author, alias, ts, timeFormat
+}) => {
+	if (isHeader) {
+		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
@@ -67,4 +50,17 @@ export default class User extends React.PureComponent {
 			</View>
 		);
 	}
-}
+	return null;
+});
+
+User.propTypes = {
+	isHeader: PropTypes.bool,
+	useRealName: PropTypes.bool,
+	author: PropTypes.object,
+	alias: PropTypes.string,
+	ts: PropTypes.instanceOf(Date),
+	timeFormat: PropTypes.string
+};
+User.displayName = 'MessageUser';
+
+export default User;

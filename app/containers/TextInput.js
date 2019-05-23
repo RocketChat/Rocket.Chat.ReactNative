@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, TextInput, ViewPropTypes
+	View, StyleSheet, Text, TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -73,7 +73,7 @@ export default class RCTextInput extends React.PureComponent {
 		label: PropTypes.string,
 		error: PropTypes.object,
 		secureTextEntry: PropTypes.bool,
-		containerStyle: ViewPropTypes.style,
+		containerStyle: PropTypes.any,
 		inputStyle: PropTypes.object,
 		inputRef: PropTypes.func,
 		testID: PropTypes.string,

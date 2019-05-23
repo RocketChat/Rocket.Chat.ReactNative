@@ -12,7 +12,7 @@ import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
-import { showToast } from '../../utils/info';
+import { Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
@@ -158,7 +158,7 @@ export default class RoomMembersView extends LoggedView {
 		const { muted } = room;
 
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m.value === user.username);
+		const userIsMuted = !!muted.find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));
@@ -234,7 +234,7 @@ export default class RoomMembersView extends LoggedView {
 		const { rid, userLongPressed } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			showToast(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
+			this.toast.show(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
 			log('handleMute', e);
 		}
@@ -301,6 +301,7 @@ export default class RoomMembersView extends LoggedView {
 					windowSize={10}
 					{...scrollPersistTaps}
 				/>
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

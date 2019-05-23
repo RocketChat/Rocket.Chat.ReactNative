@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	Text, View, StyleSheet, ViewPropTypes
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
@@ -70,7 +68,7 @@ UserItem.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func,
-	style: ViewPropTypes.style,
+	style: PropTypes.any,
 	icon: PropTypes.string
 };
 
