@@ -24,7 +24,6 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import UploadModal from './UploadModal';
-import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
@@ -32,6 +31,7 @@ import debounce from '../../utils/debounce';
 import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
+import { isAndroid } from '../../utils/deviceInfo';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -120,6 +120,10 @@ class MessageBox extends Component {
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
+		}
+
+		if (isAndroid) {
+			require('./EmojiKeyboard');
 		}
 	}
 
