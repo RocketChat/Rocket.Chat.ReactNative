@@ -209,6 +209,10 @@ const RocketChat = {
 
 		this.sdk.onStreamData('connected', () => {
 			reduxStore.dispatch(connectSuccess());
+			const { isAuthenticated } = reduxStore.getState().login;
+			if (isAuthenticated) {
+				this.getUserPresence();
+			}
 		});
 
 		this.sdk.onStreamData('close', () => {
@@ -810,9 +814,15 @@ const RocketChat = {
 				this.sdk.subscribe('activeUsers');
 			}, 5000);
 		} else {
+			const params = {};
+			if (this.lastUserPresenceFetch) {
+				params.from = this.lastUserPresenceFetch.toISOString();
+			}
+
 			// RC 1.1.0
-			const result = await this.sdk.get('users.presence');
+			const result = await this.sdk.get('users.presence', params);
 			if (result.success) {
+				this.lastUserPresenceFetch = new Date();
 				database.memoryDatabase.write(() => {
 					result.users.forEach((item) => {
 						try {
