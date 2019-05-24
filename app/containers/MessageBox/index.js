@@ -631,23 +631,27 @@ class MessageBox extends Component {
 				testID={`mention-item-${ trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
 			>
 				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-					? [
-						this.renderMentionEmoji(item),
-						<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-					]
-					: [
-						<Avatar
-							key='mention-item-avatar'
-							style={{ margin: 8 }}
-							text={item.username || item.name}
-							size={30}
-							type={item.username ? 'd' : 'c'}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
-						/>,
-						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
-					]
+					? (
+						<React.Fragment>
+							{this.renderMentionEmoji(item)}
+							<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+						</React.Fragment>
+					)
+					: (
+						<React.Fragment>
+							<Avatar
+								key='mention-item-avatar'
+								style={{ margin: 8 }}
+								text={item.username || item.name}
+								size={30}
+								type={item.username ? 'd' : 'c'}
+								baseUrl={baseUrl}
+								userId={user.id}
+								token={user.token}
+							/>
+							<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
+						</React.Fragment>
+					)
 				}
 			</TouchableOpacity>
 		);
@@ -659,7 +663,7 @@ class MessageBox extends Component {
 			return null;
 		}
 		return (
-			<View key='messagebox-container' testID='messagebox-container'>
+			<View testID='messagebox-container'>
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
@@ -736,7 +740,6 @@ class MessageBox extends Component {
 		return (
 			<React.Fragment>
 				<KeyboardAccessoryView
-					key='input'
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
@@ -748,7 +751,6 @@ class MessageBox extends Component {
 					addBottomView
 				/>
 				<UploadModal
-					key='upload-modal'
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
