@@ -92,6 +92,7 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 @connect(state => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
+	Gitlab_URL: state.settings.API_Gitlab_URL,
 	services: state.login.services
 }))
 /** @extends React.Component */
@@ -108,7 +109,8 @@ export default class LoginSignupView extends LoggedView {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		services: PropTypes.object,
-		Site_Name: PropTypes.string
+		Site_Name: PropTypes.string,
+		Gitlab_URL: PropTypes.string
 	}
 
 	constructor(props) {
@@ -177,9 +179,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressGitlab = () => {
-		const { services, server } = this.props;
+		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
-		const endpoint = 'https://gitlab.com/oauth/authorize';
+		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
+		const endpoint = `${ baseURL }/oauth/authorize`;
 		const redirect_uri = `${ server }/_oauth/gitlab?close`;
 		const scope = 'read_user';
 		const state = this.getOAuthState();
