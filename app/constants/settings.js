@@ -60,6 +60,6 @@ export default {
 		type: null
 	},
 	API_Gitlab_URL: {
-		type: 'valueAsBoolean'
+		type: 'valueAsString'
 	}
 };
