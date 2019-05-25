@@ -1,9 +1,5 @@
 import Realm from 'realm';
 
-// import { AsyncStorage } from 'react-native';
-// Realm.clearTestState();
-// AsyncStorage.clear();
-
 const email = {
 	name: 'email',
 	primaryKey: 'address',
@@ -16,9 +12,7 @@ const email = {
 
 const userSchema = {
 	name: 'user',
-	primaryKey: 'key',
 	properties: {
-		key: 'string',
 		id: { type: 'string', optional: true },
 		token: { type: 'string', optional: true },
 		username: { type: 'string', optional: true },

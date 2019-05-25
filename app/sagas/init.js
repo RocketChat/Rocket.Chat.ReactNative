@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -30,15 +29,6 @@ const restore = function* restore() {
 		yield put(toggleMarkdown(useMarkdown));
 
 		if (!token || !server) {
-			yield all([
-				serversDB.write(() => {
-					try {
-						serversDB.create('servers', { id: server, currentServer: false, userToken: null }, true);
-					} catch (e) {
-						log('restore -> removeCurrentServer ->', e);
-					}
-				})
-			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
 			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);

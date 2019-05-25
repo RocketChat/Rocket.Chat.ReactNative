@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native';
 import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
@@ -48,9 +47,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 				log('handleLoginSuccess -> setUserToken ->', e);
 			}
 		});
-		// yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	} catch (error) {
-		console.log('loginSuccess saga -> error', error);
+		log('loginSuccess saga -> error', error);
 	}
 
 	if (!user.username) {
