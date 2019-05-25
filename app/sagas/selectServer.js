@@ -36,7 +36,16 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		if (fetchVersion) {
 			serverInfo = yield getServerInfo({ server });
 		}
-		yield AsyncStorage.setItem('currentServer', server);
+
+		const { serversDB } = database.databases;
+		serversDB.write(() => {
+			try {
+				serversDB.create('servers', { id: server, currentServer: true }, true);
+			} catch (e) {
+				log('updateCurrentServer ->', e);
+			}
+		});
+
 		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
 		if (userStringified) {

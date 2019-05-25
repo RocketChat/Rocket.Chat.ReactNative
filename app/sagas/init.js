@@ -14,9 +14,13 @@ import database from '../lib/realm';
 
 const restore = function* restore() {
 	try {
+		const { serversDB } = database.databases;
+
+		const currentServer = serversDB.objects('servers').filtered('currentServer = true');
+
 		const { token, server } = yield all({
 			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
-			server: AsyncStorage.getItem('currentServer')
+			server: currentServer.length === 0 ? null : currentServer[0].id
 		});
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
@@ -28,7 +32,13 @@ const restore = function* restore() {
 		if (!token || !server) {
 			yield all([
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
-				AsyncStorage.removeItem('currentServer')
+				serversDB.write(() => {
+					try {
+						serversDB.create('servers', { id: server, currentServer: false }, true);
+					} catch (e) {
+						log('updateCurrentServer ->', e);
+					}
+				})
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
