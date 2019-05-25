@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
@@ -38,25 +38,17 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 	const { serversDB } = database.databases;
 
-	serversDB.write(() => {
-		try {
-			serversDB.create('servers', { id: server, userToken: user.token }, true);
-		} catch (e) {
-			log('handleLoginSuccess -> setUserToken ->', e);
-		}
-	});
-
 	try {
 		RocketChat.loginSuccess({ user });
 		I18n.locale = user.language;
-		database.write(() => {
+		serversDB.write(() => {
 			try {
-				database.create('user', { key: `${ RocketChat.TOKEN_KEY }-${ server }`, ...user }, true);
+				serversDB.create('servers', { id: server, userToken: user.token, user }, true);
 			} catch (e) {
-				log('handleLoginSuccess -> setUser ->', e);
+				log('handleLoginSuccess -> setUserToken ->', e);
 			}
 		});
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		// yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	} catch (error) {
 		console.log('loginSuccess saga -> error', error);
 	}
@@ -82,13 +74,13 @@ const handleLogout = function* handleLogout() {
 			const servers = yield serversDB.objects('servers');
 			// filter logging out server and delete it
 			const serverRecord = servers.filtered('id = $0', server);
+			const token = serverRecord[0].user;
 			serversDB.write(() => {
 				serversDB.delete(serverRecord);
 			});
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
-				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
 				if (token) {
 					return yield put(selectServerRequest(newServer));
 				}

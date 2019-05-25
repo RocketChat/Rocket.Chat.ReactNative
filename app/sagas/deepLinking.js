@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
 	takeLatest, take, select, put, all
@@ -47,7 +46,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		currentServer.length === 0 ? null : currentServer[0].id,
-		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		currentServer.length === 0 ? null : currentServer[0].user
 	]);
 
 	// TODO: needs better test

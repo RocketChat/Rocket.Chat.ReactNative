@@ -74,7 +74,8 @@ const RocketChat = {
 
 	async getUserToken() {
 		try {
-			return await AsyncStorage.getItem(TOKEN_KEY);
+			const { serversDB } = database.databases;
+			return await serversDB.objects('servers').filtered('currentServer = true')[0].user;
 		} catch (error) {
 			console.warn(`AsyncStorage error: ${ error.message }`);
 		}

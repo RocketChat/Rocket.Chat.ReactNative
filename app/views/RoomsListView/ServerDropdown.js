@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,7 +13,6 @@ import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
 import Touch from '../../utils/touch';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from './Check';
@@ -124,7 +123,8 @@ class ServerDropdown extends Component {
 
 		this.close();
 		if (currentServer !== server) {
-			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const { serversDB } = database.databases;
+			const token = await serversDB.objectForPrimaryKey('servers', server).user;
 			if (!token) {
 				appStart();
 				this.newServerTimeout = setTimeout(() => {
