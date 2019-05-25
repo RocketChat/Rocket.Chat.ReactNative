@@ -21,7 +21,7 @@ const userSchema = {
 		status: { type: 'string', optional: true },
 		customFields: { type: 'string', optional: true },
 		email: { type: 'list', objectType: 'email', default: [] },
-		roles: 'string[]'
+		roles: { type: 'string[]', optional: true }
 	}
 };
 
