@@ -88,6 +88,33 @@ const subscriptionSchema = {
 	}
 };
 
+const email = {
+	name: 'email',
+	primaryKey: 'address',
+	properties: {
+		// _id: { type: 'int', optional: true },
+		address: { type: 'string', optional: true },
+		verified: { type: 'bool', optional: true }
+	}
+};
+
+const userSchema = {
+	name: 'user',
+	primaryKey: 'key',
+	properties: {
+		key: 'string',
+		id: { type: 'string', optional: true },
+		token: { type: 'string', optional: true },
+		username: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
+		language: { type: 'string', optional: true },
+		status: { type: 'string', optional: true },
+		customFields: { type: 'string', optional: true },
+		email: { type: 'list', objectType: 'email', default: [] },
+		roles: 'string[]'
+	}
+};
+
 const usersSchema = {
 	name: 'users',
 	primaryKey: '_id',
@@ -337,6 +364,8 @@ const schema = [
 	messagesSchema,
 	threadsSchema,
 	threadMessagesSchema,
+	email,
+	userSchema,
 	usersSchema,
 	roomsSchema,
 	attachment,

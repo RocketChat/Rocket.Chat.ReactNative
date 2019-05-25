@@ -42,13 +42,20 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		try {
 			serversDB.create('servers', { id: server, userToken: user.token }, true);
 		} catch (e) {
-			log('restore -> removeCurrentServer ->', e);
+			log('handleLoginSuccess -> setUserToken ->', e);
 		}
 	});
 
 	try {
 		RocketChat.loginSuccess({ user });
 		I18n.locale = user.language;
+		database.write(() => {
+			try {
+				database.create('user', { key: `${ RocketChat.TOKEN_KEY }-${ server }`, ...user }, true);
+			} catch (e) {
+				log('handleLoginSuccess -> setUser ->', e);
+			}
+		});
 		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
 	} catch (error) {
 		console.log('loginSuccess saga -> error', error);

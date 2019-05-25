@@ -42,8 +42,11 @@ const handleOpen = function* handleOpen({ params }) {
 		host = host.slice(0, host.length - 1);
 	}
 
+	const { serversDB } = database.databases;
+	const currentServer = serversDB.objects('servers').filtered('currentServer = true');
+
 	const [server, user] = yield all([
-		AsyncStorage.getItem('currentServer'),
+		currentServer.length === 0 ? null : currentServer[0].id,
 		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
@@ -62,7 +65,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 	} else {
 		// search if deep link's server already exists
-		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
+		const servers = yield serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
 		if (servers.length && user) {
 			yield put(selectServerRequest(host));
 			yield take(types.SERVER.SELECT_SUCCESS);
