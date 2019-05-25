@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -19,7 +19,7 @@ const restore = function* restore() {
 		const currentServer = serversDB.objects('servers').filtered('currentServer = true');
 
 		const { token, server } = yield all({
-			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
+			token: currentServer.length === 0 ? null : currentServer[0].userToken,
 			server: currentServer.length === 0 ? null : currentServer[0].id
 		});
 
@@ -31,12 +31,11 @@ const restore = function* restore() {
 
 		if (!token || !server) {
 			yield all([
-				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				serversDB.write(() => {
 					try {
-						serversDB.create('servers', { id: server, currentServer: false }, true);
+						serversDB.create('servers', { id: server, currentServer: false, userToken: null }, true);
 					} catch (e) {
-						log('updateCurrentServer ->', e);
+						log('restore -> removeCurrentServer ->', e);
 					}
 				})
 			]);

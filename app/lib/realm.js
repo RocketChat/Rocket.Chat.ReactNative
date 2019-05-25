@@ -11,6 +11,7 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		currentServer: { type: 'bool', optional: true },
+		userToken: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'

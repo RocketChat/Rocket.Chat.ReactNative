@@ -33,9 +33,19 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	const adding = yield select(state => state.server.adding);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 
 	const server = yield select(getServer);
+
+	const { serversDB } = database.databases;
+
+	serversDB.write(() => {
+		try {
+			serversDB.create('servers', { id: server, userToken: user.token }, true);
+		} catch (e) {
+			log('restore -> removeCurrentServer ->', e);
+		}
+	});
+
 	try {
 		RocketChat.loginSuccess({ user });
 		I18n.locale = user.language;
