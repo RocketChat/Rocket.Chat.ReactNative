@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 
 import * as actions from '../actions';
@@ -15,12 +15,8 @@ const restore = function* restore() {
 	try {
 		const { serversDB } = database.databases;
 
-		const currentServer = serversDB.objects('servers').filtered('currentServer = true');
-
-		const { token, server } = yield all({
-			token: currentServer.length === 0 ? null : currentServer[0].userToken,
-			server: currentServer.length === 0 ? null : currentServer[0].id
-		});
+		const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
+		const { user: { token }, id: server } = currentServer.length !== 0 ? currentServer[0] : { user: { token: null }, id: null };
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));

@@ -72,13 +72,9 @@ const RocketChat = {
 		});
 	},
 
-	async getUserToken() {
-		try {
-			const { serversDB } = database.databases;
-			return await serversDB.objects('servers').filtered('currentServer = true')[0].user;
-		} catch (error) {
-			console.warn(`AsyncStorage error: ${ error.message }`);
-		}
+	getUserToken() {
+		const { serversDB } = database.databases;
+		return serversDB.objects('servers').filtered('currentServer = true')[0].user.token;
 	},
 	async getServerInfo(server) {
 		try {

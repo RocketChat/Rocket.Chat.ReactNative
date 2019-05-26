@@ -4,7 +4,6 @@ const email = {
 	name: 'email',
 	primaryKey: 'address',
 	properties: {
-		// _id: { type: 'int', optional: true },
 		address: { type: 'string', optional: true },
 		verified: { type: 'bool', optional: true }
 	}
@@ -32,7 +31,6 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		currentServer: { type: 'bool', optional: true },
-		userToken: { type: 'string', optional: true },
 		user: { type: 'user', optional: true },
 		iconURL: { type: 'string', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },

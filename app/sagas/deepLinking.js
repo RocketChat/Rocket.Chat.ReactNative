@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import {
-	takeLatest, take, select, put, all
+	takeLatest, take, select, put
 } from 'redux-saga/effects';
 
 import Navigation from '../lib/Navigation';
@@ -42,12 +42,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const { serversDB } = database.databases;
-	const currentServer = serversDB.objects('servers').filtered('currentServer = true');
-
-	const [server, user] = yield all([
-		currentServer.length === 0 ? null : currentServer[0].id,
-		currentServer.length === 0 ? null : currentServer[0].user
-	]);
+	const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
+	const { user, id: server } = currentServer.length !== 0 ? currentServer[0] : { user: null, id: null };
 
 	// TODO: needs better test
 	// if deep link is from same server
