@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import {
-	Text, View, Switch, Linking, ScrollView, AsyncStorage
+	View, Linking, ScrollView, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton } from 'react-native-gesture-handler';
 import { Answers } from 'react-native-fabric';
 
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY } from '../../lib/rocketchat';
 import styles from './styles';
-import { COLOR_SUCCESS, COLOR_TEXT, COLOR_DANGER } from '../../constants/colors';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
+import Button from './Button';
+import ButtonWithSwitch from './ButtonWithSwitch';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 
@@ -70,53 +69,6 @@ export default class SettingsView extends Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderItem = (item) => {
-		if (!item.onPress) {
-			item.onPress = () => {};
-		}
-		return (
-			<RectButton
-				onPress={item.onPress}
-				activeOpacity={0.9}
-				underlayColor={COLOR_TEXT}
-			>
-				<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-					<View>
-						<Text style={styles.sectionItemTitle}>{item.title}</Text>
-						{item.subTitle
-							? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
-							: null
-						}
-					</View>
-					{item.showActionIndicator ? <DisclosureIndicator /> : null}
-				</View>
-			</RectButton>
-
-		);
-	}
-
-	renderItemSwitch = item => (
-		<View style={[styles.sectionItem, item.disable && styles.sectionItemDisabled]}>
-			<View>
-				<Text style={styles.sectionItemTitle}>{item.title}</Text>
-				{item.subTitle
-					? <Text style={styles.sectionItemSubTitle}>{item.subTitle}</Text>
-					: null
-				}
-			</View>
-			<Switch
-				value={item.value}
-				disabled={item.disable}
-				style={styles.switch}
-				trackColor={{
-					false: isAndroid ? COLOR_DANGER : null,
-					true: COLOR_SUCCESS
-				}}
-				onValueChange={item.onValueChange}
-			/>
-		</View>
-	)
-
 	render() {
 		const { server, useMarkdown } = this.props;
 		return (
@@ -129,31 +81,27 @@ export default class SettingsView extends Component {
 				>
 					{this.renderSectionSeparator()}
 
-					{this.renderItem({ title: I18n.t('Contact_us'), onPress: this.sendEmail, showActionIndicator: true })}
+					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator />
 					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Language'), onPress: this.navigateToRoom('LanguageView'), showActionIndicator: true })}
+					<Button title={I18n.t('Language')} onPress={this.navigateToRoom('LanguageView')} showActionIndicator />
 					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
+					<Button title={I18n.t('Theme')} showActionIndicator disable />
 					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Share_this_app'), showActionIndicator: true, disable: true })}
-					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Theme'), showActionIndicator: true, disable: true })}
+					<Button title={I18n.t('Share_this_app')} showActionIndicator disable />
 
 					{this.renderSectionSeparator()}
 
-					{this.renderItem({ title: I18n.t('License'), onPress: this.openLink(LICENSE_LINK), showActionIndicator: true })}
+					<Button title={I18n.t('License')} onPress={this.openLink(LICENSE_LINK)} showActionIndicator />
 					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Version_no', { version: getReadableVersion }) })}
+					<Button title={I18n.t('Version_no', { version: getReadableVersion })} />
 					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Server_version', { version: server.version }), subTitle: `${ server.server.split('//')[1] }` })}
+					<Button title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} />
 
 					{this.renderSectionSeparator()}
 
-					{this.renderItemSwitch({ title: I18n.t('Enable_markdown'), value: useMarkdown, onValueChange: this.toggleMarkdown })}
+					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} />
 					{this.renderSeparator()}
-					{this.renderItemSwitch({ title: I18n.t('Send_crash_report'), disable: true })}
-					{this.renderSeparator()}
-					{this.renderItem({ title: I18n.t('Crash_report_disclaimer'), disable: true })}
+					<Button title={I18n.t('Crash_report_disclaimer')} disable />
 
 					{this.renderSectionSeparator()}
 				</ScrollView>

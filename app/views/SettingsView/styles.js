@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import {
-	COLOR_SEPARATOR, COLOR_WHITE, COLOR_BORDER
+	COLOR_SEPARATOR, COLOR_WHITE
 } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
@@ -29,6 +29,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	sectionItem: {
+		marginHorizontal: 5,
 		backgroundColor: COLOR_WHITE,
 		flex: 1,
 		paddingVertical: 20,
@@ -45,8 +46,8 @@ export default StyleSheet.create({
 		marginHorizontal: 10
 	},
 	sectionSeparatorBorder: {
-		borderColor: COLOR_BORDER,
-		borderTopWidth: 10
+		borderColor: '#F6F7F9',
+		borderWidth: 5
 	},
 	switch: {
 		marginStart: 5
