@@ -4880,10 +4880,10 @@ detect-port@^1.2.3:
     address "^1.0.1"
     debug "^2.6.0"
 
-detox@12.8.0:
-  version "12.8.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-12.8.0.tgz#68cf92ff02fcdb896f05c67b2b40a8c94d09b24b"
-  integrity sha512-mDe4HcrfUePokhgv6gZADzqqgE6BxYnHXNm4qi5WrwgPJJQMjTLeJOsD7Z6t02SoK5G5Uvq3rx9Z7eI+Xgb3iQ==
+detox@12.9.0:
+  version "12.9.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-12.9.0.tgz#d8e3d21440d582b0d148a759364c55bf5c8cd25e"
+  integrity sha512-Yo6OMPh1gDSVANRUQwwjrapYr+frusmyCFRyatp3niKBiGQP37wk+dkIUT487nEh6WSyYtTvCitdymvN73t48A==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -7169,7 +7169,7 @@ interpret@^1.0.0, interpret@^1.1.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
-invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
