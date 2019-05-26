@@ -1,4 +1,6 @@
 import Realm from 'realm';
+// import { AsyncStorage } from 'react-native';
+// import RocketChat from './rocketchat';
 
 const email = {
 	name: 'email',
@@ -382,7 +384,7 @@ class DB {
 				userSchema,
 				serversSchema
 			],
-			schemaVersion: 8,
+			schemaVersion: 9,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
 					const newServers = newRealm.objects('servers');
@@ -392,6 +394,22 @@ class DB {
 						newServers[i].roomsUpdatedAt = null;
 					}
 				}
+				// if (oldRealm.schemaVersion < 9) {
+				// 	const newServers = newRealm.objects('servers');
+				// 	const currentServer = await AsyncStorage.getItem('currentServer');
+				// 	const userStringified = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+				// 	const user = JSON.parse(userStringified);
+				// 	// eslint-disable-next-line no-plusplus
+				// 	for (let i = 0; i < newServers.length; i++) {
+				// 		if (currentServer === newServers[i].id) {
+				// 			newServers[i].currentServer = true;
+				// 			newServers[i].user = user;
+				// 		} else {
+				// 			newServers[i].currentServer = false;
+				// 			newServers[i].user = null;
+				// 		}
+				// 	}
+				// }
 			}
 		}),
 		inMemoryDB: new Realm({
