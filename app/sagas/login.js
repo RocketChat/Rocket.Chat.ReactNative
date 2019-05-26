@@ -14,7 +14,7 @@ import database from '../lib/realm';
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
-const logoutCall = args => RocketChat.logout(args);
+const logoutCall = () => RocketChat.logout();
 
 const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 	try {
@@ -66,18 +66,18 @@ const handleLogout = function* handleLogout() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			yield call(logoutCall, { server });
+			yield call(logoutCall);
 			const { serversDB } = database.databases;
 			// all servers
 			const servers = yield serversDB.objects('servers');
 			// filter logging out server and delete it
 			const serverRecord = servers.filtered('id = $0', server);
+			const token = serverRecord[0].user;
 			serversDB.write(() => {
 				serversDB.delete(serverRecord);
 			});
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
-				const token = serverRecord[0].user;
 				const newServer = servers[0].id;
 				if (token) {
 					return yield put(selectServerRequest(newServer));

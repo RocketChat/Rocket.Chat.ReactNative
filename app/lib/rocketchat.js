@@ -303,7 +303,7 @@ const RocketChat = {
 			throw e;
 		}
 	},
-	async logout({ server }) {
+	async logout() {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
 		}
@@ -325,12 +325,6 @@ const RocketChat = {
 			console.log('​logout -> api logout -> catch -> error', error);
 		}
 		this.sdk = null;
-
-		Promise.all([
-			AsyncStorage.removeItem('currentServer'),
-			AsyncStorage.removeItem(TOKEN_KEY),
-			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
-		]).catch(error => console.log(error));
 
 		try {
 			database.deleteAll();
