@@ -6,7 +6,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-// import { Answers } from 'react-native-fabric';
+import firebase from 'react-native-firebase';
 
 import LoggedView from '../View';
 import RocketChat, { MARKDOWN_KEY } from '../../lib/rocketchat';
@@ -173,7 +173,7 @@ export default class SettingsView extends LoggedView {
 		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
 		const { toggleMarkdown } = this.props;
 		toggleMarkdown(value);
-		// Answers.logCustom('toggle_markdown', { value });
+		firebase.analytics().logEvent('toggle_markdown', { value });
 	}
 
 	render() {
