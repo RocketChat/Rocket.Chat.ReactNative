@@ -358,7 +358,7 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			return await RocketChat.getPermalink(room, SHARE_CHANNEL);
 		} catch (error) {
-			log('getRoomlink ->', e);
+			log('getRoomlink ->', error);
 			return null;
 		}
 	}

@@ -512,11 +512,15 @@ const RocketChat = {
 	},
 	async getPermalink(obj, type) {
 		let room;
-		try {
-			room = await RocketChat.getRoom(obj.rid);
-		} catch (e) {
-			log('Rocketchat.getPermalink', e);
-			return null;
+		if (type === SHARE_MESSAGE) {
+			try {
+				room = await RocketChat.getRoom(obj.rid);
+			} catch (e) {
+				log('Rocketchat.getPermalink', e);
+				return null;
+			}
+		} else {
+			room = obj;
 		}
 		const { server } = reduxStore.getState().server;
 		const roomType = {
