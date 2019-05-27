@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -51,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNFirebasePackage(),
+            new RNFirebaseCrashlyticsPackage(),
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
