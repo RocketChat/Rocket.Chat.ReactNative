@@ -42,6 +42,7 @@ target 'RocketChatRN' do
   pod 'Fabric', '~> 1.9.0'
   pod 'Crashlytics', '~> 3.12.0'
   pod 'GoogleIDFASupport', '~> 3.14.0'
+  pod 'Firebase/Performance', '~> 5.20.1'
 
 end
 

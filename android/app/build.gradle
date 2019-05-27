@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
+apply plugin: "com.google.firebase.firebase-perf"
 
 import com.android.build.OutputFile
 
@@ -196,6 +197,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:16.1.0"
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-core:16.0.9"
+    implementation "com.google.firebase:firebase-perf:16.2.5"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
     }

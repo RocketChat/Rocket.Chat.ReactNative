@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -55,6 +56,7 @@ public class MainApplication extends Application implements ReactApplication, IN
             new RNFirebasePackage(),
             new RNFirebaseCrashlyticsPackage(),
             new RNFirebaseAnalyticsPackage(),
+            new RNFirebasePerformancePackage(),
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
