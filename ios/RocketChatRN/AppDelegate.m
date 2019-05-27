@@ -16,7 +16,7 @@
 #import "RNNotifications.h"
 #import "RNSplashScreen.h"
 #import "Orientation.h"
-
+#import <Firebase.h>
 
 @implementation AppDelegate
 
@@ -24,8 +24,9 @@
 {
 
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-      RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                       moduleName:@"RocketChatRN"
+    [FIRApp configure];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                moduleName:@"RocketChatRN"
                                                 initialProperties:nil];
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
