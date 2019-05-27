@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import firebase from 'react-native-firebase';
 
-import LoggedView from '../View';
 import RocketChat, { MARKDOWN_KEY } from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -56,8 +55,7 @@ const styles = StyleSheet.create({
 	setUser: params => dispatch(setUserAction(params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
 }))
-/** @extends React.Component */
-export default class SettingsView extends LoggedView {
+export default class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
@@ -72,7 +70,7 @@ export default class SettingsView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('SettingsView', props);
+		super(props);
 		this.state = {
 			placeholder: {},
 			language: props.userLanguage ? props.userLanguage : 'en',

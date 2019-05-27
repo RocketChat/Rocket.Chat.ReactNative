@@ -18,7 +18,6 @@ import {
 	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import LoggedView from '../View';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -70,8 +69,7 @@ import { Toast } from '../../utils/info';
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
-/** @extends React.Component */
-export default class RoomView extends LoggedView {
+export default class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
@@ -131,7 +129,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	constructor(props) {
-		super('RoomView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
