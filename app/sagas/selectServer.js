@@ -38,8 +38,14 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		const { serversDB } = database.databases;
+		const servers = yield serversDB.objects('servers');
+
 		serversDB.write(() => {
 			try {
+				// eslint-disable-next-line no-plusplus
+				for (let i = 0; i < servers.length; i++) {
+					serversDB.create('servers', { id: servers[i].id, currentServer: false }, true);
+				}
 				serversDB.create('servers', { id: server, currentServer: true }, true);
 			} catch (e) {
 				log('updateCurrentServer ->', e);
