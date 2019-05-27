@@ -3,6 +3,7 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -49,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),

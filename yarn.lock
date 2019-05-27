@@ -10223,6 +10223,11 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+opencollective-postinstall@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
+  integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
+
 opn@5.4.0, opn@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
@@ -11397,6 +11402,14 @@ react-native-fast-image@5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.3.0.tgz#136e045bc6e95e75b03b89a82eefecb984737fda"
   integrity sha512-pqp9loZbWHW2pVcaAItV5rtEpj6RyPnk0mRlsxRZpbJvrJArJwRMd+WT8BzC+OyTDV1TOdFJCOxDyVNL9I2XTw==
+
+react-native-firebase@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.4.0.tgz#64ee3a601fd421a931db0d81d6df1ea639997f95"
+  integrity sha512-LHbyCC9F7JfXNq5UpDNAP2rzjEYI6O/zNCy1MEEVr12ICPMeg6wwz2JMeqLwZdYLZQgaD/dk4jWZ8KxUbqdPnQ==
+  dependencies:
+    opencollective-postinstall "^2.0.0"
+    prop-types "^15.6.2"
 
 react-native-fit-image@^1.5.2:
   version "1.5.4"

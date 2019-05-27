@@ -40,6 +40,7 @@
     "react-native-dialog": "^5.6.0",
     "react-native-easy-toast": "^1.2.0",
     "react-native-fast-image": "5.3.0",
+    "react-native-firebase": "^5.4.0",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-i18n": "^2.0.15",
     "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
