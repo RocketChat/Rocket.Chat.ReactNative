@@ -27,7 +27,7 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		74815BBCB91147C08C8F7B3D /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1142E3442BA94B19BCF52814 /* libRNAudio.a */; };
 		77C35F50C01C43668188886C /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A0EEFAF8AB14F5B9E796CDD /* libRNVectorIcons.a */; };
-		7A006EA3229C785000803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006EA2229C785000803143 /* GoogleService-Info.plist */; };
+		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A430E4F20238C46008F55BC /* libRCTCustomInputController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A430E1E20238C02008F55BC /* libRCTCustomInputController.a */; };
 		7A55F1C52236D541005109A0 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A55F1C42236D541005109A0 /* custom.ttf */; };
 		7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8DEB5220ED0BDE00C5DCE4 /* libRNNotifications.a */; };
@@ -473,7 +473,7 @@
 		6533FB90166345D29F1B91C0 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		66D6B1D0567051BE541450C9 /* Pods-RocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatRN.release.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatRN/Pods-RocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7A006EA2229C785000803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A430E1620238C01008F55BC /* RCTCustomInputController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCustomInputController.xcodeproj; path = "../node_modules/react-native-keyboard-input/lib/ios/RCTCustomInputController.xcodeproj"; sourceTree = "<group>"; };
 		7A55F1C42236D541005109A0 /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
@@ -601,7 +601,7 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				7A006EA2229C785000803143 /* GoogleService-Info.plist */,
+				7A006F13229C83B600803143 /* GoogleService-Info.plist */,
 				60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -899,6 +899,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				7A6EDBE020ED6E020086E097 /* Embed Frameworks */,
 				FD0EBB93B02BAD0637E4F286 /* [CP] Copy Pods Resources */,
+				7A006EDA229C7F0A00803143 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -1438,7 +1439,7 @@
 			files = (
 				7A55F1C52236D541005109A0 /* custom.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				7A006EA3229C785000803143 /* GoogleService-Info.plist in Resources */,
+				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1458,6 +1459,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		7A006EDA229C7F0A00803143 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		FB4AC4FF76ACF097F2431C74 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
