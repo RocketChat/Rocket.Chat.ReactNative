@@ -17,7 +17,7 @@ export default StyleSheet.create({
 	sectionItemTitle: {
 		alignSelf: 'flex-start',
 		fontSize: 16,
-		marginStart: 20,
+		marginStart: 18,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},

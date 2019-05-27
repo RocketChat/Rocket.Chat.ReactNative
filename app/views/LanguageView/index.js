@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { View, ScrollView, Text } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';
 
@@ -9,15 +9,16 @@ import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
-import RCTextInput from '../../containers/TextInput';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
-import Button from '../../containers/Button';
 import Loading from '../../containers/Loading';
 import { showErrorAlert, Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
+import { CustomIcon } from '../../lib/Icons';
+import styles from './styles';
+import { COLOR_TEXT } from '../../constants/colors';
 
 const LANGUAGES = [{
 	label: 'English',
@@ -63,9 +64,7 @@ export default class LanguageView extends LoggedView {
 	constructor(props) {
 		super('LanguageView', props);
 		this.state = {
-			placeholder: {},
 			language: props.userLanguage ? props.userLanguage : 'en',
-			languages: LANGUAGES,
 			saving: false
 		};
 	}
@@ -85,29 +84,18 @@ export default class LanguageView extends LoggedView {
 		return false;
 	}
 
-	getLabel = (language) => {
-		const { languages } = this.state;
-		const l = languages.find(i => i.value === language);
-		if (l && l.label) {
-			return l.label;
-		}
-		return null;
-	}
-
-	formIsChanged = () => {
+	formIsChanged = (language) => {
 		const { userLanguage } = this.props;
-		const { language } = this.state;
 		return (userLanguage !== language);
 	}
 
-	submit = async() => {
-		if (!this.formIsChanged()) {
+	submit = async(language) => {
+		if (!this.formIsChanged(language)) {
 			return;
 		}
 
 		this.setState({ saving: true });
 
-		const { language } = this.state;
 		const { userLanguage, setUser, navigation } = this.props;
 
 		const params = {};
@@ -136,10 +124,30 @@ export default class LanguageView extends LoggedView {
 		}
 	}
 
+	renderSeparator = () => <View style={styles.separator} />;
+
+	renderItem = ({ value, label }) => {
+		const { language } = this.state;
+		const isSelected = language === value;
+		return (
+			<React.Fragment>
+				<RectButton
+					onPress={() => this.submit(value)}
+					activeOpacity={0.9}
+					underlayColor={COLOR_TEXT}
+				>
+					<View style={styles.containerItem}>
+						<Text style={styles.text}>{label}</Text>
+						{isSelected ? <CustomIcon name='check' size={20} style={styles.checkIcon} /> : null }
+					</View>
+				</RectButton>
+				{this.renderSeparator()}
+			</React.Fragment>
+		);
+	}
+
 	render() {
-		const {
-			language, languages, placeholder, saving
-		} = this.state;
+		const { saving } = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -147,36 +155,12 @@ export default class LanguageView extends LoggedView {
 			>
 				<StatusBar />
 				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
+					contentContainerStyle={styles.containerScrollView}
 					testID='settings-view-list'
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView style={sharedStyles.container} testID='settings-view' forceInset={{ bottom: 'never' }}>
-						<RNPickerSelect
-							items={languages}
-							onValueChange={(value) => {
-								this.setState({ language: value });
-							}}
-							value={language}
-							placeholder={placeholder}
-						>
-							<RCTextInput
-								inputRef={(e) => { this.name = e; }}
-								label={I18n.t('Language')}
-								placeholder={I18n.t('Language')}
-								value={this.getLabel(language)}
-								testID='settings-view-language'
-							/>
-						</RNPickerSelect>
-						<View style={sharedStyles.alignItemsFlexStart}>
-							<Button
-								title={I18n.t('Save_Changes')}
-								type='primary'
-								onPress={this.submit}
-								disabled={!this.formIsChanged()}
-								testID='settings-view-button'
-							/>
-						</View>
+						{LANGUAGES.map(item => this.renderItem(item))}
 						<Loading visible={saving} />
 					</SafeAreaView>
 				</ScrollView>
