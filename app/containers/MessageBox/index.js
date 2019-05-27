@@ -175,9 +175,7 @@ class MessageBox extends Component {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		if (!isTextEmpty) {
-			this.debouncedOnChangeText(text);
-		}
+		this.debouncedOnChangeText(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -186,7 +184,7 @@ class MessageBox extends Component {
 
 		if (this.component) {
 			requestAnimationFrame(() => {
-				const { start, end } = this.component._lastNativeSelection;
+				const { start, end } = this.component._lastNativeSelection || { start: 0, end: 0 };
 				const cursor = Math.max(start, end);
 				const lastNativeText = this.component._lastNativeText;
 				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
