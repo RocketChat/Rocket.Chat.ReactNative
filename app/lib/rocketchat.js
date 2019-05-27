@@ -37,6 +37,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../push';
 import { roomsRequest } from '../actions/rooms';
+import { SHARE_MESSAGE } from '../constants/types';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -523,7 +524,7 @@ const RocketChat = {
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ server }/${ roomType }/${ room.name }${ type === 'message' ? `?msg=${ obj._id }` : '' }`;
+		return `${ server }/${ roomType }/${ room.name }${ type === SHARE_MESSAGE ? `?msg=${ obj._id }` : '' }`;
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);

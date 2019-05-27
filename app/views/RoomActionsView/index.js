@@ -24,6 +24,7 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
+import { SHARE_CHANNEL } from '../../constants/types';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -355,8 +356,9 @@ export default class RoomActionsView extends LoggedView {
 
 	getRoomlink = async(room) => {
 		try {
-			return await RocketChat.getPermalink(room, 'room');
+			return await RocketChat.getPermalink(room, SHARE_CHANNEL);
 		} catch (error) {
+			log('getRoomlink ->', e);
 			return null;
 		}
 	}

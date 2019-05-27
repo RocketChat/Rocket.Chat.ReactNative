@@ -32,6 +32,7 @@ import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
+import { SHARE_MESSAGE } from '../../constants/types';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -245,7 +246,7 @@ class MessageBox extends Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message, 'message');
+			return await RocketChat.getPermalink(message, SHARE_MESSAGE);
 		} catch (error) {
 			return null;
 		}

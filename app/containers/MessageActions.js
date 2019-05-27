@@ -17,6 +17,7 @@ import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { SHARE_MESSAGE } from '../constants/types';
 
 @connect(
 	state => ({
@@ -155,7 +156,7 @@ export default class MessageActions extends React.Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message, 'message');
+			return await RocketChat.getPermalink(message, SHARE_MESSAGE);
 		} catch (error) {
 			return null;
 		}
