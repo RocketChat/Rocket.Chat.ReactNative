@@ -815,7 +815,7 @@ class MessageBox extends Component {
 							return ([
 								<Avatar
 									key='mention-item-avatar'
-									style={{ margin: 8 }}
+									style={styles.avatar}
 									text={item.username || item.name}
 									size={30}
 									type={item.username ? 'd' : 'c'}
@@ -850,32 +850,24 @@ class MessageBox extends Component {
 		);
 	};
 
-	renderCommandPreviewItem = ({ item }) => {
-		if (item.type === 'image') {
-			return (
-				<TouchableOpacity
-					style={styles.commandPreview}
-					onPress={() => this.onPressCommandPreview(item)}
-					testID={`command-preview-item${ item.id }`}
-				>
+	renderCommandPreviewItem = ({ item }) => (
+		<TouchableOpacity
+			style={styles.commandPreview}
+			onPress={() => this.onPressCommandPreview(item)}
+			testID={`command-preview-item${ item.id }`}
+		>
+			{item.type === 'image'
+				? (
 					<FastImage
 						style={styles.commandPreviewImage}
 						source={{ uri: item.value }}
 						resizeMode={FastImage.resizeMode.cover}
 					/>
-				</TouchableOpacity>
-			);
-		}
-		return (
-			<TouchableOpacity
-				style={styles.commandPreview}
-				onPress={() => this.onPressCommandPreview(item)}
-				testID={`command-preview-item${ item.id }`}
-			>
-				<CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
-			</TouchableOpacity>
-		);
-	}
+				)
+				: <CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
+			}
+		</TouchableOpacity>
+	)
 
 	renderCommandPreview = () => {
 		const { commandPreview } = this.state;
