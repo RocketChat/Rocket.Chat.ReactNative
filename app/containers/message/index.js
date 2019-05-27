@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes } from 'react-native';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
@@ -18,7 +17,7 @@ export default class MessageContainer extends React.Component {
 		}),
 		timeFormat: PropTypes.string,
 		customThreadTimeFormat: PropTypes.string,
-		style: ViewPropTypes.style,
+		style: PropTypes.any,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
@@ -49,17 +48,13 @@ export default class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			status, item, _updatedAt, previousItem
+			status, item, _updatedAt
 		} = this.props;
 
 		if (status !== nextProps.status) {
 			return true;
 		}
 		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
-
-		if (!previousItem && !!nextProps.previousItem) {
 			return true;
 		}
 

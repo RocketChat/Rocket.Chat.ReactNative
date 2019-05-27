@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -23,15 +23,15 @@ import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
-import FilesActions from './FilesActions';
 import UploadModal from './UploadModal';
-import './EmojiKeyboard';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import { CustomIcon } from '../../lib/Icons';
 import debounce from '../../utils/debounce';
-import { COLOR_PRIMARY, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import LeftButtons from './LeftButtons';
+import RightButtons from './RightButtons';
+import { isAndroid } from '../../utils/deviceInfo';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -47,6 +47,17 @@ const imagePickerConfig = {
 	cropperChooseText: I18n.t('Choose'),
 	cropperCancelText: I18n.t('Cancel')
 };
+
+const fileOptions = [I18n.t('Cancel')];
+const FILE_CANCEL_INDEX = 0;
+
+// Photo
+fileOptions.push(I18n.t('Take_a_photo'));
+const FILE_PHOTO_INDEX = 1;
+
+// Library
+fileOptions.push(I18n.t('Choose_from_library'));
+const FILE_LIBRARY_INDEX = 2;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -77,7 +88,6 @@ class MessageBox extends Component {
 		this.state = {
 			mentions: [],
 			showEmojiKeyboard: false,
-			showFilesAction: false,
 			showSend: false,
 			recording: false,
 			trackingType: '',
@@ -111,6 +121,10 @@ class MessageBox extends Component {
 			this.setInput(msg);
 			this.setShowSend(true);
 		}
+
+		if (isAndroid) {
+			require('./EmojiKeyboard');
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -133,7 +147,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showFilesAction, showSend, recording, mentions, file
+			showEmojiKeyboard, showSend, recording, mentions, file
 		} = this.state;
 		const {
 			roomType, replying, editing, isFocused
@@ -153,9 +167,6 @@ class MessageBox extends Component {
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
-		if (nextState.showFilesAction !== showFilesAction) {
-			return true;
-		}
 		if (nextState.showSend !== showSend) {
 			return true;
 		}
@@ -171,32 +182,25 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	onChangeText = (text) => {
+	onChangeText = debounce((text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		this.debouncedOnChangeText(text);
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce((text) => {
 		this.setInput(text);
 
 		if (this.component) {
-			requestAnimationFrame(() => {
-				const { start, end } = this.component._lastNativeSelection;
-				const cursor = Math.max(start, end);
-				const lastNativeText = this.component._lastNativeText;
-				const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					return this.stopTrackingMention();
-				}
-				const [, lastChar, name] = result;
-				this.identifyMentionKeyword(name, lastChar);
-			});
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			const lastNativeText = this.component._lastNativeText;
+			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+			const result = lastNativeText.substr(0, cursor).match(regexp);
+			if (!result) {
+				return this.stopTrackingMention();
+			}
+			const [, lastChar, name] = result;
+			this.identifyMentionKeyword(name, lastChar);
 		}
-	}, 100);
+	}, 100)
 
 	onKeyboardResigned = () => {
 		this.closeEmoji();
@@ -237,106 +241,6 @@ class MessageBox extends Component {
 		}
 		this.setInput(newText);
 		this.setShowSend(true);
-	}
-
-	get leftButtons() {
-		const { showEmojiKeyboard } = this.state;
-		const { editing } = this.props;
-
-		if (editing) {
-			return (
-				<BorderlessButton
-					onPress={this.editCancel}
-					accessibilityLabel={I18n.t('Cancel_editing')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-cancel-editing'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='cross'
-					/>
-				</BorderlessButton>
-			);
-		}
-		return !showEmojiKeyboard
-			? (
-				<BorderlessButton
-					onPress={this.openEmoji}
-					accessibilityLabel={I18n.t('Open_emoji_selector')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-open-emoji'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='emoji'
-					/>
-				</BorderlessButton>
-			)
-			: (
-				<BorderlessButton
-					onPress={this.closeEmoji}
-					accessibilityLabel={I18n.t('Close_emoji_selector')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-					testID='messagebox-close-emoji'
-				>
-					<CustomIcon
-						size={22}
-						color={COLOR_PRIMARY}
-						name='keyboard'
-					/>
-				</BorderlessButton>
-			);
-	}
-
-	get rightButtons() {
-		const { showSend } = this.state;
-		const icons = [];
-
-		if (showSend) {
-			icons.push(
-				<BorderlessButton
-					key='send-message'
-					onPress={this.submit}
-					style={styles.actionButton}
-					testID='messagebox-send-message'
-					accessibilityLabel={I18n.t('Send message')}
-					accessibilityTraits='button'
-				>
-					<CustomIcon name='send1' size={23} color={COLOR_PRIMARY} />
-				</BorderlessButton>
-			);
-			return icons;
-		}
-		icons.push(
-			<BorderlessButton
-				key='audio-message'
-				onPress={this.recordAudioMessage}
-				style={styles.actionButton}
-				testID='messagebox-send-audio'
-				accessibilityLabel={I18n.t('Send audio message')}
-				accessibilityTraits='button'
-			>
-				<CustomIcon name='mic' size={23} color={COLOR_PRIMARY} />
-			</BorderlessButton>
-		);
-		icons.push(
-			<BorderlessButton
-				key='file-message'
-				onPress={this.toggleFilesActions}
-				style={styles.actionButton}
-				testID='messagebox-actions'
-				accessibilityLabel={I18n.t('Message actions')}
-				accessibilityTraits='button'
-			>
-				<CustomIcon name='plus' size={23} color={COLOR_PRIMARY} />
-			</BorderlessButton>
-		);
-		return icons;
 	}
 
 	getPermalink = async(message) => {
@@ -495,10 +399,6 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	toggleFilesActions = () => {
-		this.setState(prevState => ({ showFilesAction: !prevState.showFilesAction }));
-	}
-
 	sendImageMessage = async(file) => {
 		const { rid, tmid } = this.props;
 
@@ -538,6 +438,28 @@ class MessageBox extends Component {
 
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
+	}
+
+	showFileActions = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: fileOptions,
+			cancelButtonIndex: FILE_CANCEL_INDEX
+		}, (actionIndex) => {
+			this.handleFileActionPress(actionIndex);
+		});
+	}
+
+	handleFileActionPress = (actionIndex) => {
+		switch (actionIndex) {
+			case FILE_PHOTO_INDEX:
+				this.takePhoto();
+				break;
+			case FILE_LIBRARY_INDEX:
+				this.chooseFromLibrary();
+				break;
+			default:
+				break;
+		}
 	}
 
 	editCancel = () => {
@@ -585,6 +507,7 @@ class MessageBox extends Component {
 		} = this.props;
 		const message = this.text;
 
+		this.clearInput();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
@@ -629,7 +552,6 @@ class MessageBox extends Component {
 		} else {
 			onSubmit(message);
 		}
-		this.clearInput();
 	}
 
 	updateMentions = (keyword, type) => {
@@ -713,23 +635,27 @@ class MessageBox extends Component {
 				testID={`mention-item-${ trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
 			>
 				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-					? [
-						this.renderMentionEmoji(item),
-						<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-					]
-					: [
-						<Avatar
-							key='mention-item-avatar'
-							style={{ margin: 8 }}
-							text={item.username || item.name}
-							size={30}
-							type={item.username ? 'd' : 'c'}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
-						/>,
-						<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
-					]
+					? (
+						<React.Fragment>
+							{this.renderMentionEmoji(item)}
+							<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+						</React.Fragment>
+					)
+					: (
+						<React.Fragment>
+							<Avatar
+								key='mention-item-avatar'
+								style={{ margin: 8 }}
+								text={item.username || item.name}
+								size={30}
+								type={item.username ? 'd' : 'c'}
+								baseUrl={baseUrl}
+								userId={user.id}
+								token={user.token}
+							/>
+							<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
+						</React.Fragment>
+					)
 				}
 			</TouchableOpacity>
 		);
@@ -741,7 +667,7 @@ class MessageBox extends Component {
 			return null;
 		}
 		return (
-			<View key='messagebox-container' testID='messagebox-container'>
+			<View testID='messagebox-container'>
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
@@ -763,39 +689,30 @@ class MessageBox extends Component {
 		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
 	};
 
-	renderFilesActions = () => {
-		const { showFilesAction } = this.state;
-
-		if (!showFilesAction) {
-			return null;
-		}
-		return (
-			<FilesActions
-				key='files-actions'
-				hideActions={this.toggleFilesActions}
-				takePhoto={this.takePhoto}
-				chooseFromLibrary={this.chooseFromLibrary}
-			/>
-		);
-	}
-
 	renderContent = () => {
-		const { recording } = this.state;
+		const { recording, showEmojiKeyboard, showSend } = this.state;
 		const { editing } = this.props;
 
 		if (recording) {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
-			[
-				this.renderMentions(),
+			<React.Fragment>
+				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
 						style={[styles.textArea, editing && styles.editing]}
 						testID='messagebox'
 					>
-						{this.leftButtons}
+						<LeftButtons
+							showEmojiKeyboard={showEmojiKeyboard}
+							editing={editing}
+							showFileActions={this.showFileActions}
+							editCancel={this.editCancel}
+							openEmoji={this.openEmoji}
+							closeEmoji={this.closeEmoji}
+						/>
 						<TextInput
 							ref={component => this.component = component}
 							style={styles.textBoxInput}
@@ -810,19 +727,23 @@ class MessageBox extends Component {
 							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
 						/>
-						{this.rightButtons}
+						<RightButtons
+							showSend={showSend}
+							submit={this.submit}
+							recordAudioMessage={this.recordAudioMessage}
+							showFileActions={this.showFileActions}
+						/>
 					</View>
 				</View>
-			]
+			</React.Fragment>
 		);
 	}
 
 	render() {
 		const { showEmojiKeyboard, file } = this.state;
 		return (
-			[
+			<React.Fragment>
 				<KeyboardAccessoryView
-					key='input'
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
@@ -832,16 +753,14 @@ class MessageBox extends Component {
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-				/>,
-				this.renderFilesActions(),
+				/>
 				<UploadModal
-					key='upload-modal'
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendImageMessage}
 				/>
-			]
+			</React.Fragment>
 		);
 	}
 }

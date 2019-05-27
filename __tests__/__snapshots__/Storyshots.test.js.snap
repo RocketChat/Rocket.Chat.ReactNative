@@ -1,196 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Avatar avatar 1`] = `
-<RCTScrollView>
-  <View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 25,
-            "width": 25,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 25,
-              "width": 25,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 40,
-            "width": 40,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 40,
-              "width": 40,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/aa?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 4,
-            "height": 30,
-            "width": 30,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/bb?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 2,
-            "height": 25,
-            "width": 25,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 2,
-              "height": 25,
-              "width": 25,
-            },
-          ]
-        }
-      >
-        <FastImageView
-          resizeMode="cover"
-          source={
-            Object {
-              "priority": "high",
-              "uri": "baseUrl/avatar/test?format=png&width=50&height=50",
-            }
-          }
-          style={
-            Object {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-      </View>
-    </View>
-  </View>
-</RCTScrollView>
-`;
-
 exports[`Storyshots Message list 1`] = `
 <RCTScrollView
   contentContainerStyle={
@@ -318,8 +127,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -524,8 +331,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -730,8 +535,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -918,8 +721,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1056,8 +857,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1144,8 +943,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1282,8 +1079,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1438,8 +1233,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1594,8 +1387,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -1796,8 +1587,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -2016,8 +1805,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -2222,8 +2009,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -2428,8 +2213,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -2634,8 +2417,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -2924,8 +2705,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -3130,8 +2909,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -3378,8 +3155,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -3584,8 +3359,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -4082,8 +3855,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -4943,8 +4714,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -5131,8 +4900,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -5319,8 +5086,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -5507,8 +5272,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -5713,8 +5476,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -5966,8 +5727,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -6151,8 +5910,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -6289,8 +6046,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -6516,8 +6271,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -6722,8 +6475,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -6964,8 +6715,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -7237,8 +6986,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -7482,8 +7229,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -7700,8 +7445,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -8044,8 +7787,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -8132,8 +7873,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -8413,8 +8152,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -8662,8 +8399,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -8979,8 +8714,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -9273,8 +9006,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -9598,8 +9329,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -9867,8 +9596,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -10216,8 +9943,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -10434,8 +10159,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -10652,8 +10375,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -10870,8 +10591,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -11088,8 +10807,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -11306,8 +11023,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -11524,8 +11239,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -11660,8 +11373,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -11934,8 +11645,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12077,8 +11786,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12220,8 +11927,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12436,8 +12141,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12579,8 +12282,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12722,8 +12423,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -12865,8 +12564,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -13001,8 +12698,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -13274,8 +12969,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -13549,8 +13242,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -13824,8 +13515,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -14117,8 +13806,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -14431,8 +14118,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -14645,8 +14330,6 @@ exports[`Storyshots Message list 1`] = `
                     "marginLeft": 46,
                   },
                   false,
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -14831,8 +14514,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -15353,8 +15034,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -15951,8 +15630,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -16234,8 +15911,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -16469,10 +16144,6 @@ exports[`Storyshots Message list 1`] = `
                 Object {
                   "marginLeft": 10,
                 },
-                Object {
-                  "marginLeft": 10,
-                },
-                false,
               ]
             }
           >
@@ -16637,10 +16308,6 @@ exports[`Storyshots Message list 1`] = `
                   "marginLeft": 46,
                 },
                 false,
-                false,
-                Object {
-                  "marginLeft": 0,
-                },
               ]
             }
           >
@@ -16796,8 +16463,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17002,8 +16667,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17213,8 +16876,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17355,8 +17016,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17497,8 +17156,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17639,8 +17296,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17781,8 +17436,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -17923,8 +17576,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18065,8 +17716,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18207,8 +17856,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18349,8 +17996,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18491,8 +18136,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18633,8 +18276,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18775,8 +18416,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -18917,8 +18556,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -19059,8 +18696,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -19201,8 +18836,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -19343,8 +18976,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -19549,8 +19180,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -19822,8 +19451,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -20173,8 +19800,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -20415,8 +20040,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -20620,8 +20243,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -20874,8 +20495,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
@@ -21091,8 +20710,6 @@ exports[`Storyshots Message list 1`] = `
                   Object {
                     "marginLeft": 10,
                   },
-                  undefined,
-                  undefined,
                 ]
               }
             >
