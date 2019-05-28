@@ -59,7 +59,7 @@ export default async function subscribeRooms() {
 						database.delete(subscription);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> subscriptions removed', e);
+					log('err_stream_msg_received_sub_removed', e);
 				}
 			} else {
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
@@ -70,7 +70,7 @@ export default async function subscribeRooms() {
 						database.delete(rooms);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> subscriptions updated', e);
+					log('err_stream_msg_received_sub_updated', e);
 				}
 			}
 		}
@@ -83,7 +83,7 @@ export default async function subscribeRooms() {
 						database.create('subscriptions', tmp, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> rooms updated', e);
+					log('err_stream_msg_received_room_updated', e);
 				}
 			} else if (type === 'inserted') {
 				try {
@@ -91,7 +91,7 @@ export default async function subscribeRooms() {
 						database.create('rooms', data, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> rooms inserted', e);
+					log('err_stream_msg_received_room_inserted', e);
 				}
 			}
 		}
@@ -116,7 +116,7 @@ export default async function subscribeRooms() {
 						database.create('messages', message, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> message', e);
+					log('err_stream_msg_received_message', e);
 				}
 			});
 		}
@@ -146,7 +146,7 @@ export default async function subscribeRooms() {
 	try {
 		await this.sdk.subscribeNotifyUser();
 	} catch (e) {
-		log('subscribeRooms', e);
+		log('err_subscribe_rooms', e);
 	}
 
 	return {

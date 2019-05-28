@@ -132,7 +132,7 @@ export default class SelectedUsersView extends React.Component {
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
 			} catch (e) {
-				log('RoomActions Add User', e);
+				log('err_add_user', e);
 			} finally {
 				setLoadingInvite(false);
 			}

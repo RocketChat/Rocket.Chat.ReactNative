@@ -87,7 +87,7 @@ const handleLogout = function* handleLogout() {
 			yield put(appStart('outside'));
 		} catch (e) {
 			yield put(appStart('outside'));
-			log('handleLogout', e);
+			log('err_handle_logout', e);
 		}
 	}
 };

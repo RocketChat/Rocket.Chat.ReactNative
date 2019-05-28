@@ -33,7 +33,7 @@ const restore = function* restore() {
 
 		yield put(actions.appReady({}));
 	} catch (e) {
-		log('restore', e);
+		log('err_restore', e);
 	}
 };
 
