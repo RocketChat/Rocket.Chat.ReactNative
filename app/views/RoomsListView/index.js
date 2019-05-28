@@ -12,7 +12,6 @@ import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
@@ -59,8 +58,7 @@ const keyExtractor = item => item.rid;
 	appStart: () => dispatch(appStartAction())
 	// roomsRequest: () => dispatch(roomsRequestAction())
 }))
-/** @extends React.Component */
-export default class RoomsListView extends LoggedView {
+export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
@@ -115,7 +113,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomsListView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 

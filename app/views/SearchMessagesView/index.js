@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
@@ -25,8 +24,7 @@ import StatusBar from '../../containers/StatusBar';
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class SearchMessagesView extends LoggedView {
+export default class SearchMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Search')
 	}
@@ -38,7 +36,7 @@ export default class SearchMessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('SearchMessagesView', props);
+		super(props);
 		this.state = {
 			loading: false,
 			messages: [],

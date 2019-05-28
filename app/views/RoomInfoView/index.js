@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
 
-import LoggedView from '../View';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -39,8 +38,7 @@ const getRoomTitle = room => (room.t === 'd'
 	},
 	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
-/** @extends React.Component */
-export default class RoomInfoView extends LoggedView {
+export default class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
@@ -67,7 +65,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomInfoView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 		this.t = props.navigation.getParam('t');
