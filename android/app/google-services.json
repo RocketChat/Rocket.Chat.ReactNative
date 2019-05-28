@@ -25,15 +25,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.reactnative"
+              }
+            }
+          ]
         }
       }
     },
@@ -46,19 +51,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "673693445664-hrjftksij02vqtd467ln2cubvu48ft5j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chat.rocket.android",
-            "certificate_hash": "41cf750df786a6d9da712a98a629d0c8391876d6"
-          }
-        },
-        {
           "client_id": "673693445664-k0mvosdjoe5dbvqce3b377ckabb5dgu8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "chat.rocket.android",
             "certificate_hash": "33fa8582794176014a59054192e261bfad0e5273"
+          }
+        },
+        {
+          "client_id": "673693445664-hrjftksij02vqtd467ln2cubvu48ft5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "chat.rocket.android",
+            "certificate_hash": "41cf750df786a6d9da712a98a629d0c8391876d6"
           }
         },
         {
@@ -72,28 +77,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "673693445664-dumairnsk1sbkca5nmsq2b5kdglqpc0a.apps.googleusercontent.com",
+              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.ios",
-                "app_store_id": "1148741252"
+                "bundle_id": "chat.rocket.reactnative"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -132,28 +129,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "673693445664-dumairnsk1sbkca5nmsq2b5kdglqpc0a.apps.googleusercontent.com",
+              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.ios",
-                "app_store_id": "1148741252"
+                "bundle_id": "chat.rocket.reactnative"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -176,15 +165,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.reactnative"
+              }
+            }
+          ]
         }
       }
     },
@@ -215,28 +209,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "673693445664-dumairnsk1sbkca5nmsq2b5kdglqpc0a.apps.googleusercontent.com",
+              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.ios",
-                "app_store_id": "1148741252"
+                "bundle_id": "chat.rocket.reactnative"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

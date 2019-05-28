@@ -31,7 +31,7 @@ class EventEmitter {
 				try {
 					listener.apply(this, args);
 				} catch (e) {
-					log('EventEmitter.emit', e);
+					log('err_emit', e);
 				}
 			});
 		}

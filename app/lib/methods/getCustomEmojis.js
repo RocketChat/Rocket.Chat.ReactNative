@@ -66,7 +66,7 @@ export default async function() {
 									database.delete(emojiRecord);
 								}
 							} catch (e) {
-								log('getEmojis delete', e);
+								log('err_get_emojis_delete', e);
 							}
 						});
 					}
@@ -74,6 +74,6 @@ export default async function() {
 			);
 		}
 	} catch (e) {
-		log('getCustomEmojis', e);
+		log('err_get_custom_emojis', e);
 	}
 }
