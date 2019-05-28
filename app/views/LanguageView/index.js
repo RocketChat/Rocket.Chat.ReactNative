@@ -133,7 +133,7 @@ export default class LanguageView extends LoggedView {
 			<React.Fragment>
 				<RectButton
 					onPress={() => this.submit(value)}
-					activeOpacity={0.9}
+					activeOpacity={0.1}
 					underlayColor={COLOR_TEXT}
 				>
 					<View style={styles.containerItem}>
