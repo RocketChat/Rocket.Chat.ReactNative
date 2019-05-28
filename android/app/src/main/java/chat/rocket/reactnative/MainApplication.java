@@ -3,6 +3,10 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -15,11 +19,9 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.crashlytics.android.Crashlytics;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
-import com.smixx.fabric.FabricPackage;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
@@ -30,7 +32,6 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
-import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 
@@ -52,6 +53,10 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
+            new RNFirebaseCrashlyticsPackage(),
+            new RNFirebaseAnalyticsPackage(),
+            new RNFirebasePerformancePackage(),
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
@@ -67,7 +72,6 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
 					new RocketChatNativePackage(),
-					new FabricPackage(),
 					new FastImageViewPackage(),
 					new RNI18nPackage(),
           new RNNotificationsPackage(MainApplication.this)
@@ -88,7 +92,6 @@ public class MainApplication extends Application implements ReactApplication, IN
   @Override
   public void onCreate() {
     super.onCreate();
-		Fabric.with(this, new Crashlytics());
     SoLoader.init(this, /* native exopackage */ false);
   }
 

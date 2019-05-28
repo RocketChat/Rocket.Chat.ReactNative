@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import LoggedView from './View';
 import I18n from '../i18n';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
 import StatusBar from '../containers/StatusBar';
@@ -56,18 +55,13 @@ const Separator = () => <View style={styles.separator} />;
 @connect(state => ({
 	server: state.server.server
 }))
-/** @extends React.Component */
-export default class LegalView extends LoggedView {
+export default class LegalView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Legal')
 	})
 
 	static propTypes = {
 		server: PropTypes.string
-	}
-
-	constructor(props) {
-		super('LegalView', props);
 	}
 
 	onPressItem = ({ route }) => {

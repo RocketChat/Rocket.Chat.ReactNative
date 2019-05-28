@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
@@ -16,6 +15,7 @@ import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
+import log from '../../utils/log';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -25,8 +25,7 @@ import StatusBar from '../../containers/StatusBar';
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class SearchMessagesView extends LoggedView {
+export default class SearchMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Search')
 	}
@@ -38,7 +37,7 @@ export default class SearchMessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('SearchMessagesView', props);
+		super(props);
 		this.state = {
 			loading: false,
 			messages: [],
@@ -83,7 +82,7 @@ export default class SearchMessagesView extends LoggedView {
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			console.log('SearchMessagesView -> search -> catch -> error', error);
+			log('err_search_messages', error);
 		}
 	}, 1000)
 

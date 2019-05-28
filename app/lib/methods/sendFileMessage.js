@@ -51,7 +51,7 @@ export async function sendFileMessage(rid, fileInfo, tmid) {
 			try {
 				database.create('uploads', fileInfo, true);
 			} catch (e) {
-				return log('sendFileMessage -> create uploads 1', e);
+				return log('err_send_file_message_create_upload_1', e);
 			}
 		});
 
@@ -69,7 +69,7 @@ export async function sendFileMessage(rid, fileInfo, tmid) {
 						try {
 							database.create('uploads', fileInfo, true);
 						} catch (e) {
-							return log('sendFileMessage -> create uploads 2', e);
+							return log('err_send_file_message_create_upload_2', e);
 						}
 					});
 				});
@@ -95,7 +95,7 @@ export async function sendFileMessage(rid, fileInfo, tmid) {
 			try {
 				database.delete(upload);
 			} catch (e) {
-				log('sendFileMessage -> delete uploads', e);
+				log('err_send_file_message_delete_upload', e);
 			}
 		});
 	} catch (e) {
@@ -104,7 +104,7 @@ export async function sendFileMessage(rid, fileInfo, tmid) {
 			try {
 				database.create('uploads', fileInfo, true);
 			} catch (err) {
-				log('sendFileMessage -> create uploads 3', err);
+				log('err_send_file_message_create_upload_3', err);
 			}
 		});
 	}

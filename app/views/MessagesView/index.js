@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import ActionSheet from 'react-native-action-sheet';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -27,8 +26,7 @@ const CANCEL_INDEX = 1;
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class MessagesView extends LoggedView {
+export default class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.state.params.name
 	});
@@ -40,7 +38,7 @@ export default class MessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('MessagesView', props);
+		super(props);
 		this.state = {
 			loading: false,
 			messages: [],
