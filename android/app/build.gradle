@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: "io.fabric"
+apply plugin: "com.google.firebase.firebase-perf"
 
 import com.android.build.OutputFile
 
@@ -163,47 +165,8 @@ android {
     }
 }
 
-buildscript {
-  repositories {
-    maven { url 'https://maven.fabric.io/public' }
-  }
-
-  dependencies {
-    // These docs use an open ended version so that our plugin
-    // can be updated quickly in response to Android tooling updates
-
-    // We recommend changing it to the latest version from our changelog:
-    // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-    classpath 'io.fabric.tools:gradle:1.+'
-  }
-}
-
-apply plugin: 'io.fabric'
-
-repositories {
-  maven { url 'https://maven.fabric.io/public' }
-}
-
-configurations.all {
-    resolutionStrategy {
-        eachDependency { DependencyResolveDetails details ->
-            if (details.requested.name == 'play-services-base') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-tasks') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-stats') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-basement') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-        }
-    }
-}
-
 dependencies {
+    implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
@@ -213,7 +176,6 @@ dependencies {
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
-    implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
@@ -232,10 +194,12 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.facebook.fresco:animated-webp:1.10.0'
     implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    implementation "com.google.firebase:firebase-core:16.0.1"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation "com.google.firebase:firebase-messaging:18.0.0"
+    implementation "com.google.firebase:firebase-core:16.0.9"
+    implementation "com.google.firebase:firebase-perf:16.2.5"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 
@@ -247,4 +211,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
-com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

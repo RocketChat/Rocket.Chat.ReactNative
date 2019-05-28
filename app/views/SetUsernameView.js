@@ -13,10 +13,10 @@ import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import LoggedView from './View';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
 }), dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 }))
-/** @extends React.Component */
-export default class SetUsernameView extends LoggedView {
+export default class SetUsernameView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
 		return {
@@ -49,7 +48,7 @@ export default class SetUsernameView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('SetUsernameView', props);
+		super(props);
 		this.state = {
 			username: '',
 			saving: false
@@ -99,7 +98,7 @@ export default class SetUsernameView extends LoggedView {
 			await RocketChat.setUsername(username);
 			await loginRequest({ resume: token });
 		} catch (e) {
-			console.log('SetUsernameView -> catch -> e', e);
+			log('err_submit_username', e);
 		}
 		this.setState({ saving: false });
 	}

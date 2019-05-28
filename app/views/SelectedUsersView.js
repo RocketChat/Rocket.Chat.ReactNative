@@ -15,7 +15,6 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
-import LoggedView from './View';
 import I18n from '../i18n';
 import log from '../utils/log';
 import { isIOS } from '../utils/deviceInfo';
@@ -52,8 +51,7 @@ const styles = StyleSheet.create({
 	reset: () => dispatch(resetAction()),
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 }))
-/** @extends React.Component */
-export default class SelectedUsersView extends LoggedView {
+export default class SelectedUsersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
 		const nextAction = navigation.getParam('nextAction', () => {});
@@ -83,7 +81,7 @@ export default class SelectedUsersView extends LoggedView {
 	};
 
 	constructor(props) {
-		super('SelectedUsersView', props);
+		super(props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
 			search: []
@@ -134,7 +132,7 @@ export default class SelectedUsersView extends LoggedView {
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
 			} catch (e) {
-				log('RoomActions Add User', e);
+				log('err_add_user', e);
 			} finally {
 				setLoadingInvite(false);
 			}

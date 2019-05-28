@@ -98,7 +98,7 @@ const RocketChat = {
 				return result;
 			}
 		} catch (e) {
-			log('getServerInfo', e);
+			log('err_get_server_info', e);
 		}
 		return {
 			success: false,
@@ -405,7 +405,7 @@ const RocketChat = {
 					database.create('messages', message, true);
 				});
 			} catch (e) {
-				log('resendMessage error', e);
+				log('err_resend_message', e);
 			}
 		}
 	},
@@ -532,7 +532,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			log('Rocketchat.getPermalink', e);
+			log('err_get_permalink', e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;
