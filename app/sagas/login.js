@@ -72,7 +72,7 @@ const handleLogout = function* handleLogout() {
 			const servers = yield serversDB.objects('servers');
 			// filter logging out server and delete it
 			const serverRecord = servers.filtered('id = $0', server);
-			const { user: token } = serverRecord.length && serverRecord[0];
+			const { user: { token } = { token: null } } = serverRecord.length && serverRecord[0];
 			serversDB.write(() => {
 				serversDB.delete(serverRecord);
 			});
