@@ -12,13 +12,11 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
 #import "RNSplashScreen.h"
 #import "Orientation.h"
-
+#import <Firebase.h>
 
 @implementation AppDelegate
 
@@ -26,8 +24,9 @@
 {
 
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-      RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                       moduleName:@"RocketChatRN"
+    [FIRApp configure];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                moduleName:@"RocketChatRN"
                                                 initialProperties:nil];
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -35,7 +34,6 @@
     rootViewController.view = rootView;
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
-    [Fabric with:@[[Crashlytics class]]];
   
     [RNSplashScreen show];
 

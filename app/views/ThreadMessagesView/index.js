@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -31,8 +30,7 @@ const API_FETCH_COUNT = 50;
 	},
 	useRealName: state.settings.UI_Use_Real_Name
 }))
-/** @extends React.Component */
-export default class ThreadMessagesView extends LoggedView {
+export default class ThreadMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Threads')
 	}
@@ -45,7 +43,7 @@ export default class ThreadMessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('ThreadMessagesView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);

@@ -131,18 +131,6 @@ jobs:
 
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
-            if [[ $FABRIC_KEY ]]; then
-              echo -e "" > ./app/fabric.properties
-              echo -e "apiKey=$FABRIC_KEY" >> ./app/fabric.properties
-              echo -e "apiSecret=$FABRIC_SECRET" >> ./app/fabric.properties
-            fi
-
-      # - run:
-      #     name: Install Android Depedencies
-      #     command: |
-      #       cd android
-      #       ./gradlew androidDependencies
-
       - run:
           name: Build Android App
           command: |
@@ -201,25 +189,12 @@ jobs:
           command: |
             yarn
 
-      # - run:
-      #     name: Fix known build error
-      #     command: |
-      #       # Fix error https://github.com/facebook/react-native/issues/14382
-      #       cd node_modules/react-native/scripts/
-      #       curl https://raw.githubusercontent.com/facebook/react-native/5c53f89dd86160301feee024bce4ce0c89e8c187/scripts/ios-configure-glog.sh > ios-configure-glog.sh
-      #       chmod +x ios-configure-glog.sh
-
       - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
             cd ios
             agvtool new-version -all $CIRCLE_BUILD_NUM
-            /usr/libexec/PlistBuddy -c "Set Fabric:APIKey $FABRIC_KEY" ./RocketChatRN/Info.plist
-
-            if [[ $FABRIC_KEY ]]; then
-              echo -e > "./Fabric.framework/run $FABRIC_KEY $FABRIC_SECRET" > ./RocketChatRN/Fabric.sh
-            fi
 
             if [[ $MATCH_KEYCHAIN_NAME ]]; then
               fastlane ios release
