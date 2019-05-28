@@ -314,7 +314,7 @@ const RocketChat = {
 			return user;
 		} catch (e) {
 			if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
-				reduxStore.dispatch(logout({ server: this.sdk.client.host }));
+				reduxStore.dispatch(logout());
 			} else {
 				reduxStore.dispatch(loginFailure(e));
 			}

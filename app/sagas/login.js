@@ -42,7 +42,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		I18n.locale = user.language;
 		serversDB.write(() => {
 			try {
-				serversDB.create('servers', { id: server, userToken: user.token, user }, true);
+				serversDB.create('servers', { id: server, user }, true);
 			} catch (e) {
 				log('err_set_user_token', e);
 			}

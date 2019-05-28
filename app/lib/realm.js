@@ -7,7 +7,7 @@ const userEmailSchema = {
 	name: 'userEmail',
 	primaryKey: 'address',
 	properties: {
-		address: { type: 'string', optional: true },
+		address: 'string',
 		verified: { type: 'bool', optional: true }
 	}
 };
@@ -22,7 +22,7 @@ const userSchema = {
 		language: { type: 'string', optional: true },
 		status: { type: 'string', optional: true },
 		customFields: { type: 'string', optional: true },
-		emails: { type: 'list', objectType: 'userEmail', default: [] },
+		emails: { type: 'userEmail[]', default: [] },
 		roles: { type: 'string[]', optional: true }
 	}
 };
