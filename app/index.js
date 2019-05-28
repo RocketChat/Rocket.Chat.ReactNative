@@ -218,6 +218,15 @@ const getActiveRouteName = (navigationState) => {
 	return route.routeName;
 };
 
+const onNavigationStateChange = (prevState, currentState) => {
+	const currentScreen = getActiveRouteName(currentState);
+	const prevScreen = getActiveRouteName(prevState);
+
+	if (prevScreen !== currentScreen) {
+		firebase.analytics().setCurrentScreen(currentScreen);
+	}
+};
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -258,14 +267,7 @@ export default class Root extends React.Component {
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
-					onNavigationStateChange={(prevState, currentState) => {
-						const currentScreen = getActiveRouteName(currentState);
-						const prevScreen = getActiveRouteName(prevState);
-
-						if (prevScreen !== currentScreen) {
-							firebase.analytics().setCurrentScreen(currentScreen);
-						}
-					}}
+					onNavigationStateChange={onNavigationStateChange}
 				/>
 			</Provider>
 		);
