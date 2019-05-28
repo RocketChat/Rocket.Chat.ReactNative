@@ -5,6 +5,7 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -204,6 +205,28 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
+// gets the current screen from navigation state
+const getActiveRouteName = (navigationState) => {
+	if (!navigationState) {
+		return null;
+	}
+	const route = navigationState.routes[navigationState.index];
+	// dive into nested navigators
+	if (route.routes) {
+		return getActiveRouteName(route);
+	}
+	return route.routeName;
+};
+
+const onNavigationStateChange = (prevState, currentState) => {
+	const currentScreen = getActiveRouteName(currentState);
+	const prevScreen = getActiveRouteName(prevState);
+
+	if (prevScreen !== currentScreen) {
+		firebase.analytics().setCurrentScreen(currentScreen);
+	}
+};
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -244,6 +267,7 @@ export default class Root extends React.Component {
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
+					onNavigationStateChange={onNavigationStateChange}
 				/>
 			</Provider>
 		);
