@@ -4,16 +4,15 @@ import {
 	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Answers } from 'react-native-fabric';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import firebase from 'react-native-firebase';
 
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import LoggedView from './View';
 import I18n from '../i18n';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
@@ -21,10 +20,6 @@ import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 
 const styles = StyleSheet.create({
-	buttonsContainer: {
-		flexDirection: 'column',
-		marginTop: 5
-	},
 	bottomContainer: {
 		flexDirection: 'column',
 		alignItems: 'center',
@@ -56,8 +51,7 @@ const styles = StyleSheet.create({
 }), dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 }))
-/** @extends React.Component */
-export default class LoginView extends LoggedView {
+export default class LoginView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -78,7 +72,7 @@ export default class LoginView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('LoginView', props);
+		super(props);
 		this.state = {
 			user: '',
 			password: '',
@@ -184,7 +178,7 @@ export default class LoginView extends LoggedView {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password, code });
-		Answers.logLogin('Email', true);
+		firebase.analytics().logEvent('login');
 	}
 
 	register = () => {
