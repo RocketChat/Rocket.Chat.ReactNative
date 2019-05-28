@@ -172,7 +172,7 @@ export default class Sidebar extends Component {
 						try {
 							RocketChat.setUserPresenceDefaultStatus(item.id);
 						} catch (e) {
-							log('setUserPresenceDefaultStatus', e);
+							log('err_set_user_presence_default_status', e);
 						}
 					}
 				}}

@@ -73,7 +73,7 @@ export default class RoomActionsView extends React.Component {
 					this.setState({ room: { ...result.channel, rid: result.channel._id } });
 				}
 			} catch (error) {
-				console.log('RoomActionsView -> getChannelInfo -> error', error);
+				log('err_get_channel_info', error);
 			}
 		}
 
@@ -84,7 +84,7 @@ export default class RoomActionsView extends React.Component {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
 			} catch (error) {
-				console.log('RoomActionsView -> getRoomCounters -> error', error);
+				log('err_get_room_counters', error);
 			}
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
@@ -335,7 +335,7 @@ export default class RoomActionsView extends React.Component {
 				this.setState({ member: result.user });
 			}
 		} catch (e) {
-			log('RoomActions updateRoomMember', e);
+			log('err_update_room_member', e);
 			this.setState({ member: {} });
 		}
 	}
@@ -347,7 +347,7 @@ export default class RoomActionsView extends React.Component {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
-			log('toggleBlockUser', e);
+			log('err_toggle_block_user', e);
 		}
 	}
 
@@ -380,7 +380,7 @@ export default class RoomActionsView extends React.Component {
 			};
 			RocketChat.saveNotificationSettings(room.rid, notifications);
 		} catch (e) {
-			log('toggleNotifications', e);
+			log('err_toggle_notifications', e);
 		}
 	}
 

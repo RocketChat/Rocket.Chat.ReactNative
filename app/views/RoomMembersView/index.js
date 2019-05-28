@@ -144,7 +144,7 @@ export default class RoomMembersView extends React.Component {
 				}
 			}
 		} catch (e) {
-			log('onPressUser', e);
+			log('err_on_press_user', e);
 		}
 	}
 
@@ -175,7 +175,7 @@ export default class RoomMembersView extends React.Component {
 				this.fetchMembers();
 			});
 		} catch (e) {
-			log('RoomMembers.toggleStatus', e);
+			log('err_toggle_status', e);
 		}
 	}
 
@@ -210,7 +210,7 @@ export default class RoomMembersView extends React.Component {
 			});
 			navigation.setParams({ allUsers });
 		} catch (error) {
-			console.log('TCL: fetchMembers -> error', error);
+			log('err_fetch_members, error');
 			this.setState({ isLoading: false });
 		}
 	}
@@ -234,7 +234,7 @@ export default class RoomMembersView extends React.Component {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
 			this.toast.show(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
-			log('handleMute', e);
+			log('err_handle_mute', e);
 		}
 	}
 
