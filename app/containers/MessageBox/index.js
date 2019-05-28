@@ -290,7 +290,7 @@ class MessageBox extends Component {
 						try {
 							database.create('users', user, true);
 						} catch (e) {
-							log('create users', e);
+							log('err_create_users', e);
 						}
 					});
 				});
@@ -414,7 +414,7 @@ class MessageBox extends Component {
 		try {
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 		} catch (e) {
-			log('sendImageMessage', e);
+			log('err_send_image', e);
 		}
 	}
 
@@ -423,7 +423,7 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openCamera(imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
-			log('takePhoto', e);
+			log('err_take_photo', e);
 		}
 	}
 
@@ -432,7 +432,7 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openPicker(imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
-			log('chooseFromLibrary', e);
+			log('err_choose_from_library', e);
 		}
 	}
 
@@ -492,7 +492,7 @@ class MessageBox extends Component {
 				if (e && e.error === 'error-file-too-large') {
 					return Alert.alert(I18n.t(e.error));
 				}
-				log('finishAudioMessage', e);
+				log('err_finish_audio_message', e);
 			}
 		}
 	}
