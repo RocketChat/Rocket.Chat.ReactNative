@@ -115,7 +115,7 @@ export default class ThreadMessagesView extends React.Component {
 						try {
 							database.create('threads', buildMessage(message), true);
 						} catch (e) {
-							log('ThreadMessagesView -> load -> create', e);
+							log('err_thread_messages_create', e);
 						}
 					}));
 
@@ -126,7 +126,7 @@ export default class ThreadMessagesView extends React.Component {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> load -> error', error);
+			log('err_thread_messages_load', error);
 			this.setState({ loading: false, end: true });
 		}
 	}, 300)
@@ -148,7 +148,7 @@ export default class ThreadMessagesView extends React.Component {
 								try {
 									database.create('threads', buildMessage(message), true);
 								} catch (e) {
-									log('ThreadMessagesView -> sync -> update', e);
+									log('err_thread_messages_update', e);
 								}
 							});
 						}
@@ -160,7 +160,7 @@ export default class ThreadMessagesView extends React.Component {
 									try {
 										database.delete(oldMessage);
 									} catch (e) {
-										log('ThreadMessagesView -> sync -> delete', e);
+										log('err_thread_messages_delete', e);
 									}
 								}
 							});
@@ -173,7 +173,7 @@ export default class ThreadMessagesView extends React.Component {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> sync -> error', error);
+			log('err_thread_messages_sync', error);
 			this.setState({ loading: false });
 		}
 	}

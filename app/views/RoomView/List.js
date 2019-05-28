@@ -105,7 +105,7 @@ export class List extends React.PureComponent {
 			this.setState({ end: result.length < 50, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			log('ListView.onEndReached', e);
+			log('err_list_view_on_end_reached', e);
 		}
 	}, 300)
 

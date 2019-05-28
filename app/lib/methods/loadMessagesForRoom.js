@@ -52,7 +52,7 @@ export default function loadMessagesForRoom(...args) {
 								database.create('threadMessages', message, true);
 							}
 						} catch (e) {
-							log('loadMessagesForRoom -> create messages', e);
+							log('err_load_messages_for_room_create', e);
 						}
 					}));
 					return resolve(data);
@@ -61,7 +61,7 @@ export default function loadMessagesForRoom(...args) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log('loadMessagesForRoom', e);
+			log('err_load_messages_for_room', e);
 			reject(e);
 		}
 	});

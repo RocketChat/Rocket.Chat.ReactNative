@@ -98,7 +98,7 @@ export default class RoomInfoView extends React.Component {
 					this.setState({ roomUser: result.user });
 				}
 			} catch (error) {
-				log('RoomInfoView.getUserInfo', error);
+				log('err_get_user_info', error);
 			}
 		}
 	}
