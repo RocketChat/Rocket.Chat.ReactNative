@@ -44,6 +44,8 @@ export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
+const STATUSES = ['offline', 'online', 'away', 'busy'];
+
 const RocketChat = {
 	TOKEN_KEY,
 	subscribeRooms,
@@ -169,14 +171,7 @@ const RocketChat = {
 		this.getCustomEmoji();
 		this.getRoles();
 		this.registerPushToken().catch(e => console.log(e));
-
-		if (this.activeUsersSubTimeout) {
-			clearTimeout(this.activeUsersSubTimeout);
-			this.activeUsersSubTimeout = false;
-		}
-		this.activeUsersSubTimeout = setTimeout(() => {
-			this.sdk.subscribe('activeUsers');
-		}, 5000);
+		this.getUserPresence();
 	},
 	connect({ server, user }) {
 		database.setActiveDB(server);
@@ -214,6 +209,10 @@ const RocketChat = {
 
 		this.sdk.onStreamData('connected', () => {
 			reduxStore.dispatch(connectSuccess());
+			const { isAuthenticated } = reduxStore.getState().login;
+			if (isAuthenticated) {
+				this.getUserPresence();
+			}
 		});
 
 		this.sdk.onStreamData('close', () => {
@@ -221,6 +220,25 @@ const RocketChat = {
 		});
 
 		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+
+		this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+			const { eventName } = ddpMessage.fields;
+			if (eventName === 'user-status') {
+				const userStatus = ddpMessage.fields.args[0];
+				const [id, username, status] = userStatus;
+				if (username) {
+					database.memoryDatabase.write(() => {
+						try {
+							database.memoryDatabase.create('activeUsers', {
+								id, username, status: STATUSES[status]
+							}, true);
+						} catch (error) {
+							console.log(error);
+						}
+					});
+				}
+			}
+		}));
 	},
 
 	register(credentials) {
@@ -782,6 +800,42 @@ const RocketChat = {
 		return this.sdk.get('chat.syncThreadsList', {
 			rid, updatedSince
 		});
+	},
+	async getUserPresence() {
+		const serverVersion = reduxStore.getState().server.version;
+
+		// if server is lower than 1.1.0
+		if (semver.lt(semver.coerce(serverVersion), '1.1.0')) {
+			if (this.activeUsersSubTimeout) {
+				clearTimeout(this.activeUsersSubTimeout);
+				this.activeUsersSubTimeout = false;
+			}
+			this.activeUsersSubTimeout = setTimeout(() => {
+				this.sdk.subscribe('activeUsers');
+			}, 5000);
+		} else {
+			const params = {};
+			if (this.lastUserPresenceFetch) {
+				params.from = this.lastUserPresenceFetch.toISOString();
+			}
+
+			// RC 1.1.0
+			const result = await this.sdk.get('users.presence', params);
+			if (result.success) {
+				this.lastUserPresenceFetch = new Date();
+				database.memoryDatabase.write(() => {
+					result.users.forEach((item) => {
+						try {
+							item.id = item._id;
+							database.memoryDatabase.create('activeUsers', item, true);
+						} catch (error) {
+							console.log(error);
+						}
+					});
+				});
+				this.sdk.subscribe('stream-notify-logged', 'user-status');
+			}
+		}
 	}
 };
 
