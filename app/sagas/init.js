@@ -16,7 +16,7 @@ const restore = function* restore() {
 		const { serversDB } = database.databases;
 
 		const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
-		const { user: { token }, id: server } = currentServer.length !== 0 ? currentServer[0] : { user: { token: null }, id: null };
+		const { user: { token = null }, id: server = null } = currentServer.length && currentServer[0];
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));

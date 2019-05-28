@@ -1,9 +1,10 @@
 import Realm from 'realm';
 // import { AsyncStorage } from 'react-native';
 // import RocketChat from './rocketchat';
+// Realm.clearTestState();
 
-const email = {
-	name: 'email',
+const userEmailSchema = {
+	name: 'userEmail',
 	primaryKey: 'address',
 	properties: {
 		address: { type: 'string', optional: true },
@@ -21,7 +22,7 @@ const userSchema = {
 		language: { type: 'string', optional: true },
 		status: { type: 'string', optional: true },
 		customFields: { type: 'string', optional: true },
-		email: { type: 'list', objectType: 'email', default: [] },
+		emails: { type: 'list', objectType: 'userEmail', default: [] },
 		roles: { type: 'string[]', optional: true }
 	}
 };
@@ -380,8 +381,8 @@ class DB {
 		serversDB: new Realm({
 			path: 'default.realm',
 			schema: [
-				email,
 				userSchema,
+				userEmailSchema,
 				serversSchema
 			],
 			schemaVersion: 9,

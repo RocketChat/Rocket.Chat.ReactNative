@@ -44,11 +44,11 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			try {
 				serversDB.create('servers', { id: server, userToken: user.token, user }, true);
 			} catch (e) {
-				log('handleLoginSuccess -> setUserToken ->', e);
+				log('err_set_user_token', e);
 			}
 		});
 	} catch (error) {
-		log('loginSuccess saga -> error', error);
+		log('err_login_success_saga', error);
 	}
 
 	if (!user.username) {
@@ -72,7 +72,7 @@ const handleLogout = function* handleLogout() {
 			const servers = yield serversDB.objects('servers');
 			// filter logging out server and delete it
 			const serverRecord = servers.filtered('id = $0', server);
-			const token = serverRecord[0].user;
+			const { user: token } = serverRecord.length && serverRecord[0];
 			serversDB.write(() => {
 				serversDB.delete(serverRecord);
 			});

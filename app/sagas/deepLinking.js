@@ -43,7 +43,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const { serversDB } = database.databases;
 	const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
-	const { user, id: server } = currentServer.length !== 0 ? currentServer[0] : { user: null, id: null };
+	const { user = null, id: server = null } = currentServer.length && currentServer[0];
 
 	// TODO: needs better test
 	// if deep link is from same server

@@ -44,11 +44,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			try {
 				// eslint-disable-next-line no-plusplus
 				for (let i = 0; i < servers.length; i++) {
-					serversDB.create('servers', { id: servers[i].id, currentServer: false }, true);
+					serversDB.create('servers', { id: servers[i].id, currentServer: servers[i].id === server }, true);
 				}
-				serversDB.create('servers', { id: server, currentServer: true }, true);
 			} catch (e) {
-				log('updateCurrentServer ->', e);
+				log('err_update_current_server ->', e);
 			}
 		});
 
