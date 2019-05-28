@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -30,8 +29,7 @@ const PAGE_SIZE = 25;
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class RoomMembersView extends LoggedView {
+export default class RoomMembersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
@@ -59,7 +57,7 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('MentionedMessagesView', props);
+		super(props);
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;

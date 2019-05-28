@@ -1,5 +1,3 @@
-import { Answers } from 'react-native-fabric';
-
 export default fn => (...params) => {
 	try {
 		fn(...params);
@@ -8,7 +6,6 @@ export default fn => (...params) => {
 		if (typeof error !== 'object') {
 			error = { error };
 		}
-		Answers.logCustom('error', error);
 		if (__DEV__) {
 			alert(error);
 		}

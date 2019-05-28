@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-navigation';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
-import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
@@ -95,8 +94,7 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	services: state.login.services
 }))
-/** @extends React.Component */
-export default class LoginSignupView extends LoggedView {
+export default class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -114,7 +112,7 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('LoginSignupView', props);
+		super(props);
 		this.state = {
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
