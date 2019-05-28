@@ -75,7 +75,7 @@ export default class ProfileView extends React.Component {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('getAvatarSuggestion', e);
+			log('err_get_avatar_suggestion', e);
 		}
 	}
 
@@ -152,7 +152,7 @@ export default class ProfileView extends React.Component {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		log(func, e);
+		// log(func, e);
 	}
 
 	submit = async() => {

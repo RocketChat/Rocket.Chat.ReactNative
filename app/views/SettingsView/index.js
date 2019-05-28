@@ -162,7 +162,7 @@ export default class SettingsView extends React.Component {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log('saveUserPreferences', e);
+				log('err_save_user_preferences', e);
 			}, 300);
 		}
 	}

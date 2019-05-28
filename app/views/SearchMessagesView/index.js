@@ -15,6 +15,7 @@ import Message from '../../containers/message/Message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
+import log from '../../utils/log';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -81,7 +82,7 @@ export default class SearchMessagesView extends React.Component {
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			console.log('SearchMessagesView -> search -> catch -> error', error);
+			log('err_search_messages', error);
 		}
 	}, 1000)
 

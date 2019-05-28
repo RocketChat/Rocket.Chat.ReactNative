@@ -16,6 +16,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -97,7 +98,7 @@ export default class SetUsernameView extends React.Component {
 			await RocketChat.setUsername(username);
 			await loginRequest({ resume: token });
 		} catch (e) {
-			console.log('SetUsernameView -> catch -> e', e);
+			log('err_submit_username', e);
 		}
 		this.setState({ saving: false });
 	}

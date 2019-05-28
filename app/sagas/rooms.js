@@ -23,7 +23,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				try {
 					database.create('subscriptions', subscription, true);
 				} catch (error) {
-					log('handleRoomsRequest create sub', error);
+					log('err_rooms_request_create_sub', error);
 				}
 			});
 		});
@@ -31,14 +31,14 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			try {
 				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
 			} catch (e) {
-				log('handleRoomsRequest update roomsUpdatedAt', e);
+				log('err_rooms_request_update', e);
 			}
 		});
 
 		yield put(roomsSuccess());
 	} catch (e) {
 		yield put(roomsFailure(e));
-		log('handleRoomsRequest', e);
+		log('err_rooms_request', e);
 	}
 };
 
