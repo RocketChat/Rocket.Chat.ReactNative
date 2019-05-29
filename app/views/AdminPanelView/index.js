@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
-import LoggedView from '../View';
 import StatusBar from '../../containers/StatusBar';
 import { DrawerButton } from '../../containers/HeaderButton';
 import styles from '../Styles';
@@ -14,8 +13,7 @@ import styles from '../Styles';
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	authToken: state.login.user && state.login.user.token
 }))
-/** @extends React.Component */
-export default class AdminPanelView extends LoggedView {
+export default class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
@@ -24,10 +22,6 @@ export default class AdminPanelView extends LoggedView {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		authToken: PropTypes.string
-	}
-
-	constructor(props) {
-		super('AdminPanelView', props);
 	}
 
 	render() {

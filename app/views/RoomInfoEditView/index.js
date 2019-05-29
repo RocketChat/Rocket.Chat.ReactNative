@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
-import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -42,8 +41,7 @@ const PERMISSIONS_ARRAY = [
 @connect(null, dispatch => ({
 	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
 }))
-/** @extends React.Component */
-export default class RoomInfoEditView extends LoggedView {
+export default class RoomInfoEditView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Room_Info_Edit')
 	}
@@ -54,7 +52,7 @@ export default class RoomInfoEditView extends LoggedView {
 	};
 
 	constructor(props) {
-		super('RoomInfoEditView', props);
+		super(props);
 		const rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
@@ -209,7 +207,7 @@ export default class RoomInfoEditView extends LoggedView {
 				this.setState({ nameError: e });
 			}
 			error = true;
-			log('saveRoomSettings', e);
+			log('err_save_room_settings', e);
 		}
 
 		await this.setState({ saving: false });
@@ -264,7 +262,7 @@ export default class RoomInfoEditView extends LoggedView {
 						try {
 							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
-							log('toggleArchive', e);
+							log('err_toggle_archive', e);
 						}
 					}
 				}

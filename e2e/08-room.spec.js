@@ -52,7 +52,9 @@ describe('Room screen', () => {
 			});
 
 			it('should have open emoji button', async() => {
-				await expect(element(by.id('messagebox-open-emoji'))).toBeVisible();
+				if (device.getPlatform() === 'android') {
+					await expect(element(by.id('messagebox-open-emoji'))).toBeVisible();
+				}
 			});
 
 			it('should have message input', async() => {
@@ -81,7 +83,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await navigateToRoom();
 			});
-	
+
 			it('should tap on more and navigate to room actions', async() => {
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
@@ -96,18 +98,20 @@ describe('Room screen', () => {
 				await mockMessage('message');
 				await expect(element(by.text(`${ data.random }message`))).toExist();
 			});
-	
-			it('should show/hide emoji keyboard', async() => {
-				await element(by.id('messagebox-open-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-keyboard-emoji'))).toBeVisible();
-				await expect(element(by.id('messagebox-close-emoji'))).toBeVisible();
-				await expect(element(by.id('messagebox-open-emoji'))).toBeNotVisible();
-				await element(by.id('messagebox-close-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible();
-				await expect(element(by.id('messagebox-close-emoji'))).toBeNotVisible();
-				await expect(element(by.id('messagebox-open-emoji'))).toBeVisible();
+
+			it('should show/hide emoji keyboard', async () => {
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji'))).toBeVisible().withTimeout(10000);
+					await expect(element(by.id('messagebox-keyboard-emoji'))).toBeVisible();
+					await expect(element(by.id('messagebox-close-emoji'))).toBeVisible();
+					await expect(element(by.id('messagebox-open-emoji'))).toBeNotVisible();
+					await element(by.id('messagebox-close-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible();
+					await expect(element(by.id('messagebox-close-emoji'))).toBeNotVisible();
+					await expect(element(by.id('messagebox-open-emoji'))).toBeVisible();
+				}
 			});
 
 			it('should show/hide emoji autocomplete', async() => {
@@ -120,7 +124,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('messagebox-container'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeNotVisible();
 			});
-	
+
 			it('should show and tap on emoji autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).replaceText(':');
@@ -131,7 +135,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
 				await element(by.id('messagebox-input')).clearText();
 			});
-	
+
 			it('should show and tap on user autocomplete and send mention', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`@${ data.user }`);
@@ -144,7 +148,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.text(`@${ data.user } ${ data.random }mention`))).toBeVisible().withTimeout(60000);
 			});
-	
+
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('#general');
@@ -173,7 +177,7 @@ describe('Room screen', () => {
 				// await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
-				
+
 				// TODO: test clipboard
 			});
 
