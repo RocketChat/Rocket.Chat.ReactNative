@@ -9,7 +9,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -42,8 +41,7 @@ import { COLOR_TEXT } from '../../constants/colors';
 }), dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 }))
-/** @extends React.Component */
-export default class ProfileView extends LoggedView {
+export default class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
@@ -56,21 +54,18 @@ export default class ProfileView extends LoggedView {
 		setUser: PropTypes.func
 	}
 
-	constructor(props) {
-		super('ProfileView', props);
-		this.state = {
-			showPasswordAlert: false,
-			saving: false,
-			name: null,
-			username: null,
-			email: null,
-			newPassword: null,
-			currentPassword: null,
-			avatarUrl: null,
-			avatar: {},
-			avatarSuggestions: {},
-			customFields: {}
-		};
+	state = {
+		showPasswordAlert: false,
+		saving: false,
+		name: null,
+		username: null,
+		email: null,
+		newPassword: null,
+		currentPassword: null,
+		avatarUrl: null,
+		avatar: {},
+		avatarSuggestions: {},
+		customFields: {}
 	}
 
 	async componentDidMount() {
@@ -80,7 +75,7 @@ export default class ProfileView extends LoggedView {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('getAvatarSuggestion', e);
+			log('err_get_avatar_suggestion', e);
 		}
 	}
 
@@ -157,7 +152,7 @@ export default class ProfileView extends LoggedView {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		log(func, e);
+		// log(func, e);
 	}
 
 	submit = async() => {

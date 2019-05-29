@@ -5,7 +5,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';
 
-import LoggedView from '../View';
 import RocketChat from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -49,7 +48,7 @@ const LANGUAGES = [{
 	setUser: params => dispatch(setUserAction(params))
 }))
 /** @extends React.Component */
-export default class LanguageView extends LoggedView {
+export default class LanguageView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
 	})
@@ -62,7 +61,7 @@ export default class LanguageView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('LanguageView', props);
+		super(props);
 		this.state = {
 			language: props.userLanguage ? props.userLanguage : 'en',
 			saving: false
@@ -119,7 +118,7 @@ export default class LanguageView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log('saveUserPreferences', e);
+				log('err_save_user_preferences', e);
 			}, 300);
 		}
 	}

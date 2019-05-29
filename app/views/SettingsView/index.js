@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
 	View, Linking, ScrollView, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import { Answers } from 'react-native-fabric';
+import firebase from 'react-native-firebase';
 
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -27,8 +27,7 @@ const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob
 }), dispatch => ({
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
 }))
-
-export default class SettingsView extends Component {
+export default class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
@@ -45,7 +44,7 @@ export default class SettingsView extends Component {
 		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
 		const { toggleMarkdown } = this.props;
 		toggleMarkdown(value);
-		Answers.logCustom('toggle_markdown', { value });
+		firebase.analytics().logEvent.logCustom('toggle_markdown', { value });
 	}
 
 	navigateToRoom = (room) => {
