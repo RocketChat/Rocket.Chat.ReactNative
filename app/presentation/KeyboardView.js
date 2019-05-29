@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 export default class KeyboardView extends React.PureComponent {
 	static propTypes = {
-		style: ViewPropTypes.style,
-		contentContainerStyle: ViewPropTypes.style,
+		style: PropTypes.any,
+		contentContainerStyle: PropTypes.any,
 		keyboardVerticalOffset: PropTypes.number,
 		scrollEnabled: PropTypes.bool,
 		children: PropTypes.oneOfType([

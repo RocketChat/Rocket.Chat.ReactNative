@@ -118,7 +118,7 @@ module.exports = {
 		"new-cap":  [2],
 		"use-isnan": 2,
 		"valid-typeof": 2,
-		"linebreak-style": [2, "unix"],
+		"linebreak-style": 0,
 		"prefer-template": 2,
 		"template-curly-spacing": [2, "always"],
 		"quotes": [2, "single"],

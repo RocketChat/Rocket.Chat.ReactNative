@@ -46,6 +46,12 @@ export default class RoomItem extends React.Component {
 		avatarSize: 48
 	}
 
+	// Making jest happy: https://github.com/facebook/react-native/issues/22175
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props) {
+		super(props);
+	}
+
 	shouldComponentUpdate(nextProps) {
 		const { lastMessage, _updatedAt } = this.props;
 		const oldlastMessage = lastMessage;

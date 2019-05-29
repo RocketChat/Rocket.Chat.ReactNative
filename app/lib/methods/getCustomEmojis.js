@@ -3,7 +3,6 @@ import semver from 'semver';
 
 import reduxStore from '../createStore';
 import database from '../realm';
-import * as actions from '../../actions';
 import log from '../../utils/log';
 
 const getUpdatedSince = () => {
@@ -17,7 +16,7 @@ const create = (customEmojis) => {
 			try {
 				database.create('customEmojis', emoji, true);
 			} catch (e) {
-				log('getEmojis create', e);
+				// log('getEmojis create', e);
 			}
 		});
 	}
@@ -40,7 +39,6 @@ export default async function() {
 				database.write(() => {
 					create(emojis);
 				});
-				reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(result.emojis)));
 			});
 		} else {
 			const params = {};
@@ -68,17 +66,14 @@ export default async function() {
 									database.delete(emojiRecord);
 								}
 							} catch (e) {
-								log('getEmojis delete', e);
+								log('err_get_emojis_delete', e);
 							}
 						});
 					}
-
-					const allEmojis = database.objects('customEmojis');
-					reduxStore.dispatch(actions.setCustomEmojis(this.parseEmojis(allEmojis)));
 				})
 			);
 		}
 	} catch (e) {
-		log('getCustomEmojis', e);
+		log('err_get_custom_emojis', e);
 	}
 }

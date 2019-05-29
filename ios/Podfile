@@ -8,7 +8,7 @@ target 'RocketChatRN' do
   # Pods for RocketChatRN
   # this is very important to have!
   rn_path = '../node_modules/react-native'
-  pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"
+
   pod 'React', path: rn_path, subspecs: [
     'Core',
     'RCTActionSheet',
@@ -31,6 +31,18 @@ target 'RocketChatRN' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
   pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+  
+  pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
+  pod 'GoogleIDFASupport', '~> 3.14.0'
+  pod 'Firebase/Performance', '~> 5.20.1'
 
 end
 

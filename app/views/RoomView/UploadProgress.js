@@ -111,7 +111,7 @@ export default class UploadProgress extends Component {
 		try {
 			database.write(() => database.delete(uploadItem[0]));
 		} catch (e) {
-			log('UploadProgess.deleteUpload', e);
+			log('err_upload_progress_delete', e);
 		}
 	}
 
@@ -119,7 +119,7 @@ export default class UploadProgress extends Component {
 		try {
 			await RocketChat.cancelUpload(item.path);
 		} catch (e) {
-			log('UploadProgess.cancelUpload', e);
+			log('err_upload_progress_cancel', e);
 		}
 	}
 
@@ -132,7 +132,7 @@ export default class UploadProgress extends Component {
 			});
 			await RocketChat.sendFileMessage(rid, item);
 		} catch (e) {
-			log('UploadProgess.tryAgain', e);
+			log('err_upload_progress_try_again', e);
 		}
 	}
 

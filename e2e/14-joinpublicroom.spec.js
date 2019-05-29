@@ -76,15 +76,15 @@ describe('Join public room', () => {
 			it('should have room actions screen', async() => {
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
 			});
-	
+
 			it('should have info', async() => {
 				await expect(element(by.id('room-actions-info'))).toBeVisible();
 			});
-	
+
 			it('should have voice', async() => {
 				await expect(element(by.id('room-actions-voice'))).toBeVisible();
 			});
-	
+
 			it('should have video', async() => {
 				await expect(element(by.id('room-actions-video'))).toBeVisible();
 			});
@@ -92,36 +92,36 @@ describe('Join public room', () => {
 			it('should have members', async() => {
 				await expect(element(by.id('room-actions-members'))).toBeVisible();
 			});
-	
+
 			it('should have files', async() => {
 				await expect(element(by.id('room-actions-files'))).toBeVisible();
 			});
-	
+
 			it('should have mentions', async() => {
 				await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			});
-	
+
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			});
-	
+
 			it('should have search', async() => {
 				await expect(element(by.id('room-actions-search'))).toBeVisible();
 			});
-	
+
 			it('should have share', async() => {
 				await element(by.id('room-actions-list')).swipe('up');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
-	
+
 			it('should have pinned', async() => {
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			});
-	
+
 			it('should not have notifications', async() => {
 				await expect(element(by.id('room-actions-notifications'))).toBeNotVisible();
 			});
-	
+
 			it('should not have leave channel', async() => {
 				await expect(element(by.id('room-actions-leave-channel'))).toBeNotVisible();
 			});
@@ -140,6 +140,9 @@ describe('Join public room', () => {
 	describe('Usage', async() => {
 		it('should join room', async() => {
 			await element(by.id('room-view-join-button')).tap();
+			await tapBack();
+			await element(by.id(`rooms-list-view-item-${ room }`)).tap();
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 			await waitFor(element(by.id('messagebox'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('messagebox'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
