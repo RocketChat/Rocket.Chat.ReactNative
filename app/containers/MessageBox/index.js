@@ -188,8 +188,8 @@ class MessageBox extends Component {
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 
-		if (this.component) {
-			const { start, end } = this.component._lastNativeSelection || { start: 0, end: 0 };
+		if (!isTextEmpty) {
+			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			const lastNativeText = this.component._lastNativeText;
 			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
