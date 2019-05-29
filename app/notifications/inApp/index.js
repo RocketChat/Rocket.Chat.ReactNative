@@ -60,7 +60,8 @@ export default class NotificationBadge extends React.Component {
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		notification: PropTypes.object
+		notification: PropTypes.object,
+		navState: PropTypes.object
 	}
 
 	constructor(props) {
@@ -70,11 +71,11 @@ export default class NotificationBadge extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
-		const { notification: { payload, route } } = this.props;
+		const { notification: { payload }, navState } = this.props;
 		if	(!nextNotification.payload) {
 			return false;
 		}
-		if (route && route.name === 'RoomView' && route.params.rid === nextNotification.payload.rid) {
+		if (navState && navState.routeName === 'RoomView' && navState.params.rid === nextNotification.payload.rid) {
 			return false;
 		}
 		if (!equal(nextNotification.payload, payload)) {

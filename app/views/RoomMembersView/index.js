@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -20,6 +19,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import NotificationBadge from '../../notifications/inApp';
 
 const PAGE_SIZE = 25;
 
@@ -30,8 +30,7 @@ const PAGE_SIZE = 25;
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class RoomMembersView extends LoggedView {
+export default class RoomMembersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
@@ -59,7 +58,7 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('MentionedMessagesView', props);
+		super(props);
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
@@ -146,7 +145,7 @@ export default class RoomMembersView extends LoggedView {
 				}
 			}
 		} catch (e) {
-			log('onPressUser', e);
+			log('err_on_press_user', e);
 		}
 	}
 
@@ -177,7 +176,7 @@ export default class RoomMembersView extends LoggedView {
 				this.fetchMembers();
 			});
 		} catch (e) {
-			log('RoomMembers.toggleStatus', e);
+			log('err_toggle_status', e);
 		}
 	}
 
@@ -212,7 +211,7 @@ export default class RoomMembersView extends LoggedView {
 			});
 			navigation.setParams({ allUsers });
 		} catch (error) {
-			console.log('TCL: fetchMembers -> error', error);
+			log('err_fetch_members, error');
 			this.setState({ isLoading: false });
 		}
 	}
@@ -236,7 +235,7 @@ export default class RoomMembersView extends LoggedView {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
 			this.toast.show(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
-			log('handleMute', e);
+			log('err_handle_mute', e);
 		}
 	}
 
@@ -276,12 +275,14 @@ export default class RoomMembersView extends LoggedView {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
+		const { navigation } = this.props;
 		// if (isLoading) {
 		// 	return <ActivityIndicator style={styles.loading} />;
 		// }
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
 
-import LoggedView from '../View';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -17,6 +16,7 @@ import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
+import NotificationBadge from '../../notifications/inApp';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -39,8 +39,7 @@ const getRoomTitle = room => (room.t === 'd'
 	},
 	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
-/** @extends React.Component */
-export default class RoomInfoView extends LoggedView {
+export default class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
@@ -67,7 +66,7 @@ export default class RoomInfoView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomInfoView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 		this.t = props.navigation.getParam('t');
@@ -100,7 +99,7 @@ export default class RoomInfoView extends LoggedView {
 					this.setState({ roomUser: result.user });
 				}
 			} catch (error) {
-				log('RoomInfoView.getUserInfo', error);
+				log('err_get_user_info', error);
 			}
 		}
 	}
@@ -243,12 +242,14 @@ export default class RoomInfoView extends LoggedView {
 
 	render() {
 		const { room, roomUser } = this.state;
+		const { navigation } = this.props;
 		if (!room) {
 			return <View />;
 		}
 		return (
 			<ScrollView style={styles.scroll}>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}

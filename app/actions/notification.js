@@ -10,9 +10,9 @@ export function notificationReceived(params) {
 	};
 }
 
-export function setCurrentRoute(payload) {
+export function notificationRemove(payload) {
 	return {
-		type: types.NOTIFICATION.SET_ROUTE,
+		type: types.NOTIFICATION.REMOVE,
 		payload
 	};
 }

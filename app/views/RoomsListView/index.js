@@ -12,7 +12,6 @@ import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
@@ -30,6 +29,7 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
+import NotificationBadge from '../../notifications/inApp';
 
 const SCROLL_OFFSET = 56;
 
@@ -59,8 +59,7 @@ const keyExtractor = item => item.rid;
 	appStart: () => dispatch(appStartAction())
 	// roomsRequest: () => dispatch(roomsRequestAction())
 }))
-/** @extends React.Component */
-export default class RoomsListView extends LoggedView {
+export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
@@ -115,7 +114,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomsListView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
@@ -362,7 +361,7 @@ export default class RoomsListView extends LoggedView {
 					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 				}
 			} catch (e) {
-				log('RoomsListView._onPressItem', e);
+				log('err_on_press_item', e);
 			}
 		} else {
 			return this.goRoom(item);
@@ -548,12 +547,13 @@ export default class RoomsListView extends LoggedView {
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, navigation
 		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

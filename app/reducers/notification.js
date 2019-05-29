@@ -2,8 +2,7 @@ import * as types from '../actions/actionsTypes';
 
 const initialState = {
 	message: '',
-	payload: null,
-	route: {}
+	payload: null
 };
 
 export default function notification(state = initialState, action) {
@@ -12,11 +11,8 @@ export default function notification(state = initialState, action) {
 			...state,
 			...action.payload
 		};
-	} else if (action.type === types.NOTIFICATION.SET_ROUTE) {
-		return {
-			...state,
-			route: action.payload
-		};
+	} else if (action.type === types.NOTIFICATION.REMOVE) {
+		return initialState;
 	}
 
 	return state;

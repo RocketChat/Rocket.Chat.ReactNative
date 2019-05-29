@@ -5,6 +5,7 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -39,8 +40,6 @@ import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import NotificationBadge from './notifications/inApp';
-import { setCurrentRoute } from './actions/notification';
 
 useScreens();
 
@@ -206,6 +205,28 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
+// gets the current screen from navigation state
+const getActiveRouteName = (navigationState) => {
+	if (!navigationState) {
+		return null;
+	}
+	const route = navigationState.routes[navigationState.index];
+	// dive into nested navigators
+	if (route.routes) {
+		return getActiveRouteName(route);
+	}
+	return route.routeName;
+};
+
+const onNavigationStateChange = (prevState, currentState) => {
+	const currentScreen = getActiveRouteName(currentState);
+	const prevScreen = getActiveRouteName(prevState);
+
+	if (prevScreen !== currentScreen) {
+		firebase.analytics().setCurrentScreen(currentScreen);
+	}
+};
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -239,38 +260,15 @@ export default class Root extends React.Component {
 		}
 	}
 
-	getActiveRoute = (navigationState) => {
-		if (!navigationState) {
-			return null;
-		}
-		const route = navigationState.routes[navigationState.index];
-		// dive into nested navigators
-		if (route.routes) {
-			return this.getActiveRoute(route);
-		}
-		return {
-			name: route.routeName,
-			params: route.params
-		};
-	}
-
 	render() {
 		return (
 			<Provider store={store}>
 				<App
-					onNavigationStateChange={(prevState, currentState) => {
-						const currentScreen = this.getActiveRoute(currentState);
-						const prevScreen = this.getActiveRoute(prevState);
-
-						if (prevScreen !== currentScreen) {
-							store.dispatch(setCurrentRoute(currentScreen));
-						}
-					}}
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
+					onNavigationStateChange={onNavigationStateChange}
 				/>
-				<NotificationBadge />
 			</Provider>
 		);
 	}

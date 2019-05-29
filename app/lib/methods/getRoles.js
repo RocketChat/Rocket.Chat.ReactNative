@@ -20,12 +20,12 @@ export default async function() {
 					try {
 						database.create('roles', role, true);
 					} catch (e) {
-						log('getRoles create', e);
+						log('err_get_roles_create', e);
 					}
 				}));
 			});
 		}
 	} catch (e) {
-		log('getRoles', e);
+		log('err_get_roles', e);
 	}
 }

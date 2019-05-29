@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -18,6 +17,7 @@ import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
+import NotificationBadge from '../../notifications/inApp';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
@@ -31,8 +31,7 @@ const API_FETCH_COUNT = 50;
 	},
 	useRealName: state.settings.UI_Use_Real_Name
 }))
-/** @extends React.Component */
-export default class ThreadMessagesView extends LoggedView {
+export default class ThreadMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Threads')
 	}
@@ -45,7 +44,7 @@ export default class ThreadMessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('ThreadMessagesView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
@@ -117,7 +116,7 @@ export default class ThreadMessagesView extends LoggedView {
 						try {
 							database.create('threads', buildMessage(message), true);
 						} catch (e) {
-							log('ThreadMessagesView -> load -> create', e);
+							log('err_thread_messages_create', e);
 						}
 					}));
 
@@ -128,7 +127,7 @@ export default class ThreadMessagesView extends LoggedView {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> load -> error', error);
+			log('err_thread_messages_load', error);
 			this.setState({ loading: false, end: true });
 		}
 	}, 300)
@@ -150,7 +149,7 @@ export default class ThreadMessagesView extends LoggedView {
 								try {
 									database.create('threads', buildMessage(message), true);
 								} catch (e) {
-									log('ThreadMessagesView -> sync -> update', e);
+									log('err_thread_messages_update', e);
 								}
 							});
 						}
@@ -162,7 +161,7 @@ export default class ThreadMessagesView extends LoggedView {
 									try {
 										database.delete(oldMessage);
 									} catch (e) {
-										log('ThreadMessagesView -> sync -> delete', e);
+										log('err_thread_messages_delete', e);
 									}
 								}
 							});
@@ -175,7 +174,7 @@ export default class ThreadMessagesView extends LoggedView {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> sync -> error', error);
+			log('err_thread_messages_sync', error);
 			this.setState({ loading: false });
 		}
 	}
@@ -239,6 +238,7 @@ export default class ThreadMessagesView extends LoggedView {
 
 	render() {
 		const { loading, messages } = this.state;
+		const { navigation } = this.props;
 
 		if (!loading && this.messages.length === 0) {
 			return this.renderEmpty();
@@ -247,6 +247,7 @@ export default class ThreadMessagesView extends LoggedView {
 		return (
 			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<FlatList
 					data={messages}
 					extraData={this.state}

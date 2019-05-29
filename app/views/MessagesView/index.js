@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import ActionSheet from 'react-native-action-sheet';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message/Message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -15,6 +14,7 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import FileModal from '../../containers/FileModal';
+import NotificationBadge from '../../notifications/inApp';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -27,8 +27,7 @@ const CANCEL_INDEX = 1;
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class MessagesView extends LoggedView {
+export default class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.state.params.name
 	});
@@ -40,7 +39,7 @@ export default class MessagesView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('MessagesView', props);
+		super(props);
 		this.state = {
 			loading: false,
 			messages: [],
@@ -247,7 +246,7 @@ export default class MessagesView extends LoggedView {
 		const {
 			messages, loading, selectedAttachment, photoModalVisible
 		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, navigation } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -256,6 +255,7 @@ export default class MessagesView extends LoggedView {
 		return (
 			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

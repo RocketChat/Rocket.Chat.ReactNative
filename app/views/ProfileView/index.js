@@ -9,7 +9,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -27,6 +26,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_TEXT } from '../../constants/colors';
+import NotificationBadge from '../../notifications/inApp';
 
 @connect(state => ({
 	user: {
@@ -42,35 +42,32 @@ import { COLOR_TEXT } from '../../constants/colors';
 }), dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 }))
-/** @extends React.Component */
-export default class ProfileView extends LoggedView {
+export default class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
 	})
 
 	static propTypes = {
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func
 	}
 
-	constructor(props) {
-		super('ProfileView', props);
-		this.state = {
-			showPasswordAlert: false,
-			saving: false,
-			name: null,
-			username: null,
-			email: null,
-			newPassword: null,
-			currentPassword: null,
-			avatarUrl: null,
-			avatar: {},
-			avatarSuggestions: {},
-			customFields: {}
-		};
+	state = {
+		showPasswordAlert: false,
+		saving: false,
+		name: null,
+		username: null,
+		email: null,
+		newPassword: null,
+		currentPassword: null,
+		avatarUrl: null,
+		avatar: {},
+		avatarSuggestions: {},
+		customFields: {}
 	}
 
 	async componentDidMount() {
@@ -80,7 +77,7 @@ export default class ProfileView extends LoggedView {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('getAvatarSuggestion', e);
+			log('err_get_avatar_suggestion', e);
 		}
 	}
 
@@ -157,7 +154,7 @@ export default class ProfileView extends LoggedView {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		log(func, e);
+		// log(func, e);
 	}
 
 	submit = async() => {
@@ -379,7 +376,7 @@ export default class ProfileView extends LoggedView {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, navigation } = this.props;
 
 		return (
 			<KeyboardView
@@ -387,6 +384,7 @@ export default class ProfileView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}

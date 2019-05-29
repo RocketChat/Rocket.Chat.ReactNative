@@ -6,9 +6,8 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import { Answers } from 'react-native-fabric';
+import firebase from 'react-native-firebase';
 
-import LoggedView from '../View';
 import RocketChat, { MARKDOWN_KEY } from '../../lib/rocketchat';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -27,6 +26,7 @@ import { isAndroid } from '../../utils/deviceInfo';
 import {
 	COLOR_WHITE, COLOR_SEPARATOR, COLOR_DANGER, COLOR_SUCCESS
 } from '../../constants/colors';
+import NotificationBadge from '../../notifications/inApp';
 
 const styles = StyleSheet.create({
 	swithContainer: {
@@ -56,8 +56,7 @@ const styles = StyleSheet.create({
 	setUser: params => dispatch(setUserAction(params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
 }))
-/** @extends React.Component */
-export default class SettingsView extends LoggedView {
+export default class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
@@ -65,6 +64,7 @@ export default class SettingsView extends LoggedView {
 
 	static propTypes = {
 		componentId: PropTypes.string,
+		navigation: PropTypes.object,
 		userLanguage: PropTypes.string,
 		useMarkdown: PropTypes.bool,
 		setUser: PropTypes.func,
@@ -72,7 +72,7 @@ export default class SettingsView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('SettingsView', props);
+		super(props);
 		this.state = {
 			placeholder: {},
 			language: props.userLanguage ? props.userLanguage : 'en',
@@ -164,7 +164,7 @@ export default class SettingsView extends LoggedView {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log('saveUserPreferences', e);
+				log('err_save_user_preferences', e);
 			}, 300);
 		}
 	}
@@ -173,20 +173,21 @@ export default class SettingsView extends LoggedView {
 		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
 		const { toggleMarkdown } = this.props;
 		toggleMarkdown(value);
-		Answers.logCustom('toggle_markdown', { value });
+		firebase.analytics().logEvent('toggle_markdown', { value });
 	}
 
 	render() {
 		const {
 			language, languages, placeholder, saving
 		} = this.state;
-		const { useMarkdown } = this.props;
+		const { useMarkdown, navigation } = this.props;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
+				<NotificationBadge navState={navigation.state} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='settings-view-list'
