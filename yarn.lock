@@ -12008,10 +12008,10 @@ readdirp@^2.0.0:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
-realm@2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.28.0.tgz#e79df5727e3922d507629a7ab079190d984e3bde"
-  integrity sha512-WvZ497qxQlUAiOxTVPI5/YL1zRlcpvjX26J9NeSs0O4Q5qNEGEP8MnAdrCSOC6zg2GH5vazeW4vla69swEncWA==
+realm@2.29.0-alpha.1:
+  version "2.29.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.29.0-alpha.1.tgz#c99f7eaee3a32fcad02caea9828e01ee8d37b5a1"
+  integrity sha512-CC1hp1LfEGC5uhS8O5fwVAc3b0Gj18Qe2hPiJLGPHq6yCXfU4VjzHNvl98WXDzvnoRfp1iY0/CXYfCYKH33t6Q==
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"
