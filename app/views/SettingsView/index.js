@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import firebase from 'react-native-firebase';
 
 import { DrawerButton } from '../../containers/HeaderButton';
@@ -71,14 +70,13 @@ export default class SettingsView extends React.Component {
 	render() {
 		const { server, useMarkdown } = this.props;
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container}>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					{this.renderSectionSeparator()}
 
 					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator />
 					{this.renderSeparator()}

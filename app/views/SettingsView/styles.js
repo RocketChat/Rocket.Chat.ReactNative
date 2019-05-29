@@ -7,8 +7,7 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	contentContainer: {
-		backgroundColor: COLOR_WHITE,
-		marginBottom: 30
+		backgroundColor: COLOR_WHITE
 	},
 	container: {
 		flex: 1,
@@ -29,8 +28,6 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	sectionItem: {
-		marginHorizontal: 5,
-		backgroundColor: COLOR_WHITE,
 		flex: 1,
 		paddingVertical: 20,
 		flexDirection: 'row',
@@ -51,5 +48,9 @@ export default StyleSheet.create({
 	},
 	switch: {
 		marginStart: 5
+	},
+	rectButton: {
+		backgroundColor: COLOR_WHITE,
+		paddingHorizontal: 5
 	}
 });
