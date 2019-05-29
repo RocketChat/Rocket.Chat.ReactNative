@@ -63,7 +63,7 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[username] = null;
 			}
 		} catch (error) {
-			console.log('TCL: removeUserTyping -> error', error);
+			log('err_remove_user_typing', error);
 		}
 	};
 
@@ -85,7 +85,7 @@ export default function subscribeRoom({ rid }) {
 					removeUserTyping(username);
 				}, 10000);
 			} catch (error) {
-				console.log('TCL: addUserTyping -> error', error);
+				log('err_add_user_typing', error);
 			}
 		}
 	};
@@ -125,7 +125,7 @@ export default function subscribeRoom({ rid }) {
 
 	const read = debounce(() => {
 		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room._id) {
+		if (room && room._id) {
 			this.readMessages(rid);
 		}
 	}, 300);
@@ -198,7 +198,7 @@ export default function subscribeRoom({ rid }) {
 	try {
 		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
-		log('subscribeRoom', e);
+		log('err_subscribe_room', e);
 	}
 
 	return {

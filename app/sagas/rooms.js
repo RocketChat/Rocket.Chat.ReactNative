@@ -19,20 +19,26 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		database.write(() => {
-			subscriptions.forEach(subscription => database.create('subscriptions', subscription, true));
+			subscriptions.forEach((subscription) => {
+				try {
+					database.create('subscriptions', subscription, true);
+				} catch (error) {
+					log('err_rooms_request_create_sub', error);
+				}
+			});
 		});
 		database.databases.serversDB.write(() => {
 			try {
 				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
 			} catch (e) {
-				log('handleRoomsRequest update roomsUpdatedAt', e);
+				log('err_rooms_request_update', e);
 			}
 		});
 
 		yield put(roomsSuccess());
 	} catch (e) {
 		yield put(roomsFailure(e));
-		log('handleRoomsRequest', e);
+		log('err_rooms_request', e);
 	}
 };
 

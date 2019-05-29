@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ViewPropTypes } from 'react-native';
 
 import Status from './Status';
 import database, { safeAddListener } from '../../lib/realm';
@@ -12,7 +11,7 @@ import database, { safeAddListener } from '../../lib/realm';
 export default class StatusContainer extends React.PureComponent {
 	static propTypes = {
 		id: PropTypes.string,
-		style: ViewPropTypes.style,
+		style: PropTypes.any,
 		size: PropTypes.number,
 		offline: PropTypes.bool
 	};

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { WebView } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
 import RocketChat from '../lib/rocketchat';
@@ -8,8 +8,9 @@ import { isIOS } from '../utils/deviceInfo';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 
-const userAgentAndroid = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
-const userAgent = isIOS ? 'UserAgent' : userAgentAndroid;
+const userAgent = isIOS
+	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
+	: 'Mozilla/5.0 (Linux; Android 6.0.1; SM-G920V Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36';
 
 @connect(state => ({
 	server: state.server.server
@@ -62,6 +63,7 @@ export default class OAuthView extends React.PureComponent {
 			<React.Fragment>
 				<StatusBar />
 				<WebView
+					useWebKit
 					source={{ uri: oAuthUrl }}
 					userAgent={userAgent}
 					onNavigationStateChange={(webViewState) => {

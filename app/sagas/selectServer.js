@@ -26,7 +26,7 @@ const getServerInfo = function* getServerInfo({ server }) {
 
 		return serverInfo;
 	} catch (e) {
-		log('getServerInfo', e);
+		log('err_get_server_info', e);
 	}
 };
 
@@ -51,12 +51,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-		const emojis = database.objects('customEmojis');
-		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
 
 		yield put(selectServerSuccess(server, fetchVersion ? serverInfo && serverInfo.version : version));
 	} catch (e) {
-		log('handleSelectServer', e);
+		log('err_select_server', e);
 	}
 };
 
@@ -75,7 +73,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 		yield put(selectServerRequest(server, serverInfo.version, false));
 	} catch (e) {
 		yield put(serverFailure());
-		log('handleServerRequest', e);
+		log('err_server_request', e);
 	}
 };
 

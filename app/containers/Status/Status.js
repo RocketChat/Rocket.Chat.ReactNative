@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes } from 'react-native';
+import { View } from 'react-native';
 import { STATUS_COLORS } from '../../constants/colors';
 
 const Status = React.memo(({ status, size, style }) => (
@@ -20,7 +20,7 @@ const Status = React.memo(({ status, size, style }) => (
 Status.propTypes = {
 	status: PropTypes.string,
 	size: PropTypes.number,
-	style: ViewPropTypes.style
+	style: PropTypes.any
 };
 Status.defaultProps = {
 	status: 'offline',

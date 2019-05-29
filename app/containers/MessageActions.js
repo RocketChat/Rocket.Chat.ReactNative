@@ -308,7 +308,7 @@ export default class MessageActions extends React.Component {
 			await RocketChat.reportMessage(actionMessage._id);
 			Alert.alert(I18n.t('Message_Reported'));
 		} catch (err) {
-			log('report message', err);
+			log('err_report_message', err);
 		}
 	}
 
