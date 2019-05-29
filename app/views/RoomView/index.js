@@ -18,7 +18,6 @@ import {
 	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import LoggedView from '../View';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -70,8 +69,7 @@ import { Toast } from '../../utils/info';
 	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
-/** @extends React.Component */
-export default class RoomView extends LoggedView {
+export default class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
@@ -131,7 +129,7 @@ export default class RoomView extends LoggedView {
 	};
 
 	constructor(props) {
-		super('RoomView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
@@ -300,8 +298,7 @@ export default class RoomView extends LoggedView {
 				}
 			});
 		} catch (e) {
-			console.log('TCL: init -> e', e);
-			log('RoomView.init', e);
+			log('err_room_init', e);
 		}
 	}
 
@@ -327,7 +324,7 @@ export default class RoomView extends LoggedView {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			log('RoomView.onReactionPress', e);
+			log('err_room_on_reaction_press', e);
 		}
 	};
 
@@ -422,8 +419,7 @@ export default class RoomView extends LoggedView {
 			}
 			return Promise.resolve();
 		} catch (e) {
-			console.log('TCL: getMessages -> e', e);
-			log('getMessages', e);
+			log('err_get_messages', e);
 		}
 	}
 
@@ -431,8 +427,7 @@ export default class RoomView extends LoggedView {
 		try {
 			return RocketChat.loadThreadMessages({ tmid: this.tmid });
 		} catch (e) {
-			console.log('TCL: getThreadMessages -> e', e);
-			log('getThreadMessages', e);
+			log('err_get_thread_messages', e);
 		}
 	}
 
@@ -447,7 +442,7 @@ export default class RoomView extends LoggedView {
 				});
 			}
 		} catch (e) {
-			log('joinRoom', e);
+			log('err_join_room', e);
 		}
 	};
 
@@ -488,7 +483,7 @@ export default class RoomView extends LoggedView {
 				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
 		} catch (error) {
-			console.log('TCL: fetchThreadName -> error', error);
+			log('err_fetch_thread_name', error);
 		}
 	}
 
@@ -497,8 +492,7 @@ export default class RoomView extends LoggedView {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
 			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
 		} catch (e) {
-			console.log('TCL: RightButtonsContainer -> toggleFollowThread -> e', e);
-			log('toggleFollowThread', e);
+			log('err_toggle_follow_thread', e);
 		}
 	}
 
