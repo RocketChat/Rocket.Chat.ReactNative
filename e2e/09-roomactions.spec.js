@@ -187,12 +187,13 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
 			});
 
-			it('should NOT navigate to share messages', async() => {
-				await waitFor(element(by.id('room-actions-share'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
-				await element(by.id('room-actions-share')).tap();
-				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('room-actions-view'))).toBeVisible();
-			});
+			// TODO: test share room link
+			// it('should NOT navigate to share room', async() => {
+			// 	await waitFor(element(by.id('room-actions-share'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
+			// 	await element(by.id('room-actions-share')).tap();
+			// 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+			// 	await expect(element(by.id('room-actions-view'))).toBeVisible();
+			// });
 
 			after(async() => {
 				takeScreenshot();
