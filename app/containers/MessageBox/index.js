@@ -29,10 +29,11 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { COLOR_TEXT_DESCRIPTION, COLOR_PRIMARY } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
+import { CustomIcon } from '../../lib/Icons';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
