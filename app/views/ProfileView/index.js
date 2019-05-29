@@ -26,6 +26,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { COLOR_TEXT } from '../../constants/colors';
 
 @connect(state => ({
 	user: {
@@ -285,17 +286,17 @@ export default class ProfileView extends LoggedView {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} user={user} />,
+					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='upload' size={30} />,
+					child: <CustomIcon name='upload' size={30} color={COLOR_TEXT} />,
 					onPress: () => this.pickImage(),
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} />,
+					child: <CustomIcon name='permalink' size={30} color={COLOR_TEXT} />,
 					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
@@ -304,7 +305,7 @@ export default class ProfileView extends LoggedView {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						key: `profile-view-avatar-${ service }`,
-						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} user={user} />,
+						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
 						})
@@ -398,7 +399,8 @@ export default class ProfileView extends LoggedView {
 								avatar={avatar && avatar.url}
 								size={100}
 								baseUrl={baseUrl}
-								user={user}
+								userId={user.id}
+								token={user.token}
 							/>
 						</View>
 						<RCTextInput

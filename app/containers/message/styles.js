@@ -1,15 +1,24 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+
+import sharedStyles from '../../views/Styles';
+import {
+	COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE, COLOR_BACKGROUND_CONTAINER
+} from '../../constants/colors';
+
+const codeFontFamily = Platform.select({
+	ios: { fontFamily: 'Courier New' },
+	android: { fontFamily: 'monospace' }
+});
 
 export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
 	},
 	container: {
-		paddingVertical: 5,
+		paddingVertical: 4,
 		width: '100%',
-		paddingHorizontal: 15,
+		paddingHorizontal: 14,
 		flexDirection: 'column',
-		transform: [{ scaleY: -1 }],
 		flex: 1
 	},
 	messageContent: {
@@ -26,10 +35,16 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		flex: 1
 	},
+	text: {
+		fontSize: 16,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
+	},
 	textInfo: {
 		fontStyle: 'italic',
-		color: '#a0a0a0',
-		fontSize: 16
+		fontSize: 16,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
 	},
 	editing: {
 		backgroundColor: '#fff5df'
@@ -39,38 +54,41 @@ export default StyleSheet.create({
 		height: 20
 	},
 	temp: { opacity: 0.3 },
-	marginBottom: {
-		marginBottom: 10
+	marginTop: {
+		marginTop: 6
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 10
+		marginTop: 6
 	},
 	reactionButton: {
-		marginRight: 10,
-		marginBottom: 10,
+		marginRight: 6,
+		marginBottom: 6,
 		borderRadius: 2
+	},
+	reactionButtonReacted: {
+		backgroundColor: '#e8f2ff'
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 4,
-		borderWidth: 1.5,
-		borderColor: '#e1e5e8',
+		borderRadius: 2,
+		borderWidth: 1,
+		borderColor: COLOR_BORDER,
 		height: 28,
-		minWidth: 46
+		minWidth: 46.3
 	},
 	reactedContainer: {
-		borderColor: '#1d74f580'
+		borderColor: COLOR_PRIMARY
 	},
 	reactionCount: {
 		fontSize: 14,
 		marginLeft: 3,
 		marginRight: 8.5,
-		fontWeight: '600',
-		color: '#1D74F5'
+		color: COLOR_PRIMARY,
+		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
 		fontSize: 13,
@@ -82,47 +100,56 @@ export default StyleSheet.create({
 		marginLeft: 7
 	},
 	avatar: {
-		marginTop: 5
+		marginTop: 4
+	},
+	avatarSmall: {
+		marginLeft: 16
 	},
 	addReaction: {
-		color: '#1D74F5'
+		color: COLOR_PRIMARY
 	},
 	errorButton: {
 		paddingHorizontal: 15,
 		paddingVertical: 5
 	},
-	broadcastButton: {
-		width: 107,
+	buttonContainer: {
+		marginTop: 6,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	button: {
+		paddingHorizontal: 15,
 		height: 44,
-		marginTop: 15,
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#1d74f5',
-		borderRadius: 4
+		backgroundColor: COLOR_PRIMARY,
+		borderRadius: 2
 	},
-	broadcastButtonIcon: {
-		color: '#fff',
-		marginRight: 11
+	smallButton: {
+		height: 30
 	},
-	broadcastButtonText: {
-		color: '#fff',
+	buttonIcon: {
+		color: COLOR_WHITE,
+		marginRight: 6
+	},
+	buttonText: {
+		color: COLOR_WHITE,
 		fontSize: 14,
-		fontWeight: '500'
+		...sharedStyles.textMedium
 	},
 	mention: {
+		...sharedStyles.textMedium,
 		color: '#0072FE',
-		fontWeight: '500',
 		padding: 5,
 		backgroundColor: '#E8F2FF'
 	},
 	mentionLoggedUser: {
-		color: '#fff',
-		backgroundColor: '#1D74F5'
+		color: COLOR_WHITE,
+		backgroundColor: COLOR_PRIMARY
 	},
 	mentionAll: {
-		color: '#fff',
+		color: COLOR_WHITE,
 		backgroundColor: '#FF5B5A'
 	},
 	paragraph: {
@@ -136,8 +163,6 @@ export default StyleSheet.create({
 	imageContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		borderColor: '#F3F4F5',
-		borderWidth: 1,
 		borderRadius: 4
 	},
 	image: {
@@ -145,7 +170,8 @@ export default StyleSheet.create({
 		maxWidth: 400,
 		minHeight: 200,
 		borderRadius: 4,
-		marginBottom: 10
+		borderColor: COLOR_BORDER,
+		borderWidth: 1
 	},
 	inlineImage: {
 		width: 300,
@@ -154,6 +180,60 @@ export default StyleSheet.create({
 	},
 	edited: {
 		fontSize: 14,
-		color: '#9EA2A8'
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
+	codeInline: {
+		...sharedStyles.textRegular,
+		...codeFontFamily,
+		borderWidth: 1,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderRadius: 4
+	},
+	codeBlock: {
+		...sharedStyles.textRegular,
+		...codeFontFamily,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
+		borderRadius: 4,
+		padding: 4
+	},
+	link: {
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
+	},
+	startedDiscussion: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		marginBottom: 6,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
+	time: {
+		fontSize: 12,
+		paddingLeft: 10,
+		lineHeight: 22,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
+	},
+	repliedThread: {
+		flexDirection: 'row',
+		flex: 1,
+		alignItems: 'center',
+		marginTop: 6,
+		marginBottom: 12
+	},
+	repliedThreadIcon: {
+		color: COLOR_PRIMARY,
+		marginRight: 10,
+		marginLeft: 16
+	},
+	repliedThreadName: {
+		fontSize: 16,
+		flex: 1,
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
 	}
 });

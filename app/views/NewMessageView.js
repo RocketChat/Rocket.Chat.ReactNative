@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import database from '../lib/realm';
+import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import debounce from '../utils/debounce';
@@ -20,6 +20,7 @@ import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -34,17 +35,18 @@ const styles = StyleSheet.create({
 	},
 	createChannelContainer: {
 		height: 47,
-		backgroundColor: '#fff',
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	createChannelIcon: {
-		color: '#1D74F5',
+		color: COLOR_PRIMARY,
 		marginHorizontal: 18
 	},
 	createChannelText: {
-		color: '#1D74F5',
-		fontSize: 18
+		color: COLOR_PRIMARY,
+		fontSize: 17,
+		...sharedStyles.textRegular
 	}
 });
 
@@ -77,7 +79,7 @@ export default class NewMessageView extends LoggedView {
 		this.state = {
 			search: []
 		};
-		this.data.addListener(this.updateState);
+		safeAddListener(this.data, this.updateState);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

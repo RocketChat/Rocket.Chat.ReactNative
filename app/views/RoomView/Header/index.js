@@ -1,86 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, StyleSheet, LayoutAnimation
-} from 'react-native';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
-import I18n from '../../../i18n';
-import { STATUS_COLORS } from '../../../constants/colors';
-import sharedStyles from '../../Styles';
-import { isIOS } from '../../../utils/deviceInfo';
-import { CustomIcon } from '../../../lib/Icons';
-import Status from '../../../containers/Status/Status';
-
-const TITLE_SIZE = 18;
-const ICON_SIZE = 18;
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	title: {
-		...sharedStyles.textSemibold,
-		color: isIOS ? '#0C0D0F' : '#fff',
-		fontSize: TITLE_SIZE
-	},
-	type: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
-		marginRight: 8,
-		color: isIOS ? '#9EA2A8' : '#fff'
-	},
-	typing: {
-		...sharedStyles.textRegular,
-		color: isIOS ? '#9EA2A8' : '#fff',
-		fontSize: 12
-	},
-	typingUsers: {
-		...sharedStyles.textSemibold,
-		fontWeight: '600'
-	},
-	status: {
-		marginRight: 8
-	}
-});
+import database, { safeAddListener } from '../../../lib/realm';
+import Header from './Header';
+import RightButtons from './RightButtons';
 
 @responsive
-@connect((state) => {
-	let status = '';
-	let title = '';
-	const roomType = state.room.t;
-	if (roomType === 'd') {
+@connect((state, ownProps) => {
+	let status;
+	let userId;
+	let isLoggedUser = false;
+	const { rid, type } = ownProps;
+	if (type === 'd') {
 		if (state.login.user && state.login.user.id) {
 			const { id: loggedUserId } = state.login.user;
-			const userId = state.room.rid.replace(loggedUserId, '').trim();
-			if (userId === loggedUserId) {
+			userId = rid.replace(loggedUserId, '').trim();
+			isLoggedUser = userId === loggedUserId;
+			if (isLoggedUser) {
 				status = state.login.user.status; // eslint-disable-line
-			} else {
-				const user = state.activeUsers[userId];
-				status = (user && user.status) || 'offline';
 			}
 		}
-		title = state.settings.UI_Use_Real_Name ? state.room.fname : state.room.name;
-	} else {
-		title = state.room.name;
-	}
-
-	let otherUsersTyping = [];
-	if (state.login.user && state.login.user.username) {
-		const { username } = state.login.user;
-		const { usersTyping } = state.room;
-		otherUsersTyping = usersTyping.filter(_username => _username !== username);
 	}
 
 	return {
-		usersTyping: otherUsersTyping,
-		type: roomType,
-		title,
+		connecting: state.meteor.connecting,
+		userId,
+		isLoggedUser,
 		status
 	};
 })
@@ -88,14 +36,37 @@ export default class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		type: PropTypes.string,
+		prid: PropTypes.string,
+		tmid: PropTypes.string,
+		rid: PropTypes.string,
 		window: PropTypes.object,
-		usersTyping: PropTypes.array,
-		status: PropTypes.string
+		status: PropTypes.string,
+		connecting: PropTypes.bool,
+		isFetching: PropTypes.bool,
+		widthOffset: PropTypes.number,
+		isLoggedUser: PropTypes.bool,
+		userId: PropTypes.string
 	};
 
-	shouldComponentUpdate(nextProps) {
+	constructor(props) {
+		super(props);
+		this.usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid = $0', props.rid);
+		this.user = [];
+		if (props.type === 'd' && !props.isLoggedUser) {
+			this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.userId);
+			safeAddListener(this.user, this.updateUser);
+		}
+		this.state = {
+			usersTyping: this.usersTyping.slice() || [],
+			user: this.user[0] || {}
+		};
+		this.usersTyping.addListener(this.updateState);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { usersTyping, user } = this.state;
 		const {
-			type, title, status, usersTyping, window
+			type, title, status, window, connecting, isFetching
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -106,89 +77,75 @@ export default class RoomHeaderView extends Component {
 		if (nextProps.status !== status) {
 			return true;
 		}
+		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
 		if (nextProps.window.width !== window.width) {
 			return true;
 		}
 		if (nextProps.window.height !== window.height) {
 			return true;
 		}
-		if (!equal(nextProps.usersTyping, usersTyping)) {
+		if (!equal(nextState.usersTyping, usersTyping)) {
+			return true;
+		}
+		if (!equal(nextState.user, user)) {
 			return true;
 		}
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
-		if (isIOS) {
-			const { usersTyping } = this.props;
-			if (!equal(prevProps.usersTyping, usersTyping)) {
-				LayoutAnimation.easeInEaseOut();
-			}
+	componentWillUnmount() {
+		this.usersTyping.removeAllListeners();
+		if (this.user && this.user.removeAllListeners) {
+			this.user.removeAllListeners();
 		}
 	}
 
-	get typing() {
-		const { usersTyping } = this.props;
-		let usersText;
-		if (!usersTyping.length) {
-			return null;
-		} else if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${ I18n.t('and') } `);
-		} else {
-			usersText = usersTyping.join(', ');
-		}
-		return (
-			<Text style={styles.typing} numberOfLines={1}>
-				<Text style={styles.typingUsers}>{usersText} </Text>
-				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
-			</Text>
-		);
+	updateState = () => {
+		this.setState({ usersTyping: this.usersTyping.slice() });
 	}
 
-	renderIcon = () => {
-		const { type, status } = this.props;
-		if (type === 'd') {
-			return <Status size={10} style={styles.status} status={status} />;
+	updateUser = () => {
+		if (this.user.length) {
+			this.setState({ user: this.user[0] });
 		}
-
-		const icon = type === 'c' ? 'hashtag' : 'lock';
-		return (
-			<CustomIcon
-				name={icon}
-				size={ICON_SIZE * 1}
-				style={[
-					styles.type,
-					{
-						width: ICON_SIZE * 1,
-						height: ICON_SIZE * 1
-					},
-					type === 'd' && { color: STATUS_COLORS[status] }
-				]}
-			/>
-		);
 	}
 
 	render() {
+		const { usersTyping, user } = this.state;
 		const {
-			window, title, usersTyping
+			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting, isFetching
 		} = this.props;
-		const portrait = window.height > window.width;
-		let scale = 1;
+		let status = 'offline';
 
-		if (!portrait) {
-			if (usersTyping.length > 0) {
-				scale = 0.8;
+		if (type === 'd') {
+			if (isLoggedUser) {
+				status = userStatus;
+			} else {
+				status = user.status || 'offline';
 			}
 		}
 
 		return (
-			<View style={styles.container}>
-				<View style={styles.titleContainer}>
-					{this.renderIcon()}
-					<Text style={[styles.title, { fontSize: TITLE_SIZE * scale }]} numberOfLines={1}>{title}</Text>
-				</View>
-				{this.typing}
-			</View>
+			<Header
+				prid={prid}
+				tmid={tmid}
+				title={title}
+				type={type}
+				status={status}
+				width={window.width}
+				height={window.height}
+				usersTyping={usersTyping}
+				widthOffset={widthOffset}
+				connecting={connecting}
+				isFetching={isFetching}
+			/>
 		);
 	}
 }
+
+export { RightButtons };

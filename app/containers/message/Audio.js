@@ -6,11 +6,13 @@ import {
 import Video from 'react-native-video';
 import Slider from 'react-native-slider';
 import moment from 'moment';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import Touchable from 'react-native-platform-touchable';
 
 import Markdown from './Markdown';
 import { CustomIcon } from '../../lib/Icons';
+import sharedStyles from '../../views/Styles';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -18,35 +20,42 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		height: 56,
-		backgroundColor: '#f7f8fa',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		borderColor: COLOR_BORDER,
+		borderWidth: 1,
 		borderRadius: 4,
-		marginBottom: 10
+		marginBottom: 6
 	},
 	playPauseButton: {
-		width: 56,
+		marginHorizontal: 10,
 		alignItems: 'center',
 		backgroundColor: 'transparent'
 	},
 	playPauseImage: {
-		color: '#1D74F5'
+		color: COLOR_PRIMARY
 	},
 	slider: {
-		flex: 1,
-		marginRight: 10
+		flex: 1
 	},
 	duration: {
-		marginRight: 16,
+		marginHorizontal: 12,
 		fontSize: 14,
-		fontWeight: '500',
-		color: '#54585e'
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	thumbStyle: {
 		width: 12,
 		height: 12
+	},
+	trackStyle: {
+		height: 2
 	}
 });
 
 const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
+const BUTTON_HIT_SLOP = {
+	top: 12, right: 12, bottom: 12, left: 12
+};
 
 export default class Audio extends React.Component {
 	static propTypes = {
@@ -93,30 +102,30 @@ export default class Audio extends React.Component {
 		return false;
 	}
 
-	onLoad(data) {
+	onLoad = (data) => {
 		this.setState({ duration: data.duration > 0 ? data.duration : 0 });
 	}
 
-	onProgress(data) {
+	onProgress = (data) => {
 		const { duration } = this.state;
 		if (data.currentTime <= duration) {
 			this.setState({ currentTime: data.currentTime });
 		}
 	}
 
-	onEnd() {
+	onEnd = () => {
 		this.setState({ paused: true, currentTime: 0 });
 		requestAnimationFrame(() => {
 			this.player.seek(0);
 		});
 	}
 
-	getDuration() {
+	getDuration = () => {
 		const { duration } = this.state;
 		return formatTime(duration);
 	}
 
-	togglePlayPause() {
+	togglePlayPause = () => {
 		const { paused } = this.state;
 		this.setState({ paused: !paused });
 	}
@@ -148,16 +157,18 @@ export default class Audio extends React.Component {
 						paused={paused}
 						repeat={false}
 					/>
-					<BorderlessButton
+					<Touchable
 						style={styles.playPauseButton}
-						onPress={() => this.togglePlayPause()}
+						onPress={this.togglePlayPause}
+						hitSlop={BUTTON_HIT_SLOP}
+						background={Touchable.SelectableBackgroundBorderless()}
 					>
 						{
 							paused
-								? <CustomIcon name='play' size={30} style={styles.playPauseImage} />
-								: <CustomIcon name='pause' size={30} style={styles.playPauseImage} />
+								? <CustomIcon name='play' size={36} style={styles.playPauseImage} />
+								: <CustomIcon name='pause' size={36} style={styles.playPauseImage} />
 						}
-					</BorderlessButton>
+					</Touchable>
 					<Slider
 						style={styles.slider}
 						value={currentTime}
@@ -169,10 +180,11 @@ export default class Audio extends React.Component {
 							easing: Easing.linear,
 							delay: 0
 						}}
-						thumbTintColor='#1d74f5'
-						minimumTrackTintColor='#1d74f5'
+						thumbTintColor={COLOR_PRIMARY}
+						minimumTrackTintColor={COLOR_PRIMARY}
 						onValueChange={value => this.setState({ currentTime: value })}
 						thumbStyle={styles.thumbStyle}
+						trackStyle={styles.trackStyle}
 					/>
 					<Text style={styles.duration}>{this.getDuration()}</Text>
 				</View>,

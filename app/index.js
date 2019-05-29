@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 
+import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
@@ -28,40 +29,34 @@ import MentionedMessagesView from './views/MentionedMessagesView';
 import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
 import PinnedMessagesView from './views/PinnedMessagesView';
+import ThreadMessagesView from './views/ThreadMessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
-import TermsServiceView from './views/TermsServiceView';
-import PrivacyPolicyView from './views/PrivacyPolicyView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications } from './push';
+import { initializePushNotifications, onNotification } from './push';
 import store from './lib/createStore';
 
 useScreens();
-initializePushNotifications();
 
-const handleOpenURL = ({ url }) => {
+const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth)\?/;
 		if (url.match(regex)) {
-			url = url.replace(regex, '');
-			const params = parseQuery(url);
-			store.dispatch(deepLinkingOpen(params));
+			url = url.replace(regex, '').trim();
+			if (url) {
+				return parseQuery(url);
+			}
 		}
 	}
+	return null;
 };
-
-Linking
-	.getInitialURL()
-	.then(url => handleOpenURL({ url }))
-	.catch(e => console.warn(e));
-Linking.addEventListener('url', handleOpenURL);
 
 const defaultHeader = {
 	headerStyle: {
@@ -84,15 +79,8 @@ const OutsideStack = createStackNavigator({
 	LoginSignupView,
 	LoginView,
 	ForgotPasswordView,
-	RegisterView
-}, {
-	defaultNavigationOptions: defaultHeader
-});
-
-const LegalStack = createStackNavigator({
-	LegalView,
-	TermsServiceView,
-	PrivacyPolicyView
+	RegisterView,
+	LegalView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -105,7 +93,6 @@ const OAuthStack = createStackNavigator({
 
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
-	LegalStack,
 	OAuthStack
 },
 {
@@ -126,10 +113,21 @@ const ChatsStack = createStackNavigator({
 	StarredMessagesView,
 	SearchMessagesView,
 	PinnedMessagesView,
-	SelectedUsersView
+	SelectedUsersView,
+	ThreadMessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
+
+ChatsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
 
 const ProfileStack = createStackNavigator({
 	ProfileView
@@ -137,11 +135,31 @@ const ProfileStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
+ProfileStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
+
 const SettingsStack = createStackNavigator({
 	SettingsView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
+
+SettingsStack.navigationOptions = ({ navigation }) => {
+	let drawerLockMode = 'unlocked';
+	if (navigation.state.index > 0) {
+		drawerLockMode = 'locked-closed';
+	}
+	return {
+		drawerLockMode
+	};
+};
 
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
@@ -184,12 +202,48 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-export default () => (
-	<Provider store={store}>
-		<App
-			ref={(navigatorRef) => {
-				Navigation.setTopLevelNavigator(navigatorRef);
-			}}
-		/>
-	</Provider>
-);
+export default class Root extends React.Component {
+	constructor(props) {
+		super(props);
+		this.init();
+	}
+
+	componentDidMount() {
+		this.listenerTimeout = setTimeout(() => {
+			Linking.addEventListener('url', ({ url }) => {
+				const parsedDeepLinkingURL = parseDeepLinking(url);
+				if (parsedDeepLinkingURL) {
+					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+				}
+			});
+		}, 5000);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.listenerTimeout);
+	}
+
+	init = async() => {
+		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		if (notification) {
+			onNotification(notification);
+		} else if (parsedDeepLinkingURL) {
+			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+		} else {
+			store.dispatch(appInit());
+		}
+	}
+
+	render() {
+		return (
+			<Provider store={store}>
+				<App
+					ref={(navigatorRef) => {
+						Navigation.setTopLevelNavigator(navigatorRef);
+					}}
+				/>
+			</Provider>
+		);
+	}
+}

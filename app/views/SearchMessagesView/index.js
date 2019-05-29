@@ -46,6 +46,7 @@ export default class SearchMessagesView extends LoggedView {
 			messages: [],
 			searchText: ''
 		};
+		this.rid = props.navigation.getParam('rid');
 	}
 
 	componentDidMount() {
@@ -72,12 +73,10 @@ export default class SearchMessagesView extends LoggedView {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(searchText) => {
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid');
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
-			const result = await RocketChat.searchMessages(rid, searchText);
+			const result = await RocketChat.searchMessages(this.rid, searchText);
 			if (result.success) {
 				this.setState({
 					messages: result.messages || [],
@@ -92,7 +91,7 @@ export default class SearchMessagesView extends LoggedView {
 
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer}>
-			<Text>{I18n.t('No_results_found')}</Text>
+			<Text style={styles.noDataFound}>{I18n.t('No_results_found')}</Text>
 		</View>
 	)
 
@@ -100,7 +99,6 @@ export default class SearchMessagesView extends LoggedView {
 		const { user, customEmojis, baseUrl } = this.props;
 		return (
 			<Message
-				style={styles.message}
 				customEmojis={customEmojis}
 				baseUrl={baseUrl}
 				user={user}

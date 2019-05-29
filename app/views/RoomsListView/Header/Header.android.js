@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { TextInput } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
+import sharedStyles from '../../Styles';
+import { COLOR_WHITE } from '../../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,14 +20,16 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		fontSize: 20,
-		color: '#FFF'
+		color: COLOR_WHITE,
+		...sharedStyles.textRegular
 	},
 	serverSmall: {
 		fontSize: 16
 	},
 	updating: {
 		fontSize: 14,
-		color: '#FFF'
+		color: COLOR_WHITE,
+		...sharedStyles.textRegular
 	},
 	disclosure: {
 		marginLeft: 9,
@@ -38,8 +42,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = ({
-	isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
+const Header = React.memo(({
+	connecting, isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
 }) => {
 	if (showSearchHeader) {
 		return (
@@ -57,6 +61,7 @@ const Header = ({
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
+				{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
 				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
 					<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
@@ -65,7 +70,7 @@ const Header = ({
 			</TouchableOpacity>
 		</View>
 	);
-};
+});
 
 Header.propTypes = {
 	showServerDropdown: PropTypes.bool.isRequired,
@@ -73,6 +78,7 @@ Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
+	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string
 };

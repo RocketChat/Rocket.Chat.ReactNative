@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -23,6 +23,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -31,8 +32,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	room: state.room
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 }), dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
 }))
@@ -49,25 +49,36 @@ export default class RoomActionsView extends LoggedView {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		room: PropTypes.object,
 		leaveRoom: PropTypes.func
 	}
 
 	constructor(props) {
 		super('RoomActionsView', props);
 		this.rid = props.navigation.getParam('rid');
+		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			room: this.rooms[0] || props.room,
+			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			membersCount: 0,
 			member: {},
-			joined: false,
+			joined: this.rooms.length > 0,
 			canViewMembers: false
 		};
 	}
 
 	async componentDidMount() {
 		const { room } = this.state;
+		if (!room._id) {
+			try {
+				const result = await RocketChat.getChannelInfo(room.rid);
+				if (result.success) {
+					this.setState({ room: { ...result.channel, rid: result.channel._id } });
+				}
+			} catch (error) {
+				console.log('RoomActionsView -> getChannelInfo -> error', error);
+			}
+		}
+
 		if (room && room.t !== 'd' && this.canViewMembers) {
 			try {
 				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
@@ -80,7 +91,7 @@ export default class RoomActionsView extends LoggedView {
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
 		}
-		this.rooms.addListener(this.updateRoom);
+		safeAddListener(this.rooms, this.updateRoom);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -119,6 +130,7 @@ export default class RoomActionsView extends LoggedView {
 		}
 	}
 
+	// TODO: move to componentDidMount
 	get canAddUser() {
 		const { room, joined } = this.state;
 		const { rid, t } = room;
@@ -138,6 +150,7 @@ export default class RoomActionsView extends LoggedView {
 		return false;
 	}
 
+	// TODO: move to componentDidMount
 	get canViewMembers() {
 		const { room } = this.state;
 		const { rid, t, broadcast } = room;
@@ -176,7 +189,8 @@ export default class RoomActionsView extends LoggedView {
 				icon: 'star',
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
-				params: { rid },
+				// forward room only if room isn't joined
+				params: { rid, t, room: joined ? null : room },
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
@@ -202,18 +216,21 @@ export default class RoomActionsView extends LoggedView {
 					icon: 'file-generic',
 					name: I18n.t('Files'),
 					route: 'RoomFilesView',
+					params: { rid, t },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'at',
 					name: I18n.t('Mentions'),
 					route: 'MentionedMessagesView',
+					params: { rid, t },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'star',
 					name: I18n.t('Starred'),
 					route: 'StarredMessagesView',
+					params: { rid, t },
 					testID: 'room-actions-starred'
 				},
 				{
@@ -233,6 +250,7 @@ export default class RoomActionsView extends LoggedView {
 					icon: 'pin',
 					name: I18n.t('Pinned'),
 					route: 'PinnedMessagesView',
+					params: { rid, t },
 					testID: 'room-actions-pinned'
 				}
 			],
@@ -313,8 +331,11 @@ export default class RoomActionsView extends LoggedView {
 		const { user } = this.props;
 
 		try {
-			const member = await RocketChat.getRoomMember(rid, user.id);
-			this.setState({ member: member || {} });
+			const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+			const result = await RocketChat.getUserInfo(roomUserId);
+			if (result.success) {
+				this.setState({ member: result.user });
+			}
 		} catch (e) {
 			log('RoomActions updateRoomMember', e);
 			this.setState({ member: {} });
@@ -379,17 +400,18 @@ export default class RoomActionsView extends LoggedView {
 					style={styles.avatar}
 					type={t}
 					baseUrl={baseUrl}
-					user={user}
+					userId={user.id}
+					token={user.token}
 				>
-					{t === 'd' ? <Status style={sharedStyles.status} id={member._id} /> : null }
+					{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
 					{room.t === 'd'
 						? <Text style={styles.roomTitle}>{room.fname}</Text>
 						: (
 							<View style={styles.roomTitleRow}>
-								<RoomTypeIcon type={room.t} />
-								<Text style={styles.roomTitle}>{room.name}</Text>
+								<RoomTypeIcon type={room.prid ? 'discussion' : room.t} />
+								<Text style={styles.roomTitle}>{room.prid ? room.fname : room.name}</Text>
 							</View>
 						)
 					}
@@ -403,7 +425,7 @@ export default class RoomActionsView extends LoggedView {
 	renderTouchableItem = (subview, item) => (
 		<Touch
 			onPress={() => this.onPressTouchable(item)}
-			underlayColor='#FFFFFF'
+			underlayColor={COLOR_WHITE}
 			activeOpacity={0.5}
 			accessibilityLabel={item.name}
 			accessibilityTraits='button'
@@ -443,6 +465,7 @@ export default class RoomActionsView extends LoggedView {
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<SectionList
+					contentContainerStyle={styles.contentContainer}
 					style={styles.container}
 					stickySectionHeadersEnabled={false}
 					sections={this.sections}

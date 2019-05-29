@@ -2,45 +2,47 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+
 import I18n from '../../i18n';
+import sharedStyles from '../Styles';
+import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 25,
-		marginTop: 15,
-		marginHorizontal: 15,
-		transform: [{ scaleY: -1 }]
+		marginTop: 16,
+		marginBottom: 4,
+		marginHorizontal: 14
 	},
 	line: {
-		backgroundColor: '#9ea2a8',
+		backgroundColor: COLOR_TEXT_DESCRIPTION,
 		height: 1,
 		flex: 1
 	},
 	text: {
-		color: '#9ea2a8',
 		fontSize: 14,
-		fontWeight: '600'
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorDescription
 	},
 	unreadLine: {
-		backgroundColor: '#f5455c'
+		backgroundColor: COLOR_DANGER
 	},
 	unreadText: {
-		color: '#f5455c'
+		color: COLOR_DANGER
 	},
 	marginLeft: {
-		marginLeft: 15
+		marginLeft: 14
 	},
 	marginRight: {
-		marginRight: 15
+		marginRight: 14
 	},
 	marginHorizontal: {
-		marginHorizontal: 15
+		marginHorizontal: 14
 	}
 });
 
-const DateSeparator = ({ ts, unread }) => {
+const DateSeparator = React.memo(({ ts, unread }) => {
 	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
 	if (ts && unread) {
 		return (
@@ -65,7 +67,7 @@ const DateSeparator = ({ ts, unread }) => {
 			<View style={[styles.line, styles.unreadLine]} />
 		</View>
 	);
-};
+});
 
 DateSeparator.propTypes = {
 	ts: PropTypes.instanceOf(Date),
