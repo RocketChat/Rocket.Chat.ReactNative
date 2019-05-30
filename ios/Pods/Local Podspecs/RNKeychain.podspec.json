@@ -1,0 +1,25 @@
+{
+  "name": "RNKeychain",
+  "version": "3.1.3",
+  "summary": "Keychain Access for React Native.",
+  "homepage": "https://github.com/oblador/react-native-keychain",
+  "license": "MIT",
+  "authors": {
+    "Joel Arvidsson": "joel@oblador.se"
+  },
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/oblador/react-native-keychain.git",
+    "tag": "v3.1.3"
+  },
+  "source_files": "RNKeychainManager/**/*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

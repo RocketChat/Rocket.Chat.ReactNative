@@ -44,6 +44,8 @@ target 'RocketChatRN' do
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Performance', '~> 5.20.1'
 
+  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
 end
 
 post_install do |installer|

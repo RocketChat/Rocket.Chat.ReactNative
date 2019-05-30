@@ -923,6 +923,9 @@
 						DevelopmentTeam = S6UPZG7ZR3;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
