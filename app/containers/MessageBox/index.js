@@ -188,7 +188,7 @@ class MessageBox extends Component {
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 
-		if (this.component) {
+		if (!isTextEmpty) {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			const lastNativeText = this.component._lastNativeText;
