@@ -360,7 +360,7 @@ export default class RoomsListView extends React.Component {
 					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 				}
 			} catch (e) {
-				log('RoomsListView._onPressItem', e);
+				log('err_on_press_item', e);
 			}
 		} else {
 			return this.goRoom(item);

@@ -18,6 +18,6 @@ export default async function readMessages(rid) {
 		});
 		return data;
 	} catch (e) {
-		log('readMessages', e);
+		log('err_read_messages', e);
 	}
 }
