@@ -181,7 +181,9 @@ export default class RoomView extends React.Component {
 		const {
 			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
 		} = this.state;
-		const { showActions, showErrorActions, appState, navigation } = this.props;
+		const {
+			showActions, showErrorActions, appState, navigation
+		} = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
 			return true;
