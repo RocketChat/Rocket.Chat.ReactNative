@@ -181,7 +181,7 @@ export default class RoomView extends React.Component {
 		const {
 			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
 		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+		const { showActions, showErrorActions, appState, navigation } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
 			return true;
@@ -208,6 +208,8 @@ export default class RoomView extends React.Component {
 		} else if (appState !== nextProps.appState) {
 			return true;
 		} else if (!equal(room.muted, nextState.room.muted)) {
+			return true;
+		} else if (!equal(navigation.state, nextProps.navigation.state)) {
 			return true;
 		}
 		return false;

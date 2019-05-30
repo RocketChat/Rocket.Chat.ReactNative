@@ -335,7 +335,7 @@ const RocketChat = {
 		if (this.notificationSub) {
 			this.notificationSub.stop();
 		}
-		
+
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;

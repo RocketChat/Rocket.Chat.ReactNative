@@ -23,7 +23,7 @@ import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
-import NotificationBadge from '../../notifications/inApp';
+import NotificationBadge from '../notifications/inApp';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
