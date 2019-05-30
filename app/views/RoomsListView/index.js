@@ -409,7 +409,7 @@ export default class RoomsListView extends React.Component {
 					unread={item.unread}
 					userMentions={item.userMentions}
 					favorite={item.f}
-					// lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}

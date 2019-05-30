@@ -177,6 +177,7 @@ describe('Join public room', () => {
 			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+			await sleep(2000);
 			await element(by.id('rooms-list-view-search')).replaceText('');
 			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
