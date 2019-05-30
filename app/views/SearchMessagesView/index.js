@@ -132,12 +132,10 @@ export default class SearchMessagesView extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
-
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}

@@ -238,7 +238,6 @@ export default class ThreadMessagesView extends React.Component {
 
 	render() {
 		const { loading, messages } = this.state;
-		const { navigation } = this.props;
 
 		if (!loading && this.messages.length === 0) {
 			return this.renderEmpty();
@@ -247,7 +246,7 @@ export default class ThreadMessagesView extends React.Component {
 		return (
 			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<FlatList
 					data={messages}
 					extraData={this.state}

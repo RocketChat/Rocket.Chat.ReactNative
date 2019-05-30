@@ -633,13 +633,13 @@ export default class RoomView extends React.Component {
 		const {
 			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage
 		} = this.state;
-		const { user, baseUrl, navigation } = this.props;
+		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
 
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{this.renderActions()}

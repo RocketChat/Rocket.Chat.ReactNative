@@ -287,14 +287,13 @@ export default class RoomInfoEditView extends React.Component {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving
 		} = this.state;
-		const { navigation } = this.props;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='room-info-edit-view-list'

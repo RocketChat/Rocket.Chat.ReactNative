@@ -180,14 +180,14 @@ export default class SettingsView extends React.Component {
 		const {
 			language, languages, placeholder, saving
 		} = this.state;
-		const { useMarkdown, navigation } = this.props;
+		const { useMarkdown } = this.props;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='settings-view-list'

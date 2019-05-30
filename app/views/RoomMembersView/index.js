@@ -275,14 +275,13 @@ export default class RoomMembersView extends React.Component {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
-		const { navigation } = this.props;
 		// if (isLoading) {
 		// 	return <ActivityIndicator style={styles.loading} />;
 		// }
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

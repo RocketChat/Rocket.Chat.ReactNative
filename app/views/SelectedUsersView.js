@@ -269,11 +269,11 @@ export default class SelectedUsersView extends React.Component {
 	}
 
 	render = () => {
-		const { loading, navigation } = this.props;
+		const { loading } = this.props;
 		return (
 			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

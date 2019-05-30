@@ -21,20 +21,19 @@ export default class AdminPanelView extends React.Component {
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		authToken: PropTypes.string
 	}
 
 	render() {
-		const { baseUrl, authToken, navigation } = this.props;
+		const { baseUrl, authToken } = this.props;
 		if (!baseUrl) {
 			return null;
 		}
 		return (
 			<SafeAreaView style={styles.container} testID='terms-view'>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}

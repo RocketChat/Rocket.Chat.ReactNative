@@ -246,7 +246,7 @@ export default class MessagesView extends React.Component {
 		const {
 			messages, loading, selectedAttachment, photoModalVisible
 		} = this.state;
-		const { user, baseUrl, navigation } = this.props;
+		const { user, baseUrl } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -255,7 +255,7 @@ export default class MessagesView extends React.Component {
 		return (
 			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

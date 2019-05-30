@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
+import { withNavigation, NavigationActions } from 'react-navigation';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TITLE, COLOR_TEXT, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
-import Navigation from '../../lib/Navigation';
 
 const AVATAR_SIZE = 40;
 const ANIMATION_DURATION = 300;
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
 	token: state.login.user && state.login.user.token,
 	notification: state.notification
 }))
-export default class NotificationBadge extends React.Component {
+class NotificationBadge extends React.Component {
 	static propTypes = {
+		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		notification: PropTypes.object,
-		navState: PropTypes.object
+		notification: PropTypes.object
 	}
 
 	constructor(props) {
@@ -71,7 +71,8 @@ export default class NotificationBadge extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
-		const { notification: { payload }, navState } = this.props;
+		const { notification: { payload }, navigation } = this.props;
+		const navState = navigation.state;
 		if	(!nextNotification.payload) {
 			return false;
 		}
@@ -120,12 +121,15 @@ export default class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = () => {
-		const { notification: { payload } } = this.props;
+		const { notification: { payload }, navigation } = this.props;
 		const { rid, type, prid } = payload;
 		const name = payload === 'p' ? payload.name : payload.sender.username;
-		Navigation.navigate('RoomView', {
-			rid, name, t: type, prid
-		});
+		navigation.reset([NavigationActions.navigate({
+			routeName: 'RoomView',
+			params: {
+				rid, name, t: type, prid
+			}
+		})]);
 		this.hide();
 	}
 
@@ -160,3 +164,5 @@ export default class NotificationBadge extends React.Component {
 		);
 	}
 }
+
+export default withNavigation(NotificationBadge);

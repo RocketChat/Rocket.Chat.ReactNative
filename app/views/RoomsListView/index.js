@@ -547,13 +547,13 @@ export default class RoomsListView extends React.Component {
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, navigation
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

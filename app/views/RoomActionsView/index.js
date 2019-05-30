@@ -460,11 +460,10 @@ export default class RoomActionsView extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}
 					style={styles.container}

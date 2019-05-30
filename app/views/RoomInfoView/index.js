@@ -242,14 +242,13 @@ export default class RoomInfoView extends React.Component {
 
 	render() {
 		const { room, roomUser } = this.state;
-		const { navigation } = this.props;
 		if (!room) {
 			return <View />;
 		}
 		return (
 			<ScrollView style={styles.scroll}>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}

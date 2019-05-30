@@ -376,7 +376,7 @@ export default class ProfileView extends React.Component {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
-		const { baseUrl, user, navigation } = this.props;
+		const { baseUrl, user } = this.props;
 
 		return (
 			<KeyboardView
@@ -384,7 +384,7 @@ export default class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge navState={navigation.state} />
+				<NotificationBadge />
 				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
