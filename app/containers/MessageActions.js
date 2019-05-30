@@ -155,7 +155,7 @@ export default class MessageActions extends React.Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message);
+			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}
