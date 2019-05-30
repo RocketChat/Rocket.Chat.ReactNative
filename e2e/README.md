@@ -17,7 +17,8 @@
 * Sign up as admin.
 * Create public room `detox-public`.
 * Create user with role: `user`, username: `detoxrn`, email: `detoxrn@gmail.com`, password: `123`.
-* Login as user `detoxrn@gmail.com` -> open My Account -> Settings tab -> click Enable 2FA -> copy TTOLP code -> paste TTOLP code into `./e2e/data.js` file into field: `alternateUserTOTPSecret`.
+* Create user with role: `user`, username: `diego.mello`, email: `diego.mello@rocket.chat`, password: `123`.
+* Login as user `detoxrn` -> open My Account -> Settings tab -> click Enable 2FA -> copy TTOLP code -> paste TTOLP code into `./e2e/data.js` file into field: `alternateUserTOTPSecret`.
 
 ### 3. Running tests
 #### 3.1. iOS
