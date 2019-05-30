@@ -64,7 +64,6 @@ export default class SettingsView extends React.Component {
 
 	static propTypes = {
 		componentId: PropTypes.string,
-		navigation: PropTypes.object,
 		userLanguage: PropTypes.string,
 		useMarkdown: PropTypes.bool,
 		setUser: PropTypes.func,

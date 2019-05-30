@@ -49,7 +49,6 @@ export default class ProfileView extends React.Component {
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,

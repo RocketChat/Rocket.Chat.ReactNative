@@ -80,10 +80,7 @@ class NotificationBadge extends React.Component {
 		const { notification: nextNotification } = nextProps;
 		const { notification: { payload }, navigation } = this.props;
 		const navState = navigation.state;
-		if	(!nextNotification.payload) {
-			return false;
-		}
-		if (navState && navState.routeName === 'RoomView' && navState.params.rid === nextNotification.payload.rid) {
+		if (navState && navState.routeName === 'RoomView' && nextNotification.payload && navState.params.rid === nextNotification.payload.rid) {
 			return false;
 		}
 		if (!equal(nextNotification.payload, payload)) {
