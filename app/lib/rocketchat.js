@@ -527,7 +527,7 @@ const RocketChat = {
 		}
 		return Promise.resolve(result);
 	},
-	async getPermalink(message) {
+	async getPermalinkMessage(message) {
 		let room;
 		try {
 			room = await RocketChat.getRoom(message.rid);
@@ -542,6 +542,15 @@ const RocketChat = {
 			d: 'direct'
 		}[room.t];
 		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
+	},
+	getPermalinkChannel(channel) {
+		const { server } = reduxStore.getState().server;
+		const roomType = {
+			p: 'group',
+			c: 'channel',
+			d: 'direct'
+		}[channel.t];
+		return `${ server }/${ roomType }/${ channel.name }`;
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
