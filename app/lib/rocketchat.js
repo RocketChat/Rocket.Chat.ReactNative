@@ -1,6 +1,7 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import * as Keychain from 'react-native-keychain';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -74,11 +75,11 @@ const RocketChat = {
 		});
 	},
 
-	async getUserToken() {
+	async getUserToken(server) {
 		try {
-			return await AsyncStorage.getItem(TOKEN_KEY);
+			return await Keychain.getInternetCredentials(server);
 		} catch (error) {
-			console.warn(`AsyncStorage error: ${ error.message }`);
+			log(`err_get_user_token: ${ error.message }`);
 		}
 	},
 	async getServerInfo(server) {
@@ -347,11 +348,7 @@ const RocketChat = {
 		}
 		this.sdk = null;
 
-		Promise.all([
-			AsyncStorage.removeItem('currentServer'),
-			AsyncStorage.removeItem(TOKEN_KEY),
-			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
-		]).catch(error => console.log(error));
+		await Keychain.resetInternetCredentials(server);
 
 		try {
 			database.deleteAll();

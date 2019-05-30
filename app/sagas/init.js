@@ -1,6 +1,6 @@
-import { AsyncStorage } from 'react-native';
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
+import * as Keychain from 'react-native-keychain';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -14,22 +14,18 @@ import database from '../lib/realm';
 
 const restore = function* restore() {
 	try {
-		const { token, server } = yield all({
-			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
-			server: AsyncStorage.getItem('currentServer')
-		});
-
+		const { serversDB } = database.databases;
+		const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
+		const { id: server = null } = currentServer.length && currentServer[0];
+		const { password: token } = server ? yield Keychain.getInternetCredentials(server) : { password: null };
 		const sortPreferences = yield RocketChat.getSortPreferences();
+
 		yield put(setAllPreferences(sortPreferences));
 
 		const useMarkdown = yield RocketChat.getUseMarkdown();
 		yield put(toggleMarkdown(useMarkdown));
 
 		if (!token || !server) {
-			yield all([
-				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
-				AsyncStorage.removeItem('currentServer')
-			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
 			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
