@@ -29,7 +29,7 @@ async function navigateToRoomActions() {
 
 describe('Join public room', () => {
 	before(async() => {
-		await device.reloadReactNative();
+    await device.launchApp({newInstance: true});
 		await navigateToRoom();
 	});
 
