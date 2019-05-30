@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert
+	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -241,7 +241,7 @@ export default class RoomActionsView extends React.Component {
 				{
 					icon: 'share',
 					name: I18n.t('Share'),
-					disabled: true,
+					event: this.handleShare,
 					testID: 'room-actions-share'
 				},
 				{
@@ -350,6 +350,14 @@ export default class RoomActionsView extends React.Component {
 			log('err_toggle_block_user', e);
 		}
 	}
+
+	handleShare = () => {
+		const { room } = this.state;
+		const permalink = RocketChat.getPermalinkChannel(room);
+		Share.share({
+			message: permalink
+		});
+	};
 
 	leaveChannel = () => {
 		const { room } = this.state;

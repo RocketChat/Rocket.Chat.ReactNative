@@ -206,7 +206,7 @@ class MessageBox extends Component {
 			}
 		}
 
-		if (this.component) {
+		if (!isTextEmpty) {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			const lastNativeText = this.component._lastNativeText;
@@ -287,7 +287,7 @@ class MessageBox extends Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message);
+			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}
