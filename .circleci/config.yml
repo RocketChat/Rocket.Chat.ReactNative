@@ -52,6 +52,9 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+
       - run:
           name: Install Node 8
           command: |
@@ -86,6 +89,11 @@ jobs:
 
       - store_artifacts:
           path: /tmp/screenshots
+
+      - save_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
   android-build:
     <<: *defaults
@@ -168,6 +176,9 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+
       - run:
           name: Install Node 8
           command: |
@@ -212,6 +223,11 @@ jobs:
           paths:
             - ios/*.ipa
             - ios/fastlane/report.xml
+
+      - save_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
   ios-testflight:
     macos:
