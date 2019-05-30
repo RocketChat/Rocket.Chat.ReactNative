@@ -26,7 +26,6 @@ import { isAndroid } from '../../utils/deviceInfo';
 import {
 	COLOR_WHITE, COLOR_SEPARATOR, COLOR_DANGER, COLOR_SUCCESS
 } from '../../constants/colors';
-import NotificationBadge from '../../notifications/inApp';
 
 const styles = StyleSheet.create({
 	swithContainer: {
@@ -186,7 +185,6 @@ export default class SettingsView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='settings-view-list'

@@ -29,7 +29,6 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
-import NotificationBadge from '../../notifications/inApp';
 
 const SCROLL_OFFSET = 56;
 
@@ -553,7 +552,6 @@ export default class RoomsListView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				{this.renderScroll()}
 				{showSortDropdown
 					? (

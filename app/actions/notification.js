@@ -1,8 +1,8 @@
-import * as types from './actionsTypes';
+import { NOTIFICATION } from './actionsTypes';
 
 export function notificationReceived(params) {
 	return {
-		type: types.NOTIFICATION.RECEIVED,
+		type: NOTIFICATION.RECEIVED,
 		payload: {
 			message: params.text,
 			payload: params.payload
@@ -12,6 +12,6 @@ export function notificationReceived(params) {
 
 export function removeNotification() {
 	return {
-		type: types.NOTIFICATION.REMOVE
+		type: NOTIFICATION.REMOVE
 	};
 }

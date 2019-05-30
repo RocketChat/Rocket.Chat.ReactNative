@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
-import { withNavigation } from 'react-navigation';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_TITLE, COLOR_TEXT, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
+import { COLOR_TITLE, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
+import sharedStyles from '../../views/Styles';
 
 const AVATAR_SIZE = 40;
 const ANIMATION_DURATION = 300;
@@ -40,10 +40,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10
 	},
 	roomName: {
-		color: COLOR_TEXT
+		...sharedStyles.textColorTitle
 	},
 	message: {
-		maxWidth: MAX_WIDTH_MESSAGE
+		maxWidth: MAX_WIDTH_MESSAGE,
+		...sharedStyles.textColorNormal
 	},
 	close: {
 		color: COLOR_TITLE,
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
 		removeNotification: () => dispatch(removeNotificationAction())
 	})
 )
-class NotificationBadge extends React.Component {
+export default class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
@@ -79,7 +80,7 @@ class NotificationBadge extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
 		const { notification: { payload }, navigation } = this.props;
-		const navState = navigation.state;
+		const navState = this.getNavState(navigation.state);
 		if (navState && navState.routeName === 'RoomView' && nextNotification.payload && navState.params.rid === nextNotification.payload.rid) {
 			return false;
 		}
@@ -90,10 +91,17 @@ class NotificationBadge extends React.Component {
 	}
 
 	componentDidUpdate() {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
+		const { notification: { payload } } = this.props;
+		if (payload.rid) {
 			this.show();
 		}
+	}
+
+	getNavState = (routes) => {
+		if (!routes.routes) {
+			return routes;
+		}
+		return this.getNavState(routes.routes[routes.index]);
 	}
 
 	show = () => {
@@ -126,16 +134,17 @@ class NotificationBadge extends React.Component {
 				useNativeDriver: true
 			},
 		).start();
-
-		removeNotification();
+		clearInterval(timeout);
+		setTimeout(removeNotification, ANIMATION_DURATION);
 	}
 
 	goToRoom = () => {
 		const { notification: { payload }, navigation } = this.props;
 		const { rid, type, prid } = payload;
-		const name = payload === 'p' ? payload.name : payload.sender.username;
-		if (navigation.state.routeName === 'RoomView') {
-			navigation.replace('RoomView', {
+		const name = type === 'p' ? payload.name : payload.sender.username;
+		const navState = this.getNavState(navigation.state);
+		if (navState.routeName === 'RoomView') {
+			navigation.push('RoomView', {
 				rid, name, t: type, prid
 			});
 		} else {
@@ -151,16 +160,12 @@ class NotificationBadge extends React.Component {
 			baseUrl, token, userId, notification
 		} = this.props;
 		const { message, payload } = notification;
-		if	(!payload) {
-			return null;
-		}
 		const { type } = payload;
-		const name = payload === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'p' ? payload.name : payload.sender.username;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [-55, 0]
 		});
-
 		return (
 			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
 				<TouchableOpacity style={styles.content} onPress={this.goToRoom}>
@@ -177,5 +182,3 @@ class NotificationBadge extends React.Component {
 		);
 	}
 }
-
-export default withNavigation(NotificationBadge);

@@ -26,7 +26,6 @@ import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_TEXT } from '../../constants/colors';
-import NotificationBadge from '../../notifications/inApp';
 
 @connect(state => ({
 	user: {
@@ -383,7 +382,6 @@ export default class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge />
 				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}

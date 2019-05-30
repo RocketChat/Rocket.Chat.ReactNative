@@ -17,7 +17,6 @@ import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
-import NotificationBadge from '../../notifications/inApp';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
@@ -246,7 +245,6 @@ export default class ThreadMessagesView extends React.Component {
 		return (
 			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<FlatList
 					data={messages}
 					extraData={this.state}

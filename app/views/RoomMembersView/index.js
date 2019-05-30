@@ -19,7 +19,6 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import NotificationBadge from '../../notifications/inApp';
 
 const PAGE_SIZE = 25;
 
@@ -281,7 +280,6 @@ export default class RoomMembersView extends React.Component {
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

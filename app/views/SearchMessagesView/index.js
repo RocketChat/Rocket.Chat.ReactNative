@@ -16,7 +16,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
-import NotificationBadge from '../../notifications/inApp';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -135,7 +134,6 @@ export default class SearchMessagesView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}

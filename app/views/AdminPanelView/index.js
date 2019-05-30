@@ -8,7 +8,6 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { DrawerButton } from '../../containers/HeaderButton';
 import styles from '../Styles';
-import NotificationBadge from '../../notifications/inApp';
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
@@ -33,7 +32,6 @@ export default class AdminPanelView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='terms-view'>
 				<StatusBar />
-				<NotificationBadge />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}

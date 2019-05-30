@@ -14,7 +14,6 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import FileModal from '../../containers/FileModal';
-import NotificationBadge from '../../notifications/inApp';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -255,7 +254,6 @@ export default class MessagesView extends React.Component {
 		return (
 			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

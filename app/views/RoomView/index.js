@@ -42,7 +42,6 @@ import FileModal from '../../containers/FileModal';
 import { vibrate } from '../../utils/vibration';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { Toast } from '../../utils/info';
-import NotificationBadge from '../../notifications/inApp';
 
 @connect(state => ({
 	user: {
@@ -635,7 +634,6 @@ export default class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{this.renderActions()}

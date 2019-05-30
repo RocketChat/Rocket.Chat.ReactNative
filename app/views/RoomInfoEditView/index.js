@@ -22,7 +22,6 @@ import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import NotificationBadge from '../../notifications/inApp';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -293,7 +292,6 @@ export default class RoomInfoEditView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<NotificationBadge />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='room-info-edit-view-list'

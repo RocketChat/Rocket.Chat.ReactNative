@@ -23,7 +23,6 @@ import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
-import NotificationBadge from '../notifications/inApp';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -273,7 +272,6 @@ export default class SelectedUsersView extends React.Component {
 		return (
 			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

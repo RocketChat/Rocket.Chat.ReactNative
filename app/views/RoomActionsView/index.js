@@ -23,7 +23,6 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
-import NotificationBadge from '../../notifications/inApp';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -463,7 +462,6 @@ export default class RoomActionsView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<NotificationBadge />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}
 					style={styles.container}
