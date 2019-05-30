@@ -43,6 +43,7 @@ jobs:
             - ./node_modules
 
   e2e-test:
+    working_directory: ~/e2e
     macos:
       xcode: "10.2.1"
 
@@ -167,6 +168,7 @@ jobs:
             - ~/.gradle
 
   ios-build:
+    working_directory: ~/ios-build
     macos:
       xcode: "10.2.1"
 
@@ -175,9 +177,6 @@ jobs:
 
     steps:
       - checkout
-
-      - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -194,6 +193,9 @@ jobs:
             brew update
             brew install ruby
             sudo gem install fastlane
+
+      - restore_cache:
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
