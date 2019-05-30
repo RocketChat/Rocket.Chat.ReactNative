@@ -16,8 +16,9 @@
 * Open `localhost:3000` in browser.
 * Sign up as admin.
 * Create public room `detox-public`.
-* Create user with role: `user`, username: `detoxrn`, email: `detoxrn@gmail.com`, password: `123`.
-* Create user with role: `user`, username: `diego.mello`, email: `diego.mello@rocket.chat`, password: `123`.
+* Create user with role: `user`, username: `detoxrn`, email: `YOUR@EMAIL.COM`, password: `123`.
+* Create user with role: `user`, username: `YOUR.NAME`, email: `YOUR.SECOND@EMAIL.COM`, password: `123`.
+* In file `e2e/data.js` change values `existingEmail` with `YOUR.SECOND@EMAIL.COM`, `existingName` with `YOUR.NAME`.
 * Login as user `detoxrn` -> open My Account -> Settings tab -> click Enable 2FA -> copy TTOLP code -> paste TTOLP code into `./e2e/data.js` file into field: `alternateUserTOTPSecret`.
 
 ### 3. Running tests

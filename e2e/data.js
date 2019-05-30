@@ -8,6 +8,8 @@ const data = {
     alternateUser: 'detoxrn',
     alternateUserPassword: '123',
     alternateUserTOTPSecret: 'NFXHKKC6FJXESL25HBYTYNSFKR4WCTSXFRKUUVKEOBBC6I3JKI7A',
+    existingEmail: 'diego.mello@rocket.chat',
+    existingName: 'diego.mello',
     email: `hilarion.galushka+e2e${ value }@rocket.chat`,
     random: value
 }
