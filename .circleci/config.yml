@@ -43,7 +43,7 @@ jobs:
             - ./node_modules
 
   e2e-test:
-    working_directory: ~/e2e
+    <<: *defaults
     macos:
       xcode: "10.2.1"
 
@@ -168,7 +168,7 @@ jobs:
             - ~/.gradle
 
   ios-build:
-    working_directory: ~/ios-build
+    <<: *defaults
     macos:
       xcode: "10.2.1"
 
