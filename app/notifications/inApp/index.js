@@ -6,10 +6,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
-import { withNavigation, NavigationActions } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TITLE, COLOR_TEXT, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
+import { removeNotification as removeNotificationAction } from '../../actions/notification';
 
 const AVATAR_SIZE = 40;
 const ANIMATION_DURATION = 300;
@@ -49,19 +50,25 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10
 	}
 });
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	token: state.login.user && state.login.user.token,
-	notification: state.notification
-}))
+@connect(
+	state => ({
+		userId: state.login.user && state.login.user.id,
+		baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+		token: state.login.user && state.login.user.token,
+		notification: state.notification
+	}),
+	dispatch => ({
+		removeNotification: () => dispatch(removeNotificationAction())
+	})
+)
 class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		notification: PropTypes.object
+		notification: PropTypes.object,
+		removeNotification: PropTypes.func
 	}
 
 	constructor(props) {
@@ -86,7 +93,10 @@ class NotificationBadge extends React.Component {
 	}
 
 	componentDidUpdate() {
-		this.show();
+		const { navigation } = this.props;
+		if (navigation.isFocused()) {
+			this.show();
+		}
 	}
 
 	show = () => {
@@ -109,6 +119,7 @@ class NotificationBadge extends React.Component {
 	}
 
 	hide = () => {
+		const { removeNotification } = this.props;
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -118,18 +129,23 @@ class NotificationBadge extends React.Component {
 				useNativeDriver: true
 			},
 		).start();
+
+		removeNotification();
 	}
 
 	goToRoom = () => {
 		const { notification: { payload }, navigation } = this.props;
 		const { rid, type, prid } = payload;
 		const name = payload === 'p' ? payload.name : payload.sender.username;
-		navigation.reset([NavigationActions.navigate({
-			routeName: 'RoomView',
-			params: {
+		if (navigation.state.routeName === 'RoomView') {
+			navigation.replace('RoomView', {
 				rid, name, t: type, prid
-			}
-		})]);
+			});
+		} else {
+			navigation.navigate('RoomView', {
+				rid, name, t: type, prid
+			});
+		}
 		this.hide();
 	}
 

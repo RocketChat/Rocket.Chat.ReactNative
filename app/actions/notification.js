@@ -10,7 +10,7 @@ export function notificationReceived(params) {
 	};
 }
 
-export function notificationRemove(payload) {
+export function removeNotification(payload) {
 	return {
 		type: types.NOTIFICATION.REMOVE,
 		payload
