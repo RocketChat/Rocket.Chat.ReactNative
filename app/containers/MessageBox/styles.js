@@ -7,7 +7,7 @@ import {
 } from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
-const SCROLLVIEW_MENTION_HEIGHT = 4*MENTION_HEIGHT;
+const SCROLLVIEW_MENTION_HEIGHT = 4 * MENTION_HEIGHT;
 
 export default StyleSheet.create({
 	textBox: {

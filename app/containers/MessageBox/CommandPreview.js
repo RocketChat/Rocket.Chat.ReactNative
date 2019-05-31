@@ -8,7 +8,6 @@ import { CustomIcon } from '../../lib/Icons';
 import { COLOR_PRIMARY } from '../../constants/colors';
 
 export default class CommandPreview extends React.PureComponent {
-
 	static propTypes = {
 		onPress: PropTypes.func,
 		item: PropTypes.object
@@ -46,7 +45,3 @@ export default class CommandPreview extends React.PureComponent {
 		);
 	}
 }
-
-
-
-
