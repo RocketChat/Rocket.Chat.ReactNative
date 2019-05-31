@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Text, FlatList } from 'react-native';
+import {
+	View, ScrollView, Text, FlatList
+} from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';

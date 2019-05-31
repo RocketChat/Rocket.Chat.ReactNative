@@ -74,7 +74,7 @@ export default class SettingsView extends React.Component {
 
 	renderCrashReportDisclaimer = () => (
 		<View style={[styles.sectionItem, styles.sectionItemDisabled]}>
-			<Text style={styles.sectionItemTitle}>{I18n.t('Crash_report_disclaimer')}</Text>	
+			<Text style={styles.sectionItemTitle}>{I18n.t('Crash_report_disclaimer')}</Text>
 		</View>
 	)
 
