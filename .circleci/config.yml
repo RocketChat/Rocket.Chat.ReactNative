@@ -43,7 +43,6 @@ jobs:
             - ./node_modules
 
   e2e-test:
-    <<: *defaults
     macos:
       xcode: "10.2.1"
 
@@ -166,7 +165,6 @@ jobs:
             - ~/.gradle
 
   ios-build:
-    <<: *defaults
     macos:
       xcode: "10.2.1"
 
