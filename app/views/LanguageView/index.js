@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';
@@ -19,28 +19,30 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { COLOR_TEXT } from '../../constants/colors';
 
-const LANGUAGES = [{
-	label: 'English',
-	value: 'en'
-}, {
-	label: 'Português (BR)',
-	value: 'pt-BR'
-}, {
-	label: 'Russian',
-	value: 'ru'
-}, {
-	label: '简体中文',
-	value: 'zh-CN'
-}, {
-	label: 'Français',
-	value: 'fr'
-}, {
-	label: 'Deutsch',
-	value: 'de'
-}, {
-	label: 'Português (PT)',
-	value: 'pt-PT'
-}];
+const LANGUAGES = [
+	{
+		label: '简体中文',
+		value: 'zh-CN'
+	}, {
+		label: 'Deutsch',
+		value: 'de'
+	}, {
+		label: 'English',
+		value: 'en'
+	}, {
+		label: 'Français',
+		value: 'fr'
+	}, {
+		label: 'Português (BR)',
+		value: 'pt-BR'
+	}, {
+		label: 'Português (PT)',
+		value: 'pt-PT'
+	}, {
+		label: 'Russian',
+		value: 'ru'
+	}
+];
 
 @connect(state => ({
 	userLanguage: state.login.user && state.login.user.language
@@ -125,7 +127,8 @@ export default class LanguageView extends React.Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderItem = ({ value, label }) => {
+	renderItem = ({ item }) => {
+		const { value, label } = item;
 		const { language } = this.state;
 		const isSelected = language === value;
 		return (
@@ -149,7 +152,7 @@ export default class LanguageView extends React.Component {
 		const { saving } = this.state;
 		return (
 			<KeyboardView
-				contentContainerStyle={sharedStyles.container}
+				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
@@ -159,7 +162,14 @@ export default class LanguageView extends React.Component {
 					{...scrollPersistTaps}
 				>
 					<SafeAreaView style={sharedStyles.container} testID='settings-view' forceInset={{ bottom: 'never' }}>
-						{LANGUAGES.map(item => this.renderItem(item))}
+						<FlatList
+							data={LANGUAGES}
+							keyExtractor={item => item.value}
+							style={sharedStyles.separatorVertical}
+							renderItem={this.renderItem}
+							ItemSeparatorComponent={this.renderSeparator}
+							keyboardShouldPersistTaps='always'
+						/>
 						<Loading visible={saving} />
 					</SafeAreaView>
 				</ScrollView>

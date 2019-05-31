@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import Button from './Button';
 import ButtonWithSwitch from './ButtonWithSwitch';
+import { showErrorAlert } from '../../utils/info';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 
@@ -58,14 +59,24 @@ export default class SettingsView extends React.Component {
 			version: ${ getReadableVersion }
 			device: ${ getDeviceModel }
 		`);
-		Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+		try {
+			Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+		} catch (e) {
+			showErrorAlert(I18n.t('error-email-send-failed', { action: 'support@rocket.chat' }));
+		}
 	}
 
-	openLink = link => () => openLink(link)
+	openLink = link => openLink(link)
 
 	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
 
 	renderSeparator = () => <View style={styles.separator} />;
+
+	renderCrashReportDisclaimer = () => (
+		<View style={[styles.sectionItem, styles.sectionItemDisabled]}>
+			<Text style={styles.sectionItemTitle}>{I18n.t('Crash_report_disclaimer')}</Text>	
+		</View>
+	)
 
 	render() {
 		const { server, useMarkdown } = this.props;
@@ -77,6 +88,7 @@ export default class SettingsView extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
+					{this.renderSectionSeparator()}
 
 					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator />
 					{this.renderSeparator()}
@@ -88,7 +100,7 @@ export default class SettingsView extends React.Component {
 
 					{this.renderSectionSeparator()}
 
-					<Button title={I18n.t('License')} onPress={this.openLink(LICENSE_LINK)} showActionIndicator />
+					<Button title={I18n.t('License')} onPress={() => this.openLink(LICENSE_LINK)} showActionIndicator />
 					{this.renderSeparator()}
 					<Button title={I18n.t('Version_no', { version: getReadableVersion })} />
 					{this.renderSeparator()}
@@ -98,7 +110,7 @@ export default class SettingsView extends React.Component {
 
 					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Crash_report_disclaimer')} disable />
+					{this.renderCrashReportDisclaimer()}
 
 					{this.renderSectionSeparator()}
 				</ScrollView>
