@@ -132,6 +132,12 @@ jobs:
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
       - run:
+          name: Set Google Services
+          command: |
+            cd android/app
+            cp google-services.prod.json google-services.json
+
+      - run:
           name: Build Android App
           command: |
             cd android
@@ -188,6 +194,12 @@ jobs:
           name: Install NPM modules
           command: |
             yarn
+
+      - run:
+          name: Set Google Services
+          command: |
+            cd ios
+            cp GoogleService-Info.prod.plist GoogleService-Info.plist
 
       - run:
           name: Fastlane Build
