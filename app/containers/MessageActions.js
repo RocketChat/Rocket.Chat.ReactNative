@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
