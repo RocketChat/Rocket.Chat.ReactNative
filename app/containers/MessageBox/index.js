@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert
+	View, TextInput, FlatList, Text, TouchableOpacity, Alert, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
-import FastImage from 'react-native-fast-image';
 import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -29,11 +28,11 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { COLOR_TEXT_DESCRIPTION, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
-import { CustomIcon } from '../../lib/Icons';
+import CommandPreview from './CommandPreview';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -197,6 +196,7 @@ class MessageBox extends Component {
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
+		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
@@ -210,6 +210,7 @@ class MessageBox extends Component {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			const lastNativeText = this.component._lastNativeText;
+			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 			const result = lastNativeText.substr(0, cursor).match(regexp);
 			this.showCommandPreview = false;
@@ -222,6 +223,9 @@ class MessageBox extends Component {
 			}
 			const [, lastChar, name] = result;
 			this.identifyMentionKeyword(name, lastChar);
+		} else {
+			this.stopTrackingMention();
+			this.showCommandPreview = false;
 		}
 	}, 100)
 
@@ -341,7 +345,7 @@ class MessageBox extends Component {
 			console.warn('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.getFixedMentions(keyword);
 			this.setState({ mentions: this.users });
 		}
@@ -393,13 +397,13 @@ class MessageBox extends Component {
 		if (keyword) {
 			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...this.customEmojis, ...this.emojis];
+			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: mergedEmojis });
 		}
 	}
 
 	getSlashCommands = (keyword) => {
-		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
 		this.setState({ mentions: this.commands });
 	}
 
@@ -654,7 +658,6 @@ class MessageBox extends Component {
 		if (!trackingType) {
 			return;
 		}
-
 		this.setState({
 			mentions: [],
 			trackingType: '',
@@ -725,29 +728,35 @@ class MessageBox extends Component {
 				{(() => {
 					switch (trackingType) {
 						case MENTIONS_TRACKING_TYPE_EMOJIS:
-							return ([
-								this.renderMentionEmoji(item),
-								<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-							]);
+							return (
+								<React.Fragment>
+									this.renderMentionEmoji(item)
+									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+								</React.Fragment>
+							);
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
-							return ([
-								<Text key='mention-item-command' style={styles.slash}>/</Text>,
-								<Text key='mention-item-param'>{ item.command}</Text>
-							]);
+							return (
+								<React.Fragment>
+									<Text key='mention-item-command' style={styles.slash}>/</Text>
+									<Text key='mention-item-param'>{ item.command}</Text>
+								</React.Fragment>
+							);
 						default:
-							return ([
-								<Avatar
-									key='mention-item-avatar'
-									style={styles.avatar}
-									text={item.username || item.name}
-									size={30}
-									type={item.username ? 'd' : 'c'}
-									baseUrl={baseUrl}
-									userId={user.id}
-									token={user.token}
-								/>,
-								<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
-							]);
+							return (
+								<React.Fragment>
+									<Avatar
+										key='mention-item-avatar'
+										style={styles.avatar}
+										text={item.username || item.name}
+										size={30}
+										type={item.username ? 'd' : 'c'}
+										baseUrl={baseUrl}
+										userId={user.id}
+										token={user.token}
+									/>
+									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
+								</React.Fragment>
+							);
 					}
 				})()
 				}
@@ -761,7 +770,11 @@ class MessageBox extends Component {
 			return null;
 		}
 		return (
-			<View testID='messagebox-container'>
+			<ScrollView
+				testID='messagebox-container'
+				style={styles.scrollViewMention}
+				keyboardShouldPersistTaps='always'
+			>
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
@@ -769,28 +782,13 @@ class MessageBox extends Component {
 					keyExtractor={item => item._id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
-			</View>
+			</ScrollView>
 		);
 	};
 
 	renderCommandPreviewItem = ({ item }) => (
-		<TouchableOpacity
-			style={styles.commandPreview}
-			onPress={() => this.onPressCommandPreview(item)}
-			testID={`command-preview-item${ item.id }`}
-		>
-			{item.type === 'image'
-				? (
-					<FastImage
-						style={styles.commandPreviewImage}
-						source={{ uri: item.value }}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
-				)
-				: <CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
-			}
-		</TouchableOpacity>
-	)
+		<CommandPreview item={item} onPress={this.onPressCommandPreview} />
+	);
 
 	renderCommandPreview = () => {
 		const { commandPreview } = this.state;

@@ -281,7 +281,6 @@ const slashCommandSchema = {
 		description: { type: 'string', optional: true },
 		clientOnly: { type: 'bool', optional: true },
 		providesPreview: { type: 'bool', optional: true }
-
 	}
 };
 

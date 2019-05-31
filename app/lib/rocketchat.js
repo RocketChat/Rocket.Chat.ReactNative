@@ -814,16 +814,19 @@ const RocketChat = {
 		});
 	},
 	runSlashCommand(command, roomId, params) {
+		// RC 0.60.2
 		return this.sdk.post('commands.run', {
 			command, roomId, params
 		});
 	},
 	getCommandPreview(command, roomId, params) {
+		// RC 0.65.0
 		return this.sdk.get('commands.preview', {
 			command, roomId, params
 		});
 	},
 	executeCommandPreview(command, params, roomId, previewItem) {
+		// RC 0.65.0
 		return this.sdk.post('commands.preview', {
 			command, params, roomId, previewItem
 		});

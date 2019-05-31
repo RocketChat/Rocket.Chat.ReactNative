@@ -7,6 +7,7 @@ import {
 } from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
+const SCROLLVIEW_MENTION_HEIGHT = 4*MENTION_HEIGHT;
 
 export default StyleSheet.create({
 	textBox: {
@@ -104,15 +105,19 @@ export default StyleSheet.create({
 	slash: {
 		color: COLOR_PRIMARY,
 		backgroundColor: COLOR_BORDER,
+		height: 30,
+		width: 30,
 		padding: 5,
 		paddingHorizontal: 12,
 		marginHorizontal: 10,
-		borderRadius: 8
+		borderRadius: 2
 	},
 	commandPreviewImage: {
+		justifyContent: 'center',
 		margin: 3,
 		width: 120,
-		height: 80
+		height: 80,
+		borderRadius: 4
 	},
 	commandPreview: {
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
@@ -123,5 +128,8 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		margin: 8
+	},
+	scrollViewMention: {
+		maxHeight: SCROLLVIEW_MENTION_HEIGHT
 	}
 });

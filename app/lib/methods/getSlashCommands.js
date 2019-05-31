@@ -5,12 +5,11 @@ import log from '../../utils/log';
 
 export default async function() {
 	try {
-		// RC 0.70.0
+		// RC 0.60.2
 		const result = await this.sdk.get('commands.list');
 
 		if (!result.success) {
-			log('getSlashCommand fetch', result);
-			return;
+			return log('getSlashCommand fetch', result);
 		}
 
 		const { commands } = result;
@@ -21,12 +20,12 @@ export default async function() {
 					try {
 						database.create('slashCommand', command, true);
 					} catch (e) {
-						log('getCommand create', e);
+						log('get_slash_command', e);
 					}
 				}));
 			});
 		}
 	} catch (e) {
-		log('getCommand', e);
+		log('err_get_slash_command', e);
 	}
 }
