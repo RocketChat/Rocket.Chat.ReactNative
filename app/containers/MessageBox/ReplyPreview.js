@@ -82,7 +82,7 @@ export default class ReplyPreview extends Component {
 						<Text style={styles.username}>{message.u.username}</Text>
 						<Text style={styles.time}>{time}</Text>
 					</View>
-					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} />
+					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} />
 				</View>
 				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
 			</View>
