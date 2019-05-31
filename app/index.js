@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, SafeAreaView
+	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
@@ -42,7 +42,6 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
-import styles from './views/Styles';
 
 useScreens();
 
@@ -206,10 +205,10 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<SafeAreaView style={styles.container}>
+			<React.Fragment>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
-			</SafeAreaView>
+			</React.Fragment>
 		);
 	}
 }
