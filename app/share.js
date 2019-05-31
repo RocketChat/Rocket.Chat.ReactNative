@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
 import ShareExtension from 'react-native-share-extension';
+
+import store from './lib/createStore';
 
 export class Home extends React.Component {
 	static navigationOptions = () => ({
@@ -54,7 +57,9 @@ const Navigator = createStackNavigator({
 
 const AppContainer = createAppContainer(Navigator);
 const Root = () => (
-	<AppContainer />
+	<Provider store={store}>
+		<AppContainer />
+	</Provider>
 );
 
 export default Root;
