@@ -4,6 +4,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import ShareExtension from 'react-native-share-extension';
 
+import { appInit } from './actions';
 import store from './lib/createStore';
 
 export class Home extends React.Component {
@@ -56,10 +57,19 @@ const Navigator = createStackNavigator({
 });
 
 const AppContainer = createAppContainer(Navigator);
-const Root = () => (
-	<Provider store={store}>
-		<AppContainer />
-	</Provider>
-);
+class Root extends React.Component {
+	constructor(props) {
+		super(props);
+		store.dispatch(appInit());
+	}
+
+	render() {
+		return (
+			<Provider store={store}>
+				<AppContainer />
+			</Provider>
+		);
+	}
+}
 
 export default Root;
