@@ -210,12 +210,13 @@ export default class ProfileView extends React.Component {
 				}
 			}
 
-			params.customFields = customFields;
+			const result = await RocketChat.saveUserProfile(params, customFields);
 
-			const result = await RocketChat.saveUserProfile(params);
 			if (result.success) {
-				if (params.customFields) {
-					setUser({ customFields });
+				if (customFields) {
+					setUser({ customFields, ...params });
+				} else {
+					setUser({ ...params });
 				}
 				this.setState({ saving: false });
 				this.toast.show(I18n.t('Profile_saved_successfully'));
