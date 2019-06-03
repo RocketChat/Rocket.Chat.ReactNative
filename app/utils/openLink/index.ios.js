@@ -1,5 +1,7 @@
 import SafariView from 'react-native-safari-view';
 
-const openLink = url => SafariView.show({ url, fromBottom: true, tintColor: '#292E35' });
+import { HEADER_BACK } from '../../constants/colors';
+
+const openLink = url => SafariView.show({ url, fromBottom: false, tintColor: HEADER_BACK });
 
 export default openLink;
