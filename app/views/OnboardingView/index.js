@@ -13,7 +13,6 @@ import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
-import LoggedView from '../View';
 import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
@@ -29,8 +28,7 @@ import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 	selectServer: server => dispatch(selectServerRequest(server)),
 	appStart: root => dispatch(appStartAction(root))
 }))
-/** @extends React.Component */
-export default class OnboardingView extends LoggedView {
+export default class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -46,7 +44,7 @@ export default class OnboardingView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('OnboardingView', props);
+		super(props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		this.previousServer = props.navigation.getParam('previousServer');
 		Orientation.lockToPortrait();

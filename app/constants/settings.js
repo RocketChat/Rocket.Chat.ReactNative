@@ -64,5 +64,8 @@ export default {
 	},
 	Threads_enabled: {
 		type: null
+	},
+	API_Gitlab_URL: {
+		type: 'valueAsString'
 	}
 };

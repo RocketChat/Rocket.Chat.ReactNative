@@ -66,6 +66,9 @@ export default StyleSheet.create({
 	alignItemsFlexStart: {
 		alignItems: 'flex-start'
 	},
+	alignItemsCenter: {
+		alignItems: 'center'
+	},
 	textAlignRight: {
 		textAlign: 'right'
 	},

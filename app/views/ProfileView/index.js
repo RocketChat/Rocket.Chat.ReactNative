@@ -9,12 +9,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showToast } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log from '../../utils/log';
@@ -42,8 +41,7 @@ import { COLOR_TEXT } from '../../constants/colors';
 }), dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 }))
-/** @extends React.Component */
-export default class ProfileView extends LoggedView {
+export default class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
@@ -56,21 +54,18 @@ export default class ProfileView extends LoggedView {
 		setUser: PropTypes.func
 	}
 
-	constructor(props) {
-		super('ProfileView', props);
-		this.state = {
-			showPasswordAlert: false,
-			saving: false,
-			name: null,
-			username: null,
-			email: null,
-			newPassword: null,
-			currentPassword: null,
-			avatarUrl: null,
-			avatar: {},
-			avatarSuggestions: {},
-			customFields: {}
-		};
+	state = {
+		showPasswordAlert: false,
+		saving: false,
+		name: null,
+		username: null,
+		email: null,
+		newPassword: null,
+		currentPassword: null,
+		avatarUrl: null,
+		avatar: {},
+		avatarSuggestions: {},
+		customFields: {}
 	}
 
 	async componentDidMount() {
@@ -80,7 +75,7 @@ export default class ProfileView extends LoggedView {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('getAvatarSuggestion', e);
+			log('err_get_avatar_suggestion', e);
 		}
 	}
 
@@ -157,7 +152,7 @@ export default class ProfileView extends LoggedView {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		log(func, e);
+		// log(func, e);
 	}
 
 	submit = async() => {
@@ -223,7 +218,7 @@ export default class ProfileView extends LoggedView {
 					setUser({ customFields });
 				}
 				this.setState({ saving: false });
-				showToast(I18n.t('Profile_saved_successfully'));
+				this.toast.show(I18n.t('Profile_saved_successfully'));
 				this.init();
 			}
 		} catch (e) {
@@ -236,7 +231,7 @@ export default class ProfileView extends LoggedView {
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
-			showToast(I18n.t('Avatar_changed_successfully'));
+			this.toast.show(I18n.t('Avatar_changed_successfully'));
 			this.init();
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
@@ -387,6 +382,7 @@ export default class ProfileView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
+				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'

@@ -9,7 +9,7 @@ async function load({ tmid, offset }) {
 	try {
 		// RC 1.0
 		const result = await this.sdk.get('chat.getThreadMessages', {
-			tmid, count: 50, offset, sort: { ts: -1 }
+			tmid, count: 50, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
 		});
 		if (!result || !result.success) {
 			return [];
@@ -34,7 +34,7 @@ export default function loadThreadMessages({ tmid, offset = 0 }) {
 							message.rid = tmid;
 							database.create('threadMessages', message, true);
 						} catch (e) {
-							log('loadThreadMessages -> create messages', e);
+							log('err_load_thread_messages_create', e);
 						}
 					}));
 					return resolve(data);
@@ -43,7 +43,7 @@ export default function loadThreadMessages({ tmid, offset = 0 }) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log('loadThreadMessages', e);
+			log('err_load_thread_messages', e);
 			reject(e);
 		}
 	});

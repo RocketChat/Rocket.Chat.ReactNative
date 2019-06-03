@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes } from 'react-native';
+import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const Avatar = React.memo(({
@@ -48,7 +48,7 @@ const Avatar = React.memo(({
 
 Avatar.propTypes = {
 	baseUrl: PropTypes.string.isRequired,
-	style: ViewPropTypes.style,
+	style: PropTypes.any,
 	text: PropTypes.string,
 	avatar: PropTypes.string,
 	size: PropTypes.number,

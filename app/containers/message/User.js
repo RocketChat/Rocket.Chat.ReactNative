@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
-import { CustomIcon } from '../../lib/Icons';
+// import { CustomIcon } from '../../lib/Icons';
 
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
@@ -34,36 +34,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class User extends React.PureComponent {
-	static propTypes = {
-		timeFormat: PropTypes.string.isRequired,
-		username: PropTypes.string,
-		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
-		temp: PropTypes.bool,
-		unread: PropTypes.bool,
-		Message_Read_Receipt_Enabled: PropTypes.bool
-	}
-
-	render() {
-		const {
-			username, alias, ts, temp, timeFormat, unread, Message_Read_Receipt_Enabled
-		} = this.props;
-
-		const extraStyle = {};
-		if (temp) {
-			extraStyle.opacity = 0.3;
-		}
-
+const User = React.memo(({
+	isHeader, useRealName, author, alias, ts, timeFormat
+}) => {
+	if (isHeader) {
+		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
-		let readReceipt = null;
-		if (Message_Read_Receipt_Enabled) {
-			readReceipt = !unread ? <CustomIcon name='check' color='#1d74f5' size={15} /> : <View style={styles.emptySpace} />;
-		}
+		// let readReceipt = null;
+		// if (Message_Read_Receipt_Enabled) {
+		// 	readReceipt = !unread ? <CustomIcon name='check' color='#1d74f5' size={15} /> : <View style={styles.emptySpace} />;
+		// }
 
 		return (
 			<View style={styles.container}>
@@ -74,8 +55,21 @@ export default class User extends React.PureComponent {
 					</Text>
 				</View>
 				<Text style={messageStyles.time}>{time}</Text>
-				{ readReceipt }
+				{/* { readReceipt } */}
 			</View>
 		);
 	}
-}
+	return null;
+});
+
+User.propTypes = {
+	isHeader: PropTypes.bool,
+	useRealName: PropTypes.bool,
+	author: PropTypes.object,
+	alias: PropTypes.string,
+	ts: PropTypes.instanceOf(Date),
+	timeFormat: PropTypes.string
+};
+User.displayName = 'MessageUser';
+
+export default User;

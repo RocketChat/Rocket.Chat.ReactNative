@@ -6,19 +6,16 @@ import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import LoggedView from '../View';
 import styles from './styles';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 
-
-/** @extends React.Component */
 @connect(state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat
 }))
-export default class ReadReceiptsView extends LoggedView {
+export default class ReadReceiptsView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Read_Receipt')
 	}

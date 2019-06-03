@@ -3,7 +3,6 @@ import { Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
 
-import LoggedView from './View';
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -15,8 +14,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 
-/** @extends React.Component */
-export default class ForgotPasswordView extends LoggedView {
+export default class ForgotPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -28,14 +26,10 @@ export default class ForgotPasswordView extends LoggedView {
 		navigation: PropTypes.object
 	}
 
-	constructor(props) {
-		super('ForgotPasswordView', props);
-
-		this.state = {
-			email: '',
-			invalidEmail: true,
-			isFetching: false
-		};
+	state = {
+		email: '',
+		invalidEmail: true,
+		isFetching: false
 	}
 
 	componentDidMount() {

@@ -1,95 +1,79 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
-import PhotoModal from './PhotoModal';
 import Markdown from './Markdown';
 import styles from './styles';
+import { formatAttachmentUrl } from '../../lib/utils';
 
-export default class extends Component {
-	static propTypes = {
-		file: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
-		customEmojis: PropTypes.oneOfType([
-			PropTypes.array,
-			PropTypes.object
-		])
+const Button = React.memo(({ children, onPress }) => (
+	<Touchable
+		onPress={onPress}
+		style={styles.imageContainer}
+		background={Touchable.Ripple('#fff')}
+	>
+		{children}
+	</Touchable>
+));
+
+const Image = React.memo(({ img }) => (
+	<FastImage
+		style={styles.image}
+		source={{ uri: encodeURI(img) }}
+		resizeMode={FastImage.resizeMode.cover}
+	/>
+));
+
+const ImageContainer = React.memo(({
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji
+}) => {
+	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+	if (!img) {
+		return null;
 	}
 
-	state = { modalVisible: false, isPressed: false };
+	const onPress = () => onOpenFileModal(file);
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { modalVisible, isPressed } = this.state;
-		const { file } = this.props;
-		if (nextState.modalVisible !== modalVisible) {
-			return true;
-		}
-		if (nextState.isPressed !== isPressed) {
-			return true;
-		}
-		if (!equal(nextProps.file, file)) {
-			return true;
-		}
-		return false;
-	}
-
-	onPressButton = () => {
-		this.setState({
-			modalVisible: true
-		});
-	}
-
-	getDescription() {
-		const {
-			file, customEmojis, baseUrl, user
-		} = this.props;
-		if (file.description) {
-			return <Markdown msg={file.description} customEmojis={customEmojis} baseUrl={baseUrl} username={user.username} />;
-		}
-	}
-
-	isPressed = (state) => {
-		this.setState({ isPressed: state });
-	}
-
-	render() {
-		const { modalVisible, isPressed } = this.state;
-		const { baseUrl, file, user } = this.props;
-		const img = file.image_url.includes('http') ? file.image_url : `${ baseUrl }${ file.image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-
-		if (!img) {
-			return null;
-		}
-
+	if (file.description) {
 		return (
-			[
-				<Touchable
-					key='image'
-					onPress={this.onPressButton}
-					style={styles.imageContainer}
-					background={Touchable.Ripple('#fff')}
-				>
-					<React.Fragment>
-						<FastImage
-							style={[styles.image, isPressed && { opacity: 0.5 }]}
-							source={{ uri: encodeURI(img) }}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
-						{this.getDescription()}
-					</React.Fragment>
-				</Touchable>,
-				<PhotoModal
-					key='modal'
-					title={file.title}
-					description={file.description}
-					image={img}
-					isVisible={modalVisible}
-					onClose={() => this.setState({ modalVisible: false })}
-				/>
-			]
+			<Button onPress={onPress}>
+				<View>
+					<Image img={img} />
+					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
+				</View>
+			</Button>
 		);
 	}
-}
+
+	return (
+		<Button onPress={onPress}>
+			<Image img={img} />
+		</Button>
+	);
+}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file));
+
+ImageContainer.propTypes = {
+	file: PropTypes.object,
+	baseUrl: PropTypes.string,
+	user: PropTypes.object,
+	useMarkdown: PropTypes.bool,
+	onOpenFileModal: PropTypes.func,
+	getCustomEmoji: PropTypes.func
+};
+ImageContainer.displayName = 'MessageImageContainer';
+
+Image.propTypes = {
+	img: PropTypes.string
+};
+ImageContainer.displayName = 'MessageImage';
+
+Button.propTypes = {
+	children: PropTypes.node,
+	onPress: PropTypes.func
+};
+ImageContainer.displayName = 'MessageButton';
+
+export default ImageContainer;
