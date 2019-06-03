@@ -199,6 +199,8 @@ class MessageBox extends Component {
 			}
 			const [, lastChar, name] = result;
 			this.identifyMentionKeyword(name, lastChar);
+		} else {
+			this.stopTrackingMention();
 		}
 	}, 100)
 
