@@ -132,6 +132,12 @@ jobs:
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
       - run:
+          name: Set Google Services
+          command: |
+            cd android/app
+            cp google-services.prod.json google-services.json
+
+      - run:
           name: Build Android App
           command: |
             cd android
@@ -190,6 +196,12 @@ jobs:
             yarn
 
       - run:
+          name: Set Google Services
+          command: |
+            cd ios
+            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+
+      - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
@@ -241,9 +253,14 @@ workflows:
   build-and-test:
     jobs:
       - lint-testunit
-      # - e2e-test:
-      #     requires:
-      #       - lint-testunit
+
+      - e2e-hold:
+          type: approval
+          requires:
+            - lint-testunit
+      - e2e-test:
+          requires:
+            - e2e-hold
 
       - ios-build:
           requires:
