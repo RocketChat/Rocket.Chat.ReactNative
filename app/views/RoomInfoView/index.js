@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
@@ -252,16 +252,28 @@ return(
 		}
 		renderFollowersAndFollowing = () => {
 			const { roomUser } = this.state;
+			const { navigation } = this.props;
+			const rid = navigation.getParam('rid');
 			return (
 			<View style={styles.followContainer}>
-				<View style={styles.followersContainer}>
-					<Text style={styles.followContent}>{roomUser.followers}</Text>
-					<Text style={styles.followLabel}>FOLLOWERS</Text>
-				</View>
+				<TouchableHighlight
+					style = {styles.buttonContainer}
+					onPress = { () => { navigation.navigate('RoomFollowView', { rid, follow: 'Followers'}) } }
+				>
+					<View style={styles.followersContainer}>
+						<Text style={styles.followContent}>{roomUser.followers}</Text>
+						<Text style={styles.followLabel}>FOLLOWERS</Text>
+					</View>
+				</TouchableHighlight>
+				<TouchableHighlight
+					style = {styles.buttonContainer}
+					onPress = { () => { navigation.navigate('RoomFollowView', { rid, follow: 'Following'}) } }
+				>
 				<View style={styles.followingContainer}>
 					<Text style={styles.followContent}>{roomUser.following}</Text>
 					<Text style={styles.followLabel}>FOLLOWING</Text>
 				</View>
+				</TouchableHighlight>
 			</View>
 			)
 			}
