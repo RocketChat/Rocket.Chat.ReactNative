@@ -253,9 +253,14 @@ workflows:
   build-and-test:
     jobs:
       - lint-testunit
-      # - e2e-test:
-      #     requires:
-      #       - lint-testunit
+
+      - e2e-hold:
+          type: approval
+          requires:
+            - lint-testunit
+      - e2e-test:
+          requires:
+            - e2e-hold
 
       - ios-build:
           requires:
