@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 
 import { isNotch, isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_TITLE, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
+import { COLOR_TITLE, HEADER_BACKGROUND } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import sharedStyles from '../../views/Styles';
@@ -18,13 +18,11 @@ const ANIMATION_DURATION = 300;
 const { width } = Dimensions.get('window');
 const MAX_WIDTH_MESSAGE = width - 100;
 let timeout;
-const TOP = (() => {
-	if (isIOS) {
-		return isNotch ? 45 : 30;
-	}
-	return 0;
-})();
 
+let TOP = 0;
+if (isIOS) {
+	TOP = isNotch ? 45 : 20;
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		position: 'absolute',
 		zIndex: 2,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		backgroundColor: HEADER_BACKGROUND,
 		width: '100%'
 	},
 	content: {
@@ -118,7 +116,7 @@ export default class NotificationBadge extends React.Component {
 			{
 				toValue: 1,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start(() => {
@@ -127,7 +125,7 @@ export default class NotificationBadge extends React.Component {
 			}
 			timeout = setTimeout(() => {
 				this.hide();
-			}, 5000);
+			}, 3000);
 		});
 	}
 
@@ -138,7 +136,7 @@ export default class NotificationBadge extends React.Component {
 			{
 				toValue: 0,
 				duration: ANIMATION_DURATION,
-				easing: Easing.ease,
+				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			},
 		).start();
@@ -172,7 +170,7 @@ export default class NotificationBadge extends React.Component {
 		const name = type === 'p' ? payload.name : payload.sender.username;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-55 + TOP, TOP]
+			outputRange: [-TOP - 55, TOP]
 		});
 		return (
 			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
