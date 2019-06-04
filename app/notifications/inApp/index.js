@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
+import { isNotch, isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_TITLE, COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
@@ -17,6 +18,13 @@ const ANIMATION_DURATION = 300;
 const { width } = Dimensions.get('window');
 const MAX_WIDTH_MESSAGE = width - 100;
 let timeout;
+const TOP = (() => {
+	if (isIOS) {
+		return isNotch ? 45 : 30;
+	}
+	return 0;
+})();
+
 
 const styles = StyleSheet.create({
 	container: {
@@ -164,7 +172,7 @@ export default class NotificationBadge extends React.Component {
 		const name = type === 'p' ? payload.name : payload.sender.username;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-55, 0]
+			outputRange: [-55 + TOP, TOP]
 		});
 		return (
 			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
