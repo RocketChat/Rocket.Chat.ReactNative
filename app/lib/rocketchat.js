@@ -644,9 +644,9 @@ const RocketChat = {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);
 	},
-	saveUserProfile(data) {
+	saveUserProfile(data, customFields) {
 		// RC 0.62.2
-		return this.sdk.post('users.updateOwnBasicInfo', { data });
+		return this.sdk.post('users.updateOwnBasicInfo', { data, customFields });
 	},
 	saveUserPreferences(params) {
 		// RC 0.51.0
