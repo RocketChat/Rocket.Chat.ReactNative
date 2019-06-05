@@ -1,62 +1,69 @@
 import React from 'react';
 import {
-	View, Text, StyleSheet, TouchableOpacity, Animated, Easing, Dimensions
+	View, Text, StyleSheet, TouchableOpacity, Animated, Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import { responsive } from 'react-native-responsive-ui';
+import Touchable from 'react-native-platform-touchable';
 
 import { isNotch, isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_TITLE, HEADER_BACKGROUND } from '../../constants/colors';
+import { COLOR_BACKGROUND_NOTIFICATION, COLOR_SEPARATOR, COLOR_TEXT } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import sharedStyles from '../../views/Styles';
+import { ROW_HEIGHT } from '../../presentation/RoomItem';
 
-const AVATAR_SIZE = 40;
+const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
-const { width } = Dimensions.get('window');
-const MAX_WIDTH_MESSAGE = width - 100;
-let timeout;
-
-let TOP = 0;
-if (isIOS) {
-	TOP = isNotch ? 45 : 20;
-}
+const BUTTON_HIT_SLOP = {
+	top: 12, right: 12, bottom: 12, left: 12
+};
 
 const styles = StyleSheet.create({
 	container: {
-		minHeight: 55,
+		height: ROW_HEIGHT,
+		paddingHorizontal: 14,
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		position: 'absolute',
 		zIndex: 2,
-		backgroundColor: HEADER_BACKGROUND,
-		width: '100%'
+		backgroundColor: COLOR_BACKGROUND_NOTIFICATION,
+		width: '100%',
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: COLOR_SEPARATOR
 	},
 	content: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'flex-start'
+		alignItems: 'center'
 	},
 	avatar: {
-		marginHorizontal: 10
+		marginRight: 10
 	},
 	roomName: {
-		...sharedStyles.textColorTitle
+		fontSize: 17,
+		lineHeight: 20,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textMedium
 	},
 	message: {
-		maxWidth: MAX_WIDTH_MESSAGE,
+		fontSize: 14,
+		lineHeight: 17,
+		...sharedStyles.textRegular,
 		...sharedStyles.textColorNormal
 	},
 	close: {
-		color: COLOR_TITLE,
-		marginHorizontal: 10
+		color: COLOR_TEXT,
+		marginLeft: 10
 	}
 });
+
+@responsive
 @connect(
 	state => ({
 		userId: state.login.user && state.login.user.id,
@@ -75,6 +82,7 @@ export default class NotificationBadge extends React.Component {
 		token: PropTypes.string,
 		userId: PropTypes.string,
 		notification: PropTypes.object,
+		window: PropTypes.object,
 		removeNotification: PropTypes.func
 	}
 
@@ -85,29 +93,31 @@ export default class NotificationBadge extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
-		const { notification: { payload }, navigation } = this.props;
-		const navState = this.getNavState(navigation.state);
-		if (navState && navState.routeName === 'RoomView' && nextNotification.payload && navState.params.rid === nextNotification.payload.rid) {
-			return false;
-		}
+		const {
+			notification: { payload }, window
+		} = this.props;
 		if (!equal(nextNotification.payload, payload)) {
+			return true;
+		}
+		if (nextProps.window.width !== window.width) {
 			return true;
 		}
 		return false;
 	}
 
 	componentDidUpdate() {
-		const { notification: { payload } } = this.props;
+		const { notification: { payload }, navigation } = this.props;
+		const navState = this.getNavState(navigation.state);
 		if (payload.rid) {
+			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
+				return;
+			}
 			this.show();
 		}
 	}
 
-	getNavState = (routes) => {
-		if (!routes.routes) {
-			return routes;
-		}
-		return this.getNavState(routes.routes[routes.index]);
+	componentWillUnmount() {
+		this.clearTimeout();
 	}
 
 	show = () => {
@@ -120,10 +130,8 @@ export default class NotificationBadge extends React.Component {
 				useNativeDriver: true
 			},
 		).start(() => {
-			if	(timeout) {
-				clearTimeout(timeout);
-			}
-			timeout = setTimeout(() => {
+			this.clearTimeout();
+			this.timeout = setTimeout(() => {
 				this.hide();
 			}, 3000);
 		});
@@ -140,47 +148,76 @@ export default class NotificationBadge extends React.Component {
 				useNativeDriver: true
 			},
 		).start();
-		clearInterval(timeout);
 		setTimeout(removeNotification, ANIMATION_DURATION);
 	}
 
-	goToRoom = () => {
+	clearTimeout = () => {
+		if	(this.timeout) {
+			clearTimeout(this.timeout);
+		}
+	}
+
+	getNavState = (routes) => {
+		if (!routes.routes) {
+			return routes;
+		}
+		return this.getNavState(routes.routes[routes.index]);
+	}
+
+	goToRoom = async() => {
 		const { notification: { payload }, navigation } = this.props;
 		const { rid, type, prid } = payload;
-		const name = type === 'p' ? payload.name : payload.sender.username;
-		const navState = this.getNavState(navigation.state);
-		if (navState.routeName === 'RoomView') {
-			navigation.push('RoomView', {
-				rid, name, t: type, prid
-			});
-		} else {
-			navigation.navigate('RoomView', {
-				rid, name, t: type, prid
-			});
+		if (!rid) {
+			return;
 		}
+		const name = type === 'p' ? payload.name : payload.sender.username;
+		await navigation.navigate('RoomsListView');
+		navigation.navigate('RoomView', {
+			rid, name, t: type, prid
+		});
 		this.hide();
 	}
 
 	render() {
 		const {
-			baseUrl, token, userId, notification
+			baseUrl, token, userId, notification, window
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
 		const name = type === 'p' ? payload.name : payload.sender.username;
+
+		let top = 0;
+		if (isIOS) {
+			const portrait = window.height > window.width;
+			if (portrait) {
+				top = isNotch ? 45 : 20;
+			} else {
+				top = 0;
+			}
+		}
+
+		const maxWidthMessage = window.width - 110;
+
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-TOP - 55, TOP]
+			outputRange: [-top - ROW_HEIGHT, top]
 		});
 		return (
 			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-				<TouchableOpacity style={styles.content} onPress={this.goToRoom}>
-					<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-					<View>
-						<Text style={styles.roomName}>{name}</Text>
-						<Text style={styles.message} numberOfLines={1}>{message}</Text>
-					</View>
-				</TouchableOpacity>
+				<Touchable
+					style={styles.content}
+					onPress={this.goToRoom}
+					hitSlop={BUTTON_HIT_SLOP}
+					background={Touchable.SelectableBackgroundBorderless()}
+				>
+					<React.Fragment>
+						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<View>
+							<Text style={styles.roomName}>{name}</Text>
+							<Text style={[styles.message, { maxWidth: maxWidthMessage }]} numberOfLines={1}>{message}</Text>
+						</View>
+					</React.Fragment>
+				</Touchable>
 				<TouchableOpacity onPress={this.hide}>
 					<CustomIcon name='circle-cross' style={styles.close} size={20} />
 				</TouchableOpacity>
