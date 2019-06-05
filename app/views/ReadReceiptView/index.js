@@ -6,6 +6,7 @@ import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
+import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -13,7 +14,10 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 
 @connect(state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	userId: state.login.user && state.login.user.id,
+	token: state.login.user && state.login.user.token
 }))
 export default class ReadReceiptsView extends React.Component {
 	static navigationOptions = {
@@ -22,11 +26,14 @@ export default class ReadReceiptsView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		baseUrl: PropTypes.string,
+		userId: PropTypes.string,
+		token: PropTypes.string
 	}
 
 	constructor(props) {
-		super('ReadReceiptsView', props);
+		super(props);
 		this.messageId = props.navigation.getParam('messageId');
 		this.state = {
 			loading: false,
@@ -78,21 +85,32 @@ export default class ReadReceiptsView extends React.Component {
 	)
 
 	renderItem = ({ item }) => {
-		const { Message_TimeFormat } = this.props;
+		const {
+			Message_TimeFormat, userId, baseUrl, token
+		} = this.props;
 		const time = moment(item.ts).format(Message_TimeFormat);
 		return (
 			<View style={styles.itemContainer}>
-				<View style={styles.item}>
-					<Text style={styles.name}>
-						{item.user.name}
-					</Text>
+				<Avatar
+					text={item.user.username}
+					size={40}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+				/>
+				<View style={styles.infoContainer}>
+					<View style={styles.item}>
+						<Text style={styles.name}>
+							{item.user.name}
+						</Text>
+						<Text>
+							{time}
+						</Text>
+					</View>
 					<Text>
-						{time}
+						{`@${ item.user.username }`}
 					</Text>
 				</View>
-				<Text>
-					{`@${ item.user.username }`}
-				</Text>
 			</View>
 		);
 	}
@@ -107,19 +125,21 @@ export default class ReadReceiptsView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='read-receipt-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='read-receipt-view' forceInset={{ bottom: 'always' }}>
 				<StatusBar />
-				{loading
-					? <RCActivityIndicator />
-					: (
-						<FlatList
-							data={receipts}
-							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
-							style={styles.list}
-							keyExtractor={item => item._id}
-						/>
-					)}
+				<View>
+					{loading
+						? <RCActivityIndicator />
+						: (
+							<FlatList
+								data={receipts}
+								renderItem={this.renderItem}
+								ItemSeparatorComponent={this.renderSeparator}
+								style={styles.list}
+								keyExtractor={item => item._id}
+							/>
+						)}
+				</View>
 			</SafeAreaView>
 		);
 	}

@@ -121,7 +121,7 @@ export default class MessageActions extends React.Component {
 			this.REACTION_INDEX = this.options.length - 1;
 		}
 
-		// Read Recepits
+		// Read Receipts
 		if (Message_Read_Receipt_Store_Users) {
 			this.options.push(I18n.t('Read_Receipt'));
 			this.READ_RECEIPT_INDEX = this.options.length - 1;

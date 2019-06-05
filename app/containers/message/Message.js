@@ -16,6 +16,8 @@ import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
+import { CustomIcon } from '../../lib/Icons';
+import { COLOR_PRIMARY } from '../../constants/colors';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
@@ -72,6 +74,10 @@ const Message = React.memo((props) => {
 				>
 					<MessageInner {...props} />
 				</View>
+				<ReadReceipt
+					Message_Read_Receipt_Enabled={props.Message_Read_Receipt_Enabled}
+					unread={props.unread}
+				/>
 			</View>
 		</View>
 	);
@@ -101,6 +107,14 @@ const MessageTouchable = React.memo((props) => {
 });
 MessageTouchable.displayName = 'MessageTouchable';
 
+const ReadReceipt = React.memo(({ Message_Read_Receipt_Enabled, unread }) => {
+	if (Message_Read_Receipt_Enabled) {
+		return !unread ? <CustomIcon name='check' color={COLOR_PRIMARY} size={15} /> : <View style={styles.emptySpace} />;
+	}
+	return null;
+});
+ReadReceipt.displayName = 'ReadReceipt';
+
 MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
@@ -119,11 +133,18 @@ Message.propTypes = {
 	hasError: PropTypes.bool,
 	style: PropTypes.any,
 	onLongPress: PropTypes.func,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	Message_Read_Receipt_Enabled: PropTypes.bool,
+	unread: PropTypes.bool
 };
 
 MessageInner.propTypes = {
 	type: PropTypes.string
+};
+
+ReadReceipt.propTypes = {
+	Message_Read_Receipt_Enabled: PropTypes.bool,
+	unread: PropTypes.bool
 };
 
 export default MessageTouchable;

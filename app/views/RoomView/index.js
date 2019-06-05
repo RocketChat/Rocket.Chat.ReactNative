@@ -117,7 +117,7 @@ export default class RoomView extends React.Component {
 		isAuthenticated: PropTypes.bool,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
-		// Message_Read_Receipt_Enabled: PropTypes.bool,
+		Message_Read_Receipt_Enabled: PropTypes.bool,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
@@ -501,7 +501,7 @@ export default class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -543,6 +543,7 @@ export default class RoomView extends React.Component {
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
+				Message_Read_Receipt_Enabled={Message_Read_Receipt_Enabled}
 			/>
 		);
 

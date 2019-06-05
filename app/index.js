@@ -27,6 +27,7 @@ import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
 import SearchMessagesView from './views/SearchMessagesView';
+import ReadReceiptsView from './views/ReadReceiptView';
 import ThreadMessagesView from './views/ThreadMessagesView';
 import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
@@ -110,7 +111,8 @@ const ChatsStack = createStackNavigator({
 	SearchMessagesView,
 	SelectedUsersView,
 	ThreadMessagesView,
-	MessagesView
+	MessagesView,
+	ReadReceiptsView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
