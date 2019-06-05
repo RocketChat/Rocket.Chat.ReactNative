@@ -174,71 +174,75 @@ const RocketChat = {
 		this.getUserPresence();
 	},
 	connect({ server, user }) {
-		database.setActiveDB(server);
-		reduxStore.dispatch(connectRequest());
+		return new Promise((resolve) => {
+			database.setActiveDB(server);
+			reduxStore.dispatch(connectRequest());
 
-		if (this.connectTimeout) {
-			clearTimeout(this.connectTimeout);
-		}
+			if (this.connectTimeout) {
+				clearTimeout(this.connectTimeout);
+			}
 
-		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
-		}
+			if (this.sdk) {
+				this.sdk.disconnect();
+				this.sdk = null;
+			}
 
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
+			// Use useSsl: false only if server url starts with http://
+			const useSsl = !/http:\/\//.test(server);
 
-		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
-		this.getSettings();
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+			this.getSettings();
 
-		this.sdk.connect()
-			.then(() => {
-				if (user && user.token) {
-					reduxStore.dispatch(loginRequest({ resume: user.token }));
+			this.sdk.connect()
+				.then(() => {
+					if (user && user.token) {
+						reduxStore.dispatch(loginRequest({ resume: user.token }));
+					}
+				})
+				.catch((err) => {
+					console.log('connect error', err);
+
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						this.connect({ server, user });
+					}, 10000);
+				});
+
+			this.sdk.onStreamData('connected', () => {
+				reduxStore.dispatch(connectSuccess());
+				const { isAuthenticated } = reduxStore.getState().login;
+				if (isAuthenticated) {
+					this.getUserPresence();
 				}
-			})
-			.catch((err) => {
-				console.log('connect error', err);
-
-				// when `connect` raises an error, we try again in 10 seconds
-				this.connectTimeout = setTimeout(() => {
-					this.connect({ server, user });
-				}, 10000);
 			});
 
-		this.sdk.onStreamData('connected', () => {
-			reduxStore.dispatch(connectSuccess());
-			const { isAuthenticated } = reduxStore.getState().login;
-			if (isAuthenticated) {
-				this.getUserPresence();
-			}
-		});
+			this.sdk.onStreamData('close', () => {
+				reduxStore.dispatch(disconnect());
+			});
 
-		this.sdk.onStreamData('close', () => {
-			reduxStore.dispatch(disconnect());
-		});
+			this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
-
-		this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
-			const { eventName } = ddpMessage.fields;
-			if (eventName === 'user-status') {
-				const userStatus = ddpMessage.fields.args[0];
-				const [id, username, status] = userStatus;
-				if (username) {
-					database.memoryDatabase.write(() => {
-						try {
-							database.memoryDatabase.create('activeUsers', {
-								id, username, status: STATUSES[status]
-							}, true);
-						} catch (error) {
-							console.log(error);
-						}
-					});
+			this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (eventName === 'user-status') {
+					const userStatus = ddpMessage.fields.args[0];
+					const [id, username, status] = userStatus;
+					if (username) {
+						database.memoryDatabase.write(() => {
+							try {
+								database.memoryDatabase.create('activeUsers', {
+									id, username, status: STATUSES[status]
+								}, true);
+							} catch (error) {
+								console.log(error);
+							}
+						});
+					}
 				}
-			}
-		}));
+			}));
+
+			resolve();
+		});
 	},
 
 	register(credentials) {
