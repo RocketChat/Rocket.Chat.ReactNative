@@ -27,7 +27,7 @@ export default StyleSheet.create({
 		marginLeft: 15
 	},
 	containerScrollView: {
-		paddingVertical: 15
+		paddingVertical: 10
 	},
 	container: {
 		flex: 1,

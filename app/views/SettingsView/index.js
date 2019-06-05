@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Text
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import Button from './Button';
 import ButtonWithSwitch from './ButtonWithSwitch';
+import InfoButton from './InfoButton';
 import { showErrorAlert } from '../../utils/info';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
@@ -52,7 +53,7 @@ export default class SettingsView extends React.Component {
 		return () => navigation.navigate(room);
 	}
 
-	sendEmail = () => {
+	sendEmail = async() => {
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
@@ -60,7 +61,7 @@ export default class SettingsView extends React.Component {
 			device: ${ getDeviceModel }
 		`);
 		try {
-			Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
 		} catch (e) {
 			showErrorAlert(I18n.t('error-email-send-failed', { action: 'support@rocket.chat' }));
 		}
@@ -72,11 +73,11 @@ export default class SettingsView extends React.Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderCrashReportDisclaimer = () => (
+	/* renderCrashReportDisclaimer = () => (
 		<View style={[styles.sectionItem, styles.sectionItemDisabled]}>
 			<Text style={styles.sectionItemTitle}>{I18n.t('Crash_report_disclaimer')}</Text>
 		</View>
-	)
+	) */
 
 	render() {
 		const { server, useMarkdown } = this.props;
@@ -88,8 +89,6 @@ export default class SettingsView extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					{this.renderSectionSeparator()}
-
 					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator />
 					{this.renderSeparator()}
 					<Button title={I18n.t('Language')} onPress={this.navigateToRoom('LanguageView')} showActionIndicator />
@@ -102,17 +101,13 @@ export default class SettingsView extends React.Component {
 
 					<Button title={I18n.t('License')} onPress={() => this.openLink(LICENSE_LINK)} showActionIndicator />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Version_no', { version: getReadableVersion })} />
+					<InfoButton title={I18n.t('Version_no', { version: getReadableVersion })} />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} />
+					<InfoButton title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} />
 
 					{this.renderSectionSeparator()}
 
 					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} />
-					{this.renderSeparator()}
-					{this.renderCrashReportDisclaimer()}
-
-					{this.renderSectionSeparator()}
 				</ScrollView>
 			</SafeAreaView>
 		);

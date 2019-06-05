@@ -7,7 +7,9 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	contentContainer: {
-		backgroundColor: COLOR_WHITE
+		...sharedStyles.separatorVertical,
+		backgroundColor: COLOR_WHITE,
+		marginVertical: 10
 	},
 	container: {
 		flex: 1,
@@ -22,7 +24,7 @@ export default StyleSheet.create({
 	},
 	sectionItemSubTitle: {
 		alignSelf: 'flex-start',
-		fontSize: 12,
+		fontSize: 14,
 		marginStart: 20,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
@@ -43,14 +45,21 @@ export default StyleSheet.create({
 		marginHorizontal: 10
 	},
 	sectionSeparatorBorder: {
+		...sharedStyles.separatorVertical,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 10
 	},
 	switch: {
-		marginHorizontal: 5
+		marginHorizontal: 10
 	},
 	rectButton: {
 		backgroundColor: COLOR_WHITE,
 		paddingHorizontal: 5
+	},
+	infoButton: {
+		flex: 1,
+		paddingVertical: 20,
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	}
 });

@@ -134,19 +134,16 @@ export default class LanguageView extends React.Component {
 		const { language } = this.state;
 		const isSelected = language === value;
 		return (
-			<React.Fragment>
-				<RectButton
-					onPress={() => this.submit(value)}
-					activeOpacity={0.1}
-					underlayColor={COLOR_TEXT}
-				>
-					<View style={styles.containerItem}>
-						<Text style={styles.text}>{label}</Text>
-						{isSelected ? <CustomIcon name='check' size={20} style={styles.checkIcon} /> : null }
-					</View>
-				</RectButton>
-				{this.renderSeparator()}
-			</React.Fragment>
+			<RectButton
+				onPress={() => this.submit(value)}
+				activeOpacity={0.1}
+				underlayColor={COLOR_TEXT}
+			>
+				<View style={styles.containerItem}>
+					<Text style={styles.text}>{label}</Text>
+					{isSelected ? <CustomIcon name='check' size={20} style={styles.checkIcon} /> : null }
+				</View>
+			</RectButton>
 		);
 	}
 
