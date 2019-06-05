@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
-// import { CustomIcon } from '../../lib/Icons';
 
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
@@ -28,9 +27,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
-	},
-	emptySpace: {
-		marginEnd: 15
 	}
 });
 
@@ -41,10 +37,6 @@ const User = React.memo(({
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
-		// let readReceipt = null;
-		// if (Message_Read_Receipt_Enabled) {
-		// 	readReceipt = !unread ? <CustomIcon name='check' color='#1d74f5' size={15} /> : <View style={styles.emptySpace} />;
-		// }
 
 		return (
 			<View style={styles.container}>
@@ -55,7 +47,6 @@ const User = React.memo(({
 					</Text>
 				</View>
 				<Text style={messageStyles.time}>{time}</Text>
-				{/* { readReceipt } */}
 			</View>
 		);
 	}

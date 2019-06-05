@@ -74,7 +74,7 @@ export default class ReadReceiptsView extends React.Component {
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			console.log('ReadReceiptsView -> catch -> error', error);
+			console.log('err_fetch_read_receipts', error);
 		}
 	}
 
