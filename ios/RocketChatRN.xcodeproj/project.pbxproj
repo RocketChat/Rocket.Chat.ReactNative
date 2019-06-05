@@ -20,6 +20,12 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1E36219E22A1FFD90042F8C5 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E36219722A1FFC70042F8C5 /* libRNKeychain.a */; };
+		1E36219F22A1FFE50042F8C5 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E36219722A1FFC70042F8C5 /* libRNKeychain.a */; };
+		1E3621A622A202E30042F8C5 /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3621A522A202DE0042F8C5 /* libRNRealmPath.a */; };
+		1E3621A722A202E80042F8C5 /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3621A522A202DE0042F8C5 /* libRNRealmPath.a */; };
+		1E3621D022A2049C0042F8C5 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3621CD22A204950042F8C5 /* libRNDeviceInfo.a */; };
+		1E3621D122A209F10042F8C5 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A770EC220BECDC7001AD51A /* libFastImage.a */; };
 		1E39C99D22A0AA0200D46C42 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E39C99B22A0AA0200D46C42 /* MainInterface.storyboard */; };
 		1E39C9A122A0AA0200D46C42 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1E39C99622A0AA0200D46C42 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1E39C9DD22A0AA2A00D46C42 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E39C9DC22A0AA2A00D46C42 /* ShareRocketChatRN.m */; };
@@ -126,6 +132,41 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		1E36219622A1FFC70042F8C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D82366F1B0CE05B005A9EF3;
+			remoteInfo = RNKeychain;
+		};
+		1E36219822A1FFC70042F8C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6478985F1F38BF9100DA1C12;
+			remoteInfo = "RNKeychain-tvOS";
+		};
+		1E3621A422A202DE0042F8C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNRealmPath;
+		};
+		1E3621CC22A204950042F8C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
+		1E3621CE22A204950042F8C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
+			remoteInfo = "RNDeviceInfo-tvOS";
 		};
 		1E39C99F22A0AA0200D46C42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -512,6 +553,9 @@
 		1845C223DA364898A8400573 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
+		1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
+		1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRealmPath.xcodeproj; path = "../node_modules/react-native-realm-path/ios/RNRealmPath.xcodeproj"; sourceTree = "<group>"; };
+		1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		1E39C99622A0AA0200D46C42 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E39C99C22A0AA0200D46C42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		1E39C99E22A0AA0200D46C42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -563,6 +607,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3621A622A202E30042F8C5 /* libRNRealmPath.a in Frameworks */,
+				1E36219E22A1FFD90042F8C5 /* libRNKeychain.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
 				B8971BB2202A093B0000D245 /* libKeyboardTrackingView.a in Frameworks */,
@@ -599,6 +645,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3621D122A209F10042F8C5 /* libFastImage.a in Frameworks */,
+				1E3621D022A2049C0042F8C5 /* libRNDeviceInfo.a in Frameworks */,
+				1E3621A722A202E80042F8C5 /* libRNRealmPath.a in Frameworks */,
+				1E36219F22A1FFE50042F8C5 /* libRNKeychain.a in Frameworks */,
 				1E580C1B22A1450800E4F123 /* libRNFetchBlob.a in Frameworks */,
 				1E580BE422A144E700E4F123 /* libRealmReact.a in Frameworks */,
 				1E39CA1522A0AD0900D46C42 /* libRNFirebase.a in Frameworks */,
@@ -724,6 +774,32 @@
 				7ACD4882222860DE00442C55 /* libjsiexecutor.a */,
 				7ACD4884222860DE00442C55 /* libjsi-tvOS.a */,
 				7ACD4886222860DE00442C55 /* libjsiexecutor-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E36215F22A1FFC60042F8C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E36219722A1FFC70042F8C5 /* libRNKeychain.a */,
+				1E36219922A1FFC70042F8C5 /* libRNKeychain.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E3621A122A202DD0042F8C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E3621A522A202DE0042F8C5 /* libRNRealmPath.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E3621C822A204950042F8C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E3621CD22A204950042F8C5 /* libRNDeviceInfo.a */,
+				1E3621CF22A204950042F8C5 /* libRNDeviceInfo-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -855,6 +931,9 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */,
+				1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */,
+				1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */,
 				1E39C9F022A0AA8700D46C42 /* ReactNativeShareExtension.xcodeproj */,
 				7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */,
 				B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */,
@@ -1060,10 +1139,13 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = S6UPZG7ZR3;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = ETQ42GP8S4;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -1073,10 +1155,13 @@
 					};
 					1E39C99522A0AA0200D46C42 = {
 						CreatedOnToolsVersion = 10.2.1;
-						DevelopmentTeam = S6UPZG7ZR3;
+						DevelopmentTeam = ETQ42GP8S4;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 						};
@@ -1173,6 +1258,10 @@
 					ProjectRef = C21010507E5B4B37BA0E4C9D /* RNAudio.xcodeproj */;
 				},
 				{
+					ProductGroup = 1E3621C822A204950042F8C5 /* Products */;
+					ProjectRef = 1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */;
+				},
+				{
 					ProductGroup = 7A8C912120F39A8000C8F5EE /* Products */;
 					ProjectRef = 0B82BCC462E84F308C5B5CD1 /* RNFetchBlob.xcodeproj */;
 				},
@@ -1189,8 +1278,16 @@
 					ProjectRef = 22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */;
 				},
 				{
+					ProductGroup = 1E36215F22A1FFC60042F8C5 /* Products */;
+					ProjectRef = 1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */;
+				},
+				{
 					ProductGroup = 7A8DEB1C20ED0BDE00C5DCE4 /* Products */;
 					ProjectRef = 7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */;
+				},
+				{
+					ProductGroup = 1E3621A122A202DD0042F8C5 /* Products */;
+					ProjectRef = 1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */;
 				},
 				{
 					ProductGroup = B8E79A8A1F3CCC6C005B464F /* Products */;
@@ -1264,6 +1361,41 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E36219722A1FFC70042F8C5 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = 1E36219622A1FFC70042F8C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E36219922A1FFC70042F8C5 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = 1E36219822A1FFC70042F8C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E3621A522A202DE0042F8C5 /* libRNRealmPath.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNRealmPath.a;
+			remoteRef = 1E3621A422A202DE0042F8C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E3621CD22A204950042F8C5 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 1E3621CC22A204950042F8C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E3621CF22A204950042F8C5 /* libRNDeviceInfo-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDeviceInfo-tvOS.a";
+			remoteRef = 1E3621CE22A204950042F8C5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1E39C9F522A0AA8700D46C42 /* libReactNativeShareExtension.a */ = {
@@ -1780,10 +1912,10 @@
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = ETQ42GP8S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1818,7 +1950,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE_SPECIFIER = "match Development chat.rocket.reactnative";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1832,9 +1964,9 @@
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = ETQ42GP8S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1869,7 +2001,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative 1552925104";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1899,7 +2031,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = ETQ42GP8S4;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1951,7 +2083,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = ETQ42GP8S4;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (

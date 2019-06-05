@@ -1,5 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { AsyncStorage, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -36,14 +37,27 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		if (fetchVersion) {
 			serverInfo = yield getServerInfo({ server });
 		}
-		yield AsyncStorage.setItem('currentServer', server);
-		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+
+		const { serversDB } = database.databases;
+		const servers = yield serversDB.objects('servers');
+		serversDB.write(() => {
+			try {
+				// eslint-disable-next-line no-plusplus
+				for (let i = 0; i < servers.length; i++) {
+					serversDB.create('servers', { id: servers[i].id, currentServer: servers[i].id === server }, true);
+				}
+			} catch (e) {
+				log('err_update_current_server ->', e);
+			}
+		});
+
+		const { username: userStringified } = yield Keychain.getInternetCredentials(server, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' });
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
 			RocketChat.connect({ server, user });
 			yield put(setUser(user));
-			yield put(actions.appStart('inside'));
+			// yield put(actions.appStart('inside'));
 		} else {
 			RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));

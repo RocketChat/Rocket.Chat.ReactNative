@@ -1,7 +1,7 @@
-import { AsyncStorage } from 'react-native';
 import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
+import * as Keychain from 'react-native-keychain';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -33,15 +33,14 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	const adding = yield select(state => state.server.adding);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 
 	const server = yield select(getServer);
 	try {
 		RocketChat.loginSuccess({ user });
 		I18n.locale = user.language;
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		yield Keychain.setInternetCredentials(server, JSON.stringify(user), user.token, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' });
 	} catch (error) {
-		console.log('loginSuccess saga -> error', error);
+		log('err_login_success_saga', error);
 	}
 
 	if (!user.username) {
@@ -71,7 +70,7 @@ const handleLogout = function* handleLogout() {
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
-				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+				const token = yield Keychain.getInternetCredentials(newServer, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' });
 				if (token) {
 					return yield put(selectServerRequest(newServer));
 				}

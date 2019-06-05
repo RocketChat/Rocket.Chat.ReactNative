@@ -10,6 +10,7 @@ const serversSchema = {
 	properties: {
 		id: 'string',
 		name: { type: 'string', optional: true },
+		currentServer: { type: 'bool', optional: true },
 		iconURL: { type: 'string', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
@@ -358,7 +359,7 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 8,
+			schemaVersion: 9,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
 					const newServers = newRealm.objects('servers');
@@ -366,6 +367,13 @@ class DB {
 					// eslint-disable-next-line no-plusplus
 					for (let i = 0; i < newServers.length; i++) {
 						newServers[i].roomsUpdatedAt = null;
+					}
+				}
+				if (oldRealm.schemaVersion < 9) {
+					const newServers = newRealm.objects('servers');
+					// eslint-disable-next-line no-plusplus
+					for (let i = 0; i < newServers.length; i++) {
+						newServers[i].currentServer = false;
 					}
 				}
 			}
