@@ -13,10 +13,11 @@ import EJSON from 'ejson';
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
+	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
-	replyCancel as replyCancelAction
+	replyCancel as replyCancelAction,
+	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import LoggedView from '../View';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -37,6 +38,10 @@ import Separator from './Separator';
 import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
+import FileModal from '../../containers/FileModal';
+import { vibrate } from '../../utils/vibration';
+import ReactionsModal from '../../containers/ReactionsModal';
+import { Toast } from '../../utils/info';
 
 @connect(state => ({
 	user: {
@@ -51,22 +56,27 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
-	isAuthenticated: state.login.isAuthenticated
+	isAuthenticated: state.login.isAuthenticated,
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	useMarkdown: state.markdown.useMarkdown,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage))
+	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
-/** @extends React.Component */
-export default class RoomView extends LoggedView {
+export default class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
-		const isFetching = navigation.getParam('isFetching', false);
+		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		return {
 			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
@@ -77,10 +87,17 @@ export default class RoomView extends LoggedView {
 					title={title}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
-					isFetching={isFetching}
 				/>
 			),
-			headerRight: <RightButtons rid={rid} tmid={tmid} t={t} navigation={navigation} />
+			headerRight: (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					t={t}
+					navigation={navigation}
+					toggleFollowThread={toggleFollowThread}
+				/>
+			)
 		};
 	}
 
@@ -97,16 +114,22 @@ export default class RoomView extends LoggedView {
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
+		Message_GroupingPeriod: PropTypes.number,
+		Message_TimeFormat: PropTypes.string,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func.isRequired,
+		baseUrl: PropTypes.string,
+		useMarkdown: PropTypes.bool,
+		toggleReactionPicker: PropTypes.func,
 		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		replyBroadcast: PropTypes.func,
+		errorActionsShow: PropTypes.func
 	};
 
 	constructor(props) {
-		super('RoomView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
@@ -116,12 +139,15 @@ export default class RoomView extends LoggedView {
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
-			lastOpen: null
+			lastOpen: null,
+			photoModalVisible: false,
+			reactionsModalVisible: false,
+			selectedAttachment: {},
+			selectedMessage: {}
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
-		safeAddListener(this.rooms, this.updateRoom);
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -135,12 +161,16 @@ export default class RoomView extends LoggedView {
 			if (room._id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
 			}
+			if (this.tmid) {
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+			}
 
 			if (isAuthenticated) {
 				this.init();
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
+			safeAddListener(this.rooms, this.updateRoom);
 			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -148,11 +178,15 @@ export default class RoomView extends LoggedView {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
+			return true;
+		} else if (photoModalVisible !== nextState.photoModalVisible) {
+			return true;
+		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
 			return true;
 		} else if (room.ro !== nextState.room.ro) {
 			return true;
@@ -264,14 +298,21 @@ export default class RoomView extends LoggedView {
 				}
 			});
 		} catch (e) {
-			console.log('TCL: init -> e', e);
-			log('RoomView.init', e);
+			log('err_room_init', e);
 		}
 	}
 
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
 		actionsShow({ ...message, rid: this.rid });
+	}
+
+	onOpenFileModal = (attachment) => {
+		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+	}
+
+	onCloseFileModal = () => {
+		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
 	onReactionPress = (shortname, messageId) => {
@@ -283,9 +324,18 @@ export default class RoomView extends LoggedView {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			log('RoomView.onReactionPress', e);
+			log('err_room_on_reaction_press', e);
 		}
 	};
+
+	onReactionLongPress = (message) => {
+		this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		vibrate();
+	}
+
+	onCloseReactionsModal = () => {
+		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
+	}
 
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
@@ -293,6 +343,35 @@ export default class RoomView extends LoggedView {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
 	}, 1000, true)
+
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
+	toggleReactionPicker = (message) => {
+		const { toggleReactionPicker } = this.props;
+		toggleReactionPicker(message);
+	}
+
+	replyBroadcast = (message) => {
+		const { replyBroadcast } = this.props;
+		replyBroadcast(message);
+	}
+
+	errorActionsShow = (message) => {
+		const { errorActionsShow } = this.props;
+		errorActionsShow(message);
+	}
 
 	handleConnected = () => {
 		this.init();
@@ -332,19 +411,15 @@ export default class RoomView extends LoggedView {
 
 	getMessages = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
 		try {
-			navigation.setParams({ isFetching: true });
 			if (room.lastOpen) {
 				await RocketChat.loadMissedMessages(room);
 			} else {
 				await RocketChat.loadMessagesForRoom(room);
 			}
-			navigation.setParams({ isFetching: false });
 			return Promise.resolve();
 		} catch (e) {
-			console.log('TCL: getMessages -> e', e);
-			log('getMessages', e);
+			log('err_get_messages', e);
 		}
 	}
 
@@ -352,12 +427,11 @@ export default class RoomView extends LoggedView {
 		try {
 			return RocketChat.loadThreadMessages({ tmid: this.tmid });
 		} catch (e) {
-			console.log('TCL: getThreadMessages -> e', e);
-			log('getThreadMessages', e);
+			log('err_get_thread_messages', e);
 		}
 	}
 
-	setLastOpen = lastOpen => this.internalSetState({ lastOpen });
+	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
 		try {
@@ -368,7 +442,7 @@ export default class RoomView extends LoggedView {
 				});
 			}
 		} catch (e) {
-			log('joinRoom', e);
+			log('err_join_room', e);
 		}
 	};
 
@@ -380,7 +454,7 @@ export default class RoomView extends LoggedView {
 	isMuted = () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		return room && room.muted && !!Array.from(Object.keys(room.muted), i => room.muted[i].value).includes(user.username);
+		return room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
 	}
 
 	isReadOnly = () => {
@@ -409,13 +483,24 @@ export default class RoomView extends LoggedView {
 				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
 		} catch (error) {
-			console.log('TCL: fetchThreadName -> error', error);
+			log('err_fetch_thread_name', error);
+		}
+	}
+
+	toggleFollowThread = async(isFollowingThread) => {
+		try {
+			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
+			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+		} catch (e) {
+			log('err_toggle_follow_thread', e);
 		}
 	}
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
-		const { user, navigation } = this.props;
+		const {
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown
+		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -441,11 +526,21 @@ export default class RoomView extends LoggedView {
 				status={item.status}
 				_updatedAt={item._updatedAt}
 				previousItem={previousItem}
-				navigation={navigation}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
+				onReactionLongPress={this.onReactionLongPress}
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
+				onThreadPress={this.onThreadPress}
+				onOpenFileModal={this.onOpenFileModal}
+				toggleReactionPicker={this.toggleReactionPicker}
+				replyBroadcast={this.replyBroadcast}
+				errorActionsShow={this.errorActionsShow}
+				baseUrl={baseUrl}
+				Message_GroupingPeriod={Message_GroupingPeriod}
+				timeFormat={Message_TimeFormat}
+				useRealName={useRealName}
+				useMarkdown={useMarkdown}
 			/>
 		);
 
@@ -520,7 +615,7 @@ export default class RoomView extends LoggedView {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} toast={this.toast} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -530,7 +625,10 @@ export default class RoomView extends LoggedView {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { room } = this.state;
+		const {
+			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage
+		} = this.state;
+		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -541,6 +639,21 @@ export default class RoomView extends LoggedView {
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
+				<FileModal
+					attachment={selectedAttachment}
+					isVisible={photoModalVisible}
+					onClose={this.onCloseFileModal}
+					user={user}
+					baseUrl={baseUrl}
+				/>
+				<ReactionsModal
+					message={selectedMessage}
+					isVisible={reactionsModalVisible}
+					onClose={this.onCloseReactionsModal}
+					user={user}
+					baseUrl={baseUrl}
+				/>
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

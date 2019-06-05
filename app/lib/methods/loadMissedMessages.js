@@ -45,7 +45,7 @@ export default function loadMissedMessages(...args) {
 									database.create('threadMessages', message, true);
 								}
 							} catch (e) {
-								log('loadMissedMessages -> create messages', e);
+								log('err_load_missed_messages_create', e);
 							}
 						}));
 					});
@@ -65,14 +65,14 @@ export default function loadMissedMessages(...args) {
 								});
 							});
 						} catch (e) {
-							log('loadMissedMessages -> delete message', e);
+							log('err_load_missed_messages_delete', e);
 						}
 					});
 				}
 			}
 			resolve();
 		} catch (e) {
-			log('loadMissedMessages', e);
+			log('err_load_missed_messages', e);
 			reject(e);
 		}
 	});

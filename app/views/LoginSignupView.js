@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-navigation';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
-import LoggedView from './View';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
@@ -92,10 +91,10 @@ const SERVICES_COLLAPSED_HEIGHT = 174;
 @connect(state => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
+	Gitlab_URL: state.settings.API_Gitlab_URL,
 	services: state.login.services
 }))
-/** @extends React.Component */
-export default class LoginSignupView extends LoggedView {
+export default class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -108,11 +107,12 @@ export default class LoginSignupView extends LoggedView {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		services: PropTypes.object,
-		Site_Name: PropTypes.string
+		Site_Name: PropTypes.string,
+		Gitlab_URL: PropTypes.string
 	}
 
 	constructor(props) {
-		super('LoginSignupView', props);
+		super(props);
 		this.state = {
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
@@ -177,9 +177,10 @@ export default class LoginSignupView extends LoggedView {
 	}
 
 	onPressGitlab = () => {
-		const { services, server } = this.props;
+		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
-		const endpoint = 'https://gitlab.com/oauth/authorize';
+		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
+		const endpoint = `${ baseURL }/oauth/authorize`;
 		const redirect_uri = `${ server }/_oauth/gitlab?close`;
 		const scope = 'read_user';
 		const state = this.getOAuthState();

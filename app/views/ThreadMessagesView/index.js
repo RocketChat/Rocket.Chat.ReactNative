@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -24,26 +23,27 @@ const API_FETCH_COUNT = 50;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	useRealName: state.settings.UI_Use_Real_Name
 }))
-/** @extends React.Component */
-export default class ThreadMessagesView extends LoggedView {
+export default class ThreadMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Threads')
 	}
 
 	static propTypes = {
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		baseUrl: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
-		super('ThreadMessagesView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
@@ -82,8 +82,15 @@ export default class ThreadMessagesView extends LoggedView {
 		this.setState({ messages: this.messages });
 	}, 300)
 
+	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		const [room] = this.rooms;
+
+		// if there's not room at this point, it's better to show nothing
+		if (!room) {
+			return;
+		}
+
 		const lastThreadSync = new Date();
 		if (room.lastThreadSync) {
 			this.sync(room.lastThreadSync);
@@ -114,7 +121,7 @@ export default class ThreadMessagesView extends LoggedView {
 						try {
 							database.create('threads', buildMessage(message), true);
 						} catch (e) {
-							log('ThreadMessagesView -> load -> create', e);
+							log('err_thread_messages_create', e);
 						}
 					}));
 
@@ -125,7 +132,7 @@ export default class ThreadMessagesView extends LoggedView {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> load -> error', error);
+			log('err_thread_messages_load', error);
 			this.setState({ loading: false, end: true });
 		}
 	}, 300)
@@ -147,7 +154,7 @@ export default class ThreadMessagesView extends LoggedView {
 								try {
 									database.create('threads', buildMessage(message), true);
 								} catch (e) {
-									log('ThreadMessagesView -> sync -> update', e);
+									log('err_thread_messages_update', e);
 								}
 							});
 						}
@@ -159,7 +166,7 @@ export default class ThreadMessagesView extends LoggedView {
 									try {
 										database.delete(oldMessage);
 									} catch (e) {
-										log('ThreadMessagesView -> sync -> delete', e);
+										log('err_thread_messages_delete', e);
 									}
 								}
 							});
@@ -172,7 +179,7 @@ export default class ThreadMessagesView extends LoggedView {
 				});
 			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> sync -> error', error);
+			log('err_thread_messages_sync', error);
 			this.setState({ loading: false });
 		}
 	}
@@ -186,6 +193,20 @@ export default class ThreadMessagesView extends LoggedView {
 		}) : null
 	)
 
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
 	renderSeparator = () => <Separator />
 
 	renderEmpty = () => (
@@ -195,7 +216,9 @@ export default class ThreadMessagesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user, navigation } = this.props;
+		const {
+			user, navigation, baseUrl, useRealName
+		} = this.props;
 		if (item.isValid && item.isValid()) {
 			return (
 				<Message
@@ -207,10 +230,11 @@ export default class ThreadMessagesView extends LoggedView {
 					status={item.status}
 					_updatedAt={item._updatedAt}
 					navigation={navigation}
-					customTimeFormat='MMM D'
+					timeFormat='MMM D'
 					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-					fetchThreadName={this.fetchThreadName}
-					onDiscussionPress={this.onDiscussionPress}
+					onThreadPress={this.onThreadPress}
+					baseUrl={baseUrl}
+					useRealName={useRealName}
 				/>
 			);
 		}

@@ -105,7 +105,7 @@ export class List extends React.PureComponent {
 			this.setState({ end: result.length < 50, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			log('ListView.onEndReached', e);
+			log('err_list_view_on_end_reached', e);
 		}
 	}, 300)
 
@@ -147,11 +147,11 @@ export class List extends React.PureComponent {
 					style={styles.list}
 					inverted
 					removeClippedSubviews
-					initialNumToRender={5}
+					initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
+					onEndReachedThreshold={5}
 					maxToRenderPerBatch={5}
-					windowSize={21}
+					windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>

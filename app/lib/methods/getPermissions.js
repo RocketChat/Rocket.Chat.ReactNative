@@ -16,7 +16,7 @@ const create = (permissions) => {
 			try {
 				database.create('permissions', permission, true);
 			} catch (e) {
-				log('getPermissions create', e);
+				log('err_get_permissions_create', e);
 			}
 		});
 	}
@@ -63,7 +63,7 @@ export default async function() {
 									database.delete(permission);
 								}
 							} catch (e) {
-								log('getPermissions delete', e);
+								log('err_get_permissions_delete', e);
 							}
 						});
 					}
@@ -71,6 +71,6 @@ export default async function() {
 			);
 		}
 	} catch (e) {
-		log('getPermissions', e);
+		log('err_get_permissions', e);
 	}
 }
