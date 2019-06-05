@@ -113,6 +113,11 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    packagingOptions {
+        pickFirst '**/libjsc.so'
+        pickFirst '**/libc++_shared.so'
+    }
+
     signingConfigs {
         release {
             if (project.hasProperty('KEYSTORE')) {
@@ -166,6 +171,7 @@ android {
 }
 
 dependencies {
+    implementation "org.webkit:android-jsc:r241213"
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
