@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_WHITE
+	COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_WHITE, HEADER_BACK
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -28,9 +28,12 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: COLOR_WHITE
 	},
-	button: {
-		position: 'absolute',
-		bottom: 16,
-		right: 16
+	sendButton: {
+		marginRight: 16
+	},
+	send: {
+		color: HEADER_BACK,
+		fontWeight: '600',
+		fontSize: 16
 	}
 });

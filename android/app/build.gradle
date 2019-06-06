@@ -170,6 +170,7 @@ dependencies {
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
+    implementation project(':react-native-realm-path')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
     implementation project(':react-native-action-sheet')

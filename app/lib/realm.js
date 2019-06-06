@@ -1,4 +1,5 @@
 import Realm from 'realm';
+// import RNRealmPath from 'react-native-realm-path';
 
 // import { AsyncStorage } from 'react-native';
 // Realm.clearTestState();
@@ -9,8 +10,9 @@ const serversSchema = {
 	primaryKey: 'id',
 	properties: {
 		id: 'string',
-		name: { type: 'string', optional: true },
 		currentServer: { type: 'bool', optional: true },
+		userToken: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
@@ -44,8 +46,15 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		name: 'string?',
 		broadcast: { type: 'bool', optional: true }
+	}
+};
+
+const userMutedInRoomSchema = {
+	name: 'usersMuted',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
 	}
 };
 
@@ -79,11 +88,19 @@ const subscriptionSchema = {
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
 		notifications: { type: 'bool', optional: true },
-		muted: 'string[]',
+		muted: { type: 'list', objectType: 'usersMuted' },
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true },
 		lastThreadSync: 'date?'
+	}
+};
+
+const userSchema = {
+	name: 'user',
+	primaryKey: 'id',
+	properties: {
+		id: 'string'
 	}
 };
 
@@ -93,7 +110,8 @@ const usersSchema = {
 	properties: {
 		_id: 'string',
 		username: 'string',
-		name: { type: 'string', optional: true }
+		name: { type: 'string', optional: true },
+		avatarVersion: { type: 'int', optional: true }
 	}
 };
 
@@ -148,13 +166,21 @@ const url = {
 	}
 };
 
+const messagesReactionsUsernamesSchema = {
+	name: 'messagesReactionsUsernames',
+	primaryKey: 'value',
+	properties: {
+		value: 'string'
+	}
+};
+
 const messagesReactionsSchema = {
 	name: 'messagesReactions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
 		emoji: 'string',
-		usernames: 'string[]'
+		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
 	}
 };
 
@@ -196,9 +222,7 @@ const messagesSchema = {
 		tmid: { type: 'string', optional: true },
 		tcount: { type: 'int', optional: true },
 		tlm: { type: 'date', optional: true },
-		replies: 'string[]',
-		mentions: { type: 'list', objectType: 'users' },
-		channels: { type: 'list', objectType: 'rooms' }
+		replies: 'string[]'
 	}
 };
 
@@ -336,6 +360,7 @@ const schema = [
 	messagesSchema,
 	threadsSchema,
 	threadMessagesSchema,
+	userSchema,
 	usersSchema,
 	roomsSchema,
 	attachment,
@@ -346,7 +371,9 @@ const schema = [
 	frequentlyUsedEmojiSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
+	messagesReactionsUsernamesSchema,
 	rolesSchema,
+	userMutedInRoomSchema,
 	uploadsSchema
 ];
 
@@ -359,21 +386,14 @@ class DB {
 			schema: [
 				serversSchema
 			],
-			schemaVersion: 9,
+			schemaVersion: 6,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 6) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
 					for (let i = 0; i < newServers.length; i++) {
 						newServers[i].roomsUpdatedAt = null;
-					}
-				}
-				if (oldRealm.schemaVersion < 9) {
-					const newServers = newRealm.objects('servers');
-					// eslint-disable-next-line no-plusplus
-					for (let i = 0; i < newServers.length; i++) {
-						newServers[i].currentServer = false;
 					}
 				}
 			}
@@ -423,11 +443,16 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 11,
+			schemaVersion: 9,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 8) {
 					const newSubs = newRealm.objects('subscriptions');
-					newRealm.delete(newSubs);
+
+					// eslint-disable-next-line no-plusplus
+					for (let i = 0; i < newSubs.length; i++) {
+						newSubs[i].lastOpen = null;
+						newSubs[i].ls = null;
+					}
 					const newMessages = newRealm.objects('messages');
 					newRealm.delete(newMessages);
 					const newThreads = newRealm.objects('threads');
@@ -436,6 +461,8 @@ class DB {
 					newRealm.delete(newThreadMessages);
 				}
 				if (newRealm.schemaVersion === 9) {
+					const newSubs = newRealm.objects('subscriptions');
+					newRealm.delete(newSubs);
 					const newEmojis = newRealm.objects('customEmojis');
 					newRealm.delete(newEmojis);
 					const newSettings = newRealm.objects('settings');

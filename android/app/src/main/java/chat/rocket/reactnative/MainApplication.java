@@ -35,6 +35,7 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
+import com.reactlibrary.RNRealmPathPackage;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class MainApplication extends Application implements ReactApplication, IN
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
+          new RNRealmPathPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),

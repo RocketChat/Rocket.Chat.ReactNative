@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT
+	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT, HEADER_BACK
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -35,5 +35,12 @@ export default StyleSheet.create({
 		fontSize: isIOS ? 17 : 10,
 		letterSpacing: 0.27,
 		flex: 1
+	},
+	cancelButton: {
+		marginLeft: 16
+	},
+	cancel: {
+		color: HEADER_BACK,
+		fontSize: 16
 	}
 });

@@ -31,11 +31,11 @@ const keyExtractor = item => item.rid;
 export default class ShareListView extends React.Component {
 	static navigationOptions = () => ({
 		headerLeft: (
-			<TouchableOpacity onPress={() => ShareExtension.close()}>
-				<Text>cancel</Text>
+			<TouchableOpacity style={styles.cancelButton} onPress={() => ShareExtension.close()}>
+				<Text style={styles.cancel}>{I18n.t('Cancel')}</Text>
 			</TouchableOpacity>
 		),
-		title: 'Selecionar Canais'
+		title: I18n.t('Select_Channels')
 	})
 
 	static propTypes = {
