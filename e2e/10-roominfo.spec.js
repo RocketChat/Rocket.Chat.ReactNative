@@ -36,6 +36,24 @@ describe('Room info screen', () => {
 			await expect(element(by.id('room-info-view-name'))).toBeVisible();
 		});
 
+		describe('Render', async() => {
+			it('should have follow/following button', async() => {
+				await expect(element(by.id('follow-button'))).toBeVisible();
+			})
+		});
+		
+		describe('Usage', async() => {
+			it('should change follow button', async() => {
+				await element(by.id('follow-button')).tap();
+				await waitFor(element(by.id('following-button'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('following-button'))).toBeVisible();
+				await element(by.id('following-button')).tap();
+				await waitFor(element(by.id('follow-button'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('follow-button'))).toBeVisible();
+			})
+			
+		})
+
 		after(async() => {
 			await takeScreenshot();
 		});
