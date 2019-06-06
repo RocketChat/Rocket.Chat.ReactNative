@@ -6,7 +6,6 @@ import { isAndroid } from '../../utils/deviceInfo';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import ReactionPicker from '../../containers/EmojiPicker/ReactionPicker';
-import LoggedView from '../View';
 
 const margin = isAndroid ? 40 : 20;
 const tabEmojiStyle = { fontSize: 15 };
@@ -16,16 +15,12 @@ const tabEmojiStyle = { fontSize: 15 };
 	actionMessage: state.messages.actionMessage
 }))
 @responsive
-export default class ReactionPickerView extends LoggedView {
+export default class ReactionPickerView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,
 		actionMessage: PropTypes.object,
 		navigation: PropTypes.object
-	}
-
-	constructor(props) {
-		super('ReactionPickerView', props);
 	}
 
 	onEmojiSelected(emoji) {

@@ -5,15 +5,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
-import ConnectionBadge from '../../containers/ConnectionBadge';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import LoggedView from '../View';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
@@ -60,8 +58,7 @@ const keyExtractor = item => item.rid;
 	appStart: () => dispatch(appStartAction())
 	// roomsRequest: () => dispatch(roomsRequestAction())
 }))
-/** @extends React.Component */
-export default class RoomsListView extends LoggedView {
+export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
@@ -116,7 +113,7 @@ export default class RoomsListView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomsListView', props);
+		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
@@ -135,13 +132,17 @@ export default class RoomsListView extends LoggedView {
 			livechat: []
 		};
 		Orientation.unlockAllOrientations();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
-			onPressItem: this._onPressItem, initSearchingAndroid: this.initSearchingAndroid, cancelSearchingAndroid: this.cancelSearchingAndroid
+			onPressItem: this._onPressItem,
+			initSearchingAndroid: this.initSearchingAndroid,
+			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -173,45 +174,6 @@ export default class RoomsListView extends LoggedView {
 		}
 		if (nextState.searching !== searching) {
 			return true;
-		}
-
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (showUnread) {
-			const { unread } = this.state;
-			if (!isEqual(nextState.unread, unread)) {
-				return true;
-			}
-		}
-		if (showFavorites) {
-			const { favorites } = this.state;
-			if (!isEqual(nextState.favorites, favorites)) {
-				return true;
-			}
-		}
-		if (groupByType) {
-			const {
-				dicussions, channels, privateGroup, direct, livechat
-			} = this.state;
-			if (!isEqual(nextState.dicussions, dicussions)) {
-				return true;
-			}
-			if (!isEqual(nextState.channels, channels)) {
-				return true;
-			}
-			if (!isEqual(nextState.privateGroup, privateGroup)) {
-				return true;
-			}
-			if (!isEqual(nextState.direct, direct)) {
-				return true;
-			}
-			if (!isEqual(nextState.livechat, livechat)) {
-				return true;
-			}
-		} else {
-			const { chats } = this.state;
-			if (!isEqual(nextState.chats, chats)) {
-				return true;
-			}
 		}
 
 		const { search } = this.state;
@@ -249,6 +211,12 @@ export default class RoomsListView extends LoggedView {
 		}
 		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
 			this.updateStateInteraction.cancel();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -311,26 +279,19 @@ export default class RoomsListView extends LoggedView {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats: this.getSnapshot(this.chats),
-				unread: this.getSnapshot(this.unread),
-				favorites: this.getSnapshot(this.favorites),
-				discussions: this.getSnapshot(this.discussions),
-				channels: this.getSnapshot(this.channels),
-				privateGroup: this.getSnapshot(this.privateGroup),
-				direct: this.getSnapshot(this.direct),
-				livechat: this.getSnapshot(this.livechat),
+				chats: this.chats ? this.chats.slice() : [],
+				unread: this.unread ? this.unread.slice() : [],
+				favorites: this.favorites ? this.favorites.slice() : [],
+				discussions: this.discussions ? this.discussions.slice() : [],
+				channels: this.channels ? this.channels.slice() : [],
+				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
+				direct: this.direct ? this.direct.slice() : [],
+				livechat: this.livechat ? this.livechat.slice() : [],
 				loading: false
 			});
+			this.forceUpdate();
 		});
 	}, 300);
-
-	getSnapshot = (data) => {
-		if (data && data.length) {
-			const array = Array.from(data);
-			return JSON.parse(JSON.stringify(array));
-		}
-		return [];
-	}
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
@@ -399,7 +360,7 @@ export default class RoomsListView extends LoggedView {
 					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 				}
 			} catch (e) {
-				log('RoomsListView._onPressItem', e);
+				log('err_on_press_item', e);
 			}
 		} else {
 			return this.goRoom(item);
@@ -441,26 +402,29 @@ export default class RoomsListView extends LoggedView {
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
-		return (
-			<RoomItem
-				alert={item.alert}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				favorite={item.f}
-				lastMessage={item.lastMessage}
-				name={this.getRoomTitle(item)}
-				_updatedAt={item.roomUpdatedAt}
-				key={item._id}
-				id={id}
-				type={item.t}
-				baseUrl={baseUrl}
-				prid={item.prid}
-				showLastMessage={StoreLastMessage}
-				onPress={() => this._onPressItem(item)}
-				testID={`rooms-list-view-item-${ item.name }`}
-				height={ROW_HEIGHT}
-			/>
-		);
+		if (item.search || (item.isValid && item.isValid())) {
+			return (
+				<RoomItem
+					alert={item.alert}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					favorite={item.f}
+					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+					name={this.getRoomTitle(item)}
+					_updatedAt={item.roomUpdatedAt}
+					key={item._id}
+					id={id}
+					type={item.t}
+					baseUrl={baseUrl}
+					prid={item.prid}
+					showLastMessage={StoreLastMessage}
+					onPress={() => this._onPressItem(item)}
+					testID={`rooms-list-view-item-${ item.name }`}
+					height={ROW_HEIGHT}
+				/>
+			);
+		}
+		return null;
 	}
 
 	renderSectionHeader = header => (
@@ -481,11 +445,10 @@ export default class RoomsListView extends LoggedView {
 		} else if (header === 'Chats' && groupByType) {
 			return null;
 		}
-		if (data.length > 0) {
+		if (data && data.length > 0) {
 			return (
 				<FlatList
 					data={data}
-					extraData={data}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
@@ -553,7 +516,6 @@ export default class RoomsListView extends LoggedView {
 				<FlatList
 					ref={this.getScrollRef}
 					data={search.length ? search : chats}
-					extraData={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
@@ -604,11 +566,6 @@ export default class RoomsListView extends LoggedView {
 					: null
 				}
 				{showServerDropdown ? <ServerDropdown /> : null}
-				<ConnectionBadge />
-				<NavigationEvents
-					onDidFocus={() => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
-					onWillBlur={() => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
-				/>
 			</SafeAreaView>
 		);
 	}

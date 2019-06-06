@@ -8,6 +8,7 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -23,21 +24,17 @@ import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
-import RoomFilesView from './views/RoomFilesView';
-import MentionedMessagesView from './views/MentionedMessagesView';
-import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
-import PinnedMessagesView from './views/PinnedMessagesView';
 import ThreadMessagesView from './views/ThreadMessagesView';
+import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
-import TermsServiceView from './views/TermsServiceView';
-import PrivacyPolicyView from './views/PrivacyPolicyView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
@@ -87,18 +84,8 @@ const OutsideStack = createStackNavigator(
 		LoginSignupView,
 		LoginView,
 		ForgotPasswordView,
-		RegisterView
-	},
-	{
-		defaultNavigationOptions: defaultHeader
-	}
-);
-
-const LegalStack = createStackNavigator(
-	{
-		LegalView,
-		TermsServiceView,
-		PrivacyPolicyView
+		RegisterView,
+		LegalView
 	},
 	{
 		defaultNavigationOptions: defaultHeader
@@ -114,17 +101,14 @@ const OAuthStack = createStackNavigator(
 	}
 );
 
-const OutsideStackModal = createStackNavigator(
-	{
-		OutsideStack,
-		LegalStack,
-		OAuthStack
-	},
-	{
-		mode: 'modal',
-		headerMode: 'none'
-	}
-);
+const OutsideStackModal = createStackNavigator({
+	OutsideStack,
+	OAuthStack
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
 
 // Inside
 const ChatsStack = createStackNavigator({
@@ -134,11 +118,7 @@ const ChatsStack = createStackNavigator({
 	RoomInfoView,
 	RoomInfoEditView,
 	RoomMembersView,
-	RoomFilesView,
-	MentionedMessagesView,
-	StarredMessagesView,
 	SearchMessagesView,
-	PinnedMessagesView,
 	SelectedUsersView,
 	ThreadMessagesView,
 	ReactionPickerView: {
@@ -146,7 +126,8 @@ const ChatsStack = createStackNavigator({
 		navigationOptions: {
 			title: i18n.t('Reactions_search')
 		}
-	}
+	},
+	MessagesView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -167,7 +148,7 @@ const ProfileStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-ProfileView.navigationOptions = ({ navigation }) => {
+ProfileStack.navigationOptions = ({ navigation }) => {
 	let drawerLockMode = 'unlocked';
 	if (navigation.state.index > 0) {
 		drawerLockMode = 'locked-closed';
@@ -179,6 +160,12 @@ ProfileView.navigationOptions = ({ navigation }) => {
 
 const SettingsStack = createStackNavigator({
 	SettingsView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const AdminPanelStack = createStackNavigator({
+	AdminPanelView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -196,7 +183,8 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack
+	SettingsStack,
+	AdminPanelStack
 }, {
 	contentComponent: Sidebar
 });
@@ -241,6 +229,28 @@ const App = createAppContainer(
 	)
 );
 
+// gets the current screen from navigation state
+const getActiveRouteName = (navigationState) => {
+	if (!navigationState) {
+		return null;
+	}
+	const route = navigationState.routes[navigationState.index];
+	// dive into nested navigators
+	if (route.routes) {
+		return getActiveRouteName(route);
+	}
+	return route.routeName;
+};
+
+const onNavigationStateChange = (prevState, currentState) => {
+	const currentScreen = getActiveRouteName(currentState);
+	const prevScreen = getActiveRouteName(prevState);
+
+	if (prevScreen !== currentScreen) {
+		firebase.analytics().setCurrentScreen(currentScreen);
+	}
+};
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -284,6 +294,7 @@ export default class Root extends React.Component {
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
+					onNavigationStateChange={onNavigationStateChange}
 				/>
 			</Provider>
 		);

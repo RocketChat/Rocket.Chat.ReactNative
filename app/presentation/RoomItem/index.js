@@ -46,6 +46,12 @@ export default class RoomItem extends React.Component {
 		avatarSize: 48
 	}
 
+	// Making jest happy: https://github.com/facebook/react-native/issues/22175
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props) {
+		super(props);
+	}
+
 	shouldComponentUpdate(nextProps) {
 		const { lastMessage, _updatedAt } = this.props;
 		const oldlastMessage = lastMessage;
@@ -109,7 +115,7 @@ export default class RoomItem extends React.Component {
 							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
 						</View>
 						<View style={styles.row}>
-							<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} />
+							<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
 							<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
 						</View>
 					</View>

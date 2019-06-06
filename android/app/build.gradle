@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: "io.fabric"
+apply plugin: "com.google.firebase.firebase-perf"
 
 import com.android.build.OutputFile
 
@@ -95,23 +97,20 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "chat.rocket.reactnative"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.12.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        versionName "1.14.0"
         vectorDrawables.useSupportLibrary = true
-    }
-
-    packagingOptions {
-        pickFirst '**/libjsc.so'
     }
 
     signingConfigs {
@@ -129,14 +128,11 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
     buildTypes {
         release {
-            // shrinkResources enableProguardInReleaseBuilds
-            // zipAlignEnabled enableProguardInReleaseBuilds
-            // useProguard enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
@@ -147,7 +143,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "arm64-v8a": 3, "x86_64": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -155,51 +151,23 @@ android {
             }
         }
     }
-}
 
-buildscript {
-  repositories {
-    maven { url 'https://maven.fabric.io/public' }
-  }
-
-  dependencies {
-    // These docs use an open ended version so that our plugin
-    // can be updated quickly in response to Android tooling updates
-
-    // We recommend changing it to the latest version from our changelog:
-    // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-    classpath 'io.fabric.tools:gradle:1.+'
-  }
-}
-
-apply plugin: 'io.fabric'
-
-repositories {
-  maven { url 'https://maven.fabric.io/public' }
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r225067'
-
-        eachDependency { DependencyResolveDetails details ->
-            if (details.requested.name == 'play-services-base') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-tasks') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-stats') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
-            if (details.requested.name == 'play-services-basement') {
-                details.useTarget group: details.requested.group, name: details.requested.name, version: '15.0.1'
-            }
+    bundle {
+        language {
+            enableSplit = false
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
         }
     }
 }
 
 dependencies {
+    implementation project(':react-native-firebase')
+    implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
@@ -208,30 +176,30 @@ dependencies {
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
-    implementation project(':react-native-fabric')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
     implementation project(':react-native-vector-icons')
     implementation project(':rn-fetch-blob')
-    implementation project(':react-native-toast')
     implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':reactnativenotifications')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:27.1.1"
-    implementation "com.android.support:support-v4:27.1.1"
-    implementation 'com.android.support:customtabs:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation "com.android.support:appcompat-v7:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:support-v4:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:customtabs:${ rootProject.ext.supportLibVersion }"
+    implementation "com.android.support:design:${ rootProject.ext.supportLibVersion }"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.fresco:fresco:1.10.0'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.facebook.fresco:animated-webp:1.10.0'
     implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    implementation "com.google.firebase:firebase-core:16.0.1"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation "com.google.firebase:firebase-messaging:18.0.0"
+    implementation "com.google.firebase:firebase-core:16.0.9"
+    implementation "com.google.firebase:firebase-perf:16.2.5"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 
@@ -243,4 +211,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
-com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

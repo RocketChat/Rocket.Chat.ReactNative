@@ -245,7 +245,7 @@ export default class ReactionPicker extends Component {
 			<Fragment>
 				<SearchBox
 					onChangeText={this.handleSearchDebounced}
-					testID='search-message-view-input'
+					testID='reaction-picker-view-search-input'
 				/>
 				{this.renderCategories()}
 			</Fragment>

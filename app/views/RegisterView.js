@@ -11,7 +11,6 @@ import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import LoggedView from './View';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -24,8 +23,7 @@ const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 @connect(null, dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 }))
-/** @extends React.Component */
-export default class RegisterView extends LoggedView {
+export default class RegisterView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -40,15 +38,12 @@ export default class RegisterView extends LoggedView {
 		Site_Name: PropTypes.string
 	}
 
-	constructor(props) {
-		super('RegisterView', props);
-		this.state = {
-			name: '',
-			email: '',
-			password: '',
-			username: '',
-			saving: false
-		};
+	state = {
+		name: '',
+		email: '',
+		password: '',
+		username: '',
+		saving: false
 	}
 
 	componentDidMount() {
