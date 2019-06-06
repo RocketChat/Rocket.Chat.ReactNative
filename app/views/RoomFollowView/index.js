@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 
 import LoggedView from '../View';
 import styles from './styles';
-import UserItem from '../../presentation/UserItem';
+import UserItem from './UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
@@ -18,7 +18,6 @@ import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
 const PAGE_SIZE = 25;
@@ -30,20 +29,13 @@ const PAGE_SIZE = 25;
 		token: state.login.user && state.login.user.token
 	}
 }))
+
 /** @extends React.Component */
 export default class RoomFollowView extends LoggedView {
 	static navigationOptions = ({ navigation }) => {
     const title = navigation.getParam('follow') // Followers or Following
-		const toggleStatus = navigation.getParam('toggleStatus', () => {});
-		const allUsers = navigation.getParam('allUsers');
-		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
-			title: title,
-			headerRight: (
-				<CustomHeaderButtons>
-					<Item title={toggleText} onPress={toggleStatus} testID='room-followers-view-toggle-status' />
-				</CustomHeaderButtons>
-			)
+			title: title
 		};
 	}
 
@@ -204,14 +196,15 @@ export default class RoomFollowView extends LoggedView {
 
 		this.setState({ isLoading: true });
 		try {
-      // right now fetching MEMBERS of general room because there is no api for fetching for getting followers.
-      console.log('followersResult are ')
+      // Right now we are fetching MEMBERS of general room because there is no api for fetching followers.
       const followersResult = await RocketChat.getRoomMembers('GENERAL', allUsers, followers.length, PAGE_SIZE);
-      console.log('followersResult are ', followersResult)
-      // TODO here we have to differentiate with the help of the navigation param whether we want to want followers or following.
-      // both followers and following are named as followers.
-      const newFollowers = followersResult.records;
-      console.log('followers are ', followers)
+			
+			/* 
+			 TODO here we have to differentiate with the help of the navigation param whether we want to want followers or following.
+			 Both followers and following are named as followers. 
+			*/
+			
+			const newFollowers = followersResult.records;
 			this.setState({
 				followers: followers.concat(newFollowers || []),
 				isLoading: false,
@@ -265,7 +258,15 @@ export default class RoomFollowView extends LoggedView {
 
 	renderItem = ({ item }) => {
 		const { baseUrl, user } = this.props;
+		/*
+			mock up code which can be inserted after building an api, after which user will contain a field similar to followers(array) as shown below.
 
+			const { following } = user // following is a list of usernames which the user is following.
+			if item.username in user.following, then
+				following = true
+			else
+				following = false
+		*/
 		return (
 			<UserItem
 				name={item.name}
@@ -275,6 +276,7 @@ export default class RoomFollowView extends LoggedView {
 				baseUrl={baseUrl}
 				testID={`room-followers-view-item-${ item.username }`}
 				user={user}
+				following={false} // hardcoded
 			/>
 		);
 	}

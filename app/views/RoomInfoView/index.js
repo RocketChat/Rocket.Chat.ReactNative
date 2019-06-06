@@ -114,7 +114,6 @@ export default class RoomInfoView extends React.Component {
 
 	follow = () => {
 		const { roomUser } = this.state;
-		Reactotron.logImportant("following the user")
 		roomUser.isFollowing = true;
 		roomUser.followers = roomUser.followers + 1;
 		this.setState({ roomUser: roomUser });
@@ -122,11 +121,11 @@ export default class RoomInfoView extends React.Component {
 
 	unfollow = () => {
 		const { roomUser } = this.state;
-		Reactotron.logImportant("Unfollowing the user")
 		roomUser.isFollowing = false;
 		roomUser.followers = roomUser.followers - 1;
 		this.setState({ roomUser: roomUser });
 	}
+
 	getRoleDescription = (id) => {
 		Reactotron.logImportant(database)
 		const role = database.objectForPrimaryKey('roles', id);
@@ -224,9 +223,7 @@ export default class RoomInfoView extends React.Component {
 	}
 	renderFollowButton = () => {
 		const { roomUser } = this.state;
-		console.warn(roomUser)
-
-			if(!roomUser.isFollowing)
+		if(!roomUser.isFollowing)
 			{
 				button = <Button
 				title= "Follow"
@@ -236,25 +233,26 @@ export default class RoomInfoView extends React.Component {
 				testID = 'follow-button'
 			/>
 		} else {
-			button = <Button
-			title= "Following"
-			type='primary'
-			style={styles.button}
-			onPress = {this.unfollow}
-			testID = 'follow-button'
-		/>
+				button = <Button
+				title= "Following"
+				type='primary'
+				style={styles.button}
+				onPress = {this.unfollow}
+				testID = 'following-button'
+			/>
 		}
-return(
-		<View style={styles.buttonContainer}>
-		{button}
-		</View>
-		)
-		}
-		renderFollowersAndFollowing = () => {
-			const { roomUser } = this.state;
-			const { navigation } = this.props;
-			const rid = navigation.getParam('rid');
-			return (
+
+		return(
+			<View style={styles.buttonContainer}>
+			{button}
+			</View>
+			)
+	}
+	renderFollowersAndFollowing = () => {
+		const { roomUser } = this.state;
+		const { navigation } = this.props;
+		const rid = navigation.getParam('rid');
+		return (
 			<View style={styles.followContainer}>
 				<TouchableHighlight
 					style = {styles.buttonContainer}
@@ -269,14 +267,14 @@ return(
 					style = {styles.buttonContainer}
 					onPress = { () => { navigation.navigate('RoomFollowView', { rid, follow: 'Following'}) } }
 				>
-				<View style={styles.followingContainer}>
-					<Text style={styles.followContent}>{roomUser.following}</Text>
-					<Text style={styles.followLabel}>FOLLOWING</Text>
-				</View>
+					<View style={styles.followingContainer}>
+						<Text style={styles.followContent}>{roomUser.following}</Text>
+						<Text style={styles.followLabel}>FOLLOWING</Text>
+					</View>
 				</TouchableHighlight>
 			</View>
 			)
-			}
+	}
 
 	renderBroadcast = () => (
 		<View style={styles.item}>
