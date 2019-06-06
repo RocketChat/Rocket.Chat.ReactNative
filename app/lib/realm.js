@@ -416,7 +416,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 11,
+			schemaVersion: 12,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
 					const newSubs = newRealm.objects('subscriptions');
