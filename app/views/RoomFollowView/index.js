@@ -77,9 +77,6 @@ export default class RoomFollowView extends LoggedView {
 	componentDidMount() {
 		this.fetchFollowers();
 		safeAddListener(this.rooms, this.updateRoom);
-
-		const { navigation } = this.props;
-		navigation.setParams({ toggleStatus: this.toggleStatus });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -161,17 +158,6 @@ export default class RoomFollowView extends LoggedView {
 		this.setState({ userLongPressed: user });
 		vibrate();
 		this.showActionSheet();
-	}
-
-	toggleStatus = () => {
-		try {
-			const { allUsers } = this.state;
-			this.setState({ followers: [], allUsers: !allUsers, end: false }, () => {
-				this.fetchFollowers();
-			});
-		} catch (e) {
-			log('RoomFollowView.toggleStatus', e);
-		}
 	}
 
 	showActionSheet = () => {
