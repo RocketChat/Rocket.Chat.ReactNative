@@ -40,13 +40,14 @@ const styles = StyleSheet.create({
 });
 
 const HeaderTitle = React.memo(({ connecting, isFetching }) => {
+	let title = I18n.t('Messages');
 	if (connecting) {
-		return <Text style={styles.title}>{I18n.t('Connecting')}</Text>;
+		title = I18n.t('Connecting');
 	}
 	if (isFetching) {
-		return <Text style={styles.title}>{I18n.t('Updating')}</Text>;
+		title = I18n.t('Updating');
 	}
-	return <Text style={styles.title}>{I18n.t('Messages')}</Text>;
+	return <Text style={styles.title}>{title}</Text>;
 });
 
 const Header = React.memo(({
@@ -57,6 +58,7 @@ const Header = React.memo(({
 			onPress={onPress}
 			testID='rooms-list-header-server-dropdown-button'
 			style={styles.container}
+			disabled={connecting || isFetching}
 		>
 			<HeaderTitle connecting={connecting} isFetching={isFetching} />
 			<View style={styles.button}>
