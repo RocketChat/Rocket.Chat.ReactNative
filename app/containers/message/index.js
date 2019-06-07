@@ -24,7 +24,7 @@ export default class MessageContainer extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date),
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
-		Message_Read_Receipt_Enabled: PropTypes.bool,
+		isReadReceiptEnabled: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
 		status: PropTypes.number,
@@ -191,7 +191,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, Message_Read_Receipt_Enabled
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread
@@ -217,7 +217,7 @@ export default class MessageContainer extends React.Component {
 				broadcast={broadcast}
 				baseUrl={baseUrl}
 				useRealName={useRealName}
-				Message_Read_Receipt_Enabled={Message_Read_Receipt_Enabled}
+				isReadReceiptEnabled={isReadReceiptEnabled}
 				unread={unread}
 				role={role}
 				drid={drid}

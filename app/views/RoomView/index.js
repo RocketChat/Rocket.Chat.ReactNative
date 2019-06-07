@@ -543,7 +543,7 @@ export default class RoomView extends React.Component {
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
-				Message_Read_Receipt_Enabled={Message_Read_Receipt_Enabled}
+				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 			/>
 		);
 

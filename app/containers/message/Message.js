@@ -75,7 +75,7 @@ const Message = React.memo((props) => {
 					<MessageInner {...props} />
 				</View>
 				<ReadReceipt
-					Message_Read_Receipt_Enabled={props.Message_Read_Receipt_Enabled}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					unread={props.unread}
 				/>
 			</View>
@@ -107,13 +107,16 @@ const MessageTouchable = React.memo((props) => {
 });
 MessageTouchable.displayName = 'MessageTouchable';
 
-const ReadReceipt = React.memo(({ Message_Read_Receipt_Enabled, unread }) => {
-	if (Message_Read_Receipt_Enabled) {
-		return !unread ? <CustomIcon name='check' color={COLOR_PRIMARY} size={15} /> : <View style={styles.emptySpace} />;
+const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }) => {
+	if (isReadReceiptEnabled) {
+		if (unread) {
+			return <View style={styles.emptySpace} />;
+		}
+		return <CustomIcon name='check' color={COLOR_PRIMARY} size={15} />;
 	}
 	return null;
 });
-ReadReceipt.displayName = 'ReadReceipt';
+ReadReceipt.displayName = 'MessageReadReceipt';
 
 MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
@@ -134,7 +137,7 @@ Message.propTypes = {
 	style: PropTypes.any,
 	onLongPress: PropTypes.func,
 	onPress: PropTypes.func,
-	Message_Read_Receipt_Enabled: PropTypes.bool,
+	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool
 };
 
@@ -143,7 +146,7 @@ MessageInner.propTypes = {
 };
 
 ReadReceipt.propTypes = {
-	Message_Read_Receipt_Enabled: PropTypes.bool,
+	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool
 };
 
