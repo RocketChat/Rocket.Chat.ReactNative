@@ -5,12 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 
-import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
@@ -19,6 +16,9 @@ import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import RCActivityIndicator from '../containers/ActivityIndicator';
+import debounce from '../utils/debounce';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		token: state.login.user && state.login.user.token
 	}
 }))
-export default class NewMessageView extends React.Component {
+export default class DirectoryView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Directory')
 	})
@@ -68,28 +68,29 @@ export default class NewMessageView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
-			search: []
+			data: [],
+			loading: false,
+			text: '',
+			total: -1
 		};
-		safeAddListener(this.data, this.updateState);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { search } = this.state;
-		if (!equal(nextState.search, search)) {
-			return true;
-		}
-		return false;
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { search } = this.state;
+	// 	if (!equal(nextState.search, search)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
+
+	componentDidMount() {
+		this.load();
 	}
 
-	componentWillUnmount() {
-		this.updateState.stop();
-		this.data.removeAllListeners();
-	}
-
-	onSearchChangeText(text) {
-		this.search(text);
+	onSearchChangeText = (text) => {
+		// this.search(text);
+		this.setState({ text });
 	}
 
 	onPressItem = (item) => {
@@ -98,32 +99,52 @@ export default class NewMessageView extends React.Component {
 		onPressItem(item);
 	}
 
-	dismiss = () => {
-		const { navigation } = this.props;
-		return navigation.pop();
-	}
-
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.forceUpdate();
-	}, 1000);
+	load = debounce(async(clear) => {
+		if (clear) {
+			this.setState({ data: [], total: -1, loading: false });
+		}
 
-	search = async(text) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
-		this.setState({
-			search: result
-		});
-	}
+		const {
+			loading, text, total, data: { length }
+		} = this.state;
+		if (loading || length === total) {
+			return;
+		}
 
-	createChannel = () => {
-		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
+		this.setState({ loading: true });
+
+		try {
+			const { data } = this.state;
+			const query = { text, type: 'users', workspace: 'all' };
+			const directories = await RocketChat.getDirectory({ query, offset: data.length, count: 50 });
+			if (directories.success) {
+				this.setState({
+					data: [...data, ...directories.result],
+					loading: false,
+					total: directories.total
+				});
+			} else {
+				this.setState({ loading: false });
+			}
+		} catch (error) {
+			log('err_load_directory', error);
+			this.setState({ loading: false });
+		}
+	}, 200)
+
+	search = () => {
+		this.load(true);
 	}
 
 	renderHeader = () => (
 		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
+			<SearchBox
+				onChangeText={this.onSearchChangeText}
+				onSubmitEditing={this.search}
+				testID='federation-view-search'
+			/>
+			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='federation-view-create-channel'>
 				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
 					<CustomIcon style={styles.createChannelIcon} size={20} name='user' />
 					<Text style={[styles.createChannelText, { flex: 1 }]}>Users</Text>
@@ -136,26 +157,20 @@ export default class NewMessageView extends React.Component {
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item, index }) => {
-		const { search } = this.state;
+		const { data } = this.state;
 		const { baseUrl, user } = this.props;
-
-		let style = {};
-		if (index === 0) {
-			style = { ...sharedStyles.separatorTop };
-		}
-		if (search.length > 0 && index === search.length - 1) {
-			style = { ...style, ...sharedStyles.separatorBottom };
-		}
-		if (search.length === 0 && index === this.data.length - 1) {
-			style = { ...style, ...sharedStyles.separatorBottom };
+		let style;
+		if (index === data.length - 1) {
+			style = sharedStyles.separatorBottom;
 		}
 		return (
 			<UserItem
-				name={item.search ? item.name : item.fname}
-				username={item.search ? item.username : item.name}
+				name={item.name}
+				username={item.username}
+				rightLabel='open.rocket.chat'
 				onPress={() => this.onPressItem(item)}
 				baseUrl={baseUrl}
-				testID={`new-message-view-item-${ item.name }`}
+				testID={`federation-view-item-${ item.username }`}
 				style={style}
 				user={user}
 			/>
@@ -163,22 +178,26 @@ export default class NewMessageView extends React.Component {
 	}
 
 	renderList = () => {
-		const { search } = this.state;
+		const { data, loading } = this.state;
 		return (
 			<FlatList
-				data={search.length > 0 ? search : this.data}
+				data={data}
+				style={{ flex: 1 }}
+				contentContainerStyle={{ paddingBottom: 30 }}
 				extraData={this.state}
 				keyExtractor={item => item._id}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				keyboardShouldPersistTaps='always'
+				ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+				onEndReached={() => this.load()}
 			/>
 		);
 	}
 
 	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
+		<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ bottom: 'never' }}>
 			<StatusBar />
 			{this.renderList()}
 		</SafeAreaView>

@@ -14,11 +14,14 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR_WHITE
 	},
 	container: {
-		flexDirection: 'row'
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingHorizontal: 15
 	},
 	avatar: {
-		marginHorizontal: 15,
-		marginVertical: 12
+		marginRight: 12
 	},
 	textContainer: {
 		flex: 1,
@@ -35,6 +38,12 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorDescription
 	},
+	label: {
+		fontSize: 14,
+		paddingLeft: 10,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
+	},
 	icon: {
 		marginHorizontal: 15,
 		alignSelf: 'center',
@@ -42,16 +51,24 @@ const styles = StyleSheet.create({
 	}
 });
 
+const UserItemLabel = React.memo(({ text }) => {
+	if (!text) {
+		return null;
+	}
+	return <Text style={styles.label}>{text}</Text>;
+});
+
 const UserItem = ({
-	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user
+	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user, rightLabel
 }) => (
 	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={[styles.container, style]}>
 			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
-				<Text style={styles.name}>{name}</Text>
-				<Text style={styles.username}>@{username}</Text>
+				<Text style={styles.name} numberOfLines={1}>{name}</Text>
+				<Text style={styles.username} numberOfLines={1}>@{username}</Text>
 			</View>
+			<UserItemLabel text={rightLabel} />
 			{icon ? <CustomIcon name={icon} size={22} style={styles.icon} /> : null}
 		</View>
 	</Touch>
@@ -69,7 +86,12 @@ UserItem.propTypes = {
 	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func,
 	style: PropTypes.any,
-	icon: PropTypes.string
+	icon: PropTypes.string,
+	rightLabel: PropTypes.string
+};
+
+UserItemLabel.propTypes = {
+	text: PropTypes.string
 };
 
 export default UserItem;

@@ -849,6 +849,10 @@ const RocketChat = {
 				this.sdk.subscribe('stream-notify-logged', 'user-status');
 			}
 		}
+	},
+	getDirectory({ query, count, offset }) {
+		// RC 1.0
+		return this.sdk.get('directory', { query, count, offset });
 	}
 };
 
