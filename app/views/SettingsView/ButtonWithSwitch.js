@@ -7,9 +7,9 @@ import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { isAndroid } from '../../utils/deviceInfo';
 
 const ButtonWithSwitch = React.memo(({
-	onValueChange, title, subtitle, disable, value
+	onValueChange, title, subtitle, disable, value, testID
 }) => (
-	<View style={[styles.sectionItem, disable && styles.sectionItemDisabled]}>
+	<View style={[styles.sectionItem, disable && styles.sectionItemDisabled]} testID={testID}>
 		<View>
 			<Text style={styles.sectionItemTitle}>{title}</Text>
 			{subtitle
@@ -36,7 +36,8 @@ ButtonWithSwitch.propTypes = {
 	onValueChange: PropTypes.func,
 	title: PropTypes.string.isRequired,
 	subtitle: PropTypes.string,
-	disable: PropTypes.bool
+	disable: PropTypes.bool,
+	testID: PropTypes.string
 };
 
 ButtonWithSwitch.defaultProps = {

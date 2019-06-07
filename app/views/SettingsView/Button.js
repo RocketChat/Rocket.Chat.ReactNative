@@ -8,7 +8,7 @@ import { COLOR_TEXT } from '../../constants/colors';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 const Button = React.memo(({
-	onPress, title, subTitle, showActionIndicator, disable
+	onPress, title, subTitle, showActionIndicator, disable, testID
 }) => (
 	<RectButton
 		onPress={onPress}
@@ -16,6 +16,7 @@ const Button = React.memo(({
 		underlayColor={COLOR_TEXT}
 		enabled={!disable}
 		style={styles.rectButton}
+		testID={testID}
 	>
 		<View style={[styles.sectionItem, disable && styles.sectionItemDisabled]}>
 			<View>
@@ -36,7 +37,8 @@ Button.propTypes = {
 	title: PropTypes.string.isRequired,
 	subTitle: PropTypes.string,
 	showActionIndicator: PropTypes.bool,
-	disable: PropTypes.bool
+	disable: PropTypes.bool,
+	testID: PropTypes.string
 };
 
 Button.defaultProps = {

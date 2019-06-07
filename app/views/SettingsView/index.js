@@ -90,25 +90,25 @@ export default class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator testID='setting-view-contact' />
+					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator testID='settings-view-contact' />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Language')} onPress={this.navigateToRoom('LanguageView')} showActionIndicator testID='setting-view-language' />
+					<Button title={I18n.t('Language')} onPress={this.navigateToRoom('LanguageView')} showActionIndicator testID='settings-view-language' />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Theme')} showActionIndicator disable testID='setting-view-theme' />
+					<Button title={I18n.t('Theme')} showActionIndicator disable testID='settings-view-theme' />
 					{this.renderSeparator()}
-					<Button title={I18n.t('Share_this_app')} showActionIndicator disable testID='setting-view-share-app' />
+					<Button title={I18n.t('Share_this_app')} showActionIndicator disable testID='settings-view-share-app' />
 
 					{this.renderSectionSeparator()}
 
-					<Button title={I18n.t('License')} onPress={() => this.openLink(LICENSE_LINK)} showActionIndicator testID='setting-view-license' />
+					<Button title={I18n.t('License')} onPress={() => this.openLink(LICENSE_LINK)} showActionIndicator testID='settings-view-license' />
 					{this.renderSeparator()}
-					<InfoButton title={I18n.t('Version_no', { version: getReadableVersion })} testID='setting-view-version' />
+					<InfoButton title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
 					{this.renderSeparator()}
-					<InfoButton title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} testID='setting-view-server-version' />
+					<InfoButton title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} testID='settings-view-server-version' />
 
 					{this.renderSectionSeparator()}
 
-					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} testID='setting-view-markdown' />
+					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} testID='settings-view-markdown' />
 				</ScrollView>
 			</SafeAreaView>
 		);

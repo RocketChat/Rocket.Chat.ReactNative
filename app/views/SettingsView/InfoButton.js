@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 
-const InfoButton = React.memo(({ title, subTitle }) => (
-	<View style={styles.infoButton}>
+const InfoButton = React.memo(({ title, subTitle, testID }) => (
+	<View style={styles.infoButton} testID={testID}>
 		<Text style={styles.sectionItemTitle}>{title}</Text>
 		{subTitle
 			? <Text style={styles.sectionItemSubTitle}>{subTitle}</Text>
@@ -16,7 +16,8 @@ const InfoButton = React.memo(({ title, subTitle }) => (
 
 InfoButton.propTypes = {
 	title: PropTypes.string.isRequired,
-	subTitle: PropTypes.string
+	subTitle: PropTypes.string,
+	testID: PropTypes.string
 };
 
 export default InfoButton;
