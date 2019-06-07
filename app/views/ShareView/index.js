@@ -26,7 +26,7 @@ export default class ShareView extends React.Component {
 		title: I18n.t('Share'),
 		headerRight: (
 			<TouchableOpacity onPress={navigation.getParam('sendMessage')} style={styles.sendButton}>
-				<Text style={styles.send}>Enviar</Text>
+				<Text style={styles.send}>{I18n.t('Send')}</Text>
 			</TouchableOpacity>
 		)
 	})
@@ -51,7 +51,7 @@ export default class ShareView extends React.Component {
 		const text = navigation.getParam('text', '');
 		this.setState({ rid, text, name });
 
-		navigation.setParams({ sendMessage: this._sendMessagee });
+		navigation.setParams({ sendMessage: this._sendMessage });
 	}
 
 	_sendMessage = () => {

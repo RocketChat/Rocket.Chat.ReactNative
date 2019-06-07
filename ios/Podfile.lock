@@ -142,7 +142,6 @@ DEPENDENCIES:
   - Crashlytics (~> 3.12.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Fabric (~> 1.9.0)
-  - Firebase/Core
   - Firebase/Core (~> 5.20.1)
   - Firebase/Performance (~> 5.20.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -244,6 +243,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 5eb5b0e70b4137f9fad7a928c840f92f67d266bf
+PODFILE CHECKSUM: f98adf896db83acfddda2f17bf015d55d15a89f2
 
 COCOAPODS: 1.6.2
