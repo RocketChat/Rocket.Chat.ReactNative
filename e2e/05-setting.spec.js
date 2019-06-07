@@ -28,11 +28,11 @@ describe('Settings screen', () => {
 		});
 
 		it('should have theme', async() => {
-			await expect(element(by.id('settings-theme'))).toExist();
+			await expect(element(by.id('settings-view-theme'))).toExist();
 		});
 
 		it('should have share app', async() => {
-			await expect(element(by.id('settings-share-app'))).toExist();
+			await expect(element(by.id('settings-view-share-app'))).toExist();
 		});
 
 		it('should have licence', async() => {
@@ -61,14 +61,34 @@ describe('Settings screen', () => {
 			await element(by.id('settings-view-language')).tap();
 			await waitFor(element(by.id('language-view'))).toBeVisible().withTimeout(60000);
             await expect(element(by.id('language-view-zh-CN'))).toExist();
-            await expect(element(by.id('language-de'))).toExist();
-            await expect(element(by.id('language-en'))).toExist();
-            await expect(element(by.id('language-fr'))).toExist();
-            await expect(element(by.id('language-pt-BR'))).toExist();
-            await expect(element(by.id('language-pt-PT'))).toExist();
-            await expect(element(by.id('language-ru'))).toExist();
+            await expect(element(by.id('language-view-de'))).toExist();
+            await expect(element(by.id('language-view-en'))).toExist();
+            await expect(element(by.id('language-view-fr'))).toExist();
+            await expect(element(by.id('language-view-pt-BR'))).toExist();
+            await expect(element(by.id('language-view-pt-PT'))).toExist();
+            await expect(element(by.id('language-view-ru'))).toExist();
 		});
 
+		it('should navigate to change language', async() => {
+            await expect(element(by.id('language-view-zh-CN'))).toExist();
+            await element(by.id('language-view-zh-CN')).tap()
+            await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('rooms-list-view'))).toBeVisible();
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+			await element(by.id('rooms-list-view-sidebar')).tap();
+			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.text('语言'))).toBeVisible();
+			await element(element(by.text('语言'))).tap();
+			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
+			await element(by.id('settings-view-language')).tap();
+			await expect(element(by.id('language-en'))).tap();
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('rooms-list-view'))).toBeVisible();
+			await element(by.id('rooms-list-view-sidebar')).tap();
+			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+			await expect(element(by.text('Language'))).toBeVisible();
+			await expect(element(by.text('Language'))).tap();
+		});
 		after(async() => {
 			takeScreenshot();
 		});

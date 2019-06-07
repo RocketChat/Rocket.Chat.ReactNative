@@ -138,7 +138,7 @@ export default class LanguageView extends React.Component {
 				onPress={() => this.submit(value)}
 				activeOpacity={0.1}
 				underlayColor={COLOR_TEXT}
-				testID={`laguage-view-${ value }`}
+				testID={`language-view-${ value }`}
 			>
 				<View style={styles.containerItem}>
 					<Text style={styles.text}>{label}</Text>
