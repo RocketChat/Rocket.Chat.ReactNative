@@ -710,11 +710,16 @@ class MessageBox extends Component {
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
 		}
-		const defineTestID = type => ({
-			MENTIONS_TRACKING_TYPE_EMOJIS: `mention-item-${ item.name || item }`,
-			MENTIONS_TRACKING_TYPE_COMMANDS: `mention-item-${ item.command || item }`,
-			MENTIONS_TRACKING_TYPE_USERS: `mention-item-${ item.username || item }`
-		}[type]);
+		const defineTestID = (type) => {
+			switch (type) {
+				case MENTIONS_TRACKING_TYPE_EMOJIS:
+					return `mention-item-${ item.name || item }`;
+				case MENTIONS_TRACKING_TYPE_COMMANDS:
+					return `mention-item-${ item.command || item }`;
+				default:
+					return `mention-item-${ item.username || item.name || item }`;
+			}
+		};
 
 		const testID = defineTestID(trackingType);
 
@@ -730,7 +735,7 @@ class MessageBox extends Component {
 						case MENTIONS_TRACKING_TYPE_EMOJIS:
 							return (
 								<React.Fragment>
-									this.renderMentionEmoji(item)
+									{this.renderMentionEmoji(item)}
 									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
 								</React.Fragment>
 							);
@@ -754,7 +759,7 @@ class MessageBox extends Component {
 										userId={user.id}
 										token={user.token}
 									/>
-									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
+									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
 								</React.Fragment>
 							);
 					}
