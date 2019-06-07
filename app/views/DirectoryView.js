@@ -25,23 +25,35 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
+	list: {
+		flex: 1
+	},
+	listContainer: {
+		paddingBottom: 30
+	},
 	separator: {
 		marginLeft: 60
 	},
-	createChannelContainer: {
+	toggleDropdownContainer: {
 		height: 47,
 		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	createChannelIcon: {
+	toggleDropdownIcon: {
 		color: COLOR_PRIMARY,
-		marginHorizontal: 18
+		marginLeft: 20,
+		marginRight: 17
 	},
-	createChannelText: {
+	toggleDropdownText: {
+		flex: 1,
 		color: COLOR_PRIMARY,
 		fontSize: 17,
 		...sharedStyles.textRegular
+	},
+	toggleDropdownArrow: {
+		color: '#cbced1',
+		marginRight: 15
 	}
 });
 
@@ -89,7 +101,6 @@ export default class DirectoryView extends React.Component {
 	}
 
 	onSearchChangeText = (text) => {
-		// this.search(text);
 		this.setState({ text });
 	}
 
@@ -137,21 +148,23 @@ export default class DirectoryView extends React.Component {
 		this.load(true);
 	}
 
+	toggleDropdown = () => {}
+
 	renderHeader = () => (
-		<View>
+		<React.Fragment>
 			<SearchBox
 				onChangeText={this.onSearchChangeText}
 				onSubmitEditing={this.search}
 				testID='federation-view-search'
 			/>
-			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='federation-view-create-channel'>
-				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
-					<CustomIcon style={styles.createChannelIcon} size={20} name='user' />
-					<Text style={[styles.createChannelText, { flex: 1 }]}>Users</Text>
-					<CustomIcon name='arrow-down' size={20} style={{ color: '#cbced1', marginRight: 15 }} />
+			<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>
+				<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer]}>
+					<CustomIcon style={styles.toggleDropdownIcon} size={20} name='user' />
+					<Text style={styles.toggleDropdownText}>Users</Text>
+					<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
 				</View>
 			</Touch>
-		</View>
+		</React.Fragment>
 	)
 
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
@@ -182,8 +195,8 @@ export default class DirectoryView extends React.Component {
 		return (
 			<FlatList
 				data={data}
-				style={{ flex: 1 }}
-				contentContainerStyle={{ paddingBottom: 30 }}
+				style={styles.list}
+				contentContainerStyle={styles.listContainer}
 				extraData={this.state}
 				keyExtractor={item => item._id}
 				ListHeaderComponent={this.renderHeader}
