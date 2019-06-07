@@ -296,6 +296,7 @@ export default {
 	Search: 'Buscar',
 	Select_Avatar: 'Selecionar Avatar',
 	Select_Channels: 'Selecionar Canais',
+	Select_Server: 'Selecionar Servidor',
 	Select_Users: 'Selecionar Usuários',
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',

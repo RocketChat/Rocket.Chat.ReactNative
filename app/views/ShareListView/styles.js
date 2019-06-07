@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT, HEADER_BACK
+	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT, HEADER_BACK, COLOR_SEPARATOR
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -20,6 +20,11 @@ export default StyleSheet.create({
 	flatlist: {
 		width: '100%',
 		backgroundColor: COLOR_WHITE
+	},
+	bordered: {
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderColor: COLOR_SEPARATOR
 	},
 	scroll: {
 		width: '100%'

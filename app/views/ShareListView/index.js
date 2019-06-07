@@ -5,8 +5,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'react-native-share-extension';
+import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
+import { RectButton } from 'react-native-gesture-handler';
 
+import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
 import { isIOS } from '../../utils/deviceInfo';
@@ -55,7 +58,8 @@ export default class ShareListView extends React.Component {
 			channels: [],
 			privateGroup: [],
 			direct: [],
-			livechat: []
+			livechat: [],
+			servers: []
 		};
 	}
 
@@ -82,9 +86,8 @@ export default class ShareListView extends React.Component {
 			this.data.removeAllListeners();
 		}
 
-		const {
-			server
-		} = this.props;
+		const { serversDB } = database.databases;
+		const { server } = this.props;
 
 		if (server && this.hasActiveDB()) {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
@@ -93,6 +96,7 @@ export default class ShareListView extends React.Component {
 			this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
 			this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
 			this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
+			this.servers = serversDB.objects('servers');
 			safeAddListener(this.data, this.updateState);
 		}
 	}, 300);
@@ -105,7 +109,8 @@ export default class ShareListView extends React.Component {
 				channels: this.channels ? this.channels.slice() : [],
 				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
 				direct: this.direct ? this.direct.slice() : [],
-				livechat: this.livechat ? this.livechat.slice() : []
+				livechat: this.livechat ? this.livechat.slice() : [],
+				servers: this.servers ? this.servers.slice() : []
 			});
 			this.forceUpdate();
 		});
@@ -160,6 +165,7 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<View style={styles.content}>
+				{this.renderServerSelector()}
 				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
@@ -170,12 +176,8 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderSectionHeader = header => (
-		<View
-			style={styles.headerContainer}
-		>
-			<Text
-				style={styles.headerText}
-			>
+		<View style={styles.headerContainer}>
+			<Text style={styles.headerText}>
 				{I18n.t(header)}
 			</Text>
 		</View>
@@ -216,6 +218,30 @@ export default class ShareListView extends React.Component {
 		}
 		return null;
 	}
+
+	renderServerSelector = () => {
+		const { servers } = this.state;
+		const { server } = this.props;
+		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
+		return (
+			<View>
+				{this.renderSectionHeader('Select_Server')}
+				<RectButton onPress={() => Navigation.navigate('SelectServerView')} style={[{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 }, styles.bordered]}>
+					<FastImage
+						style={{ height: 50, width: 50 }}
+						source={{
+							uri: currentServer.iconURL,
+							priority: FastImage.priority.high
+						}}
+					/>
+					<View style={{ marginLeft: 10, justifyContent: 'center' }}>
+						<Text style={{ fontSize: 18, lineHeight: 24 }}>{currentServer.name}</Text>
+						<Text style={{ fontSize: 14 }}>{currentServer.id}</Text>
+					</View>
+				</RectButton>
+			</View>
+		);
+	};
 
 	render() {
 		return (

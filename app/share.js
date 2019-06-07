@@ -8,12 +8,19 @@ import store from './lib/createStore';
 import { appInit } from './actions';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
+import SelectServerView from './views/SelectServerView';
 import AuthLoadingView from './views/AuthLoadingView';
 
-const InsideNavigator = createStackNavigator({
-	ShareListView,
-	ShareView
-});
+const InsideNavigator = createStackNavigator(
+	{
+		ShareListView,
+		ShareView,
+		SelectServerView
+	},
+	{
+		initialRouteName: 'ShareListView'
+	}
+);
 const AppContainer = createAppContainer(createSwitchNavigator(
 	{
 		InsideStack: InsideNavigator,

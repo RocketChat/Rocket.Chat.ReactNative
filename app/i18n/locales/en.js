@@ -297,6 +297,7 @@ export default {
 	Search: 'Search',
 	Select_Avatar: 'Select Avatar',
 	Select_Channels: 'Select Channels',
+	Select_Server: 'Select Server',
 	Select_Users: 'Select Users',
 	Send: 'Send',
 	Send_audio_message: 'Send audio message',
