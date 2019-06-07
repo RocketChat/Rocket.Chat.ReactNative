@@ -72,7 +72,7 @@ describe('Create user screen', () => {
 			const invalidEmail = 'invalidemail';
 			await element(by.id('register-view-name')).replaceText(data.user);
 			await element(by.id('register-view-username')).replaceText(data.user);
-			await element(by.id('register-view-email')).replaceText('diego.mello@rocket.chat');
+			await element(by.id('register-view-email')).replaceText(data.existingEmail);
 			await element(by.id('register-view-password')).replaceText(data.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0)).toExist().withTimeout(10000);
@@ -83,7 +83,7 @@ describe('Create user screen', () => {
 		it('should submit email already taken and raise error', async() => {
 			const invalidEmail = 'invalidemail';
 			await element(by.id('register-view-name')).replaceText(data.user);
-			await element(by.id('register-view-username')).replaceText('diego.mello');
+			await element(by.id('register-view-username')).replaceText(data.existingName);
 			await element(by.id('register-view-email')).replaceText(data.email);
 			await element(by.id('register-view-password')).replaceText(data.password);
 			await element(by.id('register-view-submit')).tap();
