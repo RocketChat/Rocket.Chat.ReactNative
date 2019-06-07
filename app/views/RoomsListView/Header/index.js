@@ -11,7 +11,7 @@ import Header from './Header';
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
-	connecting: state.meteor.connecting,
+	connecting: state.meteor.connecting || state.server.loading,
 	isFetching: state.rooms.isFetching,
 	serverName: state.settings.Site_Name
 }), dispatch => ({
