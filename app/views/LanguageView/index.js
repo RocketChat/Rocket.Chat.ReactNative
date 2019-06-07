@@ -138,6 +138,7 @@ export default class LanguageView extends React.Component {
 				onPress={() => this.submit(value)}
 				activeOpacity={0.1}
 				underlayColor={COLOR_TEXT}
+				testID={`laguage-view-${ value }`}
 			>
 				<View style={styles.containerItem}>
 					<Text style={styles.text}>{label}</Text>
@@ -157,10 +158,10 @@ export default class LanguageView extends React.Component {
 				<StatusBar />
 				<ScrollView
 					contentContainerStyle={styles.containerScrollView}
-					testID='settings-view-list'
+					testID='language-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='settings-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='language-view' forceInset={{ bottom: 'never' }}>
 						<FlatList
 							data={LANGUAGES}
 							keyExtractor={item => item.value}
