@@ -850,9 +850,13 @@ const RocketChat = {
 			}
 		}
 	},
-	getDirectory({ query, count, offset }) {
+	getDirectory({
+		query, count, offset, sort
+	}) {
 		// RC 1.0
-		return this.sdk.get('directory', { query, count, offset });
+		return this.sdk.get('directory', {
+			query, count, offset, sort
+		});
 	}
 };
 
