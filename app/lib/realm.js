@@ -1,5 +1,5 @@
 import Realm from 'realm';
-// import RNRealmPath from 'react-native-realm-path';
+import RNRealmPath from 'react-native-realm-path';
 
 // import { AsyncStorage } from 'react-native';
 // Realm.clearTestState();
@@ -356,7 +356,7 @@ const inMemorySchema = [usersTypingSchema, activeUsersSchema];
 class DB {
 	databases = {
 		serversDB: new Realm({
-			path: 'default.realm',
+			path: `${ RNRealmPath.realmPath }default.realm`,
 			schema: [
 				serversSchema
 			],
@@ -381,7 +381,7 @@ class DB {
 			}
 		}),
 		inMemoryDB: new Realm({
-			path: 'memory.realm',
+			path: `${ RNRealmPath.realmPath }memory.realm`,
 			schema: inMemorySchema,
 			schemaVersion: 2,
 			inMemory: true
@@ -423,7 +423,7 @@ class DB {
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
-			path: `${ path }.realm`,
+			path: `${ RNRealmPath.realmPath }${ path }.realm`,
 			schema,
 			schemaVersion: 11,
 			migration: (oldRealm, newRealm) => {
