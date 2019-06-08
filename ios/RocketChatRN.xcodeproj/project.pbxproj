@@ -20,6 +20,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1E175AF022AC2313002E1A7B /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E175AEF22AC230A002E1A7B /* libSplashScreen.a */; };
 		1E36219E22A1FFD90042F8C5 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E36219722A1FFC70042F8C5 /* libRNKeychain.a */; };
 		1E36219F22A1FFE50042F8C5 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E36219722A1FFC70042F8C5 /* libRNKeychain.a */; };
 		1E3621A622A202E30042F8C5 /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3621A522A202DE0042F8C5 /* libRNRealmPath.a */; };
@@ -132,6 +133,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		1E175AEE22AC230A002E1A7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E175AAE22AC230A002E1A7B /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
 		};
 		1E36219622A1FFC70042F8C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -553,6 +561,7 @@
 		1845C223DA364898A8400573 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
+		1E175AAE22AC230A002E1A7B /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRealmPath.xcodeproj; path = "../node_modules/react-native-realm-path/ios/RNRealmPath.xcodeproj"; sourceTree = "<group>"; };
 		1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -645,6 +654,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E175AF022AC2313002E1A7B /* libSplashScreen.a in Frameworks */,
 				1E3621D122A209F10042F8C5 /* libFastImage.a in Frameworks */,
 				1E3621D022A2049C0042F8C5 /* libRNDeviceInfo.a in Frameworks */,
 				1E3621A722A202E80042F8C5 /* libRNRealmPath.a in Frameworks */,
@@ -774,6 +784,14 @@
 				7ACD4882222860DE00442C55 /* libjsiexecutor.a */,
 				7ACD4884222860DE00442C55 /* libjsi-tvOS.a */,
 				7ACD4886222860DE00442C55 /* libjsiexecutor-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E175AAF22AC230A002E1A7B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E175AEF22AC230A002E1A7B /* libSplashScreen.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -931,6 +949,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1E175AAE22AC230A002E1A7B /* SplashScreen.xcodeproj */,
 				1E3621C722A204950042F8C5 /* RNDeviceInfo.xcodeproj */,
 				1E3621A022A202DD0042F8C5 /* RNRealmPath.xcodeproj */,
 				1E36215E22A1FFC60042F8C5 /* RNKeychain.xcodeproj */,
@@ -1297,6 +1316,10 @@
 					ProductGroup = B810DF8D203B10480010C331 /* Products */;
 					ProjectRef = 4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */;
 				},
+				{
+					ProductGroup = 1E175AAF22AC230A002E1A7B /* Products */;
+					ProjectRef = 1E175AAE22AC230A002E1A7B /* SplashScreen.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1361,6 +1384,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E175AEF22AC230A002E1A7B /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = 1E175AEE22AC230A002E1A7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1E36219722A1FFC70042F8C5 /* libRNKeychain.a */ = {
