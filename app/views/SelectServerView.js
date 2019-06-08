@@ -19,10 +19,19 @@ import {
 import Navigation from '../lib/Navigation';
 import ServerItem from '../presentation/ServerItem';
 
-const getItemLayout = (data, index) => ({ length: 70, offset: 70 * index, index });
+const getItemLayout = (data, index) => ({ length: 68, offset: 68 * index, index });
 const keyExtractor = item => item.id;
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	list: {
+		width: '100%',
+		flex: 1,
+		paddingVertical: 32
+	},
 	server: {
 		backgroundColor: COLOR_WHITE
 	}
@@ -88,7 +97,7 @@ export default class LoginView extends React.Component {
 				<FlatList
 					data={servers}
 					keyExtractor={keyExtractor}
-					style={{ width: '100%', flex: 1, paddingVertical: 32 }}
+					style={styles.list}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					enableEmptySections
@@ -105,7 +114,7 @@ export default class LoginView extends React.Component {
 	render() {
 		return (
 			<SafeAreaView
-				style={{ flex: 1, backgroundColor: COLOR_BACKGROUND_CONTAINER }}
+				style={styles.container}
 				forceInset={{ bottom: 'never' }}
 			>
 				<StatusBar />

@@ -47,5 +47,10 @@ export default StyleSheet.create({
 	cancel: {
 		color: HEADER_BACK,
 		fontSize: 16
+	},
+	separator: {
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderColor: COLOR_SEPARATOR,
+		marginLeft: 48
 	}
 });

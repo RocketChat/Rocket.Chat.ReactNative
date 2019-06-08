@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
@@ -32,10 +32,15 @@ export default class ShareItem extends React.Component {
 		return (
 			<RectButton
 				onPress={onPress}
-				style={styles.content}
 			>
-				<Avatar text={name} size={24} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-				<Text style={styles.name} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
+				<View style={styles.content}>
+					<Avatar text={name} size={24} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+					<View
+						style={styles.center}
+					>
+						<Text style={styles.name} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
+					</View>
+				</View>
 			</RectButton>
 		);
 	}

@@ -197,6 +197,8 @@ export default class ShareListView extends React.Component {
 		return null;
 	}
 
+	renderSeparator = () => <View style={styles.separator} />;
+
 	renderSection = (data, header) => {
 		if (data && data.length > 0) {
 			return (
@@ -206,6 +208,7 @@ export default class ShareListView extends React.Component {
 					style={styles.flatlist}
 					renderItem={this.renderItem}
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
+					ItemSeparatorComponent={this.renderSeparator}
 					getItemLayout={getItemLayout}
 					enableEmptySections
 					removeClippedSubviews
@@ -225,10 +228,12 @@ export default class ShareListView extends React.Component {
 		return (
 			<View>
 				{this.renderSectionHeader('Select_Server')}
-				<ServerItem
-					onPress={() => Navigation.navigate('SelectServerView')}
-					item={currentServer}
-				/>
+				<View style={styles.bordered}>
+					<ServerItem
+						onPress={() => Navigation.navigate('SelectServerView')}
+						item={currentServer}
+					/>
+				</View>
 			</View>
 		);
 	};

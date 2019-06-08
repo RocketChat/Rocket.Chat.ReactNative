@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import SplashScreen from 'react-native-splash-screen';
+// import SplashScreen from 'react-native-splash-screen';
 import * as Keychain from 'react-native-keychain';
 
 import * as actions from '../actions';
@@ -46,7 +46,7 @@ const start = function* start({ root }) {
 	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
 	}
-	SplashScreen.hide();
+	// SplashScreen.hide();
 };
 
 const root = function* root() {

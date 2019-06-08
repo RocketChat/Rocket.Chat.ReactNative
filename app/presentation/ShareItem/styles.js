@@ -1,9 +1,5 @@
 import { StyleSheet, PixelRatio } from 'react-native';
 
-import {
-	COLOR_SEPARATOR
-} from '../../constants/colors';
-
 export const ROW_HEIGHT = 56 * PixelRatio.getFontScale();
 
 export default StyleSheet.create({
@@ -13,14 +9,17 @@ export default StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		marginLeft: 14,
-		paddingRight: 28,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR
+		paddingRight: 28
 	},
 	name: {
-		flex: 1,
 		fontSize: 17,
 		lineHeight: 20
+	},
+	center: {
+		flex: 1,
+		height: '100%',
+		width: '100%',
+		justifyContent: 'center'
 	},
 	avatar: {
 		marginRight: 10

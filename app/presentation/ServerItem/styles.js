@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import {
-	COLOR_SEPARATOR, COLOR_PRIMARY
+	COLOR_PRIMARY
 } from '../../constants/colors';
 
 import sharedStyles from '../../views/Styles';
@@ -38,10 +38,5 @@ export default StyleSheet.create({
 	checkIcon: {
 		marginHorizontal: 15,
 		color: COLOR_PRIMARY
-	},
-	serverSeparator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
-		marginLeft: 72
 	}
 });
