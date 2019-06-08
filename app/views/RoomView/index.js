@@ -227,7 +227,7 @@ export default class RoomView extends React.Component {
 	componentWillUnmount() {
 		this.mounted = false;
 		const { editing, replying } = this.props;
-		if (!editing && this.messagebox && this.messagebox.current && this.messagebox.current.text) {
+		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
 			let obj;
 			if (this.tmid) {
