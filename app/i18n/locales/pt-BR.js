@@ -364,6 +364,7 @@ export default {
 	Welcome: 'Bem vindo',
 	Welcome_to_RocketChat: 'Bem vindo ao Rocket.Chat',
 	Whats_your_2fa: 'Qual seu código de autenticação?',
+	Without_Servers: 'Sem Servidores',
 	Yes_action_it: 'Sim, {{action}}!',
 	Yesterday: 'Ontem',
 	You_are_in_preview_mode: 'Está é uma prévia do canal',
@@ -373,5 +374,6 @@ export default {
 	you_were_mentioned: 'você foi mencionado',
 	you: 'você',
 	You: 'Você',
-	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!'
+	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!',
+	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Você precisa acessar pelo menos um servidor Rocket.Chat para compartilhar algo.'
 };

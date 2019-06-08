@@ -10,6 +10,7 @@ import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
 import AuthLoadingView from './views/AuthLoadingView';
+import WithoutServersView from './views/WithoutServersView';
 
 const InsideNavigator = createStackNavigator(
 	{
@@ -21,8 +22,19 @@ const InsideNavigator = createStackNavigator(
 		initialRouteName: 'ShareListView'
 	}
 );
+
+const OutsideNavigator = createStackNavigator(
+	{
+		WithoutServersView
+	},
+	{
+		initialRouteName: 'WithoutServersView'
+	}
+);
+
 const AppContainer = createAppContainer(createSwitchNavigator(
 	{
+		OutsideStack: OutsideNavigator,
 		InsideStack: InsideNavigator,
 		AuthLoading: AuthLoadingView
 	},
@@ -31,13 +43,11 @@ const AppContainer = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-// gets the current screen from navigation state
 const getActiveRouteName = (navigationState) => {
 	if (!navigationState) {
 		return null;
 	}
 	const route = navigationState.routes[navigationState.index];
-	// dive into nested navigators
 	if (route.routes) {
 		return getActiveRouteName(route);
 	}

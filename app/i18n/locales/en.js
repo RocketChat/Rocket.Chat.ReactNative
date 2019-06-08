@@ -369,6 +369,7 @@ export default {
 	Welcome: 'Welcome',
 	Welcome_to_RocketChat: 'Welcome to Rocket.Chat',
 	Whats_your_2fa: 'What\'s your 2FA code?',
+	Without_Servers: 'Without Servers',
 	Yes_action_it: 'Yes, {{action}} it!',
 	Yesterday: 'Yesterday',
 	You_are_in_preview_mode: 'You are in preview mode',
@@ -378,5 +379,6 @@ export default {
 	you_were_mentioned: 'you were mentioned',
 	you: 'you',
 	You: 'You',
-	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!'
+	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
+	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'You need to access at least one Rocket.Chat server to share something.'
 };
