@@ -12,7 +12,7 @@ import { setPreference } from '../../actions/sortPreferences';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import Check from './Check';
+import Check from '../../containers/Check';
 
 const ANIMATION_DURATION = 200;
 

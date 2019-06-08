@@ -1,7 +1,4 @@
 import { StyleSheet } from 'react-native';
-import {
-	COLOR_PRIMARY
-} from '../../constants/colors';
 
 import sharedStyles from '../../views/Styles';
 
@@ -34,9 +31,5 @@ export default StyleSheet.create({
 		fontSize: 15,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
-	},
-	checkIcon: {
-		marginHorizontal: 15,
-		color: COLOR_PRIMARY
 	}
 });
