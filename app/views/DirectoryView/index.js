@@ -25,7 +25,8 @@ import styles from './styles';
 	user: {
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	isFederationEnabled: state.settings.FEDERATION_Enabled
 }))
 export default class DirectoryView extends React.Component {
 	static navigationOptions = () => ({
@@ -35,6 +36,7 @@ export default class DirectoryView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
+		isFederationEnabled: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -206,6 +208,7 @@ export default class DirectoryView extends React.Component {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
+		const { isFederationEnabled } = this.props;
 		return (
 			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
@@ -230,6 +233,7 @@ export default class DirectoryView extends React.Component {
 							close={this.toggleDropdown}
 							changeType={this.changeType}
 							toggleWorkspace={this.toggleWorkspace}
+							isFederationEnabled={isFederationEnabled}
 						/>
 					)
 					: null}

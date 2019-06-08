@@ -16,6 +16,7 @@ export default class DirectoryOptions extends PureComponent {
 	static propTypes = {
 		type: PropTypes.string,
 		globalUsers: PropTypes.bool,
+		isFederationEnabled: PropTypes.bool,
 		close: PropTypes.func,
 		changeType: PropTypes.func,
 		toggleWorkspace: PropTypes.func
@@ -61,7 +62,7 @@ export default class DirectoryOptions extends PureComponent {
 			outputRange: [0, 0.3]
 		});
 		const {
-			type, globalUsers, changeType, toggleWorkspace
+			type, globalUsers, changeType, toggleWorkspace, isFederationEnabled
 		} = this.props;
 		return (
 			<React.Fragment>
@@ -92,14 +93,20 @@ export default class DirectoryOptions extends PureComponent {
 							{type === 'users' ? <Check /> : null}
 						</View>
 					</Touch>
-					<View style={styles.dropdownSeparator} />
-					<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
-						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>
-							<Text style={styles.dropdownItemDescription}>{I18n.t('Search_global_users_description')}</Text>
-						</View>
-						<Switch value={globalUsers} onValueChange={toggleWorkspace} />
-					</View>
+					{isFederationEnabled
+						? (
+							<React.Fragment>
+								<View style={styles.dropdownSeparator} />
+								<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
+									<View style={{ flex: 1, flexDirection: 'column' }}>
+										<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>
+										<Text style={styles.dropdownItemDescription}>{I18n.t('Search_global_users_description')}</Text>
+									</View>
+									<Switch value={globalUsers} onValueChange={toggleWorkspace} />
+								</View>
+							</React.Fragment>
+						)
+						: null}
 				</Animated.View>
 			</React.Fragment>
 		);
