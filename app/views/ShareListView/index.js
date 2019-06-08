@@ -5,9 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'react-native-share-extension';
-import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
 
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
@@ -18,6 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
 
 import styles from './styles';
+import ServerItem from '../../presentation/ServerItem';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
@@ -226,19 +225,10 @@ export default class ShareListView extends React.Component {
 		return (
 			<View>
 				{this.renderSectionHeader('Select_Server')}
-				<RectButton onPress={() => Navigation.navigate('SelectServerView')} style={[{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 }, styles.bordered]}>
-					<FastImage
-						style={{ height: 50, width: 50 }}
-						source={{
-							uri: currentServer.iconURL,
-							priority: FastImage.priority.high
-						}}
-					/>
-					<View style={{ marginLeft: 10, justifyContent: 'center' }}>
-						<Text style={{ fontSize: 18, lineHeight: 24 }}>{currentServer.name}</Text>
-						<Text style={{ fontSize: 14 }}>{currentServer.id}</Text>
-					</View>
-				</RectButton>
+				<ServerItem
+					onPress={() => Navigation.navigate('SelectServerView')}
+					item={currentServer}
+				/>
 			</View>
 		);
 	};

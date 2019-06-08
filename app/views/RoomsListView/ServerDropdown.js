@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList
 } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import PropTypes from 'prop-types';
@@ -13,10 +13,9 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
-import Touch from '../../utils/touch';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import Check from './Check';
+import ServerItem from '../../presentation/ServerItem';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -138,37 +137,13 @@ class ServerDropdown extends Component {
 
 	renderSeparator = () => <View style={styles.serverSeparator} />;
 
-	renderServer = ({ item }) => {
-		const { server } = this.props;
-
-		return (
-			<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
-				<View style={styles.serverItemContainer}>
-					{item.iconURL
-						? (
-							<Image
-								source={{ uri: item.iconURL }}
-								defaultSource={{ uri: 'logo' }}
-								style={styles.serverIcon}
-								onError={() => console.warn('error loading serverIcon')}
-							/>
-						)
-						: (
-							<Image
-								source={{ uri: 'logo' }}
-								style={styles.serverIcon}
-							/>
-						)
-					}
-					<View style={styles.serverTextContainer}>
-						<Text style={styles.serverName}>{item.name || item.id}</Text>
-						<Text style={styles.serverUrl}>{item.id}</Text>
-					</View>
-					{item.id === server ? <Check /> : null}
-				</View>
-			</Touch>
-		);
-	}
+	renderServer = ({ item }) => (
+		<ServerItem
+			onPress={() => this.select(item.id)}
+			item={item}
+			hasCheck
+		/>
+	);
 
 	render() {
 		const { servers } = this.state;

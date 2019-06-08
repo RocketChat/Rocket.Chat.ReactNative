@@ -1,28 +1,32 @@
 import React from 'react';
 import {
-	FlatList, Text, View
+	FlatList, View, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import * as Keychain from 'react-native-keychain';
 import { connect } from 'react-redux';
 import { HeaderBackButton, SafeAreaView } from 'react-navigation';
-import FastImage from 'react-native-fast-image';
-import { RectButton } from 'react-native-gesture-handler';
 
 import I18n from '../i18n';
 import database from '../lib/realm';
-import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import EventEmitter from '../utils/events';
 import { selectServerRequest as selectServerRequestAction } from '../actions/server';
 
 import {
-	HEADER_BACK, COLOR_BACKGROUND_CONTAINER
+	HEADER_BACK, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
 } from '../constants/colors';
 import Navigation from '../lib/Navigation';
+import ServerItem from '../presentation/ServerItem';
 
 const getItemLayout = (data, index) => ({ length: 70, offset: 70 * index, index });
 const keyExtractor = item => item.id;
+
+const styles = StyleSheet.create({
+	server: {
+		backgroundColor: COLOR_WHITE
+	}
+});
 
 @connect(state => ({
 	server: state.server.server
@@ -65,34 +69,15 @@ export default class LoginView extends React.Component {
 		}
 	}
 
-	renderItem = ({ item }) => {
-		const { server } = this.props;
-		return (
-			<RectButton
+	renderItem = ({ item }) => (
+		<View style={styles.server}>
+			<ServerItem
 				onPress={() => this.select(item.id)}
-				style={{
-					flexDirection: 'row',
-					paddingHorizontal: 16,
-					paddingVertical: 8,
-					backgroundColor: 'white',
-					alignItems: 'center'
-				}}
-			>
-				<FastImage
-					style={{ height: 50, width: 50 }}
-					source={{
-						uri: item.iconURL,
-						priority: FastImage.priority.high
-					}}
-				/>
-				<View style={{ marginLeft: 10, justifyContent: 'center' }}>
-					<Text style={{ fontSize: 18, lineHeight: 24 }}>{item.name}</Text>
-					<Text style={{ fontSize: 14 }}>{item.id}</Text>
-				</View>
-				{item.id === server ? <CustomIcon name='check' size={20} style={{ position: 'absolute', right: 16 }} /> : null}
-			</RectButton>
-		);
-	}
+				item={item}
+				hasCheck
+			/>
+		</View>
+	);
 
 	renderList = () => {
 		const { serversDB } = database.databases;
