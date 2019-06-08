@@ -153,7 +153,7 @@ export default class DirectoryView extends React.Component {
 				<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer]}>
 						<CustomIcon style={styles.toggleDropdownIcon} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
-						<Text style={styles.toggleDropdownText}>{type === 'users' ? 'Users' : 'Channels'}</Text>
+						<Text style={styles.toggleDropdownText}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
 						<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
 					</View>
 				</Touch>

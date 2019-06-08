@@ -147,5 +147,17 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth,
 		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 72
+	},
+	directoryIcon: {
+		width: 22,
+		height: 22,
+		marginHorizontal: 15,
+		color: COLOR_PRIMARY
+	},
+	directoryText: {
+		fontSize: 15,
+		flex: 1,
+		color: COLOR_PRIMARY,
+		...sharedStyles.textRegular
 	}
 });

@@ -7,7 +7,6 @@ import I18n from '../../../i18n';
 import Touch from '../../../utils/touch';
 import styles from '../styles';
 import DisclosureIndicator from '../../../containers/DisclosureIndicator';
-import { COLOR_PRIMARY } from '../../../constants/colors';
 
 
 const Directory = React.memo(({ goDirectory }) => (
@@ -17,8 +16,8 @@ const Directory = React.memo(({ goDirectory }) => (
 		style={styles.dropdownContainerHeader}
 	>
 		<View style={styles.sortItemContainer}>
-			<CustomIcon style={[styles.sortIcon, { color: COLOR_PRIMARY }]} size={22} name='discover' />
-			<Text style={[styles.sortToggleText, { color: COLOR_PRIMARY, marginLeft: 0 }]}>{I18n.t('Directory')}</Text>
+			<CustomIcon style={styles.directoryIcon} size={22} name='discover' />
+			<Text style={styles.directoryText}>{I18n.t('Directory')}</Text>
 			<DisclosureIndicator />
 		</View>
 	</Touch>

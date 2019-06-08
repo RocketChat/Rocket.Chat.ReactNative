@@ -137,5 +137,11 @@ export default StyleSheet.create({
 		paddingLeft: 10,
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorDescription
+	},
+	inverted: {
+		transform: [{ scaleY: -1 }]
+	},
+	globalUsersContainer: {
+		padding: 15
 	}
 });
