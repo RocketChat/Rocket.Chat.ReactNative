@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import {
-	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE
+	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
 } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
@@ -152,12 +152,12 @@ export default StyleSheet.create({
 		width: 22,
 		height: 22,
 		marginHorizontal: 15,
-		color: COLOR_PRIMARY
+		color: isIOS ? COLOR_PRIMARY : COLOR_TEXT_DESCRIPTION
 	},
 	directoryText: {
 		fontSize: 15,
 		flex: 1,
-		color: COLOR_PRIMARY,
+		color: isIOS ? COLOR_PRIMARY : COLOR_TEXT_DESCRIPTION,
 		...sharedStyles.textRegular
 	}
 });
