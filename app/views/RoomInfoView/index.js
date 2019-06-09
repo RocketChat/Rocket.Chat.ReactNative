@@ -239,7 +239,7 @@ export default class RoomInfoView extends React.Component {
 					title='Following'
 					type='primary'
 					style={styles.button}
-					onPress={this.follow}
+					onPress={this.unfollow}
 					testID='following-button'
 				/>
 			);
