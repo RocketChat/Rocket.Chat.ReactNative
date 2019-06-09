@@ -18,8 +18,8 @@ import SortDropdown from './SortDropdown';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction
-	// roomsRequest as roomsRequestAction
+	closeSearchHeader as closeSearchHeaderAction,
+	roomsRequest as roomsRequestAction
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
@@ -53,8 +53,8 @@ const keyExtractor = item => item.rid;
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction())
-	// roomsRequest: () => dispatch(roomsRequestAction())
+	appStart: () => dispatch(appStartAction()),
+	roomsRequest: () => dispatch(roomsRequestAction())
 }))
 export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -101,12 +101,12 @@ export default class RoomsListView extends React.Component {
 		showUnread: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
-		// appState: PropTypes.string,
+		appState: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func
-		// roomsRequest: PropTypes.func
+		appStart: PropTypes.func,
+		roomsRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -182,7 +182,7 @@ export default class RoomsListView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
 		} = this.props;
 
 		if (!(
@@ -192,11 +192,9 @@ export default class RoomsListView extends React.Component {
 			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
+		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+			roomsRequest();
 		}
-		// removed for now... we may not need it anymore
-		// else if (appState === 'foreground' && appState !== prevProps.appState) {
-		// 	// roomsRequest();
-		// }
 	}
 
 	componentWillUnmount() {

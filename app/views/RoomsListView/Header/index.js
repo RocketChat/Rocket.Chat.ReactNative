@@ -7,7 +7,7 @@ import Header from './Header';
 
 @connect(state => ({
 	showSearchHeader: state.rooms.showSearchHeader,
-	connecting: state.meteor.connecting,
+	connecting: state.meteor.connecting || state.server.loading,
 	isFetching: state.rooms.isFetching,
 	serverName: state.settings.Site_Name
 }), dispatch => ({
