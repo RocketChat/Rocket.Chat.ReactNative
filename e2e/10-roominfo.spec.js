@@ -44,11 +44,12 @@ describe('Room info screen', () => {
 		
 		describe('Usage', async() => {
 			it('should change follow button', async() => {
+				await expect(element(by.id('follow-button'))).toBeVisible();
 				await element(by.id('follow-button')).tap();
-				await waitFor(element(by.id('following-button'))).toBeVisible().withTimeout(60000);
+				await waitFor(element(by.id('following-button'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('following-button'))).toBeVisible();
 				await element(by.id('following-button')).tap();
-				await waitFor(element(by.id('follow-button'))).toBeVisible().withTimeout(60000);
+				await waitFor(element(by.id('follow-button'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('follow-button'))).toBeVisible();
 			})
 			
