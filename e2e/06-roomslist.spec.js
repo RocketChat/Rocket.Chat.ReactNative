@@ -70,8 +70,8 @@ describe('Rooms list screen', () => {
 				await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('sidebar-logout'))).toBeVisible().withTimeout(2000);
 				await element(by.id('sidebar-logout')).tap();
-				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.id('onboarding-view'))).toBeVisible();
+				await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('login-view'))).toBeVisible();
 			});
 		});
 

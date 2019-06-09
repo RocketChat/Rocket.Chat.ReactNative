@@ -7,6 +7,8 @@ const { tapBack } = require('./helpers/app');
 describe('Welcome screen', () => {
 	before(async() => {
 		await device.reloadReactNative();
+		await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+		await tapBack();
 		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 	})
 
