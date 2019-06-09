@@ -25,7 +25,7 @@ import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
-import RoomFollowView from './views/RoomFollowView'
+import RoomFollowView from './views/RoomFollowView';
 import RoomMembersView from './views/RoomMembersView';
 import SearchMessagesView from './views/SearchMessagesView';
 import ThreadMessagesView from './views/ThreadMessagesView';

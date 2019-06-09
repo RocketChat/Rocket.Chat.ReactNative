@@ -5,14 +5,12 @@ import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-
-import LoggedView from '../View';
 import styles from './styles';
 import UserItem from './UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
-import { showToast } from '../../utils/info';
+import { Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
@@ -31,11 +29,11 @@ const PAGE_SIZE = 25;
 }))
 
 /** @extends React.Component */
-export default class RoomFollowView extends LoggedView {
+export default class RoomFollowView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
-    const title = navigation.getParam('follow') // Followers or Following
+		const title = navigation.getParam('follow'); // Followers or Following
 		return {
-			title: title
+			title
 		};
 	}
 
@@ -173,7 +171,7 @@ export default class RoomFollowView extends LoggedView {
 	// eslint-disable-next-line react/sort-comp
 	fetchFollowers = async() => {
 		const {
-			rid, followers, isLoading, allUsers, end
+			followers, isLoading, allUsers, end
 		} = this.state;
 		const { navigation } = this.props;
 		if (isLoading || end) {
@@ -182,14 +180,12 @@ export default class RoomFollowView extends LoggedView {
 
 		this.setState({ isLoading: true });
 		try {
-      // Right now we are fetching MEMBERS of general room because there is no api for fetching followers.
-      const followersResult = await RocketChat.getRoomMembers('GENERAL', allUsers, followers.length, PAGE_SIZE);
-			
-			/* 
+			// Right now we are fetching MEMBERS of general room because there is no api for fetching followers.
+			const followersResult = await RocketChat.getRoomMembers('GENERAL', allUsers, followers.length, PAGE_SIZE);
+			/*
 			 TODO here we have to differentiate with the help of the navigation param whether we want to want followers or following.
-			 Both followers and following are named as followers. 
+			 Both followers and following are named as followers.
 			*/
-			
 			const newFollowers = followersResult.records;
 			this.setState({
 				followers: followers.concat(newFollowers || []),
@@ -220,7 +216,7 @@ export default class RoomFollowView extends LoggedView {
 		const { rid, userLongPressed } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			showToast(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
+			Toast(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
 			log('handleMute', e);
 		}

@@ -34,7 +34,7 @@ export default StyleSheet.create({
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		padding: 16,
+		padding: 16
 	},
 	roomTitle: {
 		fontSize: 18,
@@ -44,7 +44,7 @@ export default StyleSheet.create({
 	followContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
@@ -64,17 +64,17 @@ export default StyleSheet.create({
 	followingContainer: {
 		borderColor: '#f5f5f5',
 		borderWidth: 1,
-		borderRadius:2,
+		borderRadius: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 	followersContainer: {
 		marginRight: 10,
 		borderColor: '#f5f5f5',
 		borderWidth: 1,
-		borderRadius:2,
+		borderRadius: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -89,7 +89,7 @@ export default StyleSheet.create({
 	},
 	itemLabel: {
 		marginBottom: 10,
-		marginTop:10,
+		marginTop: 10,
 		fontSize: 14,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium

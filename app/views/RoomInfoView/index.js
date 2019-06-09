@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableHighlight, ScrollView, StyleSheet } from 'react-native';
+import {
+	View, Text, TouchableHighlight, ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
@@ -16,7 +18,6 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import Button from '../../containers/Button';
-import { blue } from 'ansi-colors';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -96,9 +97,9 @@ export default class RoomInfoView extends React.Component {
 			try {
 				const result = await RocketChat.getUserInfo(roomUserId);
 				// setting follow and following count manually until we get that from an api.
-				result.user.isFollowing = false // is the user following the user whose profile he is visiting
-				result.user.following = 12
-				result.user.followers = 356
+				result.user.isFollowing = false; // is the user following the user whose profile he is visiting
+				result.user.following = 12;
+				result.user.followers = 356;
 				if (result.success) {
 					this.setState({ roomUser: result.user });
 				}
@@ -115,19 +116,18 @@ export default class RoomInfoView extends React.Component {
 	follow = () => {
 		const { roomUser } = this.state;
 		roomUser.isFollowing = true;
-		roomUser.followers = roomUser.followers + 1;
-		this.setState({ roomUser: roomUser });
+		roomUser.followers += 1;
+		this.setState({ roomUser });
 	}
 
 	unfollow = () => {
 		const { roomUser } = this.state;
 		roomUser.isFollowing = false;
-		roomUser.followers = roomUser.followers - 1;
-		this.setState({ roomUser: roomUser });
+		roomUser.followers -= 1;
+		this.setState({ roomUser });
 	}
 
 	getRoleDescription = (id) => {
-		Reactotron.logImportant(database)
 		const role = database.objectForPrimaryKey('roles', id);
 		if (role) {
 			return role.description;
@@ -221,33 +221,37 @@ export default class RoomInfoView extends React.Component {
 			</Avatar>
 		);
 	}
+
 	renderFollowButton = () => {
 		const { roomUser } = this.state;
-		if(!roomUser.isFollowing)
-			{
-				button = <Button
-				title= "Follow"
+		let button = (
+			<Button
+				title='Follow'
 				type='primary'
 				style={styles.button}
-				onPress = {this.follow}
-				testID = 'follow-button'
+				onPress={this.follow}
+				testID='follow-button'
 			/>
-		} else {
-				button = <Button
-				title= "Following"
-				type='primary'
-				style={styles.button}
-				onPress = {this.unfollow}
-				testID = 'following-button'
-			/>
+		);
+		if (roomUser.isFollowing) {
+			button = (
+				<Button
+					title='Following'
+					type='primary'
+					style={styles.button}
+					onPress={this.follow}
+					testID='following-button'
+				/>
+			);
 		}
 
-		return(
+		return (
 			<View style={styles.buttonContainer}>
-			{button}
+				{button}
 			</View>
-			)
+		);
 	}
+
 	renderFollowersAndFollowing = () => {
 		const { roomUser } = this.state;
 		const { navigation } = this.props;
@@ -255,8 +259,8 @@ export default class RoomInfoView extends React.Component {
 		return (
 			<View style={styles.followContainer}>
 				<TouchableHighlight
-					style = {styles.buttonContainer}
-					onPress = { () => { navigation.navigate('RoomFollowView', { rid, follow: 'Followers'}) } }
+					style={styles.buttonContainer}
+					onPress={() => { navigation.navigate('RoomFollowView', { rid, follow: 'Followers' }); }}
 				>
 					<View style={styles.followersContainer}>
 						<Text style={styles.followContent}>{roomUser.followers}</Text>
@@ -264,8 +268,8 @@ export default class RoomInfoView extends React.Component {
 					</View>
 				</TouchableHighlight>
 				<TouchableHighlight
-					style = {styles.buttonContainer}
-					onPress = { () => { navigation.navigate('RoomFollowView', { rid, follow: 'Following'}) } }
+					style={styles.buttonContainer}
+					onPress={() => { navigation.navigate('RoomFollowView', { rid, follow: 'Following' }); }}
 				>
 					<View style={styles.followingContainer}>
 						<Text style={styles.followContent}>{roomUser.following}</Text>
@@ -273,7 +277,7 @@ export default class RoomInfoView extends React.Component {
 					</View>
 				</TouchableHighlight>
 			</View>
-			)
+		);
 	}
 
 	renderBroadcast = () => (
@@ -327,7 +331,7 @@ export default class RoomInfoView extends React.Component {
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
 					</View>
 					{this.isDirect() ? this.renderFollowersAndFollowing() : null}
-					{this.isDirect() ? this.renderFollowButton(): null}
+					{this.isDirect() ? this.renderFollowButton() : null}
 					{!this.isDirect() ? this.renderItem('description', room) : null}
 					{!this.isDirect() ? this.renderItem('topic', room) : null}
 					{!this.isDirect() ? this.renderItem('announcement', room) : null}
