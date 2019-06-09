@@ -116,7 +116,7 @@ export default class LanguageView extends React.Component {
 			setTimeout(() => {
 				this.toast.show(I18n.t('Preferences_saved'));
 				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
-				navigation.push('RoomsListView');
+				navigation.navigate('RoomsListView');
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });

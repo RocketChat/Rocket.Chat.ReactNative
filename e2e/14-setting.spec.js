@@ -3,12 +3,11 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login } = require('./helpers/app');
-const data = require('./data');
-
-const scrollDown = 200;
 
 describe('Settings screen', () => {
 	before(async() => {
+		await device.reloadReactNative();
+		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
@@ -74,20 +73,20 @@ describe('Settings screen', () => {
             await element(by.id('language-view-zh-CN')).tap()
             await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await element(by.id('rooms-list-view-sidebar')).tap();
 			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.text('语言'))).toBeVisible();
-			await element(element(by.text('语言'))).tap();
+			await waitFor(element(by.text('设置'))).toBeVisible().withTimeout(2000);
+			await element(by.text('设置')).tap();
 			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('settings-view-language')).tap();
-			await expect(element(by.id('language-en'))).tap();
+			await element(by.id('language-view-en')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-sidebar')).tap();
 			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.text('Language'))).toBeVisible();
-			await expect(element(by.text('Language'))).tap();
+			await expect(element(by.text('Settings'))).toBeVisible();
+			await element(by.text('Settings')).tap();
+			await expect(element(by.id('settings-view'))).toBeVisible();
 		});
 		after(async() => {
 			takeScreenshot();
