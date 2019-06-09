@@ -37,16 +37,6 @@ export default function login(state = initialState, action) {
 				...state,
 				searchText: action.searchText
 			};
-		case types.ROOMS.CLOSE_SERVER_DROPDOWN:
-			return {
-				...state,
-				closeServerDropdown: !state.closeServerDropdown
-			};
-		case types.ROOMS.TOGGLE_SERVER_DROPDOWN:
-			return {
-				...state,
-				showServerDropdown: !state.showServerDropdown
-			};
 		case types.ROOMS.CLOSE_SORT_DROPDOWN:
 			return {
 				...state,

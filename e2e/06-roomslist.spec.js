@@ -64,19 +64,7 @@ describe('Rooms list screen', () => {
 
 		// Usage - Sidebar
 		describe('SidebarView', async() => {
-			it('should navigate to add server', async() => {
-				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible();
-				await expect(element(by.id('rooms-list-header-server-add'))).toBeVisible();
-				await element(by.id('rooms-list-header-server-add')).tap();
-				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('onboarding-view'))).toBeVisible();
-				await element(by.id('onboarding-close')).tap();
-				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			});
-	
+			
 			it('should logout', async() => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
 				await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);

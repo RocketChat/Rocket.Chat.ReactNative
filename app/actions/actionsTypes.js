@@ -18,8 +18,6 @@ export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
 	'SET_SEARCH',
-	'CLOSE_SERVER_DROPDOWN',
-	'TOGGLE_SERVER_DROPDOWN',
 	'CLOSE_SORT_DROPDOWN',
 	'TOGGLE_SORT_DROPDOWN',
 	'OPEN_SEARCH_HEADER',

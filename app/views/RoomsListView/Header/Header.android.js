@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Text, View, TouchableOpacity, Image, StyleSheet
+	Text, View, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { TextInput } from 'react-native-gesture-handler';
@@ -30,20 +30,11 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: COLOR_WHITE,
 		...sharedStyles.textRegular
-	},
-	disclosure: {
-		marginLeft: 9,
-		marginTop: 1,
-		width: 10,
-		height: 5
-	},
-	upsideDown: {
-		transform: [{ scaleY: -1 }]
 	}
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
+	connecting, isFetching, serverName, setSearchInputRef, showSearchHeader, onSearchChangeText
 }) => {
 	if (showSearchHeader) {
 		return (
@@ -60,22 +51,17 @@ const Header = React.memo(({
 	}
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
-				{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
-				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
-				<View style={styles.button}>
-					<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
-					<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
-				</View>
-			</TouchableOpacity>
+			{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
+			{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
+			<View style={styles.button}>
+				<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
+			</View>
 		</View>
 	);
 });
 
 Header.propTypes = {
-	showServerDropdown: PropTypes.bool.isRequired,
 	showSearchHeader: PropTypes.bool.isRequired,
-	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	setSearchInputRef: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,

@@ -9,8 +9,6 @@ import firebase from 'react-native-firebase';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
-import OnboardingView from './views/OnboardingView';
-import NewServerView from './views/NewServerView';
 import LoginSignupView from './views/LoginSignupView';
 import AuthLoadingView from './views/AuthLoadingView';
 import RoomsListView from './views/RoomsListView';
@@ -70,12 +68,10 @@ const defaultHeader = {
 
 // Outside
 const OutsideStack = createStackNavigator({
-	OnboardingView: {
-		screen: OnboardingView,
+	LoginSignupView: {
+		screen: LoginSignupView,
 		header: null
 	},
-	NewServerView,
-	LoginSignupView,
 	LoginView,
 	ForgotPasswordView,
 	RegisterView,

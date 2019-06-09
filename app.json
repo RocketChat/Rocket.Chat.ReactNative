@@ -1,4 +1,5 @@
 {
   "name": "RocketChatRN",
-  "displayName": "RocketChatRN"
+  "displayName": "RocketChatRN",
+  "server": "https://open.rocket.chat"
 }

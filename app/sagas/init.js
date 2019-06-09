@@ -3,7 +3,7 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 
 import * as actions from '../actions';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleMarkdown } from '../actions/markdown';
 import { APP } from '../actions/actionsTypes';
@@ -11,6 +11,7 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
+import appConfig from '../../app.json';
 
 const restore = function* restore() {
 	try {
@@ -30,7 +31,7 @@ const restore = function* restore() {
 				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
 				AsyncStorage.removeItem('currentServer')
 			]);
-			yield put(actions.appStart('outside'));
+			yield put(serverRequest(appConfig.server));
 		} else if (server) {
 			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));

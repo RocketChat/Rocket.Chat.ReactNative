@@ -15,7 +15,6 @@ import styles from './styles';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
-import ServerDropdown from './ServerDropdown';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
@@ -42,7 +41,6 @@ const keyExtractor = item => item.rid;
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
-	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
@@ -96,7 +94,6 @@ export default class RoomsListView extends React.Component {
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
-		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
@@ -546,7 +543,7 @@ export default class RoomsListView extends React.Component {
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+			sortBy, groupByType, showFavorites, showUnread, showSortDropdown
 		} = this.props;
 
 		return (
@@ -565,7 +562,6 @@ export default class RoomsListView extends React.Component {
 					)
 					: null
 				}
-				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	}
