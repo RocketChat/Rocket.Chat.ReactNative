@@ -5,12 +5,13 @@ import {
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
-import { serverFinishAdd, selectServerRequest } from '../actions/server';
+import { serverFinishAdd, serverRequest } from '../actions/server';
 import { loginFailure, loginSuccess } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/realm';
+import appConfig from '../../app.json';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -68,16 +69,9 @@ const handleLogout = function* handleLogout() {
 			serversDB.write(() => {
 				serversDB.delete(serverRecord);
 			});
-			// see if there's other logged in servers and selects first one
-			if (servers.length > 0) {
-				const newServer = servers[0].id;
-				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-				if (token) {
-					return yield put(selectServerRequest(newServer));
-				}
-			}
+
 			// if there's no servers, go outside
-			yield put(appStart('outside'));
+			yield put(serverRequest(appConfig.server));
 		} catch (e) {
 			yield put(appStart('outside'));
 			log('err_handle_logout', e);

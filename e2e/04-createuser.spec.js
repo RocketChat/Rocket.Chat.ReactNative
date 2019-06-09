@@ -6,11 +6,6 @@ const { logout, sleep } = require('./helpers/app');
 const data = require('./data');
 
 async function navigateToRegister() {
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-	await element(by.id('connect-server-button')).tap();
-	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(data.server);
-	await element(by.id('new-server-view-button')).tap();
 	// we're assuming the server don't have login services and the navigation will jump to login
 	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 	await element(by.id('login-view-register')).tap();
