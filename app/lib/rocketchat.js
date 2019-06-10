@@ -771,6 +771,12 @@ const RocketChat = {
 			sort: { ts: -1 }
 		});
 	},
+
+	getReadReceipts(messageId) {
+		return this.sdk.get('chat.getMessageReadReceipts', {
+			messageId
+		});
+	},
 	searchMessages(roomId, searchText) {
 		// RC 0.60.0
 		return this.sdk.get('chat.search', {
