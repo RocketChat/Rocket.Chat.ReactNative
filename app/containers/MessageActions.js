@@ -17,6 +17,7 @@ import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import log from '../utils/log';
+import Navigation from '../lib/Navigation';
 
 @connect(
 	state => ({
@@ -26,7 +27,8 @@ import log from '../utils/log';
 		Message_AllowEditing: state.settings.Message_AllowEditing,
 		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 		Message_AllowPinning: state.settings.Message_AllowPinning,
-		Message_AllowStarring: state.settings.Message_AllowStarring
+		Message_AllowStarring: state.settings.Message_AllowStarring,
+		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 	}),
 	dispatch => ({
 		actionsHide: () => dispatch(actionsHideAction()),
@@ -56,7 +58,8 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing: PropTypes.bool,
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
-		Message_AllowStarring: PropTypes.bool
+		Message_AllowStarring: PropTypes.bool,
+		Message_Read_Receipt_Store_Users: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -64,7 +67,7 @@ export default class MessageActions extends React.Component {
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.setPermissions();
 
-		const { Message_AllowStarring, Message_AllowPinning } = this.props;
+		const { Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users } = this.props;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -116,6 +119,12 @@ export default class MessageActions extends React.Component {
 		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
 			this.options.push(I18n.t('Add_Reaction'));
 			this.REACTION_INDEX = this.options.length - 1;
+		}
+
+		// Read Receipts
+		if (Message_Read_Receipt_Store_Users) {
+			this.options.push(I18n.t('Read_Receipt'));
+			this.READ_RECEIPT_INDEX = this.options.length - 1;
 		}
 
 		// Report
@@ -302,6 +311,11 @@ export default class MessageActions extends React.Component {
 		toggleReactionPicker(actionMessage);
 	}
 
+	handleReadReceipt = () => {
+		const { actionMessage } = this.props;
+		Navigation.navigate('ReadReceiptsView', { messageId: actionMessage._id });
+	}
+
 	handleReport = async() => {
 		const { actionMessage } = this.props;
 		try {
@@ -347,6 +361,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();
+					break;
+				case this.READ_RECEIPT_INDEX:
+					this.handleReadReceipt();
 					break;
 				default:
 					break;
