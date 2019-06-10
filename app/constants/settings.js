@@ -14,6 +14,9 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
+	FEDERATION_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -56,7 +59,16 @@ export default {
 	Assets_favicon_512: {
 		type: null
 	},
+	Message_Read_Receipt_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Message_Read_Receipt_Store_Users: {
+		type: 'valueAsBoolean'
+	},
 	Threads_enabled: {
 		type: null
+	},
+	API_Gitlab_URL: {
+		type: 'valueAsString'
 	}
 };

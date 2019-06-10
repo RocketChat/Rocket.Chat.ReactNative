@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import firebase from 'react-native-firebase';
+import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -16,6 +17,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import NewMessageView from './views/NewMessageView';
+import DirectoryView from './views/DirectoryView';
 import LoginView from './views/LoginView';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
@@ -27,6 +29,7 @@ import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
 import SearchMessagesView from './views/SearchMessagesView';
+import ReadReceiptsView from './views/ReadReceiptView';
 import ThreadMessagesView from './views/ThreadMessagesView';
 import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
@@ -38,8 +41,9 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './push';
+import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
+import NotificationBadge from './notifications/inApp';
 
 useScreens();
 
@@ -110,7 +114,9 @@ const ChatsStack = createStackNavigator({
 	SearchMessagesView,
 	SelectedUsersView,
 	ThreadMessagesView,
-	MessagesView
+	MessagesView,
+	ReadReceiptsView,
+	DirectoryView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -193,10 +199,28 @@ const SetUsernameStack = createStackNavigator({
 	SetUsernameView
 });
 
+class CustomInsideStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return (
+			<React.Fragment>
+				<InsideStackModal navigation={navigation} />
+				<NotificationBadge navigation={navigation} />
+			</React.Fragment>
+		);
+	}
+}
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
-		InsideStack: InsideStackModal,
+		InsideStack: CustomInsideStack,
 		AuthLoading: AuthLoadingView,
 		SetUsernameStack
 	},
