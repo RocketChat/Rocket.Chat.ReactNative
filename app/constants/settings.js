@@ -14,6 +14,9 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
+	FEDERATION_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},

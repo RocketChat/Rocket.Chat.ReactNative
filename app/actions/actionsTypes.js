@@ -66,4 +66,5 @@ export const LOGOUT = 'LOGOUT'; // logout is always success
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
+export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
 export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';

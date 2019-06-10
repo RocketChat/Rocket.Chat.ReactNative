@@ -1,8 +1,8 @@
 import EJSON from 'ejson';
 
 import PushNotification from './push';
-import store from '../lib/createStore';
-import { deepLinkingOpen } from '../actions/deepLinking';
+import store from '../../lib/createStore';
+import { deepLinkingOpen } from '../../actions/deepLinking';
 
 export const onNotification = (notification) => {
 	if (notification) {
