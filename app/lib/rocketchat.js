@@ -35,7 +35,7 @@ import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
-import { getDeviceToken } from '../push';
+import { getDeviceToken } from '../notifications/push';
 import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
