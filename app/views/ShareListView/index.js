@@ -136,9 +136,9 @@ export default class ShareListView extends React.Component {
 		});
 	};
 
-	renderScroll = () => {
+	renderScrollView = () => {
 		if (!(this.data && this.data.length > 0)) {
-			return <ActivityIndicator style={{ flex: 1 }} />;
+			return <ActivityIndicator style={styles.loading} />;
 		}
 
 		return (
@@ -148,12 +148,12 @@ export default class ShareListView extends React.Component {
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>
-				{this.renderScrollView()}
+				{this.renderContent()}
 			</ScrollView>
 		);
 	}
 
-	renderScrollView = () => {
+	renderContent = () => {
 		const {
 			discussions, channels, privateGroup, direct, livechat
 		} = this.state;
@@ -245,7 +245,7 @@ export default class ShareListView extends React.Component {
 				forceInset={{ bottom: 'never' }}
 			>
 				<StatusBar />
-				{this.renderScroll()}
+				{this.renderScrollView()}
 			</SafeAreaView>
 		);
 	}

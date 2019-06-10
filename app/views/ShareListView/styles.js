@@ -52,5 +52,8 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		marginLeft: 48
+	},
+	loading: {
+		flex: 1
 	}
 });
