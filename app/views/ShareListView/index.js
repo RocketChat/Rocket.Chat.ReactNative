@@ -26,8 +26,7 @@ const keyExtractor = item => item.rid;
 	token: state.login.user && state.login.user.token,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	useRealName: state.settings.UI_Use_Real_Name,
-	server: state.server.server,
-	connected: state.meteor.connected
+	server: state.server.server
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
@@ -44,7 +43,6 @@ export default class ShareListView extends React.Component {
 		baseUrl: PropTypes.string.isRequired,
 		navigation: PropTypes.object,
 		server: PropTypes.string,
-		connected: PropTypes.bool,
 		useRealName: PropTypes.bool
 	}
 
@@ -139,9 +137,7 @@ export default class ShareListView extends React.Component {
 	};
 
 	renderScroll = () => {
-		const { connected } = this.props;
-
-		if (!connected) {
+		if (!(this.data && this.data.length > 0)) {
 			return <ActivityIndicator style={{ flex: 1 }} />;
 		}
 
@@ -202,20 +198,24 @@ export default class ShareListView extends React.Component {
 	renderSection = (data, header) => {
 		if (data && data.length > 0) {
 			return (
-				<FlatList
-					data={data}
-					keyExtractor={keyExtractor}
-					style={styles.flatlist}
-					renderItem={this.renderItem}
-					ListHeaderComponent={() => this.renderSectionHeader(header)}
-					ItemSeparatorComponent={this.renderSeparator}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
-				/>
+				<View>
+					{this.renderSectionHeader(header)}
+					<View style={styles.bordered}>
+						<FlatList
+							data={data}
+							keyExtractor={keyExtractor}
+							style={styles.flatlist}
+							renderItem={this.renderItem}
+							ItemSeparatorComponent={this.renderSeparator}
+							getItemLayout={getItemLayout}
+							enableEmptySections
+							removeClippedSubviews
+							keyboardShouldPersistTaps='always'
+							initialNumToRender={12}
+							windowSize={7}
+						/>
+					</View>
+				</View>
 			);
 		}
 		return null;
@@ -225,7 +225,7 @@ export default class ShareListView extends React.Component {
 		const { servers } = this.state;
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
-		return (
+		return currentServer ? (
 			<View>
 				{this.renderSectionHeader('Select_Server')}
 				<View style={styles.bordered}>
@@ -235,7 +235,7 @@ export default class ShareListView extends React.Component {
 					/>
 				</View>
 			</View>
-		);
+		) : null;
 	};
 
 	render() {
