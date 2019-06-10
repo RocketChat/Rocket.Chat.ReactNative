@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert
+	View, TextInput, FlatList, Text, TouchableOpacity, Alert, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
@@ -32,9 +32,12 @@ import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
+import CommandPreview from './CommandPreview';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
+const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
+const MENTIONS_COUNT_TO_DISPLAY = 4;
 
 const onlyUnique = function onlyUnique(value, index, self) {
 	return self.indexOf(({ _id }) => value._id === _id) === index;
@@ -93,8 +96,11 @@ class MessageBox extends Component {
 			trackingType: '',
 			file: {
 				isVisible: false
-			}
+			},
+			commandPreview: []
 		};
+		this.showCommandPreview = false;
+		this.commands = [];
 		this.users = [];
 		this.rooms = [];
 		this.emojis = [];
@@ -147,7 +153,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, file
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
 		} = this.state;
 		const {
 			roomType, replying, editing, isFocused
@@ -176,6 +182,9 @@ class MessageBox extends Component {
 		if (!equal(nextState.mentions, mentions)) {
 			return true;
 		}
+		if (!equal(nextState.commandPreview, commandPreview)) {
+			return true;
+		}
 		if (!equal(nextState.file, file)) {
 			return true;
 		}
@@ -187,20 +196,36 @@ class MessageBox extends Component {
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
+		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
+		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+		if (slashCommand) {
+			const [, name, params] = slashCommand;
+			const command = database.objects('slashCommand').filtered('command == $0', name);
+			if (command && command[0] && command[0].providesPreview) {
+				return this.setCommandPreview(name, params);
+			}
+		}
 
 		if (!isTextEmpty) {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
 			const lastNativeText = this.component._lastNativeText;
-			const regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
+			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 			const result = lastNativeText.substr(0, cursor).match(regexp);
+			this.showCommandPreview = false;
 			if (!result) {
+				const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+				if (slash) {
+					return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+				}
 				return this.stopTrackingMention();
 			}
 			const [, lastChar, name] = result;
 			this.identifyMentionKeyword(name, lastChar);
 		} else {
 			this.stopTrackingMention();
+			this.showCommandPreview = false;
 		}
 	}, 100)
 
@@ -220,11 +245,30 @@ class MessageBox extends Component {
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			? `${ item.name || item }:`
-			: (item.username || item.name);
+			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
+			this.showCommandPreview = true;
+		}
 		this.setInput(text);
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
+	}
+
+	onPressCommandPreview = (item) => {
+		const { rid } = this.props;
+		const { text } = this;
+		const command = text.substr(0, text.indexOf(' ')).slice(1);
+		const params = text.substr(text.indexOf(' ') + 1) || 'params';
+		this.showCommandPreview = false;
+		this.setState({ commandPreview: [] });
+		this.stopTrackingMention();
+		this.clearInput();
+		try {
+			RocketChat.executeCommandPreview(command, params, rid, item);
+		} catch (e) {
+			log('onPressCommandPreview', e);
+		}
 	}
 
 	onEmojiSelected = (keyboardId, params) => {
@@ -301,7 +345,7 @@ class MessageBox extends Component {
 			console.warn('spotlight canceled');
 		} finally {
 			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice();
+			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.getFixedMentions(keyword);
 			this.setState({ mentions: this.users });
 		}
@@ -351,11 +395,16 @@ class MessageBox extends Component {
 
 	getEmojis = (keyword) => {
 		if (keyword) {
-			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, 4);
-			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, 4);
-			const mergedEmojis = [...this.customEmojis, ...this.emojis];
+			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: mergedEmojis });
 		}
+	}
+
+	getSlashCommands = (keyword) => {
+		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
+		this.setState({ mentions: this.commands });
 	}
 
 	focus = () => {
@@ -383,6 +432,18 @@ class MessageBox extends Component {
 			typing(rid, true);
 			this.typingTimeout = false;
 		}, 1000);
+	}
+
+	setCommandPreview = async(command, params) => {
+		const { rid } = this.props;
+		try	{
+			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
+			this.showCommandPreview = true;
+			this.setState({ commandPreview: preview.items });
+		} catch (e) {
+			this.showCommandPreview = false;
+			log('command Preview', e);
+		}
 	}
 
 	setInput = (text) => {
@@ -505,7 +566,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			message: editingMessage, editRequest, onSubmit
+			message: editingMessage, editRequest, onSubmit, rid: roomId
 		} = this.props;
 		const message = this.text;
 
@@ -521,6 +582,22 @@ class MessageBox extends Component {
 			editing, replying
 		} = this.props;
 
+		// Slash command
+
+		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			const command = message.replace(/ .*/, '').slice(1);
+			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
+			if (slashCommand.length > 0) {
+				try {
+					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
+				} catch (e) {
+					log('slashCommand', e);
+				}
+				this.clearInput();
+				return;
+			}
+		}
 		// Edit
 		if (editing) {
 			const { _id, rid } = editingMessage;
@@ -561,6 +638,8 @@ class MessageBox extends Component {
 			this.getUsers(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
 			this.getEmojis(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			this.getSlashCommands(keyword);
 		} else {
 			this.getRooms(keyword);
 		}
@@ -579,15 +658,16 @@ class MessageBox extends Component {
 		if (!trackingType) {
 			return;
 		}
-
 		this.setState({
 			mentions: [],
-			trackingType: ''
+			trackingType: '',
+			commandPreview: []
 		});
 		this.users = [];
 		this.rooms = [];
 		this.customEmojis = [];
 		this.emojis = [];
+		this.commands = [];
 	}
 
 	renderFixedMentionItem = item => (
@@ -623,41 +703,67 @@ class MessageBox extends Component {
 		);
 	}
 
-	renderMentionItem = (item) => {
+	renderMentionItem = ({ item }) => {
 		const { trackingType } = this.state;
 		const { baseUrl, user } = this.props;
 
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
 		}
+		const defineTestID = (type) => {
+			switch (type) {
+				case MENTIONS_TRACKING_TYPE_EMOJIS:
+					return `mention-item-${ item.name || item }`;
+				case MENTIONS_TRACKING_TYPE_COMMANDS:
+					return `mention-item-${ item.command || item }`;
+				default:
+					return `mention-item-${ item.username || item.name || item }`;
+			}
+		};
+
+		const testID = defineTestID(trackingType);
+
 		return (
 			<TouchableOpacity
 				style={styles.mentionItem}
 				onPress={() => this.onPressMention(item)}
-				testID={`mention-item-${ trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? item.name || item : item.username || item.name }`}
+				testID={testID}
 			>
-				{trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-					? (
-						<React.Fragment>
-							{this.renderMentionEmoji(item)}
-							<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-						</React.Fragment>
-					)
-					: (
-						<React.Fragment>
-							<Avatar
-								key='mention-item-avatar'
-								style={{ margin: 8 }}
-								text={item.username || item.name}
-								size={30}
-								type={item.username ? 'd' : 'c'}
-								baseUrl={baseUrl}
-								userId={user.id}
-								token={user.token}
-							/>
-							<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name }</Text>
-						</React.Fragment>
-					)
+
+				{(() => {
+					switch (trackingType) {
+						case MENTIONS_TRACKING_TYPE_EMOJIS:
+							return (
+								<React.Fragment>
+									{this.renderMentionEmoji(item)}
+									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+								</React.Fragment>
+							);
+						case MENTIONS_TRACKING_TYPE_COMMANDS:
+							return (
+								<React.Fragment>
+									<Text key='mention-item-command' style={styles.slash}>/</Text>
+									<Text key='mention-item-param'>{ item.command}</Text>
+								</React.Fragment>
+							);
+						default:
+							return (
+								<React.Fragment>
+									<Avatar
+										key='mention-item-avatar'
+										style={styles.avatar}
+										text={item.username || item.name}
+										size={30}
+										type={item.username ? 'd' : 'c'}
+										baseUrl={baseUrl}
+										userId={user.id}
+										token={user.token}
+									/>
+									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
+								</React.Fragment>
+							);
+					}
+				})()
 				}
 			</TouchableOpacity>
 		);
@@ -669,17 +775,45 @@ class MessageBox extends Component {
 			return null;
 		}
 		return (
-			<View testID='messagebox-container'>
+			<ScrollView
+				testID='messagebox-container'
+				style={styles.scrollViewMention}
+				keyboardShouldPersistTaps='always'
+			>
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
-					renderItem={({ item }) => this.renderMentionItem(item)}
-					keyExtractor={item => item._id || item.username || item}
+					renderItem={this.renderMentionItem}
+					keyExtractor={item => item._id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
+				/>
+			</ScrollView>
+		);
+	};
+
+	renderCommandPreviewItem = ({ item }) => (
+		<CommandPreview item={item} onPress={this.onPressCommandPreview} />
+	);
+
+	renderCommandPreview = () => {
+		const { commandPreview } = this.state;
+		if (!this.showCommandPreview) {
+			return null;
+		}
+		return (
+			<View key='commandbox-container' testID='commandbox-container'>
+				<FlatList
+					style={styles.mentionList}
+					data={commandPreview}
+					renderItem={this.renderCommandPreviewItem}
+					keyExtractor={item => item.id}
+					keyboardShouldPersistTaps='always'
+					horizontal
+					showsHorizontalScrollIndicator={false}
 				/>
 			</View>
 		);
-	};
+	}
 
 	renderReplyPreview = () => {
 		const {
@@ -700,6 +834,7 @@ class MessageBox extends Component {
 		}
 		return (
 			<React.Fragment>
+				{this.renderCommandPreview()}
 				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}

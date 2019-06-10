@@ -3,10 +3,11 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
 import {
-	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY
 } from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
+const SCROLLVIEW_MENTION_HEIGHT = 4 * MENTION_HEIGHT;
 
 export default StyleSheet.create({
 	textBox: {
@@ -100,5 +101,35 @@ export default StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0
+	},
+	slash: {
+		color: COLOR_PRIMARY,
+		backgroundColor: COLOR_BORDER,
+		height: 30,
+		width: 30,
+		padding: 5,
+		paddingHorizontal: 12,
+		marginHorizontal: 10,
+		borderRadius: 2
+	},
+	commandPreviewImage: {
+		justifyContent: 'center',
+		margin: 3,
+		width: 120,
+		height: 80,
+		borderRadius: 4
+	},
+	commandPreview: {
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		height: 100,
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	avatar: {
+		margin: 8
+	},
+	scrollViewMention: {
+		maxHeight: SCROLLVIEW_MENTION_HEIGHT
 	}
 });
