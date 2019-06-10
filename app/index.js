@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import firebase from 'react-native-firebase';
+import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -39,8 +40,9 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './push';
+import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
+import NotificationBadge from './notifications/inApp';
 
 useScreens();
 
@@ -195,10 +197,28 @@ const SetUsernameStack = createStackNavigator({
 	SetUsernameView
 });
 
+class CustomInsideStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return (
+			<React.Fragment>
+				<InsideStackModal navigation={navigation} />
+				<NotificationBadge navigation={navigation} />
+			</React.Fragment>
+		);
+	}
+}
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
-		InsideStack: InsideStackModal,
+		InsideStack: CustomInsideStack,
 		AuthLoading: AuthLoadingView,
 		SetUsernameStack
 	},
