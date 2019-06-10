@@ -5,7 +5,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import database, { safeAddListener } from './realm';
+import database from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import EventEmitter from '../utils/events';
@@ -57,23 +57,6 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.sdk.methodCall(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
-	async createDirectMessageAndWait(username) {
-		const room = await RocketChat.createDirectMessage(username);
-		return new Promise((resolve) => {
-			const data = database.objects('subscriptions')
-				.filtered('rid = $1', room.rid);
-
-			if (data.length) {
-				return resolve(data[0]);
-			}
-			safeAddListener(data, () => {
-				if (!data.length) { return; }
-				data.removeAllListeners();
-				resolve(data[0]);
-			});
-		});
-	},
-
 	async getUserToken() {
 		try {
 			return await AsyncStorage.getItem(TOKEN_KEY);
@@ -849,6 +832,14 @@ const RocketChat = {
 				this.sdk.subscribe('stream-notify-logged', 'user-status');
 			}
 		}
+	},
+	getDirectory({
+		query, count, offset, sort
+	}) {
+		// RC 1.0
+		return this.sdk.get('directory', {
+			query, count, offset, sort
+		});
 	}
 };
 
