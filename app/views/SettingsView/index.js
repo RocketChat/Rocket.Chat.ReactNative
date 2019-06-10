@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import firebase from 'react-native-firebase';
 
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -45,7 +44,6 @@ export default class SettingsView extends React.Component {
 		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
 		const { toggleMarkdown } = this.props;
 		toggleMarkdown(value);
-		firebase.analytics().logEvent.logCustom('toggle_markdown', { value });
 	}
 
 	navigateToRoom = (room) => {
