@@ -235,7 +235,7 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
-	emptySpace: {
-		width: 15
+	readReceipt: {
+		lineHeight: 20
 	}
 });
