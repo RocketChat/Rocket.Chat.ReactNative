@@ -197,7 +197,8 @@ const messagesSchema = {
 		tlm: { type: 'date', optional: true },
 		replies: 'string[]',
 		mentions: { type: 'list', objectType: 'users' },
-		channels: { type: 'list', objectType: 'rooms' }
+		channels: { type: 'list', objectType: 'rooms' },
+		unread: { type: 'bool', optional: true }
 	}
 };
 
