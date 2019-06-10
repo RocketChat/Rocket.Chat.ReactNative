@@ -60,7 +60,8 @@ import { Toast } from '../../utils/info';
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -116,6 +117,7 @@ export default class RoomView extends React.Component {
 		isAuthenticated: PropTypes.bool,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
+		Message_Read_Receipt_Enabled: PropTypes.bool,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
@@ -499,7 +501,7 @@ export default class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -541,6 +543,7 @@ export default class RoomView extends React.Component {
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
+				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 			/>
 		);
 

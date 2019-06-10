@@ -26,6 +26,7 @@ export default (msg) => {
 
 	msg = normalizeAttachments(msg);
 	msg.reactions = msg.reactions || [];
+	msg.unread = msg.unread || false;
 	// TODO: api problems
 	// if (Array.isArray(msg.reactions)) {
 	// 	msg.reactions = msg.reactions.map((value, key) => ({ emoji: key, usernames: value.usernames.map(username => ({ value: username })) }));

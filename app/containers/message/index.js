@@ -24,6 +24,7 @@ export default class MessageContainer extends React.Component {
 		_updatedAt: PropTypes.instanceOf(Date),
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
+		isReadReceiptEnabled: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
 		status: PropTypes.number,
@@ -55,6 +56,9 @@ export default class MessageContainer extends React.Component {
 			return true;
 		}
 		if (item.tmsg !== nextProps.item.tmsg) {
+			return true;
+		}
+		if (item.unread !== nextProps.item.unread) {
 			return true;
 		}
 
@@ -187,10 +191,10 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels
+			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread
 		} = item;
 
 		return (
@@ -213,6 +217,8 @@ export default class MessageContainer extends React.Component {
 				broadcast={broadcast}
 				baseUrl={baseUrl}
 				useRealName={useRealName}
+				isReadReceiptEnabled={isReadReceiptEnabled}
+				unread={unread}
 				role={role}
 				drid={drid}
 				dcount={dcount}
