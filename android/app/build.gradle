@@ -109,8 +109,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.14.0"
+        versionName "1.15.0"
         vectorDrawables.useSupportLibrary = true
+    }
+
+    packagingOptions {
+        pickFirst '**/libjsc.so'
+        pickFirst '**/libc++_shared.so'
     }
 
     signingConfigs {
@@ -166,6 +171,7 @@ android {
 }
 
 dependencies {
+    implementation "org.webkit:android-jsc:r241213"
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
