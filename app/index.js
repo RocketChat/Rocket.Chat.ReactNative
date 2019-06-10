@@ -17,6 +17,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import NewMessageView from './views/NewMessageView';
+import DirectoryView from './views/DirectoryView';
 import LoginView from './views/LoginView';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
@@ -112,7 +113,8 @@ const ChatsStack = createStackNavigator({
 	SearchMessagesView,
 	SelectedUsersView,
 	ThreadMessagesView,
-	MessagesView
+	MessagesView,
+	DirectoryView
 }, {
 	defaultNavigationOptions: defaultHeader
 });

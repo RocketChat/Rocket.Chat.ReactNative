@@ -12,7 +12,7 @@ import { setPreference } from '../../actions/sortPreferences';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import Check from './Check';
+import Check from '../../containers/Check';
 
 const ANIMATION_DURATION = 200;
 
@@ -106,7 +106,7 @@ export default class Sort extends PureComponent {
 	render() {
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-245, 41]
+			outputRange: [-326, 0]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -117,14 +117,24 @@ export default class Sort extends PureComponent {
 		} = this.props;
 
 		return (
-			[
+			<React.Fragment>
 				<TouchableWithoutFeedback key='sort-backdrop' onPress={this.close}>
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
-				</TouchableWithoutFeedback>,
+				</TouchableWithoutFeedback>
 				<Animated.View
 					key='sort-container'
 					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
 				>
+					<Touch
+						key='sort-toggle'
+						onPress={this.close}
+						style={styles.dropdownContainerHeader}
+					>
+						<View style={styles.sortItemContainer}>
+							<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
+							<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
+						</View>
+					</Touch>
 					<Touch key='sort-alphabetical' style={styles.sortItemButton} onPress={this.sortByName}>
 						<View style={styles.sortItemContainer}>
 							<CustomIcon style={styles.sortIcon} size={22} name='sort' />
@@ -161,18 +171,8 @@ export default class Sort extends PureComponent {
 							{showUnread ? <Check /> : null}
 						</View>
 					</Touch>
-				</Animated.View>,
-				<Touch
-					key='sort-toggle'
-					onPress={this.close}
-					style={[styles.dropdownContainerHeader, styles.sortToggleContainerClose]}
-				>
-					<View style={styles.sortItemContainer}>
-						<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-						<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
-					</View>
-				</Touch>
-			]
+				</Animated.View>
+			</React.Fragment>
 		);
 	}
 }
