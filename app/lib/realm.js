@@ -273,6 +273,18 @@ const frequentlyUsedEmojiSchema = {
 	}
 };
 
+const slashCommandSchema = {
+	name: 'slashCommand',
+	primaryKey: 'command',
+	properties: {
+		command: 'string',
+		params: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		clientOnly: { type: 'bool', optional: true },
+		providesPreview: { type: 'bool', optional: true }
+	}
+};
+
 const customEmojisSchema = {
 	name: 'customEmojis',
 	primaryKey: '_id',
@@ -347,7 +359,8 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	rolesSchema,
-	uploadsSchema
+	uploadsSchema,
+	slashCommandSchema
 ];
 
 const inMemorySchema = [usersTypingSchema, activeUsersSchema];
