@@ -159,30 +159,30 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 
-			it('should show and tap on slash command autocomplete and send slash command', async() => {
-				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText('/');
-				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('mention-item-shrug')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('/shrug ');
-				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`joy ¯\_(ツ)_/¯`))).toBeVisible().withTimeout(60000);
-			});
+			// it('should show and tap on slash command autocomplete and send slash command', async() => {
+			// 	await element(by.id('messagebox-input')).tap();
+			// 	await element(by.id('messagebox-input')).typeText('/');
+			// 	await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
+			// 	await expect(element(by.id('messagebox-container'))).toBeVisible();
+			// 	await element(by.id('mention-item-shrug')).tap();
+			// 	await expect(element(by.id('messagebox-input'))).toHaveText('/shrug ');
+			// 	await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
+			// 	await element(by.id('messagebox-send-message')).tap();
+			// 	await waitFor(element(by.text(`joy ¯\_(ツ)_/¯`))).toBeVisible().withTimeout(60000);
+			// });
 
-			it('should show command Preview', async() => {
-				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText('/giphy');
-				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('mention-item-giphy')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('/giphy ');
-				await element(by.id('messagebox-input')).typeText('no'); // workaround for number keyboard
-				await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('commandbox-container'))).toBeVisible();
-				await element(by.id('messagebox-input')).clearText();
-			});
+			// it('should show command Preview', async() => {
+			// 	await element(by.id('messagebox-input')).tap();
+			// 	await element(by.id('messagebox-input')).replaceText('/giphy');
+			// 	await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
+			// 	await expect(element(by.id('messagebox-container'))).toBeVisible();
+			// 	await element(by.id('mention-item-giphy')).tap();
+			// 	await expect(element(by.id('messagebox-input'))).toHaveText('/giphy ');
+			// 	await element(by.id('messagebox-input')).typeText('no'); // workaround for number keyboard
+			// 	await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
+			// 	await expect(element(by.id('commandbox-container'))).toBeVisible();
+			// 	await element(by.id('messagebox-input')).clearText();
+			// });
 		});
 
 		describe('Message', async() => {
