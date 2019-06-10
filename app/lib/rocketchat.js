@@ -25,6 +25,7 @@ import getSettings from './methods/getSettings';
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
+import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 
@@ -153,6 +154,7 @@ const RocketChat = {
 		this.getPermissions();
 		this.getCustomEmoji();
 		this.getRoles();
+		this.getSlashCommands();
 		this.registerPushToken().catch(e => console.log(e));
 		this.getUserPresence();
 	},
@@ -467,6 +469,7 @@ const RocketChat = {
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
+	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[defaultSettings[item._id].type];
@@ -801,6 +804,24 @@ const RocketChat = {
 		// RC 1.0
 		return this.sdk.get('chat.syncThreadsList', {
 			rid, updatedSince
+		});
+	},
+	runSlashCommand(command, roomId, params) {
+		// RC 0.60.2
+		return this.sdk.post('commands.run', {
+			command, roomId, params
+		});
+	},
+	getCommandPreview(command, roomId, params) {
+		// RC 0.65.0
+		return this.sdk.get('commands.preview', {
+			command, roomId, params
+		});
+	},
+	executeCommandPreview(command, params, roomId, previewItem) {
+		// RC 0.65.0
+		return this.sdk.post('commands.preview', {
+			command, params, roomId, previewItem
 		});
 	},
 	async getUserPresence() {
