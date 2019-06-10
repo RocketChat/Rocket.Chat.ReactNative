@@ -1,9 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import {
+	View, Text, Dimensions, Animated
+} from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
@@ -11,6 +14,9 @@ import styles, { ROW_HEIGHT } from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
+import { CustomIcon } from '../../lib/Icons';
+import RocketChat from '../../lib/rocketchat';
+import log from '../../utils/log';
 
 export { ROW_HEIGHT };
 
@@ -39,7 +45,10 @@ export default class RoomItem extends React.Component {
 		token: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
-		height: PropTypes.number
+		height: PropTypes.number,
+		favorite: PropTypes.bool,
+		isRead: PropTypes.bool,
+		rid: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -53,7 +62,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt } = this.props;
+		const { lastMessage, _updatedAt, isRead } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -63,8 +72,90 @@ export default class RoomItem extends React.Component {
 		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
 			return true;
 		}
+		if (isRead !== nextProps.isRead) {
+			return true;
+		}
 		// eslint-disable-next-line react/destructuring-assignment
 		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
+
+	close = () => {
+		this.swipeableRow.close();
+	};
+
+	toggleFav = async() => {
+		try {
+			const { rid, favorite } = this.props;
+			await RocketChat.toggleFavorite(rid, !favorite);
+		} catch (e) {
+			log('error_toggle_favorite', e);
+		}
+		this.close();
+	}
+
+	toggleRead = async() => {
+		try {
+			const { rid, isRead } = this.props;
+			await RocketChat.toggleRead(isRead, rid);
+		} catch (e) {
+			log('error_toggle_read', e);
+		}
+		this.close();
+	}
+
+	renderLeftActions = (progress, dragX) => {
+		const { isRead } = this.props;
+		const trans = dragX.interpolate({
+			inputRange: [0, 80, 81],
+			outputRange: [0, 0, 1]
+		});
+		return (
+			<RectButton style={[styles.action, { backgroundColor: '#497AFC' }]}>
+				<Animated.View
+					style={{ transform: [{ translateX: trans }] }}
+				>
+					{isRead ? (
+						<View style={styles.actionView}>
+							<CustomIcon size={15} name='flag' color='white' />
+							<Text style={styles.actionText}>Unread</Text>
+						</View>
+					) : (
+						<View style={styles.actionView}>
+							<CustomIcon size={15} name='check' color='white' />
+							<Text style={styles.actionText}>Read</Text>
+						</View>
+					)}
+				</Animated.View>
+			</RectButton>
+		);
+	};
+
+	renderRightActions = (progress, dragX) => {
+		const { favorite } = this.props;
+		const { width } = Dimensions.get('window');
+		const trans = dragX.interpolate({
+			inputRange: [-width, -80, 0],
+			outputRange: [0, width - 80, width - 80]
+		});
+		return (
+			<RectButton style={[styles.action, { backgroundColor: '#F4BD3E' }]}>
+				<Animated.View
+					style={{ transform: [{ translateX: trans }] }}
+				>
+					{favorite ? (
+						<View style={styles.actionView}>
+							<CustomIcon size={17} name='Star-filled' color='white' />
+							<Text style={styles.actionText}>Unfavorite</Text>
+						</View>
+					) : (
+						<View style={styles.actionView}>
+							<CustomIcon size={17} name='star' color='white' />
+							<Text style={styles.actionText}>Favorite</Text>
+						</View>
+					)}
+				</Animated.View>
+			</RectButton>
+		);
 	}
 
 	formatDate = date => moment(date).calendar(null, {
@@ -97,30 +188,43 @@ export default class RoomItem extends React.Component {
 		}
 
 		return (
-			<RectButton
-				onPress={onPress}
-				activeOpacity={0.8}
-				underlayColor='#e1e5e8'
-				testID={testID}
+			<Swipeable
+				ref={(ref) => { this.swipeableRow = ref; }}
+				friction={3}
+				leftThreshold={70}
+				rightThreshold={70}
+				renderLeftActions={this.renderLeftActions}
+				renderRightActions={this.renderRightActions}
+				overshootRight={false}
+				overshootLeft={false}
+				onSwipeableLeftOpen={this.toggleRead}
+				onSwipeableRightOpen={this.toggleFav}
 			>
-				<View
-					style={[styles.container, height && { height }]}
-					accessibilityLabel={accessibilityLabel}
+				<RectButton
+					onPress={onPress}
+					activeOpacity={0.8}
+					underlayColor='#e1e5e8'
+					testID={testID}
 				>
-					<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-					<View style={styles.centerContainer}>
-						<View style={styles.titleContainer}>
-							<TypeIcon type={type} id={id} prid={prid} />
-							<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-							{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
-						</View>
-						<View style={styles.row}>
-							<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
-							<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
+					<View
+						style={[styles.container, height && { height }]}
+						accessibilityLabel={accessibilityLabel}
+					>
+						<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<View style={styles.centerContainer}>
+							<View style={styles.titleContainer}>
+								<TypeIcon type={type} id={id} prid={prid} />
+								<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+								{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+							</View>
+							<View style={styles.row}>
+								<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
+								<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
+							</View>
 						</View>
 					</View>
-				</View>
-			</RectButton>
+				</RectButton>
+			</Swipeable>
 		);
 	}
 }

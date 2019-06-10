@@ -9,9 +9,10 @@ export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
 export default StyleSheet.create({
 	container: {
+		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: 14,
+		paddingLeft: 14,
 		height: ROW_HEIGHT
 	},
 	centerContainer: {
@@ -93,5 +94,19 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		marginRight: 10
+	},
+	actionText: {
+		color: 'white',
+		fontSize: 14,
+		backgroundColor: 'transparent',
+		justifyContent: 'center'
+	},
+	action: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	actionView: {
+		width: 80,
+		alignItems: 'center'
 	}
 });

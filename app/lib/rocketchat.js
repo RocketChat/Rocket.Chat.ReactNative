@@ -569,6 +569,12 @@ const RocketChat = {
 		// RC 0.64.0
 		return this.sdk.post('rooms.favorite', { roomId, favorite });
 	},
+	toggleRead(read, roomId) {
+		if (read) {
+			return this.sdk.post('subscriptions.unread', { roomId });
+		}
+		return this.sdk.post('subscriptions.read', { rid: roomId });
+	},
 	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
 		// RC 0.42.0
 		return this.sdk.methodCall('getUsersOfRoom', rid, allUsers, { skip, limit });
