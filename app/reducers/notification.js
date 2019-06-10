@@ -10,14 +10,15 @@ const initialState = {
 };
 
 export default function notification(state = initialState, action) {
-	if (action.type === NOTIFICATION.RECEIVED) {
-		return {
-			...state,
-			...action.payload
-		};
-	} else if (action.type === NOTIFICATION.REMOVE) {
-		return initialState;
+	switch (action.type) {
+		case NOTIFICATION.RECEIVED:
+			return {
+				...state,
+				...action.payload
+			};
+		case NOTIFICATION.REMOVE:
+			return initialState;
+		default:
+			return state;
 	}
-
-	return state;
 }

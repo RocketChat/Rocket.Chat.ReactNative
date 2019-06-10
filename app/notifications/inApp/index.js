@@ -18,8 +18,14 @@ import { ROW_HEIGHT } from '../../presentation/RoomItem';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
+const NOTIFICATION_DURATION = 3000;
 const BUTTON_HIT_SLOP = {
 	top: 12, right: 12, bottom: 12, left: 12
+};
+const ANIMATION_PROPS = {
+	duration: ANIMATION_DURATION,
+	easing: Easing.inOut(Easing.quad),
+	useNativeDriver: true
 };
 
 const styles = StyleSheet.create({
@@ -125,15 +131,13 @@ export default class NotificationBadge extends React.Component {
 			this.animatedValue,
 			{
 				toValue: 1,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
+				...ANIMATION_PROPS
 			},
 		).start(() => {
 			this.clearTimeout();
 			this.timeout = setTimeout(() => {
 				this.hide();
-			}, 3000);
+			}, NOTIFICATION_DURATION);
 		});
 	}
 
@@ -143,9 +147,7 @@ export default class NotificationBadge extends React.Component {
 			this.animatedValue,
 			{
 				toValue: 0,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
+				...ANIMATION_PROPS
 			},
 		).start();
 		setTimeout(removeNotification, ANIMATION_DURATION);
