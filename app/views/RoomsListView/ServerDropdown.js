@@ -16,7 +16,7 @@ import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import Check from './Check';
+import Check from '../../containers/Check';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
