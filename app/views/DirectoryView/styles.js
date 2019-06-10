@@ -143,5 +143,9 @@ export default StyleSheet.create({
 	},
 	globalUsersContainer: {
 		padding: 15
+	},
+	globalUsersTextContainer: {
+		flex: 1,
+		flexDirection: 'column'
 	}
 });

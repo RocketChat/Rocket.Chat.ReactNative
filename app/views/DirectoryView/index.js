@@ -57,7 +57,7 @@ export default class DirectoryView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.load();
+		this.load({});
 	}
 
 	onSearchChangeText = (text) => {
@@ -66,13 +66,17 @@ export default class DirectoryView extends React.Component {
 
 	onPressItem = (item) => {
 		const { navigation } = this.props;
-		const onPressItem = navigation.getParam('onPressItem', () => {});
-		onPressItem(item);
+		try {
+			const onPressItem = navigation.getParam('onPressItem', () => {});
+			onPressItem(item);
+		} catch (error) {
+			console.log('DirectoryView -> onPressItem -> error', error);
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	load = debounce(async(clear) => {
-		if (clear) {
+	load = debounce(async({ newSearch = false }) => {
+		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
 
@@ -110,7 +114,7 @@ export default class DirectoryView extends React.Component {
 	}, 200)
 
 	search = () => {
-		this.load(true);
+		this.load({ newSearch: true });
 	}
 
 	changeType = (type) => {
@@ -168,38 +172,39 @@ export default class DirectoryView extends React.Component {
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
 		const { baseUrl, user } = this.props;
+
 		let style;
 		if (index === data.length - 1) {
 			style = sharedStyles.separatorBottom;
 		}
+
+		const commonProps = {
+			title: item.name,
+			onPress: () => this.onPressItem(item),
+			baseUrl,
+			testID: `federation-view-item-${ item.name }`,
+			style,
+			user
+		};
+
 		if (type === 'users') {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					title={item.name}
 					description={item.username}
 					rightLabel={item.federation && item.federation.peer}
-					onPress={() => this.onPressItem(item)}
-					baseUrl={baseUrl}
-					testID={`federation-view-item-${ item.name }`}
-					style={style}
-					user={user}
 					type='d'
+					{...commonProps}
 				/>
 			);
 		}
 		return (
 			<DirectoryItem
 				avatar={item.name}
-				title={item.name}
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
-				onPress={() => this.onPressItem(item)}
-				baseUrl={baseUrl}
-				testID={`federation-view-item-${ item.name }`}
-				style={style}
-				user={user}
 				type='c'
+				{...commonProps}
 			/>
 		);
 	}
@@ -223,7 +228,7 @@ export default class DirectoryView extends React.Component {
 					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
-					onEndReached={() => this.load()}
+					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown
 					? (
