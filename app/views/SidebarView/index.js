@@ -15,7 +15,6 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { getReadableVersion } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
@@ -279,9 +278,6 @@ export default class Sidebar extends Component {
 					{!showStatus ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
-				<Text style={styles.version}>
-					{getReadableVersion}
-				</Text>
 			</SafeAreaView>
 		);
 	}

@@ -376,6 +376,11 @@ export default class RoomsListView extends React.Component {
 		}, 100);
 	}
 
+	goDirectory = () => {
+		const { navigation } = this.props;
+		navigation.navigate('DirectoryView');
+	}
+
 	getScrollRef = ref => this.scroll = ref
 
 	renderListHeader = () => {
@@ -387,6 +392,7 @@ export default class RoomsListView extends React.Component {
 				sortBy={sortBy}
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
+				goDirectory={this.goDirectory}
 			/>
 		);
 	}
