@@ -311,6 +311,30 @@ export default (
 			}]}
 		/>
 
+		<Separator title='Message with read receipt' />
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			unread
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			unread
+			isHeader={false}
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			read
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			read
+			isHeader={false}
+		/>
+
 		<Separator title='Message with thread' />
 		<Message
 			msg='How are you?'

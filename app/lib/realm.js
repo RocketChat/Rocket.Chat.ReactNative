@@ -197,7 +197,8 @@ const messagesSchema = {
 		tlm: { type: 'date', optional: true },
 		replies: 'string[]',
 		mentions: { type: 'list', objectType: 'users' },
-		channels: { type: 'list', objectType: 'rooms' }
+		channels: { type: 'list', objectType: 'rooms' },
+		unread: { type: 'bool', optional: true }
 	}
 };
 
@@ -269,6 +270,18 @@ const frequentlyUsedEmojiSchema = {
 		extension: { type: 'string', optional: true },
 		isCustom: 'bool',
 		count: 'int'
+	}
+};
+
+const slashCommandSchema = {
+	name: 'slashCommand',
+	primaryKey: 'command',
+	properties: {
+		command: 'string',
+		params: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		clientOnly: { type: 'bool', optional: true },
+		providesPreview: { type: 'bool', optional: true }
 	}
 };
 
@@ -346,7 +359,8 @@ const schema = [
 	customEmojisSchema,
 	messagesReactionsSchema,
 	rolesSchema,
-	uploadsSchema
+	uploadsSchema,
+	slashCommandSchema
 ];
 
 const inMemorySchema = [usersTypingSchema, activeUsersSchema];
@@ -415,7 +429,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 11,
+			schemaVersion: 12,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
 					const newSubs = newRealm.objects('subscriptions');

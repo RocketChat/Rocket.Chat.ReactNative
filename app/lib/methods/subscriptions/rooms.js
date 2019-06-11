@@ -6,6 +6,7 @@ import log from '../../../utils/log';
 import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
+import { notificationReceived } from '../../../actions/notification';
 
 const removeListener = listener => listener.stop();
 
@@ -119,6 +120,10 @@ export default async function subscribeRooms() {
 					log('err_stream_msg_received_message', e);
 				}
 			});
+		}
+		if (/notification/.test(ev)) {
+			const [notification] = ddpMessage.fields.args;
+			store.dispatch(notificationReceived(notification));
 		}
 	});
 
