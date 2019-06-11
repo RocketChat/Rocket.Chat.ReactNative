@@ -23,6 +23,7 @@ import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import LanguageView from './views/LanguageView';
 import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
@@ -148,7 +149,8 @@ ProfileStack.navigationOptions = ({ navigation }) => {
 };
 
 const SettingsStack = createStackNavigator({
-	SettingsView
+	SettingsView,
+	LanguageView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
