@@ -155,7 +155,7 @@
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.emulator",
-        "name": "ANDROID_API_28"
+        "name": "Pixel_3_XL_API_28"
       }
     }
   }

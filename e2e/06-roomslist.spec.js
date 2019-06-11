@@ -10,7 +10,7 @@ describe('Rooms list screen', () => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
         });
-        
+
         // it('should have rooms list', async() => {
 		// 	await expect(element(by.id('rooms-list-view-list'))).toBeVisible();
 		// });
@@ -18,13 +18,13 @@ describe('Rooms list screen', () => {
         it('should have room item', async() => {
 			await expect(element(by.id('rooms-list-view-item-general')).atIndex(0)).toExist();
 		});
-		
+
 		// Render - Header
 		describe('Header', async() => {
 			it('should have create channel button', async() => {
 				await expect(element(by.id('rooms-list-view-create-channel'))).toBeVisible();
 			});
-	
+
 			it('should have sidebar button', async() => {
 				await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
 				// await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.server }. Tap to view servers list.`);
@@ -44,7 +44,13 @@ describe('Rooms list screen', () => {
 
 			await waitFor(element(by.id('rooms-list-view-search'))).toExist().withTimeout(2000);
 
-			await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
+			if (device.getPlatform() === 'android') {
+				await element(by.id('rooms-list-view-search')).tap();
+				await element(by.id('rooms-list-view-search-input')).replaceText('rocket.cat');
+			} else {
+				await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
+			}
+
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
@@ -56,7 +62,18 @@ describe('Rooms list screen', () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			await element(by.id('rooms-list-view-search')).replaceText('');
+			if (device.getPlatform() === 'android') {
+				await element(by.id('rooms-list-view-search')).tap();
+				await element(by.id('rooms-list-view-search-input')).replaceText('');
+			} else {
+				await element(by.id('rooms-list-view-search')).replaceText('');
+			}
+			await sleep(2000);
+			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
+			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
+			if (device.getPlatform() === 'android') {
+				await element(by.id('rooms-list-view-search-cancel')).tap();
+			}
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
@@ -76,7 +93,7 @@ describe('Rooms list screen', () => {
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			});
-	
+
 			it('should logout', async() => {
 				await element(by.id('rooms-list-view-sidebar')).tap();
 				await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);

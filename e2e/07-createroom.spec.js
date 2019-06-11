@@ -19,12 +19,12 @@ describe('Create room screen', () => {
 			it('should have new message screen', async() => {
 				await expect(element(by.id('new-message-view'))).toBeVisible();
 			});
-	
+
 			it('should have search input', async() => {
 				await waitFor(element(by.id('new-message-view-search'))).toExist().withTimeout(2000);
 				await expect(element(by.id('new-message-view-search'))).toExist();
 			});
-	
+
 			after(async() => {
 				takeScreenshot();
 			});
@@ -109,7 +109,7 @@ describe('Create room screen', () => {
 				await expect(element(by.text(`A channel with name 'general' exists`))).toBeVisible();
 				await element(by.text('OK')).tap();
 			});
-	
+
 			it('should create public room', async() => {
 				const room = `public${ data.random }`;
 				await element(by.id('create-channel-name')).replaceText(room);
@@ -124,7 +124,7 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});
-	
+
 			it('should create private room', async() => {
 				const room = `private${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
@@ -145,7 +145,12 @@ describe('Create room screen', () => {
 				await expect(element(by.text(room))).toExist();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
+				if (device.getPlatform() === 'android') {
+					await element(by.id('rooms-list-view-search')).tap();
+					await element(by.id('rooms-list-view-search-input')).replaceText(room);
+				} else {
+					await element(by.id('rooms-list-view-search')).replaceText(room);
+				}
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
@@ -169,10 +174,18 @@ describe('Create room screen', () => {
 				await expect(element(by.text(room))).toExist();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
+				if (device.getPlatform() === 'android') {
+					await element(by.id('rooms-list-view-search')).tap();
+					await element(by.id('rooms-list-view-search-input')).replaceText(room);
+				} else {
+					await element(by.id('rooms-list-view-search')).replaceText(room);
+				}
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
+				if (device.getPlatform() === 'android') {
+					await element(by.id('rooms-list-view-search-cancel')).tap();
+				}
 			});
 		})
 

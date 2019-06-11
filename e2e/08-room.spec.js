@@ -13,7 +13,12 @@ async function mockMessage(message) {
 };
 
 async function navigateToRoom() {
-	await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
+	if (device.getPlatform() === 'android') {
+		await element(by.id('rooms-list-view-search')).tap();
+		await element(by.id('rooms-list-view-search-input')).replaceText(`private${ data.random }`);
+	} else {
+		await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
+	}
 	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
@@ -116,35 +121,51 @@ describe('Room screen', () => {
 
 			it('should show/hide emoji autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText(':');
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-input')).typeText(':');
+				} else {
+					await element(by.id('messagebox-input')).replaceText(':');
+				}
 				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('messagebox-input')).clearText();
+				await element(by.id('messagebox-input')).replaceText('');
 				await waitFor(element(by.id('messagebox-container'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeNotVisible();
 			});
 
 			it('should show and tap on emoji autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText(':');
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-input')).typeText(':');
+				} else {
+					await element(by.id('messagebox-input')).replaceText(':');
+				}
 				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-joy')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
-				await element(by.id('messagebox-input')).clearText();
+				await element(by.id('messagebox-send-message')).tap();
 			});
 
 			it('should show and tap on user autocomplete and send mention', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText(`@${ data.user }`);
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-input')).typeText(`@${ data.user }`);
+				} else {
+					await element(by.id('messagebox-input')).replaceText(`@${ data.user }`);
+				}
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id(`mention-item-${ data.user }`)).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ data.user } `);
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
+				} else {
+					await element(by.id('messagebox-input')).replaceText(`${ data.random }mention`);
+				}
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.text(`@${ data.user } ${ data.random }mention`))).toBeVisible().withTimeout(60000);
 			});

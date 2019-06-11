@@ -70,7 +70,7 @@ export default class RoomsListView extends React.Component {
 				searching
 					? (
 						<CustomHeaderButtons left>
-							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} testID='rooms-list-view-search-cancel' />
 						</CustomHeaderButtons>
 					)
 					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
@@ -81,7 +81,7 @@ export default class RoomsListView extends React.Component {
 					? null
 					: (
 						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
+							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} testID='rooms-list-view-search' /> : null}
 							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
 						</CustomHeaderButtons>
 					)
