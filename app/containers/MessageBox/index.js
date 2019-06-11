@@ -52,7 +52,7 @@ const imagePickerConfig = {
 };
 
 const libraryPickerConfig = {
-	mediaType: 'video'
+	mediaType: 'any'
 };
 
 const videoPickerConfig = {
