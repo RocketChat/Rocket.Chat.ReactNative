@@ -9,6 +9,7 @@ import log from '../../utils/log';
 import Check from '../../containers/Check';
 
 import styles from './styles';
+import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 @connect(state => ({
 	server: state.server.server
@@ -19,12 +20,13 @@ export default class ServerItem extends React.Component {
 		onPress: PropTypes.func.isRequired,
 		item: PropTypes.object.isRequired,
 		hasCheck: PropTypes.bool,
+		disclosure: PropTypes.bool,
 		server: PropTypes.string
 	}
 
 	render() {
 		const {
-			server, item, onPress, hasCheck
+			server, item, onPress, hasCheck, disclosure
 		} = this.props;
 
 		return (
@@ -54,6 +56,7 @@ export default class ServerItem extends React.Component {
 						<Text style={styles.serverUrl}>{item.id}</Text>
 					</View>
 					{item.id === server && hasCheck ? <Check /> : null}
+					{disclosure ? <DisclosureIndicator /> : null}
 				</View>
 			</Touch>
 		);

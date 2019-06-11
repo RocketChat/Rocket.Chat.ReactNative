@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
 
 import styles, { ROW_HEIGHT } from './styles';
+import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 export { ROW_HEIGHT };
 
@@ -39,6 +40,7 @@ export default class ShareItem extends React.Component {
 						style={styles.center}
 					>
 						<Text style={styles.name} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
+						<DisclosureIndicator />
 					</View>
 				</View>
 			</RectButton>

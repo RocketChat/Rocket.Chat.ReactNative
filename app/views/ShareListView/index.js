@@ -232,6 +232,7 @@ export default class ShareListView extends React.Component {
 					<ServerItem
 						onPress={() => Navigation.navigate('SelectServerView')}
 						item={currentServer}
+						disclosure
 					/>
 				</View>
 			</View>
