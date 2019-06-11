@@ -6,13 +6,12 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
-import { showToast } from '../../utils/info';
+import { Toast } from '../../utils/info';
 import log from '../../utils/log';
 import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
@@ -21,6 +20,8 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 
+const PAGE_SIZE = 25;
+
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: {
@@ -28,8 +29,7 @@ import StatusBar from '../../containers/StatusBar';
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class RoomMembersView extends LoggedView {
+export default class RoomMembersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
@@ -57,24 +57,25 @@ export default class RoomMembersView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('MentionedMessagesView', props);
+		super(props);
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid, members } = props.navigation.state.params;
+		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
-			isLoading: true,
+			isLoading: false,
 			allUsers: false,
 			filtering: false,
 			rid,
-			members,
+			members: [],
 			membersFiltered: [],
 			userLongPressed: {},
 			room: this.rooms[0] || {},
-			options: []
+			options: [],
+			end: false
 		};
 	}
 
@@ -143,7 +144,7 @@ export default class RoomMembersView extends LoggedView {
 				}
 			}
 		} catch (e) {
-			log('onPressUser', e);
+			log('err_on_press_user', e);
 		}
 	}
 
@@ -155,7 +156,7 @@ export default class RoomMembersView extends LoggedView {
 		const { muted } = room;
 
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m.value === user.username);
+		const userIsMuted = !!muted.find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));
@@ -170,9 +171,11 @@ export default class RoomMembersView extends LoggedView {
 	toggleStatus = () => {
 		try {
 			const { allUsers } = this.state;
-			this.fetchMembers(!allUsers);
+			this.setState({ members: [], allUsers: !allUsers, end: false }, () => {
+				this.fetchMembers();
+			});
 		} catch (e) {
-			log('RoomMembers.toggleStatus', e);
+			log('err_toggle_status', e);
 		}
 	}
 
@@ -186,17 +189,28 @@ export default class RoomMembersView extends LoggedView {
 		});
 	}
 
-	fetchMembers = async(status) => {
-		this.setState({ isLoading: true });
-		const { rid } = this.state;
+	// eslint-disable-next-line react/sort-comp
+	fetchMembers = async() => {
+		const {
+			rid, members, isLoading, allUsers, end
+		} = this.state;
 		const { navigation } = this.props;
+		if (isLoading || end) {
+			return;
+		}
+
+		this.setState({ isLoading: true });
 		try {
-			const membersResult = await RocketChat.getRoomMembers(rid, status);
-			const members = membersResult.records;
-			this.setState({ allUsers: status, members, isLoading: false });
-			navigation.setParams({ allUsers: status });
+			const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
+			const newMembers = membersResult.records;
+			this.setState({
+				members: members.concat(newMembers || []),
+				isLoading: false,
+				end: newMembers.length < PAGE_SIZE
+			});
+			navigation.setParams({ allUsers });
 		} catch (error) {
-			console.log('TCL: fetchMembers -> error', error);
+			log('err_fetch_members, error');
 			this.setState({ isLoading: false });
 		}
 	}
@@ -218,9 +232,9 @@ export default class RoomMembersView extends LoggedView {
 		const { rid, userLongPressed } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			showToast(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
+			this.toast.show(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
 		} catch (e) {
-			log('handleMute', e);
+			log('err_handle_mute', e);
 		}
 	}
 
@@ -260,9 +274,9 @@ export default class RoomMembersView extends LoggedView {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
-		if (isLoading) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
+		// if (isLoading) {
+		// 	return <ActivityIndicator style={styles.loading} />;
+		// }
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
@@ -273,8 +287,19 @@ export default class RoomMembersView extends LoggedView {
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
+					ListFooterComponent={() => {
+						if (isLoading) {
+							return <ActivityIndicator style={styles.loading} />;
+						}
+						return null;
+					}}
+					onEndReachedThreshold={0.1}
+					onEndReached={this.fetchMembers}
+					maxToRenderPerBatch={5}
+					windowSize={10}
 					{...scrollPersistTaps}
 				/>
+				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}

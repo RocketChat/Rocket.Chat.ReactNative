@@ -24,18 +24,27 @@ const author = {
 	username: 'diego.mello'
 };
 const baseUrl = 'https://open.rocket.chat';
-const customEmojis = { react_rocket: 'png', nyan_rocket: 'png', marioparty: 'gif' };
 const date = new Date(2017, 10, 10, 10);
+const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+
+const getCustomEmoji = (content) => {
+	const customEmoji = {
+		marioparty: { name: content, extension: 'gif' },
+		react_rocket: { name: content, extension: 'png' },
+		nyan_rocket: { name: content, extension: 'png' }
+	}[content];
+	return customEmoji;
+};
 
 const Message = props => (
 	<MessageComponent
 		baseUrl={baseUrl}
-		customEmojis={customEmojis}
 		user={user}
 		author={author}
 		ts={date}
 		timeFormat='LT'
-		header
+		isHeader
+		getCustomEmoji={getCustomEmoji}
 		{...props}
 	/>
 );
@@ -50,7 +59,7 @@ export default (
 		<Message msg='Message' />
 
 		<Separator title='Long message' />
-		<Message msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum' />
+		<Message msg={longText} />
 
 		<Separator title='Grouped messages' />
 		<Message msg='...' />
@@ -58,15 +67,15 @@ export default (
 			msg='Different user'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 		/>
-		<Message msg='This is the third message' header={false} />
-		<Message msg='This is the second message' header={false} />
+		<Message msg='This is the third message' isHeader={false} />
+		<Message msg='This is the second message' isHeader={false} />
 		<Message msg='This is the first message' />
 
 		<Separator title='Without header' />
-		<Message msg='Message' header={false} />
+		<Message msg='Message' isHeader={false} />
 
 		<Separator title='With alias' />
 		<Message msg='Message' alias='Diego Mello' />
@@ -74,7 +83,7 @@ export default (
 			msg='Message'
 			author={{
 				...author,
-				username: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+				username: longText
 			}}
 			alias='Diego Mello'
 		/>
@@ -100,7 +109,21 @@ export default (
 		/>
 
 		<Separator title='Mentions' />
-		<Message msg='@rocket.cat @diego.mello @all @here #general' />
+		<Message
+			msg='@rocket.cat @diego.mello @all @here #general'
+			mentions={[{
+				username: 'rocket.cat'
+			}, {
+				username: 'diego.mello'
+			}, {
+				username: 'all'
+			}, {
+				username: 'here'
+			}]}
+			channels={[{
+				name: 'general'
+			}]}
+		/>
 
 		<Separator title='Emojis' />
 		<Message msg='👊🤙👏' />
@@ -193,7 +216,7 @@ export default (
 				...author,
 				username: 'rocket.cat'
 			}}
-			header={false}
+			isHeader={false}
 		/>
 		<Message
 			msg='Second message'
@@ -216,7 +239,7 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
 				image_url: '/file-upload/sxLXBzjwuqxMnebyP/Clipboard%20-%2029%20de%20Agosto%20de%202018%20%C3%A0s%2018:10'
 			}]}
 		/>
@@ -225,7 +248,13 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
+				video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
+			}]}
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
 				video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
 			}]}
 		/>
@@ -234,32 +263,32 @@ export default (
 		<Message
 			attachments={[{
 				title: 'This is a title',
-				description: 'This is a description',
+				description: 'This is a description :nyan_rocket:',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
 		/>
-		<Message msg='First message' header={false} />
+		<Message msg='First message' isHeader={false} />
 		<Message
 			attachments={[{
 				title: 'This is a title',
 				description: 'This is a description',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
-			header={false}
+			isHeader={false}
 		/>
 		<Message
 			attachments={[{
 				title: 'This is a title',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
-			header={false}
+			isHeader={false}
 		/>
 		<Message
 			attachments={[{
 				title: 'This is a title',
 				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 			}]}
-			header={false}
+			isHeader={false}
 		/>
 
 		<Separator title='Message with reply' />
@@ -278,9 +307,224 @@ export default (
 				author_name: 'rocket.cat',
 				ts: date,
 				timeFormat: 'LT',
-				text: 'How are you?'
+				text: 'How are you? :nyan_rocket:'
 			}]}
 		/>
+
+		<Separator title='Message with read receipt' />
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			unread
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			unread
+			isHeader={false}
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			read
+		/>
+		<Message
+			msg="I'm fine!"
+			isReadReceiptEnabled
+			read
+			isHeader={false}
+		/>
+
+		<Separator title='Message with thread' />
+		<Message
+			msg='How are you?'
+			tcount={1}
+			tlm={date}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={date}
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Thread with emoji :) :joy:'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
+			isThreadReply
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg={longText}
+			isThreadReply
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			tmsg={longText}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with attachment'
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description :nyan_rocket:',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			isThreadReply
+		/>
+
+		<Separator title='Sequential thread messages following thread button' />
+		<Message
+			msg='How are you?'
+			tcount={1}
+			tlm={date}
+		/>
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
+		<Separator title='Sequential thread messages following thread reply' />
+		<Message
+			msg="I'm fine!"
+			tmid='1'
+			tmsg='How are you?'
+			isThreadReply
+		/>
+		<Message
+			msg='Cool!'
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			msg={longText}
+			tmid='1'
+			isThreadSequential
+		/>
+		<Message
+			attachments={[{
+				title: 'This is a title',
+				description: 'This is a description',
+				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+			}]}
+			tmid='1'
+			isThreadSequential
+		/>
+
+		{/* <Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'hour')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(1, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(5, 'day')}
+		/>
+		<Message
+			msg='How are you?'
+			tcount={9999}
+			tlm={moment().subtract(30, 'day')}
+		/> */}
+
+		<Separator title='Discussion' />
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={null}
+			dlm={null}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={10}
+			dlm={date}
+			msg={longText}
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={date}
+			msg='This is a discussion'
+		/>
+		{/* <Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'hour')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(1, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(5, 'day')}
+			msg='This is a discussion'
+		/>
+		<Message
+			type='discussion-created'
+			drid='aisduhasidhs'
+			dcount={1000}
+			dlm={moment().subtract(30, 'day')}
+			msg='This is a discussion'
+		/> */}
+
 
 		<Separator title='URL' />
 		<Message
@@ -294,6 +538,22 @@ export default (
 				title: 'Google',
 				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
 			}]}
+		/>
+		<Message
+			urls={[{
+				url: 'https://google.com',
+				title: 'Google',
+				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
+			}]}
+			msg='Message :nyan_rocket:'
+		/>
+		<Message
+			urls={[{
+				url: 'https://google.com',
+				title: 'Google',
+				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
+			}]}
+			isHeader={false}
 		/>
 
 		<Separator title='Custom fields' />
@@ -360,90 +620,33 @@ export default (
 		<Separator title='Broadcast' />
 		<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 
-		<Separator title='Discussion' />
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={null}
-			dlm={null}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1}
-			dlm={date}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={10}
-			dlm={date}
-			msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={date}
-			msg='This is a discussion'
-		/>
-		{/* <Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(1, 'hour')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(1, 'day')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(5, 'day')}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={moment().subtract(30, 'day')}
-			msg='This is a discussion'
-		/> */}
-
 		<Separator title='Archived' />
 		<Message msg='This message is inside an archived room' archived />
 
 		<Separator title='Error' />
-		<Message msg='This message has error too' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} header={false} />
-		<Message msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
+		<Message hasError msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
+		<Message hasError msg='This message has error too' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} isHeader={false} />
 
 		<Separator title='Temp' />
-		<Message msg='Temp message' status={messagesStatus.TEMP} />
+		<Message msg='Temp message' status={messagesStatus.TEMP} isTemp />
 
 		<Separator title='Editing' />
 		<Message msg='Message being edited' editing />
 
 		<Separator title='Removed' />
-		<Message type='rm' />
+		<Message type='rm' isInfo />
 
 		<Separator title='Joined' />
-		<Message type='uj' />
+		<Message type='uj' isInfo />
 
 		<Separator title='Room name changed' />
-		<Message msg='New name' type='r' />
+		<Message msg='New name' type='r' isInfo />
 
 		<Separator title='Message pinned' />
 		<Message
 			msg='New name'
 			type='message_pinned'
+			isInfo
 			attachments={[{
 				author_name: 'rocket.cat',
 				ts: date,
@@ -453,25 +656,26 @@ export default (
 		/>
 
 		<Separator title='Has left the channel' />
-		<Message type='ul' />
+		<Message type='ul' isInfo />
 
 		<Separator title='User removed' />
-		<Message msg='rocket.cat' type='ru' />
+		<Message msg='rocket.cat' type='ru' isInfo />
 
 		<Separator title='User added' />
-		<Message msg='rocket.cat' type='au' />
+		<Message msg='rocket.cat' type='au' isInfo />
 
 		<Separator title='User muted' />
-		<Message msg='rocket.cat' type='user-muted' />
+		<Message msg='rocket.cat' type='user-muted' isInfo />
 
 		<Separator title='User unmuted' />
-		<Message msg='rocket.cat' type='user-unmuted' />
+		<Message msg='rocket.cat' type='user-unmuted' isInfo />
 
 		<Separator title='Role added' />
 		<Message
 			msg='rocket.cat'
 			role='admin' // eslint-disable-line
 			type='subscription-role-added'
+			isInfo
 		/>
 
 		<Separator title='Role removed' />
@@ -479,19 +683,20 @@ export default (
 			msg='rocket.cat'
 			role='admin' // eslint-disable-line
 			type='subscription-role-removed'
+			isInfo
 		/>
 
 		<Separator title='Changed description' />
-		<Message msg='new description' type='room_changed_description' />
+		<Message msg='new description' type='room_changed_description' isInfo />
 
 		<Separator title='Changed announcement' />
-		<Message msg='new announcement' type='room_changed_announcement' />
+		<Message msg='new announcement' type='room_changed_announcement' isInfo />
 
 		<Separator title='Changed topic' />
-		<Message msg='new topic' type='room_changed_topic' />
+		<Message msg='new topic' type='room_changed_topic' isInfo />
 
 		<Separator title='Changed type' />
-		<Message msg='public' type='room_changed_privacy' />
+		<Message msg='public' type='room_changed_privacy' isInfo />
 
 		<Separator title='Custom style' />
 		<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />

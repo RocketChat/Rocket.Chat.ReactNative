@@ -4,6 +4,7 @@ import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
+import debounce from '../../../utils/debounce';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -62,7 +63,7 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[username] = null;
 			}
 		} catch (error) {
-			console.log('TCL: removeUserTyping -> error', error);
+			log('err_remove_user_typing', error);
 		}
 	};
 
@@ -84,7 +85,7 @@ export default function subscribeRoom({ rid }) {
 					removeUserTyping(username);
 				}, 10000);
 			} catch (error) {
-				console.log('TCL: addUserTyping -> error', error);
+				log('err_add_user_typing', error);
 			}
 		}
 	};
@@ -107,27 +108,47 @@ export default function subscribeRoom({ rid }) {
 					const { _id } = ddpMessage.fields.args[0];
 					const message = database.objects('messages').filtered('_id = $0', _id);
 					database.delete(message);
+					const thread = database.objects('threads').filtered('_id = $0', _id);
+					database.delete(thread);
+					const threadMessage = database.objects('threadMessages').filtered('_id = $0', _id);
+					database.delete(threadMessage);
+					const cleanTmids = database.objects('messages').filtered('tmid = $0', _id).snapshot();
+					if (cleanTmids && cleanTmids.length) {
+						cleanTmids.forEach((m) => {
+							m.tmid = null;
+						});
+					}
 				}
 			});
 		}
 	});
 
+	const read = debounce(() => {
+		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+		if (room && room._id) {
+			this.readMessages(rid);
+		}
+	}, 300);
+
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(ddpMessage.fields.args[0]);
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		if (rid !== message.rid) {
 			return;
 		}
 		requestAnimationFrame(() => {
 			try {
 				database.write(() => {
-					database.create('messages', EJSON.fromJSONValue(message), true);
+					database.create('messages', message, true);
+					// if it's a thread "header"
+					if (message.tlm) {
+						database.create('threads', message, true);
+					} else if (message.tmid) {
+						message.rid = message.tmid;
+						database.create('threadMessages', message, true);
+					}
 				});
 
-				const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-
-				if (room._id) {
-					this.readMessages(rid);
-				}
+				read();
 			} catch (e) {
 				console.warn('handleMessageReceived', e);
 			}
@@ -163,6 +184,10 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[key] = null;
 			}
 		});
+		database.memoryDatabase.write(() => {
+			const usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid == $0', rid);
+			database.memoryDatabase.delete(usersTyping);
+		});
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnected);
@@ -173,7 +198,7 @@ export default function subscribeRoom({ rid }) {
 	try {
 		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
-		log('subscribeRoom', e);
+		log('err_subscribe_room', e);
 	}
 
 	return {

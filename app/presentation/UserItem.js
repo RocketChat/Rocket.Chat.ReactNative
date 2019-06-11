@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	Text, View, StyleSheet, ViewPropTypes
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../containers/Avatar';
@@ -49,7 +47,7 @@ const UserItem = ({
 }) => (
 	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={[styles.container, style]}>
-			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} user={user} />
+			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{name}</Text>
 				<Text style={styles.username}>@{username}</Text>
@@ -70,7 +68,7 @@ UserItem.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func,
-	style: ViewPropTypes.style,
+	style: PropTypes.any,
 	icon: PropTypes.string
 };
 

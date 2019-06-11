@@ -5,52 +5,66 @@ import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
 import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
-import { setRoles } from '../actions/roles';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const handleSelectServer = function* handleSelectServer({ server }) {
+const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
+	try {
+		const serverInfo = yield RocketChat.getServerInfo(server);
+		if (!serverInfo.success) {
+			if (raiseError) {
+				Alert.alert(I18n.t('Oops'), I18n.t(serverInfo.message, serverInfo.messageOptions));
+			}
+			yield put(serverFailure());
+			return;
+		}
+
+		database.databases.serversDB.write(() => {
+			database.databases.serversDB.create('servers', { id: server, version: serverInfo.version }, true);
+		});
+
+		return serverInfo;
+	} catch (e) {
+		log('err_get_server_info', e);
+	}
+};
+
+const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		yield AsyncStorage.setItem('currentServer', server);
 		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
-			RocketChat.connect({ server, user });
+			yield RocketChat.connect({ server, user });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {
-			RocketChat.connect({ server });
+			yield RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));
 		}
 
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-		const emojis = database.objects('customEmojis');
-		yield put(actions.setCustomEmojis(RocketChat.parseEmojis(emojis.slice(0, emojis.length))));
-		const roles = database.objects('roles');
-		yield put(setRoles(roles.reduce((result, role) => {
-			result[role._id] = role.description;
-			return result;
-		}, {})));
 
-		yield put(selectServerSuccess(server));
+		let serverInfo;
+		if (fetchVersion) {
+			serverInfo = yield getServerInfo({ server, raiseError: false });
+		}
+
+		// Return server version even when offline
+		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
 	} catch (e) {
-		log('handleSelectServer', e);
+		log('err_select_server', e);
 	}
 };
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
-		const result = yield RocketChat.testServer(server);
-		if (!result.success) {
-			Alert.alert(I18n.t('Oops'), I18n.t(result.message, result.messageOptions));
-			yield put(serverFailure());
-			return;
-		}
+		const serverInfo = yield getServerInfo({ server });
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
@@ -59,13 +73,10 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 			Navigation.navigate('LoginSignupView');
 		}
 
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server }, true);
-		});
-		yield put(selectServerRequest(server));
+		yield put(selectServerRequest(server, serverInfo.version, false));
 	} catch (e) {
 		yield put(serverFailure());
-		log('handleServerRequest', e);
+		log('err_server_request', e);
 	}
 };
 

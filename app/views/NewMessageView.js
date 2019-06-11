@@ -11,7 +11,6 @@ import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import debounce from '../utils/debounce';
-import LoggedView from './View';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import Touch from '../utils/touch';
@@ -41,7 +40,8 @@ const styles = StyleSheet.create({
 	},
 	createChannelIcon: {
 		color: COLOR_PRIMARY,
-		marginHorizontal: 18
+		marginLeft: 18,
+		marginRight: 15
 	},
 	createChannelText: {
 		color: COLOR_PRIMARY,
@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
 		token: state.login.user && state.login.user.token
 	}
 }))
-/** @extends React.Component */
-export default class NewMessageView extends LoggedView {
+export default class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
@@ -74,7 +73,7 @@ export default class NewMessageView extends LoggedView {
 	};
 
 	constructor(props) {
-		super('NewMessageView', props);
+		super(props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
 			search: []
