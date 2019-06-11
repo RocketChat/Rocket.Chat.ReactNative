@@ -7,12 +7,12 @@ import { SafeAreaView, NavigationActions } from 'react-navigation';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
-import { showErrorAlert, Toast } from '../../utils/info';
+import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
-import styles from './styles';
+import sharedStyles from '../Styles';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
 
@@ -108,7 +108,6 @@ export default class LanguageView extends React.Component {
 
 			this.setState({ saving: false });
 			setTimeout(() => {
-				this.toast.show(I18n.t('Preferences_saved'));
 				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
 				navigation.navigate('RoomsListView');
 			}, 300);
@@ -123,7 +122,7 @@ export default class LanguageView extends React.Component {
 
 	renderSeparator = () => <Separator />
 
-	renderIcon = () => <CustomIcon name='check' size={20} style={styles.checkIcon} />
+	renderIcon = () => <CustomIcon name='check' size={20} style={sharedStyles.colorPrimary} />
 
 	renderItem = ({ item }) => {
 		const { value, label } = item;
@@ -143,18 +142,16 @@ export default class LanguageView extends React.Component {
 	render() {
 		const { saving } = this.state;
 		return (
-			<SafeAreaView style={styles.container} testID='language-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={LANGUAGES}
 					keyExtractor={item => item.value}
-					contentContainerStyle={styles.contentContainerStyle}
+					contentContainerStyle={sharedStyles.listContentContainer}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
-					keyboardShouldPersistTaps='always'
 				/>
 				<Loading visible={saving} />
-				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}
