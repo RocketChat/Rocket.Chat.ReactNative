@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import { CloseModalButton } from '../containers/HeaderButton';
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	}
-	})
+});
 
 @connect(state => ({
 	server: state.server.server
@@ -72,6 +72,7 @@ export default class OAuthView extends React.PureComponent {
 
 	render() {
 		const { navigation } = this.props;
+		const { loading } = this.state;
 		const oAuthUrl = navigation.getParam('oAuthUrl');
 		return (
 			<React.Fragment>
@@ -88,15 +89,15 @@ export default class OAuthView extends React.PureComponent {
 							this.login({ oauth: { ...credentials } });
 						}
 					}}
-					onLoadStart={syntheticEvent => {
-						this.setState({loading: true});
-					  }}
+					onLoadStart={() => {
+						this.setState({ loading: true });
+					}}
 
-					onLoadEnd={syntheticEvent => {
-						this.setState({loading: false});
+					onLoadEnd={() => {
+						this.setState({ loading: false });
 					}}
 				/>
-				{ this.state.loading ? <ActivityIndicator size="large" style = {styles.loading}/> : null }
+				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
 			</React.Fragment>
 		);
 	}
