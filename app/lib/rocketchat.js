@@ -6,7 +6,7 @@ import * as Keychain from 'react-native-keychain';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import database, { safeAddListener } from './realm';
+import database from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import EventEmitter from '../utils/events';
@@ -26,6 +26,7 @@ import getSettings from './methods/getSettings';
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import getCustomEmoji from './methods/getCustomEmojis';
+import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 
@@ -36,7 +37,7 @@ import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
-import { getDeviceToken } from '../push';
+import { getDeviceToken } from '../notifications/push';
 import { roomsRequest } from '../actions/rooms';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -58,23 +59,6 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.sdk.methodCall(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
-	async createDirectMessageAndWait(username) {
-		const room = await RocketChat.createDirectMessage(username);
-		return new Promise((resolve) => {
-			const data = database.objects('subscriptions')
-				.filtered('rid = $1', room.rid);
-
-			if (data.length) {
-				return resolve(data[0]);
-			}
-			safeAddListener(data, () => {
-				if (!data.length) { return; }
-				data.removeAllListeners();
-				resolve(data[0]);
-			});
-		});
-	},
-
 	async getUserToken(server) {
 		try {
 			return await Keychain.getInternetCredentials(server, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' });
@@ -171,75 +155,80 @@ const RocketChat = {
 		this.getPermissions();
 		this.getCustomEmoji();
 		this.getRoles();
+		this.getSlashCommands();
 		this.registerPushToken().catch(e => console.log(e));
 		this.getUserPresence();
 	},
 	connect({ server, user }) {
-		database.setActiveDB(server);
-		reduxStore.dispatch(connectRequest());
+		return new Promise((resolve) => {
+			database.setActiveDB(server);
+			reduxStore.dispatch(connectRequest());
 
-		if (this.connectTimeout) {
-			clearTimeout(this.connectTimeout);
-		}
+			if (this.connectTimeout) {
+				clearTimeout(this.connectTimeout);
+			}
 
-		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
-		}
+			if (this.sdk) {
+				this.sdk.disconnect();
+				this.sdk = null;
+			}
 
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
+			// Use useSsl: false only if server url starts with http://
+			const useSsl = !/http:\/\//.test(server);
 
-		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
-		this.getSettings();
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+			this.getSettings();
 
-		this.sdk.connect()
-			.then(() => {
-				if (user && user.token) {
-					reduxStore.dispatch(loginRequest({ resume: user.token }));
+			this.sdk.connect()
+				.then(() => {
+					if (user && user.token) {
+						reduxStore.dispatch(loginRequest({ resume: user.token }));
+					}
+				})
+				.catch((err) => {
+					console.log('connect error', err);
+
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						this.connect({ server, user });
+					}, 10000);
+				});
+
+			this.sdk.onStreamData('connected', () => {
+				reduxStore.dispatch(connectSuccess());
+				const { isAuthenticated } = reduxStore.getState().login;
+				if (isAuthenticated) {
+					this.getUserPresence();
 				}
-			})
-			.catch((err) => {
-				console.log('connect error', err);
-
-				// when `connect` raises an error, we try again in 10 seconds
-				this.connectTimeout = setTimeout(() => {
-					this.connect({ server, user });
-				}, 10000);
 			});
 
-		this.sdk.onStreamData('connected', () => {
-			reduxStore.dispatch(connectSuccess());
-			const { isAuthenticated } = reduxStore.getState().login;
-			if (isAuthenticated) {
-				this.getUserPresence();
-			}
-		});
+			this.sdk.onStreamData('close', () => {
+				reduxStore.dispatch(disconnect());
+			});
 
-		this.sdk.onStreamData('close', () => {
-			reduxStore.dispatch(disconnect());
-		});
+			this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-		this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
-
-		this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
-			const { eventName } = ddpMessage.fields;
-			if (eventName === 'user-status') {
-				const userStatus = ddpMessage.fields.args[0];
-				const [id, username, status] = userStatus;
-				if (username) {
-					database.memoryDatabase.write(() => {
-						try {
-							database.memoryDatabase.create('activeUsers', {
-								id, username, status: STATUSES[status]
-							}, true);
-						} catch (error) {
-							console.log(error);
-						}
-					});
+			this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (eventName === 'user-status') {
+					const userStatus = ddpMessage.fields.args[0];
+					const [id, username, status] = userStatus;
+					if (username) {
+						database.memoryDatabase.write(() => {
+							try {
+								database.memoryDatabase.create('activeUsers', {
+									id, username, status: STATUSES[status]
+								}, true);
+							} catch (error) {
+								console.log(error);
+							}
+						});
+					}
 				}
-			}
-		}));
+			}));
+
+			resolve();
+		});
 	},
 
 	register(credentials) {
@@ -477,6 +466,7 @@ const RocketChat = {
 	getSettings,
 	getPermissions,
 	getCustomEmoji,
+	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[defaultSettings[item._id].type];
@@ -641,9 +631,9 @@ const RocketChat = {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);
 	},
-	saveUserProfile(data) {
+	saveUserProfile(data, customFields) {
 		// RC 0.62.2
-		return this.sdk.post('users.updateOwnBasicInfo', { data });
+		return this.sdk.post('users.updateOwnBasicInfo', { data, customFields });
 	},
 	saveUserPreferences(params) {
 		// RC 0.51.0
@@ -781,6 +771,12 @@ const RocketChat = {
 			sort: { ts: -1 }
 		});
 	},
+
+	getReadReceipts(messageId) {
+		return this.sdk.get('chat.getMessageReadReceipts', {
+			messageId
+		});
+	},
 	searchMessages(roomId, searchText) {
 		// RC 0.60.0
 		return this.sdk.get('chat.search', {
@@ -805,6 +801,24 @@ const RocketChat = {
 		// RC 1.0
 		return this.sdk.get('chat.syncThreadsList', {
 			rid, updatedSince
+		});
+	},
+	runSlashCommand(command, roomId, params) {
+		// RC 0.60.2
+		return this.sdk.post('commands.run', {
+			command, roomId, params
+		});
+	},
+	getCommandPreview(command, roomId, params) {
+		// RC 0.65.0
+		return this.sdk.get('commands.preview', {
+			command, roomId, params
+		});
+	},
+	executeCommandPreview(command, params, roomId, previewItem) {
+		// RC 0.65.0
+		return this.sdk.post('commands.preview', {
+			command, params, roomId, previewItem
 		});
 	},
 	async getUserPresence() {
@@ -842,6 +856,14 @@ const RocketChat = {
 				this.sdk.subscribe('stream-notify-logged', 'user-status');
 			}
 		}
+	},
+	getDirectory({
+		query, count, offset, sort
+	}) {
+		// RC 1.0
+		return this.sdk.get('directory', {
+			query, count, offset, sort
+		});
 	}
 };
 

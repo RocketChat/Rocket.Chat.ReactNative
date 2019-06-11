@@ -8524,10 +8524,10 @@ jsbn@~0.1.0:
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
-jsc-android@241213.1.0:
-  version "241213.1.0"
-  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-241213.1.0.tgz#8f940d7c7f6bebf14eda32bef42a76182e336452"
-  integrity sha512-AH8NYyMNLNhcUEF97QbMxPNLNW+oiSBlvm1rsMNzgJ1d5TQzdh/AOJGsxeeESp3m9YIWGLCgUvGTVoVLs0p68A==
+jsc-android@^241213.2.0:
+  version "241213.2.0"
+  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-241213.2.0.tgz#a43b78e4dace997be533e7cb812d9714878b069f"
+  integrity sha512-nfddejB9jxFSG+Uewf+zwATFi8F2CZEEgoHLoOj13egiBDoC7zMoxK1c5/Ycf3AGmGuwCgjpn3LWe0f4tKYbjw==
 
 jsdom@^11.5.1:
   version "11.12.0"
@@ -12023,10 +12023,10 @@ readdirp@^2.0.0:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
-realm@2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.28.0.tgz#e79df5727e3922d507629a7ab079190d984e3bde"
-  integrity sha512-WvZ497qxQlUAiOxTVPI5/YL1zRlcpvjX26J9NeSs0O4Q5qNEGEP8MnAdrCSOC6zg2GH5vazeW4vla69swEncWA==
+realm@2.28.1:
+  version "2.28.1"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.28.1.tgz#4482eea65708e38a2935850d569ff7c34001369d"
+  integrity sha512-2p/KMpqGXkcLopXyiAGyLUd8SyrBRwjjcy1gjI6KbD+/FaW8AaONaeOiF9c/kYc5kQ7xM2tJEOw1iBtoUihHXA==
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"

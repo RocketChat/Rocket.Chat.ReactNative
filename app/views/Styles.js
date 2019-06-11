@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE
+	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY
 } from '../constants/colors';
 
 export default StyleSheet.create({
@@ -176,7 +176,21 @@ export default StyleSheet.create({
 	textColorDescription: {
 		color: COLOR_TEXT_DESCRIPTION
 	},
+	colorPrimary: {
+		color: COLOR_PRIMARY
+	},
 	inputLastChild: {
 		marginBottom: 15
+	},
+	listSafeArea: {
+		flex: 1,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	listContentContainer: {
+		borderColor: COLOR_SEPARATOR,
+		borderTopWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		backgroundColor: COLOR_WHITE,
+		marginVertical: 10
 	}
 });

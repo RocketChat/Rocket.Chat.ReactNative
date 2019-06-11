@@ -85,6 +85,12 @@ export default class ThreadMessagesView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		const [room] = this.rooms;
+
+		// if there's not room at this point, it's better to show nothing
+		if (!room) {
+			return;
+		}
+
 		const lastThreadSync = new Date();
 		if (room.lastThreadSync) {
 			this.sync(room.lastThreadSync);

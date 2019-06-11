@@ -12,11 +12,13 @@ import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
 
-const getServerInfo = function* getServerInfo({ server }) {
+const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
 		const serverInfo = yield RocketChat.getServerInfo(server);
 		if (!serverInfo.success) {
-			Alert.alert(I18n.t('Oops'), I18n.t(serverInfo.message, serverInfo.messageOptions));
+			if (raiseError) {
+				Alert.alert(I18n.t('Oops'), I18n.t(serverInfo.message, serverInfo.messageOptions));
+			}
 			yield put(serverFailure());
 			return;
 		}
@@ -55,18 +57,19 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		if (userStringified) {
 			const user = JSON.parse(userStringified);
-			RocketChat.connect({ server, user });
+			yield RocketChat.connect({ server, user });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {
-			RocketChat.connect({ server });
+			yield RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));
 		}
 
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 
-		yield put(selectServerSuccess(server, fetchVersion ? serverInfo && serverInfo.version : version));
+		// Return server version even when offline
+		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
 	} catch (e) {
 		log('err_select_server', e);
 	}
@@ -76,7 +79,6 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
 		const serverInfo = yield getServerInfo({ server });
 
-		// TODO: cai aqui O.o
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
 		if (loginServicesLength === 0) {
 			Navigation.navigate('LoginView');
