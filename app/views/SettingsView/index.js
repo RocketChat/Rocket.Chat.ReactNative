@@ -14,13 +14,13 @@ import styles from './styles';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
-import Item from '../../containers/ListItem';
+import ListItem from '../../containers/ListItem';
 import { showErrorAlert } from '../../utils/info';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
+import Separator from '../../containers/Separator';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
-const Separator = React.memo(() => <View style={styles.separator} />);
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const SWITCH_TRACK_COLOR = {
 	false: isAndroid ? COLOR_DANGER : null,
@@ -97,7 +97,7 @@ export default class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					<Item
+					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
 						showActionIndicator
@@ -105,7 +105,7 @@ export default class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 					/>
 					<Separator />
-					<Item
+					<ListItem
 						title={I18n.t('Language')}
 						onPress={() => this.navigateToRoom('LanguageView')}
 						showActionIndicator
@@ -113,14 +113,14 @@ export default class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 					/>
 					<Separator />
-					<Item
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
 					/>
 					<Separator />
-					<Item
+					<ListItem
 						title={I18n.t('Share_this_app')}
 						showActionIndicator
 						disabled
@@ -129,7 +129,7 @@ export default class SettingsView extends React.Component {
 
 					<SectionSeparator />
 
-					<Item
+					<ListItem
 						title={I18n.t('License')}
 						onPress={this.onPressLicense}
 						showActionIndicator
@@ -137,9 +137,9 @@ export default class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 					/>
 					<Separator />
-					<Item title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
+					<ListItem title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
 					<Separator />
-					<Item
+					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
 						subtitle={`${ server.server.split('//')[1] }`}
 						testID='settings-view-server-version'
@@ -147,7 +147,7 @@ export default class SettingsView extends React.Component {
 
 					<SectionSeparator />
 
-					<Item
+					<ListItem
 						title={I18n.t('Enable_markdown')}
 						testID='settings-view-markdown'
 						right={() => this.renderMarkdownSwitch()}

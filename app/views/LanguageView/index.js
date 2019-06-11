@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';
 
@@ -13,7 +13,8 @@ import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import Item from '../../containers/ListItem';
+import ListItem from '../../containers/ListItem';
+import Separator from '../../containers/Separator';
 
 const LANGUAGES = [
 	{
@@ -120,7 +121,7 @@ export default class LanguageView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => <View style={styles.separator} />
+	renderSeparator = () => <Separator />
 
 	renderIcon = () => <CustomIcon name='check' size={20} style={styles.checkIcon} />
 
@@ -130,7 +131,7 @@ export default class LanguageView extends React.Component {
 		const isSelected = language === value;
 
 		return (
-			<Item
+			<ListItem
 				title={label}
 				onPress={() => this.submit(value)}
 				testID={`language-view-${ value }`}
