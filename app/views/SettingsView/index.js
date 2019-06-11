@@ -1,25 +1,32 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
+import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
+import ListItem from '../../containers/ListItem';
+import { DisclosureImage } from '../../containers/DisclosureIndicator';
+import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY } from '../../lib/rocketchat';
-import styles from './styles';
+import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
-import Button from './Button';
-import ButtonWithSwitch from './ButtonWithSwitch';
-import InfoButton from './InfoButton';
 import { showErrorAlert } from '../../utils/info';
+import styles from './styles';
+import sharedStyles from '../Styles';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
+const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
+const SWITCH_TRACK_COLOR = {
+	false: isAndroid ? COLOR_DANGER : null,
+	true: COLOR_SUCCESS
+};
 
 @connect(state => ({
 	server: state.server,
@@ -48,7 +55,7 @@ export default class SettingsView extends React.Component {
 
 	navigateToRoom = (room) => {
 		const { navigation } = this.props;
-		return () => navigation.navigate(room);
+		navigation.navigate(room);
 	}
 
 	sendEmail = async() => {
@@ -65,48 +72,87 @@ export default class SettingsView extends React.Component {
 		}
 	}
 
-	openLink = link => openLink(link)
+	onPressLicense = () => openLink(LICENSE_LINK)
 
-	renderSectionSeparator = () => <View style={styles.sectionSeparatorBorder} />;
+	renderDisclosure = () => <DisclosureImage />
 
-	renderSeparator = () => <View style={styles.separator} />;
-
-	/* renderCrashReportDisclaimer = () => (
-		<View style={[styles.sectionItem, styles.sectionItemDisabled]}>
-			<Text style={styles.sectionItemTitle}>{I18n.t('Crash_report_disclaimer')}</Text>
-		</View>
-	) */
+	renderMarkdownSwitch = () => {
+		const { useMarkdown } = this.props;
+		return (
+			<Switch
+				value={useMarkdown}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleMarkdown}
+			/>
+		);
+	}
 
 	render() {
-		const { server, useMarkdown } = this.props;
+		const { server } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='settings-view'>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='settings-view'>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={styles.contentContainer}
+					contentContainerStyle={sharedStyles.listContentContainer}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					<Button title={I18n.t('Contact_us')} onPress={this.sendEmail} showActionIndicator testID='settings-view-contact' />
-					{this.renderSeparator()}
-					<Button title={I18n.t('Language')} onPress={this.navigateToRoom('LanguageView')} showActionIndicator testID='settings-view-language' />
-					{this.renderSeparator()}
-					<Button title={I18n.t('Theme')} showActionIndicator disable testID='settings-view-theme' />
-					{this.renderSeparator()}
-					<Button title={I18n.t('Share_this_app')} showActionIndicator disable testID='settings-view-share-app' />
+					<ListItem
+						title={I18n.t('Contact_us')}
+						onPress={this.sendEmail}
+						showActionIndicator
+						testID='settings-view-contact'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
+					<ListItem
+						title={I18n.t('Language')}
+						onPress={() => this.navigateToRoom('LanguageView')}
+						showActionIndicator
+						testID='settings-view-language'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
+					<ListItem
+						title={I18n.t('Theme')}
+						showActionIndicator
+						disabled
+						testID='settings-view-theme'
+					/>
+					<Separator />
+					<ListItem
+						title={I18n.t('Share_this_app')}
+						showActionIndicator
+						disabled
+						testID='settings-view-share-app'
+					/>
 
-					{this.renderSectionSeparator()}
+					<SectionSeparator />
 
-					<Button title={I18n.t('License')} onPress={() => this.openLink(LICENSE_LINK)} showActionIndicator testID='settings-view-license' />
-					{this.renderSeparator()}
-					<InfoButton title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
-					{this.renderSeparator()}
-					<InfoButton title={I18n.t('Server_version', { version: server.version })} subTitle={`${ server.server.split('//')[1] }`} testID='settings-view-server-version' />
+					<ListItem
+						title={I18n.t('License')}
+						onPress={this.onPressLicense}
+						showActionIndicator
+						testID='settings-view-license'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
+					<ListItem title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
+					<Separator />
+					<ListItem
+						title={I18n.t('Server_version', { version: server.version })}
+						subtitle={`${ server.server.split('//')[1] }`}
+						testID='settings-view-server-version'
+					/>
 
-					{this.renderSectionSeparator()}
+					<SectionSeparator />
 
-					<ButtonWithSwitch title={I18n.t('Enable_markdown')} value={useMarkdown} onValueChange={this.toggleMarkdown} testID='settings-view-markdown' />
+					<ListItem
+						title={I18n.t('Enable_markdown')}
+						testID='settings-view-markdown'
+						right={() => this.renderMarkdownSwitch()}
+					/>
 				</ScrollView>
 			</SafeAreaView>
 		);

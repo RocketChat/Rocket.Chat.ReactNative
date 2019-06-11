@@ -1,25 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, ScrollView, Text, FlatList
-} from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView, NavigationActions } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
-import KeyboardView from '../../presentation/KeyboardView';
-import sharedStyles from '../Styles';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
-import { showErrorAlert, Toast } from '../../utils/info';
+import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
-import styles from './styles';
-import { COLOR_TEXT } from '../../constants/colors';
+import sharedStyles from '../Styles';
+import ListItem from '../../containers/ListItem';
+import Separator from '../../containers/Separator';
 
 const LANGUAGES = [
 	{
@@ -58,7 +53,6 @@ export default class LanguageView extends React.Component {
 	})
 
 	static propTypes = {
-		componentId: PropTypes.string,
 		userLanguage: PropTypes.string,
 		navigation: PropTypes.object,
 		setUser: PropTypes.func
@@ -114,7 +108,6 @@ export default class LanguageView extends React.Component {
 
 			this.setState({ saving: false });
 			setTimeout(() => {
-				this.toast.show(I18n.t('Preferences_saved'));
 				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
 				navigation.navigate('RoomsListView');
 			}, 300);
@@ -127,54 +120,39 @@ export default class LanguageView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => <Separator />
+
+	renderIcon = () => <CustomIcon name='check' size={20} style={sharedStyles.colorPrimary} />
 
 	renderItem = ({ item }) => {
 		const { value, label } = item;
 		const { language } = this.state;
 		const isSelected = language === value;
+
 		return (
-			<RectButton
+			<ListItem
+				title={label}
 				onPress={() => this.submit(value)}
-				activeOpacity={0.1}
-				underlayColor={COLOR_TEXT}
 				testID={`language-view-${ value }`}
-			>
-				<View style={styles.containerItem}>
-					<Text style={styles.text}>{label}</Text>
-					{isSelected ? <CustomIcon name='check' size={20} style={styles.checkIcon} /> : null }
-				</View>
-			</RectButton>
+				right={isSelected ? this.renderIcon : null}
+			/>
 		);
 	}
 
 	render() {
 		const { saving } = this.state;
 		return (
-			<KeyboardView
-				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}
-			>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				<ScrollView
-					contentContainerStyle={styles.containerScrollView}
-					testID='language-view-list'
-					{...scrollPersistTaps}
-				>
-					<SafeAreaView style={sharedStyles.container} testID='language-view' forceInset={{ bottom: 'never' }}>
-						<FlatList
-							data={LANGUAGES}
-							keyExtractor={item => item.value}
-							style={sharedStyles.separatorVertical}
-							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
-							keyboardShouldPersistTaps='always'
-						/>
-						<Loading visible={saving} />
-					</SafeAreaView>
-				</ScrollView>
-				<Toast ref={toast => this.toast = toast} />
-			</KeyboardView>
+				<FlatList
+					data={LANGUAGES}
+					keyExtractor={item => item.value}
+					contentContainerStyle={sharedStyles.listContentContainer}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={this.renderSeparator}
+				/>
+				<Loading visible={saving} />
+			</SafeAreaView>
 		);
 	}
 }
