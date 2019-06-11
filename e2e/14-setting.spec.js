@@ -11,7 +11,6 @@ describe('Settings screen', () => {
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
-		// await expect(element(by.id('sidebar-profile'))).toBeVisible();
 		await element(by.id('sidebar-settings')).tap();
 		await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 
@@ -59,19 +58,19 @@ describe('Settings screen', () => {
 		it('should navigate to language view', async() => {
 			await element(by.id('settings-view-language')).tap();
 			await waitFor(element(by.id('language-view'))).toBeVisible().withTimeout(60000);
-            await expect(element(by.id('language-view-zh-CN'))).toExist();
-            await expect(element(by.id('language-view-de'))).toExist();
-            await expect(element(by.id('language-view-en'))).toExist();
-            await expect(element(by.id('language-view-fr'))).toExist();
-            await expect(element(by.id('language-view-pt-BR'))).toExist();
-            await expect(element(by.id('language-view-pt-PT'))).toExist();
-            await expect(element(by.id('language-view-ru'))).toExist();
+			await expect(element(by.id('language-view-zh-CN'))).toExist();
+			await expect(element(by.id('language-view-de'))).toExist();
+			await expect(element(by.id('language-view-en'))).toExist();
+			await expect(element(by.id('language-view-fr'))).toExist();
+			await expect(element(by.id('language-view-pt-BR'))).toExist();
+			await expect(element(by.id('language-view-pt-PT'))).toExist();
+			await expect(element(by.id('language-view-ru'))).toExist();
 		});
 
 		it('should navigate to change language', async() => {
-            await expect(element(by.id('language-view-zh-CN'))).toExist();
-            await element(by.id('language-view-zh-CN')).tap()
-            await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('language-view-zh-CN'))).toExist();
+			await element(by.id('language-view-zh-CN')).tap()
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await element(by.id('rooms-list-view-sidebar')).tap();
 			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
