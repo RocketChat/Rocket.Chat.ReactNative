@@ -171,6 +171,7 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-user-defaults')
     implementation "org.webkit:android-jsc:r241213"
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')

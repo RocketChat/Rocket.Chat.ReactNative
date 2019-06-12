@@ -1,6 +1,7 @@
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
+import RNUserDefaults from 'rn-user-defaults';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -15,9 +16,15 @@ import database from '../lib/realm';
 const restore = function* restore() {
 	try {
 		const { token, server } = yield all({
-			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
-			server: AsyncStorage.getItem('currentServer')
+			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
+			server: RNUserDefaults.get('currentServer')
 		});
+
+		// RNUserDefaults.setName('group.ios.chat.rocket').then(() => {
+		// 	RNUserDefaults.objectForKey('kServers').then(value => console.log(value));
+		// });
+
+		// RNUserDefaults.get(RocketChat.TOKEN_KEY).then(value => console.log('tokenkey: ', value));
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
@@ -27,8 +34,8 @@ const restore = function* restore() {
 
 		if (!token || !server) {
 			yield all([
-				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
-				AsyncStorage.removeItem('currentServer')
+				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
+				RNUserDefaults.clear('currentServer')
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {

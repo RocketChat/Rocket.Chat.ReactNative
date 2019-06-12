@@ -1,5 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { AsyncStorage, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -36,8 +37,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		const { serversDB } = database.databases;
 
-		yield AsyncStorage.setItem('currentServer', server);
-		const userId = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		yield RNUserDefaults.set('currentServer', server);
+		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
 
 		if (user) {

@@ -1,6 +1,7 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import RNUserDefaults from 'rn-user-defaults';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -60,9 +61,9 @@ const RocketChat = {
 	},
 	async getUserToken() {
 		try {
-			return await AsyncStorage.getItem(TOKEN_KEY);
+			return await RNUserDefaults.get(TOKEN_KEY);
 		} catch (error) {
-			console.warn(`AsyncStorage error: ${ error.message }`);
+			console.warn(`RNUserDefaults error: ${ error.message }`);
 		}
 	},
 	async getServerInfo(server) {
@@ -337,9 +338,9 @@ const RocketChat = {
 		this.sdk = null;
 
 		Promise.all([
-			AsyncStorage.removeItem('currentServer'),
-			AsyncStorage.removeItem(TOKEN_KEY),
-			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
+			RNUserDefaults.clear('currentServer'),
+			RNUserDefaults.clear(TOKEN_KEY),
+			RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`)
 		]).catch(error => console.log(error));
 
 		try {

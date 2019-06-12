@@ -1,7 +1,8 @@
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';
+import RNUserDefaults from 'rn-user-defaults';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -33,7 +34,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	const adding = yield select(state => state.server.adding);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
+	yield RNUserDefaults.set(RocketChat.TOKEN_KEY, user.token);
 
 	const server = yield select(getServer);
 	const { serversDB } = database.databases;
@@ -49,7 +50,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
+		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
 	} catch (error) {
 		console.log('loginSuccess saga -> error', error);
 	}
@@ -81,7 +82,7 @@ const handleLogout = function* handleLogout() {
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
-				const token = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+				const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
 				if (token) {
 					return yield put(selectServerRequest(newServer));
 				}
