@@ -4,15 +4,6 @@ import Realm from 'realm';
 // Realm.clearTestState();
 // AsyncStorage.clear();
 
-const userEmailSchema = {
-	name: 'userEmail',
-	primaryKey: 'address',
-	properties: {
-		address: 'string',
-		verified: { type: 'bool', optional: true }
-	}
-};
-
 const userSchema = {
 	name: 'user',
 	primaryKey: 'id',
@@ -394,7 +385,6 @@ class DB {
 			path: 'default.realm',
 			schema: [
 				userSchema,
-				userEmailSchema,
 				serversSchema
 			],
 			schemaVersion: 8,
