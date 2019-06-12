@@ -273,9 +273,9 @@ export default {
 	Repeat_Password: 'Wiederhole das Passwort',
 	Replied_on: 'Antwortete am:',
 	replies: 'Antworten',
-	reply: 'Antworten'
+	reply: 'Antworten',
 	Reply: 'Antworten',
-	Report: 'Bericht'
+	Report: 'Bericht',
 	Resend: 'Erneut senden',
 	Reset_password: 'Passwort zurücksetzen',
 	resetting_password: 'Passwort zurücksetzen',
