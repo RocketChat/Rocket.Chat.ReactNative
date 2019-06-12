@@ -378,7 +378,7 @@ export default {
 	Welcome: 'Herzlich willkommen',
 	Welcome_to_RocketChat: 'Willkommen bei Rocket.Chat',
 	Whats_your_2fa: 'Wie ist dein 2FA-Code?',
-	Yes_action_it: 'Ja, {{action}} es!',
+	Yes_action_it: 'Ja, {{action}}!',
 	Yesterday: 'Gestern',
 	You_are_in_preview_mode: 'Sie befinden sich im Vorschaumodus',
 	You_are_offline: 'Sie sind offline',
