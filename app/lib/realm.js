@@ -23,8 +23,6 @@ const userSchema = {
 		name: { type: 'string', optional: true },
 		language: { type: 'string', optional: true },
 		status: { type: 'string', optional: true },
-		customFields: { type: 'string', optional: true },
-		emails: { type: 'userEmail[]', default: [] },
 		roles: { type: 'string[]', optional: true }
 	}
 };
