@@ -124,8 +124,8 @@ class ServerDropdown extends Component {
 
 		this.close();
 		if (currentServer !== server) {
-			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (!token) {
+			const userId = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			if (!userId) {
 				appStart();
 				this.newServerTimeout = setTimeout(() => {
 					EventEmitter.emit('NewServer', { server });

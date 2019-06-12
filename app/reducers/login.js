@@ -44,7 +44,8 @@ export default function login(state = initialState, action) {
 				...state,
 				user: {
 					...state.user,
-					...action.user
+					...action.user,
+					emails: Object.values(action.user.emails)
 				}
 			};
 		case types.LOGIN.SET_SERVICES:

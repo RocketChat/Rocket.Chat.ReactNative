@@ -4,6 +4,31 @@ import Realm from 'realm';
 // Realm.clearTestState();
 // AsyncStorage.clear();
 
+const userEmailSchema = {
+	name: 'userEmail',
+	primaryKey: 'address',
+	properties: {
+		address: 'string',
+		verified: { type: 'bool', optional: true }
+	}
+};
+
+const userSchema = {
+	name: 'user',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		token: { type: 'string', optional: true },
+		username: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
+		language: { type: 'string', optional: true },
+		status: { type: 'string', optional: true },
+		customFields: { type: 'string', optional: true },
+		emails: { type: 'userEmail[]', default: [] },
+		roles: { type: 'string[]', optional: true }
+	}
+};
+
 const serversSchema = {
 	name: 'servers',
 	primaryKey: 'id',
@@ -370,6 +395,8 @@ class DB {
 		serversDB: new Realm({
 			path: 'default.realm',
 			schema: [
+				userSchema,
+				userEmailSchema,
 				serversSchema
 			],
 			schemaVersion: 8,

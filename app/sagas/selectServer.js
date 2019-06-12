@@ -34,11 +34,13 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
-		yield AsyncStorage.setItem('currentServer', server);
-		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const { serversDB } = database.databases;
 
-		if (userStringified) {
-			const user = JSON.parse(userStringified);
+		yield AsyncStorage.setItem('currentServer', server);
+		const userId = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+
+		if (user) {
 			yield RocketChat.connect({ server, user });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
