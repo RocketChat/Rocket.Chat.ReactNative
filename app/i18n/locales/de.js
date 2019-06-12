@@ -388,7 +388,7 @@ export default {
 	you: 'sie',
 	You: 'Sie',
 	Version_no: 'Version: {{version}}',									
-	You_will_not_be_able_to_recover_this_message: 'Sie können diese Nachricht nicht wiederherstellen!'
+	You_will_not_be_able_to_recover_this_message: 'Sie können diese Nachricht nicht wiederherstellen!',
 	Change_Language: 'Sprache ändern',
 	Crash_report_disclaimer: 'Wir verfolgen niemals den Inhalt Ihrer Chats. Der Crash-Report enthält nur für uns relevante Informationen in der Reihenfolge '									
 };
