@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native';
 import {
 	put, call, takeLatest, select
 } from 'redux-saga/effects';

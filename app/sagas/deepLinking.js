@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
 	takeLatest, take, select, put, all

@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
