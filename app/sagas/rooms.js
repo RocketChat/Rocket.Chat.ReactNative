@@ -1,5 +1,5 @@
 import {
-	put, takeLatest, select, race, take
+	put, select, race, take, fork, cancel
 } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
@@ -9,26 +9,19 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 
+let roomsSub;
+
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
+		if (roomsSub && roomsSub.stop) {
+			roomsSub.stop();
+		}
+		roomsSub = yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
 		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
 		const { roomsUpdatedAt } = serverRecord;
-		// const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
-		const {
-			rooms, cancel
-		} = yield race({
-			rooms: RocketChat.getRooms(roomsUpdatedAt),
-			cancel: take(types.METEOR.REQUEST)
-		});
-
-		if (cancel) {
-			console.log('CANCELLLLEEEDEDEDEDEDEDED');
-			return;
-		}
-
-		const [subscriptionsResult, roomsResult] = rooms;
+		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		database.write(() => {
@@ -56,6 +49,14 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOMS.REQUEST, handleRoomsRequest);
+	while (true) {
+		const params = yield take(types.ROOMS.REQUEST);
+		const roomsRequestTask = yield fork(handleRoomsRequest, params);
+		yield race({
+			serverReq: take(types.SERVER.SELECT_REQUEST),
+			roomsReq: take(types.ROOMS.REQUEST)
+		});
+		yield cancel(roomsRequestTask);
+	}
 };
 export default root;

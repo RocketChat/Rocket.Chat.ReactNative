@@ -98,16 +98,13 @@ const root = function* root() {
 
 	while (true) {
 		const params = yield take(SERVER.SELECT_REQUEST);
-		console.log('TCL: selectServer -> root -> params', params);
-		console.log('TOOK SERVER.SELECT_REQUEST AND STARTED RUNNING bgSync');
-		const bgSyncTask = yield fork(handleSelectServer, params);
+		const selectServerTask = yield fork(handleSelectServer, params);
 		yield race({
 			request: take(SERVER.SELECT_REQUEST),
 			success: take(SERVER.SELECT_SUCCESS),
 			failure: take(SERVER.SELECT_FAILURE)
 		});
-		console.log('will cancel server task');
-		yield cancel(bgSyncTask);
+		yield cancel(selectServerTask);
 	}
 };
 export default root;
