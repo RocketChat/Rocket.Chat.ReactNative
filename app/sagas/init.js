@@ -14,6 +14,8 @@ import database from '../lib/realm';
 
 const restore = function* restore() {
 	try {
+		yield RNUserDefaults.setName('group.ios.chat.rocket');
+
 		const { token, server } = yield all({
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
 			server: RNUserDefaults.get('currentServer')

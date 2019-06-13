@@ -41,8 +41,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
 
-		yield RNUserDefaults.setName('group.ios.chat.rocket');
-
 		const users = yield RNUserDefaults.objectForKey('kServers');
 		const userCredentials = users && users.find(x => x.kAuthServerURL === server);
 		const userLogin = userCredentials && {
@@ -52,7 +50,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		if (user || userLogin) {
 			yield RocketChat.connect({ server, user: user || userLogin });
-			yield put(setUser(user));
+			yield put(setUser(user || userLogin));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });
