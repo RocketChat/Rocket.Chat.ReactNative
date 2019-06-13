@@ -298,7 +298,7 @@ export default {
 	saving_profile: 'Profil speichern',
 	saving_settings: 'Einstellungen speichern',
 	Search_Messages: 'Nachrichten suchen',
-	Search: 'Suchen',
+	Search: 'Suche',
 	Search_by: 'Suche nach',
 	Search_global_users: 'Suche nach globalen Benutzern',
 	Search_global_users_description: 'Beim Einschalten können Sie nach Benutzern von anderen Unternehmen oder Servern suchen.',
