@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import {
-	put, call, takeLatest, select, cancelled, take, fork, cancel
+	put, call, takeLatest, select, take, fork, cancel
 } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
@@ -63,22 +63,18 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 
 		const server = yield select(getServer);
-		try {
-			RocketChat.loginSuccess({ user });
-			yield put(roomsRequest());
-			yield fork(fetchPermissions);
-			yield fork(fetchCustomEmojis);
-			yield fork(fetchRoles);
-			yield fork(fetchSlashCommands);
-			yield fork(registerPushToken);
-			yield fork(fetchUserPresence);
-			I18n.locale = user.language;
-			yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-			yield put(setUser(user));
-			EventEmitter.emit('connected');
-		} catch (error) {
-			console.log('loginSuccess saga -> error', error);
-		}
+		yield put(roomsRequest());
+		yield fork(fetchPermissions);
+		yield fork(fetchCustomEmojis);
+		yield fork(fetchRoles);
+		yield fork(fetchSlashCommands);
+		yield fork(registerPushToken);
+		yield fork(fetchUserPresence);
+
+		I18n.locale = user.language;
+		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		yield put(setUser(user));
+		EventEmitter.emit('connected');
 
 		if (!user.username) {
 			yield put(appStart('setUsername'));
@@ -88,11 +84,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		} else {
 			yield put(appStart('inside'));
 		}
-	} finally {
-		if (yield cancelled()) {
-			// yield put(actions.requestFailure('Sync cancelled!'))
-			console.log('LOGIN TASK CANCELLED');
-		}
+	} catch (e) {
+		log('err_handle_login_success', e);
 	}
 };
 

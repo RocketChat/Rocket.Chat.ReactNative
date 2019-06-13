@@ -1,5 +1,5 @@
 import {
-	put, take, takeLatest, fork, cancel, cancelled, race
+	put, take, takeLatest, fork, cancel, race
 } from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
 
@@ -37,7 +37,6 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 };
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
-	console.log('TCL: handleSelectServer FORK -> handleSelectServer', server);
 	try {
 		yield AsyncStorage.setItem('currentServer', server);
 		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
@@ -65,12 +64,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	} catch (e) {
 		yield put(selectServerFailure());
 		log('err_select_server', e);
-	} finally {
-		if (yield cancelled()) {
-			// yield put(actions.requestFailure('Sync cancelled!'))
-			console.log('SERVER SELECT TASK CANCELLED');
-		}
-		console.log('FINISHED SERVER SELECT ', server);
 	}
 };
 
@@ -93,7 +86,6 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 };
 
 const root = function* root() {
-	// yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
 	yield takeLatest(SERVER.REQUEST, handleServerRequest);
 
 	while (true) {

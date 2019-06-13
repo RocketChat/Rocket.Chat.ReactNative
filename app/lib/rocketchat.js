@@ -180,10 +180,10 @@ const RocketChat = {
 
 			this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
-				// const { isAuthenticated } = reduxStore.getState().login;
-				// if (isAuthenticated) {
-				// 	this.getUserPresence();
-				// }
+				const { isAuthenticated } = reduxStore.getState().login;
+				if (isAuthenticated) {
+					this.getUserPresence();
+				}
 			});
 
 			this.sdk.onStreamData('close', () => {
@@ -273,7 +273,6 @@ const RocketChat = {
 	},
 
 	async login(params) {
-		console.log('TCL: login -> params', params);
 		try {
 			// RC 0.64.0
 			await this.sdk.login(params);

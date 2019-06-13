@@ -147,12 +147,6 @@ export default class RoomsListView extends React.Component {
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
-
-		// this.interval = setInterval(() => {
-		// 	const newServer = this.props.server === 'https://open.rocket.chat' ? 'http://localhost:3000' : 'https://open.rocket.chat';
-		// 	console.log(`CONNECTING TO ${ newServer }`)
-		// 	this.props.selectServerRequest(newServer);
-		// }, 2000);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -223,9 +217,6 @@ export default class RoomsListView extends React.Component {
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
-		}
-		if (this.interval) {
-			clearInterval(this.interval);
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -349,13 +340,11 @@ export default class RoomsListView extends React.Component {
 	}
 
 	goRoom = (item) => {
-		// this.cancelSearchingAndroid();
-		// const { navigation } = this.props;
-		// navigation.navigate('RoomView', {
-		// 	rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
-		// });
-		const room = database.objects('subscriptions').filtered('rid == $0', item.rid);
-		database.write(() => database.delete(room));
+		this.cancelSearchingAndroid();
+		const { navigation } = this.props;
+		navigation.navigate('RoomView', {
+			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
+		});
 	}
 
 	_onPressItem = async(item = {}) => {
