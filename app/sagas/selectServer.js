@@ -11,6 +11,7 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -41,11 +42,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
 
-		const users = yield RNUserDefaults.objectForKey('kServers');
-		const userCredentials = users && users.find(x => x.kAuthServerURL === server);
+		const servers = yield RNUserDefaults.objectForKey(SERVERS);
+		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
 		const userLogin = userCredentials && {
-			token: userCredentials.kAuthToken,
-			id: userCredentials.kUserId
+			token: userCredentials[TOKEN]
 		};
 
 		if (user || userLogin) {
