@@ -1,5 +1,5 @@
 import {
-	put, takeLatest, select
+	put, takeLatest, select, race, take
 } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
@@ -15,7 +15,20 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const server = yield select(state => state.server.server);
 		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
 		const { roomsUpdatedAt } = serverRecord;
-		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
+		// const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
+		const {
+			rooms, cancel
+		} = yield race({
+			rooms: RocketChat.getRooms(roomsUpdatedAt),
+			cancel: take(types.METEOR.REQUEST)
+		});
+
+		if (cancel) {
+			console.log('CANCELLLLEEEDEDEDEDEDEDED');
+			return;
+		}
+
+		const [subscriptionsResult, roomsResult] = rooms;
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		database.write(() => {

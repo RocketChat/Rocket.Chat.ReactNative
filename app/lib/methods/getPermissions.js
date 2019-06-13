@@ -26,6 +26,11 @@ export default async function() {
 	try {
 		const serverVersion = reduxStore.getState().server.version;
 
+		// if (!serverVersion) {
+		// 	console.log('NO SERVER WTF')
+		// 	return;
+		// }
+
 		// if server version is lower than 0.73.0, fetches from old api
 		if (semver.lt(serverVersion, '0.73.0')) {
 			// RC 0.66.0
@@ -46,6 +51,13 @@ export default async function() {
 			}
 			// RC 0.73.0
 			const result = await this.sdk.get('permissions.listAll', params);
+
+
+			// const { server: currentServer } = reduxStore.getState().server;
+			// if (server !== currentServer) {
+			// 	console.log('GET PERMISSIONS CANCELLEEEEDEDEDEDRDEDEDEDEDED', server, currentServer)
+			// 	return;
+			// }
 
 			if (!result.success) {
 				return;

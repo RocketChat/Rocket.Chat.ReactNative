@@ -145,10 +145,6 @@ const RocketChat = {
 		EventEmitter.emit('connected');
 		reduxStore.dispatch(setUser(user));
 		reduxStore.dispatch(roomsRequest());
-
-		if (this.roomsSub) {
-			this.roomsSub.stop();
-		}
 		this.roomsSub = await this.subscribeRooms();
 
 		this.getPermissions();
@@ -159,12 +155,17 @@ const RocketChat = {
 		this.getUserPresence();
 	},
 	connect({ server, user }) {
+		console.log('TCL: connect -> server, user', server, user);
 		return new Promise((resolve) => {
 			database.setActiveDB(server);
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
 				clearTimeout(this.connectTimeout);
+			}
+
+			if (this.roomsSub) {
+				this.roomsSub.stop();
 			}
 
 			if (this.sdk) {
@@ -195,10 +196,10 @@ const RocketChat = {
 
 			this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
-				const { isAuthenticated } = reduxStore.getState().login;
-				if (isAuthenticated) {
-					this.getUserPresence();
-				}
+				// const { isAuthenticated } = reduxStore.getState().login;
+				// if (isAuthenticated) {
+				// 	this.getUserPresence();
+				// }
 			});
 
 			this.sdk.onStreamData('close', () => {
@@ -288,6 +289,7 @@ const RocketChat = {
 	},
 
 	async login(params) {
+		console.log('TCL: login -> params', params);
 		try {
 			// RC 0.64.0
 			await this.sdk.login(params);

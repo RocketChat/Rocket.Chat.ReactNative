@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import {
-	put, call, takeLatest, select
+	put, call, takeLatest, select, cancelled, take, fork, cancel
 } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
@@ -32,26 +32,33 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
-	const adding = yield select(state => state.server.adding);
-	yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
-
-	const server = yield select(getServer);
 	try {
-		RocketChat.loginSuccess({ user });
-		I18n.locale = user.language;
-		yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
-	} catch (error) {
-		console.log('loginSuccess saga -> error', error);
-	}
+		const adding = yield select(state => state.server.adding);
+		yield AsyncStorage.setItem(RocketChat.TOKEN_KEY, user.token);
 
-	if (!user.username) {
-		RocketChat.loginSuccess({ user });
-		yield put(appStart('setUsername'));
-	} else if (adding) {
-		yield put(serverFinishAdd());
-		yield put(appStart('inside'));
-	} else {
-		yield put(appStart('inside'));
+		const server = yield select(getServer);
+		try {
+			RocketChat.loginSuccess({ user });
+			I18n.locale = user.language;
+			yield AsyncStorage.setItem(`${ RocketChat.TOKEN_KEY }-${ server }`, JSON.stringify(user));
+		} catch (error) {
+			console.log('loginSuccess saga -> error', error);
+		}
+
+		if (!user.username) {
+			// RocketChat.loginSuccess({ user, server });
+			yield put(appStart('setUsername'));
+		} else if (adding) {
+			yield put(serverFinishAdd());
+			yield put(appStart('inside'));
+		} else {
+			yield put(appStart('inside'));
+		}
+	} finally {
+		if (yield cancelled()) {
+			// yield put(actions.requestFailure('Sync cancelled!'))
+			console.log('LOGIN TASK CANCELLED');
+		}
 	}
 };
 
@@ -91,10 +98,34 @@ const handleSetUser = function handleSetUser({ user }) {
 	}
 };
 
+// function* bgSync() {
+// 	try {
+// 		while (true) {
+// 			console.log('RUNNING bgSync');
+// 			// yield put(actions.requestStart())
+// 			// const result = yield call(someApi)
+// 			// yield put(actions.requestSuccess(result))
+// 			yield delay(500000);
+// 		}
+// 	} finally {
+// 		if (yield cancelled()) {
+// 			// yield put(actions.requestFailure('Sync cancelled!'))
+// 			console.log('TASK CANCELLED');
+// 		}
+// 	}
+// }
+
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
-	yield takeLatest(types.LOGIN.SUCCESS, handleLoginSuccess);
+	// yield takeLatest(types.LOGIN.SUCCESS, handleLoginSuccess);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
+
+	while (true) {
+		const params = yield take(types.LOGIN.SUCCESS);
+		const bgSyncTask = yield fork(handleLoginSuccess, params);
+		yield take(types.SERVER.SELECT_REQUEST);
+		yield cancel(bgSyncTask);
+	}
 };
 export default root;
