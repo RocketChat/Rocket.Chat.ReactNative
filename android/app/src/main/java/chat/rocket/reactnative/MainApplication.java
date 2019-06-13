@@ -3,7 +3,6 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.djorkaeffalexandre.rn_user_defaults.RNUserDefaultsPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -54,14 +53,13 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNUserDefaultsPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseCrashlyticsPackage(),
-            new RNFirebaseAnalyticsPackage(),
-            new RNFirebasePerformancePackage(),
-            new RNCWebViewPackage(),
-            new OrientationPackage(),
-            new SplashScreenReactPackage(),
+          new RNFirebasePackage(),
+          new RNFirebaseCrashlyticsPackage(),
+          new RNFirebaseAnalyticsPackage(),
+          new RNFirebasePerformancePackage(),
+          new RNCWebViewPackage(),
+          new OrientationPackage(),
+          new SplashScreenReactPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),

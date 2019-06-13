@@ -12462,10 +12462,10 @@ rn-fetch-blob@^0.10.15:
     base-64 "0.1.0"
     glob "7.0.6"
 
-rn-user-defaults@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.2.1.tgz#a1d7d26eef9671fbe6567432091a09e5103f6b7c"
-  integrity sha512-JuKDQ5TjcYJ6cgc54ICbmhrj+3k27iGqVbMgZQUmZaSfOj1LrcV7Iuw+3m4J1M91+ckHtkOCzVnQ238PFMg6oA==
+rn-user-defaults@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.2.3.tgz#cc02edff5be574b0dfe56f1cf409cef90796a91f"
+  integrity sha512-BUxowCLxi7uKMZFSW8bxCLUjnFhQIZWff9sgBOCmFYi0Ob1xbvQ0bY+CsyvPA9BjqQq3U7R0ZQWQOazVinTtTg==
 
 rsvp@^3.3.3:
   version "3.6.2"

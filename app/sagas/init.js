@@ -20,12 +20,6 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
-		// RNUserDefaults.setName('group.ios.chat.rocket').then(() => {
-		// 	RNUserDefaults.objectForKey('kServers').then(value => console.log(value));
-		// });
-
-		// RNUserDefaults.get(RocketChat.TOKEN_KEY).then(value => console.log('tokenkey: ', value));
-
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
 
