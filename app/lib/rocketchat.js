@@ -345,6 +345,15 @@ const RocketChat = {
 			console.log('logout_rn_user_defaults', error);
 		}
 
+		const { serversDB } = database.databases;
+
+		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
+
+		serversDB.write(() => {
+			const user = serversDB.objectForPrimaryKey('user', userId);
+			serversDB.delete(user);
+		});
+
 		Promise.all([
 			RNUserDefaults.clear('currentServer'),
 			RNUserDefaults.clear(TOKEN_KEY),
