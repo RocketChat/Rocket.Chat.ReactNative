@@ -44,7 +44,6 @@ export default class OAuthView extends React.PureComponent {
 			logging: false,
 			loading: false
 		};
-
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
