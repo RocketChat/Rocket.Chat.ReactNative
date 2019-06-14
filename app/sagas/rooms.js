@@ -1,5 +1,5 @@
 import {
-	put, select, race, take, fork, cancel
+	put, select, race, take, fork, cancel, takeLatest
 } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
@@ -11,11 +11,15 @@ import RocketChat from '../lib/rocketchat';
 
 let roomsSub;
 
+const removeSub = function removeSub() {
+	if (roomsSub && roomsSub.stop) {
+		roomsSub.stop();
+	}
+};
+
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
-		if (roomsSub && roomsSub.stop) {
-			roomsSub.stop();
-		}
+		removeSub();
 		roomsSub = yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
@@ -48,13 +52,19 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 	}
 };
 
+const handleLogout = function handleLogout() {
+	removeSub();
+};
+
 const root = function* root() {
+	yield takeLatest(types.LOGOUT, handleLogout);
 	while (true) {
 		const params = yield take(types.ROOMS.REQUEST);
 		const roomsRequestTask = yield fork(handleRoomsRequest, params);
 		yield race({
 			serverReq: take(types.SERVER.SELECT_REQUEST),
-			roomsReq: take(types.ROOMS.REQUEST)
+			roomsReq: take(types.ROOMS.REQUEST),
+			logout: take(types.LOGOUT)
 		});
 		yield cancel(roomsRequestTask);
 	}
