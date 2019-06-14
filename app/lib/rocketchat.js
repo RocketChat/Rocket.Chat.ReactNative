@@ -39,6 +39,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../notifications/push';
 import { roomsRequest } from '../actions/rooms';
+import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -336,6 +337,13 @@ const RocketChat = {
 			console.log('​logout -> api logout -> catch -> error', error);
 		}
 		this.sdk = null;
+
+		try {
+			const servers = await RNUserDefaults.objectForKey(SERVERS);
+			await RNUserDefaults.setObjectForKey(SERVERS, servers.filter(srv => srv[SERVER_URL] !== server));
+		} catch (error) {
+			console.log('logout_rn_user_defaults', error);
+		}
 
 		Promise.all([
 			RNUserDefaults.clear('currentServer'),
