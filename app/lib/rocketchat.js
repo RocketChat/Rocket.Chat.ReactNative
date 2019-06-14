@@ -340,7 +340,7 @@ const RocketChat = {
 
 		try {
 			const servers = await RNUserDefaults.objectForKey(SERVERS);
-			await RNUserDefaults.setObjectForKey(SERVERS, servers.filter(srv => srv[SERVER_URL] !== server));
+			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
 		} catch (error) {
 			console.log('logout_rn_user_defaults', error);
 		}
