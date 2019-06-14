@@ -63,7 +63,7 @@ const Header = React.memo(({
 			<TouchableOpacity
 				onPress={onPress}
 				testID='rooms-list-header-server-dropdown-button'
-				disabled={connecting || isFetching}
+				// disabled={connecting || isFetching}
 			>
 				{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
 				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
