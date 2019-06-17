@@ -1,7 +1,7 @@
 import {
 	put, select, race, take, fork, cancel, takeLatest
 } from 'redux-saga/effects';
-import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
+import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
@@ -65,6 +65,7 @@ const root = function* root() {
 		yield race({
 			serverReq: take(types.SERVER.SELECT_REQUEST),
 			background: take(BACKGROUND),
+			inactive: take(INACTIVE),
 			logout: take(types.LOGOUT)
 		});
 		yield cancel(roomsRequestTask);
