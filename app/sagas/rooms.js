@@ -1,6 +1,7 @@
 import {
-	put, takeLatest, select
+	put, select, race, take, fork, cancel, takeLatest
 } from 'redux-saga/effects';
+import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
@@ -9,8 +10,18 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 
+let roomsSub;
+
+const removeSub = function removeSub() {
+	if (roomsSub && roomsSub.stop) {
+		roomsSub.stop();
+	}
+};
+
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
+		removeSub();
+		roomsSub = yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
 		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
@@ -42,7 +53,21 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 	}
 };
 
+const handleLogout = function handleLogout() {
+	removeSub();
+};
+
 const root = function* root() {
-	yield takeLatest(types.ROOMS.REQUEST, handleRoomsRequest);
+	yield takeLatest(types.LOGOUT, handleLogout);
+	while (true) {
+		const params = yield take(types.ROOMS.REQUEST);
+		const roomsRequestTask = yield fork(handleRoomsRequest, params);
+		yield race({
+			serverReq: take(types.SERVER.SELECT_REQUEST),
+			background: take(BACKGROUND),
+			logout: take(types.LOGOUT)
+		});
+		yield cancel(roomsRequestTask);
+	}
 };
 export default root;
