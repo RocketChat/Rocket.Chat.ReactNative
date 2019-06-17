@@ -118,15 +118,14 @@ describe('Room screen', () => {
 
 			it('should show/hide emoji autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				if (device.getPlatform() === 'android') {
-					await element(by.id('messagebox-input')).typeText(':');
-				} else {
-					await element(by.id('messagebox-input')).replaceText(':');
-				}
-				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
+				await element(by.id('messagebox-input')).typeText(':joy');
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('messagebox-input')).replaceText('');
+				if (device.getPlatform() === 'android') {
+					await element(by.id('messagebox-input')).replaceText('');
+				} else {
+					await element(by.id('messagebox-input')).clearText();
+				}
 				await waitFor(element(by.id('messagebox-container'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.id('messagebox-container'))).toBeNotVisible();
 			});
