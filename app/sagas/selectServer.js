@@ -1,10 +1,14 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import {
+	put, take, takeLatest, fork, cancel, race
+} from 'redux-saga/effects';
 import { AsyncStorage, Alert } from 'react-native';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import * as actions from '../actions';
-import { serverFailure, selectServerRequest, selectServerSuccess } from '../actions/server';
+import {
+	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
+} from '../actions/server';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
@@ -58,6 +62,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// Return server version even when offline
 		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
 	} catch (e) {
+		yield put(selectServerFailure());
 		log('err_select_server', e);
 	}
 };
@@ -81,7 +86,17 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 };
 
 const root = function* root() {
-	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
 	yield takeLatest(SERVER.REQUEST, handleServerRequest);
+
+	while (true) {
+		const params = yield take(SERVER.SELECT_REQUEST);
+		const selectServerTask = yield fork(handleSelectServer, params);
+		yield race({
+			request: take(SERVER.SELECT_REQUEST),
+			success: take(SERVER.SELECT_SUCCESS),
+			failure: take(SERVER.SELECT_FAILURE)
+		});
+		yield cancel(selectServerTask);
+	}
 };
 export default root;
