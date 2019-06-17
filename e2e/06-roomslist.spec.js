@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const { login, navigateToLogin, tapBack, sleep } = require('./helpers/app');
+const { searchRoom } = require('./helpers/roomListView');
 const data = require('./data');
 
 describe('Rooms list screen', () => {
@@ -38,19 +39,9 @@ describe('Rooms list screen', () => {
 
 	describe('Usage', async() => {
 		it('should search room and navigate', async() => {
-			// await element(by.id('rooms-list-view-list')).swipe('down');
-			// await waitFor(element(by.id('rooms-list-view-search'))).toBeVisible().withTimeout(2000);
-			// await expect(element(by.id('rooms-list-view-search'))).toBeVisible();
-
 			await waitFor(element(by.id('rooms-list-view-search'))).toExist().withTimeout(2000);
 
-			if (device.getPlatform() === 'android') {
-				await element(by.id('rooms-list-view-search')).tap();
-				await element(by.id('rooms-list-view-search-input')).replaceText('rocket.cat');
-			} else {
-				await element(by.id('rooms-list-view-search')).replaceText('rocket.cat');
-			}
-
+			await searchRoom('rocket.cat');
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
@@ -62,12 +53,7 @@ describe('Rooms list screen', () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			if (device.getPlatform() === 'android') {
-				await element(by.id('rooms-list-view-search')).tap();
-				await element(by.id('rooms-list-view-search-input')).replaceText('');
-			} else {
-				await element(by.id('rooms-list-view-search')).replaceText('');
-			}
+			await searchRoom('');
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();

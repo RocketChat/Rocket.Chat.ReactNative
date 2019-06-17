@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, testID }) => (
+const SearchBox = ({ onChangeText, onSubmitEditing, testID }) => (
 	<View style={styles.container}>
 		<View style={styles.searchBox}>
 			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
@@ -49,6 +49,7 @@ const SearchBox = ({ onChangeText, testID }) => (
 				testID={testID}
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
+				onSubmitEditing={onSubmitEditing}
 			/>
 		</View>
 	</View>
@@ -56,6 +57,7 @@ const SearchBox = ({ onChangeText, testID }) => (
 
 SearchBox.propTypes = {
 	onChangeText: PropTypes.func.isRequired,
+	onSubmitEditing: PropTypes.func,
 	testID: PropTypes.string
 };
 

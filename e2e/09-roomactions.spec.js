@@ -4,6 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
+const { searchRoom } = require('./helpers/roomListView');
 
 const scrollDown = 200;
 
@@ -15,7 +16,7 @@ async function navigateToRoomActions(type) {
 		room = `private${ data.random }`;
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	await element(by.id('rooms-list-view-search')).replaceText(room);
+	await searchRoom(room);
 	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-${ room }`)).tap();

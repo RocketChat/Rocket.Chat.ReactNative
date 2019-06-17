@@ -92,7 +92,11 @@ describe('Profile screen', () => {
 			await waitFor(element(by.id('profile-view-typed-password'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('profile-view-typed-password'))).toBeVisible();
 			await element(by.id('profile-view-typed-password')).replaceText(`${ data.password }`);
-			await element(by.text('Save')).tap();
+			if (device.getPlatform() === 'android') {
+				await element(by.text('SAVE')).tap();
+			} else {
+				await element(by.text('Save')).tap();
+			}
 			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
 			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
 			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);

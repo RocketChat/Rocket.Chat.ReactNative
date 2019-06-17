@@ -4,6 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
+const { searchRoom } = require('./helpers/roomListView');
 
 describe('Create room screen', () => {
 	before(async() => {
@@ -145,12 +146,7 @@ describe('Create room screen', () => {
 				await expect(element(by.text(room))).toExist();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				if (device.getPlatform() === 'android') {
-					await element(by.id('rooms-list-view-search')).tap();
-					await element(by.id('rooms-list-view-search-input')).replaceText(room);
-				} else {
-					await element(by.id('rooms-list-view-search')).replaceText(room);
-				}
+				await searchRoom(room);
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
@@ -174,12 +170,7 @@ describe('Create room screen', () => {
 				await expect(element(by.text(room))).toExist();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				if (device.getPlatform() === 'android') {
-					await element(by.id('rooms-list-view-search')).tap();
-					await element(by.id('rooms-list-view-search-input')).replaceText(room);
-				} else {
-					await element(by.id('rooms-list-view-search')).replaceText(room);
-				}
+				await searchRoom(room);
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();

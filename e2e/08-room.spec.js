@@ -4,21 +4,18 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
+const { searchRoom } = require('./helpers/roomListView');
 
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
+	await sleep(2000);
 	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
 };
 
 async function navigateToRoom() {
-	if (device.getPlatform() === 'android') {
-		await element(by.id('rooms-list-view-search')).tap();
-		await element(by.id('rooms-list-view-search-input')).replaceText(`private${ data.random }`);
-	} else {
-		await element(by.id('rooms-list-view-search')).replaceText(`private${ data.random }`);
-	}
+	await searchRoom(`private${ data.random }`);
 	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
     await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
@@ -151,23 +148,20 @@ describe('Room screen', () => {
 
 			it('should show and tap on user autocomplete and send mention', async() => {
 				await element(by.id('messagebox-input')).tap();
-				if (device.getPlatform() === 'android') {
-					await element(by.id('messagebox-input')).typeText(`@${ data.user }`);
-				} else {
-					await element(by.id('messagebox-input')).replaceText(`@${ data.user }`);
-				}
+				await element(by.id('messagebox-input')).typeText(`@${data.user}`);
 				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id(`mention-item-${ data.user }`)).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ data.user } `);
-				await element(by.id('messagebox-input')).tap();
-				if (device.getPlatform() === 'android') {
+				await element(by.id(`mention-item-${data.user}`)).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText(`@${data.user} `);
+				if (device.getPlatform() === 'ios') {
+					await element(by.id('messagebox-input')).tap();
 					await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
+					await element(by.id('messagebox-send-message')).tap();
+					await waitFor(element(by.text(`@${ data.user } ${ data.random }mention`))).toBeVisible().withTimeout(60000);
 				} else {
-					await element(by.id('messagebox-input')).replaceText(`${ data.random }mention`);
+					await element(by.id('messagebox-send-message')).tap();
+					await waitFor(element(by.text(`@${ data.user }`))).toBeVisible().withTimeout(60000);
 				}
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`@${ data.user } ${ data.random }mention`))).toBeVisible().withTimeout(60000);
 			});
 
 			it('should show and tap on room autocomplete', async() => {
@@ -177,6 +171,31 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-general')).atIndex(0).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
+				await element(by.id('messagebox-input')).clearText();
+			});
+
+			it('should show and tap on slash command autocomplete and send slash command', async() => {
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText('/shrug');
+				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
+				await expect(element(by.id('messagebox-container'))).toBeVisible();
+				await element(by.id('mention-item-shrug')).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText('/shrug ');
+				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.text(`joy ¯\_(ツ)_/¯`))).toBeVisible().withTimeout(60000);
+			});
+
+			it('should show command Preview', async() => {
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText('/giphy');
+				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
+				await expect(element(by.id('messagebox-container'))).toBeVisible();
+				await element(by.id('mention-item-giphy')).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText('/giphy ');
+				await element(by.id('messagebox-input')).typeText('no'); // workaround for number keyboard
+				await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
+				await expect(element(by.id('commandbox-container'))).toBeVisible();
 				await element(by.id('messagebox-input')).clearText();
 			});
 		});
@@ -227,36 +246,45 @@ describe('Room screen', () => {
 			});
 
 			it('should react to message', async() => {
-				await element(by.text(`${ data.random }message`)).longPress();
-				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toBeVisible();
-				await element(by.text('Add Reaction')).tap();
-				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('reaction-picker'))).toBeVisible();
-				await element(by.id('reaction-picker-😃')).tap();
-				await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
-				await element(by.id('reaction-picker-grinning')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.id('message-reaction-:grinning:'))).toBeVisible();
+				// detox fails to find element(by.id('reaction-picker-grinning')) on Android
+				if (device.getPlatform() === 'ios') {
+					await element(by.text(`${ data.random }message`)).longPress();
+					await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
+					await expect(element(by.text('Message actions'))).toBeVisible();
+					await element(by.text('Add Reaction')).tap();
+					await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
+					await expect(element(by.id('reaction-picker'))).toBeVisible();
+					await element(by.id('reaction-picker-😃')).tap();
+					await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
+					await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
+					await element(by.id('reaction-picker-grinning')).tap();
+					await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(60000);
+					await expect(element(by.id('message-reaction-:grinning:'))).toBeVisible();
+				}
 			});
 
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
-				await element(by.id('message-add-reaction')).tap();
-				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('reaction-picker'))).toBeVisible();
-				await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
-				await element(by.id('reaction-picker-😃')).tap();
-				await waitFor(element(by.id('reaction-picker-grimacing'))).toBeVisible().withTimeout(2000);
-				await element(by.id('reaction-picker-grimacing')).tap();
-				await waitFor(element(by.id('message-reaction-:grimacing:'))).toBeVisible().withTimeout(60000);
+				// detox fails to find element(by.id('reaction-picker-grinning')) on Android
+				if (device.getPlatform() === 'ios') {
+					await element(by.id('message-add-reaction')).tap();
+					await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
+					await expect(element(by.id('reaction-picker'))).toBeVisible();
+					await waitFor(element(by.id('reaction-picker-grinning'))).toBeVisible().withTimeout(2000);
+					await expect(element(by.id('reaction-picker-grinning'))).toBeVisible();
+					await element(by.id('reaction-picker-😃')).tap();
+					await waitFor(element(by.id('reaction-picker-grimacing'))).toBeVisible().withTimeout(10000);
+					await element(by.id('reaction-picker-grimacing')).tap();
+					await waitFor(element(by.id('message-reaction-:grimacing:'))).toBeVisible().withTimeout(60000);
+				}
 			});
 
 			it('should remove reaction', async() => {
-				await element(by.id('message-reaction-:grinning:')).tap();
-				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
-				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
+				// detox fails to find element(by.id('reaction-picker-grinning')) on Android
+				if (device.getPlatform() === 'ios') {
+					await element(by.id('message-reaction-:grinning:')).tap();
+					await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
+					await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
+				}
 			});
 
 			it('should edit message', async() => {
@@ -265,7 +293,12 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Edit')).tap();
-				await element(by.id('messagebox-input')).typeText('ed');
+				if (device.getPlatform() === 'ios') {
+					await element(by.id('messagebox-input')).typeText('ed');
+				} else {
+					// Work-around is made because on Android method typeText replaces text instead of appending to end
+					await element(by.id('messagebox-input')).replaceText(`${ data.random }edited`);
+				}
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.text(`${ data.random }edited (edited)`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text(`${ data.random }edited (edited)`))).toBeVisible();

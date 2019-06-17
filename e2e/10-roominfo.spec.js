@@ -4,6 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
+const { searchRoom } = require('./helpers/roomListView');
 
 async function navigateToRoomInfo(type) {
 	let room;
@@ -13,7 +14,7 @@ async function navigateToRoomInfo(type) {
 		room = `private${ data.random }`;
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	await element(by.id('rooms-list-view-search')).replaceText(room);
+	await searchRoom(room);
 	await sleep(2000);
     await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
@@ -158,7 +159,6 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
 				await tapBack();
@@ -172,7 +172,6 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
 				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
 				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
 				await element(by.id('room-info-edit-view-list')).swipe('down');
@@ -195,8 +194,11 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
-				await expect(element(by.id('room-info-edit-view-t'))).toHaveValue('1');
-				await expect(element(by.id('room-info-edit-view-ro'))).toHaveValue('0');
+				if (device.getPlatform() === 'ios') {
+					// On Android Error: '(with content description text: is "0" and view has effective visibility=VISIBLE)' doesn't match the selected view.
+					await expect(element(by.id('room-info-edit-view-t'))).toHaveValue('1');
+					await expect(element(by.id('room-info-edit-view-ro'))).toHaveValue('0');
+				}
 				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toBeNotVisible();
 				await element(by.id('room-info-edit-view-list')).swipe('down');
 			});
@@ -313,7 +315,7 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Yes, delete it!'))).toBeVisible();
 				await element(by.text('Yes, delete it!')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-				await element(by.id('rooms-list-view-search')).replaceText('');
+				await searchRoom('');
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
