@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
+import sharedStyles from '../Styles';
 
 import {
 	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT, HEADER_BACK, COLOR_SEPARATOR
@@ -22,9 +23,7 @@ export default StyleSheet.create({
 		backgroundColor: COLOR_WHITE
 	},
 	bordered: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR
+		...sharedStyles.separatorVertical
 	},
 	scroll: {
 		width: '100%'

@@ -11,6 +11,7 @@ import {
 } from '../../constants/colors';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import log from '../../utils/log';
 import styles from './styles';
 
 export default class ShareView extends React.Component {
@@ -50,14 +51,17 @@ export default class ShareView extends React.Component {
 		const name = navigation.getParam('name', '');
 		const text = navigation.getParam('text', '');
 		this.setState({ rid, text, name });
-
 		navigation.setParams({ sendMessage: this._sendMessage });
 	}
 
 	_sendMessage = () => {
 		const { text, rid } = this.state;
 		if (text !== '' && rid !== '') {
-			RocketChat.sendMessage(rid, text, undefined).then(ShareExtension.close);
+			try {
+				RocketChat.sendMessage(rid, text, undefined).then(ShareExtension.close);
+			} catch (error) {
+				log('err_share_extension_send_message', error);
+			}
 		}
 	};
 

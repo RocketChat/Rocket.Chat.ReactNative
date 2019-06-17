@@ -1,6 +1,7 @@
-import { StyleSheet, PixelRatio } from 'react-native';
+import { StyleSheet } from 'react-native';
+import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 56 * PixelRatio.getFontScale();
+export const ROW_HEIGHT = 56;
 
 export default StyleSheet.create({
 	content: {
@@ -14,6 +15,7 @@ export default StyleSheet.create({
 	name: {
 		fontSize: 17,
 		lineHeight: 20,
+		...sharedStyles.textRegular,
 		width: '80%'
 	},
 	center: {

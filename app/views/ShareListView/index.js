@@ -24,7 +24,6 @@ const keyExtractor = item => item.rid;
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	token: state.login.user && state.login.user.token,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	useRealName: state.settings.UI_Use_Real_Name,
 	server: state.server.server
 }))
@@ -40,7 +39,6 @@ export default class ShareListView extends React.Component {
 	})
 
 	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		useRealName: PropTypes.bool
@@ -144,7 +142,6 @@ export default class ShareListView extends React.Component {
 		return (
 			<ScrollView
 				style={styles.scroll}
-				ref={this.getScrollRef}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
 			>
@@ -179,11 +176,9 @@ export default class ShareListView extends React.Component {
 	);
 
 	renderItem = ({ item }) => {
-		const { baseUrl } = this.props;
 		if (item.isValid && item.isValid()) {
 			return (
 				<ShareItem
-					baseUrl={baseUrl}
 					type={item.t}
 					name={this.getRoomTitle(item)}
 					onPress={() => this.shareMessage(item)}

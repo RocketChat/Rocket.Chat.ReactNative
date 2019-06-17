@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import Touch from '../../utils/touch';
 import log from '../../utils/log';
 import Check from '../../containers/Check';
-
 import styles from './styles';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 

@@ -382,7 +382,7 @@ export default {
 	Welcome: 'Welcome',
 	Welcome_to_RocketChat: 'Welcome to Rocket.Chat',
 	Whats_your_2fa: 'What\'s your 2FA code?',
-	Without_Servers: 'Without Servers',
+	Without_Servers: 'Without Servers!',
 	Yes_action_it: 'Yes, {{action}} it!',
 	Yesterday: 'Yesterday',
 	You_are_in_preview_mode: 'You are in preview mode',

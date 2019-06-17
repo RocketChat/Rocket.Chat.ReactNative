@@ -12,16 +12,17 @@ export { ROW_HEIGHT };
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
-	token: state.login.user && state.login.user.token
+	token: state.login.user && state.login.user.token,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }))
 /** @extends React.Component */
 export default class ShareItem extends React.Component {
 	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		token: PropTypes.string,
 		userId: PropTypes.string,
+		baseUrl: PropTypes.string,
 		onPress: PropTypes.func
 	}
 
