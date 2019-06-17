@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
 	},
 	createChannelIcon: {
 		color: COLOR_PRIMARY,
-		marginHorizontal: 18
+		marginLeft: 18,
+		marginRight: 15
 	},
 	createChannelText: {
 		color: COLOR_PRIMARY,

@@ -16,6 +16,7 @@ import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
+import ReadReceipt from './ReadReceipt';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
@@ -72,6 +73,10 @@ const Message = React.memo((props) => {
 				>
 					<MessageInner {...props} />
 				</View>
+				<ReadReceipt
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+				/>
 			</View>
 		</View>
 	);
@@ -119,7 +124,9 @@ Message.propTypes = {
 	hasError: PropTypes.bool,
 	style: PropTypes.any,
 	onLongPress: PropTypes.func,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	isReadReceiptEnabled: PropTypes.bool,
+	unread: PropTypes.bool
 };
 
 MessageInner.propTypes = {
