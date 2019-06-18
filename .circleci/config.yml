@@ -82,7 +82,7 @@ jobs:
       - run:
           name: Test
           command: |
-            detox test --configuration ios.sim.release --cleanup
+            detox test --configuration ios.sim.release --cleanup --loglevel verbose
 
       - store_artifacts:
           path: /tmp/screenshots
