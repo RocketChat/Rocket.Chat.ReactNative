@@ -56,7 +56,7 @@ export default class ShareView extends React.Component {
 		navigation.setParams({ sendMessage: this._sendMediaMessage });
 	}
 
-	uriToPath = uri => uri.replace(/^file:\/\//, '');
+	uriToPath = uri => uri.replace(/^file:\/\//, '').replace('%20', ' ');
 
 	_sendMediaMessage = async() => {
 		const { text, rid } = this.state;
