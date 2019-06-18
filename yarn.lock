@@ -11611,11 +11611,6 @@ react-native-responsive-ui@^1.1.1:
   dependencies:
     lodash "^4.17.4"
 
-react-native-safari-view@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-safari-view/-/react-native-safari-view-2.1.0.tgz#1e0cd12c62bce79bc1759c7e281646b08b61c959"
-  integrity sha1-HgzRLGK855vBdZx+KBZGsIthyVk=
-
 react-native-safe-area-view@^0.13.0:
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.13.1.tgz#834bbb6d22f76a7ff07de56725ee5667ba1386b0"

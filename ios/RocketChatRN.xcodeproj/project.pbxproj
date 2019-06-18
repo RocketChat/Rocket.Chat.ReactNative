@@ -373,13 +373,6 @@
 			remoteGlobalIDString = 42F559BA1CFC90C400DC3F84;
 			remoteInfo = RNAudio;
 		};
-		B810DF90203B10490010C331 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = SafariViewManager;
-		};
 		B88F58451FBF55E200B352B8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B88F58361FBF55E200B352B8 /* RCTPushNotification.xcodeproj */;
@@ -464,7 +457,6 @@
 		22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		3B696712EE2345A59F007A88 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
-		4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 		58E5009FCA8D40E59303C3DD /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		5A0EEFAF8AB14F5B9E796CDD /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		5A8684E7C27E426C9206E980 /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
@@ -759,7 +751,6 @@
 				5A8684E7C27E426C9206E980 /* RealmReact.xcodeproj */,
 				22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */,
 				AD0379F2BCE84C968538CDAF /* RCTVideo.xcodeproj */,
-				4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */,
 				C21010507E5B4B37BA0E4C9D /* RNAudio.xcodeproj */,
 				1845C223DA364898A8400573 /* FastImage.xcodeproj */,
 				22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */,
@@ -816,14 +807,6 @@
 				7A55F1C42236D541005109A0 /* custom.ttf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		B810DF8D203B10480010C331 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B810DF91203B10490010C331 /* libSafariViewManager.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		B88F58371FBF55E200B352B8 /* Products */ = {
@@ -1038,10 +1021,6 @@
 				{
 					ProductGroup = B8E79A8A1F3CCC6C005B464F /* Products */;
 					ProjectRef = 22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */;
-				},
-				{
-					ProductGroup = B810DF8D203B10480010C331 /* Products */;
-					ProjectRef = 4019A5E1911B4C61944FBCEC /* SafariViewManager.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1379,13 +1358,6 @@
 			fileType = archive.ar;
 			path = libRNAudio.a;
 			remoteRef = A9A6C944204DD557006B7D9D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		B810DF91203B10490010C331 /* libSafariViewManager.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSafariViewManager.a;
-			remoteRef = B810DF90203B10490010C331 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B88F58461FBF55E200B352B8 /* libRCTPushNotification.a */ = {
