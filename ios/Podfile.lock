@@ -13,6 +13,8 @@ PODS:
   - EXPermissions (5.0.1):
     - UMCore
     - UMPermissionsInterface
+  - EXWebBrowser (5.0.3):
+    - UMCore
   - Fabric (1.9.0)
   - Firebase/Core (5.20.2):
     - Firebase/CoreOnly
@@ -170,6 +172,7 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - Fabric (~> 1.9.0)
   - Firebase/Core (~> 5.20.1)
   - Firebase/Performance (~> 5.20.1)
@@ -243,6 +246,9 @@ EXTERNAL SOURCES:
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
+  EXWebBrowser:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-web-browser/ios"
   Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
@@ -308,6 +314,7 @@ SPEC CHECKSUMS:
   EXConstants: 9fe56eec8bf0a3ee9beb8f3381fa91340a5b1e57
   EXFileSystem: 96624bd4b93a0684335c421a6567a92b25bd7ddb
   EXPermissions: 8e05008ed4fc8c9be6c17ea95301fc3f3f005a7b
+  EXWebBrowser: e03894b4583bb726e5ea05d01b341ba00134c2b5
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 0c8cf33f266410c61ab3e2265cfa412200351d9c
   FirebaseABTesting: 1f50b8d50f5e3469eea54e7463a7b7fe221d1f5e
