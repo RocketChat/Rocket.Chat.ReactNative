@@ -79,7 +79,6 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new ReactVideoPackage(),
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
-					new RocketChatNativePackage(),
 					new FastImageViewPackage(),
 					new RNI18nPackage(),
           new RNNotificationsPackage(MainApplication.this),
