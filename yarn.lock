@@ -11540,10 +11540,10 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-realm-path@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/react-native-realm-path/-/react-native-realm-path-1.2.7.tgz#b5f3f608564885adef6829dcc4f5b35fa8ffff1d"
-  integrity sha512-kpj5v4pdLd4tAxopGGjwRA68QzXxWQaGcrr6WpTLjkd/G8Ar+bSXePgpbepu/K2bV3KhtS1b3Zz1jqVXBzFavg==
+react-native-realm-path@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/react-native-realm-path/-/react-native-realm-path-1.2.8.tgz#263e71621cdc7a4bfbd4bdbaad5637969c785a3d"
+  integrity sha512-KgP/gWbEPLyMAuYMuJPAIdIueoe8gVKv3DgEyEu0fA5K0mQWGfEdBFTFWzKJ1M+tY+4t/jIi0msqKz6W7LofMg==
 
 react-native-responsive-ui@^1.1.1:
   version "1.1.1"
