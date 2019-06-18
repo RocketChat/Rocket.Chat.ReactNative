@@ -12,25 +12,19 @@ import SelectServerView from './views/SelectServerView';
 import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
 
-const InsideNavigator = createStackNavigator(
-	{
-		ShareListView,
-		ShareView,
-		SelectServerView
-	},
-	{
-		initialRouteName: 'ShareListView'
-	}
-);
+const InsideNavigator = createStackNavigator({
+	ShareListView,
+	ShareView,
+	SelectServerView
+}, {
+	initialRouteName: 'ShareListView'
+});
 
-const OutsideNavigator = createStackNavigator(
-	{
-		WithoutServersView
-	},
-	{
-		initialRouteName: 'WithoutServersView'
-	}
-);
+const OutsideNavigator = createStackNavigator({
+	WithoutServersView
+}, {
+	initialRouteName: 'WithoutServersView'
+});
 
 const AppContainer = createAppContainer(createSwitchNavigator(
 	{

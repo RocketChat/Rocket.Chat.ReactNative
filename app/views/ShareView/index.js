@@ -38,19 +38,19 @@ export default class ShareView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const { navigation } = this.props;
+		const rid = navigation.getParam('rid', '');
+		const name = navigation.getParam('name', '');
+		const text = navigation.getParam('text', '');
 		this.state = {
-			rid: '',
-			text: '',
-			name: ''
+			rid,
+			text,
+			name
 		};
 	}
 
 	componentWillMount() {
 		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', '');
-		const name = navigation.getParam('name', '');
-		const text = navigation.getParam('text', '');
-		this.setState({ rid, text, name });
 		navigation.setParams({ sendMessage: this._sendMessage });
 	}
 
