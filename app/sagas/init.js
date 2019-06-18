@@ -1,6 +1,6 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
-import * as Keychain from 'react-native-keychain';
+import RNUserDefaults from 'rn-user-defaults';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -14,18 +14,24 @@ import database from '../lib/realm';
 
 const restore = function* restore() {
 	try {
-		const { serversDB } = database.databases;
-		const currentServer = yield serversDB.objects('servers').filtered('currentServer = true');
-		const { id: server = null } = currentServer.length && currentServer[0];
-		const { password: token } = server ? yield Keychain.getInternetCredentials(server, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' }) : { password: null };
-		const sortPreferences = yield RocketChat.getSortPreferences();
+		yield RNUserDefaults.setName('group.ios.chat.rocket');
 
+		const { token, server } = yield all({
+			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
+			server: RNUserDefaults.get('currentServer')
+		});
+
+		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
 
 		const useMarkdown = yield RocketChat.getUseMarkdown();
 		yield put(toggleMarkdown(useMarkdown));
 
 		if (!token || !server) {
+			yield all([
+				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
+				RNUserDefaults.clear('currentServer')
+			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
 			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);

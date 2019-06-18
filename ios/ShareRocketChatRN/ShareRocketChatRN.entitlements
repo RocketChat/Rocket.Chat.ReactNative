@@ -4,11 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.chat.rocket.reactnative</string>
-	</array>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
+		<string>group.ios.chat.rocket</string>
 	</array>
 </dict>
 </plist>

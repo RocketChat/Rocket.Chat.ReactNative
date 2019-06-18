@@ -5,13 +5,26 @@ import RNRealmPath from 'react-native-realm-path';
 // Realm.clearTestState();
 // AsyncStorage.clear();
 
+const userSchema = {
+	name: 'user',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		token: { type: 'string', optional: true },
+		username: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
+		language: { type: 'string', optional: true },
+		status: { type: 'string', optional: true },
+		roles: { type: 'string[]', optional: true }
+	}
+};
+
 const serversSchema = {
 	name: 'servers',
 	primaryKey: 'id',
 	properties: {
 		id: 'string',
 		name: { type: 'string', optional: true },
-		currentServer: { type: 'bool', optional: true },
 		iconURL: { type: 'string', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
@@ -372,9 +385,10 @@ class DB {
 		serversDB: new Realm({
 			path: `${ RNRealmPath.realmPath }default.realm`,
 			schema: [
+				userSchema,
 				serversSchema
 			],
-			schemaVersion: 9,
+			schemaVersion: 8,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
 					const newServers = newRealm.objects('servers');
@@ -382,14 +396,6 @@ class DB {
 					// eslint-disable-next-line no-plusplus
 					for (let i = 0; i < newServers.length; i++) {
 						newServers[i].roomsUpdatedAt = null;
-					}
-				}
-				if (newRealm.schemaVersion < 9) {
-					const newServers = newRealm.objects('servers');
-
-					// eslint-disable-next-line no-plusplus
-					for (let i = 0; i < newServers.length; i++) {
-						newServers[i].currentServer = null;
 					}
 				}
 			}
