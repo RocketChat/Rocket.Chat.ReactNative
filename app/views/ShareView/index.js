@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import ShareExtension from 'react-native-share-extension';
 import { HeaderBackButton } from 'react-navigation';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import {
 	COLOR_TEXT_DESCRIPTION, HEADER_BACK
@@ -51,7 +52,27 @@ export default class ShareView extends React.Component {
 
 	componentWillMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMessage });
+		navigation.setParams({ sendMessage: this._sendMediaMessage });
+	}
+
+	uriToPath = uri => uri.replace(/^file:\/\//, '');
+
+	_sendMediaMessage = async() => {
+		const { text, rid } = this.state;
+		const data = await RNFetchBlob.fs.stat(this.uriToPath(text));
+		const fileInfo = {
+			name: data.filename,
+			description: '',
+			size: data.size,
+			type: 'image/jpeg',
+			store: 'Uploads',
+			path: data.path
+		};
+		try {
+			await RocketChat.sendFileMessage(rid, fileInfo, undefined);
+		} catch (e) {
+			log('err_send_media_message', e);
+		}
 	}
 
 	_sendMessage = () => {
