@@ -6,6 +6,7 @@ import {
 import ShareExtension from 'react-native-share-extension';
 import { HeaderBackButton } from 'react-navigation';
 import RNFetchBlob from 'rn-fetch-blob';
+import * as mime from 'react-native-mime-types';
 
 import {
 	COLOR_TEXT_DESCRIPTION, HEADER_BACK
@@ -64,7 +65,7 @@ export default class ShareView extends React.Component {
 			name: data.filename,
 			description: '',
 			size: data.size,
-			type: 'image/jpeg',
+			type: mime.lookup(data.path),
 			store: 'Uploads',
 			path: data.path
 		};
