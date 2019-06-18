@@ -178,7 +178,9 @@ dependencies {
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
     implementation project(':react-native-action-sheet')
-    implementation project(':react-native-device-info')
+    implementation(project(":react-native-device-info"),  {
+        exclude group: "com.google.android.gms"
+    })
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
