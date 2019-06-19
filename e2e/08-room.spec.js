@@ -180,19 +180,15 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-container'))).toBeVisible();
 				await element(by.id('mention-item-shrug')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('/shrug ');
-				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
+				await element(by.id('messagebox-input')).typeText('joy');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.text(`joy ¯\_(ツ)_/¯`))).toBeVisible().withTimeout(60000);
 			});
 
 			it('should show command Preview', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText('/giphy');
-				await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toBeVisible();
-				await element(by.id('mention-item-giphy')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('/giphy ');
-				await element(by.id('messagebox-input')).typeText('no'); // workaround for number keyboard
+				await element(by.id('messagebox-input')).replaceText('/giphy no');
+				await element(by.id('messagebox-input')).typeText('way');
 				await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('commandbox-container'))).toBeVisible();
 				await element(by.id('messagebox-input')).clearText();
@@ -213,7 +209,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Permalink')).tap();
-				// await expect(element(by.text('Permalink copied to clipboard!'))).toBeVisible();
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.text('Permalink copied to clipboard!'))).toBeNotVisible().withTimeout(5000);
 
