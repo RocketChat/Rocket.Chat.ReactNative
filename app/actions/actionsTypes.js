@@ -58,6 +58,7 @@ export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',
 	'SELECT_REQUEST',
+	'SELECT_FAILURE',
 	'INIT_ADD',
 	'FINISH_ADD'
 ]);
