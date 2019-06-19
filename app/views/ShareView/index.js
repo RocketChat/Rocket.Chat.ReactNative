@@ -122,23 +122,29 @@ export default class ShareView extends React.Component {
 		}
 	};
 
+	renderPreview = () => {
+		const { fileInfo } = this.state;
+
+		const icon = fileInfo.type.match(/image/)
+			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
+			: <CustomIcon name='file-generic' size={72} />;
+
+		return (
+			<View style={styles.mediaContent}>
+				{icon}
+				<View style={styles.mediaInfo}>
+					<Text style={styles.mediaText}>{fileInfo.name}</Text>
+					<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
+				</View>
+			</View>
+		);
+	};
+
 	renderMediaContent = () => {
 		const { fileInfo, file } = this.state;
 		return fileInfo ? (
 			<View style={styles.mediaContainer}>
-				<View
-					style={styles.mediaContent}
-				>
-					{
-						fileInfo.type.match(/image/)
-							? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
-							: <CustomIcon name='file-generic' size={72} style={styles.fileIcon} />
-					}
-					<View style={styles.mediaInfo}>
-						<Text style={styles.mediaText}>{fileInfo.name}</Text>
-						<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
-					</View>
-				</View>
+				{this.renderPreview()}
 				<View style={styles.mediaInputContent}>
 					<TextInput
 						style={[styles.mediaNameInput, styles.input]}
