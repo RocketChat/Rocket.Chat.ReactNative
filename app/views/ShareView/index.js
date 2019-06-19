@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, TouchableOpacity, TextInput
+	View, Text, TouchableOpacity, TextInput, Image
 } from 'react-native';
 import ShareExtension from 'react-native-share-extension';
 import { HeaderBackButton } from 'react-navigation';
@@ -15,6 +15,7 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import styles from './styles';
+import Loading from './Loading';
 
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -43,75 +44,149 @@ export default class ShareView extends React.Component {
 		const { navigation } = this.props;
 		const rid = navigation.getParam('rid', '');
 		const name = navigation.getParam('name', '');
-		const text = navigation.getParam('text', '');
+		const value = navigation.getParam('value', '');
 		this.state = {
 			rid,
-			text,
-			name
+			value,
+			name,
+			fileInfo: null,
+			loading: false,
+			file: {
+				name: '',
+				description: ''
+			}
 		};
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMediaMessage });
+		navigation.setParams({ sendMessage: this._sendMessage });
+
+		const { value } = this.state;
+		if (this.isMedia(value)) {
+			const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
+			const fileInfo = {
+				name: data.filename,
+				description: '',
+				size: data.size,
+				type: mime.lookup(data.path),
+				store: 'Uploads',
+				path: data.path
+			};
+			this.setState({ fileInfo, file: { name: data.filename } });
+		}
 	}
 
 	uriToPath = uri => uri.replace(/^file:\/\//, '').replace('%20', ' ');
 
-	_sendMediaMessage = async() => {
-		const { text, rid } = this.state;
-		const data = await RNFetchBlob.fs.stat(this.uriToPath(text));
-		const fileInfo = {
-			name: data.filename,
-			description: '',
-			size: data.size,
-			type: mime.lookup(data.path),
-			store: 'Uploads',
-			path: data.path
-		};
-		try {
-			await RocketChat.sendFileMessage(rid, fileInfo, undefined);
-		} catch (e) {
-			log('err_send_media_message', e);
+	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
+
+	isMedia = uri => uri.match(/^file:\/\//);
+
+	_sendMessage = async() => {
+		const { value } = this.state;
+		this.setState({ loading: true });
+
+		if (this.isMedia(value)) {
+			await this.sendMediaMessage();
+		} else {
+			await this.sendTextMessage();
+		}
+
+		this.setState({ loading: false });
+		ShareExtension.close();
+	}
+
+	sendMediaMessage = async() => {
+		const { rid, fileInfo, file } = this.state;
+		const { name, description } = file;
+		const fileMessage = { ...fileInfo, name, description };
+		if (fileInfo && rid !== '') {
+			try {
+				await RocketChat.sendFileMessage(rid, fileMessage, undefined);
+			} catch (e) {
+				log('err_send_media_message', e);
+			}
 		}
 	}
 
-	_sendMessage = () => {
-		const { text, rid } = this.state;
-		if (text !== '' && rid !== '') {
+	sendTextMessage = async() => {
+		const { value, rid } = this.state;
+		if (value !== '' && rid !== '') {
 			try {
-				RocketChat.sendMessage(rid, text, undefined).then(ShareExtension.close);
+				await RocketChat.sendMessage(rid, value, undefined);
 			} catch (error) {
 				log('err_share_extension_send_message', error);
 			}
 		}
 	};
 
-	render() {
-		const { text, name } = this.state;
+	renderMediaContent = () => {
+		const { fileInfo, file } = this.state;
+		return fileInfo ? (
+			<View style={styles.mediaContainer}>
+				<View
+					style={styles.mediaContent}
+				>
+					<Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
+					<View style={styles.mediaInfo}>
+						<Text style={styles.mediaText}>{fileInfo.name}</Text>
+						<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
+					</View>
+				</View>
+				<View style={styles.mediaInputContent}>
+					<TextInput
+						style={[styles.mediaNameInput, styles.input]}
+						placeholder={I18n.t('File_name')}
+						onChangeText={name => this.setState({ file: { ...file, name } })}
+						underlineColorAndroid='transparent'
+						defaultValue={file.name}
+						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+					/>
+					<TextInput
+						style={[styles.mediaDescriptionInput, styles.input]}
+						placeholder={I18n.t('File_description')}
+						onChangeText={description => this.setState({ file: { ...file, description } })}
+						underlineColorAndroid='transparent'
+						defaultValue={file.description}
+						multiline
+						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+					/>
+				</View>
+			</View>
+		) : null;
+	};
 
+	renderInput = () => {
+		const { value } = this.state;
+		return (
+			<TextInput
+				style={[styles.input, styles.textInput]}
+				placeholder=''
+				onChangeText={handleText => this.setState({ value: handleText })}
+				underlineColorAndroid='transparent'
+				defaultValue={value}
+				multiline
+				placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+			/>
+		);
+	}
+
+	render() {
+		const { value, name, loading } = this.state;
 		return (
 			<View
 				style={styles.container}
 			>
-				<Text style={styles.text}>
-					<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
-					<Text style={styles.name}>{`${ name }`}</Text>
-				</Text>
+				{ loading ? <Loading /> : null }
+				<View style={styles.toContent}>
+					<Text style={styles.text}>
+						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
+						<Text style={styles.name}>{`${ name }`}</Text>
+					</Text>
+				</View>
 				<View style={styles.content}>
-					<TextInput
-						ref={component => this.component = component}
-						style={styles.input}
-						returnKeyType='default'
-						keyboardType='twitter'
-						blurOnSubmit={false}
-						placeholder=''
-						onChangeText={handleText => this.setState({ text: handleText })}
-						underlineColorAndroid='transparent'
-						defaultValue={text}
-						multiline
-						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
-					/>
+					{this.isMedia(value) ? this.renderMediaContent() : this.renderInput()}
 				</View>
 			</View>
 		);

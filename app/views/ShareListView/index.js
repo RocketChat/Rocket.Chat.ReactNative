@@ -129,7 +129,7 @@ export default class ShareListView extends React.Component {
 
 		navigation.navigate('ShareView', {
 			rid: item.rid,
-			text: value,
+			value,
 			name: this.getRoomTitle(item)
 		});
 	};
