@@ -13,6 +13,7 @@ import {
 } from '../../constants/colors';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
+import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
@@ -128,7 +129,11 @@ export default class ShareView extends React.Component {
 				<View
 					style={styles.mediaContent}
 				>
-					<Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
+					{
+						fileInfo.type.match(/image/)
+							? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
+							: <CustomIcon name='file-generic' size={72} style={styles.fileIcon} />
+					}
 					<View style={styles.mediaInfo}>
 						<Text style={styles.mediaText}>{fileInfo.name}</Text>
 						<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
@@ -174,19 +179,20 @@ export default class ShareView extends React.Component {
 
 	render() {
 		const { value, name, loading } = this.state;
+		const isMedia = this.isMedia(value);
 		return (
 			<View
 				style={styles.container}
 			>
 				{ loading ? <Loading /> : null }
-				<View style={styles.toContent}>
+				<View style={isMedia ? styles.toContent : styles.toContentText}>
 					<Text style={styles.text}>
 						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
 						<Text style={styles.name}>{`${ name }`}</Text>
 					</Text>
 				</View>
 				<View style={styles.content}>
-					{this.isMedia(value) ? this.renderMediaContent() : this.renderInput()}
+					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
 			</View>
 		);

@@ -21,6 +21,10 @@ export default StyleSheet.create({
 		width: '100%',
 		backgroundColor: COLOR_WHITE
 	},
+	toContentText: {
+		width: '100%',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
 	name: {
 		color: COLOR_TITLE
 	},
