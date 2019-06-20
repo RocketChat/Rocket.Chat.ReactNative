@@ -447,9 +447,12 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('im.create', { username });
 	},
-	joinRoom(roomId) {
+	joinRoom(roomId, type) {
 		// TODO: join code
 		// RC 0.48.0
+		if (type === 'p') {
+			return this.sdk.methodCall('joinRoom', roomId);
+		}
 		return this.sdk.post('channels.join', { roomId });
 	},
 	sendFileMessage,
