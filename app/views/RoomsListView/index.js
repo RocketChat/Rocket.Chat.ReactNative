@@ -29,6 +29,7 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
+import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 
 const SCROLL_OFFSET = 56;
 
@@ -56,7 +57,8 @@ const keyExtractor = item => item.rid;
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction())
+	roomsRequest: () => dispatch(roomsRequestAction()),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 }))
 export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -379,6 +381,11 @@ export default class RoomsListView extends React.Component {
 		}, 100);
 	}
 
+	goDirectory = () => {
+		const { navigation } = this.props;
+		navigation.navigate('DirectoryView');
+	}
+
 	getScrollRef = ref => this.scroll = ref
 
 	renderListHeader = () => {
@@ -390,6 +397,7 @@ export default class RoomsListView extends React.Component {
 				sortBy={sortBy}
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
+				goDirectory={this.goDirectory}
 			/>
 		);
 	}

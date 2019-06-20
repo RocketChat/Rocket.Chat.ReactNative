@@ -22,55 +22,60 @@ const create = (permissions) => {
 	}
 };
 
-export default async function() {
-	try {
-		const serverVersion = reduxStore.getState().server.version;
+export default function() {
+	return new Promise(async(resolve) => {
+		try {
+			const serverVersion = reduxStore.getState().server.version;
 
-		// if server version is lower than 0.73.0, fetches from old api
-		if (semver.lt(serverVersion, '0.73.0')) {
-			// RC 0.66.0
-			const result = await this.sdk.get('permissions.list');
-			if (!result.success) {
-				return;
-			}
-			InteractionManager.runAfterInteractions(() => {
-				database.write(() => {
-					create(result.permissions);
+			// if server version is lower than 0.73.0, fetches from old api
+			if (semver.lt(serverVersion, '0.73.0')) {
+				// RC 0.66.0
+				const result = await this.sdk.get('permissions.list');
+				if (!result.success) {
+					return resolve();
+				}
+				InteractionManager.runAfterInteractions(() => {
+					database.write(() => {
+						create(result.permissions);
+					});
+					return resolve();
 				});
-			});
-		} else {
-			const params = {};
-			const updatedSince = getUpdatedSince();
-			if (updatedSince) {
-				params.updatedSince = updatedSince;
-			}
-			// RC 0.73.0
-			const result = await this.sdk.get('permissions.listAll', params);
+			} else {
+				const params = {};
+				const updatedSince = getUpdatedSince();
+				if (updatedSince) {
+					params.updatedSince = updatedSince;
+				}
+				// RC 0.73.0
+				const result = await this.sdk.get('permissions.listAll', params);
 
-			if (!result.success) {
-				return;
-			}
+				if (!result.success) {
+					return resolve();
+				}
 
-			InteractionManager.runAfterInteractions(
-				() => database.write(() => {
-					create(result.update);
+				InteractionManager.runAfterInteractions(
+					() => database.write(() => {
+						create(result.update);
 
-					if (result.delete && result.delete.length) {
-						result.delete.forEach((p) => {
-							try {
-								const permission = database.objectForPrimaryKey('permissions', p._id);
-								if (permission) {
-									database.delete(permission);
+						if (result.delete && result.delete.length) {
+							result.delete.forEach((p) => {
+								try {
+									const permission = database.objectForPrimaryKey('permissions', p._id);
+									if (permission) {
+										database.delete(permission);
+									}
+								} catch (e) {
+									log('err_get_permissions_delete', e);
 								}
-							} catch (e) {
-								log('err_get_permissions_delete', e);
-							}
-						});
-					}
-				})
-			);
+							});
+						}
+						return resolve();
+					})
+				);
+			}
+		} catch (e) {
+			log('err_get_permissions', e);
+			return resolve();
 		}
-	} catch (e) {
-		log('err_get_permissions', e);
-	}
+	});
 }
