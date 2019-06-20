@@ -437,12 +437,10 @@ export default class RoomView extends React.Component {
 
 	joinRoom = async() => {
 		try {
-			const result = await RocketChat.joinRoom(this.rid);
-			if (result.success) {
-				this.internalSetState({
-					joined: true
-				});
-			}
+			await RocketChat.joinRoom(this.rid, this.t);
+			this.internalSetState({
+				joined: true
+			});
 		} catch (e) {
 			log('err_join_room', e);
 		}
