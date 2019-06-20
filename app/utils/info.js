@@ -29,5 +29,4 @@ export const Toast = React.forwardRef((props, ref) => (
 		opacity={0.8}
 	/>
 ));
-
 export const showErrorAlert = (message, title, onPress = () => {}) => Alert.alert(title, message, [{ text: 'OK', onPress }], { cancelable: true });
