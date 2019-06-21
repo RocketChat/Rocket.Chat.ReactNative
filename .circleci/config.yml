@@ -76,7 +76,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ios/build/Build/Products/Release-iphonesimulator/*
+            - ios/build/Build/Products/*
 
 
   e2e-test:
@@ -88,8 +88,6 @@ jobs:
 
     steps:
       - checkout
-      - attach_workspace:
-          at: ios
 
       - run:
           name: Install Node 8
@@ -107,11 +105,17 @@ jobs:
             brew tap wix/brew
             brew install wix/brew/applesimutils
 
+      - attach_workspace:
+          at: ios
+
       - run:
           name: Install Detox CLI
           command: |
             yarn global add detox-cli
             yarn
+            cd ios
+            ls
+            cd ..
 
       - run:
           name: Test
