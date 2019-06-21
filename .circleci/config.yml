@@ -276,8 +276,9 @@ workflows:
 #          requires:
 #            - lint-testunit
       - e2e-build:
-          requires:
-            - e2e-hold
+# TODO UNCOMMMENT
+#          requires:
+#            - e2e-hold
       - e2e-test:
           requires:
             - e2e-build
