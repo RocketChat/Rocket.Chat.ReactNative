@@ -87,6 +87,7 @@ jobs:
       BASH_ENV: "~/.nvm/nvm.sh"
 
     steps:
+      - checkout
       - attach_workspace:
           at: ios
 
