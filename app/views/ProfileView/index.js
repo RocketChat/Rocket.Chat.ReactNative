@@ -151,8 +151,11 @@ export default class ProfileView extends React.Component {
 		if (e.data && e.data.errorType === 'error-too-many-requests') {
 			return showErrorAlert(e.data.error);
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		// log(func, e);
+		showErrorAlert(
+			I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }),
+			'',
+			() => this.setState({ showPasswordAlert: false })
+		);
 	}
 
 	submit = async() => {
@@ -162,7 +165,7 @@ export default class ProfileView extends React.Component {
 			return;
 		}
 
-		this.setState({ saving: true, showPasswordAlert: false });
+		this.setState({ saving: true });
 
 		const {
 			name, username, email, newPassword, currentPassword, avatar, customFields
@@ -218,7 +221,7 @@ export default class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				this.setState({ saving: false });
+				this.setState({ saving: false, showPasswordAlert: false });
 				this.toast.show(I18n.t('Profile_saved_successfully'));
 				this.init();
 			}
