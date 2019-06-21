@@ -1,5 +1,10 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BugsnagReactNative (2.21.0):
+    - BugsnagReactNative/Core (= 2.21.0)
+    - React
+  - BugsnagReactNative/Core (2.21.0):
+    - React
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - DoubleConversion (1.1.6)
@@ -166,6 +171,7 @@ PODS:
   - yoga (0.59.8.React)
 
 DEPENDENCIES:
+  - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - Crashlytics (~> 3.12.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
@@ -232,6 +238,8 @@ SPEC REPOS:
     - RSKImageCropper
 
 EXTERNAL SOURCES:
+  BugsnagReactNative:
+    :path: "../node_modules/bugsnag-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAppLoaderProvider:
@@ -308,6 +316,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BugsnagReactNative: 9f273f292378a016977f578e4467cf84b7182b07
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EXAppLoaderProvider: 8f2c04a0a8d9be91f7c37c2b8824077ee5d4bc01
@@ -355,6 +364,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: b5e15bac5f306ea636e16393a7a6eb42c017ea99
+PODFILE CHECKSUM: 2b29a7b7ca3ce87453a70618b1fb41e84d727d32
 
 COCOAPODS: 1.6.2

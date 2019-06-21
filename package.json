@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@rocket.chat/sdk": "1.0.0-alpha.28",
+    "bugsnag-react-native": "^2.21.0",
     "deep-equal": "^1.0.1",
     "ejson": "^2.1.2",
     "expo-web-browser": "^5.0.3",

@@ -132,6 +132,11 @@ jobs:
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
       - run:
+          name: Set Bugsnag key
+          command: |
+            echo "export default '$BUGSNAG_KEY'" > ./app/lib/bugsnag/key.js
+
+      - run:
           name: Set Google Services
           command: |
             cd android/app
@@ -194,6 +199,11 @@ jobs:
           name: Install NPM modules
           command: |
             yarn
+
+      - run:
+          name: Set Bugsnag key
+          command: |
+            echo "export default '$BUGSNAG_KEY'" > ./app/lib/bugsnag/key.js
 
       - run:
           name: Set Google Services

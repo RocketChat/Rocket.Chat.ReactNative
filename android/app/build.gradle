@@ -172,6 +172,7 @@ android {
 }
 
 dependencies {
+    implementation project(':bugsnag-react-native')
     addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
     implementation project(':react-native-firebase')

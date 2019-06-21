@@ -1,11 +1,9 @@
-import firebase from 'react-native-firebase';
+import { bugsnag } from '../lib/bugsnag';
 
 export default (event, error) => {
-	if (typeof error !== 'object') {
-		error = { error };
-	}
-	firebase.analytics().logEvent(event);
 	if (__DEV__) {
 		console.warn(event, error);
+	} else {
+		bugsnag.notify(error);
 	}
 };
