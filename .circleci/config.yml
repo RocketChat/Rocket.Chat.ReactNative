@@ -83,7 +83,8 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          paths: .
+          paths:
+            - ios/build
 
 
   e2e-test:
@@ -92,7 +93,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: .
+          at: ios
 
       - run:
           name: Test
