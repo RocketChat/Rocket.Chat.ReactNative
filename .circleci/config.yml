@@ -76,7 +76,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ios/build
+            - ios/build/Build/Products
 
 
   e2e-test:
