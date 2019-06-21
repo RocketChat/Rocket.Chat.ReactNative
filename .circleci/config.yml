@@ -81,13 +81,14 @@ jobs:
             detox build --configuration ios.sim.release
             ls
 
-      - persist_to_workspace
+      - persist_to_workspace:
           root: .
           paths: .
 
   e2e-test:
     macos:
       xcode: "10.2.1"
+
       steps:
         - attach_workspace:
             at: .
