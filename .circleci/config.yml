@@ -42,7 +42,8 @@ jobs:
           paths:
             - ./node_modules
 
-  e2e-test:
+
+  e2e-build:
     macos:
       xcode: "10.2.1"
 
@@ -78,14 +79,28 @@ jobs:
           name: Build
           command: |
             detox build --configuration ios.sim.release
+            ls
 
-      - run:
-          name: Test
-          command: |
-            detox test --configuration ios.sim.release --cleanup --loglevel verbose
+      - persist_to_workspace
+          root: .
+          paths: .
 
-      - store_artifacts:
-          path: /tmp/screenshots
+  e2e-test:
+    macos:
+      xcode: "10.2.1"
+      steps:
+        - attach_workspace:
+            at: .
+
+        - run:
+            name: Test
+            command: |
+              ls
+              detox test --configuration ios.sim.release --cleanup --loglevel verbose
+
+        - store_artifacts:
+            path: /tmp/screenshots
+
 
   android-build:
     <<: *defaults
@@ -258,9 +273,12 @@ workflows:
           type: approval
           requires:
             - lint-testunit
-      - e2e-test:
+      - e2e-build:
           requires:
             - e2e-hold
+      - e2e-test:
+          requires:
+            - e2e-build
 
       - ios-build:
           requires:
