@@ -83,6 +83,9 @@ jobs:
     macos:
       xcode: "10.2.1"
 
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
     steps:
       - attach_workspace:
           at: ios
@@ -107,6 +110,7 @@ jobs:
           name: Install Detox CLI
           command: |
             yarn global add detox-cli
+            yarn
 
       - run:
           name: Test
