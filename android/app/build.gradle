@@ -80,6 +80,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -99,7 +100,7 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-     compileOptions {
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -171,6 +172,7 @@ android {
 }
 
 dependencies {
+    addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')

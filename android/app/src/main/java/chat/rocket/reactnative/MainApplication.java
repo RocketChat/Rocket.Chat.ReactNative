@@ -36,6 +36,12 @@ import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.reactlibrary.RNRealmPathPackage;
 
+import chat.rocket.reactnative.generated.BasePackageList;
+
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import org.unimodules.core.interfaces.SingletonModule;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -43,6 +49,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
+
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), Arrays.<SingletonModule>asList());
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -73,10 +81,10 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new ReactVideoPackage(),
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
-					new RocketChatNativePackage(),
 					new FastImageViewPackage(),
 					new RNI18nPackage(),
-          new RNNotificationsPackage(MainApplication.this)
+          new RNNotificationsPackage(MainApplication.this),
+          new ModuleRegistryAdapter(mModuleRegistryProvider)
       );
     }
 

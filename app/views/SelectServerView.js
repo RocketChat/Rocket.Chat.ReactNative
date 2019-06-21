@@ -3,9 +3,9 @@ import {
 	FlatList, View, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
-import * as Keychain from 'react-native-keychain';
 import { connect } from 'react-redux';
 import { HeaderBackButton, SafeAreaView } from 'react-navigation';
+import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import database from '../lib/realm';
@@ -18,6 +18,7 @@ import {
 } from '../constants/colors';
 import Navigation from '../lib/Navigation';
 import ServerItem from '../presentation/ServerItem';
+import RocketChat from '../lib/rocketchat';
 
 const getItemLayout = (data, index) => ({ length: 68, offset: 68 * index, index });
 const keyExtractor = item => item.id;
@@ -60,14 +61,14 @@ export default class LoginView extends React.Component {
 		selectServerRequest: PropTypes.func
 	}
 
-	select = async(server) => {
+	elect = async(server) => {
 		const {
 			server: currentServer, selectServerRequest
 		} = this.props;
 
 		if (currentServer !== server) {
-			const { password: token } = await Keychain.getInternetCredentials(server, { accessGroup: 'group.chat.rocket.reactnative', service: 'chat.rocket.reactnative' });
-			if (!token) {
+			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			if (!userId) {
 				this.newServerTimeout = setTimeout(() => {
 					EventEmitter.emit('NewServer', { server });
 				}, 1000);
