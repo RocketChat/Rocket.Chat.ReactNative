@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
-describe('Onboarding', () => {
+describe.only('Onboarding', () => {
 	before(async() => {
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 	});
@@ -35,7 +35,7 @@ describe('Onboarding', () => {
 		it('should navigate to create new workspace', async() => {
 			// webviews are not supported by detox: https://github.com/wix/detox/issues/136#issuecomment-306591554
 		});
-	
+
 		it('should navigate to join community', async() => {
 			await element(by.id('join-community-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
