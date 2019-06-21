@@ -85,22 +85,23 @@ jobs:
           root: .
           paths: .
 
+
   e2e-test:
     macos:
       xcode: "10.2.1"
 
-      steps:
-        - attach_workspace:
-            at: .
+    steps:
+      - attach_workspace:
+          at: .
 
-        - run:
-            name: Test
-            command: |
-              ls
-              detox test --configuration ios.sim.release --cleanup --loglevel verbose
+      - run:
+          name: Test
+          command: |
+            ls
+            detox test --configuration ios.sim.release --cleanup --loglevel verbose
 
-        - store_artifacts:
-            path: /tmp/screenshots
+      - store_artifacts:
+          path: /tmp/screenshots
 
 
   android-build:
