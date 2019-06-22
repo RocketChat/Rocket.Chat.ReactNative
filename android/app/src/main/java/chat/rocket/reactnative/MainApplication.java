@@ -73,7 +73,6 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new RNDeviceInfo(),
 					new PickerPackage(),
 					new VectorIconsPackage(),
-					new RNFetchBlobPackage(),
 					new RealmReactPackage(),
 					new ReactVideoPackage(),
 					new ReactNativeAudioPackage(),
