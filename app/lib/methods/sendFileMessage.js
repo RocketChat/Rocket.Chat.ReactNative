@@ -1,49 +1,34 @@
-import RNFetchBlob from 'rn-fetch-blob';
-
 import reduxStore from '../createStore';
 import database from '../realm';
 import log from '../../utils/log';
 
-const promises = {};
-
-function _ufsCreate(fileInfo) {
-	return this.sdk.methodCall('ufsCreate', fileInfo);
-}
-
-function _ufsComplete(fileId, store, token) {
-	return this.sdk.methodCall('ufsComplete', fileId, store, token);
-}
-
-function _sendFileMessage(rid, data, msg = {}) {
-	// RC 0.22.0
-	return this.sdk.methodCall('sendFileMessage', rid, null, data, msg);
-}
+const XHR = {};
 
 export function isUploadActive(path) {
-	return !!promises[path];
+	return !!XHR[path];
 }
 
-export async function cancelUpload(path) {
-	if (promises[path]) {
-		await promises[path].cancel();
+export function cancelUpload(path) {
+	if (XHR[path]) {
+		XHR[path].abort();
 	}
 }
 
-export async function sendFileMessage(rid, fileInfo, tmid) {
-	try {
-		const data = await RNFetchBlob.wrap(fileInfo.path);
-		if (!fileInfo.size) {
-			const fileStat = await RNFetchBlob.fs.stat(fileInfo.path);
-			fileInfo.size = fileStat.size;
-			fileInfo.name = fileStat.filename;
-		}
-
-		const { FileUpload_MaxFileSize } = reduxStore.getState().settings;
+// eslint-disable-next-line no-unused-vars
+export function sendFileMessage(rid, fileInfo, tmid) {
+	return new Promise((resolve, reject) => {
+		const { FileUpload_MaxFileSize, Site_Url } = reduxStore.getState().settings;
+		const { id, token } = reduxStore.getState().login.user;
 
 		// -1 maxFileSize means there is no limit
 		if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-			return Promise.reject({ error: 'error-file-too-large' }); // eslint-disable-line
+			return reject({ error: 'error-file-too-large' }); // eslint-disable-line
 		}
+
+		const uploadUrl = `${ Site_Url }/api/v1/rooms.upload/${ rid }`;
+
+		const xhr = new XMLHttpRequest();
+		const formData = new FormData();
 
 		fileInfo.rid = rid;
 
@@ -55,57 +40,72 @@ export async function sendFileMessage(rid, fileInfo, tmid) {
 			}
 		});
 
-		const result = await _ufsCreate.call(this, fileInfo);
+		XHR[fileInfo.path] = xhr;
+		xhr.open('POST', uploadUrl);
 
-		promises[fileInfo.path] = RNFetchBlob.fetch('POST', result.url, {
-			'Content-Type': 'octet-stream'
-		}, data);
-		// Workaround for https://github.com/joltup/rn-fetch-blob/issues/96
-		setTimeout(() => {
-			if (promises[fileInfo.path] && promises[fileInfo.path].uploadProgress) {
-				promises[fileInfo.path].uploadProgress((loaded, total) => {
-					database.write(() => {
-						fileInfo.progress = Math.floor((loaded / total) * 100);
-						try {
-							database.create('uploads', fileInfo, true);
-						} catch (e) {
-							return log('err_send_file_message_create_upload_2', e);
-						}
-					});
+		formData.append('file', {
+			uri: fileInfo.path,
+			type: fileInfo.type,
+			name: fileInfo.name
+		});
+		formData.append('description', fileInfo.description);
+
+		xhr.setRequestHeader('X-Auth-Token', token);
+		xhr.setRequestHeader('X-User-Id', id);
+
+		if (xhr.upload) {
+			xhr.upload.onprogress = ({ total, loaded }) => {
+				database.write(() => {
+					fileInfo.progress = Math.floor((loaded / total) * 100);
+					try {
+						database.create('uploads', fileInfo, true);
+					} catch (e) {
+						return log('err_send_file_message_create_upload_2', e);
+					}
+				});
+			};
+		}
+		xhr.onload = () => {
+			if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
+				database.write(() => {
+					const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
+					try {
+						database.delete(upload);
+						const response = JSON.parse(xhr.response);
+						resolve(response);
+					} catch (e) {
+						reject(e);
+						log('err_send_file_message_delete_upload', e);
+					}
+				});
+			} else {
+				database.write(() => {
+					fileInfo.error = true;
+					try {
+						database.create('uploads', fileInfo, true);
+						const response = JSON.parse(xhr.response);
+						reject(response);
+					} catch (err) {
+						reject(err);
+						log('err_send_file_message_create_upload_3', err);
+					}
 				});
 			}
-		});
-		await promises[fileInfo.path];
+		};
 
-		const completeResult = await _ufsComplete.call(this, result.fileId, fileInfo.store, result.token);
+		xhr.onerror = (e) => {
+			database.write(() => {
+				fileInfo.error = true;
+				try {
+					database.create('uploads', fileInfo, true);
+					reject(e);
+				} catch (err) {
+					reject(err);
+					log('err_send_file_message_create_upload_3', err);
+				}
+			});
+		};
 
-		await _sendFileMessage.call(this, completeResult.rid, {
-			_id: completeResult._id,
-			type: completeResult.type,
-			size: completeResult.size,
-			name: completeResult.name,
-			description: completeResult.description,
-			url: completeResult.path
-		}, {
-			tmid
-		});
-
-		database.write(() => {
-			const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
-			try {
-				database.delete(upload);
-			} catch (e) {
-				log('err_send_file_message_delete_upload', e);
-			}
-		});
-	} catch (e) {
-		database.write(() => {
-			fileInfo.error = true;
-			try {
-				database.create('uploads', fileInfo, true);
-			} catch (err) {
-				log('err_send_file_message_create_upload_3', err);
-			}
-		});
-	}
+		xhr.send(formData);
+	});
 }

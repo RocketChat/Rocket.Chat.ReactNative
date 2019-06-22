@@ -190,7 +190,6 @@ dependencies {
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
     implementation project(':react-native-vector-icons')
-    implementation project(':rn-fetch-blob')
     implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':reactnativenotifications')
