@@ -53,18 +53,19 @@ export function sendFileMessage(rid, fileInfo, tmid) {
 		xhr.setRequestHeader('X-Auth-Token', token);
 		xhr.setRequestHeader('X-User-Id', id);
 
-		if (xhr.upload) {
-			xhr.upload.onprogress = ({ total, loaded }) => {
-				database.write(() => {
-					fileInfo.progress = Math.floor((loaded / total) * 100);
-					try {
-						database.create('uploads', fileInfo, true);
-					} catch (e) {
-						return log('err_send_file_message_create_upload_2', e);
-					}
-				});
-			};
-		}
+		const handleProgress = ({ total, loaded }) => {
+			database.write(() => {
+				fileInfo.progress = Math.floor((loaded / total) * 100);
+				try {
+					database.create('uploads', fileInfo, true);
+				} catch (e) {
+					return log('err_send_file_message_create_upload_2', e);
+				}
+			});
+		};
+
+		xhr.addEventListener('progress', handleProgress);
+
 		xhr.onload = () => {
 			if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
 				database.write(() => {
