@@ -23,12 +23,14 @@ import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import LanguageView from './views/LanguageView';
 import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
 import SearchMessagesView from './views/SearchMessagesView';
+import ReadReceiptsView from './views/ReadReceiptView';
 import ThreadMessagesView from './views/ThreadMessagesView';
 import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
@@ -114,6 +116,7 @@ const ChatsStack = createStackNavigator({
 	SelectedUsersView,
 	ThreadMessagesView,
 	MessagesView,
+	ReadReceiptsView,
 	DirectoryView
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -146,7 +149,8 @@ ProfileStack.navigationOptions = ({ navigation }) => {
 };
 
 const SettingsStack = createStackNavigator({
-	SettingsView
+	SettingsView,
+	LanguageView
 }, {
 	defaultNavigationOptions: defaultHeader
 });

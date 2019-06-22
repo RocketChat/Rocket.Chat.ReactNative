@@ -44,6 +44,13 @@ export default function server(state = initialState, action) {
 				connected: true,
 				loading: false
 			};
+		case SERVER.SELECT_FAILURE:
+			return {
+				...state,
+				connecting: false,
+				connected: false,
+				loading: false
+			};
 		case SERVER.INIT_ADD:
 			return {
 				...state,

@@ -234,5 +234,8 @@ export default StyleSheet.create({
 		flex: 1,
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
+	},
+	readReceipt: {
+		lineHeight: 20
 	}
 });
