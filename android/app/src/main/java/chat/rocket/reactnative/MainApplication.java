@@ -3,6 +3,7 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -15,7 +16,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -53,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNLocalizePackage(),
             new RNFirebasePackage(),
             new RNFirebaseCrashlyticsPackage(),
             new RNFirebaseAnalyticsPackage(),

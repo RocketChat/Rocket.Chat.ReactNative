@@ -1,4 +1,6 @@
 rootProject.name = 'RocketChatRN'
+include ':react-native-localize'
+project(':react-native-localize').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-localize/android')
 include ':react-native-firebase'
 project(':react-native-firebase').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-firebase/android')
 include ':react-native-webview'
@@ -19,8 +21,6 @@ include ':rn-fetch-blob'
 project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
 include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
-include ':react-native-i18n'
-project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')
 include ':react-native-fast-image'
 project(':react-native-fast-image').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fast-image/android')
 include ':react-native-audio'
