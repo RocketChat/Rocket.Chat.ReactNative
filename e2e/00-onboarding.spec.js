@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
-describe.only('Onboarding', () => {
+describe('Onboarding', () => {
 	before(async() => {
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 	});
