@@ -74,7 +74,7 @@ jobs:
             detox build --configuration ios.sim.release
 
       - persist_to_workspace:
-          root: .
+          root: /tmp/iosDetoxBuild
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/*
 
@@ -106,14 +106,24 @@ jobs:
             brew install wix/brew/applesimutils
 
       - attach_workspace:
-          at: ios
+          at: /tmp/iosDetoxBuild
 
       - run:
           name: Install Detox CLI
           command: |
             yarn global add detox-cli
             yarn
-            cd ios/build/Build/Products/Release-iphonesimulator
+            ls
+            cd ios
+            ls
+            cd -
+            cd ios/build
+            ls
+            cd -
+            cd ios/build/Build
+            ls
+            cd -
+            cd ios/build/Build/Products
             ls
             cd -
 
