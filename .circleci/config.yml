@@ -113,9 +113,9 @@ jobs:
           command: |
             yarn global add detox-cli
             yarn
-            cd ios
+            cd ios/build/Build/Products/Release-iphonesimulator
             ls
-            cd ..
+            cd -
 
       - run:
           name: Test
