@@ -95,7 +95,7 @@ jobs:
       BASH_ENV: "~/.nvm/nvm.sh"
 
     steps:
-      - checkout
+#      - checkout
 
 #      - run:
 #          name: Install Node 8
@@ -114,7 +114,7 @@ jobs:
 #            brew install wix/brew/applesimutils
 
       - attach_workspace:
-          at: /tmp/ios
+          at: ios
 
       - run:
           name: Install Detox CLI
