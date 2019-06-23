@@ -79,7 +79,7 @@ jobs:
             mkdir -p ios/build/Build/Products/Release-iphonesimulator
             cd ios/build/Build/Products/Release-iphonesimulator
             touch file.txt
-            pw
+            pwd
             ls
             cd -
 
