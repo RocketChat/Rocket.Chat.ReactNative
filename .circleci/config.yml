@@ -51,37 +51,37 @@ jobs:
       BASH_ENV: "~/.nvm/nvm.sh"
 
     steps:
-      - checkout
-
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
-
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
-
-      - run:
-          name: Build
-          command: |
-            detox build --configuration ios.sim.release
-
+#      - checkout
+#
 #      - run:
-#          name: Create fake folder to persist
+#          name: Install Node 8
 #          command: |
-#            mkdir -p ios/build/Build/Products/Release-iphonesimulator
-#            cd ios/build/Build/Products/Release-iphonesimulator
-#            touch file.txt
-#            pw
-#            ls
-#            cd -
+#            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+#            source ~/.nvm/nvm.sh
+#            # https://github.com/creationix/nvm/issues/1394
+#            set +e
+#            nvm install 8
+#
+#      - run:
+#          name: Install NPM modules
+#          command: |
+#            yarn global add detox-cli
+#            yarn
+#
+#      - run:
+#          name: Build
+#          command: |
+#            detox build --configuration ios.sim.release
+
+      - run:
+          name: Create fake folder to persist
+          command: |
+            mkdir -p ios/build/Build/Products/Release-iphonesimulator
+            cd ios/build/Build/Products/Release-iphonesimulator
+            touch file.txt
+            pw
+            ls
+            cd -
 
       - persist_to_workspace:
           root: .
@@ -97,26 +97,26 @@ jobs:
       BASH_ENV: "~/.nvm/nvm.sh"
 
     steps:
-      - checkout
-
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
-
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
+#      - checkout
+#
+#      - run:
+#          name: Install Node 8
+#          command: |
+#            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+#            source ~/.nvm/nvm.sh
+#            # https://github.com/creationix/nvm/issues/1394
+#            set +e
+#            nvm install 8
+#
+#      - run:
+#          name: Install appleSimUtils
+#          command: |
+#            brew update
+#            brew tap wix/brew
+#            brew install wix/brew/applesimutils
 
       - attach_workspace:
-          at: ios/build/Build/Products/Release-iphonesimulator
+          at: ios/build/Build/Products/Release-iphonesimulator/*
 
       - run:
           name: Install Detox CLI
@@ -136,13 +136,16 @@ jobs:
             cd ios/build/Build/Products
             ls
             cd -
-            yarn global add detox-cli
-            yarn
+            cd ios/build/Build/Products/Release-iphonesimulator
+            ls
+            cd -
+#            yarn global add detox-cli
+#            yarn
 
-      - run:
-          name: Test
-          command: |
-            detox test --configuration ios.sim.release --cleanup --loglevel verbose
+#      - run:
+#          name: Test
+#          command: |
+#            detox test --configuration ios.sim.release --cleanup --loglevel verbose
 
       - store_artifacts:
           path: /tmp/screenshots
