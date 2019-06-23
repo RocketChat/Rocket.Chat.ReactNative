@@ -116,7 +116,7 @@ jobs:
 #            brew install wix/brew/applesimutils
 
       - attach_workspace:
-          at: ios/build/Build/Products/Release-iphonesimulator/*
+          at: ios/build/Build/Products/Release-iphonesimulator/
 
       - run:
           name: Install Detox CLI
