@@ -122,9 +122,7 @@
       "e2e",
       "node_modules"
 	],
-	"setupFiles": [
-		"./node_modules/react-native-gesture-handler/jestSetup.js"
-	],
+
     "preset": "react-native",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
@@ -134,10 +132,7 @@
     },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-	},
-	"transformIgnorePatterns": [
-		"node_modules/!redux-enhancer-react-native-appstate"
-	]
+	  }
   },
   "snyk": true,
   "engines": {
