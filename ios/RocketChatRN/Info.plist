@@ -62,6 +62,16 @@
 	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
+  <key>NSCalendarsUsageDescription</key>
+  <string>Allow $(PRODUCT_NAME) to access your calendar</string>
+  <key>NSContactsUsageDescription</key>
+  <string>Allow $(PRODUCT_NAME) to access your contacts</string>
+  <key>NSMotionUsageDescription</key>
+  <string>Allow $(PRODUCT_NAME) to access your device's accelerometer</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>Give $(PRODUCT_NAME) permission to save photos</string>
+  <key>NSRemindersUsageDescription</key>
+  <string>Allow $(PRODUCT_NAME) to access your reminders</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>

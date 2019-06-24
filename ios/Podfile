@@ -1,5 +1,7 @@
-# Uncomment the next line to define a global platform for your project
-platform :ios, '9.0'
+platform :ios, '10.0'
+
+require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
+
 
 target 'RocketChatRN' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
@@ -45,6 +47,7 @@ target 'RocketChatRN' do
   pod 'Firebase/Performance', '~> 5.20.1'
 
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
 
 end
 
