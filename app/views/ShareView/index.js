@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, TouchableOpacity, TextInput, Image
 } from 'react-native';
-import ShareExtension from 'react-native-share-extension';
+import ShareExtension from 'rn-extensions-share';
 import { HeaderBackButton } from 'react-navigation';
 import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';

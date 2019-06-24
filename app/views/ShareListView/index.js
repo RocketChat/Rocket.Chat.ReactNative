@@ -4,7 +4,7 @@ import {
 	View, Text, TouchableOpacity, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import ShareExtension from 'react-native-share-extension';
+import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 
 import Navigation from '../../lib/Navigation';

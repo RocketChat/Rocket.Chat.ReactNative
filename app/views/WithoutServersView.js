@@ -2,7 +2,7 @@ import React from 'react';
 import {
 	StyleSheet, View, Text, TouchableOpacity
 } from 'react-native';
-import ShareExtension from 'react-native-share-extension';
+import ShareExtension from 'rn-extensions-share';
 
 import I18n from '../i18n';
 import { COLOR_WHITE, HEADER_BACK } from '../constants/colors';
