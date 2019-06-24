@@ -146,11 +146,17 @@
         "type": "ios.simulator",
         "name": "iPhone 7"
       },
-      "ios.sim.release": {
+      "ios.sim.release-iPhone7": {
         "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "name": "iPhone 7"
+      },
+      "ios.sim.release-iPhoneXʀ": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app",
+        "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone Xʀ"
       }
     }
   }

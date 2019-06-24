@@ -42,7 +42,44 @@ jobs:
           paths:
             - ./node_modules
 
-  e2e-test:
+
+  e2e-build:
+    macos:
+      xcode: "10.2.1"
+
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn global add detox-cli
+            yarn
+
+      - run:
+          name: Build
+          command: |
+            detox build --configuration ios.sim.release
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/build/Build/Products/Release-iphonesimulator/*
+
+
+  e2e-test-iPhone-7:
     macos:
       xcode: "10.2.1"
 
@@ -68,21 +105,63 @@ jobs:
             brew tap wix/brew
             brew install wix/brew/applesimutils
 
+      - attach_workspace:
+          at: .
+
       - run:
-          name: Install NPM modules
+          name: Install Detox CLI
           command: |
             yarn global add detox-cli
             yarn
 
       - run:
-          name: Build
+          name: Test
           command: |
-            detox build --configuration ios.sim.release
+            detox test --configuration ios.sim.release-iPhone7 --cleanup --loglevel verbose
+
+      - store_artifacts:
+          path: /tmp/screenshots
+
+
+  e2e-test-iPhone-Xʀ:
+    macos:
+      xcode: "10.2.1"
+
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+
+      - run:
+          name: Install appleSimUtils
+          command: |
+            brew update
+            brew tap wix/brew
+            brew install wix/brew/applesimutils
+
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Install Detox CLI
+          command: |
+            yarn global add detox-cli
+            yarn
 
       - run:
           name: Test
           command: |
-            detox test --configuration ios.sim.release --cleanup
+            detox test --configuration ios.sim.release-iPhoneXʀ --cleanup --loglevel verbose
 
       - store_artifacts:
           path: /tmp/screenshots
@@ -254,14 +333,6 @@ workflows:
     jobs:
       - lint-testunit
 
-      - e2e-hold:
-          type: approval
-          requires:
-            - lint-testunit
-      - e2e-test:
-          requires:
-            - e2e-hold
-
       - ios-build:
           requires:
             - lint-testunit
@@ -276,3 +347,17 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
+
+      - e2e-hold:
+          type: approval
+          requires:
+            - lint-testunit
+      - e2e-build:
+          requires:
+            - e2e-hold
+      - e2e-test-iPhone-7:
+          requires:
+            - e2e-build
+      - e2e-test-iPhone-Xʀ:
+          requires:
+            - e2e-build
