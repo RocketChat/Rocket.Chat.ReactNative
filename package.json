@@ -121,8 +121,7 @@
     "testPathIgnorePatterns": [
       "e2e",
       "node_modules"
-	],
-
+    ],
     "preset": "react-native",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
@@ -132,7 +131,7 @@
     },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-	  }
+    }
   },
   "snyk": true,
   "engines": {

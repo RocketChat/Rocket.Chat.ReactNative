@@ -103,13 +103,21 @@ export default StyleSheet.create({
 	},
 	actionButtonLeft: {
 		flex: 1,
+		backgroundColor: '#497AFC',
 		justifyContent: 'center',
 		alignItems: 'flex-end'
 	},
-	actionButtonRight: {
+	actionButtonRightFav: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		backgroundColor: '#F4BD3E'
+	},
+	actionButtonRightHide: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'flex-start',
+		backgroundColor: '#55585D'
 	},
 	actionView: {
 		width: 80,

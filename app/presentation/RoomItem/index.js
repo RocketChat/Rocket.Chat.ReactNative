@@ -82,9 +82,8 @@ export default class RoomItem extends React.Component {
 		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		const { lastMessage, _updatedAt, isRead } = this.props;
-		const { dragX, rowState } = this.state;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -95,12 +94,6 @@ export default class RoomItem extends React.Component {
 			return true;
 		}
 		if (isRead !== nextProps.isRead) {
-			return true;
-		}
-		if (dragX !== nextState.dragX) {
-			return true;
-		}
-		if (rowState !== nextState.rowState) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -237,7 +230,7 @@ export default class RoomItem extends React.Component {
 		});
 
 		const iconTrans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH, 200, 220, width],
+			inputRange: [0, OPTION_WIDTH, ACTION_OFFSET - 20, ACTION_OFFSET, width],
 			outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
 		});
 		return (
@@ -247,7 +240,7 @@ export default class RoomItem extends React.Component {
 					{ transform: [{ translateX: trans }] }
 				]}
 			>
-				<RectButton style={[styles.actionButtonLeft, { backgroundColor: '#497AFC' }]} onPress={this.handleLeftButtonPress}>
+				<RectButton style={[styles.actionButtonLeft]} onPress={this.handleLeftButtonPress}>
 					<Animated.View
 						style={{ transform: [{ translateX: iconTrans }] }}
 					>
@@ -304,7 +297,7 @@ export default class RoomItem extends React.Component {
 						{ transform: [{ translateX: iconFavTrans }] }
 					]}
 				>
-					<RectButton style={[styles.actionButtonRight, { backgroundColor: '#F4BD3E' }]} onPress={this.toggleFav}>
+					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
 						{favorite ? (
 							<View style={styles.actionView}>
 								<CustomIcon size={17} name='Star-filled' color='white' />
@@ -324,7 +317,7 @@ export default class RoomItem extends React.Component {
 				]}
 				>
 					<RectButton
-						style={[styles.actionButtonRight, { backgroundColor: '#55585D' }]}
+						style={[styles.actionButtonRightHide]}
 						onPress={this.handleHideButtonPress}
 					>
 						<View style={styles.actionView}>
