@@ -628,6 +628,9 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.unarchive`, { roomId });
 	},
+	hideRoom(roomId, t) {
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.close`, { roomId });
+	},
 	saveRoomSettings(rid, params) {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);

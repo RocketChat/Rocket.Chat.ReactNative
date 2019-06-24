@@ -5,8 +5,7 @@ import {
 	View, Text, Dimensions, Animated
 } from 'react-native';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
@@ -15,11 +14,12 @@ import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { CustomIcon } from '../../lib/Icons';
-import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
 
 export { ROW_HEIGHT };
 
+const OPTION_WIDTH = 80;
+const SMALL_SWIPE = 80;
+const ACTION_OFFSET = 220;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type'];
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -48,7 +48,10 @@ export default class RoomItem extends React.Component {
 		height: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
-		rid: PropTypes.string
+		rid: PropTypes.string,
+		toggleFav: PropTypes.func,
+		toggleRead: PropTypes.func,
+		hideChannel: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -59,10 +62,29 @@ export default class RoomItem extends React.Component {
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props) {
 		super(props);
+		const dragX = new Animated.Value(0);
+		const rowOffSet = new Animated.Value(0);
+		this.rowTranslation = Animated.add(
+			rowOffSet,
+			dragX
+		);
+		this.state = {
+			dragX,
+			rowOffSet,
+			rowState: 0, // here 0 means closed 1 means right open and -1 left open
+			leftWidth: undefined,
+			rightOffset: undefined
+		};
+		this._onGestureEvent = Animated.event(
+			[{ nativeEvent: { translationX: dragX } }]
+		);
+		this._value = 0;
+		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		const { lastMessage, _updatedAt, isRead } = this.props;
+		const { dragX, rowState } = this.state;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -75,86 +97,243 @@ export default class RoomItem extends React.Component {
 		if (isRead !== nextProps.isRead) {
 			return true;
 		}
+		if (dragX !== nextState.dragX) {
+			return true;
+		}
+		if (rowState !== nextState.rowState) {
+			return true;
+		}
 		// eslint-disable-next-line react/destructuring-assignment
 		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
+
+	componentWillUnmount() {
+		this.rowTranslation.removeAllListeners();
 	}
 
 	close = () => {
 		this.swipeableRow.close();
 	};
 
-	toggleFav = async() => {
-		try {
-			const { rid, favorite } = this.props;
-			await RocketChat.toggleFavorite(rid, !favorite);
-		} catch (e) {
-			log('error_toggle_favorite', e);
+	_onHandlerStateChange = ({ nativeEvent }) => {
+		if (nativeEvent.oldState === State.ACTIVE) {
+			this._handleRelease(nativeEvent);
+		}
+	};
+
+	_currentOffset = () => {
+		const { leftWidth = 0, rowState } = this.state;
+		const { rightOffset } = this.state;
+		if (rowState === 1) {
+			return leftWidth;
+		} else if (rowState === -1) {
+			return rightOffset;
+		}
+		return 0;
+	};
+
+	_handleRelease = (nativeEvent) => {
+		const { translationX } = nativeEvent;
+		const { rowState } = this.state;
+		let toValue = 0;
+		if (rowState === 0) { // if no option is opned
+			if (translationX > 0 && translationX < ACTION_OFFSET) {
+				toValue = OPTION_WIDTH; // open left option if he swipe right but not enough to trigger action
+				this.setState({ rowState: -1 });
+			} else if (translationX > ACTION_OFFSET) {
+				toValue = 0;
+				this.toggleRead();
+			} else if (translationX < 0 && translationX > -ACTION_OFFSET) {
+				toValue = -2 * OPTION_WIDTH; // open right option if he swipe left
+				this.setState({ rowState: 1 });
+			} else if (translationX < -ACTION_OFFSET) {
+				toValue = 0;
+				this.hideChannel();
+			} else {
+				toValue = 0;
+			}
+		}
+
+		if (rowState === -1) { // if left option is opened
+			if (this._value < SMALL_SWIPE) {
+				toValue = 0;
+				this.setState({ rowState: 0 });
+			} else if (this._value > ACTION_OFFSET) {
+				toValue = 0;
+				this.setState({ rowState: 0 });
+				this.toggleRead();
+			} else {
+				toValue = OPTION_WIDTH;
+			}
+		}
+
+		if (rowState === 1) { // if right option is opened
+			if (this._value > -2 * SMALL_SWIPE) {
+				toValue = 0;
+				this.setState({ rowState: 0 });
+			} else if (this._value < -ACTION_OFFSET) {
+				toValue = 0;
+				this.setState({ rowState: 0 });
+				this.hideChannel();
+			} else {
+				toValue = -2 * OPTION_WIDTH;
+			}
+		}
+		this._animateRow(toValue);
+	}
+
+	_animateRow = (toValue) => {
+		const { dragX, rowOffSet } = this.state;
+		rowOffSet.setValue(this._value);
+		dragX.setValue(0);
+		Animated.spring(rowOffSet, {
+			toValue,
+			bounciness: 0
+		}).start();
+	}
+
+	handleLeftButtonPress = () => {
+		this.toggleRead();
+		this.close();
+	}
+
+	close = () => {
+		this._animateRow(0);
+	}
+
+	toggleFav = () => {
+		const { toggleFav, rid, favorite } = this.props;
+		if (toggleFav) {
+			toggleFav(rid, favorite);
 		}
 		this.close();
 	}
 
-	toggleRead = async() => {
-		try {
-			const { rid, isRead } = this.props;
-			await RocketChat.toggleRead(isRead, rid);
-		} catch (e) {
-			log('error_toggle_read', e);
+	toggleRead = () => {
+		const { toggleRead, rid, isRead } = this.props;
+		if (toggleRead) {
+			toggleRead(rid, isRead);
 		}
+	}
+
+	handleHideButtonPress = () => {
+		this.hideChannel();
 		this.close();
 	}
 
-	renderLeftActions = (progress, dragX) => {
+	hideChannel = () => {
+		const { hideChannel, rid, type } = this.props;
+		if (hideChannel) {
+			hideChannel(rid, type);
+		}
+	}
+
+	renderLeftActions = () => {
 		const { isRead } = this.props;
-		const trans = dragX.interpolate({
-			inputRange: [0, 80, 81],
-			outputRange: [0, 0, 1]
+		const { width } = Dimensions.get('window');
+		const trans = this.rowTranslation.interpolate({
+			inputRange: [0, OPTION_WIDTH],
+			outputRange: [-width, -width + OPTION_WIDTH]
+		});
+
+		const iconTrans = this.rowTranslation.interpolate({
+			inputRange: [0, OPTION_WIDTH, 200, 220, width],
+			outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
 		});
 		return (
-			<RectButton style={[styles.action, { backgroundColor: '#497AFC' }]}>
-				<Animated.View
-					style={{ transform: [{ translateX: trans }] }}
-				>
-					{isRead ? (
-						<View style={styles.actionView}>
-							<CustomIcon size={15} name='flag' color='white' />
-							<Text style={styles.actionText}>Unread</Text>
-						</View>
-					) : (
-						<View style={styles.actionView}>
-							<CustomIcon size={15} name='check' color='white' />
-							<Text style={styles.actionText}>Read</Text>
-						</View>
-					)}
-				</Animated.View>
-			</RectButton>
+			<Animated.View
+				style={[
+					styles.leftAction,
+					{ transform: [{ translateX: trans }] }
+				]}
+			>
+				<RectButton style={[styles.actionButtonLeft, { backgroundColor: '#497AFC' }]} onPress={this.handleLeftButtonPress}>
+					<Animated.View
+						style={{ transform: [{ translateX: iconTrans }] }}
+					>
+						{isRead ? (
+							<View style={styles.actionView}>
+								<CustomIcon size={15} name='flag' color='white' />
+								<Text style={styles.actionText}>Unread</Text>
+							</View>
+						) : (
+							<View style={styles.actionView}>
+								<CustomIcon size={15} name='check' color='white' />
+								<Text style={styles.actionText}>Read</Text>
+							</View>
+						)}
+					</Animated.View>
+				</RectButton>
+			</Animated.View>
 		);
 	};
 
-	renderRightActions = (progress, dragX) => {
+	renderRightActions = () => {
 		const { favorite } = this.props;
 		const { width } = Dimensions.get('window');
-		const trans = dragX.interpolate({
-			inputRange: [-width, -80, 0],
-			outputRange: [0, width - 80, width - 80]
+		const trans = this.rowTranslation.interpolate({
+			inputRange: [-OPTION_WIDTH, 0],
+			outputRange: [width - OPTION_WIDTH, width]
+		});
+		const iconFavTrans = this.rowTranslation.interpolate({
+			inputRange: [-2 * OPTION_WIDTH, 0],
+			outputRange: [0, 0]
+		});
+		const iconHideTrans = this.rowTranslation.interpolate({
+			inputRange: [-(ACTION_OFFSET - 20), -2 * OPTION_WIDTH, 0],
+			outputRange: [0, 0, -OPTION_WIDTH]
+		});
+		const iconFavWidth = this.rowTranslation.interpolate({
+			inputRange: [-(ACTION_OFFSET + 1), -ACTION_OFFSET, -(ACTION_OFFSET - 20), -2 * OPTION_WIDTH, 0],
+			outputRange: [0, 0, OPTION_WIDTH + 20, OPTION_WIDTH, OPTION_WIDTH]
+		});
+		const iconHideWidth = this.rowTranslation.interpolate({
+			inputRange: [-(ACTION_OFFSET + 1), -ACTION_OFFSET, -(ACTION_OFFSET - 20), -2 * OPTION_WIDTH, 0],
+			outputRange: [(ACTION_OFFSET + 1), ACTION_OFFSET, OPTION_WIDTH + 20, OPTION_WIDTH, OPTION_WIDTH]
 		});
 		return (
-			<RectButton style={[styles.action, { backgroundColor: '#F4BD3E' }]}>
+			<Animated.View
+				style={[
+					styles.rightAction,
+					{ transform: [{ translateX: trans }] }
+				]}
+			>
 				<Animated.View
-					style={{ transform: [{ translateX: trans }] }}
+					style={[
+						{ width: iconFavWidth },
+						{ transform: [{ translateX: iconFavTrans }] }
+					]}
 				>
-					{favorite ? (
-						<View style={styles.actionView}>
-							<CustomIcon size={17} name='Star-filled' color='white' />
-							<Text style={styles.actionText}>Unfavorite</Text>
-						</View>
-					) : (
-						<View style={styles.actionView}>
-							<CustomIcon size={17} name='star' color='white' />
-							<Text style={styles.actionText}>Favorite</Text>
-						</View>
-					)}
+					<RectButton style={[styles.actionButtonRight, { backgroundColor: '#F4BD3E' }]} onPress={this.toggleFav}>
+						{favorite ? (
+							<View style={styles.actionView}>
+								<CustomIcon size={17} name='Star-filled' color='white' />
+								<Text style={styles.actionText}>Unfavorite</Text>
+							</View>
+						) : (
+							<View style={styles.actionView}>
+								<CustomIcon size={17} name='star' color='white' />
+								<Text style={styles.actionText}>Favorite</Text>
+							</View>
+						)}
+					</RectButton>
 				</Animated.View>
-			</RectButton>
+				<Animated.View style={[
+					{ width: iconHideWidth },
+					{ transform: [{ translateX: iconHideTrans }] }
+				]}
+				>
+					<RectButton
+						style={[styles.actionButtonRight, { backgroundColor: '#55585D' }]}
+						onPress={this.handleHideButtonPress}
+					>
+						<View style={styles.actionView}>
+							<CustomIcon size={15} name='eye-off' color='white' />
+							<Text style={styles.actionText}>Hide</Text>
+						</View>
+					</RectButton>
+				</Animated.View>
+			</Animated.View>
 		);
 	}
 
@@ -188,43 +367,48 @@ export default class RoomItem extends React.Component {
 		}
 
 		return (
-			<Swipeable
-				ref={(ref) => { this.swipeableRow = ref; }}
-				friction={3}
-				leftThreshold={70}
-				rightThreshold={70}
-				renderLeftActions={this.renderLeftActions}
-				renderRightActions={this.renderRightActions}
-				overshootRight={false}
-				overshootLeft={false}
-				onSwipeableLeftOpen={this.toggleRead}
-				onSwipeableRightOpen={this.toggleFav}
+			<PanGestureHandler
+				minDeltaX={10}
+				onGestureEvent={this._onGestureEvent}
+				onHandlerStateChange={this._onHandlerStateChange}
 			>
-				<RectButton
-					onPress={onPress}
-					activeOpacity={0.8}
-					underlayColor='#e1e5e8'
-					testID={testID}
-				>
-					<View
-						style={[styles.container, height && { height }]}
-						accessibilityLabel={accessibilityLabel}
+				<Animated.View style={styles.upperContainer}>
+					{this.renderLeftActions()}
+					{this.renderRightActions()}
+					<Animated.View
+						style={
+							{
+								transform: [{ translateX: this.rowTranslation }]
+							}
+						}
 					>
-						<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-						<View style={styles.centerContainer}>
-							<View style={styles.titleContainer}>
-								<TypeIcon type={type} id={id} prid={prid} />
-								<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-								{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+						<RectButton
+							onPress={onPress}
+							activeOpacity={0.8}
+							underlayColor='#e1e5e8'
+							testID={testID}
+						>
+							<View
+								style={[styles.container, height && { height }]}
+								accessibilityLabel={accessibilityLabel}
+							>
+								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+								<View style={styles.centerContainer}>
+									<View style={styles.titleContainer}>
+										<TypeIcon type={type} id={id} prid={prid} />
+										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
+										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+									</View>
+									<View style={styles.row}>
+										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
+										<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
+									</View>
+								</View>
 							</View>
-							<View style={styles.row}>
-								<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
-								<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
-							</View>
-						</View>
-					</View>
-				</RectButton>
-			</Swipeable>
+						</RectButton>
+					</Animated.View>
+				</Animated.View>
+			</PanGestureHandler>
 		);
 	}
 }

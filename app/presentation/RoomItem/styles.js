@@ -101,12 +101,29 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		justifyContent: 'center'
 	},
-	action: {
+	actionButtonLeft: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'flex-end'
+	},
+	actionButtonRight: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'flex-start'
 	},
 	actionView: {
 		width: 80,
 		alignItems: 'center'
+	},
+	leftAction: {
+		...StyleSheet.absoluteFill,
+		flexDirection: 'row-reverse'
+	},
+	rightAction: {
+		...StyleSheet.absoluteFill,
+		flexDirection: 'row'
+	},
+	upperContainer: {
+		overflow: 'hidden'
 	}
 });
