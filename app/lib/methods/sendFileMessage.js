@@ -14,7 +14,6 @@ export function cancelUpload(path) {
 	}
 }
 
-// eslint-disable-next-line no-unused-vars
 export function sendFileMessage(rid, fileInfo, tmid) {
 	return new Promise((resolve, reject) => {
 		const { FileUpload_MaxFileSize, Site_Url } = reduxStore.getState().settings;
@@ -49,6 +48,7 @@ export function sendFileMessage(rid, fileInfo, tmid) {
 			name: fileInfo.name
 		});
 		formData.append('description', fileInfo.description);
+		formData.append('tmid', tmid);
 
 		xhr.setRequestHeader('X-Auth-Token', token);
 		xhr.setRequestHeader('X-User-Id', id);
