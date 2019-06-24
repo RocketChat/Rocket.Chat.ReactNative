@@ -8,10 +8,7 @@ const { logout, navigateToLogin, login, tapBack, sleep } = require('./helpers/ap
 const { searchRoom } = require('./helpers/roomListView');
 const data = require('./data');
 
-// TODO Research the problems: No users displayed when creating channel,
-//  No Message 'The room is read only', Messagebox is displayed in broadcast room
-//  Maybe it's a problem with tests or new bug introduced
-describe.skip('Broadcast room', () => {
+describe('Broadcast room', () => {
 	const broadcastRoom = `broadcast${ data.random }`;
 
 	before(async() => {
