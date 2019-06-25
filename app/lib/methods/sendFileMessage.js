@@ -48,7 +48,10 @@ export function sendFileMessage(rid, fileInfo, tmid) {
 			name: fileInfo.name
 		});
 		formData.append('description', fileInfo.description);
-		formData.append('tmid', tmid);
+
+		if (tmid) {
+			formData.append('tmid', tmid);
+		}
 
 		xhr.setRequestHeader('X-Auth-Token', token);
 		xhr.setRequestHeader('X-User-Id', id);
