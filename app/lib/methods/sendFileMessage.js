@@ -11,6 +11,15 @@ export function isUploadActive(path) {
 export function cancelUpload(path) {
 	if (XHR[path]) {
 		XHR[path].abort();
+		database.write(() => {
+			const upload = database.objects('uploads').filtered('path = $0', path);
+			try {
+				database.delete(upload);
+			} catch (e) {
+				log('err_send_file_message_delete_upload', e);
+			}
+		});
+		delete XHR[path];
 	}
 }
 
