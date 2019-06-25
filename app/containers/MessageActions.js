@@ -30,8 +30,7 @@ import { getMessageTranslation } from './message/utils';
 		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 		Message_AllowPinning: state.settings.Message_AllowPinning,
 		Message_AllowStarring: state.settings.Message_AllowStarring,
-		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
-		AutoTranslate_Enabled: state.settings.AutoTranslate_Enabled
+		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 	}),
 	dispatch => ({
 		actionsHide: () => dispatch(actionsHideAction()),
@@ -62,8 +61,7 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
-		Message_Read_Receipt_Store_Users: PropTypes.bool,
-		AutoTranslate_Enabled: PropTypes.bool
+		Message_Read_Receipt_Store_Users: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -132,7 +130,7 @@ export default class MessageActions extends React.Component {
 		}
 
 		// Toggle Auto-translate
-		if (props.AutoTranslate_Enabled && props.room.autoTranslate && getMessageTranslation(props.actionMessage, props.room.autoTranslateLanguage)) {
+		if (props.room.autoTranslate && getMessageTranslation(props.actionMessage, props.room.autoTranslateLanguage)) {
 			this.options.push(I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'));
 			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}

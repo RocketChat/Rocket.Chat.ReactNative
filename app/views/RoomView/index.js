@@ -61,8 +61,7 @@ import { Toast } from '../../utils/info';
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	AutoTranslate_Enabled: state.settings.AutoTranslate_Enabled
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -119,7 +118,6 @@ export default class RoomView extends React.Component {
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
-		AutoTranslate_Enabled: PropTypes.bool,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
@@ -140,6 +138,7 @@ export default class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
@@ -147,7 +146,8 @@ export default class RoomView extends React.Component {
 			photoModalVisible: false,
 			reactionsModalVisible: false,
 			selectedAttachment: {},
-			selectedMessage: {}
+			selectedMessage: {},
+			canAutoTranslate
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -182,7 +182,7 @@ export default class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -203,6 +203,8 @@ export default class RoomView extends React.Component {
 		} else if (room.archived !== nextState.room.archived) {
 			return true;
 		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
 			return true;
@@ -300,6 +302,11 @@ export default class RoomView extends React.Component {
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
+
+				// We run `canAutoTranslate` again in order to refetch auto translate permission
+				// in case of a missing connection or poor connection on room open
+				const canAutoTranslate = RocketChat.canAutoTranslate();
+				this.setState({ canAutoTranslate });
 			});
 		} catch (e) {
 			log('err_room_init', e);
@@ -502,9 +509,9 @@ export default class RoomView extends React.Component {
 	}
 
 	renderItem = (item, previousItem) => {
-		const { room, lastOpen } = this.state;
+		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, AutoTranslate_Enabled
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -547,8 +554,8 @@ export default class RoomView extends React.Component {
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
-				autoTranslateRoom={AutoTranslate_Enabled && room.autoTranslate}
-				autoTranslateLanguage={AutoTranslate_Enabled && room.autoTranslateLanguage}
+				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
+				autoTranslateLanguage={room.autoTranslateLanguage}
 			/>
 		);
 

@@ -99,6 +99,7 @@ export default {
 	Are_you_sure_question_mark: 'Are you sure?',
 	Are_you_sure_you_want_to_leave_the_room: 'Are you sure you want to leave the room {{room}}?',
 	Authenticating: 'Authenticating',
+	Auto_Translate: 'Auto-Translate',
 	Avatar_changed_successfully: 'Avatar changed successfully!',
 	Avatar_Url: 'Avatar URL',
 	Away: 'Away',
