@@ -82,7 +82,7 @@ export default class ShareView extends React.Component {
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
 
-	isMedia = uri => uri.match(/^file:\/\//);
+	isMedia = uri => (uri || '').match(/^file:\/\//);
 
 	_sendMessage = async() => {
 		const { value } = this.state;
