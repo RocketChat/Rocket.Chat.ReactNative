@@ -53,7 +53,7 @@ export default class AutoTranslateView extends React.Component {
 		this.state = {
 			languages: [],
 			selectedLanguage: this.rooms[0].autoTranslateLanguage,
-			enableAutoTranslate: false
+			enableAutoTranslate: this.rooms[0].autoTranslate
 		};
 	}
 
@@ -66,14 +66,32 @@ export default class AutoTranslateView extends React.Component {
 		}
 	}
 
-	toggleAutoTranslate = () => {
+	toggleAutoTranslate = async() => {
 		const { enableAutoTranslate } = this.state;
-		this.setState({ enableAutoTranslate: !enableAutoTranslate });
-		// try {
-		// 	const result = RocketChat.saveAutoTranslate({  })
-		// } catch (error) {
-		// }
-		// alert('auto translate')
+		try {
+			await RocketChat.saveAutoTranslate({
+				rid: this.rid,
+				field: 'autoTranslate',
+				value: enableAutoTranslate ? '0' : '1',
+				options: { defaultLanguage: 'en' }
+			});
+			this.setState({ enableAutoTranslate: !enableAutoTranslate });
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	saveAutoTranslateLanguage = async(language) => {
+		try {
+			await RocketChat.saveAutoTranslate({
+				rid: this.rid,
+				field: 'autoTranslateLanguage',
+				value: language
+			});
+			this.setState({ selectedLanguage: language });
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	renderSeparator = () => <Separator />
@@ -99,7 +117,7 @@ export default class AutoTranslateView extends React.Component {
 		return (
 			<ListItem
 				title={name || language}
-				// onPress={() => this.submit(language)}
+				onPress={() => this.saveAutoTranslateLanguage(language)}
 				testID={`auto-translate-view-${ language }`}
 				right={isSelected ? this.renderIcon : null}
 			/>
@@ -124,6 +142,7 @@ export default class AutoTranslateView extends React.Component {
 					<SectionSeparator />
 					<FlatList
 						data={languages}
+						extraData={this.state}
 						keyExtractor={item => item.language}
 						renderItem={this.renderItem}
 						ItemSeparatorComponent={this.renderSeparator}
