@@ -15,9 +15,11 @@ import {
 } from '../actions/messages';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
+import database from '../lib/realm';
 import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
+import { getMessageTranslation } from './message/utils';
 
 @connect(
 	state => ({
@@ -125,6 +127,12 @@ export default class MessageActions extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			this.options.push(I18n.t('Read_Receipt'));
 			this.READ_RECEIPT_INDEX = this.options.length - 1;
+		}
+
+		// Toggle Auto-translate
+		if (props.room.autoTranslate && getMessageTranslation(props.actionMessage, props.room.autoTranslateLanguage)) {
+			this.options.push(I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'));
+			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}
 
 		// Report
@@ -326,6 +334,19 @@ export default class MessageActions extends React.Component {
 		}
 	}
 
+	handleToggleTranslation = () => {
+		const { actionMessage } = this.props;
+		try {
+			database.write(() => {
+				const message = database.objectForPrimaryKey('messages', actionMessage._id);
+				message.autoTranslate = !message.autoTranslate;
+				message._updatedAt = new Date();
+			});
+		} catch (err) {
+			log('err_toggle_translation', err);
+		}
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -364,6 +385,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.READ_RECEIPT_INDEX:
 					this.handleReadReceipt();
+					break;
+				case this.TOGGLE_TRANSLATION_INDEX:
+					this.handleToggleTranslation();
 					break;
 				default:
 					break;

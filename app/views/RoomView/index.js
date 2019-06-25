@@ -545,6 +545,8 @@ export default class RoomView extends React.Component {
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+				autoTranslateRoom={room.autoTranslate}
+				autoTranslateLanguage={room.autoTranslateLanguage}
 			/>
 		);
 
