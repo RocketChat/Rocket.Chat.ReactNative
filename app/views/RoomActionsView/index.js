@@ -264,9 +264,9 @@ export default class RoomActionsView extends React.Component {
 			sections[2].data.push({
 				icon: 'language',
 				name: I18n.t('Auto_Translate'),
-				route: 'SelectedUsersView',
+				route: 'AutoTranslateView',
 				params: { rid },
-				testID: 'room-actions-add-user'
+				testID: 'room-actions-auto-translate'
 			});
 		}
 

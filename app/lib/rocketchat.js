@@ -877,6 +877,14 @@ const RocketChat = {
 			log('err_can_auto_translate', error);
 			return false;
 		}
+	},
+	saveAutoTranslate({
+		rid, field, value, options
+	}) {
+		return this.sdk.methodCall('autoTranslate.saveSettings', rid, field, value, options);
+	},
+	getSupportedLanguagesAutoTranslate() {
+		return this.sdk.methodCall('autoTranslate.getSupportedLanguages', 'en');
 	}
 };
 
