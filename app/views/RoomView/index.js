@@ -61,7 +61,8 @@ import { Toast } from '../../utils/info';
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
+	AutoTranslate_Enabled: state.settings.AutoTranslate_Enabled
 }), dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
@@ -118,6 +119,7 @@ export default class RoomView extends React.Component {
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
+		AutoTranslate_Enabled: PropTypes.bool,
 		editing: PropTypes.bool,
 		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
@@ -502,7 +504,7 @@ export default class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, AutoTranslate_Enabled
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -545,8 +547,8 @@ export default class RoomView extends React.Component {
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
-				autoTranslateRoom={room.autoTranslate}
-				autoTranslateLanguage={room.autoTranslateLanguage}
+				autoTranslateRoom={AutoTranslate_Enabled && room.autoTranslate}
+				autoTranslateLanguage={AutoTranslate_Enabled && room.autoTranslateLanguage}
 			/>
 		);
 
