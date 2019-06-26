@@ -39,6 +39,7 @@ const keyExtractor = item => item.rid;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
+	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
@@ -111,7 +112,8 @@ export default class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func
+		roomsRequest: PropTypes.func,
+		isAuthenticated: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -187,7 +189,7 @@ export default class RoomsListView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest, isAuthenticated
 		} = this.props;
 
 		if (!(
@@ -197,7 +199,7 @@ export default class RoomsListView extends React.Component {
 			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+		} else if (appState === 'foreground' && appState !== prevProps.appState && isAuthenticated) {
 			roomsRequest();
 		}
 	}

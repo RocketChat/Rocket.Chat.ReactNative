@@ -11,15 +11,44 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
+import {
+	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN
+} from '../constants/userDefaults';
 
 const restore = function* restore() {
 	try {
 		yield RNUserDefaults.setName('group.ios.chat.rocket');
 
-		const { token, server } = yield all({
+		let { token, server } = yield all({
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
 			server: RNUserDefaults.get('currentServer')
 		});
+
+		// get native credentials
+		const { serversDB } = database.databases;
+		const servers = yield RNUserDefaults.objectForKey(SERVERS);
+		if (servers) {
+			serversDB.write(() => {
+				servers.forEach((serverItem) => {
+					const serverInfo = {
+						id: serverItem[SERVER_URL],
+						name: serverItem[SERVER_NAME],
+						iconURL: serverItem[SERVER_ICON]
+					};
+					try {
+						serversDB.create('servers', serverInfo, true);
+					} catch (e) {
+						log('err_create_servers', e);
+					}
+				});
+			});
+		}
+
+		// if not have current
+		if (servers.length !== 0 && (!token || !server)) {
+			server = servers[0][SERVER_URL];
+			token = servers[0][TOKEN];
+		}
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
