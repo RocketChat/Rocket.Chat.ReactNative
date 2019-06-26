@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
@@ -18,7 +19,11 @@ import { isIOS } from '../utils/deviceInfo';
 
 const restore = function* restore() {
 	try {
-		if (isIOS) { yield RNUserDefaults.setName('group.ios.chat.rocket'); }
+		let hasMigration;
+		if (isIOS) {
+			yield RNUserDefaults.setName('group.ios.chat.rocket');
+			hasMigration = yield AsyncStorage.getItem('hasMigration');
+		}
 
 		let { token, server } = yield all({
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
@@ -26,7 +31,7 @@ const restore = function* restore() {
 		});
 
 		// get native credentials
-		if (isIOS) {
+		if (isIOS && !hasMigration) {
 			const { serversDB } = database.databases;
 			const servers = yield RNUserDefaults.objectForKey(SERVERS);
 			if (servers) {
@@ -45,6 +50,7 @@ const restore = function* restore() {
 						}
 					});
 				});
+				yield AsyncStorage.setItem('hasMigration', true);
 			}
 
 			// if not have current
