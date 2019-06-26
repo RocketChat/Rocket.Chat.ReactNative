@@ -157,9 +157,9 @@ export default class RegisterView extends React.Component {
 						>
 							<TextInput
 								inputRef={(e) => { this[key] = e; }}
-								label={key}
 								placeholder={key}
 								value={customFields[key]}
+								iconLeft='flag'
 								testID='register-view-custom-picker'
 							/>
 						</RNPickerSelect>
@@ -170,9 +170,9 @@ export default class RegisterView extends React.Component {
 					<TextInput
 						inputRef={(e) => { this[key] = e; }}
 						key={key}
-						label={key}
 						placeholder={key}
 						value={customFields[key]}
+						iconLeft='flag'
 						onChangeText={(value) => {
 							const newValue = {};
 							newValue[key] = value;
