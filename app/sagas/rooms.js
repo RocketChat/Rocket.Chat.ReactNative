@@ -1,7 +1,8 @@
+import { delay } from 'redux-saga';
 import {
 	put, select, race, take, fork, cancel, takeLatest
 } from 'redux-saga/effects';
-import { BACKGROUND } from 'redux-enhancer-react-native-appstate';
+import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
@@ -61,13 +62,20 @@ const root = function* root() {
 	yield takeLatest(types.LOGOUT, handleLogout);
 	while (true) {
 		const params = yield take(types.ROOMS.REQUEST);
-		const roomsRequestTask = yield fork(handleRoomsRequest, params);
-		yield race({
-			serverReq: take(types.SERVER.SELECT_REQUEST),
-			background: take(BACKGROUND),
-			logout: take(types.LOGOUT)
-		});
-		yield cancel(roomsRequestTask);
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		if (isAuthenticated) {
+			const roomsRequestTask = yield fork(handleRoomsRequest, params);
+			yield race({
+				roomsSuccess: take(types.ROOMS.SUCCESS),
+				roomsFailure: take(types.ROOMS.FAILURE),
+				serverReq: take(types.SERVER.SELECT_REQUEST),
+				background: take(BACKGROUND),
+				inactive: take(INACTIVE),
+				logout: take(types.LOGOUT),
+				timeout: delay(30000)
+			});
+			yield cancel(roomsRequestTask);
+		}
 	}
 };
 export default root;

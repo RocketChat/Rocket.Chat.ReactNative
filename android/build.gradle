@@ -6,6 +6,7 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
+        glideVersion = "4.9.0"
     }
     repositories {
         mavenLocal()
