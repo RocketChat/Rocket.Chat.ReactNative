@@ -12,7 +12,7 @@ import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import {
-	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN
+	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
 
 const restore = function* restore() {
@@ -29,7 +29,7 @@ const restore = function* restore() {
 		const servers = yield RNUserDefaults.objectForKey(SERVERS);
 		if (servers) {
 			serversDB.write(() => {
-				servers.forEach((serverItem) => {
+				servers.forEach(async(serverItem) => {
 					const serverInfo = {
 						id: serverItem[SERVER_URL],
 						name: serverItem[SERVER_NAME],
@@ -37,6 +37,7 @@ const restore = function* restore() {
 					};
 					try {
 						serversDB.create('servers', serverInfo, true);
+						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
 					} catch (e) {
 						log('err_create_servers', e);
 					}
