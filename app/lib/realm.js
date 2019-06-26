@@ -4,6 +4,20 @@ import Realm from 'realm';
 // Realm.clearTestState();
 // AsyncStorage.clear();
 
+const userSchema = {
+	name: 'user',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		token: { type: 'string', optional: true },
+		username: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
+		language: { type: 'string', optional: true },
+		status: { type: 'string', optional: true },
+		roles: { type: 'string[]', optional: true }
+	}
+};
+
 const serversSchema = {
 	name: 'servers',
 	primaryKey: 'id',
@@ -370,6 +384,7 @@ class DB {
 		serversDB: new Realm({
 			path: 'default.realm',
 			schema: [
+				userSchema,
 				serversSchema
 			],
 			schemaVersion: 8,
