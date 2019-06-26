@@ -1,6 +1,7 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import RNUserDefaults from 'rn-user-defaults';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -36,6 +37,7 @@ import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage'
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../notifications/push';
+import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -58,9 +60,9 @@ const RocketChat = {
 	},
 	async getUserToken() {
 		try {
-			return await AsyncStorage.getItem(TOKEN_KEY);
+			return await RNUserDefaults.get(TOKEN_KEY);
 		} catch (error) {
-			console.warn(`AsyncStorage error: ${ error.message }`);
+			console.warn(`RNUserDefaults error: ${ error.message }`);
 		}
 	},
 	async getServerInfo(server) {
@@ -321,10 +323,26 @@ const RocketChat = {
 		}
 		this.sdk = null;
 
+		try {
+			const servers = await RNUserDefaults.objectForKey(SERVERS);
+			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
+		} catch (error) {
+			console.log('logout_rn_user_defaults', error);
+		}
+
+		const { serversDB } = database.databases;
+
+		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
+
+		serversDB.write(() => {
+			const user = serversDB.objectForPrimaryKey('user', userId);
+			serversDB.delete(user);
+		});
+
 		Promise.all([
-			AsyncStorage.removeItem('currentServer'),
-			AsyncStorage.removeItem(TOKEN_KEY),
-			AsyncStorage.removeItem(`${ TOKEN_KEY }-${ server }`)
+			RNUserDefaults.clear('currentServer'),
+			RNUserDefaults.clear(TOKEN_KEY),
+			RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`)
 		]).catch(error => console.log(error));
 
 		try {

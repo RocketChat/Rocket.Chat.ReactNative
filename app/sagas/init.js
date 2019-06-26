@@ -1,6 +1,6 @@
-import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
+import RNUserDefaults from 'rn-user-defaults';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -11,13 +11,45 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
+import {
+	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
+} from '../constants/userDefaults';
 
 const restore = function* restore() {
 	try {
-		const { token, server } = yield all({
-			token: AsyncStorage.getItem(RocketChat.TOKEN_KEY),
-			server: AsyncStorage.getItem('currentServer')
+		yield RNUserDefaults.setName('group.ios.chat.rocket');
+
+		let { token, server } = yield all({
+			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
+			server: RNUserDefaults.get('currentServer')
 		});
+
+		// get native credentials
+		const { serversDB } = database.databases;
+		const servers = yield RNUserDefaults.objectForKey(SERVERS);
+		if (servers) {
+			serversDB.write(() => {
+				servers.forEach(async(serverItem) => {
+					const serverInfo = {
+						id: serverItem[SERVER_URL],
+						name: serverItem[SERVER_NAME],
+						iconURL: serverItem[SERVER_ICON]
+					};
+					try {
+						serversDB.create('servers', serverInfo, true);
+						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
+					} catch (e) {
+						log('err_create_servers', e);
+					}
+				});
+			});
+		}
+
+		// if not have current
+		if (servers.length !== 0 && (!token || !server)) {
+			server = servers[0][SERVER_URL];
+			token = servers[0][TOKEN];
+		}
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
 		yield put(setAllPreferences(sortPreferences));
@@ -27,8 +59,8 @@ const restore = function* restore() {
 
 		if (!token || !server) {
 			yield all([
-				AsyncStorage.removeItem(RocketChat.TOKEN_KEY),
-				AsyncStorage.removeItem('currentServer')
+				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
+				RNUserDefaults.clear('currentServer')
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
