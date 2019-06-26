@@ -156,6 +156,7 @@ export default {
 	Email_or_password_field_is_empty: 'Email or password field is empty',
 	Email: 'Email',
 	email: 'e-mail',
+	Enable_Auto_Translate: 'Enable Auto-Translate',
 	Enable_markdown: 'Enable markdown',
 	Enable_notifications: 'Enable notifications',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',

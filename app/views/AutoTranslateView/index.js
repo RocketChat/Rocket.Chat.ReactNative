@@ -135,7 +135,7 @@ export default class AutoTranslateView extends React.Component {
 					testID='auto-translate-view-list'
 				>
 					<ListItem
-						title={I18n.t('Enable_markdown')}
+						title={I18n.t('Enable_Auto_Translate')}
 						testID='auto-translate-view-switch'
 						right={() => this.renderSwitch()}
 					/>
