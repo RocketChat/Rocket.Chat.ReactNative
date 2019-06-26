@@ -885,6 +885,9 @@ const RocketChat = {
 	},
 	getSupportedLanguagesAutoTranslate() {
 		return this.sdk.methodCall('autoTranslate.getSupportedLanguages', 'en');
+	},
+	translateMessage(message, targetLanguage) {
+		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	}
 };
 

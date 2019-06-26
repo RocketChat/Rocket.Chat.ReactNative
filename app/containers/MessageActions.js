@@ -48,7 +48,7 @@ export default class MessageActions extends React.Component {
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
 		toast: PropTypes.element,
-		// user: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
@@ -130,7 +130,7 @@ export default class MessageActions extends React.Component {
 		}
 
 		// Toggle Auto-translate
-		if (props.room.autoTranslate && getMessageTranslation(props.actionMessage, props.room.autoTranslateLanguage)) {
+		if (props.room.autoTranslate && props.actionMessage.u && props.actionMessage.u._id !== props.user.id) {
 			this.options.push(I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'));
 			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}
@@ -334,14 +334,18 @@ export default class MessageActions extends React.Component {
 		}
 	}
 
-	handleToggleTranslation = () => {
-		const { actionMessage } = this.props;
+	handleToggleTranslation = async() => {
+		const { actionMessage, room } = this.props;
 		try {
+			const message = database.objectForPrimaryKey('messages', actionMessage._id);
 			database.write(() => {
-				const message = database.objectForPrimaryKey('messages', actionMessage._id);
 				message.autoTranslate = !message.autoTranslate;
 				message._updatedAt = new Date();
 			});
+			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
+			if (!translatedMessage) {
+				await RocketChat.translateMessage(actionMessage, room.autoTranslateLanguage);
+			}
 		} catch (err) {
 			log('err_toggle_translation', err);
 		}

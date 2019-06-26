@@ -211,7 +211,7 @@ const messagesSchema = {
 		mentions: { type: 'list', objectType: 'users' },
 		channels: { type: 'list', objectType: 'rooms' },
 		unread: { type: 'bool', optional: true },
-		autoTranslate: { type: 'bool', default: true },
+		autoTranslate: { type: 'bool', default: false },
 		translations: { type: 'list', objectType: 'messagesTranslations' }
 	}
 };
@@ -249,7 +249,7 @@ const threadsSchema = {
 		mentions: { type: 'list', objectType: 'users' },
 		channels: { type: 'list', objectType: 'rooms' },
 		unread: { type: 'bool', optional: true },
-		autoTranslate: { type: 'bool', default: true },
+		autoTranslate: { type: 'bool', default: false },
 		translations: { type: 'list', objectType: 'messagesTranslations' },
 		draftMessage: 'string?'
 	}
@@ -282,7 +282,7 @@ const threadMessagesSchema = {
 		mentions: { type: 'list', objectType: 'users' },
 		channels: { type: 'list', objectType: 'rooms' },
 		unread: { type: 'bool', optional: true },
-		autoTranslate: { type: 'bool', default: true },
+		autoTranslate: { type: 'bool', default: false },
 		translations: { type: 'list', objectType: 'messagesTranslations' }
 	}
 };
