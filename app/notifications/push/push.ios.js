@@ -25,12 +25,13 @@ class PushNotification {
 		NotificationsIOS.setBadgesCount(count);
 	}
 
-	configure(params) {
+	async configure(params) {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;
 
+		const initial = await NotificationsIOS.getInitialNotification();
 		NotificationsIOS.consumeBackgroundQueue();
-		return Promise.resolve();
+		return Promise.resolve(initial);
 	}
 }
 export default new PushNotification();
