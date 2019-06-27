@@ -71,7 +71,7 @@ export default class RoomItem extends React.Component {
 		this.state = {
 			dragX,
 			rowOffSet,
-			rowState: 0, // here 0 means closed 1 means right open and -1 left open
+			rowState: 0, // 0: closed, 1: right opened, -1: left opened
 			leftWidth: undefined,
 			rightOffset: undefined
 		};
@@ -129,7 +129,7 @@ export default class RoomItem extends React.Component {
 		const { translationX } = nativeEvent;
 		const { rowState } = this.state;
 		let toValue = 0;
-		if (rowState === 0) { // if no option is opned
+		if (rowState === 0) { // if no option is opened
 			if (translationX > 0 && translationX < ACTION_OFFSET) {
 				toValue = OPTION_WIDTH; // open left option if he swipe right but not enough to trigger action
 				this.setState({ rowState: -1 });
@@ -181,7 +181,7 @@ export default class RoomItem extends React.Component {
 		dragX.setValue(0);
 		Animated.spring(rowOffSet, {
 			toValue,
-			bounciness: 0
+			bounciness: 5
 		}).start();
 	}
 
@@ -240,19 +240,19 @@ export default class RoomItem extends React.Component {
 					{ transform: [{ translateX: trans }] }
 				]}
 			>
-				<RectButton style={[styles.actionButtonLeft]} onPress={this.handleLeftButtonPress}>
+				<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
 					<Animated.View
 						style={{ transform: [{ translateX: iconTrans }] }}
 					>
 						{isRead ? (
 							<View style={styles.actionView}>
 								<CustomIcon size={15} name='flag' color='white' />
-								<Text style={styles.actionText}>Unread</Text>
+								<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
 							</View>
 						) : (
 							<View style={styles.actionView}>
 								<CustomIcon size={15} name='check' color='white' />
-								<Text style={styles.actionText}>Read</Text>
+								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
 							</View>
 						)}
 					</Animated.View>
@@ -267,10 +267,6 @@ export default class RoomItem extends React.Component {
 		const trans = this.rowTranslation.interpolate({
 			inputRange: [-OPTION_WIDTH, 0],
 			outputRange: [width - OPTION_WIDTH, width]
-		});
-		const iconFavTrans = this.rowTranslation.interpolate({
-			inputRange: [-2 * OPTION_WIDTH, 0],
-			outputRange: [0, 0]
 		});
 		const iconHideTrans = this.rowTranslation.interpolate({
 			inputRange: [-(ACTION_OFFSET - 20), -2 * OPTION_WIDTH, 0],
@@ -292,21 +288,18 @@ export default class RoomItem extends React.Component {
 				]}
 			>
 				<Animated.View
-					style={[
-						{ width: iconFavWidth },
-						{ transform: [{ translateX: iconFavTrans }] }
-					]}
+					style={{ width: iconFavWidth }}
 				>
 					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
 						{favorite ? (
 							<View style={styles.actionView}>
 								<CustomIcon size={17} name='Star-filled' color='white' />
-								<Text style={styles.actionText}>Unfavorite</Text>
+								<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
 							</View>
 						) : (
 							<View style={styles.actionView}>
 								<CustomIcon size={17} name='star' color='white' />
-								<Text style={styles.actionText}>Favorite</Text>
+								<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
 							</View>
 						)}
 					</RectButton>
@@ -322,7 +315,7 @@ export default class RoomItem extends React.Component {
 					>
 						<View style={styles.actionView}>
 							<CustomIcon size={15} name='eye-off' color='white' />
-							<Text style={styles.actionText}>Hide</Text>
+							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
 						</View>
 					</RectButton>
 				</Animated.View>

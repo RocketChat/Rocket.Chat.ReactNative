@@ -428,6 +428,12 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
+	getIsRead = (item) => {
+		let isUnread = (item.archived !== true && item.open === true); // item is not archived and not opened
+		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+		return !isUnread;
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			userId, baseUrl, StoreLastMessage
@@ -440,7 +446,7 @@ export default class RoomsListView extends React.Component {
 					alert={item.alert}
 					unread={item.unread}
 					userMentions={item.userMentions}
-					isRead={!((item.archived !== true && item.open === true) && (item.unread > 0 || item.alert === true))}
+					isRead={this.getIsRead(item)}
 					favorite={item.f}
 					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 					name={this.getRoomTitle(item)}
