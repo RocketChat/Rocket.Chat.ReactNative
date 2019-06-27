@@ -311,7 +311,6 @@ export default {
 	This_room_is_blocked: 'Esta sala está bloqueada',
 	This_room_is_read_only: 'Esta sala é apenas de leitura',
 	Timezone: 'Fuso Horário',
-	Toggle_Drawer: 'Toggle_Drawer',
 	topic: 'tópico',
 	Topic: 'Tópico',
 	Try_again: 'Tente novamente',

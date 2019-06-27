@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert
+	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
-import LoggedView from '../View';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -36,8 +35,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 }), dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
 }))
-/** @extends React.Component */
-export default class RoomActionsView extends LoggedView {
+export default class RoomActionsView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Actions')
 	}
@@ -53,7 +51,7 @@ export default class RoomActionsView extends LoggedView {
 	}
 
 	constructor(props) {
-		super('RoomActionsView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
@@ -75,7 +73,7 @@ export default class RoomActionsView extends LoggedView {
 					this.setState({ room: { ...result.channel, rid: result.channel._id } });
 				}
 			} catch (error) {
-				console.log('RoomActionsView -> getChannelInfo -> error', error);
+				log('err_get_channel_info', error);
 			}
 		}
 
@@ -86,7 +84,7 @@ export default class RoomActionsView extends LoggedView {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
 			} catch (error) {
-				console.log('RoomActionsView -> getRoomCounters -> error', error);
+				log('err_get_room_counters', error);
 			}
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
@@ -215,22 +213,22 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'file-generic',
 					name: I18n.t('Files'),
-					route: 'RoomFilesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Files' },
 					testID: 'room-actions-files'
 				},
 				{
 					icon: 'at',
 					name: I18n.t('Mentions'),
-					route: 'MentionedMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Mentions' },
 					testID: 'room-actions-mentioned'
 				},
 				{
 					icon: 'star',
 					name: I18n.t('Starred'),
-					route: 'StarredMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Starred' },
 					testID: 'room-actions-starred'
 				},
 				{
@@ -243,14 +241,14 @@ export default class RoomActionsView extends LoggedView {
 				{
 					icon: 'share',
 					name: I18n.t('Share'),
-					disabled: true,
+					event: this.handleShare,
 					testID: 'room-actions-share'
 				},
 				{
 					icon: 'pin',
 					name: I18n.t('Pinned'),
-					route: 'PinnedMessagesView',
-					params: { rid, t },
+					route: 'MessagesView',
+					params: { rid, t, name: 'Pinned' },
 					testID: 'room-actions-pinned'
 				}
 			],
@@ -337,7 +335,7 @@ export default class RoomActionsView extends LoggedView {
 				this.setState({ member: result.user });
 			}
 		} catch (e) {
-			log('RoomActions updateRoomMember', e);
+			log('err_update_room_member', e);
 			this.setState({ member: {} });
 		}
 	}
@@ -349,9 +347,17 @@ export default class RoomActionsView extends LoggedView {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
-			log('toggleBlockUser', e);
+			log('err_toggle_block_user', e);
 		}
 	}
+
+	handleShare = () => {
+		const { room } = this.state;
+		const permalink = RocketChat.getPermalinkChannel(room);
+		Share.share({
+			message: permalink
+		});
+	};
 
 	leaveChannel = () => {
 		const { room } = this.state;
@@ -382,7 +388,7 @@ export default class RoomActionsView extends LoggedView {
 			};
 			RocketChat.saveNotificationSettings(room.rid, notifications);
 		} catch (e) {
-			log('toggleNotifications', e);
+			log('err_toggle_notifications', e);
 		}
 	}
 

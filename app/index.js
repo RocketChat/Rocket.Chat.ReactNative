@@ -5,6 +5,8 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
+import firebase from 'react-native-firebase';
+import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -15,21 +17,22 @@ import AuthLoadingView from './views/AuthLoadingView';
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import NewMessageView from './views/NewMessageView';
+import DirectoryView from './views/DirectoryView';
 import LoginView from './views/LoginView';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
 import ProfileView from './views/ProfileView';
 import SettingsView from './views/SettingsView';
+import LanguageView from './views/LanguageView';
+import AdminPanelView from './views/AdminPanelView';
 import RoomActionsView from './views/RoomActionsView';
 import RoomInfoView from './views/RoomInfoView';
 import RoomInfoEditView from './views/RoomInfoEditView';
 import RoomMembersView from './views/RoomMembersView';
-import RoomFilesView from './views/RoomFilesView';
-import MentionedMessagesView from './views/MentionedMessagesView';
-import StarredMessagesView from './views/StarredMessagesView';
 import SearchMessagesView from './views/SearchMessagesView';
-import PinnedMessagesView from './views/PinnedMessagesView';
+import ReadReceiptsView from './views/ReadReceiptView';
 import ThreadMessagesView from './views/ThreadMessagesView';
+import MessagesView from './views/MessagesView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
@@ -39,8 +42,9 @@ import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './push';
+import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
+import NotificationBadge from './notifications/inApp';
 
 useScreens();
 
@@ -108,13 +112,12 @@ const ChatsStack = createStackNavigator({
 	RoomInfoView,
 	RoomInfoEditView,
 	RoomMembersView,
-	RoomFilesView,
-	MentionedMessagesView,
-	StarredMessagesView,
 	SearchMessagesView,
-	PinnedMessagesView,
 	SelectedUsersView,
-	ThreadMessagesView
+	ThreadMessagesView,
+	MessagesView,
+	ReadReceiptsView,
+	DirectoryView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -146,7 +149,14 @@ ProfileStack.navigationOptions = ({ navigation }) => {
 };
 
 const SettingsStack = createStackNavigator({
-	SettingsView
+	SettingsView,
+	LanguageView
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const AdminPanelStack = createStackNavigator({
+	AdminPanelView
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -164,7 +174,8 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
-	SettingsStack
+	SettingsStack,
+	AdminPanelStack
 }, {
 	contentComponent: Sidebar
 });
@@ -190,10 +201,28 @@ const SetUsernameStack = createStackNavigator({
 	SetUsernameView
 });
 
+class CustomInsideStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return (
+			<React.Fragment>
+				<InsideStackModal navigation={navigation} />
+				<NotificationBadge navigation={navigation} />
+			</React.Fragment>
+		);
+	}
+}
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
-		InsideStack: InsideStackModal,
+		InsideStack: CustomInsideStack,
 		AuthLoading: AuthLoadingView,
 		SetUsernameStack
 	},
@@ -201,6 +230,28 @@ const App = createAppContainer(createSwitchNavigator(
 		initialRouteName: 'AuthLoading'
 	}
 ));
+
+// gets the current screen from navigation state
+const getActiveRouteName = (navigationState) => {
+	if (!navigationState) {
+		return null;
+	}
+	const route = navigationState.routes[navigationState.index];
+	// dive into nested navigators
+	if (route.routes) {
+		return getActiveRouteName(route);
+	}
+	return route.routeName;
+};
+
+const onNavigationStateChange = (prevState, currentState) => {
+	const currentScreen = getActiveRouteName(currentState);
+	const prevScreen = getActiveRouteName(prevState);
+
+	if (prevScreen !== currentScreen) {
+		firebase.analytics().setCurrentScreen(currentScreen);
+	}
+};
 
 export default class Root extends React.Component {
 	constructor(props) {
@@ -242,6 +293,7 @@ export default class Root extends React.Component {
 					ref={(navigatorRef) => {
 						Navigation.setTopLevelNavigator(navigatorRef);
 					}}
+					onNavigationStateChange={onNavigationStateChange}
 				/>
 			</Provider>
 		);

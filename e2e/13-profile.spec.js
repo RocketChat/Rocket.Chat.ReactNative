@@ -79,8 +79,8 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-username')).replaceText(`${ data.user }new`);
 			await element(by.id('profile-view-list')).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
+			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
+			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
 			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
 			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
 		});
@@ -93,8 +93,8 @@ describe('Profile screen', () => {
 			await expect(element(by.id('profile-view-typed-password'))).toBeVisible();
 			await element(by.id('profile-view-typed-password')).replaceText(`${ data.password }`);
 			await element(by.text('Save')).tap();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
+			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
+			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
 			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
 			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
 		});
@@ -102,8 +102,8 @@ describe('Profile screen', () => {
 		it('should reset avatar', async() => {
 			await element(by.id('profile-view-list')).swipe('up');
 			await element(by.id('profile-view-reset-avatar')).tap();
-			await waitFor(element(by.text('Avatar changed successfully!'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('Avatar changed successfully!'))).toBeVisible();
+			await waitFor(element(by.text('Avatar changed successfully!'))).toBeVisible().withTimeout(10000);
+			// await expect(element(by.text('Avatar changed successfully!'))).toBeVisible();
 			await waitFor(element(by.text('Avatar changed successfully!'))).toBeNotVisible().withTimeout(10000);
 			await expect(element(by.text('Avatar changed successfully!'))).toBeNotVisible();
 		});

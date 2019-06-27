@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
-import * as moment from 'moment';
-
+import moment from 'moment';
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
@@ -14,10 +13,11 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
-import { showToast } from '../utils/info';
 import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
+import log from '../utils/log';
+import Navigation from '../lib/Navigation';
 
 @connect(
 	state => ({
@@ -27,7 +27,8 @@ import I18n from '../i18n';
 		Message_AllowEditing: state.settings.Message_AllowEditing,
 		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 		Message_AllowPinning: state.settings.Message_AllowPinning,
-		Message_AllowStarring: state.settings.Message_AllowStarring
+		Message_AllowStarring: state.settings.Message_AllowStarring,
+		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 	}),
 	dispatch => ({
 		actionsHide: () => dispatch(actionsHideAction()),
@@ -44,6 +45,7 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
+		toast: PropTypes.element,
 		// user: PropTypes.object.isRequired,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
@@ -56,7 +58,8 @@ export default class MessageActions extends React.Component {
 		Message_AllowEditing: PropTypes.bool,
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
-		Message_AllowStarring: PropTypes.bool
+		Message_AllowStarring: PropTypes.bool,
+		Message_Read_Receipt_Store_Users: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -64,7 +67,7 @@ export default class MessageActions extends React.Component {
 		this.handleActionPress = this.handleActionPress.bind(this);
 		this.setPermissions();
 
-		const { Message_AllowStarring, Message_AllowPinning } = this.props;
+		const { Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users } = this.props;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -118,6 +121,16 @@ export default class MessageActions extends React.Component {
 			this.REACTION_INDEX = this.options.length - 1;
 		}
 
+		// Read Receipts
+		if (Message_Read_Receipt_Store_Users) {
+			this.options.push(I18n.t('Read_Receipt'));
+			this.READ_RECEIPT_INDEX = this.options.length - 1;
+		}
+
+		// Report
+		this.options.push(I18n.t('Report'));
+		this.REPORT_INDEX = this.options.length - 1;
+
 		// Delete
 		if (this.allowDelete(props)) {
 			this.options.push(I18n.t('Delete'));
@@ -151,7 +164,7 @@ export default class MessageActions extends React.Component {
 
 	getPermalink = async(message) => {
 		try {
-			return await RocketChat.getPermalink(message);
+			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}
@@ -253,9 +266,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleCopy = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		await Clipboard.setString(actionMessage.msg);
-		showToast(I18n.t('Copied_to_clipboard'));
+		toast.show(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
@@ -272,10 +285,10 @@ export default class MessageActions extends React.Component {
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage } = this.props;
+		const { actionMessage, toast } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
-		showToast(I18n.t('Permalink_copied_to_clipboard'));
+		toast.show(I18n.t('Permalink_copied_to_clipboard'));
 	}
 
 	handlePin = () => {
@@ -296,6 +309,21 @@ export default class MessageActions extends React.Component {
 	handleReaction = () => {
 		const { actionMessage, toggleReactionPicker } = this.props;
 		toggleReactionPicker(actionMessage);
+	}
+
+	handleReadReceipt = () => {
+		const { actionMessage } = this.props;
+		Navigation.navigate('ReadReceiptsView', { messageId: actionMessage._id });
+	}
+
+	handleReport = async() => {
+		const { actionMessage } = this.props;
+		try {
+			await RocketChat.reportMessage(actionMessage._id);
+			Alert.alert(I18n.t('Message_Reported'));
+		} catch (err) {
+			log('err_report_message', err);
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -328,8 +356,14 @@ export default class MessageActions extends React.Component {
 				case this.REACTION_INDEX:
 					this.handleReaction();
 					break;
+				case this.REPORT_INDEX:
+					this.handleReport();
+					break;
 				case this.DELETE_INDEX:
 					this.handleDelete();
+					break;
+				case this.READ_RECEIPT_INDEX:
+					this.handleReadReceipt();
 					break;
 				default:
 					break;
