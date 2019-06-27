@@ -14,9 +14,12 @@ const styles = StyleSheet.create({
 	}
 });
 
+export const DisclosureImage = React.memo(() => <Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />);
+
 const DisclosureIndicator = React.memo(() => (
 	<View style={styles.disclosureContainer}>
-		<Image source={{ uri: 'disclosure_indicator' }} style={styles.disclosureIndicator} />
+		<DisclosureImage />
 	</View>
 ));
+
 export default DisclosureIndicator;

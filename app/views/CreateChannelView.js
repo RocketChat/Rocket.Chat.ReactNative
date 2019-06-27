@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import Loading from '../containers/Loading';
-import LoggedView from './View';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
 import sharedStyles from './Styles';
@@ -93,8 +92,7 @@ const styles = StyleSheet.create({
 	create: data => dispatch(createChannelRequestAction(data)),
 	removeUser: user => dispatch(removeUserAction(user))
 }))
-/** @extends React.Component */
-export default class CreateChannelView extends LoggedView {
+export default class CreateChannelView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const submit = navigation.getParam('submit', () => {});
 		const showSubmit = navigation.getParam('showSubmit');
@@ -128,14 +126,11 @@ export default class CreateChannelView extends LoggedView {
 		})
 	};
 
-	constructor(props) {
-		super('CreateChannelView', props);
-		this.state = {
-			channelName: '',
-			type: true,
-			readOnly: false,
-			broadcast: false
-		};
+	state = {
+		channelName: '',
+		type: true,
+		readOnly: false,
+		broadcast: false
 	}
 
 	componentDidMount() {

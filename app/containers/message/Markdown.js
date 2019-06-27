@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
+
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import I18n from '../../i18n';
+
+const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
+const MentionsPlugin = new PluginContainer(MarkdownFlowdock);
+const plugins = [EmojiPlugin, MentionsPlugin];
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -41,22 +47,23 @@ const emojiCount = (str) => {
 	return counter;
 };
 
-export default class Markdown extends React.Component {
-	shouldComponentUpdate(nextProps) {
-		const { msg } = this.props;
-		return nextProps.msg !== msg;
+const Markdown = React.memo(({
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
+}) => {
+	if (!msg) {
+		return null;
 	}
-
-	render() {
-		const {
-			msg, customEmojis, style, rules, baseUrl, username, edited
-		} = this.props;
-		if (!msg) {
-			return null;
-		}
-		let m = formatText(msg);
+	let m = formatText(msg);
+	if (m) {
 		m = emojify(m, { output: 'unicode' });
 		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+		if (numberOfLines > 0) {
+			m = m.replace(/[\n]+/g, '\n').trim();
+		}
+
+		if (!useMarkdown) {
+			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
+		}
 
 		const isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
@@ -64,10 +71,9 @@ export default class Markdown extends React.Component {
 			<MarkdownRenderer
 				rules={{
 					paragraph: (node, children) => (
-						// eslint-disable-next-line
-						<Text key={node.key} style={styles.paragraph}>
+						<Text key={node.key} style={styles.paragraph} numberOfLines={numberOfLines}>
 							{children}
-							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
+							{isEdited ? <Text style={styles.edited}> ({I18n.t('edited')})</Text> : null}
 						</Text>
 					),
 					mention: (node) => {
@@ -84,23 +90,31 @@ export default class Markdown extends React.Component {
 								...styles.mentionLoggedUser
 							};
 						}
-						return (
-							<Text style={mentionStyle} key={key}>
-								&nbsp;{content}&nbsp;
-							</Text>
-						);
+						if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
+							return (
+								<Text style={mentionStyle} key={key}>
+									&nbsp;{content}&nbsp;
+								</Text>
+							);
+						}
+						return `@${ content }`;
 					},
-					hashtag: node => (
-						<Text key={node.key} style={styles.mention}>
-							&nbsp;#{node.content}&nbsp;
-						</Text>
-					),
+					hashtag: (node) => {
+						const { content, key } = node;
+						if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
+							return (
+								<Text key={key} style={styles.mention}>
+									&nbsp;#{content}&nbsp;
+								</Text>
+							);
+						}
+						return `#${ content }`;
+					},
 					emoji: (node) => {
 						if (node.children && node.children.length && node.children[0].content) {
 							const { content } = node.children[0];
-							const emojiExtension = customEmojis[content];
-							if (emojiExtension) {
-								const emoji = { extension: emojiExtension, content };
+							const emoji = getCustomEmoji && getCustomEmoji(content);
+							if (emoji) {
 								return (
 									<CustomEmoji
 										key={node.key}
@@ -129,22 +143,26 @@ export default class Markdown extends React.Component {
 					link: styles.link,
 					...style
 				}}
-				plugins={[
-					new PluginContainer(MarkdownFlowdock),
-					new PluginContainer(MarkdownEmojiPlugin)
-				]}
+				plugins={plugins}
 			>{m}
 			</MarkdownRenderer>
 		);
 	}
-}
+}, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
-	username: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object.isRequired,
+	username: PropTypes.string,
+	baseUrl: PropTypes.string,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool
+	isEdited: PropTypes.bool,
+	numberOfLines: PropTypes.number,
+	useMarkdown: PropTypes.bool,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func
 };
+Markdown.displayName = 'MessageMarkdown';
+
+export default Markdown;

@@ -6,14 +6,16 @@ import log from '../../../utils/log';
 import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
+import { notificationReceived } from '../../../actions/notification';
 
 const removeListener = listener => listener.stop();
 
 let connectedListener;
 let disconnectedListener;
 let streamListener;
+let subServer;
 
-export default async function subscribeRooms() {
+export default function subscribeRooms() {
 	let timer = null;
 	const loop = () => {
 		if (timer) {
@@ -40,6 +42,10 @@ export default async function subscribeRooms() {
 	};
 
 	const handleStreamMessageReceived = protectedFunction((ddpMessage) => {
+		// check if the server from variable is the same as the js sdk client
+		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
+			return;
+		}
 		if (ddpMessage.msg === 'added') {
 			return;
 		}
@@ -59,7 +65,7 @@ export default async function subscribeRooms() {
 						database.delete(subscription);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> subscriptions removed', e);
+					log('err_stream_msg_received_sub_removed', e);
 				}
 			} else {
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
@@ -70,7 +76,7 @@ export default async function subscribeRooms() {
 						database.delete(rooms);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> subscriptions updated', e);
+					log('err_stream_msg_received_sub_updated', e);
 				}
 			}
 		}
@@ -83,7 +89,7 @@ export default async function subscribeRooms() {
 						database.create('subscriptions', tmp, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> rooms updated', e);
+					log('err_stream_msg_received_room_updated', e);
 				}
 			} else if (type === 'inserted') {
 				try {
@@ -91,7 +97,7 @@ export default async function subscribeRooms() {
 						database.create('rooms', data, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> rooms inserted', e);
+					log('err_stream_msg_received_room_inserted', e);
 				}
 			}
 		}
@@ -116,9 +122,13 @@ export default async function subscribeRooms() {
 						database.create('messages', message, true);
 					});
 				} catch (e) {
-					log('handleStreamMessageReceived -> message', e);
+					log('err_stream_msg_received_message', e);
 				}
 			});
+		}
+		if (/notification/.test(ev)) {
+			const [notification] = ddpMessage.fields.args;
+			store.dispatch(notificationReceived(notification));
 		}
 	});
 
@@ -144,12 +154,15 @@ export default async function subscribeRooms() {
 	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
-		await this.sdk.subscribeNotifyUser();
-	} catch (e) {
-		log('subscribeRooms', e);
-	}
+		// set the server that started this task
+		subServer = this.sdk.client.host;
+		this.sdk.subscribeNotifyUser().catch(e => console.log(e));
 
-	return {
-		stop: () => stop()
-	};
+		return {
+			stop: () => stop()
+		};
+	} catch (e) {
+		log('err_subscribe_rooms', e);
+		return Promise.reject();
+	}
 }

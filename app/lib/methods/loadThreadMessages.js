@@ -5,24 +5,26 @@ import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
 
-async function load({ tmid, skip }) {
+async function load({ tmid, offset }) {
 	try {
 		// RC 1.0
-		const data = await this.sdk.methodCall('getThreadMessages', { tmid, limit: 50, skip });
-		if (!data || data.status === 'error') {
+		const result = await this.sdk.get('chat.getThreadMessages', {
+			tmid, count: 50, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
+		});
+		if (!result || !result.success) {
 			return [];
 		}
-		return data;
+		return result.messages;
 	} catch (error) {
 		console.log(error);
 		return [];
 	}
 }
 
-export default function loadThreadMessages({ tmid, skip }) {
+export default function loadThreadMessages({ tmid, offset = 0 }) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = await load.call(this, { tmid, skip });
+			const data = await load.call(this, { tmid, offset });
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
@@ -32,7 +34,7 @@ export default function loadThreadMessages({ tmid, skip }) {
 							message.rid = tmid;
 							database.create('threadMessages', message, true);
 						} catch (e) {
-							log('loadThreadMessages -> create messages', e);
+							log('err_load_thread_messages_create', e);
 						}
 					}));
 					return resolve(data);
@@ -41,7 +43,7 @@ export default function loadThreadMessages({ tmid, skip }) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log('loadThreadMessages', e);
+			log('err_load_thread_messages', e);
 			reject(e);
 		}
 	});

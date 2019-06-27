@@ -11,7 +11,6 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
-import LoggedView from './View';
 import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
@@ -38,16 +37,6 @@ const styles = StyleSheet.create({
 		marginTop: 25,
 		marginBottom: 15
 	},
-	input: {
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
-		fontSize: 17,
-		letterSpacing: 0,
-		paddingTop: 14,
-		paddingBottom: 14,
-		paddingLeft: 16,
-		paddingRight: 16
-	},
 	backButton: {
 		position: 'absolute',
 		paddingHorizontal: 9,
@@ -62,8 +51,7 @@ const defaultServer = 'https://open.rocket.chat';
 }), dispatch => ({
 	connectServer: server => dispatch(serverRequest(server))
 }))
-/** @extends React.Component */
-export default class NewServerView extends LoggedView {
+export default class NewServerView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -75,11 +63,8 @@ export default class NewServerView extends LoggedView {
 		connectServer: PropTypes.func.isRequired
 	}
 
-	constructor(props) {
-		super('NewServerView', props);
-		this.state = {
-			text: ''
-		};
+	state = {
+		text: ''
 	}
 
 	componentDidMount() {

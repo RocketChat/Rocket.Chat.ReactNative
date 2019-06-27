@@ -5,11 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
-import EJSON from 'ejson';
 import moment from 'moment';
 
-import LoggedView from '../View';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -22,97 +19,170 @@ import log from '../../utils/log';
 import debounce from '../../utils/debounce';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
+const API_FETCH_COUNT = 50;
 
 @connect(state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	useRealName: state.settings.UI_Use_Real_Name
 }))
-/** @extends React.Component */
-export default class ThreadMessagesView extends LoggedView {
+export default class ThreadMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Threads')
 	}
 
 	static propTypes = {
 		user: PropTypes.object,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		baseUrl: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
-		super('ThreadMessagesView', props);
+		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.messages = database.objects('threads').filtered('rid = $0', this.rid);
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.messages = database.objects('threads').filtered('rid = $0', this.rid).sorted('ts', true);
 		safeAddListener(this.messages, this.updateMessages);
 		this.state = {
 			loading: false,
-			messages: this.messages.slice(),
 			end: false,
-			total: 0
+			messages: this.messages
 		};
+		this.mounted = false;
 	}
 
 	componentDidMount() {
-		this.load();
+		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
+			this.init();
+			this.mounted = true;
+		});
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, messages, end } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
+	componentWillUnmount() {
+		this.messages.removeAllListeners();
+		if (this.mountInteraction && this.mountInteraction.cancel) {
+			this.mountInteraction.cancel();
 		}
-		if (!equal(nextState.messages, messages)) {
-			return true;
+		if (this.loadInteraction && this.loadInteraction.cancel) {
+			this.loadInteraction.cancel();
 		}
-		if (!equal(nextState.end, end)) {
-			return true;
+		if (this.syncInteraction && this.syncInteraction.cancel) {
+			this.syncInteraction.cancel();
 		}
-		return false;
 	}
 
-	updateMessages = () => {
-		this.setState({ messages: this.messages.slice() });
+	// eslint-disable-next-line react/sort-comp
+	updateMessages = debounce(() => {
+		this.setState({ messages: this.messages });
+	}, 300)
+
+	// eslint-disable-next-line react/sort-comp
+	init = () => {
+		const [room] = this.rooms;
+
+		// if there's not room at this point, it's better to show nothing
+		if (!room) {
+			return;
+		}
+
+		const lastThreadSync = new Date();
+		if (room.lastThreadSync) {
+			this.sync(room.lastThreadSync);
+		} else {
+			this.load();
+		}
+		database.write(() => {
+			room.lastThreadSync = lastThreadSync;
+		});
 	}
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async() => {
-		const {
-			loading, end, total
-		} = this.state;
-		if (end || loading) {
+		const { loading, end } = this.state;
+		if (end || loading || !this.mounted) {
 			return;
 		}
 
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getThreadsList({ rid: this.rid, limit: 50, skip: total });
-
-			database.write(() => result.forEach((message) => {
-				try {
-					database.create('threads', buildMessage(EJSON.fromJSONValue(message)), true);
-				} catch (e) {
-					log('ThreadMessagesView -> load -> create', e);
-				}
-			}));
-
-			InteractionManager.runAfterInteractions(() => {
-				this.setState(prevState => ({
-					loading: false,
-					end: result.length < 50,
-					total: prevState.total + result.length
-				}));
+			const result = await RocketChat.getThreadsList({
+				rid: this.rid, count: API_FETCH_COUNT, offset: this.messages.length
 			});
+			if (result.success) {
+				this.loadInteraction = InteractionManager.runAfterInteractions(() => {
+					database.write(() => result.threads.forEach((message) => {
+						try {
+							database.create('threads', buildMessage(message), true);
+						} catch (e) {
+							log('err_thread_messages_create', e);
+						}
+					}));
+
+					this.setState({
+						loading: false,
+						end: result.count < API_FETCH_COUNT
+					});
+				});
+			}
 		} catch (error) {
-			console.log('ThreadMessagesView -> catch -> error', error);
+			log('err_thread_messages_load', error);
 			this.setState({ loading: false, end: true });
 		}
-	}, 300, true)
+	}, 300)
+
+	// eslint-disable-next-line react/sort-comp
+	sync = async(updatedSince) => {
+		this.setState({ loading: true });
+
+		try {
+			const result = await RocketChat.getSyncThreadsList({
+				rid: this.rid, updatedSince: updatedSince.toISOString()
+			});
+			if (result.success && result.threads) {
+				this.syncInteraction = InteractionManager.runAfterInteractions(() => {
+					const { update, remove } = result.threads;
+					database.write(() => {
+						if (update && update.length) {
+							update.forEach((message) => {
+								try {
+									database.create('threads', buildMessage(message), true);
+								} catch (e) {
+									log('err_thread_messages_update', e);
+								}
+							});
+						}
+
+						if (remove && remove.length) {
+							remove.forEach((message) => {
+								const oldMessage = database.objectForPrimaryKey('threads', message._id);
+								if (oldMessage) {
+									try {
+										database.delete(oldMessage);
+									} catch (e) {
+										log('err_thread_messages_delete', e);
+									}
+								}
+							});
+						}
+					});
+
+					this.setState({
+						loading: false
+					});
+				});
+			}
+		} catch (error) {
+			log('err_thread_messages_sync', error);
+			this.setState({ loading: false });
+		}
+	}
 
 	formatMessage = lm => (
 		lm ? moment(lm).calendar(null, {
@@ -123,6 +193,20 @@ export default class ThreadMessagesView extends LoggedView {
 		}) : null
 	)
 
+	onThreadPress = debounce((item) => {
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+			});
+		} else if (item.tlm) {
+			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			navigation.push('RoomView', {
+				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+			});
+		}
+	}, 1000, true)
+
 	renderSeparator = () => <Separator />
 
 	renderEmpty = () => (
@@ -132,29 +216,35 @@ export default class ThreadMessagesView extends LoggedView {
 	)
 
 	renderItem = ({ item }) => {
-		const { user, navigation } = this.props;
-		return (
-			<Message
-				key={item._id}
-				item={item}
-				user={user}
-				archived={false}
-				broadcast={false}
-				status={item.status}
-				_updatedAt={item._updatedAt}
-				navigation={navigation}
-				customTimeFormat='MMM D'
-				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-				fetchThreadName={this.fetchThreadName}
-				onDiscussionPress={this.onDiscussionPress}
-			/>
-		);
+		const {
+			user, navigation, baseUrl, useRealName
+		} = this.props;
+		if (item.isValid && item.isValid()) {
+			return (
+				<Message
+					key={item._id}
+					item={item}
+					user={user}
+					archived={false}
+					broadcast={false}
+					status={item.status}
+					_updatedAt={item._updatedAt}
+					navigation={navigation}
+					timeFormat='MMM D'
+					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
+					onThreadPress={this.onThreadPress}
+					baseUrl={baseUrl}
+					useRealName={useRealName}
+				/>
+			);
+		}
+		return null;
 	}
 
 	render() {
-		const { messages, loading } = this.state;
+		const { loading, messages } = this.state;
 
-		if (!loading && messages.length === 0) {
+		if (!loading && this.messages.length === 0) {
 			return this.renderEmpty();
 		}
 
@@ -163,6 +253,7 @@ export default class ThreadMessagesView extends LoggedView {
 				<StatusBar />
 				<FlatList
 					data={messages}
+					extraData={this.state}
 					renderItem={this.renderItem}
 					style={styles.list}
 					contentContainerStyle={styles.contentContainer}

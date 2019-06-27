@@ -9,12 +9,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import LoggedView from '../View';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showToast } from '../../utils/info';
+import { showErrorAlert, Toast } from '../../utils/info';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log from '../../utils/log';
@@ -42,8 +41,7 @@ import { COLOR_TEXT } from '../../constants/colors';
 }), dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 }))
-/** @extends React.Component */
-export default class ProfileView extends LoggedView {
+export default class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
@@ -56,21 +54,18 @@ export default class ProfileView extends LoggedView {
 		setUser: PropTypes.func
 	}
 
-	constructor(props) {
-		super('ProfileView', props);
-		this.state = {
-			showPasswordAlert: false,
-			saving: false,
-			name: null,
-			username: null,
-			email: null,
-			newPassword: null,
-			currentPassword: null,
-			avatarUrl: null,
-			avatar: {},
-			avatarSuggestions: {},
-			customFields: {}
-		};
+	state = {
+		showPasswordAlert: false,
+		saving: false,
+		name: null,
+		username: null,
+		email: null,
+		newPassword: null,
+		currentPassword: null,
+		avatarUrl: null,
+		avatar: {},
+		avatarSuggestions: {},
+		customFields: {}
 	}
 
 	async componentDidMount() {
@@ -80,7 +75,7 @@ export default class ProfileView extends LoggedView {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('getAvatarSuggestion', e);
+			log('err_get_avatar_suggestion', e);
 		}
 	}
 
@@ -156,8 +151,11 @@ export default class ProfileView extends LoggedView {
 		if (e.data && e.data.errorType === 'error-too-many-requests') {
 			return showErrorAlert(e.data.error);
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-		log(func, e);
+		showErrorAlert(
+			I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }),
+			'',
+			() => this.setState({ showPasswordAlert: false })
+		);
 	}
 
 	submit = async() => {
@@ -167,7 +165,7 @@ export default class ProfileView extends LoggedView {
 			return;
 		}
 
-		this.setState({ saving: true, showPasswordAlert: false });
+		this.setState({ saving: true });
 
 		const {
 			name, username, email, newPassword, currentPassword, avatar, customFields
@@ -215,15 +213,16 @@ export default class ProfileView extends LoggedView {
 				}
 			}
 
-			params.customFields = customFields;
+			const result = await RocketChat.saveUserProfile(params, customFields);
 
-			const result = await RocketChat.saveUserProfile(params);
 			if (result.success) {
-				if (params.customFields) {
-					setUser({ customFields });
+				if (customFields) {
+					setUser({ customFields, ...params });
+				} else {
+					setUser({ ...params });
 				}
-				this.setState({ saving: false });
-				showToast(I18n.t('Profile_saved_successfully'));
+				this.setState({ saving: false, showPasswordAlert: false });
+				this.toast.show(I18n.t('Profile_saved_successfully'));
 				this.init();
 			}
 		} catch (e) {
@@ -236,7 +235,7 @@ export default class ProfileView extends LoggedView {
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
-			showToast(I18n.t('Avatar_changed_successfully'));
+			this.toast.show(I18n.t('Avatar_changed_successfully'));
 			this.init();
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
@@ -286,7 +285,7 @@ export default class ProfileView extends LoggedView {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} user={user} />,
+					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
 					key: 'profile-view-reset-avatar'
 				})}
@@ -305,7 +304,7 @@ export default class ProfileView extends LoggedView {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						key: `profile-view-avatar-${ service }`,
-						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} user={user} />,
+						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
 						})
@@ -387,6 +386,7 @@ export default class ProfileView extends LoggedView {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
+				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'
@@ -399,7 +399,8 @@ export default class ProfileView extends LoggedView {
 								avatar={avatar && avatar.url}
 								size={100}
 								baseUrl={baseUrl}
-								user={user}
+								userId={user.id}
+								token={user.token}
 							/>
 						</View>
 						<RCTextInput
