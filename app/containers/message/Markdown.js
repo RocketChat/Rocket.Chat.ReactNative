@@ -95,7 +95,7 @@ const Markdown = React.memo(({
 					if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
 						return (
 							<Text style={mentionStyle} key={key}>
-								{content}&nbsp;
+								&nbsp;{content}&nbsp;
 							</Text>
 						);
 					}
@@ -106,7 +106,7 @@ const Markdown = React.memo(({
 					if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
 						return (
 							<Text key={key} style={styles.mention}>
-									&nbsp;#{content}&nbsp;
+								&nbsp;#{content}&nbsp;
 							</Text>
 						);
 					}
