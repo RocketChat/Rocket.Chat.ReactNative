@@ -1,15 +1,18 @@
 import React from 'react';
-import { Text, Image, Platform } from 'react-native';
+import { Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { emojify } from 'react-emojione';
 import MarkdownRenderer, { PluginContainer } from 'react-native-markdown-renderer';
 import MarkdownFlowdock from 'markdown-it-flowdock';
+
 import styles from './styles';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import MarkdownEmojiPlugin from './MarkdownEmojiPlugin';
+import I18n from '../../i18n';
 
-import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+const EmojiPlugin = new PluginContainer(MarkdownEmojiPlugin);
+const MentionsPlugin = new PluginContainer(MarkdownFlowdock);
+const plugins = [EmojiPlugin, MentionsPlugin];
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -17,126 +20,113 @@ const formatText = text => text.replace(
 	(match, url, title) => `[${ title }](${ url })`
 );
 
-const codeFontFamily = Platform.select({
-	ios: { fontFamily: 'Courier New' },
-	android: { fontFamily: 'monospace' }
-});
-
-export default class Markdown extends React.Component {
-	shouldComponentUpdate(nextProps) {
-		const { msg } = this.props;
-		return nextProps.msg !== msg;
+const Markdown = React.memo(({
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
+}) => {
+	if (!msg) {
+		return null;
+	}
+	let m = formatText(msg);
+	if (m) {
+		m = emojify(m, { output: 'unicode' });
+	}
+	m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+	if (numberOfLines > 0) {
+		m = m.replace(/[\n]+/g, '\n').trim();
 	}
 
-	render() {
-		const {
-			msg, customEmojis, style, rules, baseUrl, username, edited
-		} = this.props;
-		if (!msg) {
-			return null;
-		}
-		let m = formatText(msg);
-		m = emojify(m, { output: 'unicode' });
-		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
-		return (
-			<MarkdownRenderer
-				rules={{
-					paragraph: (node, children) => (
-						// eslint-disable-next-line
-						<Text key={node.key} style={styles.paragraph}>
-							{children}
-							{edited ? <Text style={styles.edited}> (edited)</Text> : null}
-						</Text>
-					),
-					mention: (node) => {
-						const { content, key } = node;
-						let mentionStyle = styles.mention;
-						if (content === 'all' || content === 'here') {
-							mentionStyle = {
-								...mentionStyle,
-								...styles.mentionAll
-							};
-						} else if (content === username) {
-							mentionStyle = {
-								...mentionStyle,
-								...styles.mentionLoggedUser
-							};
-						}
+	if (!useMarkdown) {
+		return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
+	}
+
+	return (
+		<MarkdownRenderer
+			rules={{
+				paragraph: (node, children) => (
+					<Text key={node.key} style={styles.paragraph} numberOfLines={numberOfLines}>
+						{children}
+						{isEdited ? <Text style={styles.edited}> ({I18n.t('edited')})</Text> : null}
+					</Text>
+				),
+				mention: (node) => {
+					const { content, key } = node;
+					let mentionStyle = styles.mention;
+					if (content === 'all' || content === 'here') {
+						mentionStyle = {
+							...mentionStyle,
+							...styles.mentionAll
+						};
+					} else if (content === username) {
+						mentionStyle = {
+							...mentionStyle,
+							...styles.mentionLoggedUser
+						};
+					}
+					if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
 						return (
 							<Text style={mentionStyle} key={key}>
 								&nbsp;{content}&nbsp;
 							</Text>
 						);
-					},
-					hashtag: node => (
-						<Text key={node.key} style={styles.mention}>
-							&nbsp;#{node.content}&nbsp;
-						</Text>
-					),
-					emoji: (node) => {
-						if (node.children && node.children.length && node.children[0].content) {
-							const { content } = node.children[0];
-							const emojiExtension = customEmojis[content];
-							if (emojiExtension) {
-								const emoji = { extension: emojiExtension, content };
-								return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
-							}
-							return <Text key={node.key}>:{content}:</Text>;
+					}
+					return `@${ content }`;
+				},
+				hashtag: (node) => {
+					const { content, key } = node;
+					if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
+						return (
+							<Text key={key} style={styles.mention}>
+								&nbsp;#{content}&nbsp;
+							</Text>
+						);
+					}
+					return `#${ content }`;
+				},
+				emoji: (node) => {
+					if (node.children && node.children.length && node.children[0].content) {
+						const { content } = node.children[0];
+						const emoji = getCustomEmoji && getCustomEmoji(content);
+						if (emoji) {
+							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
 						}
-						return null;
-					},
-					hardbreak: () => null,
-					blocklink: () => null,
-					image: node => (
-						<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
-					),
-					...rules
-				}}
-				style={{
-					paragraph: styles.paragraph,
-					text: {
-						fontSize: 16,
-						...sharedStyles.textColorNormal,
-						...sharedStyles.textRegular
-					},
-					codeInline: {
-						...sharedStyles.textRegular,
-						...codeFontFamily,
-						borderWidth: 1,
-						backgroundColor: COLOR_BACKGROUND_CONTAINER,
-						borderRadius: 4
-					},
-					codeBlock: {
-						...sharedStyles.textRegular,
-						...codeFontFamily,
-						backgroundColor: COLOR_BACKGROUND_CONTAINER,
-						borderColor: COLOR_BORDER,
-						borderWidth: 1,
-						borderRadius: 4,
-						padding: 4
-					},
-					link: {
-						color: COLOR_PRIMARY,
-						...sharedStyles.textRegular
-					},
-					...style
-				}}
-				plugins={[
-					new PluginContainer(MarkdownFlowdock),
-					new PluginContainer(MarkdownEmojiPlugin)
-				]}
-			>{m}
-			</MarkdownRenderer>
-		);
-	}
-}
+						return <Text key={node.key}>:{content}:</Text>;
+					}
+					return null;
+				},
+				hardbreak: () => null,
+				blocklink: () => null,
+				image: node => (
+					<Image key={node.key} style={styles.inlineImage} source={{ uri: node.attributes.src }} />
+				),
+				...rules
+			}}
+			style={{
+				paragraph: styles.paragraph,
+				text: styles.text,
+				codeInline: styles.codeInline,
+				codeBlock: styles.codeBlock,
+				link: styles.link,
+				...style
+			}}
+			plugins={plugins}
+		>{m}
+		</MarkdownRenderer>
+	);
+}, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
 
 Markdown.propTypes = {
 	msg: PropTypes.string,
-	username: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	customEmojis: PropTypes.object.isRequired,
+	username: PropTypes.string,
+	baseUrl: PropTypes.string,
 	style: PropTypes.any,
 	rules: PropTypes.object,
-	edited: PropTypes.bool
+	isEdited: PropTypes.bool,
+	numberOfLines: PropTypes.number,
+	useMarkdown: PropTypes.bool,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func
 };
+Markdown.displayName = 'MessageMarkdown';
+
+export default Markdown;

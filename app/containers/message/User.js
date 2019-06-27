@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 
 import sharedStyles from '../../views/Styles';
+import messageStyles from './styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,39 +27,14 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
-	},
-	time: {
-		fontSize: 12,
-		paddingLeft: 10,
-		lineHeight: 22,
-		...sharedStyles.textColorDescription,
-		...sharedStyles.textRegular,
-		fontWeight: '300'
 	}
 });
 
-export default class User extends React.PureComponent {
-	static propTypes = {
-		timeFormat: PropTypes.string.isRequired,
-		username: PropTypes.string,
-		alias: PropTypes.string,
-		ts: PropTypes.oneOfType([
-			PropTypes.instanceOf(Date),
-			PropTypes.string
-		]),
-		temp: PropTypes.bool
-	}
-
-	render() {
-		const {
-			username, alias, ts, temp, timeFormat
-		} = this.props;
-
-		const extraStyle = {};
-		if (temp) {
-			extraStyle.opacity = 0.3;
-		}
-
+const User = React.memo(({
+	isHeader, useRealName, author, alias, ts, timeFormat
+}) => {
+	if (isHeader) {
+		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
@@ -70,8 +46,21 @@ export default class User extends React.PureComponent {
 						{aliasUsername}
 					</Text>
 				</View>
-				<Text style={styles.time}>{time}</Text>
+				<Text style={messageStyles.time}>{time}</Text>
 			</View>
 		);
 	}
-}
+	return null;
+});
+
+User.propTypes = {
+	isHeader: PropTypes.bool,
+	useRealName: PropTypes.bool,
+	author: PropTypes.object,
+	alias: PropTypes.string,
+	ts: PropTypes.instanceOf(Date),
+	timeFormat: PropTypes.string
+};
+User.displayName = 'MessageUser';
+
+export default User;

@@ -39,10 +39,20 @@ export default function loadMessagesForRoom(...args) {
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(() => {
 					database.write(() => data.forEach((message) => {
+						message = buildMessage(message);
 						try {
-							database.create('messages', buildMessage(message), true);
+							database.create('messages', message, true);
+							// if it's a thread "header"
+							if (message.tlm) {
+								database.create('threads', message, true);
+							}
+							// if it belongs to a thread
+							if (message.tmid) {
+								message.rid = message.tmid;
+								database.create('threadMessages', message, true);
+							}
 						} catch (e) {
-							log('loadMessagesForRoom -> create messages', e);
+							log('err_load_messages_for_room_create', e);
 						}
 					}));
 					return resolve(data);
@@ -51,7 +61,7 @@ export default function loadMessagesForRoom(...args) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log('loadMessagesForRoom', e);
+			log('err_load_messages_for_room', e);
 			reject(e);
 		}
 	});

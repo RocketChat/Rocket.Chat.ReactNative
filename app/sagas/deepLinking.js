@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
 	takeLatest, take, select, put, all
 } from 'redux-saga/effects';
+import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
@@ -43,8 +43,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		AsyncStorage.getItem('currentServer'),
-		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		RNUserDefaults.get('currentServer'),
+		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
 	// TODO: needs better test
@@ -69,7 +69,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield navigate({ params });
 		} else {
 			// if deep link is from a different server
-			const result = yield RocketChat.testServer(server);
+			const result = yield RocketChat.getServerInfo(server);
 			if (!result.success) {
 				return;
 			}

@@ -1,59 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes } from 'react-native';
-import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
-import {
-	errorActionsShow as errorActionsShowAction,
-	toggleReactionPicker as toggleReactionPickerAction,
-	replyBroadcast as replyBroadcastAction
-} from '../../actions/messages';
-import { vibrate } from '../../utils/vibration';
+import debounce from '../../utils/debounce';
+import { SYSTEM_MESSAGES, getCustomEmoji } from './utils';
+import messagesStatus from '../../constants/messagesStatus';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	customEmojis: state.customEmojis,
-	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	editingMessage: state.messages.message,
-	useRealName: state.settings.UI_Use_Real_Name
-}), dispatch => ({
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-}))
 export default class MessageContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		reactions: PropTypes.any.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		customTimeFormat: PropTypes.string,
-		style: ViewPropTypes.style,
-		status: PropTypes.number,
+		timeFormat: PropTypes.string,
+		customThreadTimeFormat: PropTypes.string,
+		style: PropTypes.any,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
 		_updatedAt: PropTypes.instanceOf(Date),
-		// redux
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object,
 		Message_GroupingPeriod: PropTypes.number,
-		Message_TimeFormat: PropTypes.string,
-		editingMessage: PropTypes.object,
+		isReadReceiptEnabled: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		// methods - props
+		useMarkdown: PropTypes.bool,
+		status: PropTypes.number,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
-		// methods - redux
+		onDiscussionPress: PropTypes.func,
+		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func
+		toggleReactionPicker: PropTypes.func,
+		fetchThreadName: PropTypes.func,
+		onOpenFileModal: PropTypes.func,
+		onReactionLongPress: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -63,75 +47,79 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = { reactionsModal: false };
-		this.closeReactions = this.closeReactions.bind(this);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { reactionsModal } = this.state;
+	shouldComponentUpdate(nextProps) {
 		const {
-			status, reactions, broadcast, _updatedAt, editingMessage, item
+			status, item, _updatedAt
 		} = this.props;
 
-		if (reactionsModal !== nextState.reactionsModal) {
-			return true;
-		}
 		if (status !== nextProps.status) {
 			return true;
 		}
-		// eslint-disable-next-line
-		if (!!_updatedAt ^ !!nextProps._updatedAt) {
+		if (item.tmsg !== nextProps.item.tmsg) {
 			return true;
 		}
-		if (!equal(reactions, nextProps.reactions)) {
+		if (item.unread !== nextProps.item.unread) {
 			return true;
 		}
-		if (broadcast !== nextProps.broadcast) {
-			return true;
-		}
-		if (!equal(editingMessage, nextProps.editingMessage)) {
-			if (nextProps.editingMessage && nextProps.editingMessage._id === item._id) {
-				return true;
-			} else if (!nextProps.editingMessage._id !== item._id && editingMessage._id === item._id) {
-				return true;
-			}
-		}
-		return _updatedAt.toGMTString() !== nextProps._updatedAt.toGMTString();
+
+		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
 	}
 
+	onPress = debounce(() => {
+		const { item } = this.props;
+		KeyboardUtils.dismiss();
+
+		if ((item.tlm || item.tmid)) {
+			this.onThreadPress();
+		}
+	}, 300, true);
+
 	onLongPress = () => {
-		const { onLongPress } = this.props;
-		onLongPress(this.parseMessage());
+		const { archived, onLongPress } = this.props;
+		if (this.isInfo || this.hasError || archived) {
+			return;
+		}
+		if (onLongPress) {
+			onLongPress(this.parseMessage());
+		}
 	}
 
 	onErrorPress = () => {
 		const { errorActionsShow } = this.props;
-		errorActionsShow(this.parseMessage());
+		if (errorActionsShow) {
+			errorActionsShow(this.parseMessage());
+		}
 	}
 
 	onReactionPress = (emoji) => {
 		const { onReactionPress, item } = this.props;
-		onReactionPress(emoji, item._id);
+		if (onReactionPress) {
+			onReactionPress(emoji, item._id);
+		}
 	}
-
 
 	onReactionLongPress = () => {
-		this.setState({ reactionsModal: true });
-		vibrate();
+		const { onReactionLongPress, item } = this.props;
+		if (onReactionLongPress) {
+			onReactionLongPress(item);
+		}
 	}
 
-	get timeFormat() {
-		const { customTimeFormat, Message_TimeFormat } = this.props;
-		return customTimeFormat || Message_TimeFormat;
+	onDiscussionPress = () => {
+		const { onDiscussionPress, item } = this.props;
+		if (onDiscussionPress) {
+			onDiscussionPress(item);
+		}
 	}
 
-	closeReactions = () => {
-		this.setState({ reactionsModal: false });
+	onThreadPress = () => {
+		const { onThreadPress, item } = this.props;
+		if (onThreadPress) {
+			onThreadPress(item);
+		}
 	}
 
-	isHeader = () => {
+	get isHeader() {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
 		} = this.props;
@@ -140,10 +128,46 @@ export default class MessageContainer extends React.Component {
 			&& (previousItem.u.username === item.u.username)
 			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
 			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+			&& (previousItem.tmid === item.tmid)
 		)) {
 			return false;
 		}
 		return true;
+	}
+
+	get isThreadReply() {
+		const {
+			item, previousItem
+		} = this.props;
+		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem._id !== item.tmid)) {
+			return true;
+		}
+		return false;
+	}
+
+	get isThreadSequential() {
+		const {
+			item, previousItem
+		} = this.props;
+		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem._id === item.tmid))) {
+			return true;
+		}
+		return false;
+	}
+
+	get isInfo() {
+		const { item } = this.props;
+		return SYSTEM_MESSAGES.includes(item.t);
+	}
+
+	get isTemp() {
+		const { item } = this.props;
+		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
+	}
+
+	get hasError() {
+		const { item } = this.props;
+		return item.status === messagesStatus.ERROR;
 	}
 
 	parseMessage = () => {
@@ -153,55 +177,77 @@ export default class MessageContainer extends React.Component {
 
 	toggleReactionPicker = () => {
 		const { toggleReactionPicker } = this.props;
-		toggleReactionPicker(this.parseMessage());
+		if (toggleReactionPicker) {
+			toggleReactionPicker(this.parseMessage());
+		}
 	}
 
 	replyBroadcast = () => {
 		const { replyBroadcast } = this.props;
-		replyBroadcast(this.parseMessage());
+		if (replyBroadcast) {
+			replyBroadcast(this.parseMessage());
+		}
 	}
 
 	render() {
-		const { reactionsModal } = this.state;
 		const {
-			item, editingMessage, user, style, archived, baseUrl, customEmojis, useRealName, broadcast
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled
 		} = this.props;
 		const {
-			msg, ts, attachments, urls, reactions, t, status, avatar, u, alias, editedBy, role
+			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread
 		} = item;
-		const isEditing = editingMessage._id === item._id;
+
 		return (
 			<Message
+				id={_id}
 				msg={msg}
 				author={u}
 				ts={ts}
 				type={t}
-				status={status}
 				attachments={attachments}
 				urls={urls}
 				reactions={reactions}
 				alias={alias}
-				editing={isEditing}
-				header={this.isHeader()}
 				avatar={avatar}
 				user={user}
-				edited={editedBy && !!editedBy.username}
-				timeFormat={this.timeFormat}
+				timeFormat={timeFormat}
+				customThreadTimeFormat={customThreadTimeFormat}
 				style={style}
 				archived={archived}
 				broadcast={broadcast}
 				baseUrl={baseUrl}
-				customEmojis={customEmojis}
-				reactionsModal={reactionsModal}
 				useRealName={useRealName}
+				isReadReceiptEnabled={isReadReceiptEnabled}
+				unread={unread}
 				role={role}
-				closeReactions={this.closeReactions}
+				drid={drid}
+				dcount={dcount}
+				dlm={dlm}
+				tmid={tmid}
+				tcount={tcount}
+				tlm={tlm}
+				tmsg={tmsg}
+				useMarkdown={useMarkdown}
+				fetchThreadName={fetchThreadName}
+				mentions={mentions}
+				channels={channels}
+				isEdited={editedBy && !!editedBy.username}
+				isHeader={this.isHeader}
+				isThreadReply={this.isThreadReply}
+				isThreadSequential={this.isThreadSequential}
+				isInfo={this.isInfo}
+				isTemp={this.isTemp}
+				hasError={this.hasError}
 				onErrorPress={this.onErrorPress}
+				onPress={this.onPress}
 				onLongPress={this.onLongPress}
 				onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
 				toggleReactionPicker={this.toggleReactionPicker}
+				onDiscussionPress={this.onDiscussionPress}
+				onOpenFileModal={onOpenFileModal}
+				getCustomEmoji={getCustomEmoji}
 			/>
 		);
 	}

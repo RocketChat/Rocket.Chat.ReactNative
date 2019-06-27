@@ -61,11 +61,9 @@ Readme will guide you on how to config.
 ## Current priorities
 1) [NEW] Jitsi integration ([#711][i711])
 2) [NEW] Federation ([#706][i706])
-3) [NEW] Threads ([#707][i707])
-4) [NEW] Record video ([#712][i712])
-5) [NEW] Slash Commands ([#405][i405])
-6) [NEW] Draft message per room ([#708][i708])
-7) [NEW] Share extension ([#391][i391])
+3) [NEW] Record video ([#712][i712])
+4) [NEW] Slash Commands ([#405][i405])
+5) [NEW] Share extension ([#391][i391])
 
 [i711]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/711
 [i706]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/706 
@@ -80,11 +78,11 @@ Readme will guide you on how to config.
 |---------------------------------------------------------------	|--------	|
 | Jitsi Integration                                             	| ❌    	|
 | Federation (Directory)                                        	| ❌    	|
-| Threads                                                       	| ❌    	|
+| Threads                                                       	| ✅     	|
 | Record Audio                                                  	| ✅    	|
 | Record Video                                                  	| ❌    	|
 | Commands                                                      	| ❌    	|
-| Draft message per room                                        	| ❌    	|
+| Draft message per room                                        	| ✅    	|
 | Share Extension                                               	| ❌    	|
 | Notifications Preferences                                     	| ✅    	|
 | Edited status                                                 	| ✅    	|
@@ -102,7 +100,7 @@ Readme will guide you on how to config.
 | Theming                                                       	| ❌    	|
 | Settings -> Review the App                                    	| ❌    	|
 | Settings -> Default Browser                                   	| ❌    	|
-| Admin panel                                                   	| ❌    	|
+| Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ❌    	|
 | Unread counter banner on message list                         	| ✅    	|
 | E2E                                                           	| ❌    	|

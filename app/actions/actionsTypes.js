@@ -12,8 +12,7 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_SERVICES',
-	'SET_PREFERENCE',
-	'SET_SORT_PREFERENCE'
+	'SET_PREFERENCE'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
@@ -26,17 +25,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', [
-	'ADD_USER_TYPING',
-	'REMOVE_USER_TYPING',
-	'SOMEONE_TYPING',
-	'OPEN',
-	'CLOSE',
-	'LEAVE',
-	'ERASE',
-	'USER_TYPING',
-	'MESSAGE_RECEIVED'
-]);
+export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
@@ -69,13 +58,14 @@ export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
 	'SELECT_SUCCESS',
 	'SELECT_REQUEST',
+	'SELECT_FAILURE',
 	'INIT_ADD',
 	'FINISH_ADD'
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
-export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET']);
-export const ROLES = createRequestTypes('ROLES', ['SET']);
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
+export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
+export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';

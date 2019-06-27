@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, AsyncStorage
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
+import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -16,7 +17,7 @@ import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import Check from './Check';
+import Check from '../../containers/Check';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -124,8 +125,8 @@ class ServerDropdown extends Component {
 
 		this.close();
 		if (currentServer !== server) {
-			const token = await AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (!token) {
+			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			if (!userId) {
 				appStart();
 				this.newServerTimeout = setTimeout(() => {
 					EventEmitter.emit('NewServer', { server });

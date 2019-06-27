@@ -4,6 +4,20 @@ import Realm from 'realm';
 // Realm.clearTestState();
 // AsyncStorage.clear();
 
+const userSchema = {
+	name: 'user',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		token: { type: 'string', optional: true },
+		username: { type: 'string', optional: true },
+		name: { type: 'string', optional: true },
+		language: { type: 'string', optional: true },
+		status: { type: 'string', optional: true },
+		roles: { type: 'string[]', optional: true }
+	}
+};
+
 const serversSchema = {
 	name: 'servers',
 	primaryKey: 'id',
@@ -11,7 +25,8 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
-		roomsUpdatedAt: { type: 'date', optional: true }
+		roomsUpdatedAt: { type: 'date', optional: true },
+		version: 'string?'
 	}
 };
 
@@ -27,20 +42,12 @@ const settingsSchema = {
 	}
 };
 
-const permissionsRolesSchema = {
-	name: 'permissionsRoles',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const permissionsSchema = {
 	name: 'permissions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
-		roles: { type: 'list', objectType: 'permissionsRoles' },
+		roles: 'string[]',
 		_updatedAt: { type: 'date', optional: true }
 	}
 };
@@ -50,23 +57,8 @@ const roomsSchema = {
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
+		name: 'string?',
 		broadcast: { type: 'bool', optional: true }
-	}
-};
-
-const subscriptionRolesSchema = {
-	name: 'subscriptionRolesSchema',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
-const userMutedInRoomSchema = {
-	name: 'usersMuted',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
 	}
 };
 
@@ -84,7 +76,7 @@ const subscriptionSchema = {
 		rid: { type: 'string', indexed: true },
 		open: { type: 'bool', optional: true },
 		alert: { type: 'bool', optional: true },
-		roles: { type: 'list', objectType: 'subscriptionRolesSchema' },
+		roles: 'string[]',
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
 		roomUpdatedAt: { type: 'date', optional: true },
@@ -100,9 +92,11 @@ const subscriptionSchema = {
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
 		notifications: { type: 'bool', optional: true },
-		muted: { type: 'list', objectType: 'usersMuted' },
+		muted: 'string[]',
 		broadcast: { type: 'bool', optional: true },
-		draftMessage: { type: 'string', optional: true }
+		prid: { type: 'string', optional: true },
+		draftMessage: { type: 'string', optional: true },
+		lastThreadSync: 'date?'
 	}
 };
 
@@ -112,8 +106,7 @@ const usersSchema = {
 	properties: {
 		_id: 'string',
 		username: 'string',
-		name: { type: 'string', optional: true },
-		avatarVersion: { type: 'int', optional: true }
+		name: { type: 'string', optional: true }
 	}
 };
 
@@ -168,21 +161,13 @@ const url = {
 	}
 };
 
-const messagesReactionsUsernamesSchema = {
-	name: 'messagesReactionsUsernames',
-	primaryKey: 'value',
-	properties: {
-		value: 'string'
-	}
-};
-
 const messagesReactionsSchema = {
 	name: 'messagesReactions',
 	primaryKey: '_id',
 	properties: {
 		_id: 'string',
 		emoji: 'string',
-		usernames: { type: 'list', objectType: 'messagesReactionsUsernames' }
+		usernames: 'string[]'
 	}
 };
 
@@ -205,8 +190,76 @@ const messagesSchema = {
 		rid: { type: 'string', indexed: true },
 		ts: 'date',
 		u: 'users',
-		// mentions: [],
-		// channels: [],
+		alias: { type: 'string', optional: true },
+		parseUrls: { type: 'bool', optional: true },
+		groupable: { type: 'bool', optional: true },
+		avatar: { type: 'string', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
+		urls: { type: 'list', objectType: 'url', default: [] },
+		_updatedAt: { type: 'date', optional: true },
+		status: { type: 'int', optional: true },
+		pinned: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true },
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]',
+		mentions: { type: 'list', objectType: 'users' },
+		channels: { type: 'list', objectType: 'rooms' },
+		unread: { type: 'bool', optional: true }
+	}
+};
+
+const threadsSchema = {
+	name: 'threads',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
+		rid: { type: 'string', indexed: true },
+		ts: 'date',
+		u: 'users',
+		alias: { type: 'string', optional: true },
+		parseUrls: { type: 'bool', optional: true },
+		groupable: { type: 'bool', optional: true },
+		avatar: { type: 'string', optional: true },
+		attachments: { type: 'list', objectType: 'attachment' },
+		urls: { type: 'list', objectType: 'url', default: [] },
+		_updatedAt: { type: 'date', optional: true },
+		status: { type: 'int', optional: true },
+		pinned: { type: 'bool', optional: true },
+		starred: { type: 'bool', optional: true },
+		editedBy: 'messagesEditedBy',
+		reactions: { type: 'list', objectType: 'messagesReactions' },
+		role: { type: 'string', optional: true },
+		drid: { type: 'string', optional: true },
+		dcount: { type: 'int', optional: true },
+		dlm: { type: 'date', optional: true },
+		tmid: { type: 'string', optional: true },
+		tcount: { type: 'int', optional: true },
+		tlm: { type: 'date', optional: true },
+		replies: 'string[]',
+		draftMessage: 'string?'
+	}
+};
+
+const threadMessagesSchema = {
+	name: 'threadMessages',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		msg: { type: 'string', optional: true },
+		t: { type: 'string', optional: true },
+		rid: { type: 'string', indexed: true },
+		ts: 'date',
+		u: 'users',
 		alias: { type: 'string', optional: true },
 		parseUrls: { type: 'bool', optional: true },
 		groupable: { type: 'bool', optional: true },
@@ -234,11 +287,15 @@ const frequentlyUsedEmojiSchema = {
 	}
 };
 
-const customEmojiAliasesSchema = {
-	name: 'customEmojiAliases',
-	primaryKey: 'value',
+const slashCommandSchema = {
+	name: 'slashCommand',
+	primaryKey: 'command',
 	properties: {
-		value: 'string'
+		command: 'string',
+		params: { type: 'string', optional: true },
+		description: { type: 'string', optional: true },
+		clientOnly: { type: 'bool', optional: true },
+		providesPreview: { type: 'bool', optional: true }
 	}
 };
 
@@ -248,7 +305,7 @@ const customEmojisSchema = {
 	properties: {
 		_id: 'string',
 		name: 'string',
-		aliases: { type: 'list', objectType: 'customEmojiAliases' },
+		aliases: 'string[]',
 		extension: 'string',
 		_updatedAt: { type: 'date', optional: true }
 	}
@@ -279,37 +336,74 @@ const uploadsSchema = {
 	}
 };
 
+const usersTypingSchema = {
+	name: 'usersTyping',
+	properties: {
+		rid: { type: 'string', indexed: true },
+		username: { type: 'string', optional: true }
+	}
+};
+
+const activeUsersSchema = {
+	name: 'activeUsers',
+	primaryKey: 'id',
+	properties: {
+		id: 'string',
+		name: 'string?',
+		username: 'string?',
+		status: 'string?',
+		utcOffset: 'double?'
+	}
+};
+
 const schema = [
 	settingsSchema,
 	subscriptionSchema,
-	subscriptionRolesSchema,
 	messagesSchema,
+	threadsSchema,
+	threadMessagesSchema,
 	usersSchema,
 	roomsSchema,
 	attachment,
 	attachmentFields,
 	messagesEditedBySchema,
 	permissionsSchema,
-	permissionsRolesSchema,
 	url,
 	frequentlyUsedEmojiSchema,
-	customEmojiAliasesSchema,
 	customEmojisSchema,
 	messagesReactionsSchema,
-	messagesReactionsUsernamesSchema,
 	rolesSchema,
-	userMutedInRoomSchema,
-	uploadsSchema
+	uploadsSchema,
+	slashCommandSchema
 ];
+
+const inMemorySchema = [usersTypingSchema, activeUsersSchema];
 
 class DB {
 	databases = {
 		serversDB: new Realm({
 			path: 'default.realm',
 			schema: [
+				userSchema,
 				serversSchema
 			],
-			schemaVersion: 1
+			schemaVersion: 8,
+			migration: (oldRealm, newRealm) => {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
+					const newServers = newRealm.objects('servers');
+
+					// eslint-disable-next-line no-plusplus
+					for (let i = 0; i < newServers.length; i++) {
+						newServers[i].roomsUpdatedAt = null;
+					}
+				}
+			}
+		}),
+		inMemoryDB: new Realm({
+			path: 'memory.realm',
+			schema: inMemorySchema,
+			schemaVersion: 2,
+			inMemory: true
 		})
 	}
 
@@ -333,8 +427,16 @@ class DB {
 		return this.database.objects(...args);
 	}
 
+	objectForPrimaryKey(...args) {
+		return this.database.objectForPrimaryKey(...args);
+	}
+
 	get database() {
 		return this.databases.activeDB;
+	}
+
+	get memoryDatabase() {
+		return this.databases.inMemoryDB;
 	}
 
 	setActiveDB(database = '') {
@@ -342,7 +444,25 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 2
+			schemaVersion: 12,
+			migration: (oldRealm, newRealm) => {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
+					const newSubs = newRealm.objects('subscriptions');
+					newRealm.delete(newSubs);
+					const newMessages = newRealm.objects('messages');
+					newRealm.delete(newMessages);
+					const newThreads = newRealm.objects('threads');
+					newRealm.delete(newThreads);
+					const newThreadMessages = newRealm.objects('threadMessages');
+					newRealm.delete(newThreadMessages);
+				}
+				if (newRealm.schemaVersion === 9) {
+					const newEmojis = newRealm.objects('customEmojis');
+					newRealm.delete(newEmojis);
+					const newSettings = newRealm.objects('settings');
+					newRealm.delete(newSettings);
+				}
+			}
 		});
 	}
 }
