@@ -11503,10 +11503,9 @@ react-native-i18n@^2.0.15:
   dependencies:
     i18n-js "3.0.11"
 
-react-native-image-crop-picker@^0.24.1:
+"react-native-image-crop-picker@git+https://github.com/RocketChat/react-native-image-crop-picker.git":
   version "0.24.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.24.1.tgz#4408e2bb20e3c082c0191e0acf0c8c7a1e9804ea"
-  integrity sha512-M+6iFhDXPDtf++X+fvb5mKkLw2978SbyPVVQHigktgKONxtTZtBiOOtYfBUIkPaSetP20P9q4iwOu+iTaZ/R+w==
+  resolved "git+https://github.com/RocketChat/react-native-image-crop-picker.git#d3e92c13fee5ce2f2dd3655ba719a70ba99a7d36"
 
 react-native-image-pan-zoom@^2.1.9:
   version "2.1.11"
