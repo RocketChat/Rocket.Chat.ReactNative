@@ -4,6 +4,8 @@ import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 import moment from 'moment';
+import * as Haptics from 'expo-haptics';
+
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
@@ -13,7 +15,6 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
-import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import log from '../utils/log';
@@ -138,7 +139,7 @@ export default class MessageActions extends React.Component {
 		}
 		setTimeout(() => {
 			this.showActionSheet();
-			vibrate();
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		});
 	}
 
