@@ -128,8 +128,20 @@ export default (
 		<Separator title='Emojis' />
 		<Message msg='👊🤙👏' />
 
+		<Separator title='Single Emoji' />
+		<Message msg='👏' />
+
 		<Separator title='Custom Emojis' />
 		<Message msg=':react_rocket: :nyan_rocket: :marioparty:' />
+
+		<Separator title='Single Custom Emojis' />
+		<Message msg=':react_rocket:' />
+
+		<Separator title='Normal Emoji + Custom Emojis' />
+		<Message msg='🤙:react_rocket:' />
+
+		<Separator title='Four emoji' />
+		<Message msg='🤙:react_rocket:🤙🤙' />
 
 		<Separator title='Time format' />
 		<Message msg='Testing' timeFormat='DD MMMM YYYY' />
