@@ -44,13 +44,15 @@ export default class extends React.PureComponent {
 
 		this.recordingCanceled = false;
 		this.recording = true;
+		this.name = '';
 		this.state = {
 			currentTime: '00:00'
 		};
 	}
 
 	componentDidMount() {
-		const audioPath = `${ AudioUtils.CachesDirectoryPath }/${ Date.now() }.aac`;
+		this.name = `${ Date.now() }.aac`;
+		const audioPath = `${ AudioUtils.CachesDirectoryPath }/${ this.name }`;
 
 		AudioRecorder.prepareRecordingAtPath(audioPath, {
 			SampleRate: 22050,
@@ -87,6 +89,7 @@ export default class extends React.PureComponent {
 
 		const path = filePath.startsWith('file://') ? filePath.split('file://')[1] : filePath;
 		const fileInfo = {
+			name: this.name,
 			type: 'audio/aac',
 			store: 'Uploads',
 			path

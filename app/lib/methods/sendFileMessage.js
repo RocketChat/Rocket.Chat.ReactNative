@@ -54,9 +54,12 @@ export function sendFileMessage(rid, fileInfo, tmid) {
 		formData.append('file', {
 			uri: fileInfo.path,
 			type: fileInfo.type,
-			name: fileInfo.name
+			name: fileInfo.name || 'fileMessage'
 		});
-		formData.append('description', fileInfo.description);
+
+		if (fileInfo.description) {
+			formData.append('description', fileInfo.description);
+		}
 
 		if (tmid) {
 			formData.append('tmid', tmid);
