@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
@@ -14,10 +15,15 @@ import database from '../lib/realm';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
+import { isIOS } from '../utils/deviceInfo';
 
 const restore = function* restore() {
 	try {
-		yield RNUserDefaults.setName('group.ios.chat.rocket');
+		let hasMigration;
+		if (isIOS) {
+			yield RNUserDefaults.setName('group.ios.chat.rocket');
+			hasMigration = yield AsyncStorage.getItem('hasMigration');
+		}
 
 		let { token, server } = yield all({
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
@@ -25,30 +31,33 @@ const restore = function* restore() {
 		});
 
 		// get native credentials
-		const { serversDB } = database.databases;
-		const servers = yield RNUserDefaults.objectForKey(SERVERS);
-		if (servers) {
-			serversDB.write(() => {
-				servers.forEach(async(serverItem) => {
-					const serverInfo = {
-						id: serverItem[SERVER_URL],
-						name: serverItem[SERVER_NAME],
-						iconURL: serverItem[SERVER_ICON]
-					};
-					try {
-						serversDB.create('servers', serverInfo, true);
-						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
-					} catch (e) {
-						log('err_create_servers', e);
-					}
+		if (isIOS && !hasMigration) {
+			const { serversDB } = database.databases;
+			const servers = yield RNUserDefaults.objectForKey(SERVERS);
+			if (servers) {
+				serversDB.write(() => {
+					servers.forEach(async(serverItem) => {
+						const serverInfo = {
+							id: serverItem[SERVER_URL],
+							name: serverItem[SERVER_NAME],
+							iconURL: serverItem[SERVER_ICON]
+						};
+						try {
+							serversDB.create('servers', serverInfo, true);
+							await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
+						} catch (e) {
+							log('err_create_servers', e);
+						}
+					});
 				});
-			});
-		}
+				yield AsyncStorage.setItem('hasMigration', true);
+			}
 
-		// if not have current
-		if (servers.length !== 0 && (!token || !server)) {
-			server = servers[0][SERVER_URL];
-			token = servers[0][TOKEN];
+			// if not have current
+			if (servers && servers.length !== 0 && (!token || !server)) {
+				server = servers[0][SERVER_URL];
+				token = servers[0][TOKEN];
+			}
 		}
 
 		const sortPreferences = yield RocketChat.getSortPreferences();
