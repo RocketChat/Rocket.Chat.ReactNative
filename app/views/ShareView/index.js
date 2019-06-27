@@ -46,9 +46,11 @@ export default class ShareView extends React.Component {
 		const rid = navigation.getParam('rid', '');
 		const name = navigation.getParam('name', '');
 		const value = navigation.getParam('value', '');
+		const isMedia = navigation.getParam('isMedia', false);
 		this.state = {
 			rid,
 			value,
+			isMedia,
 			name,
 			fileInfo: null,
 			loading: false,
@@ -63,8 +65,8 @@ export default class ShareView extends React.Component {
 		const { navigation } = this.props;
 		navigation.setParams({ sendMessage: this._sendMessage });
 
-		const { value } = this.state;
-		if (this.isMedia(value)) {
+		const { value, isMedia } = this.state;
+		if (isMedia) {
 			const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
 			const fileInfo = {
 				name: data.filename,
@@ -82,13 +84,11 @@ export default class ShareView extends React.Component {
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
 
-	isMedia = uri => (uri || '').match(/^file:\/\//);
-
 	_sendMessage = async() => {
-		const { value } = this.state;
+		const { isMedia } = this.state;
 		this.setState({ loading: true });
 
-		if (this.isMedia(value)) {
+		if (isMedia) {
 			await this.sendMediaMessage();
 		} else {
 			await this.sendTextMessage();
@@ -184,8 +184,8 @@ export default class ShareView extends React.Component {
 	}
 
 	render() {
-		const { value, name, loading } = this.state;
-		const isMedia = this.isMedia(value);
+		const { name, loading, isMedia } = this.state;
+
 		return (
 			<View
 				style={styles.container}

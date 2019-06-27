@@ -49,6 +49,7 @@ export default class ShareListView extends React.Component {
 		this.data = [];
 		this.state = {
 			value: '',
+			isMedia: false,
 			discussions: [],
 			channels: [],
 			privateGroup: [],
@@ -60,7 +61,7 @@ export default class ShareListView extends React.Component {
 
 	componentWillMount() {
 		ShareExtension.data()
-			.then(({ value }) => this.setState({ value }));
+			.then(({ value, type }) => this.setState({ value, isMedia: (type === 'media') }));
 	}
 
 	componentDidMount() {
@@ -124,12 +125,13 @@ export default class ShareListView extends React.Component {
 	}
 
 	shareMessage = (item) => {
-		const { value } = this.state;
+		const { value, isMedia } = this.state;
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
 			rid: item.rid,
 			value,
+			isMedia,
 			name: this.getRoomTitle(item)
 		});
 	};
