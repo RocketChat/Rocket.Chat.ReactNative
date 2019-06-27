@@ -19,6 +19,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import log from '../utils/log';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -48,7 +49,11 @@ export default class RegisterView extends React.Component {
 		const customFields = {};
 		this.parsedCustomFields = {};
 		if (props.Accounts_CustomFields) {
-			this.parsedCustomFields = JSON.parse(props.Accounts_CustomFields);
+			try {
+				this.parsedCustomFields = JSON.parse(props.Accounts_CustomFields);
+			} catch (e) {
+				log('err_parsing_account_custom_feilds', e);
+			}
 		}
 		Object.keys(this.parsedCustomFields).forEach((key) => {
 			if (this.parsedCustomFields[key].defaultValue) {
