@@ -44,7 +44,7 @@
     "react-native-firebase": "^5.4.0",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-i18n": "^2.0.15",
-    "react-native-image-crop-picker": "^0.24.1",
+    "react-native-image-crop-picker": "git+https://github.com/RocketChat/react-native-image-crop-picker.git",
     "react-native-image-zoom-viewer": "^2.2.25",
     "react-native-keyboard-aware-scroll-view": "0.8.0",
     "react-native-keyboard-input": "^5.3.1",
