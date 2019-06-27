@@ -2508,7 +2508,6 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       
                       rocket.cat
                        
                     </Text>
@@ -2526,7 +2525,6 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       
                       diego.mello
                        
                     </Text>
@@ -2544,7 +2542,6 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       
                       all
                        
                     </Text>
@@ -2562,7 +2559,6 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       
                       here
                        
                     </Text>
