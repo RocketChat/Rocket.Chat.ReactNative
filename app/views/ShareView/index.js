@@ -54,7 +54,7 @@ export default class ShareView extends React.Component {
 			fileInfo,
 			loading: false,
 			file: {
-				name: fileInfo.name,
+				name: fileInfo ? fileInfo.name : '',
 				description: ''
 			}
 		};
