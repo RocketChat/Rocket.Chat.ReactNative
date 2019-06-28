@@ -12550,6 +12550,11 @@ rn-fetch-blob@^0.10.15:
     base-64 "0.1.0"
     glob "7.0.6"
 
+rn-user-defaults@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.3.4.tgz#1fbdd1bf29d9f853918dca5219e45db54d19fe37"
+  integrity sha512-CnzZbq3Q1VQUr6wKl9Z48eKmOzu+6dMcl2wN0ty+sBnpUyIqFvv3CMzYzb26v1qK8z7q/PcMr75shFHcrJH9WA==
+
 rsvp@^3.3.3:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.6.2.tgz#2e96491599a96cde1b515d5674a8f7a91452926a"
