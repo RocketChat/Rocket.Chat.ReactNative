@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
-import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
@@ -14,7 +14,7 @@ import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
@@ -23,10 +23,6 @@ import sharedStyles from '../Styles';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
-const SWITCH_TRACK_COLOR = {
-	false: isAndroid ? COLOR_DANGER : null,
-	true: COLOR_SUCCESS
-};
 
 @connect(state => ({
 	server: state.server,
