@@ -114,3 +114,15 @@ export const getCustomEmoji = (content) => {
 	});
 	return findByAlias;
 };
+
+export const getMessageTranslation = (message, autoTranslateLanguage) => {
+	if (!autoTranslateLanguage) {
+		return null;
+	}
+	const { translations } = message;
+	if (translations) {
+		const translation = translations.find(trans => trans.language === autoTranslateLanguage);
+		return translation && translation.value;
+	}
+	return null;
+};

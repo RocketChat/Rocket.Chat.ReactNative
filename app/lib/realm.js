@@ -96,7 +96,9 @@ const subscriptionSchema = {
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true },
-		lastThreadSync: 'date?'
+		lastThreadSync: 'date?',
+		autoTranslate: 'bool?',
+		autoTranslateLanguage: 'string?'
 	}
 };
 
@@ -171,6 +173,16 @@ const messagesReactionsSchema = {
 	}
 };
 
+const messagesTranslationsSchema = {
+	name: 'messagesTranslations',
+	primaryKey: '_id',
+	properties: {
+		_id: 'string',
+		language: 'string',
+		value: 'string'
+	}
+};
+
 const messagesEditedBySchema = {
 	name: 'messagesEditedBy',
 	primaryKey: '_id',
@@ -212,7 +224,9 @@ const messagesSchema = {
 		replies: 'string[]',
 		mentions: { type: 'list', objectType: 'users' },
 		channels: { type: 'list', objectType: 'rooms' },
-		unread: { type: 'bool', optional: true }
+		unread: { type: 'bool', optional: true },
+		autoTranslate: { type: 'bool', default: false },
+		translations: { type: 'list', objectType: 'messagesTranslations' }
 	}
 };
 
@@ -246,6 +260,11 @@ const threadsSchema = {
 		tcount: { type: 'int', optional: true },
 		tlm: { type: 'date', optional: true },
 		replies: 'string[]',
+		mentions: { type: 'list', objectType: 'users' },
+		channels: { type: 'list', objectType: 'rooms' },
+		unread: { type: 'bool', optional: true },
+		autoTranslate: { type: 'bool', default: false },
+		translations: { type: 'list', objectType: 'messagesTranslations' },
 		draftMessage: 'string?'
 	}
 };
@@ -272,7 +291,13 @@ const threadMessagesSchema = {
 		starred: { type: 'bool', optional: true },
 		editedBy: 'messagesEditedBy',
 		reactions: { type: 'list', objectType: 'messagesReactions' },
-		role: { type: 'string', optional: true }
+		role: { type: 'string', optional: true },
+		replies: 'string[]',
+		mentions: { type: 'list', objectType: 'users' },
+		channels: { type: 'list', objectType: 'rooms' },
+		unread: { type: 'bool', optional: true },
+		autoTranslate: { type: 'bool', default: false },
+		translations: { type: 'list', objectType: 'messagesTranslations' }
 	}
 };
 
@@ -374,7 +399,8 @@ const schema = [
 	messagesReactionsSchema,
 	rolesSchema,
 	uploadsSchema,
-	slashCommandSchema
+	slashCommandSchema,
+	messagesTranslationsSchema
 ];
 
 const inMemorySchema = [usersTypingSchema, activeUsersSchema];
@@ -387,9 +413,9 @@ class DB {
 				userSchema,
 				serversSchema
 			],
-			schemaVersion: 8,
+			schemaVersion: 9,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 8) {
+				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 9) {
 					const newServers = newRealm.objects('servers');
 
 					// eslint-disable-next-line no-plusplus
@@ -444,9 +470,9 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ path }.realm`,
 			schema,
-			schemaVersion: 12,
+			schemaVersion: 13,
 			migration: (oldRealm, newRealm) => {
-				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 11) {
+				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 13) {
 					const newSubs = newRealm.objects('subscriptions');
 					newRealm.delete(newSubs);
 					const newMessages = newRealm.objects('messages');

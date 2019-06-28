@@ -46,7 +46,6 @@ const LANGUAGES = [
 }), dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 }))
-/** @extends React.Component */
 export default class LanguageView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
