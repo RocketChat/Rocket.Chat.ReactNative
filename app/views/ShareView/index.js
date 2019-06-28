@@ -5,8 +5,6 @@ import {
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import { HeaderBackButton } from 'react-navigation';
-import RNFetchBlob from 'rn-fetch-blob';
-import * as mime from 'react-native-mime-types';
 
 import {
 	COLOR_TEXT_DESCRIPTION, HEADER_BACK
@@ -47,37 +45,24 @@ export default class ShareView extends React.Component {
 		const name = navigation.getParam('name', '');
 		const value = navigation.getParam('value', '');
 		const isMedia = navigation.getParam('isMedia', false);
+		const fileInfo = navigation.getParam('fileInfo', {});
 		this.state = {
 			rid,
 			value,
 			isMedia,
 			name,
-			fileInfo: null,
+			fileInfo,
 			loading: false,
 			file: {
-				name: '',
+				name: fileInfo.name,
 				description: ''
 			}
 		};
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		const { navigation } = this.props;
 		navigation.setParams({ sendMessage: this._sendMessage });
-
-		const { value, isMedia } = this.state;
-		if (isMedia) {
-			const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
-			const fileInfo = {
-				name: data.filename,
-				description: '',
-				size: data.size,
-				type: mime.lookup(data.path),
-				store: 'Uploads',
-				path: data.path
-			};
-			this.setState({ fileInfo, file: { name: data.filename } });
-		}
 	}
 
 	uriToPath = uri => uri.replace(/^file:\/\//, '').replace('%20', ' ');

@@ -6,6 +6,8 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
+import RNFetchBlob from 'rn-fetch-blob';
+import * as mime from 'react-native-mime-types';
 
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
@@ -14,6 +16,8 @@ import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
+import { CustomIcon } from '../../lib/Icons';
+import log from '../../utils/log';
 
 import styles from './styles';
 import ServerItem from '../../presentation/ServerItem';
@@ -25,7 +29,9 @@ const keyExtractor = item => item.rid;
 	userId: state.login.user && state.login.user.id,
 	token: state.login.user && state.login.user.token,
 	useRealName: state.settings.UI_Use_Real_Name,
-	server: state.server.server
+	server: state.server.server,
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
@@ -41,7 +47,9 @@ export default class ShareListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		FileUpload_MediaTypeWhiteList: PropTypes.string,
+		FileUpload_MaxFileSize: PropTypes.number
 	}
 
 	constructor(props) {
@@ -50,6 +58,8 @@ export default class ShareListView extends React.Component {
 		this.state = {
 			value: '',
 			isMedia: false,
+			mediaLoading: false,
+			fileInfo: null,
 			discussions: [],
 			channels: [],
 			privateGroup: [],
@@ -59,13 +69,31 @@ export default class ShareListView extends React.Component {
 		};
 	}
 
-	componentWillMount() {
-		ShareExtension.data()
-			.then(({ value, type }) => this.setState({ value, isMedia: (type === 'media') }));
-	}
-
-	componentDidMount() {
+	async componentDidMount() {
 		this.getSubscriptions();
+		try {
+			const { value, type } = await ShareExtension.data();
+			let fileInfo = null;
+			const isMedia = (type === 'media');
+			if (isMedia) {
+				this.setState({ mediaLoading: true });
+				const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
+				fileInfo = {
+					name: data.filename,
+					description: '',
+					size: data.size,
+					type: mime.lookup(data.path),
+					store: 'Uploads',
+					path: data.path
+				};
+			}
+			this.setState({
+				value, fileInfo, isMedia, mediaLoading: false
+			});
+		} catch (e) {
+			log('err_process_media_share_extension', e);
+			this.setState({ mediaLoading: false });
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -97,6 +125,8 @@ export default class ShareListView extends React.Component {
 		}
 	}, 300);
 
+	uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
+
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
@@ -125,19 +155,46 @@ export default class ShareListView extends React.Component {
 	}
 
 	shareMessage = (item) => {
-		const { value, isMedia } = this.state;
+		const { value, isMedia, fileInfo } = this.state;
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
 			rid: item.rid,
 			value,
 			isMedia,
+			fileInfo,
 			name: this.getRoomTitle(item)
 		});
 	};
 
+	canUploadFile = () => {
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+		const { fileInfo: file } = this.state;
+
+		if (!(file && file.path)) {
+			return true;
+		}
+		if (file.size > FileUpload_MaxFileSize) {
+			return false;
+		}
+		if (!FileUpload_MediaTypeWhiteList) {
+			return false;
+		}
+		const allowedMime = FileUpload_MediaTypeWhiteList.split(',');
+		if (allowedMime.includes(file.type)) {
+			return true;
+		}
+		const wildCardGlob = '/*';
+		const wildCards = allowedMime.filter(item => item.indexOf(wildCardGlob) > 0);
+		if (wildCards.includes(file.type.replace(/(\/.*)$/, wildCardGlob))) {
+			return true;
+		}
+		return false;
+	}
+
 	renderScrollView = () => {
-		if (!(this.data && this.data.length > 0)) {
+		const { mediaLoading } = this.state;
+		if (!(this.data && this.data.length > 0) || mediaLoading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
@@ -236,14 +293,34 @@ export default class ShareListView extends React.Component {
 		) : null;
 	};
 
+	renderError = () => {
+		const { FileUpload_MaxFileSize } = this.props;
+		const { fileInfo: file } = this.state;
+		const errorMessage = (FileUpload_MaxFileSize < file.size)
+			? 'error-file-too-large'
+			: 'error-invalid-file-type';
+		return (
+			<View style={[styles.container]}>
+				<View>
+					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+				</View>
+				<View>
+					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
+				</View>
+				<Text style={styles.fileMime}>{ file.type }</Text>
+			</View>
+		);
+	}
+
 	render() {
+		const showError = !this.canUploadFile();
 		return (
 			<SafeAreaView
 				style={styles.container}
 				forceInset={{ bottom: 'never' }}
 			>
 				<StatusBar />
-				{this.renderScrollView()}
+				{ showError ? this.renderError() : this.renderScrollView() }
 			</SafeAreaView>
 		);
 	}
