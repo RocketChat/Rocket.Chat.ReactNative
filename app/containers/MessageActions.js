@@ -4,6 +4,8 @@ import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 import moment from 'moment';
+import * as Haptics from 'expo-haptics';
+
 import {
 	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
@@ -13,11 +15,12 @@ import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
-import { vibrate } from '../utils/vibration';
 import RocketChat from '../lib/rocketchat';
+import database from '../lib/realm';
 import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
+import { getMessageTranslation } from './message/utils';
 
 @connect(
 	state => ({
@@ -46,7 +49,7 @@ export default class MessageActions extends React.Component {
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
 		toast: PropTypes.element,
-		// user: PropTypes.object.isRequired,
+		user: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
@@ -127,6 +130,12 @@ export default class MessageActions extends React.Component {
 			this.READ_RECEIPT_INDEX = this.options.length - 1;
 		}
 
+		// Toggle Auto-translate
+		if (props.room.autoTranslate && props.actionMessage.u && props.actionMessage.u._id !== props.user.id) {
+			this.options.push(I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'));
+			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
+		}
+
 		// Report
 		this.options.push(I18n.t('Report'));
 		this.REPORT_INDEX = this.options.length - 1;
@@ -138,7 +147,7 @@ export default class MessageActions extends React.Component {
 		}
 		setTimeout(() => {
 			this.showActionSheet();
-			vibrate();
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		});
 	}
 
@@ -326,6 +335,23 @@ export default class MessageActions extends React.Component {
 		}
 	}
 
+	handleToggleTranslation = async() => {
+		const { actionMessage, room } = this.props;
+		try {
+			const message = database.objectForPrimaryKey('messages', actionMessage._id);
+			database.write(() => {
+				message.autoTranslate = !message.autoTranslate;
+				message._updatedAt = new Date();
+			});
+			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
+			if (!translatedMessage) {
+				await RocketChat.translateMessage(actionMessage, room.autoTranslateLanguage);
+			}
+		} catch (err) {
+			log('err_toggle_translation', err);
+		}
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -364,6 +390,9 @@ export default class MessageActions extends React.Component {
 					break;
 				case this.READ_RECEIPT_INDEX:
 					this.handleReadReceipt();
+					break;
+				case this.TOGGLE_TRANSLATION_INDEX:
+					this.handleToggleTranslation();
 					break;
 				default:
 					break;
