@@ -5,6 +5,7 @@ import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import * as Haptics from 'expo-haptics';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -13,7 +14,6 @@ import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
 import { Toast } from '../../utils/info';
 import log from '../../utils/log';
-import { vibrate } from '../../utils/vibration';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -164,7 +164,7 @@ export default class RoomMembersView extends React.Component {
 			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
 		this.setState({ userLongPressed: user });
-		vibrate();
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		this.showActionSheet();
 	}
 
