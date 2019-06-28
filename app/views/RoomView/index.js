@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import EJSON from 'ejson';
+import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -39,7 +40,6 @@ import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
-import { vibrate } from '../../utils/vibration';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { Toast } from '../../utils/info';
 
@@ -341,7 +341,7 @@ export default class RoomView extends React.Component {
 
 	onReactionLongPress = (message) => {
 		this.setState({ selectedMessage: message, reactionsModalVisible: true });
-		vibrate();
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
 
 	onCloseReactionsModal = () => {
