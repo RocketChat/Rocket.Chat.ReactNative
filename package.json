@@ -78,7 +78,6 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "^0.16.2",
     "remove-markdown": "^0.3.0",
-    "rn-fetch-blob": "^0.10.15",
     "rn-user-defaults": "^1.3.4",
     "semver": "6.0.0",
     "snyk": "^1.156.0",
