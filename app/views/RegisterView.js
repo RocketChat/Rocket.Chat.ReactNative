@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import RNPickerSelect from 'react-native-picker-select';
+import equal from 'deep-equal';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -17,10 +19,13 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
+import log from '../utils/log';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
-@connect(null, dispatch => ({
+@connect(state => ({
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
+}), dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 }))
 export default class RegisterView extends React.Component {
@@ -35,15 +40,34 @@ export default class RegisterView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		loginRequest: PropTypes.func,
-		Site_Name: PropTypes.string
+		Site_Name: PropTypes.string,
+		Accounts_CustomFields: PropTypes.string
 	}
 
-	state = {
-		name: '',
-		email: '',
-		password: '',
-		username: '',
-		saving: false
+	constructor(props) {
+		super(props);
+		const customFields = {};
+		this.parsedCustomFields = {};
+		if (props.Accounts_CustomFields) {
+			try {
+				this.parsedCustomFields = JSON.parse(props.Accounts_CustomFields);
+			} catch (e) {
+				log('err_parsing_account_custom_fields', e);
+			}
+		}
+		Object.keys(this.parsedCustomFields).forEach((key) => {
+			if (this.parsedCustomFields[key].defaultValue) {
+				customFields[key] = this.parsedCustomFields[key].defaultValue;
+			}
+		});
+		this.state = {
+			name: '',
+			email: '',
+			password: '',
+			username: '',
+			saving: false,
+			customFields
+		};
 	}
 
 	componentDidMount() {
@@ -53,6 +77,10 @@ export default class RegisterView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		const { customFields } = this.state;
+		if (!equal(nextState.customFields, customFields)) {
+			return true;
+		}
 		// eslint-disable-next-line react/destructuring-assignment
 		return shouldUpdateState.some(key => nextState[key] !== this.state[key]);
 	}
@@ -77,9 +105,15 @@ export default class RegisterView extends React.Component {
 
 	valid = () => {
 		const {
-			name, email, password, username
+			name, email, password, username, customFields
 		} = this.state;
-		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email);
+		let requiredCheck = true;
+		Object.keys(this.parsedCustomFields).forEach((key) => {
+			if (this.parsedCustomFields[key].required) {
+				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
+			}
+		});
+		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
 	}
 
 	submit = async() => {
@@ -90,19 +124,77 @@ export default class RegisterView extends React.Component {
 		Keyboard.dismiss();
 
 		const {
-			name, email, password, username
+			name, email, password, username, customFields
 		} = this.state;
 		const { loginRequest } = this.props;
 
 		try {
 			await RocketChat.register({
-				name, email, pass: password, username
+				name, email, pass: password, username, ...customFields
 			});
 			await loginRequest({ user: email, password });
 		} catch (e) {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
 		this.setState({ saving: false });
+	}
+
+	renderCustomFields = () => {
+		const { customFields } = this.state;
+		const { Accounts_CustomFields } = this.props;
+		if (!Accounts_CustomFields) {
+			return null;
+		}
+		try {
+			return Object.keys(this.parsedCustomFields).map((key, index, array) => {
+				if (this.parsedCustomFields[key].type === 'select') {
+					const options = this.parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+					return (
+						<RNPickerSelect
+							key={key}
+							items={options}
+							onValueChange={(value) => {
+								const newValue = {};
+								newValue[key] = value;
+								this.setState({ customFields: { ...customFields, ...newValue } });
+							}}
+							value={customFields[key]}
+						>
+							<TextInput
+								inputRef={(e) => { this[key] = e; }}
+								placeholder={key}
+								value={customFields[key]}
+								iconLeft='flag'
+								testID='register-view-custom-picker'
+							/>
+						</RNPickerSelect>
+					);
+				}
+
+				return (
+					<TextInput
+						inputRef={(e) => { this[key] = e; }}
+						key={key}
+						placeholder={key}
+						value={customFields[key]}
+						iconLeft='flag'
+						onChangeText={(value) => {
+							const newValue = {};
+							newValue[key] = value;
+							this.setState({ customFields: { ...customFields, ...newValue } });
+						}}
+						onSubmitEditing={() => {
+							if (array.length - 1 > index) {
+								return this[array[index + 1]].focus();
+							}
+							this.avatarUrl.focus();
+						}}
+					/>
+				);
+			});
+		} catch (error) {
+			return null;
+		}
 	}
 
 	render() {
@@ -152,6 +244,8 @@ export default class RegisterView extends React.Component {
 							testID='register-view-password'
 							containerStyle={sharedStyles.inputLastChild}
 						/>
+
+						{this.renderCustomFields()}
 
 						<Button
 							title={I18n.t('Register')}
