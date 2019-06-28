@@ -57,10 +57,7 @@ const Markdown = React.memo(({
 	if (m) {
 		m = emojify(m, { output: 'unicode' });
 	}
-	const matched = m.match(/^\[([^\]]*)\]\(([^)]*)\)\1/);
-	if (matched && matched[0] !== msg) {
-		m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
-	}
+	m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)\s/, '').trim();
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
