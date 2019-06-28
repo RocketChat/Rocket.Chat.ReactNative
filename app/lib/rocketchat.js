@@ -881,6 +881,31 @@ const RocketChat = {
 		return this.sdk.get('directory', {
 			query, count, offset, sort
 		});
+	},
+	canAutoTranslate() {
+		try {
+			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			if (!AutoTranslate_Enabled) {
+				return false;
+			}
+			const autoTranslatePermission = database.objectForPrimaryKey('permissions', 'auto-translate');
+			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
+			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+		} catch (error) {
+			log('err_can_auto_translate', error);
+			return false;
+		}
+	},
+	saveAutoTranslate({
+		rid, field, value, options
+	}) {
+		return this.sdk.methodCall('autoTranslate.saveSettings', rid, field, value, options);
+	},
+	getSupportedLanguagesAutoTranslate() {
+		return this.sdk.methodCall('autoTranslate.getSupportedLanguages', 'en');
+	},
+	translateMessage(message, targetLanguage) {
+		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	}
 };
 
