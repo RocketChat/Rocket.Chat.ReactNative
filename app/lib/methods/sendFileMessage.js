@@ -2,15 +2,15 @@ import reduxStore from '../createStore';
 import database from '../realm';
 import log from '../../utils/log';
 
-const XHR = {};
+const uploadQueue = {};
 
 export function isUploadActive(path) {
-	return !!XHR[path];
+	return !!uploadQueue[path];
 }
 
 export function cancelUpload(path) {
-	if (XHR[path]) {
-		XHR[path].abort();
+	if (uploadQueue[path]) {
+		uploadQueue[path].abort();
 		database.write(() => {
 			const upload = database.objects('uploads').filtered('path = $0', path);
 			try {
@@ -19,7 +19,7 @@ export function cancelUpload(path) {
 				log('err_send_file_message_delete_upload', e);
 			}
 		});
-		delete XHR[path];
+		delete uploadQueue[path];
 	}
 }
 
@@ -49,7 +49,7 @@ export function sendFileMessage(rid, fileInfo, tmid) {
 				}
 			});
 
-			XHR[fileInfo.path] = xhr;
+			uploadQueue[fileInfo.path] = xhr;
 			xhr.open('POST', uploadUrl);
 
 			formData.append('file', {
