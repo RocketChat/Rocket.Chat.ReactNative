@@ -315,7 +315,22 @@ export default class RoomView extends React.Component {
 
 	onMessageLongPress = (message) => {
 		const { actionsShow } = this.props;
-		actionsShow({ ...message, rid: this.rid });
+		const options = [
+			{ label: I18n.t('Cancel'), handler: () => {}, icon: 'circle-cross' },
+			{ label: I18n.t('Permalink'), handler: this.handlePermalink, icon: 'permalink' },
+			{ label: I18n.t('Copy'), handler: this.handleCopy, icon: 'copy' },
+			{ label: I18n.t('Share'), handler: this.handleShare, icon: 'share' }
+		];
+
+		// Reply
+		if (!this.isRoomReadOnly()) {
+			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply, icon: 'reply' });
+		}
+
+		// Edit
+		if (this.allowEdit(props)) {
+			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
+		}
 	}
 
 	onOpenFileModal = (attachment) => {
