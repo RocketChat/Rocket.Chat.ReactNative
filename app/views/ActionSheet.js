@@ -1,21 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-	Alert, Clipboard, Share, View, Text, StyleSheet, TouchableWithoutFeedback
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
-import Animated from 'react-native-reanimated';
 import Touchable from 'react-native-platform-touchable';
 import { RectButton } from 'react-native-gesture-handler';
 
-import {
-	deleteRequest as deleteRequestAction,
-	editInit as editInitAction,
-	replyInit as replyInitAction,
-	togglePinRequest as togglePinRequestAction,
-	toggleReactionPicker as toggleReactionPickerAction,
-	toggleStarRequest as toggleStarRequestAction
-} from '../actions/messages';
 import { verticalScale } from '../utils/scaling';
 import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
@@ -54,42 +42,21 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		backgroundColor: '#dadada'
 	},
-	backdrop: {
-		...StyleSheet.absoluteFill,
-		backgroundColor: '#000000',
-		opacity: 0
-	},
 	androidButtonView: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#dadada'
 	}
 });
 
-@connect(
-	state => ({
-		actionMessage: state.messages.actionMessage,
-		Message_AllowDeleting: state.settings.Message_AllowDeleting,
-		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
-		Message_AllowEditing: state.settings.Message_AllowEditing,
-		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
-		Message_AllowPinning: state.settings.Message_AllowPinning,
-		Message_AllowStarring: state.settings.Message_AllowStarring
-	}),
-	dispatch => ({
-		deleteRequest: message => dispatch(deleteRequestAction(message)),
-		editInit: message => dispatch(editInitAction(message)),
-		toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
-		togglePinRequest: message => dispatch(togglePinRequestAction(message)),
-		toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-		replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
-	})
-)
-
 export default class ActionSheet extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: {}
+			options: [
+				{ label: 'Permalink', handler: this.dummy, icon: 'permalink' },
+				{ label: 'Copy', handler: this.dummy, icon: 'copy' },
+				{ label: 'Share', handler: this.dummy, icon: 'share' }
+			]
 		};
 	}
 
@@ -100,6 +67,8 @@ export default class ActionSheet extends React.Component {
 	componentWillUnmount() {
 		EventEmitter.removeListener('actionSheet');
 	}
+
+	dummy = () => {}
 
 	handleDisplay = (args) => {
 		this.setState({ options: args.options });
@@ -155,8 +124,8 @@ export default class ActionSheet extends React.Component {
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}
-				initialSnap={bottomSheetStatus.HIDDEN}
-				snapPoints={[bottomSheetMaxHeight, this.bottomSheetHeight + bottomSheetHeaderHeight, bottomSheetInitialHeight]}
+				initialSnap={1}
+				snapPoints={[0, 100, 400]}
 				renderHeader={this.renderHeader}
 				renderContent={this.renderInner}
 				enabledManualSnapping

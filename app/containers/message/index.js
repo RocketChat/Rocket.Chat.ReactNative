@@ -22,11 +22,11 @@ import {
 } from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
-import Navigation from '../lib/Navigation';
+import Navigation from '../../lib/Navigation';
 
 @connect(
 	state => ({
-		actionMessage: state.messages.actionMessage,
+		item: state.messages.item,
 		Message_AllowDeleting: state.settings.Message_AllowDeleting,
 		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
 		Message_AllowEditing: state.settings.Message_AllowEditing,
@@ -68,7 +68,6 @@ export default class MessageContainer extends React.Component {
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
-		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
@@ -78,16 +77,14 @@ export default class MessageContainer extends React.Component {
 		fetchThreadName: PropTypes.func,
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
-		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
-		actionMessage: PropTypes.object,
+		tmid: PropTypes.string,
+
 		toast: PropTypes.element,
-		user: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
 		togglePinRequest: PropTypes.func.isRequired,
-		toggleReactionPicker: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
@@ -99,7 +96,6 @@ export default class MessageContainer extends React.Component {
 	}
 
 	static defaultProps = {
-		onLongPress: () => {},
 		_updatedAt: new Date(),
 		archived: false,
 		broadcast: false
@@ -136,7 +132,9 @@ export default class MessageContainer extends React.Component {
 	}, 300, true);
 
 	onLongPress = () => {
-		const { archived, Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, item } = this.props;
+		const {
+			archived, Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, item, room, user
+		} = this.props;
 		if (this.isInfo || this.hasError || archived) {
 			return;
 		}
@@ -153,7 +151,7 @@ export default class MessageContainer extends React.Component {
 		}
 
 		// Edit
-		if (this.allowEdit(props)) {
+		if (this.allowEdit()) {
 			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
 		}
 		// Quote
@@ -174,23 +172,23 @@ export default class MessageContainer extends React.Component {
 			this.options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction, icon: 'emoji' });
 		}
 		// Delete
-		if (this.allowDelete(props)) {
+		if (this.allowDelete()) {
 			this.options.push({ label: I18n.t('Delete'), handler: this.handleDelete, icon: 'cross' });
 		}
 
 		// Report
 		this.options.push({ label: I18n.t('Report'), handler: this.handleReport, icon: 'flag' });
-		
+
 		// Toggle - translate
-		if (props.room.autoTranslate && props.actionMessage.u && props.actionMessage.u._id !== props.user.id) {
-			this.options.push({ lable: I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'), handler: this.handleToggleTranslation, icon: 'flag' });
+		if (room.autoTranslate && item.u && item.u._id !== user.id) {
+			this.options.push({ lable: I18n.t(item.autoTranslate ? 'View_Original' : 'Translate'), handler: this.handleToggleTranslation, icon: 'flag' });
 		}
 
 		// Read Receipts
 		if (Message_Read_Receipt_Store_Users) {
 			this.options.push({ label: I18n.t('Read_Receipt'), handler: this.handleReadReceipt, icon: 'flag' });
 		}
-
+		log('hi', options);
 	}
 
 	onErrorPress = () => {
@@ -299,7 +297,7 @@ export default class MessageContainer extends React.Component {
 		}
 	}
 
-	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
+	isOwn = (item, user) => item.u && item.u._id === user.id;
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
@@ -311,12 +309,14 @@ export default class MessageContainer extends React.Component {
 		return room.reactWhenReadOnly;
 	}
 
-	allowEdit = (props) => {
+	allowEdit = () => {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
-		const editOwn = this.isOwn(props);
-		const { Message_AllowEditing: isEditAllowed, Message_AllowEditing_BlockEditInMinutes } = this.props;
+		const {
+			Message_AllowEditing: isEditAllowed, Message_AllowEditing_BlockEditInMinutes, item, user
+		} = this.props;
+		const editOwn = this.isOwn(item, user);
 
 		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
 			return false;
@@ -324,8 +324,8 @@ export default class MessageContainer extends React.Component {
 		const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
 		if (blockEditInMinutes) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
-				msgTs = moment(props.actionMessage.ts);
+			if (item.ts != null) {
+				msgTs = moment(item.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -336,17 +336,19 @@ export default class MessageContainer extends React.Component {
 		return true;
 	}
 
-	allowDelete = (props) => {
+	allowDelete = () => {
 		if (this.isRoomReadOnly()) {
 			return false;
 		}
+		const {
+			Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes, item, tmid, user
+		} = this.props;
 
 		// Prevent from deleting thread start message when positioned inside the thread
-		if (props.tmid && props.tmid === props.actionMessage._id) {
+		if (tmid && tmid === item._id) {
 			return false;
 		}
-		const deleteOwn = this.isOwn(props);
-		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
+		const deleteOwn = this.isOwn(item, user);
 		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
 			return false;
 		}
@@ -356,8 +358,8 @@ export default class MessageContainer extends React.Component {
 		const blockDeleteInMinutes = Message_AllowDeleting_BlockDeleteInMinutes;
 		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
-				msgTs = moment(props.actionMessage.ts);
+			if (item.ts != null) {
+				msgTs = moment(item.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -369,7 +371,7 @@ export default class MessageContainer extends React.Component {
 	}
 
 	handleDelete = () => {
-		const { deleteRequest, actionMessage } = this.props;
+		const { deleteRequest, item } = this.props;
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('You_will_not_be_able_to_recover_this_message'),
@@ -381,7 +383,7 @@ export default class MessageContainer extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: 'delete' }),
 					style: 'destructive',
-					onPress: () => deleteRequest(actionMessage)
+					onPress: () => deleteRequest(item)
 				}
 			],
 			{ cancelable: false }
@@ -389,66 +391,66 @@ export default class MessageContainer extends React.Component {
 	}
 
 	handleEdit = () => {
-		const { actionMessage, editInit } = this.props;
-		const { _id, msg, rid } = actionMessage;
+		const { item, editInit } = this.props;
+		const { _id, msg, rid } = item;
 		editInit({ _id, msg, rid });
 	}
 
 	handleCopy = async() => {
-		const { actionMessage, toast } = this.props;
-		await Clipboard.setString(actionMessage.msg);
+		const { item, toast } = this.props;
+		await Clipboard.setString(item.msg);
 		toast.show(I18n.t('Copied_to_clipboard'));
 	}
 
 	handleShare = async() => {
-		const { actionMessage } = this.props;
-		const permalink = await this.getPermalink(actionMessage);
+		const { item } = this.props;
+		const permalink = await this.getPermalink(item);
 		Share.share({
 			message: permalink
 		});
 	};
 
 	handleStar = () => {
-		const { actionMessage, toggleStarRequest } = this.props;
-		toggleStarRequest(actionMessage);
+		const { item, toggleStarRequest } = this.props;
+		toggleStarRequest(item);
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage, toast } = this.props;
-		const permalink = await this.getPermalink(actionMessage);
+		const { item, toast } = this.props;
+		const permalink = await this.getPermalink(item);
 		Clipboard.setString(permalink);
 		toast.show(I18n.t('Permalink_copied_to_clipboard'));
 	}
 
 	handlePin = () => {
-		const { actionMessage, togglePinRequest } = this.props;
-		togglePinRequest(actionMessage);
+		const { item, togglePinRequest } = this.props;
+		togglePinRequest(item);
 	}
 
 	handleReply = () => {
-		const { actionMessage, replyInit } = this.props;
-		replyInit(actionMessage, true);
+		const { item, replyInit } = this.props;
+		replyInit(item, true);
 	}
 
 	handleQuote = () => {
-		const { actionMessage, replyInit } = this.props;
-		replyInit(actionMessage, false);
+		const { item, replyInit } = this.props;
+		replyInit(item, false);
 	}
 
 	handleReaction = () => {
-		const { actionMessage, toggleReactionPicker } = this.props;
-		toggleReactionPicker(actionMessage);
+		const { item, toggleReactionPicker } = this.props;
+		toggleReactionPicker(item);
 	}
 
 	handleReadReceipt = () => {
-		const { actionMessage } = this.props;
-		Navigation.navigate('ReadReceiptsView', { messageId: actionMessage._id });
+		const { item } = this.props;
+		Navigation.navigate('ReadReceiptsView', { messageId: item._id });
 	}
 
 	handleReport = async() => {
-		const { actionMessage } = this.props;
+		const { item } = this.props;
 		try {
-			await RocketChat.reportMessage(actionMessage._id);
+			await RocketChat.reportMessage(item._id);
 			Alert.alert(I18n.t('Message_Reported'));
 		} catch (err) {
 			log('err_report_message', err);
@@ -456,16 +458,16 @@ export default class MessageContainer extends React.Component {
 	}
 
 	handleToggleTranslation = async() => {
-		const { actionMessage, room } = this.props;
+		const { item, room } = this.props;
 		try {
-			const message = database.objectForPrimaryKey('messages', actionMessage._id);
+			const message = database.objectForPrimaryKey('messages', item._id);
 			database.write(() => {
 				message.autoTranslate = !message.autoTranslate;
 				message._updatedAt = new Date();
 			});
 			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 			if (!translatedMessage) {
-				await RocketChat.translateMessage(actionMessage, room.autoTranslateLanguage);
+				await RocketChat.translateMessage(item, room.autoTranslateLanguage);
 			}
 		} catch (err) {
 			log('err_toggle_translation', err);

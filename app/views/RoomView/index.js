@@ -123,7 +123,6 @@ export default class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		useMarkdown: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
-		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
 		replyCancel: PropTypes.func,
 		replyBroadcast: PropTypes.func,
@@ -310,26 +309,6 @@ export default class RoomView extends React.Component {
 			});
 		} catch (e) {
 			log('err_room_init', e);
-		}
-	}
-
-	onMessageLongPress = (message) => {
-		const { actionsShow } = this.props;
-		const options = [
-			{ label: I18n.t('Cancel'), handler: () => {}, icon: 'circle-cross' },
-			{ label: I18n.t('Permalink'), handler: this.handlePermalink, icon: 'permalink' },
-			{ label: I18n.t('Copy'), handler: this.handleCopy, icon: 'copy' },
-			{ label: I18n.t('Share'), handler: this.handleShare, icon: 'share' }
-		];
-
-		// Reply
-		if (!this.isRoomReadOnly()) {
-			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply, icon: 'reply' });
-		}
-
-		// Edit
-		if (this.allowEdit(props)) {
-			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
 		}
 	}
 
@@ -556,7 +535,6 @@ export default class RoomView extends React.Component {
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onReactionLongPress={this.onReactionLongPress}
-				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				onOpenFileModal={this.onOpenFileModal}
