@@ -1,17 +1,5 @@
 import * as types from './actionsTypes';
 
-export function actionsShow(actionMessage) {
-	return {
-		type: types.MESSAGES.ACTIONS_SHOW,
-		actionMessage
-	};
-}
-
-export function actionsHide() {
-	return {
-		type: types.MESSAGES.ACTIONS_HIDE
-	};
-}
 
 export function errorActionsShow(actionMessage) {
 	return {

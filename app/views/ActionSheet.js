@@ -11,6 +11,39 @@ import { isIOS } from '../utils/deviceInfo';
 import EventEmitter from '../utils/events';
 import vibrate from '../utils/throttle';
 
+/*
+To use this emmit an event to LISTNER and pass an object with snapPoint and options as parameter
+
+example object = {
+	snapPoint: SNAP_POINT.HALF,
+	options: {}
+}
+
+option object that you pass should have
+1. lable
+2. hadler
+3. icon // if not provided gives an flag icon
+
+example optionObject : {
+	label: 'Permalink',
+	handler: this.dummy,
+	icon: 'permalink'
+}
+
+*/
+
+export const LISTNER = 'actionSheet';
+export const SNAP_PONITS = {
+	HIDE: 0,
+	SHORT: 1,
+	HALF: 2,
+	FULL: 3
+};
+
+const bottomSheetHeaderHeight = 25;
+const buttonPaddingsSize = verticalScale(25);
+const textSize = 13;
+
 const styles = StyleSheet.create({
 	panel: {
 		height: verticalScale(500),
@@ -58,22 +91,27 @@ export default class ActionSheet extends React.Component {
 				{ label: 'Share', handler: this.dummy, icon: 'share' }
 			]
 		};
+		this.bottomSheetRef = React.createRef();
 	}
 
 	componentDidMount() {
-		EventEmitter.addEventListener('actionSheet', this.handleDisplay);
+		EventEmitter.addEventListener(LISTNER, this.handleDisplay);
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener('actionSheet');
+		EventEmitter.removeListener(LISTNER);
 	}
 
 	dummy = () => {}
 
 	handleDisplay = (args) => {
 		this.setState({ options: args.options });
-		this.bottomSheetRef.snapTo();
+		this.bottomSheetRef.current.snapTo(args.snapPoint);
 		vibrate();
+	}
+
+	hideActionSheet = () => {
+		this.bottomSheetRef.current.snapTo(0);
 	}
 
 
@@ -85,9 +123,14 @@ export default class ActionSheet extends React.Component {
 		</View>
 	);
 
-	buttonIcon = icon => (
-		<CustomIcon name={icon} size={18} style={styles.panelButtonIcon} />
-	)
+	buttonIcon = (icon) => {
+		if (!icon) {
+			icon = 'flag';
+		}
+		return (
+			<CustomIcon name={icon} size={18} style={styles.panelButtonIcon} />
+		);
+	}
 
 	buttonText = label => (
 		<Text style={sharedStyles.textRegular}>{label}</Text>
@@ -95,8 +138,9 @@ export default class ActionSheet extends React.Component {
 
 	renderInner = () => {
 		const { options } = this.state;
+		const height = options.length * buttonPaddingsSize + options.length * textSize + bottomSheetHeaderHeight;
 		return (
-			<View style={[styles.panel, { height: this.bottomSheetHeight }]}>
+			<View style={[styles.panel, { height }]}>
 				{options.map(option => (
 					isIOS
 						? (
@@ -124,8 +168,8 @@ export default class ActionSheet extends React.Component {
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}
-				initialSnap={1}
-				snapPoints={[0, 100, 400]}
+				initialSnap={0}
+				snapPoints={[0, 200, 300, 500]}
 				renderHeader={this.renderHeader}
 				renderContent={this.renderInner}
 				enabledManualSnapping

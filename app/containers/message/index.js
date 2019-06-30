@@ -12,21 +12,20 @@ import I18n from '../../i18n';
 import database from '../../lib/realm';
 import messagesStatus from '../../constants/messagesStatus';
 import {
-	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
 	editInit as editInitAction,
 	replyInit as replyInitAction,
 	togglePinRequest as togglePinRequestAction,
-	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import Navigation from '../../lib/Navigation';
+import EventEmitter from '../../utils/events';
+import { LISTNER, SNAP_PONITS } from '../../views/ActionSheet';
 
 @connect(
 	state => ({
-		item: state.messages.item,
 		Message_AllowDeleting: state.settings.Message_AllowDeleting,
 		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
 		Message_AllowEditing: state.settings.Message_AllowEditing,
@@ -36,12 +35,10 @@ import Navigation from '../../lib/Navigation';
 		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 	}),
 	dispatch => ({
-		actionsHide: () => dispatch(actionsHideAction()),
 		deleteRequest: message => dispatch(deleteRequestAction(message)),
 		editInit: message => dispatch(editInitAction(message)),
 		toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
 		togglePinRequest: message => dispatch(togglePinRequestAction(message)),
-		toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 		replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
 	})
 )
@@ -147,48 +144,48 @@ export default class MessageContainer extends React.Component {
 
 		// Reply
 		if (!this.isRoomReadOnly()) {
-			this.options.push({ label: I18n.t('Reply'), handler: this.handleReply, icon: 'reply' });
+			options.push({ label: I18n.t('Reply'), handler: this.handleReply, icon: 'reply' });
 		}
 
 		// Edit
 		if (this.allowEdit()) {
-			this.options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
+			options.push({ label: I18n.t('Edit'), handler: this.handleEdit, icon: 'edit' });
 		}
 		// Quote
 		if (!this.isRoomReadOnly()) {
-			this.options.push({ label: I18n.t('Quote'), handler: this.handleQuote, icon: 'quote' });
+			options.push({ label: I18n.t('Quote'), handler: this.handleQuote, icon: 'quote' });
 		}
 		// Star
 		if (Message_AllowStarring) {
-			this.options.push({ label: I18n.t(item && item.starred ? 'Unstar' : 'Star'), handler: this.handleStar, icon: 'star' });
+			options.push({ label: I18n.t(item && item.starred ? 'Unstar' : 'Star'), handler: this.handleStar, icon: 'star' });
 		}
 		// Pin
 		if (Message_AllowPinning) {
-			this.options.push({ label: I18n.t(item && item.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin, icon: 'pin' });
+			options.push({ label: I18n.t(item && item.pinned ? 'Unpin' : 'Pin'), handler: this.handlePin, icon: 'pin' });
 		}
 
 		// Reaction
 		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
-			this.options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction, icon: 'emoji' });
+			options.push({ label: I18n.t('Add_Reaction'), handler: this.handleReaction, icon: 'emoji' });
 		}
 		// Delete
 		if (this.allowDelete()) {
-			this.options.push({ label: I18n.t('Delete'), handler: this.handleDelete, icon: 'cross' });
+			options.push({ label: I18n.t('Delete'), handler: this.handleDelete, icon: 'cross' });
 		}
 
 		// Report
-		this.options.push({ label: I18n.t('Report'), handler: this.handleReport, icon: 'flag' });
+		options.push({ label: I18n.t('Report'), handler: this.handleReport, icon: 'flag' });
 
 		// Toggle - translate
 		if (room.autoTranslate && item.u && item.u._id !== user.id) {
-			this.options.push({ lable: I18n.t(item.autoTranslate ? 'View_Original' : 'Translate'), handler: this.handleToggleTranslation, icon: 'flag' });
+			options.push({ lable: I18n.t(item.autoTranslate ? 'View_Original' : 'Translate'), handler: this.handleToggleTranslation, icon: 'flag' });
 		}
 
 		// Read Receipts
 		if (Message_Read_Receipt_Store_Users) {
-			this.options.push({ label: I18n.t('Read_Receipt'), handler: this.handleReadReceipt, icon: 'flag' });
+			options.push({ label: I18n.t('Read_Receipt'), handler: this.handleReadReceipt, icon: 'flag' });
 		}
-		log('hi', options);
+		EventEmitter.emit(LISTNER, { options, snapPoint: SNAP_PONITS.HALF });
 	}
 
 	onErrorPress = () => {
@@ -438,8 +435,7 @@ export default class MessageContainer extends React.Component {
 	}
 
 	handleReaction = () => {
-		const { item, toggleReactionPicker } = this.props;
-		toggleReactionPicker(item);
+		this.toggleReactionPicker();
 	}
 
 	handleReadReceipt = () => {

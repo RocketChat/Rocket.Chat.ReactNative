@@ -41,6 +41,7 @@ import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import OAuthView from './views/OAuthView';
 import SetUsernameView from './views/SetUsernameView';
+import ActionSheet from './views/ActionSheet';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
@@ -216,6 +217,7 @@ class CustomInsideStack extends React.Component {
 			<React.Fragment>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
+				<ActionSheet />
 			</React.Fragment>
 		);
 	}

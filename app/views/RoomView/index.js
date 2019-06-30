@@ -13,7 +13,6 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
-	actionsShow as actionsShowAction,
 	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction,
@@ -23,7 +22,6 @@ import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
-import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
@@ -67,7 +65,6 @@ import { Toast } from '../../utils/info';
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 }))
 export default class RoomView extends React.Component {
@@ -109,7 +106,6 @@ export default class RoomView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
@@ -183,7 +179,7 @@ export default class RoomView extends React.Component {
 		const {
 			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
 		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+		const { showErrorActions, appState } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
 			return true;
@@ -204,8 +200,6 @@ export default class RoomView extends React.Component {
 		} else if (joined !== nextState.joined) {
 			return true;
 		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-			return true;
-		} else if (showActions !== nextProps.showActions) {
 			return true;
 		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
@@ -549,6 +543,8 @@ export default class RoomView extends React.Component {
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
+				room={room}
+				toast={this.toast}
 			/>
 		);
 
@@ -613,19 +609,12 @@ export default class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const { room } = this.state;
-		const {
-			user, showActions, showErrorActions, navigation
-		} = this.props;
+		const { showErrorActions, navigation } = this.props;
 		if (!navigation.isFocused()) {
 			return null;
 		}
 		return (
 			<React.Fragment>
-				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} toast={this.toast} />
-					: null
-				}
 				{showErrorActions ? <MessageErrorActions /> : null}
 			</React.Fragment>
 		);
