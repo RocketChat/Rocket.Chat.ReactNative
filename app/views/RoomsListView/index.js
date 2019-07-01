@@ -383,6 +383,30 @@ export default class RoomsListView extends React.Component {
 		}, 100);
 	}
 
+	toggleFav = async(rid, favorite) => {
+		try {
+			await RocketChat.toggleFavorite(rid, !favorite);
+		} catch (e) {
+			log('error_toggle_favorite', e);
+		}
+	}
+
+	toggleRead = async(rid, isRead) => {
+		try {
+			await RocketChat.toggleRead(isRead, rid);
+		} catch (e) {
+			log('error_toggle_read', e);
+		}
+	}
+
+	hideChannel = async(rid, type) => {
+		try {
+			await RocketChat.hideRoom(rid, type);
+		} catch (e) {
+			log('error_hide_channel', e);
+		}
+	}
+
 	goDirectory = () => {
 		const { navigation } = this.props;
 		navigation.navigate('DirectoryView');
@@ -404,6 +428,12 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
+	getIsRead = (item) => {
+		let isUnread = (item.archived !== true && item.open === true); // item is not archived and not opened
+		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+		return !isUnread;
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			userId, baseUrl, StoreLastMessage
@@ -416,12 +446,14 @@ export default class RoomsListView extends React.Component {
 					alert={item.alert}
 					unread={item.unread}
 					userMentions={item.userMentions}
+					isRead={this.getIsRead(item)}
 					favorite={item.f}
 					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
 					id={id}
+					rid={item.rid}
 					type={item.t}
 					baseUrl={baseUrl}
 					prid={item.prid}
@@ -429,6 +461,9 @@ export default class RoomsListView extends React.Component {
 					onPress={() => this._onPressItem(item)}
 					testID={`rooms-list-view-item-${ item.name }`}
 					height={ROW_HEIGHT}
+					toggleFav={this.toggleFav}
+					toggleRead={this.toggleRead}
+					hideChannel={this.hideChannel}
 				/>
 			);
 		}
