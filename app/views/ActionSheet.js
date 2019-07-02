@@ -2,14 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
-import { RectButton } from 'react-native-gesture-handler';
 
 import { verticalScale } from '../utils/scaling';
 import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
-import { isIOS } from '../utils/deviceInfo';
 import EventEmitter from '../utils/events';
 import vibrate from '../utils/throttle';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_SEPARATOR } from '../constants/colors';
 
 /*
 To use this emmit an event to LISTNER and pass an object with snapPoint and options as parameter
@@ -41,27 +40,27 @@ export const SNAP_PONITS = {
 };
 
 const bottomSheetHeaderHeight = 25;
-const buttonPaddingsSize = verticalScale(25);
+const buttonPaddingsSize = verticalScale(35);
 const textSize = 13;
 
 const styles = StyleSheet.create({
 	panel: {
-		height: verticalScale(500),
-		padding: verticalScale(5),
-		backgroundColor: '#f3f3f3'
+		paddingVertical: verticalScale(15),
+		paddingHorizontal: verticalScale(10),
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	panelButton: {
-		padding: verticalScale(10),
+		padding: verticalScale(15),
 		backgroundColor: 'transparent',
 		borderBottomWidth: 1,
-		borderBottomColor: '#dadada',
+		borderBottomColor: COLOR_SEPARATOR,
 		flexDirection: 'row'
 	},
 	panelButtonIcon: {
-		paddingHorizontal: 5
+		paddingRight: 10
 	},
 	header: {
-		backgroundColor: '#f3f3f3',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingTop: 15,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20
@@ -73,11 +72,7 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 8,
 		borderRadius: 4,
-		backgroundColor: '#dadada'
-	},
-	androidButtonView: {
-		borderBottomWidth: 1,
-		borderBottomColor: '#dadada'
+		backgroundColor: COLOR_SEPARATOR
 	}
 });
 
@@ -142,23 +137,12 @@ export default class ActionSheet extends React.Component {
 		return (
 			<View style={[styles.panel, { height }]}>
 				{options.map(option => (
-					isIOS
-						? (
-							<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
-								<View style={styles.panelButton}>
-									{this.buttonIcon(option.icon)}
-									{this.buttonText(option.label)}
-								</View>
-							</Touchable>
-						)
-						: (
-							<View style={styles.androidButtonView}>
-								<RectButton onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label} style={styles.panelButton}>
-									{this.buttonIcon(option.icon)}
-									{this.buttonText(option.label)}
-								</RectButton>
-							</View>
-						)
+					<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
+						<View style={styles.panelButton}>
+							{this.buttonIcon(option.icon)}
+							{this.buttonText(option.label)}
+						</View>
+					</Touchable>
 				))}
 			</View>
 		);
