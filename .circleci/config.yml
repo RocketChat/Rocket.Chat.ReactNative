@@ -200,7 +200,7 @@ jobs:
           name: Update Fastlane
           command: |
             cd ios
-            bundle install
+            sudo bundle install
 
       - save_cache:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
