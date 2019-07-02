@@ -186,15 +186,15 @@ jobs:
             set +e
             nvm install 8
 
-#      - run:
-#          name: Install NPM modules
-#          command: |
-#            yarn
-#
-#      - run:
-#          name: Set Google Services
-#          command: |
-#            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn
+
+      - run:
+          name: Set Google Services
+          command: |
+            cp GoogleService-Info.prod.plist GoogleService-Info.plist
 
       - run:
           name: Update Fastlane
@@ -207,29 +207,29 @@ jobs:
           paths:
             - vendor/bundle
 
-#      - run:
-#          name: Fastlane Build
-#          no_output_timeout: 1200
-#          command: |
-#            cd ios
-#            agvtool new-version -all $CIRCLE_BUILD_NUM
-#
-#            if [[ $MATCH_KEYCHAIN_NAME ]]; then
-#              fastlane ios release
-#            else
-#              export MATCH_KEYCHAIN_NAME="temp"
-#              export MATCH_KEYCHAIN_PASSWORD="temp"
-#              fastlane ios build
-#            fi
-#
-#      - store_artifacts:
-#          path: ios/RocketChatRN.ipa
-#
-#      - persist_to_workspace:
-#          root: .
-#          paths:
-#            - ios/*.ipa
-#            - ios/fastlane/report.xml
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 1200
+          command: |
+            cd ios
+            agvtool new-version -all $CIRCLE_BUILD_NUM
+
+            if [[ $MATCH_KEYCHAIN_NAME ]]; then
+              bundle exec fastlane ios release
+            else
+              export MATCH_KEYCHAIN_NAME="temp"
+              export MATCH_KEYCHAIN_PASSWORD="temp"
+              bundle exec fastlane ios build
+            fi
+
+      - store_artifacts:
+          path: ios/RocketChatRN.ipa
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/*.ipa
+            - ios/fastlane/report.xml
 
   ios-testflight:
     macos:
