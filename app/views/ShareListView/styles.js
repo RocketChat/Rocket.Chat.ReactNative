@@ -45,7 +45,7 @@ export default StyleSheet.create({
 	},
 	cancel: {
 		color: HEADER_BACK,
-		fontSize: 16
+		fontSize: 17
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
