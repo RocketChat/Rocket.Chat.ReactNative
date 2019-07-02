@@ -346,7 +346,6 @@ export default {
 	Welcome: 'Bem vindo(a)',
 	Welcome_to_RocketChat: 'Bem vindo(a) ao Rocket.Chat',
 	Whats_your_2fa: 'Qual é o seu código 2FA?',
-	Without_Servers: 'Sem servidores!',
 	Yes_action_it: 'Sim, {{action}}!',
 	Yesterday: 'Ontem',
 	You_are_in_preview_mode: 'Você está no modo de pré-visualização',

@@ -380,6 +380,5 @@ export default {
 	you_were_mentioned: 'você foi mencionado',
 	you: 'você',
 	You: 'Você',
-	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!',
-	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Você precisa acessar pelo menos um servidor Rocket.Chat para compartilhar algo.'
+	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!'
 };

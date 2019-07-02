@@ -2780,7 +2780,7 @@ exports[`Storyshots Message list 1`] = `
                         "backgroundColor": "transparent",
                         "color": "#2F343D",
                         "fontFamily": "System",
-                        "fontSize": 16,
+                        "fontSize": 46,
                         "fontWeight": "400",
                       }
                     }
@@ -2984,7 +2984,7 @@ exports[`Storyshots Message list 1`] = `
                         "backgroundColor": "transparent",
                         "color": "#2F343D",
                         "fontFamily": "System",
-                        "fontSize": 16,
+                        "fontSize": 46,
                         "fontWeight": "400",
                       }
                     }
@@ -2997,8 +2997,8 @@ exports[`Storyshots Message list 1`] = `
                       }
                       style={
                         Object {
-                          "height": 20,
-                          "width": 20,
+                          "height": 50,
+                          "width": 50,
                         }
                       }
                     />
@@ -3013,8 +3013,8 @@ exports[`Storyshots Message list 1`] = `
                       }
                       style={
                         Object {
-                          "height": 20,
-                          "width": 20,
+                          "height": 50,
+                          "width": 50,
                         }
                       }
                     />
@@ -3029,8 +3029,8 @@ exports[`Storyshots Message list 1`] = `
                       }
                       style={
                         Object {
-                          "height": 20,
-                          "width": 20,
+                          "height": 50,
+                          "width": 50,
                         }
                       }
                     />

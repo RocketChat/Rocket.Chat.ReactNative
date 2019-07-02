@@ -76,5 +76,8 @@ export default {
 	},
 	API_Gitlab_URL: {
 		type: 'valueAsString'
+	},
+	AutoTranslate_Enabled: {
+		type: 'valueAsBoolean'
 	}
 };
