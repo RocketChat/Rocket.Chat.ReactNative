@@ -192,15 +192,15 @@ jobs:
             yarn
 
       - run:
-          name: Set Google Services
-          command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
-
-      - run:
           name: Update Fastlane
           command: |
             cd ios
             sudo bundle install
+
+      - run:
+          name: Set Google Services
+          command: |
+            cp GoogleService-Info.prod.plist GoogleService-Info.plist
 
       - save_cache:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
