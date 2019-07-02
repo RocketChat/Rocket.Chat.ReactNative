@@ -292,7 +292,7 @@ workflows:
           requires:
             - e2e-hold
 
-      - ios-build
+      - ios-build:
           requires:
             - lint-testunit
       - ios-hold-testflight:
