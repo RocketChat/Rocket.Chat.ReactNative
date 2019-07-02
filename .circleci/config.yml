@@ -194,13 +194,14 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            cd ios
             sudo bundle install
+          working_directory: ios
 
       - run:
           name: Set Google Services
           command: |
             cp GoogleService-Info.prod.plist GoogleService-Info.plist
+          working_directory: ios
 
       - save_cache:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
@@ -221,6 +222,7 @@ jobs:
               export MATCH_KEYCHAIN_PASSWORD="temp"
               bundle exec fastlane ios build
             fi
+          working_directory: ios
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
