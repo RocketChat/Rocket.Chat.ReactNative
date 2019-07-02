@@ -42,12 +42,10 @@ export default class WithoutServerView extends React.Component {
 
 	render() {
 		return (
-			<React.Fragment>
-				<View style={styles.container}>
-					<Text style={styles.title}>{I18n.t('Without_Servers')}</Text>
-					<Text style={styles.content}>{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}</Text>
-				</View>
-			</React.Fragment>
+			<View style={styles.container}>
+				<Text style={styles.title}>{I18n.t('Without_Servers')}</Text>
+				<Text style={styles.content}>{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}</Text>
+			</View>
 		);
 	}
 }

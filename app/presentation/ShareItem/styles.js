@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 56;
-
 export default StyleSheet.create({
 	content: {
 		height: 40,
@@ -16,6 +14,7 @@ export default StyleSheet.create({
 		fontSize: 17,
 		lineHeight: 20,
 		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal,
 		width: '80%'
 	},
 	center: {

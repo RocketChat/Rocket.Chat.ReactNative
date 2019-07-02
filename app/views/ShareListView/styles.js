@@ -35,8 +35,8 @@ export default StyleSheet.create({
 		paddingTop: 17
 	},
 	headerText: {
-		color: isIOS ? COLOR_TEXT : '#54585E',
-		fontSize: isIOS ? 17 : 10,
+		...sharedStyles.COLOR_TEXT,
+		fontSize: 17,
 		letterSpacing: 0.27,
 		flex: 1
 	},

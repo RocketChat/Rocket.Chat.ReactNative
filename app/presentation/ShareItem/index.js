@@ -5,10 +5,10 @@ import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
 
-import styles, { ROW_HEIGHT } from './styles';
+import styles from './styles';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
-export { ROW_HEIGHT };
+export const ROW_HEIGHT = 56;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,

@@ -60,12 +60,10 @@ export default class ShareView extends React.Component {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		const { navigation } = this.props;
 		navigation.setParams({ sendMessage: this._sendMessage });
 	}
-
-	uriToPath = uri => uri.replace(/^file:\/\//, '').replace('%20', ' ');
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
 

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_WHITE, HEADER_BACK
+	COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE, HEADER_BACK
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -12,7 +12,8 @@ export default StyleSheet.create({
 	},
 	text: {
 		paddingHorizontal: 16,
-		paddingVertical: 8
+		paddingVertical: 8,
+		...sharedStyles.textColorNormal
 	},
 	to: {
 		color: COLOR_TEXT_DESCRIPTION
@@ -23,10 +24,13 @@ export default StyleSheet.create({
 	},
 	toContentText: {
 		width: '100%',
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	name: {
-		color: COLOR_TITLE
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorTitle
 	},
 	content: {
 		flex: 1,
@@ -51,7 +55,9 @@ export default StyleSheet.create({
 	},
 	mediaText: {
 		fontSize: 18,
-		marginBottom: 10
+		marginBottom: 10,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	mediaInputContent: {
 		width: '100%',
@@ -85,7 +91,7 @@ export default StyleSheet.create({
 	},
 	send: {
 		color: HEADER_BACK,
-		fontWeight: '600',
+		...sharedStyles.textSemibold,
 		fontSize: 16
 	}
 });
