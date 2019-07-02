@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -22,6 +21,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
+<<<<<<< HEAD
 		1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */; };
 		1E25743222CBA2C2005A877F /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743022CBA2AD005A877F /* libRNRealmPath.a */; };
 		1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
@@ -55,6 +55,8 @@
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1ED59D4F22CBA86C00C54289 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4E22CBA86C00C54289 /* Images.xcassets */; };
 		1ED59D5022CBA8ED00C54289 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A55F1C42236D541005109A0 /* custom.ttf */; };
+=======
+>>>>>>> develop
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		38CEA0ED468E49CFABCD82FD /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A36F9982B71E4662AA8DEB77 /* libRNFirebase.a */; };
 		50046CB6BDA69B9232CF66D9 /* libPods-RocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C235DC7B31A4D1578EDEF219 /* libPods-RocketChatRN.a */; };
@@ -140,6 +142,7 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNUserDefaults;
 		};
+<<<<<<< HEAD
 		1E25741E22CBA263005A877F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */;
@@ -175,6 +178,8 @@
 			remoteGlobalIDString = 1EC6ACAF22CB9FC300A41C61;
 			remoteInfo = ShareRocketChatRN;
 		};
+=======
+>>>>>>> develop
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */;
@@ -534,6 +539,7 @@
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 		1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUserDefaults.xcodeproj; path = "../node_modules/rn-user-defaults/ios/RNUserDefaults.xcodeproj"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeShareExtension.xcodeproj; path = "../node_modules/rn-extensions-share/ios/ReactNativeShareExtension.xcodeproj"; sourceTree = "<group>"; };
 		1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRealmPath.xcodeproj; path = "../node_modules/react-native-realm-path/ios/RNRealmPath.xcodeproj"; sourceTree = "<group>"; };
 		1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -546,6 +552,8 @@
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1ED59D4E22CBA86C00C54289 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+=======
+>>>>>>> develop
 		20CE3E407E0D4D9E8C9885F2 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
@@ -586,7 +594,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				1E25745922CBA3F1005A877F /* libRNRealmPath.a in Frameworks */,
+=======
+>>>>>>> develop
 				1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
@@ -763,6 +774,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		1E2573F122CBA263005A877F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -808,6 +820,8 @@
 			path = ShareRocketChatRN;
 			sourceTree = "<group>";
 		};
+=======
+>>>>>>> develop
 		22CA7F59107E0C79C2506C7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -907,10 +921,13 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				1E25745122CBA3DB005A877F /* SplashScreen.xcodeproj */,
 				1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */,
 				1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */,
 				1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */,
+=======
+>>>>>>> develop
 				1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */,
 				7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */,
 				B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */,
@@ -1215,10 +1232,13 @@
 					ProjectRef = C21010507E5B4B37BA0E4C9D /* RNAudio.xcodeproj */;
 				},
 				{
+<<<<<<< HEAD
 					ProductGroup = 1E25743622CBA2F8005A877F /* Products */;
 					ProjectRef = 1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */;
 				},
 				{
+=======
+>>>>>>> develop
 					ProductGroup = 7AB8E714229C6145006B474A /* Products */;
 					ProjectRef = 1132AD7934954A958E143199 /* RNFirebase.xcodeproj */;
 				},
@@ -1235,10 +1255,13 @@
 					ProjectRef = 7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */;
 				},
 				{
+<<<<<<< HEAD
 					ProductGroup = 1E25742C22CBA2AC005A877F /* Products */;
 					ProjectRef = 1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */;
 				},
 				{
+=======
+>>>>>>> develop
 					ProductGroup = 1E0221D622B2F76300001862 /* Products */;
 					ProjectRef = 1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */;
 				},
@@ -1323,6 +1346,7 @@
 			remoteRef = 1E02220C22B2F76400001862 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+<<<<<<< HEAD
 		1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1351,6 +1375,8 @@
 			remoteRef = 1E25745522CBA3DB005A877F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+=======
+>>>>>>> develop
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1855,7 +1881,13 @@
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+<<<<<<< HEAD
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+=======
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+				);
+>>>>>>> develop
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1902,7 +1934,13 @@
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+<<<<<<< HEAD
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+=======
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+				);
+>>>>>>> develop
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
