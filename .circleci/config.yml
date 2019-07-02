@@ -257,18 +257,25 @@ jobs:
       - attach_workspace:
           at: ios
 
+      - restore_cache:
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
       - run:
           name: Update Fastlane
           command: |
-            brew update
-            brew install ruby
-            sudo gem install fastlane
+            sudo bundle install
+          working_directory: ios
 
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            cd ios
-            fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+            bundle exec fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
 
 workflows:
   version: 2
