@@ -212,7 +212,6 @@ jobs:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
-            cd ios
             agvtool new-version -all $CIRCLE_BUILD_NUM
 
             if [[ $MATCH_KEYCHAIN_NAME ]]; then
