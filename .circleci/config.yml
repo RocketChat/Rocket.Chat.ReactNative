@@ -178,10 +178,7 @@ jobs:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -225,14 +222,9 @@ jobs:
           working_directory: ios
 
       - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
+            - ./node_modules
 
       - save_cache:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
