@@ -50,7 +50,7 @@ const restore = function* restore() {
 						}
 					});
 				});
-				yield AsyncStorage.setItem('hasMigration', true);
+				yield AsyncStorage.setItem('hasMigration', '1');
 			}
 
 			// if not have current
