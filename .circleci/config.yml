@@ -197,26 +197,11 @@ jobs:
           command: |
             yarn
 
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
       - run:
           name: Update Fastlane
           command: |
             sudo bundle install
           working_directory: ios
-
-      - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
 
       - run:
           name: Set Google Services
@@ -238,7 +223,21 @@ jobs:
 #              bundle exec fastlane ios build
 #            fi
 #          working_directory: ios
-#
+
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - save_cache:
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
 #      - store_artifacts:
 #          path: ios/RocketChatRN.ipa
 #
