@@ -186,18 +186,6 @@ jobs:
             set +e
             nvm install 8
 
-      - run:
-          name: Update Fastlane
-          command: |
-            brew update
-            brew install ruby
-            sudo gem install fastlane
-
-      - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
-
 #      - run:
 #          name: Install NPM modules
 #          command: |
@@ -206,8 +194,18 @@ jobs:
 #      - run:
 #          name: Set Google Services
 #          command: |
-#            cd ios
 #            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+
+      - run:
+          name: Update Fastlane
+          command: |
+            cd ios
+            bundle install
+
+      - save_cache:
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
 
 #      - run:
 #          name: Fastlane Build
