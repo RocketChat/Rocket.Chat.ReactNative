@@ -165,6 +165,7 @@ jobs:
             - ~/.gradle
 
   ios-build:
+    <<: *defaults
     macos:
       xcode: "10.2.1"
 
