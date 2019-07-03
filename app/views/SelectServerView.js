@@ -61,7 +61,7 @@ export default class LoginView extends React.Component {
 		selectServerRequest: PropTypes.func
 	}
 
-	elect = async(server) => {
+	select = async(server) => {
 		const {
 			server: currentServer, selectServerRequest
 		} = this.props;
