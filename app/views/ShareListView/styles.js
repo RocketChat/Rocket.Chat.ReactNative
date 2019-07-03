@@ -11,7 +11,11 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 1,
+		width: '100%',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	horizontal: {
+		paddingHorizontal: 30
 	},
 	content: {
 		flex: 1,

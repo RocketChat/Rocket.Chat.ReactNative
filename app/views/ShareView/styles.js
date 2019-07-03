@@ -10,6 +10,9 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
+	horizontal: {
+		paddingHorizontal: 30
+	},
 	text: {
 		paddingHorizontal: 16,
 		paddingVertical: 8,

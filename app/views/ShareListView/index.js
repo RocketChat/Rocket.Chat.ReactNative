@@ -12,9 +12,8 @@ import * as mime from 'react-native-mime-types';
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isNotch } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
@@ -59,6 +58,7 @@ export default class ShareListView extends React.Component {
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
+			isLandscape: false,
 			fileInfo: null,
 			discussions: [],
 			channels: [],
@@ -94,6 +94,10 @@ export default class ShareListView extends React.Component {
 			log('err_process_media_share_extension', e);
 			this.setState({ mediaLoading: false });
 		}
+	}
+
+	componentWillReceiveProps() {
+		this.getSubscriptions();
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -145,10 +149,6 @@ export default class ShareListView extends React.Component {
 	// this is necessary during development (enables Cmd + r)
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
-	componentWillReceiveProps() {
-		this.getSubscriptions();
-	}
-
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
 		return ((item.prid || useRealName) && item.fname) || item.name;
@@ -199,11 +199,7 @@ export default class ShareListView extends React.Component {
 		}
 
 		return (
-			<ScrollView
-				style={styles.scroll}
-				keyboardShouldPersistTaps='always'
-				testID='rooms-list-view-list'
-			>
+			<ScrollView style={styles.scroll} keyboardShouldPersistTaps='always'>
 				{this.renderContent()}
 			</ScrollView>
 		);
@@ -312,16 +308,20 @@ export default class ShareListView extends React.Component {
 		);
 	}
 
+	handleLayout = (event) => {
+		const { width, height } = event.nativeEvent.layout;
+		this.setState({ isLandscape: width > height });
+	}
+
 	render() {
+		const { isLandscape } = this.state;
 		const showError = !this.canUploadFile();
 		return (
-			<SafeAreaView
-				style={styles.container}
-				forceInset={{ bottom: 'never' }}
-			>
-				<StatusBar />
-				{ showError ? this.renderError() : this.renderScrollView() }
-			</SafeAreaView>
+			<View style={[styles.container, isLandscape && isNotch ? styles.horizontal : {}]} onLayout={this.handleLayout}>
+				<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+					{ showError ? this.renderError() : this.renderScrollView() }
+				</SafeAreaView>
+			</View>
 		);
 	}
 }

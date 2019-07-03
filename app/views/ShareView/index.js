@@ -13,6 +13,7 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
+import { isNotch } from '../../utils/deviceInfo';
 import styles from './styles';
 import Loading from './Loading';
 
@@ -53,6 +54,7 @@ export default class ShareView extends React.Component {
 			name,
 			fileInfo,
 			loading: false,
+			isLandscape: false,
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
@@ -166,12 +168,20 @@ export default class ShareView extends React.Component {
 		);
 	}
 
+	handleLayout = (event) => {
+		const { width, height } = event.nativeEvent.layout;
+		this.setState({ isLandscape: width > height });
+	}
+
 	render() {
-		const { name, loading, isMedia } = this.state;
+		const {
+			name, loading, isMedia, isLandscape
+		} = this.state;
 
 		return (
 			<View
-				style={styles.container}
+				style={[styles.container, isLandscape && isNotch ? styles.horizontal : {}]}
+				onLayout={this.handleLayout}
 			>
 				{ loading ? <Loading /> : null }
 				<View style={isMedia ? styles.toContent : styles.toContentText}>

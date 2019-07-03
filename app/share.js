@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import firebase from 'react-native-firebase';
@@ -11,6 +12,7 @@ import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
 import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
+import { isNotch } from './utils/deviceInfo';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView,
@@ -61,18 +63,29 @@ class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		store.dispatch(appInit());
+		this.state = {
+			isLandscape: false
+		};
+	}
+
+	handleLayout = (event) => {
+		const { width, height } = event.nativeEvent.layout;
+		this.setState({ isLandscape: width > height });
 	}
 
 	render() {
+		const { isLandscape } = this.state;
 		return (
-			<Provider store={store}>
-				<AppContainer
-					ref={(navigatorRef) => {
-						Navigation.setTopLevelNavigator(navigatorRef);
-					}}
-					onNavigationStateChange={onNavigationStateChange}
-				/>
-			</Provider>
+			<View style={[{ flex: 1 }, isLandscape && isNotch ? { marginTop: -44 } : {}]} onLayout={this.handleLayout}>
+				<Provider store={store}>
+					<AppContainer
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</Provider>
+			</View>
 		);
 	}
 }
