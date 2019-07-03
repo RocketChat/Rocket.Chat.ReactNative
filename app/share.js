@@ -12,6 +12,7 @@ import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
 import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
+import sharedStyles from './views/Styles';
 import { isNotch } from './utils/deviceInfo';
 
 const InsideNavigator = createStackNavigator({
@@ -76,7 +77,10 @@ class Root extends React.Component {
 	render() {
 		const { isLandscape } = this.state;
 		return (
-			<View style={[{ flex: 1 }, isLandscape && isNotch ? { marginTop: -44 } : {}]} onLayout={this.handleLayout}>
+			<View
+				style={[{ ...sharedStyles.container }, isLandscape && isNotch ? { ...sharedStyles.notchLandscapeContainer } : {}]}
+				onLayout={this.handleLayout}
+			>
 				<Provider store={store}>
 					<AppContainer
 						ref={(navigatorRef) => {

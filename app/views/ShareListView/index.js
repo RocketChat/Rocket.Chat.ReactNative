@@ -12,7 +12,7 @@ import * as mime from 'react-native-mime-types';
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
-import { isIOS, isNotch } from '../../utils/deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
 import { CustomIcon } from '../../lib/Icons';
@@ -58,7 +58,6 @@ export default class ShareListView extends React.Component {
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
-			isLandscape: false,
 			fileInfo: null,
 			discussions: [],
 			channels: [],
@@ -308,20 +307,12 @@ export default class ShareListView extends React.Component {
 		);
 	}
 
-	handleLayout = (event) => {
-		const { width, height } = event.nativeEvent.layout;
-		this.setState({ isLandscape: width > height });
-	}
-
 	render() {
-		const { isLandscape } = this.state;
 		const showError = !this.canUploadFile();
 		return (
-			<View style={[styles.container, isLandscape && isNotch ? styles.horizontal : {}]} onLayout={this.handleLayout}>
-				<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
-					{ showError ? this.renderError() : this.renderScrollView() }
-				</SafeAreaView>
-			</View>
+			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+				{ showError ? this.renderError() : this.renderScrollView() }
+			</SafeAreaView>
 		);
 	}
 }

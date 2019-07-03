@@ -192,5 +192,10 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		backgroundColor: COLOR_WHITE,
 		marginVertical: 10
+	},
+	notchLandscapeContainer: {
+		marginTop: -44,
+		paddingHorizontal: 30,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	}
 });
