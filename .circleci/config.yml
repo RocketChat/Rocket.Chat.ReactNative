@@ -15,7 +15,8 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          name: Restore npm cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -38,7 +39,8 @@ jobs:
             yarn codecov
 
       - save_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-modules-{{ checksum "yarn.lock" }}
+          name: Save npm cache
           paths:
             - ./node_modules
 
@@ -53,8 +55,8 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restoring npm cache
-          key: node-v1-mac-{{ checksum "package.json" }}
+          name: Restore npm cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -89,8 +91,8 @@ jobs:
             detox test --configuration ios.sim.release --cleanup
 
       - save_cache:
-          name: Saving npm cache
-          key: node-v1-mac-{{ checksum "package.json" }}
+          name: Save npm cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
 
@@ -114,7 +116,7 @@ jobs:
 
       - restore_cache:
           name: Restore npm cache
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -168,7 +170,7 @@ jobs:
 
       - save_cache:
           name: Restore npm cache
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-modules-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
@@ -179,7 +181,6 @@ jobs:
             - ~/.gradle
 
   ios-build:
-    <<: *defaults
     macos:
       xcode: "10.2.1"
 
@@ -190,12 +191,12 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restoring gems cache
+          name: Restore gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
       - restore_cache:
-          name: Restoring npm cache
-          key: node-v1-mac-{{ checksum "package.json" }}
+          name: Restore npm cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -239,13 +240,13 @@ jobs:
           working_directory: ios
 
       - save_cache:
-          name: Saving npm cache
-          key: node-v1-mac-{{ checksum "package.json" }}
+          name: Save npm cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
 
       - save_cache:
-          name: Saving gems cache
+          name: Save gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
@@ -270,6 +271,7 @@ jobs:
           at: ios
 
       - restore_cache:
+          name: Restore gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
       - run:
@@ -285,6 +287,7 @@ jobs:
           working_directory: ios
 
       - save_cache:
+          name: Save gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
