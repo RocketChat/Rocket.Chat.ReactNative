@@ -113,6 +113,7 @@ jobs:
       - checkout
 
       - restore_cache:
+          name: Restore npm cache
           key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
 
       - run:
@@ -121,6 +122,7 @@ jobs:
             yarn
 
       - restore_cache:
+          name: Restore gradle cache
           key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
