@@ -95,10 +95,12 @@ export default StyleSheet.create({
 		marginRight: 10
 	},
 	actionText: {
-		color: 'white',
-		fontSize: 14,
+		color: COLOR_WHITE,
+		fontSize: 15,
 		backgroundColor: 'transparent',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginTop: 4,
+		...sharedStyles.textSemibold
 	},
 	actionButtonLeft: {
 		flex: 1,

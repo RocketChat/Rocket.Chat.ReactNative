@@ -246,12 +246,12 @@ export default class RoomItem extends React.Component {
 					>
 						{isRead ? (
 							<View style={styles.actionView}>
-								<CustomIcon size={15} name='flag' color='white' />
+								<CustomIcon size={20} name='flag' color='white' />
 								<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
 							</View>
 						) : (
 							<View style={styles.actionView}>
-								<CustomIcon size={15} name='check' color='white' />
+								<CustomIcon size={20} name='check' color='white' />
 								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
 							</View>
 						)}
@@ -293,12 +293,12 @@ export default class RoomItem extends React.Component {
 					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
 						{favorite ? (
 							<View style={styles.actionView}>
-								<CustomIcon size={17} name='Star-filled' color='white' />
+								<CustomIcon size={20} name='Star-filled' color='white' />
 								<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
 							</View>
 						) : (
 							<View style={styles.actionView}>
-								<CustomIcon size={17} name='star' color='white' />
+								<CustomIcon size={20} name='star' color='white' />
 								<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
 							</View>
 						)}
@@ -314,7 +314,7 @@ export default class RoomItem extends React.Component {
 						onPress={this.handleHideButtonPress}
 					>
 						<View style={styles.actionView}>
-							<CustomIcon size={15} name='eye-off' color='white' />
+							<CustomIcon size={20} name='eye-off' color='white' />
 							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
 						</View>
 					</RectButton>
