@@ -9,7 +9,6 @@ export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
 export default StyleSheet.create({
 	container: {
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingLeft: 14,
