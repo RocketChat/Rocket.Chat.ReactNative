@@ -20,6 +20,33 @@ const formatText = text => text.replace(
 	(match, url, title) => `[${ title }](${ url })`
 );
 
+const emojiRanges = [
+	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
+	':.{1,40}:', // custom emoji
+	' |\n' // allow spaces and line breaks
+].join('|');
+
+const removeAllEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
+
+const isOnlyEmoji = str => !removeAllEmoji(str).length;
+
+const removeOneEmoji = str => str.replace(new RegExp(emojiRanges), '');
+
+const emojiCount = (str) => {
+	let oldLength = 0;
+	let counter = 0;
+
+	while (oldLength !== str.length) {
+		oldLength = str.length;
+		str = removeOneEmoji(str);
+		if (oldLength !== str.length) {
+			counter += 1;
+		}
+	}
+
+	return counter;
+};
+
 const Markdown = React.memo(({
 	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
 }) => {
@@ -30,7 +57,7 @@ const Markdown = React.memo(({
 	if (m) {
 		m = emojify(m, { output: 'unicode' });
 	}
-	m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)/, '').trim();
+	m = m.replace(/^\[([^\]]*)\]\(([^)]*)\)\s/, '').trim();
 	if (numberOfLines > 0) {
 		m = m.replace(/[\n]+/g, '\n').trim();
 	}
@@ -38,6 +65,8 @@ const Markdown = React.memo(({
 	if (!useMarkdown) {
 		return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
 	}
+
+	const isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
 	return (
 		<MarkdownRenderer
@@ -87,7 +116,14 @@ const Markdown = React.memo(({
 						const { content } = node.children[0];
 						const emoji = getCustomEmoji && getCustomEmoji(content);
 						if (emoji) {
-							return <CustomEmoji key={node.key} baseUrl={baseUrl} style={styles.customEmoji} emoji={emoji} />;
+							return (
+								<CustomEmoji
+									key={node.key}
+									baseUrl={baseUrl}
+									style={isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji}
+									emoji={emoji}
+								/>
+							);
 						}
 						return <Text key={node.key}>:{content}:</Text>;
 					}
@@ -102,7 +138,7 @@ const Markdown = React.memo(({
 			}}
 			style={{
 				paragraph: styles.paragraph,
-				text: styles.text,
+				text: isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
 				codeInline: styles.codeInline,
 				codeBlock: styles.codeBlock,
 				link: styles.link,

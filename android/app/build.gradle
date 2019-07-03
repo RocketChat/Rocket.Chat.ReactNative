@@ -110,7 +110,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.15.1"
+        versionName "1.16.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -190,7 +190,6 @@ dependencies {
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
     implementation project(':react-native-vector-icons')
-    implementation project(':rn-fetch-blob')
     implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':reactnativenotifications')
