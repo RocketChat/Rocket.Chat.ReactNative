@@ -181,7 +181,7 @@ jobs:
 
       - restore_cache:
           name: Restoring npm cache
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
       - run:
           name: Install Node 8
