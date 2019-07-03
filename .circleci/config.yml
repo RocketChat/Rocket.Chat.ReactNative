@@ -125,7 +125,7 @@ jobs:
 
       - restore_cache:
           name: Restore gradle cache
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: Configure Gradle
@@ -169,14 +169,14 @@ jobs:
           path: /tmp/build/outputs
 
       - save_cache:
-          name: Restore NPM cache
+          name: Save NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
       - save_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          name: Save gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
 
