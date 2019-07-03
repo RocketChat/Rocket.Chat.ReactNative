@@ -37,7 +37,7 @@ const keyExtractor = item => item.rid;
 export default class ShareListView extends React.Component {
 	static navigationOptions = () => ({
 		headerLeft: (
-			<TouchableOpacity style={styles.cancelButton} onPress={() => ShareExtension.close()}>
+			<TouchableOpacity style={styles.cancelButton} onPress={ShareExtension.close}>
 				<Text style={styles.cancel}>{I18n.t('Cancel')}</Text>
 			</TouchableOpacity>
 		),
@@ -60,6 +60,7 @@ export default class ShareListView extends React.Component {
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
+			loading: true,
 			fileInfo: null,
 			discussions: [],
 			channels: [],
@@ -97,8 +98,25 @@ export default class ShareListView extends React.Component {
 		}
 	}
 
-	componentWillReceiveProps() {
-		this.getSubscriptions();
+	componentWillReceiveProps(nextProps) {
+		const { loadingServer } = this.props;
+
+		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
+			if (nextProps.loadingServer) {
+				this.internalSetState({ loading: true });
+			} else {
+				this.getSubscriptions();
+			}
+		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loading } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+
+		return false;
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -141,7 +159,8 @@ export default class ShareListView extends React.Component {
 				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
 				direct: this.direct ? this.direct.slice() : [],
 				livechat: this.livechat ? this.livechat.slice() : [],
-				servers: this.servers ? this.servers.slice() : []
+				servers: this.servers ? this.servers.slice() : [],
+				loading: false
 			});
 			this.forceUpdate();
 		});
@@ -194,9 +213,8 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderScrollView = () => {
-		const { loadingServer } = this.props;
-		const { mediaLoading } = this.state;
-		if (mediaLoading || loadingServer) {
+		const { mediaLoading, loading } = this.state;
+		if (mediaLoading || loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
