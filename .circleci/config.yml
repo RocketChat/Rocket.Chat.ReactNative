@@ -52,6 +52,10 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          name: Restoring npm cache
+          key: node-v1-mac-{{ checksum "package.json" }}
+
       - run:
           name: Install Node 8
           command: |
@@ -83,6 +87,12 @@ jobs:
           name: Test
           command: |
             detox test --configuration ios.sim.release --cleanup
+
+      - save_cache:
+          name: Saving npm cache
+          key: node-v1-mac-{{ checksum "package.json" }}
+          paths:
+            - node_modules
 
       - store_artifacts:
           path: /tmp/screenshots
@@ -177,11 +187,11 @@ jobs:
 
       - restore_cache:
           name: Restoring gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
       - restore_cache:
           name: Restoring npm cache
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v1-mac-{{ checksum "package.json" }}
 
       - run:
           name: Install Node 8
@@ -226,13 +236,13 @@ jobs:
 
       - save_cache:
           name: Saving npm cache
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v1-mac-{{ checksum "package.json" }}
           paths:
             - node_modules
 
       - save_cache:
           name: Saving gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
 
@@ -256,7 +266,7 @@ jobs:
           at: ios
 
       - restore_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
       - run:
           name: Update Fastlane
@@ -271,7 +281,7 @@ jobs:
           working_directory: ios
 
       - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
 
