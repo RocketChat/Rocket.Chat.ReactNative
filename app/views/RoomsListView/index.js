@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -121,6 +121,7 @@ export default class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
+		const { width } = Dimensions.get('window');
 		this.data = [];
 		this.state = {
 			searching: false,
@@ -133,7 +134,8 @@ export default class RoomsListView extends React.Component {
 			channels: [],
 			privateGroup: [],
 			direct: [],
-			livechat: []
+			livechat: [],
+			width
 		};
 		Orientation.unlockAllOrientations();
 		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
@@ -148,6 +150,7 @@ export default class RoomsListView extends React.Component {
 			initSearchingAndroid: this.initSearchingAndroid,
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
+		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -172,11 +175,15 @@ export default class RoomsListView extends React.Component {
 			return true;
 		}
 
-		const { loading, searching } = this.state;
+		const { loading, searching, width } = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.width !== width) {
 			return true;
 		}
 
@@ -220,8 +227,11 @@ export default class RoomsListView extends React.Component {
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
+		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
+
+	onDimensionsChange = () => ({ window: { width } }) => this.setState({ width });
 
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
@@ -435,6 +445,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
+		const { width } = this.state;
 		const {
 			userId, baseUrl, StoreLastMessage
 		} = this.props;
@@ -460,6 +471,7 @@ export default class RoomsListView extends React.Component {
 					showLastMessage={StoreLastMessage}
 					onPress={() => this._onPressItem(item)}
 					testID={`rooms-list-view-item-${ item.name }`}
+					width={width}
 					height={ROW_HEIGHT}
 					toggleFav={this.toggleFav}
 					toggleRead={this.toggleRead}
