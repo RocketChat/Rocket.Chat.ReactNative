@@ -181,7 +181,7 @@ jobs:
 
       - restore_cache:
           name: Restoring npm cache
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }
 
       - run:
           name: Install Node 8
@@ -226,9 +226,9 @@ jobs:
 
       - save_cache:
           name: Saving npm cache
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
-            - ./node_modules
+            - node_modules
 
       - save_cache:
           name: Saving gems cache
