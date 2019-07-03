@@ -29,6 +29,7 @@ const keyExtractor = item => item.rid;
 	token: state.login.user && state.login.user.token,
 	useRealName: state.settings.UI_Use_Real_Name,
 	server: state.server.server,
+	loadingServer: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 }))
@@ -47,6 +48,7 @@ export default class ShareListView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		useRealName: PropTypes.bool,
+		loadingServer: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number
 	}
@@ -192,8 +194,9 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderScrollView = () => {
+		const { loadingServer } = this.props;
 		const { mediaLoading } = this.state;
-		if (!(this.data && this.data.length > 0) || mediaLoading) {
+		if (mediaLoading || loadingServer) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
