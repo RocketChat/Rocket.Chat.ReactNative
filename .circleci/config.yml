@@ -15,7 +15,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restore npm cache
+          name: Restore NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
@@ -40,7 +40,7 @@ jobs:
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
-          name: Save npm cache
+          name: Save NPM cache
           paths:
             - ./node_modules
 
@@ -55,7 +55,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restore npm cache
+          name: Restore NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
@@ -91,7 +91,7 @@ jobs:
             detox test --configuration ios.sim.release --cleanup
 
       - save_cache:
-          name: Save npm cache
+          name: Save NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
@@ -115,7 +115,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restore npm cache
+          name: Restore NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
@@ -169,7 +169,7 @@ jobs:
           path: /tmp/build/outputs
 
       - save_cache:
-          name: Restore npm cache
+          name: Restore NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
@@ -195,7 +195,7 @@ jobs:
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
       - restore_cache:
-          name: Restore npm cache
+          name: Restore NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
@@ -240,7 +240,7 @@ jobs:
           working_directory: ios
 
       - save_cache:
-          name: Save npm cache
+          name: Save NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
