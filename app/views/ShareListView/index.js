@@ -189,8 +189,11 @@ export default class ShareListView extends React.Component {
 
 	canUploadFile = () => {
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const { fileInfo: file } = this.state;
+		const { fileInfo: file, mediaLoading, loading } = this.state;
 
+		if (loading || mediaLoading) {
+			return true;
+		}
 		if (!(file && file.path)) {
 			return true;
 		}
