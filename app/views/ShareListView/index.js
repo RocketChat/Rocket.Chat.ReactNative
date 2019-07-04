@@ -88,7 +88,7 @@ export default class ShareListView extends React.Component {
 					size: data.size,
 					type: mime.lookup(data.path),
 					store: 'Uploads',
-					path: data.path
+					path: isIOS ? data.path : `file://${ data.path }`
 				};
 			}
 			this.setState({
@@ -150,7 +150,7 @@ export default class ShareListView extends React.Component {
 		}
 	}, 300);
 
-	uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
+	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
