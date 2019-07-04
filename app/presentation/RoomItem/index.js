@@ -1,9 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {
-	View, Text, Animated, Dimensions
-} from 'react-native';
+import { View, Text, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
@@ -19,7 +17,6 @@ export { ROW_HEIGHT };
 
 const OPTION_WIDTH = 80;
 const SMALL_SWIPE = 40;
-const TEMP_WIDTH = Dimensions.get('window').width;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -45,6 +42,7 @@ export default class RoomItem extends React.Component {
 		token: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
+		width: PropTypes.number,
 		height: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
@@ -71,8 +69,7 @@ export default class RoomItem extends React.Component {
 		this.state = {
 			dragX,
 			rowOffSet,
-			rowState: 0, // 0: closed, 1: right opened, -1: left opened
-			rowWidth: undefined
+			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
 		this._onGestureEvent = Animated.event(
 			[{ nativeEvent: { translationX: dragX } }]
@@ -81,15 +78,10 @@ export default class RoomItem extends React.Component {
 		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { rowWidth } = this.state;
+	shouldComponentUpdate(nextProps) {
 		const { lastMessage, _updatedAt, isRead } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
-
-		if (rowWidth !== nextState.rowWidth) {
-			return true;
-		}
 
 		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
 			return true;
@@ -116,8 +108,9 @@ export default class RoomItem extends React.Component {
 
 	_handleRelease = (nativeEvent) => {
 		const { translationX } = nativeEvent;
-		const { rowState, rowWidth } = this.state;
-		const halfScreen = rowWidth / 2;
+		const { rowState } = this.state;
+		const { width } = this.props;
+		const halfScreen = width / 2;
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
 			if (translationX > 0 && translationX < halfScreen) {
@@ -130,7 +123,7 @@ export default class RoomItem extends React.Component {
 				toValue = -2 * OPTION_WIDTH; // open right option if he swipe left
 				this.setState({ rowState: 1 });
 			} else if (translationX <= -halfScreen) {
-				toValue = -rowWidth;
+				toValue = -width;
 				this.hideChannel();
 			} else {
 				toValue = 0;
@@ -212,10 +205,6 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	_onRowLayout = ({ nativeEvent }) => {
-		this.setState({ rowWidth: nativeEvent.layout.width });
-	};
-
 	onPress = () => {
 		const { rowState } = this.state;
 		if (rowState !== 0) {
@@ -229,9 +218,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	renderLeftActions = () => {
-		const { rowWidth } = this.state;
-		const { isRead } = this.props;
-		const width = rowWidth || TEMP_WIDTH;
+		const { isRead, width } = this.props;
 		const halfWidth = width / 2;
 		const trans = this.rowTranslation.interpolate({
 			inputRange: [0, OPTION_WIDTH],
@@ -271,9 +258,7 @@ export default class RoomItem extends React.Component {
 	};
 
 	renderRightActions = () => {
-		const { rowWidth } = this.state;
-		const { favorite } = this.props;
-		const width = rowWidth || TEMP_WIDTH;
+		const { favorite, width } = this.props;
 		const halfWidth = width / 2;
 		const trans = this.rowTranslation.interpolate({
 			inputRange: [-OPTION_WIDTH, 0],
@@ -370,7 +355,7 @@ export default class RoomItem extends React.Component {
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
-				<Animated.View onLayout={this._onRowLayout} style={styles.upperContainer}>
+				<View style={styles.upperContainer}>
 					{this.renderLeftActions()}
 					{this.renderRightActions()}
 					<Animated.View
@@ -406,7 +391,7 @@ export default class RoomItem extends React.Component {
 							</View>
 						</RectButton>
 					</Animated.View>
-				</Animated.View>
+				</View>
 			</PanGestureHandler>
 		);
 	}
