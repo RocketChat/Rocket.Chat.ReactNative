@@ -175,6 +175,7 @@ dependencies {
     addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
     implementation project(':rn-extensions-share')
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')

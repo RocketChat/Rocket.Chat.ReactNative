@@ -35,6 +35,7 @@ import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.reactlibrary.RNRealmPathPackage;
 import com.alinz.parkerdan.shareextension.SharePackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import chat.rocket.reactnative.generated.BasePackageList;
 
@@ -70,6 +71,7 @@ public class MainApplication extends Application implements ReactApplication, IN
             new OrientationPackage(),
             new SplashScreenReactPackage(),
             new SharePackage(),
+            new RNFetchBlobPackage(),
           new RNRealmPathPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
