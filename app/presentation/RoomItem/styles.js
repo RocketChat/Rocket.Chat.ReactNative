@@ -134,5 +134,8 @@ export default StyleSheet.create({
 	rightAction: {
 		...StyleSheet.absoluteFill,
 		flexDirection: 'row'
+	},
+	upperContainer: {
+		overflow: 'hidden'
 	}
 });

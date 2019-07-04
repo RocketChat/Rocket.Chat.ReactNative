@@ -370,7 +370,7 @@ export default class RoomItem extends React.Component {
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
-				<Animated.View onLayout={this._onRowLayout} style={{ overflow: 'hidden' }}>
+				<Animated.View onLayout={this._onRowLayout} style={styles.upperContainer}>
 					{this.renderLeftActions()}
 					{this.renderRightActions()}
 					<Animated.View

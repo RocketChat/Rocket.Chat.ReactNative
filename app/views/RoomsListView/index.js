@@ -393,7 +393,15 @@ export default class RoomsListView extends React.Component {
 
 	toggleRead = async(rid, isRead) => {
 		try {
-			await RocketChat.toggleRead(isRead, rid);
+			const result = await RocketChat.toggleRead(isRead, rid);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					if (sub) {
+						sub.alert = isRead;
+					}
+				});
+			}
 		} catch (e) {
 			log('error_toggle_read', e);
 		}
@@ -401,7 +409,13 @@ export default class RoomsListView extends React.Component {
 
 	hideChannel = async(rid, type) => {
 		try {
-			await RocketChat.hideRoom(rid, type);
+			const result = await RocketChat.hideRoom(rid, type);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					database.delete(sub);
+				});
+			}
 		} catch (e) {
 			log('error_hide_channel', e);
 		}
