@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
+import { COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	serverItem: {
-		height: 68
+		height: 68,
+		backgroundColor: COLOR_WHITE
 	},
 	serverItemContainer: {
 		flexDirection: 'row',

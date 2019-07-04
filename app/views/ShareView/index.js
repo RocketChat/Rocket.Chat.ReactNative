@@ -15,14 +15,15 @@ import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
+import { isIOS } from '../../utils/deviceInfo';
 
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: (
 			<HeaderBackButton
 				title={I18n.t('Back')}
-				backTitleVisible
-				onPress={navigation.goBack}
+				backTitleVisible={isIOS}
+				onPress={() => navigation.goBack()}
 				tintColor={HEADER_BACK}
 			/>
 		),
@@ -144,6 +145,7 @@ export default class ShareView extends React.Component {
 						underlineColorAndroid='transparent'
 						defaultValue={file.description}
 						multiline
+						textAlignVertical='top'
 						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 					/>
 				</View>
@@ -161,6 +163,7 @@ export default class ShareView extends React.Component {
 				underlineColorAndroid='transparent'
 				defaultValue={value}
 				multiline
+				textAlignVertical='top'
 				placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 			/>
 		);
