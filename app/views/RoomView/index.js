@@ -399,7 +399,6 @@ export default class RoomView extends React.Component {
 		EventEmitter.emit(LISTNER, { options, snapPoint: SNAP_PONITS.HALF });
 	}
 
-
 	onOpenFileModal = (attachment) => {
 		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
 	}
@@ -590,7 +589,6 @@ export default class RoomView extends React.Component {
 		}
 	}
 
-	// here
 	parseMessage = item => JSON.parse(JSON.stringify(item));
 
 	getPermalink = async(message) => {
@@ -772,7 +770,6 @@ export default class RoomView extends React.Component {
 			log('err_toggle_translation', err);
 		}
 	}
-	// here end
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
