@@ -14,6 +14,9 @@ export default StyleSheet.create({
 		paddingLeft: 14,
 		height: ROW_HEIGHT
 	},
+	button: {
+		backgroundColor: COLOR_WHITE
+	},
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,

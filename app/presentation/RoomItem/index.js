@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, Animated } from 'react-native';
+import {
+	View, Text, Animated, Dimensions
+} from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
@@ -17,6 +19,7 @@ export { ROW_HEIGHT };
 
 const OPTION_WIDTH = 80;
 const SMALL_SWIPE = 40;
+const TEMP_WIDTH = Dimensions.get('window').width;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
@@ -42,7 +45,6 @@ export default class RoomItem extends React.Component {
 		token: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
-		width: PropTypes.number,
 		height: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
@@ -79,23 +81,28 @@ export default class RoomItem extends React.Component {
 		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
-	// shouldComponentUpdate(nextProps) {
-	// 	const { lastMessage, _updatedAt, isRead } = this.props;
-	// 	const oldlastMessage = lastMessage;
-	// 	const newLastmessage = nextProps.lastMessage;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { rowWidth } = this.state;
+		const { lastMessage, _updatedAt, isRead } = this.props;
+		const oldlastMessage = lastMessage;
+		const newLastmessage = nextProps.lastMessage;
 
-	// 	if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-	// 		return true;
-	// 	}
-	// 	if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
-	// 		return true;
-	// 	}
-	// 	if (isRead !== nextProps.isRead) {
-	// 		return true;
-	// 	}
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	return attrs.some(key => nextProps[key] !== this.props[key]);
-	// }
+		if (rowWidth !== nextState.rowWidth) {
+			return true;
+		}
+
+		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+			return true;
+		}
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
+			return true;
+		}
+		if (isRead !== nextProps.isRead) {
+			return true;
+		}
+		// eslint-disable-next-line react/destructuring-assignment
+		return attrs.some(key => nextProps[key] !== this.props[key]);
+	}
 
 	componentWillUnmount() {
 		this.rowTranslation.removeAllListeners();
@@ -110,7 +117,6 @@ export default class RoomItem extends React.Component {
 	_handleRelease = (nativeEvent) => {
 		const { translationX } = nativeEvent;
 		const { rowState, rowWidth } = this.state;
-		// const { width } = this.props;
 		const halfScreen = rowWidth / 2;
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
@@ -175,6 +181,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	close = () => {
+		this.setState({ rowState: 0 });
 		this._animateRow(0);
 	}
 
@@ -209,8 +216,22 @@ export default class RoomItem extends React.Component {
 		this.setState({ rowWidth: nativeEvent.layout.width });
 	};
 
+	onPress = () => {
+		const { rowState } = this.state;
+		if (rowState !== 0) {
+			this.close();
+			return;
+		}
+		const { onPress } = this.props;
+		if (onPress) {
+			onPress();
+		}
+	}
+
 	renderLeftActions = () => {
-		const { isRead, width } = this.props;
+		const { rowWidth } = this.state;
+		const { isRead } = this.props;
+		const width = rowWidth || TEMP_WIDTH;
 		const halfWidth = width / 2;
 		const trans = this.rowTranslation.interpolate({
 			inputRange: [0, OPTION_WIDTH],
@@ -250,7 +271,9 @@ export default class RoomItem extends React.Component {
 	};
 
 	renderRightActions = () => {
-		const { favorite, width } = this.props;
+		const { rowWidth } = this.state;
+		const { favorite } = this.props;
+		const width = rowWidth || TEMP_WIDTH;
 		const halfWidth = width / 2;
 		const trans = this.rowTranslation.interpolate({
 			inputRange: [-OPTION_WIDTH, 0],
@@ -321,7 +344,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, onPress, id, prid, showLastMessage, lastMessage
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -358,10 +381,11 @@ export default class RoomItem extends React.Component {
 						}
 					>
 						<RectButton
-							onPress={onPress}
+							onPress={this.onPress}
 							activeOpacity={0.8}
 							underlayColor='#e1e5e8'
 							testID={testID}
+							style={styles.button}
 						>
 							<View
 								style={[styles.container, height && { height }]}
