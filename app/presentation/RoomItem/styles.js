@@ -9,11 +9,13 @@ export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 
 export default StyleSheet.create({
 	container: {
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingLeft: 14,
 		height: ROW_HEIGHT
+	},
+	button: {
+		backgroundColor: COLOR_WHITE
 	},
 	centerContainer: {
 		flex: 1,
@@ -96,10 +98,12 @@ export default StyleSheet.create({
 		marginRight: 10
 	},
 	actionText: {
-		color: 'white',
-		fontSize: 14,
+		color: COLOR_WHITE,
+		fontSize: 15,
 		backgroundColor: 'transparent',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginTop: 4,
+		...sharedStyles.textSemibold
 	},
 	actionButtonLeft: {
 		flex: 1,
