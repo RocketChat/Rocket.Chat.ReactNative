@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, TouchableOpacity, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator
+	View, Text, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -20,6 +20,7 @@ import log from '../../utils/log';
 
 import styles from './styles';
 import ServerItem from '../../presentation/ServerItem';
+import { CloseShareExtensionButton } from '../../containers/HeaderButton';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
@@ -37,9 +38,10 @@ const keyExtractor = item => item.rid;
 export default class ShareListView extends React.Component {
 	static navigationOptions = () => ({
 		headerLeft: (
-			<TouchableOpacity style={styles.cancelButton} onPress={ShareExtension.close}>
-				<Text style={styles.cancel}>{I18n.t('Cancel')}</Text>
-			</TouchableOpacity>
+			<CloseShareExtensionButton
+				onPress={ShareExtension.close}
+				testID='share-extension-close'
+			/>
 		),
 		title: I18n.t('Select_Channels')
 	})
@@ -86,7 +88,7 @@ export default class ShareListView extends React.Component {
 					size: data.size,
 					type: mime.lookup(data.path),
 					store: 'Uploads',
-					path: data.path
+					path: isIOS ? data.path : `file://${ data.path }`
 				};
 			}
 			this.setState({
@@ -148,7 +150,7 @@ export default class ShareListView extends React.Component {
 		}
 	}, 300);
 
-	uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
+	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {

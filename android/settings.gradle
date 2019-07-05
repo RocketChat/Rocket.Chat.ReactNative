@@ -38,4 +38,8 @@ include ':realm'
 project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
 include ':reactnativenotifications'
 project(':reactnativenotifications').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-notifications/android')
-include ':app'
+include ':rn-fetch-blob'                                                                                                  
+project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
+include ':app', ':rn-extensions-share'
+project(':rn-extensions-share').projectDir = new File(rootProject.projectDir, '../node_modules/rn-extensions-share/android')
+

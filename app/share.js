@@ -14,13 +14,26 @@ import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
 import sharedStyles from './views/Styles';
 import { isNotch } from './utils/deviceInfo';
+import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
+
+const defaultHeader = {
+	headerStyle: {
+		backgroundColor: HEADER_BACKGROUND
+	},
+	headerTitleStyle: {
+		color: HEADER_TITLE
+	},
+	headerBackTitle: null,
+	headerTintColor: HEADER_BACK
+};
 
 const InsideNavigator = createStackNavigator({
 	ShareListView,
 	ShareView,
 	SelectServerView
 }, {
-	initialRouteName: 'ShareListView'
+	initialRouteName: 'ShareListView',
+	defaultNavigationOptions: defaultHeader
 });
 
 const OutsideNavigator = createStackNavigator({

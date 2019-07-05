@@ -12621,10 +12621,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.2.4.tgz#2880a387d57c67b535836d5e92dbcbb0de84c274"
-  integrity sha512-Qg7J9yFc82klArAYcFLdpxczuDaQSqtEzVTauXtauh6/4v3gekTOUCchVWlkViu9e+LW3e/zzRA+bYcflKcOUg==
+rn-extensions-share@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.5.tgz#0d5da2e2b7e08b893e0f6da35f0c072dd832db86"
+  integrity sha512-qTwowmZ61eQaKKAT5BcqtMPGO7akKaq8U6JssR4Tg8BlWF8m60zNtL2ZZL7p3aHzaJ6w2JhqS35GYnCtoa4JuQ==
 
 rn-fetch-blob@^0.10.15:
   version "0.10.15"

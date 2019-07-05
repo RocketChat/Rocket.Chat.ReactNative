@@ -40,7 +40,7 @@ export default class ServerItem extends React.Component {
 								}}
 								defaultSource={{ uri: 'logo' }}
 								style={styles.serverIcon}
-								onError={() => log('error loading serverIcon')}
+								onError={() => log('err_loading_server_icon')}
 							/>
 						)
 						: (
