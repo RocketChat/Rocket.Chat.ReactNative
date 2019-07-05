@@ -46,7 +46,7 @@ import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { getMessageTranslation } from '../../containers/message/utils';
 import { Toast } from '../../utils/info';
-import { LISTNER, SNAP_PONITS } from '../ActionSheet';
+import { LISTENER, SNAP_POINTS } from '../ActionSheet';
 
 @connect(state => ({
 	user: {
@@ -396,7 +396,7 @@ export default class RoomView extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({ label: I18n.t('Read_Receipt'), handler: () => this.handleReadReceipt(item), icon: 'flag' });
 		}
-		EventEmitter.emit(LISTNER, { options, snapPoint: SNAP_PONITS.HALF });
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.HALF });
 	}
 
 

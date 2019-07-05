@@ -11,7 +11,7 @@ import vibrate from '../utils/throttle';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_SEPARATOR } from '../constants/colors';
 
 /*
-To use this emmit an event to LISTNER and pass an object with snapPoint and options as parameter
+To use this emit an event to LISTENER and pass an object with snapPoint and options as parameter
 
 example object = {
 	snapPoint: SNAP_POINT.HALF,
@@ -19,8 +19,8 @@ example object = {
 }
 
 option object that you pass should have
-1. lable
-2. hadler
+1. label
+2. handler
 3. icon // if not provided gives an flag icon
 
 example optionObject : {
@@ -31,8 +31,8 @@ example optionObject : {
 
 */
 
-export const LISTNER = 'actionSheet';
-export const SNAP_PONITS = {
+export const LISTENER = 'actionSheet';
+export const SNAP_POINTS = {
 	HIDE: 0,
 	SHORT: 1,
 	HALF: 2,
@@ -40,7 +40,7 @@ export const SNAP_PONITS = {
 };
 
 const bottomSheetHeaderHeight = 25;
-const buttonPaddingsSize = verticalScale(35);
+const buttonPaddingSize = verticalScale(35);
 const textSize = 13;
 
 const styles = StyleSheet.create({
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 	panelButton: {
 		padding: verticalScale(15),
 		backgroundColor: 'transparent',
-		borderBottomWidth: 1,
+		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: COLOR_SEPARATOR,
 		flexDirection: 'row'
 	},
@@ -63,9 +63,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingTop: 15,
 		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20
-	},
-	panelHeader: {
+		borderTopRightRadius: 20,
 		alignItems: 'center'
 	},
 	panelHandle: {
@@ -80,24 +78,18 @@ export default class ActionSheet extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: [
-				{ label: 'Permalink', handler: this.dummy, icon: 'permalink' },
-				{ label: 'Copy', handler: this.dummy, icon: 'copy' },
-				{ label: 'Share', handler: this.dummy, icon: 'share' }
-			]
+			options: []
 		};
 		this.bottomSheetRef = React.createRef();
 	}
 
 	componentDidMount() {
-		EventEmitter.addEventListener(LISTNER, this.handleDisplay);
+		EventEmitter.addEventListener(LISTENER, this.handleDisplay);
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener(LISTNER);
+		EventEmitter.removeListener(LISTENER);
 	}
-
-	dummy = () => {}
 
 	handleDisplay = (args) => {
 		this.setState({ options: args.options });
@@ -112,15 +104,13 @@ export default class ActionSheet extends React.Component {
 
 	renderHeader = () => (
 		<View style={styles.header}>
-			<View style={styles.panelHeader}>
-				<View style={styles.panelHandle} />
-			</View>
+			<View style={styles.panelHandle} />
 		</View>
 	);
 
 	buttonIcon = (icon) => {
 		if (!icon) {
-			icon = 'flag';
+			return null;
 		}
 		return (
 			<CustomIcon name={icon} size={18} style={styles.panelButtonIcon} />
@@ -131,13 +121,18 @@ export default class ActionSheet extends React.Component {
 		<Text style={sharedStyles.textRegular}>{label}</Text>
 	)
 
+	onOptionPress = (action) => {
+		action();
+		this.hideActionSheet();
+	}
+
 	renderInner = () => {
 		const { options } = this.state;
-		const height = options.length * buttonPaddingsSize + options.length * textSize + bottomSheetHeaderHeight;
+		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight;
 		return (
 			<View style={[styles.panel, { height }]}>
 				{options.map(option => (
-					<Touchable onPress={() => { this.hideActionSheet(); option.handler(); }} key={option.label}>
+					<Touchable onPress={() => this.onOptionPress(option.handler)} key={option.label}>
 						<View style={styles.panelButton}>
 							{this.buttonIcon(option.icon)}
 							{this.buttonText(option.label)}
