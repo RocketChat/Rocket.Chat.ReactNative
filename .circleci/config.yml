@@ -153,6 +153,9 @@ jobs:
           paths:
             - ~/.gradle
       - run:
+          command: echo -e "console.disableYellowBox = true;" >> ./index.js
+          name: Append "console.disableYellowBox = true;" to index.js
+      - run:
           background: true
           command: react-native start
           name: Start Metro Packager (Background)
@@ -208,8 +211,6 @@ jobs:
           name: Detox Test
       - store_artifacts:
           path: /tmp/screenshots
-# TODO append console.disableYellowBox = true; to index.js
-
 
   android-build:
     <<: *defaults
