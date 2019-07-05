@@ -120,6 +120,7 @@ export default {
 	Copied_to_clipboard: 'Скопировано в буфер обмена!',
 	Copy: 'Копировать',
 	Permalink: 'постоянную ссылку',
+	Mark_as_unread: 'пометить как непрочитанное',
 	Create_account: 'Создать аккаунт',
 	Create_Channel: 'Создать канал',
 	Create: 'Создать',

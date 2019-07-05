@@ -82,6 +82,10 @@ export default class MessageActions extends React.Component {
 			this.REPLY_INDEX = this.options.length - 1;
 		}
 
+		// Mark as unread
+		this.options.push(I18n.t('Mark_as_unread'));
+		this.UNREAD_INDEX = this.options.length - 1;
+
 		// Edit
 		if (this.allowEdit(props)) {
 			this.options.push(I18n.t('Edit'));
@@ -310,6 +314,16 @@ export default class MessageActions extends React.Component {
 		replyInit(actionMessage, true);
 	}
 
+	handleUnread = () => {
+		const { actionMessage } = this.props;
+		try {
+			RocketChat.markMessageAsUnread(actionMessage._id);
+			Navigation.navigate('RoomsListView');
+		} catch (err) {
+			log('err_mark_unread_message', err);
+		}
+	}
+
 	handleQuote = () => {
 		const { actionMessage, replyInit } = this.props;
 		replyInit(actionMessage, false);
@@ -357,6 +371,9 @@ export default class MessageActions extends React.Component {
 			switch (actionIndex) {
 				case this.REPLY_INDEX:
 					this.handleReply();
+					break;
+				case this.UNREAD_INDEX:
+					this.handleUnread();
 					break;
 				case this.EDIT_INDEX:
 					this.handleEdit();

@@ -129,6 +129,7 @@ export default {
 	Copied_to_clipboard: '复制到剪贴板',
 	Copy: '复制',
 	Permalink: '永久链接',
+	Mark_as_unread: '设置为已读',
 	Create_account: '创建账户',
 	Create_Channel: '创建频道',
 	Create_a_new_workspace: '创建一个新的工作区',
