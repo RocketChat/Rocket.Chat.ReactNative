@@ -107,7 +107,7 @@ export default StyleSheet.create({
 	},
 	actionButtonLeft: {
 		flex: 1,
-		backgroundColor: '#497AFC',
+		backgroundColor: '#ccc',
 		justifyContent: 'center',
 		alignItems: 'flex-end'
 	},
@@ -124,7 +124,8 @@ export default StyleSheet.create({
 		backgroundColor: '#55585D'
 	},
 	actionView: {
-		width: 80,
+		width: 78,
+		height: '100%',
 		alignItems: 'center'
 	},
 	leftAction: {

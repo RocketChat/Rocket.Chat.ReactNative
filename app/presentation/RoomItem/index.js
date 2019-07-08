@@ -1,10 +1,18 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { View, Text, Animated } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
+// import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
+import Animated from 'react-native-reanimated';
+import { State, RectButton } from 'react-native-gesture-handler';
+import Interactable from './Interactable';
+
+const { cond, eq, call } = Animated;
+
+const Screen = Dimensions.get('window');
+const BUTTON_WIDTH = 78
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
 import styles, { ROW_HEIGHT } from './styles';
@@ -58,125 +66,69 @@ export default class RoomItem extends React.Component {
 
 	// Making jest happy: https://github.com/facebook/react-native/issues/22175
 	// eslint-disable-next-line no-useless-constructor
+	// constructor(props) {
+	// 	super(props);
+	// 	const dragX = new Animated.Value(0);
+	// 	const rowOffSet = new Animated.Value(0);
+	// 	this.rowTranslation = Animated.add(
+	// 		rowOffSet,
+	// 		dragX
+	// 	);
+	// 	this.state = {
+	// 		dragX,
+	// 		rowOffSet,
+	// 		rowState: 0 // 0: closed, 1: right opened, -1: left opened
+	// 	};
+	// 	this._onGestureEvent = Animated.event(
+	// 		[{ nativeEvent: { translationX: dragX } }]
+	// 	);
+	// 	this._value = 0;
+	// 	this.rowTranslation.addListener(({ value }) => { this._value = value; });
+	// }
+	// button = React.createRef();
+
 	constructor(props) {
 		super(props);
-		const dragX = new Animated.Value(0);
-		const rowOffSet = new Animated.Value(0);
-		this.rowTranslation = Animated.add(
-			rowOffSet,
-			dragX
-		);
+		this._deltaX = new Animated.Value(0);
 		this.state = {
-			dragX,
-			rowOffSet,
-			rowState: 0 // 0: closed, 1: right opened, -1: left opened
-		};
-		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: dragX } }]
-		);
-		this._value = 0;
-		this.rowTranslation.addListener(({ value }) => { this._value = value; });
+			position: 1
+		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt, isRead } = this.props;
-		const oldlastMessage = lastMessage;
-		const newLastmessage = nextProps.lastMessage;
+	// shouldComponentUpdate(nextProps) {
+	// 	const { lastMessage, _updatedAt, isRead } = this.props;
+	// 	const oldlastMessage = lastMessage;
+	// 	const newLastmessage = nextProps.lastMessage;
 
-		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-			return true;
-		}
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
-			return true;
-		}
-		if (isRead !== nextProps.isRead) {
-			return true;
-		}
-		// eslint-disable-next-line react/destructuring-assignment
-		return attrs.some(key => nextProps[key] !== this.props[key]);
-	}
+	// 	if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+	// 		return true;
+	// 	}
+	// 	if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
+	// 		return true;
+	// 	}
+	// 	if (isRead !== nextProps.isRead) {
+	// 		return true;
+	// 	}
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	return attrs.some(key => nextProps[key] !== this.props[key]);
+	// }
 
-	componentWillUnmount() {
-		this.rowTranslation.removeAllListeners();
-	}
+	// componentWillUnmount() {
+	// 	this.rowTranslation.removeAllListeners();
+	// }
 
-	_onHandlerStateChange = ({ nativeEvent }) => {
-		if (nativeEvent.oldState === State.ACTIVE) {
-			this._handleRelease(nativeEvent);
-		}
-	};
-
-	_handleRelease = (nativeEvent) => {
-		const { translationX } = nativeEvent;
-		const { rowState } = this.state;
-		const { width } = this.props;
-		const halfScreen = width / 2;
-		let toValue = 0;
-		if (rowState === 0) { // if no option is opened
-			if (translationX > 0 && translationX < halfScreen) {
-				toValue = OPTION_WIDTH; // open left option if he swipe right but not enough to trigger action
-				this.setState({ rowState: -1 });
-			} else if (translationX >= halfScreen) {
-				toValue = 0;
-				this.toggleRead();
-			} else if (translationX < 0 && translationX > -halfScreen) {
-				toValue = -2 * OPTION_WIDTH; // open right option if he swipe left
-				this.setState({ rowState: 1 });
-			} else if (translationX <= -halfScreen) {
-				toValue = -width;
-				this.hideChannel();
-			} else {
-				toValue = 0;
-			}
-		}
-
-		if (rowState === -1) { // if left option is opened
-			if (this._value < SMALL_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-			} else if (this._value > halfScreen) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-				this.toggleRead();
-			} else {
-				toValue = OPTION_WIDTH;
-			}
-		}
-
-		if (rowState === 1) { // if right option is opened
-			if (this._value > -2 * SMALL_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-			} else if (this._value < -halfScreen) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-				this.hideChannel();
-			} else {
-				toValue = -2 * OPTION_WIDTH;
-			}
-		}
-		this._animateRow(toValue);
-	}
-
-	_animateRow = (toValue) => {
-		const { dragX, rowOffSet } = this.state;
-		rowOffSet.setValue(this._value);
-		dragX.setValue(0);
-		Animated.spring(rowOffSet, {
-			toValue,
-			bounciness: 0
-		}).start();
-	}
+	// _onHandlerStateChange = ({ nativeEvent }) => {
+	// 	if (nativeEvent.oldState === State.ACTIVE) {
+	// 		this._handleRelease(nativeEvent);
+	// 	}
+	// };
 
 	handleLeftButtonPress = () => {
 		this.toggleRead();
 		this.close();
 	}
 
-	close = () => {
-		this.setState({ rowState: 0 });
-		this._animateRow(0);
-	}
+	close = () => this.interactableElem && this.interactableElem._snapAnchor && this.interactableElem._snapAnchor.x && this.interactableElem._snapAnchor.x.setValue(0)
 
 	toggleFav = () => {
 		const { toggleFav, rid, favorite } = this.props;
@@ -206,8 +158,8 @@ export default class RoomItem extends React.Component {
 	}
 
 	onPress = () => {
-		const { rowState } = this.state;
-		if (rowState !== 0) {
+		const { position } = this.state;
+		if (position !== 1) {
 			this.close();
 			return;
 		}
@@ -219,27 +171,75 @@ export default class RoomItem extends React.Component {
 
 	renderLeftActions = () => {
 		const { isRead, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH],
-			outputRange: [-width, -width + OPTION_WIDTH]
-		});
+		// const halfWidth = width / 2;
+		// const trans = this.rowTranslation.interpolate({
+		// 	inputRange: [0, OPTION_WIDTH],
+		// 	outputRange: [-width, -width + OPTION_WIDTH]
+		// });
 
-		const iconTrans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH, halfWidth - 1, halfWidth, width],
-			outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
-		});
+		// const iconTrans = this.rowTranslation.interpolate({
+		// 	inputRange: [0, OPTION_WIDTH, halfWidth - 1, halfWidth, width],
+		// 	outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
+		// });
+		// return (
+		// 	<Animated.View
+		// 		style={[
+		// 			styles.leftAction,
+		// 			{ transform: [{ translateX: trans }] }
+		// 		]}
+		// 	>
+		// 		<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
+		// 			<Animated.View
+		// 				style={{ transform: [{ translateX: iconTrans }] }}
+		// 			>
+		// 				{isRead ? (
+		// 					<View style={styles.actionView}>
+		// 						<CustomIcon size={20} name='flag' color='white' />
+		// 						<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
+		// 					</View>
+		// 				) : (
+		// 					<View style={styles.actionView}>
+		// 						<CustomIcon size={20} name='check' color='white' />
+		// 						<Text style={styles.actionText}>{I18n.t('Read')}</Text>
+		// 					</View>
+		// 				)}
+		// 			</Animated.View>
+		// 		</RectButton>
+		// 	</Animated.View>
+		// );
 		return (
-			<Animated.View
-				style={[
-					styles.leftAction,
-					{ transform: [{ translateX: trans }] }
-				]}
+			<View
+				style={{ position: 'absolute', left: 0, right: 0, height: 75 }}
+				// pointerEvents='box-none'
 			>
-				<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
-					<Animated.View
-						style={{ transform: [{ translateX: iconTrans }] }}
-					>
+				<Animated.View
+					style={[
+						{
+							position: 'absolute',
+							top: 0,
+							right: Screen.width - 78,
+							width: Screen.width,
+							height: 75,
+							paddingRight: 18,
+							backgroundColor: '#497AFC',
+							justifyContent: 'center',
+							alignItems: 'flex-end',
+						},
+						{
+							transform: [
+								{
+									translateX: this._deltaX.interpolate({
+										inputRange: [0, 78],
+										outputRange: [-78, 0],
+									}),
+								},
+							],
+						},
+					]}>
+					<RectButton style={styles.actionButtonLeft} onPress={() => this.handleLeftButtonPress()}>
+						{/* <Animated.View
+							style={{ transform: [{ translateX: iconTrans }] }}
+						> */}
 						{isRead ? (
 							<View style={styles.actionView}>
 								<CustomIcon size={20} name='flag' color='white' />
@@ -251,42 +251,109 @@ export default class RoomItem extends React.Component {
 								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
 							</View>
 						)}
-					</Animated.View>
-				</RectButton>
-			</Animated.View>
-		);
+						{/* </Animated.View> */}
+					</RectButton>
+				</Animated.View>
+			</View>
+		)
 	};
 
 	renderRightActions = () => {
 		const { favorite, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [-OPTION_WIDTH, 0],
-			outputRange: [width - OPTION_WIDTH, width]
-		});
-		const iconHideTrans = this.rowTranslation.interpolate({
-			inputRange: [-(halfWidth - 20), -2 * OPTION_WIDTH, 0],
-			outputRange: [0, 0, -OPTION_WIDTH]
-		});
-		const iconFavWidth = this.rowTranslation.interpolate({
-			inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
-			extrapolate: 'clamp'
-		});
-		const iconHideWidth = this.rowTranslation.interpolate({
-			inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
-		});
+		// const halfWidth = width / 2;
+		// const trans = this.rowTranslation.interpolate({
+		// 	inputRange: [-OPTION_WIDTH, 0],
+		// 	outputRange: [width - OPTION_WIDTH, width]
+		// });
+		// const iconHideTrans = this.rowTranslation.interpolate({
+		// 	inputRange: [-(halfWidth - 20), -2 * OPTION_WIDTH, 0],
+		// 	outputRange: [0, 0, -OPTION_WIDTH]
+		// });
+		// const iconFavWidth = this.rowTranslation.interpolate({
+		// 	inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
+		// 	outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
+		// 	extrapolate: 'clamp'
+		// });
+		// const iconHideWidth = this.rowTranslation.interpolate({
+		// 	inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
+		// 	outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
+		// });
+		// return (
+		// 	<Animated.View
+		// 		style={[
+		// 			styles.rightAction,
+		// 			{ transform: [{ translateX: trans }] }
+		// 		]}
+		// 	>
+		// 		<Animated.View
+		// 			style={{ width: iconFavWidth }}
+		// 		>
+		// 			<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
+		// 				{favorite ? (
+		// 					<View style={styles.actionView}>
+		// 						<CustomIcon size={20} name='Star-filled' color='white' />
+		// 						<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
+		// 					</View>
+		// 				) : (
+		// 					<View style={styles.actionView}>
+		// 						<CustomIcon size={20} name='star' color='white' />
+		// 						<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
+		// 					</View>
+		// 				)}
+		// 			</RectButton>
+		// 		</Animated.View>
+		// 		<Animated.View style={[
+		// 			{ width: iconHideWidth },
+		// 			{ transform: [{ translateX: iconHideTrans }] }
+		// 		]}
+		// 		>
+		// 			<RectButton
+		// 				style={[styles.actionButtonRightHide]}
+		// 				onPress={this.handleHideButtonPress}
+		// 			>
+		// 				<View style={styles.actionView}>
+		// 					<CustomIcon size={20} name='eye-off' color='white' />
+		// 					<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
+		// 				</View>
+		// 			</RectButton>
+		// 		</Animated.View>
+		// 	</Animated.View>
+		// );
 		return (
-			<Animated.View
-				style={[
-					styles.rightAction,
-					{ transform: [{ translateX: trans }] }
-				]}
+			<View
+				style={{ position: 'absolute', left: 0, right: 0, height: 75 }}
+				// pointerEvents="box-none"
 			>
 				<Animated.View
-					style={{ width: iconFavWidth }}
-				>
+					style={[
+						{
+							position: 'absolute',
+							top: 0,
+							// left: Screen.width - 155,
+							width: Screen.width,  // change me
+							height: 75,
+							// paddingLeft: 18,
+							backgroundColor: '#f8a024',
+							justifyContent: 'center',
+						},
+						{
+							// transform: [
+							//   {
+							//     translateX: Screen.width - BUTTON_WIDTH * 2
+							//   }
+							// ]
+							transform: [
+								{
+									translateX: this._deltaX.interpolate({
+										inputRange: [-Screen.width / 2, -BUTTON_WIDTH * 2, 0],
+										outputRange: [Screen.width / 2, Screen.width - BUTTON_WIDTH * 2, Screen.width],
+										// extrapolate: Animated.Extrapolate.CLAMP
+									}),
+									// translateX: iconHideTrans
+								},
+							],
+						},
+					]}>
 					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
 						{favorite ? (
 							<View style={styles.actionView}>
@@ -301,11 +368,45 @@ export default class RoomItem extends React.Component {
 						)}
 					</RectButton>
 				</Animated.View>
-				<Animated.View style={[
-					{ width: iconHideWidth },
-					{ transform: [{ translateX: iconHideTrans }] }
-				]}
-				>
+
+				<Animated.View
+					style={[
+						{
+							position: 'absolute',
+							top: 0,
+							// left: Screen.width - 78,
+							width: Screen.width, // change me
+							height: 75,
+							// paddingLeft: 18,
+							backgroundColor: '#4f7db0',
+							justifyContent: 'center',
+						},
+						{
+							// transform: [
+							//   {
+							//     translateX: Screen.width - BUTTON_WIDTH
+							//   }
+							// ]
+							transform: [
+								{
+									translateX: this._deltaX.interpolate({
+										inputRange: [-Screen.width, -Screen.width / 2, -Screen.width / 2 + 5, -BUTTON_WIDTH * 2, 0],
+										outputRange: [0, Screen.width / 2, Screen.width - BUTTON_WIDTH, Screen.width - BUTTON_WIDTH, Screen.width + BUTTON_WIDTH],
+									// extrapolate: Animated.Extrapolate.CLAMP
+									}),
+								}
+							]
+							// transform: [
+							//   {
+							//     translateX: this._deltaX.interpolate({
+							//       inputRange: [-155, 0],
+							//       outputRange: [0, 78],
+							//       // extrapolate: Animated.Extrapolate.CLAMP
+							//     }),
+							//   },
+							// ],
+						},
+					]}>
 					<RectButton
 						style={[styles.actionButtonRightHide]}
 						onPress={this.handleHideButtonPress}
@@ -316,7 +417,7 @@ export default class RoomItem extends React.Component {
 						</View>
 					</RectButton>
 				</Animated.View>
-			</Animated.View>
+			</View>
 		);
 	}
 
@@ -327,10 +428,22 @@ export default class RoomItem extends React.Component {
 		sameElse: 'MMM D'
 	})
 
+	// onButtonPress(name) {
+	// 	alert(`Button ${name} pressed`);
+	//   }
+
+	onSnap = ({ nativeEvent }) => {
+		const { index } = nativeEvent;
+		this.setState({ position: index });
+	}
+
+	onDrag = e => console.log('drag', e)
+
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, width
 		} = this.props;
+		const halfWidth = width / 2;
 
 		const date = this.formatDate(_updatedAt);
 
@@ -350,21 +463,33 @@ export default class RoomItem extends React.Component {
 		}
 
 		return (
-			<PanGestureHandler
-				minDeltaX={10}
-				onGestureEvent={this._onGestureEvent}
-				onHandlerStateChange={this._onHandlerStateChange}
-			>
-				<View style={styles.upperContainer}>
-					{this.renderLeftActions()}
-					{this.renderRightActions()}
-					<Animated.View
-						style={
-							{
-								transform: [{ translateX: this.rowTranslation }]
-							}
+			<View style={{ backgroundColor: '#ceced2' }}>
+				{this.renderLeftActions()}
+				{/* {this.renderRightActions()} */}
+				<Interactable.View
+					ref={el => (this.interactableElem = el)}
+					horizontalOnly
+					snapPoints={[
+						{
+							x: 78,
+							damping: 1 - this.props.damping,
+							tension: this.props.tension,
+						},
+						{
+							x: 0,
+							damping: 1 - this.props.damping,
+							tension: this.props.tension,
+						},
+						{
+							x: -155,
+							damping: 1 - this.props.damping,
+							tension: this.props.tension,
 						}
-					>
+					]}
+					animatedValueX={this._deltaX}
+					onDrag={this.onDrag}
+					onSnap={this.onSnap}>
+					<View style={{ left: 0, right: 0, height: 75, backgroundColor: 'white' }}>
 						<RectButton
 							onPress={this.onPress}
 							activeOpacity={0.8}
@@ -390,9 +515,9 @@ export default class RoomItem extends React.Component {
 								</View>
 							</View>
 						</RectButton>
-					</Animated.View>
-				</View>
-			</PanGestureHandler>
+					</View>
+				</Interactable.View>
+			</View>
 		);
 	}
 }
