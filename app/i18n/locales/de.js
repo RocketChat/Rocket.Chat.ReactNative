@@ -270,7 +270,7 @@ export default {
 	Reactions_are_disabled: 'Reaktionen sind deaktiviert',
 	Reactions_are_enabled: 'Reaktionen sind aktiviert',
 	Reactions: 'Reaktionen',
-	Read: 'Lesen',
+	Read: 'Gelesen',
 	Read_Only_Channel: 'Nur-Lese-Kanal',
 	Read_Only: 'Schreibgeschützt',
 	Read_Receipt: 'Lesebestätigung',
