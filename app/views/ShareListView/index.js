@@ -8,7 +8,9 @@ import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
+import { isEqual } from 'lodash';
 
+import RocketChat from '../../lib/rocketchat';
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
@@ -21,6 +23,9 @@ import log from '../../utils/log';
 import styles from './styles';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton } from '../../containers/HeaderButton';
+import SearchBar from '../RoomsListView/ListHeader/SearchBar';
+
+const SCROLL_OFFSET = 56;
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
@@ -29,6 +34,7 @@ const keyExtractor = item => item.rid;
 	userId: state.login.user && state.login.user.id,
 	token: state.login.user && state.login.user.token,
 	useRealName: state.settings.UI_Use_Real_Name,
+	searchText: state.rooms.searchText,
 	server: state.server.server,
 	loadingServer: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
@@ -50,6 +56,7 @@ export default class ShareListView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		useRealName: PropTypes.bool,
+		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number
@@ -64,6 +71,7 @@ export default class ShareListView extends React.Component {
 			mediaLoading: false,
 			loading: true,
 			fileInfo: null,
+			search: [],
 			discussions: [],
 			channels: [],
 			privateGroup: [],
@@ -101,7 +109,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { loadingServer } = this.props;
+		const { loadingServer, searchText } = this.props;
 
 		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
 			if (nextProps.loadingServer) {
@@ -109,6 +117,8 @@ export default class ShareListView extends React.Component {
 			} else {
 				this.getSubscriptions();
 			}
+		} else if (searchText !== nextProps.searchText) {
+			this.search(nextProps.searchText);
 		}
 	}
 
@@ -118,6 +128,10 @@ export default class ShareListView extends React.Component {
 			return true;
 		}
 
+		const { search } = this.state;
+		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -176,6 +190,26 @@ export default class ShareListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
+	_onPressItem = async(item = {}) => {
+		if (!item.search) {
+			return this.shareMessage(item);
+		}
+		if (item.t === 'd') {
+			// if user is using the search we need first to join/create room
+			try {
+				const { username } = item;
+				const result = await RocketChat.createDirectMessage(username);
+				if (result.success) {
+					return this.shareMessage({ rid: result.room._id, name: username, t: 'd' });
+				}
+			} catch (e) {
+				log('err_on_press_item', e);
+			}
+		} else {
+			return this.shareMessage(item);
+		}
+	}
+
 	shareMessage = (item) => {
 		const { value, isMedia, fileInfo } = this.state;
 		const { navigation } = this.props;
@@ -217,6 +251,15 @@ export default class ShareListView extends React.Component {
 		return false;
 	}
 
+	search = async(text) => {
+		const result = await RocketChat.search({ text });
+		this.internalSetState({
+			search: result
+		});
+	}
+
+	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
+
 	renderScrollView = () => {
 		const { mediaLoading, loading } = this.state;
 		if (mediaLoading || loading) {
@@ -224,16 +267,41 @@ export default class ShareListView extends React.Component {
 		}
 
 		return (
-			<ScrollView style={styles.scroll} keyboardShouldPersistTaps='always'>
+			<ScrollView
+				style={styles.scroll}
+				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				keyboardShouldPersistTaps='never'
+			>
+				{this.renderListHeader()}
 				{this.renderContent()}
 			</ScrollView>
 		);
 	}
 
+	getScrollRef = ref => this.scroll = ref;
+
 	renderContent = () => {
 		const {
-			discussions, channels, privateGroup, direct, livechat
+			discussions, channels, privateGroup, direct, livechat, search
 		} = this.state;
+
+		if (search.length > 0) {
+			return (
+				<FlatList
+					data={search}
+					extraData={search}
+					keyExtractor={keyExtractor}
+					style={styles.list}
+					renderItem={this.renderItem}
+					getItemLayout={getItemLayout}
+					enableEmptySections
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+					initialNumToRender={12}
+					windowSize={7}
+				/>
+			);
+		}
 
 		return (
 			<View style={styles.content}>
@@ -256,12 +324,12 @@ export default class ShareListView extends React.Component {
 	);
 
 	renderItem = ({ item }) => {
-		if (item.isValid && item.isValid()) {
+		if (item.search || (item.isValid && item.isValid())) {
 			return (
 				<ShareItem
 					type={item.t}
 					name={this.getRoomTitle(item)}
-					onPress={() => this.shareMessage(item)}
+					onPress={() => this._onPressItem(item)}
 				/>
 			);
 		}
