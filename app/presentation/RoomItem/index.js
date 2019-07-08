@@ -15,7 +15,7 @@ const Screen = Dimensions.get('window');
 const BUTTON_WIDTH = 78
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
-import styles, { ROW_HEIGHT } from './styles';
+import styles, { ROW_HEIGHT, OPTION_WIDTH } from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
@@ -23,7 +23,6 @@ import { CustomIcon } from '../../lib/Icons';
 
 export { ROW_HEIGHT };
 
-const OPTION_WIDTH = 80;
 const SMALL_SWIPE = 40;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
 @connect(state => ({
@@ -125,7 +124,9 @@ export default class RoomItem extends React.Component {
 
 	handleLeftButtonPress = () => {
 		this.toggleRead();
-		this.close();
+		setTimeout(() => {
+			this.close();
+		})
 	}
 
 	close = () => this.interactableElem && this.interactableElem._snapAnchor && this.interactableElem._snapAnchor.x && this.interactableElem._snapAnchor.x.setValue(0)
@@ -171,45 +172,13 @@ export default class RoomItem extends React.Component {
 
 	renderLeftActions = () => {
 		const { isRead, width } = this.props;
-		// const halfWidth = width / 2;
-		// const trans = this.rowTranslation.interpolate({
-		// 	inputRange: [0, OPTION_WIDTH],
-		// 	outputRange: [-width, -width + OPTION_WIDTH]
-		// });
-
-		// const iconTrans = this.rowTranslation.interpolate({
-		// 	inputRange: [0, OPTION_WIDTH, halfWidth - 1, halfWidth, width],
-		// 	outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
-		// });
-		// return (
-		// 	<Animated.View
-		// 		style={[
-		// 			styles.leftAction,
-		// 			{ transform: [{ translateX: trans }] }
-		// 		]}
-		// 	>
-		// 		<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
-		// 			<Animated.View
-		// 				style={{ transform: [{ translateX: iconTrans }] }}
-		// 			>
-		// 				{isRead ? (
-		// 					<View style={styles.actionView}>
-		// 						<CustomIcon size={20} name='flag' color='white' />
-		// 						<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
-		// 					</View>
-		// 				) : (
-		// 					<View style={styles.actionView}>
-		// 						<CustomIcon size={20} name='check' color='white' />
-		// 						<Text style={styles.actionText}>{I18n.t('Read')}</Text>
-		// 					</View>
-		// 				)}
-		// 			</Animated.View>
-		// 		</RectButton>
-		// 	</Animated.View>
-		// );
+		const translateX = this._deltaX.interpolate({
+			inputRange: [0, OPTION_WIDTH],
+			outputRange: [-OPTION_WIDTH, 0]
+		});
 		return (
 			<View
-				style={{ position: 'absolute', left: 0, right: 0, height: 75 }}
+				style={{ position: 'absolute', left: 0, right: 0, height: '100%' }}
 				// pointerEvents='box-none'
 			>
 				<Animated.View
@@ -217,41 +186,23 @@ export default class RoomItem extends React.Component {
 						{
 							position: 'absolute',
 							top: 0,
-							right: Screen.width - 78,
-							width: Screen.width,
-							height: 75,
-							paddingRight: 18,
+							right: width - OPTION_WIDTH,
+							width,
+							height: '100%',
 							backgroundColor: '#497AFC',
 							justifyContent: 'center',
-							alignItems: 'flex-end',
+							alignItems: 'flex-end'
 						},
 						{
-							transform: [
-								{
-									translateX: this._deltaX.interpolate({
-										inputRange: [0, 78],
-										outputRange: [-78, 0],
-									}),
-								},
-							],
-						},
-					]}>
-					<RectButton style={styles.actionButtonLeft} onPress={() => this.handleLeftButtonPress()}>
-						{/* <Animated.View
-							style={{ transform: [{ translateX: iconTrans }] }}
-						> */}
-						{isRead ? (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='flag' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
-							</View>
-						) : (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='check' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
-							</View>
-						)}
-						{/* </Animated.View> */}
+							transform: [{ translateX }]
+						}
+					]}
+				>
+					<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
+						<React.Fragment>
+							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
+							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+						</React.Fragment>
 					</RectButton>
 				</Animated.View>
 			</View>

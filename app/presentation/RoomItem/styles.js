@@ -6,6 +6,7 @@ import {
 } from '../../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const OPTION_WIDTH = 80;
 
 export default StyleSheet.create({
 	container: {
@@ -106,10 +107,13 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	actionButtonLeft: {
-		flex: 1,
-		backgroundColor: '#ccc',
+		// flex: 1,
+		width: OPTION_WIDTH,
+		height: '100%',
+		alignItems: 'center',
+		// backgroundColor: '#ccc',
 		justifyContent: 'center',
-		alignItems: 'flex-end'
+		// alignItems: 'flex-end'
 	},
 	actionButtonRightFav: {
 		flex: 1,
@@ -124,7 +128,7 @@ export default StyleSheet.create({
 		backgroundColor: '#55585D'
 	},
 	actionView: {
-		width: 78,
+		width: OPTION_WIDTH,
 		height: '100%',
 		alignItems: 'center'
 	},
