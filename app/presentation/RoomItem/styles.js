@@ -109,8 +109,7 @@ export default StyleSheet.create({
 	actionLeftButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,
-		backgroundColor: COLOR_PRIMARY,
-		alignItems: 'flex-end'
+		backgroundColor: COLOR_PRIMARY
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
