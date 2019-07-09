@@ -22469,7 +22469,92 @@ exports[`Storyshots RoomItem list 1`] = `
     >
       Basic
     </Text>
-    View
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
     <Text
       style={
         Array [
@@ -22485,8 +22570,178 @@ exports[`Storyshots RoomItem list 1`] = `
     >
       User
     </Text>
-    View
-    View
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
     <Text
       style={
         Array [
@@ -22502,11 +22757,436 @@ exports[`Storyshots RoomItem list 1`] = `
     >
       Type
     </Text>
-    View
-    View
-    View
-    View
-    View
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
     <Text
       style={
         Array [
@@ -22522,15 +23202,780 @@ exports[`Storyshots RoomItem list 1`] = `
     >
       Alerts
     </Text>
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
-    View
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
     <Text
       style={
         Array [
@@ -22546,12 +23991,522 @@ exports[`Storyshots RoomItem list 1`] = `
     >
       Last Message
     </Text>
-    View
-    View
-    View
-    View
-    View
-    View
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "left": -750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "height": "100%",
+              "left": 670,
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+            }
+          }
+        >
+          View
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#ffbb00",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "height": 150,
+              "position": "absolute",
+            },
+            Object {
+              "backgroundColor": "#54585e",
+              "left": 750,
+              "transform": Array [
+                Object {
+                  "translateX": undefined,
+                },
+              ],
+              "width": 750,
+            },
+          ]
+        }
+      >
+        View
+      </View>
+      View
+    </View>
   </View>
 </RCTScrollView>
 `;
