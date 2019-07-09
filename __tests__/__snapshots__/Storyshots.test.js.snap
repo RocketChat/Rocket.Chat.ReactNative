@@ -22543,13 +22543,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22566,13 +22566,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22677,13 +22677,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22700,13 +22700,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22796,13 +22796,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22819,13 +22819,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22930,13 +22930,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -22953,13 +22953,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23049,13 +23049,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23072,13 +23072,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23168,13 +23168,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23191,13 +23191,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23287,13 +23287,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23310,13 +23310,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23406,13 +23406,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23429,13 +23429,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23540,13 +23540,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23563,13 +23563,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23659,13 +23659,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23682,13 +23682,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23778,13 +23778,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23801,13 +23801,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23897,13 +23897,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -23920,13 +23920,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24016,13 +24016,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24039,13 +24039,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24135,13 +24135,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24158,13 +24158,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24254,13 +24254,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24277,13 +24277,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24373,13 +24373,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24396,13 +24396,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24492,13 +24492,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24515,13 +24515,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24626,13 +24626,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24649,13 +24649,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24745,13 +24745,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24768,13 +24768,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24864,13 +24864,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24887,13 +24887,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -24983,13 +24983,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -25006,13 +25006,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -25102,13 +25102,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -25125,13 +25125,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -25221,13 +25221,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#ffbb00",
                 "transform": Array [
                   Object {
                     "translateX": undefined,
@@ -25244,13 +25244,13 @@ exports[`Storyshots RoomItem list 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
                 "top": 0,
               },
               Object {
-                "backgroundColor": "#54585e",
                 "transform": Array [
                   Object {
                     "translateX": undefined,

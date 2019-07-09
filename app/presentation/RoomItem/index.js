@@ -20,19 +20,13 @@ export { ROW_HEIGHT };
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
 const SNAP_POINTS = [
 	{
-		x: OPTION_WIDTH,
-		damping: 0.7,
-		tension: 300
+		x: OPTION_WIDTH
 	},
 	{
-		x: 0,
-		damping: 0.7,
-		tension: 300
+		x: 0
 	},
 	{
-		x: -OPTION_WIDTH * 2,
-		damping: 0.7,
-		tension: 300
+		x: -OPTION_WIDTH * 2
 	}
 ];
 const LONG_SWIPE = OPTION_WIDTH * 3;
@@ -77,9 +71,7 @@ export default class RoomItem extends React.Component {
 	constructor(props) {
 		super(props);
 		this._deltaX = new Animated.Value(0);
-		this.state = {
-			position: 1
-		};
+		this.state = { position: 1 };
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -104,7 +96,11 @@ export default class RoomItem extends React.Component {
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
 
-	close = () => this.interactableElem && this.interactableElem._snapAnchor && this.interactableElem._snapAnchor.x && this.interactableElem._snapAnchor.x.setValue(0)
+	close = () => {
+		this.interactableElem._dragging = {};
+		this.interactableElem._velocity = {};
+		this.interactableElem.snapTo({ index: 1 });
+	}
 
 	toggleFav = () => {
 		this.close();
@@ -120,7 +116,6 @@ export default class RoomItem extends React.Component {
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
-		this.forceUpdate();
 	}
 
 	hideChannel = () => {
@@ -129,7 +124,6 @@ export default class RoomItem extends React.Component {
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
-		this.forceUpdate();
 	}
 
 	onPress = () => {
@@ -141,6 +135,30 @@ export default class RoomItem extends React.Component {
 		const { onPress } = this.props;
 		if (onPress) {
 			onPress();
+		}
+	}
+
+	formatDate = date => moment(date).calendar(null, {
+		lastDay: `[${ I18n.t('Yesterday') }]`,
+		sameDay: 'h:mm A',
+		lastWeek: 'dddd',
+		sameElse: 'MMM D'
+	})
+
+	onSnap = ({ nativeEvent }) => {
+		const { index } = nativeEvent;
+		this.setState({ position: index });
+	}
+
+	onDrag = (e) => {
+		const { state, x } = e.nativeEvent;
+		if (state === 'end') {
+			if (x >= LONG_SWIPE) {
+				this.toggleRead();
+			}
+			if (x <= -LONG_SWIPE) {
+				this.hideChannel();
+			}
 		}
 	}
 
@@ -211,12 +229,11 @@ export default class RoomItem extends React.Component {
 						styles.actionRightButtonContainer,
 						{
 							width,
-							backgroundColor: '#ffbb00',
 							transform: [{ translateX: translateXFav }]
 						}
 					]}
 				>
-					<RectButton style={styles.actionButton} onPress={this.toggleFav}>
+					<RectButton style={[styles.actionButton, { backgroundColor: '#ffbb00' }]} onPress={this.toggleFav}>
 						<React.Fragment>
 							<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color='white' />
 							<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
@@ -228,12 +245,11 @@ export default class RoomItem extends React.Component {
 						styles.actionRightButtonContainer,
 						{
 							width,
-							backgroundColor: '#54585e',
 							transform: [{ translateX: translateXHide }]
 						}
 					]}
 				>
-					<RectButton style={styles.actionButton} onPress={this.hideChannel}>
+					<RectButton style={[styles.actionButton, { backgroundColor: '#54585e' }]} onPress={this.hideChannel}>
 						<React.Fragment>
 							<CustomIcon size={20} name='eye-off' color='white' />
 							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
@@ -243,30 +259,6 @@ export default class RoomItem extends React.Component {
 			</View>
 		);
 	};
-
-	formatDate = date => moment(date).calendar(null, {
-		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'h:mm A',
-		lastWeek: 'dddd',
-		sameElse: 'MMM D'
-	})
-
-	onSnap = ({ nativeEvent }) => {
-		const { index } = nativeEvent;
-		this.setState({ position: index });
-	}
-
-	onDrag = (e) => {
-		const { state, x } = e.nativeEvent;
-		if (state === 'end') {
-			if (x >= LONG_SWIPE) {
-				this.toggleRead();
-			}
-			if (x <= -LONG_SWIPE) {
-				this.hideChannel();
-			}
-		}
-	}
 
 	render() {
 		const {
@@ -297,6 +289,7 @@ export default class RoomItem extends React.Component {
 					ref={el => (this.interactableElem = el)}
 					horizontalOnly
 					snapPoints={SNAP_POINTS}
+					dragWithSpring={{ tension: 4000, damping: 0.5 }}
 					animatedValueX={this._deltaX}
 					onDrag={this.onDrag}
 					onSnap={this.onSnap}

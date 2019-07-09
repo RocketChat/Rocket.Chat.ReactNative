@@ -510,7 +510,7 @@ class Interactable extends Component {
 				enabled={this.props.dragEnabled}
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onGestureEvent}
-				minDeltaX={10}
+				minDeltaX={20}
 			>
 				<Animated.View
 					style={[

@@ -291,14 +291,14 @@ export default class RoomsListView extends React.Component {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
-				chats: this.chats ? this.chats.slice() : [],
-				unread: this.unread ? this.unread.slice() : [],
-				favorites: this.favorites ? this.favorites.slice() : [],
-				discussions: this.discussions ? this.discussions.slice() : [],
-				channels: this.channels ? this.channels.slice() : [],
-				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
-				direct: this.direct ? this.direct.slice() : [],
-				livechat: this.livechat ? this.livechat.slice() : [],
+				chats: this.chats ? this.chats : [],
+				unread: this.unread ? this.unread : [],
+				favorites: this.favorites ? this.favorites : [],
+				discussions: this.discussions ? this.discussions : [],
+				channels: this.channels ? this.channels : [],
+				privateGroup: this.privateGroup ? this.privateGroup : [],
+				direct: this.direct ? this.direct : [],
+				livechat: this.livechat ? this.livechat : [],
 				loading: false
 			});
 			this.forceUpdate();
