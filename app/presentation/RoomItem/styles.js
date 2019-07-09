@@ -106,41 +106,21 @@ export default StyleSheet.create({
 		marginTop: 4,
 		...sharedStyles.textSemibold
 	},
-	actionButtonLeft: {
-		// flex: 1,
+	actionLeftButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
+		backgroundColor: COLOR_PRIMARY,
+		alignItems: 'flex-end'
+	},
+	actionRightButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
+		alignItems: 'flex-start'
+	},
+	actionButton: {
 		width: OPTION_WIDTH,
 		height: '100%',
 		alignItems: 'center',
-		// backgroundColor: '#ccc',
-		justifyContent: 'center',
-		// alignItems: 'flex-end'
-	},
-	actionButtonRightFav: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start',
-		backgroundColor: '#F4BD3E'
-	},
-	actionButtonRightHide: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start',
-		backgroundColor: '#55585D'
-	},
-	actionView: {
-		width: OPTION_WIDTH,
-		height: '100%',
-		alignItems: 'center'
-	},
-	leftAction: {
-		...StyleSheet.absoluteFill,
-		flexDirection: 'row-reverse'
-	},
-	rightAction: {
-		...StyleSheet.absoluteFill,
-		flexDirection: 'row'
-	},
-	upperContainer: {
-		overflow: 'hidden'
+		justifyContent: 'center'
 	}
 });
