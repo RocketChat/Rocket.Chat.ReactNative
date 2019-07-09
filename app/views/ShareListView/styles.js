@@ -16,7 +16,7 @@ export default StyleSheet.create({
 	},
 	list: {
 		width: '100%',
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		backgroundColor: COLOR_WHITE
 	},
 	content: {
 		flex: 1,

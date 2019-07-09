@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator
+	View, Text, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator, Keyboard
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -14,16 +14,21 @@ import RocketChat from '../../lib/rocketchat';
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
+import {
+	openSearchHeader as openSearchHeaderAction,
+	closeSearchHeader as closeSearchHeaderAction
+} from '../../actions/rooms';
+import ServerItem from '../../presentation/ServerItem';
+import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import SearchBar from '../RoomsListView/ListHeader/SearchBar';
+import ShareListHeader from './Header';
 
 import styles from './styles';
-import ServerItem from '../../presentation/ServerItem';
-import { CloseShareExtensionButton } from '../../containers/HeaderButton';
-import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 
 const SCROLL_OFFSET = 56;
 
@@ -39,18 +44,42 @@ const keyExtractor = item => item.rid;
 	loadingServer: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+}), dispatch => ({
+	openSearchHeader: () => dispatch(openSearchHeaderAction()),
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
-	static navigationOptions = () => ({
-		headerLeft: (
-			<CloseShareExtensionButton
-				onPress={ShareExtension.close}
-				testID='share-extension-close'
-			/>
-		),
-		title: I18n.t('Select_Channels')
-	})
+	static navigationOptions = ({ navigation }) => {
+		const searching = navigation.getParam('searching');
+		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
+		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+
+		return {
+			headerLeft: searching
+				? (
+					<CustomHeaderButtons left>
+						<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+					</CustomHeaderButtons>
+				)
+				: (
+					<CloseShareExtensionButton
+						onPress={ShareExtension.close}
+						testID='share-extension-close'
+					/>
+				),
+			headerTitle: <ShareListHeader />,
+			headerRight: (
+				searching
+					? null
+					: (
+						<CustomHeaderButtons>
+							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
+						</CustomHeaderButtons>
+					)
+			)
+		};
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -59,13 +88,16 @@ export default class ShareListView extends React.Component {
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
-		FileUpload_MaxFileSize: PropTypes.number
+		FileUpload_MaxFileSize: PropTypes.number,
+		openSearchHeader: PropTypes.func,
+		closeSearchHeader: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.data = [];
 		this.state = {
+			searching: false,
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
@@ -83,6 +115,13 @@ export default class ShareListView extends React.Component {
 
 	async componentDidMount() {
 		this.getSubscriptions();
+
+		const { navigation } = this.props;
+		navigation.setParams({
+			initSearchingAndroid: this.initSearchingAndroid,
+			cancelSearchingAndroid: this.cancelSearchingAndroid
+		});
+
 		try {
 			const { value, type } = await ShareExtension.data();
 			let fileInfo = null;
@@ -123,8 +162,11 @@ export default class ShareListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading } = this.state;
+		const { loading, searching } = this.state;
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.searching !== searching) {
 			return true;
 		}
 
@@ -258,6 +300,24 @@ export default class ShareListView extends React.Component {
 		});
 	}
 
+	initSearchingAndroid = () => {
+		const { openSearchHeader, navigation } = this.props;
+		this.setState({ searching: true });
+		navigation.setParams({ searching: true });
+		openSearchHeader();
+	}
+
+	cancelSearchingAndroid = () => {
+		if (isAndroid) {
+			const { closeSearchHeader, navigation } = this.props;
+			this.setState({ searching: false });
+			navigation.setParams({ searching: false });
+			closeSearchHeader();
+			this.internalSetState({ search: [] });
+			Keyboard.dismiss();
+		}
+	}
+
 	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
 
 	renderScrollView = () => {
@@ -294,6 +354,7 @@ export default class ShareListView extends React.Component {
 					style={styles.list}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
+					ItemSeparatorComponent={this.renderSeparator}
 					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
