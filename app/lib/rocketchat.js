@@ -521,7 +521,7 @@ const RocketChat = {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
 	markMessageAsUnread(firstUnreadMessageId) {
-		return this.sdk.post('subscriptions.unread', { firstUnreadMessage : { _id: firstUnreadMessageId } });
+		return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: firstUnreadMessageId } });
 	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
