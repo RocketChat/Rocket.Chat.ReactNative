@@ -82,7 +82,8 @@ export default class RoomItem extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
+		const { position } = this.state;
 		const { lastMessage, _updatedAt, isRead } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
@@ -94,6 +95,9 @@ export default class RoomItem extends React.Component {
 			return true;
 		}
 		if (isRead !== nextProps.isRead) {
+			return true;
+		}
+		if (position !== nextState.position) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -116,6 +120,7 @@ export default class RoomItem extends React.Component {
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
+		this.forceUpdate();
 	}
 
 	hideChannel = () => {
@@ -124,6 +129,7 @@ export default class RoomItem extends React.Component {
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
+		this.forceUpdate();
 	}
 
 	onPress = () => {
