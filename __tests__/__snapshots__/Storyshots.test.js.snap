@@ -22471,87 +22471,120 @@ exports[`Storyshots RoomItem list 1`] = `
     </Text>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
@@ -22572,173 +22605,239 @@ exports[`Storyshots RoomItem list 1`] = `
     </Text>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
@@ -22759,431 +22858,596 @@ exports[`Storyshots RoomItem list 1`] = `
     </Text>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
@@ -23204,775 +23468,1072 @@ exports[`Storyshots RoomItem list 1`] = `
     </Text>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
@@ -23993,517 +24554,715 @@ exports[`Storyshots RoomItem list 1`] = `
     </Text>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>
     <View>
       <View
+        pointerEvents="box-none"
         style={
-          Array [
-            Object {
-              "backgroundColor": "#1d74f5",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "left": -750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
         }
       >
         <View
           style={
-            Object {
-              "height": "100%",
-              "left": 670,
-              "position": "absolute",
-              "transform": Array [
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "right": 670,
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
                 Object {
-                  "translateX": undefined,
+                  "backgroundColor": "#1d74f5",
+                  "height": 150,
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "top": 0,
                 },
-              ],
+                Object {
+                  "right": 0,
+                  "transform": Array [
+                    Object {
+                      "translateX": undefined,
+                    },
+                  ],
+                },
+              ]
             }
+          >
+            View
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "height": 150,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#ffbb00",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
           }
         >
           View
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#ffbb00",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "flex-start",
-              "height": 150,
-              "position": "absolute",
-            },
-            Object {
-              "backgroundColor": "#54585e",
-              "left": 750,
-              "transform": Array [
-                Object {
-                  "translateX": undefined,
-                },
-              ],
-              "width": 750,
-            },
-          ]
-        }
-      >
-        View
+        <View
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+              },
+              Object {
+                "backgroundColor": "#54585e",
+                "transform": Array [
+                  Object {
+                    "translateX": undefined,
+                  },
+                ],
+                "width": 750,
+              },
+            ]
+          }
+        >
+          View
+        </View>
       </View>
       View
     </View>

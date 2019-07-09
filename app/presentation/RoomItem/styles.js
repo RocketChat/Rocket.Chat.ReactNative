@@ -98,6 +98,12 @@ export default StyleSheet.create({
 	avatar: {
 		marginRight: 10
 	},
+	actionsContainer: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: ROW_HEIGHT
+	},
 	actionText: {
 		color: COLOR_WHITE,
 		fontSize: 15,
@@ -109,12 +115,15 @@ export default StyleSheet.create({
 	actionLeftButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,
-		backgroundColor: COLOR_PRIMARY
+		backgroundColor: COLOR_PRIMARY,
+		justifyContent: 'center',
+		top: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,
-		alignItems: 'flex-start'
+		justifyContent: 'center',
+		top: 0
 	},
 	actionButton: {
 		width: OPTION_WIDTH,

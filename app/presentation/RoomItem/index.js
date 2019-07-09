@@ -142,7 +142,7 @@ export default class RoomItem extends React.Component {
 		const { isRead, width } = this.props;
 		const translateX = this._deltaX.interpolate({
 			inputRange: [0, OPTION_WIDTH],
-			outputRange: [0, OPTION_WIDTH]
+			outputRange: [-OPTION_WIDTH, 0]
 		});
 		const translateXIcon = this._deltaX.interpolate({
 			inputRange: [0, OPTION_WIDTH, LONG_SWIPE - 2, LONG_SWIPE],
@@ -150,52 +150,60 @@ export default class RoomItem extends React.Component {
 			extrapolate: Animated.Extrapolate.CLAMP
 		});
 		return (
-			<Animated.View
-				style={[
-					styles.actionLeftButtonContainer,
-					{
-						left: -width,
-						width,
-						transform: [{ translateX }]
-					}
-				]}
+			<View
+				style={styles.actionsContainer}
+				pointerEvents='box-none'
 			>
 				<Animated.View
-					style={{
-						position: 'absolute',
-						height: '100%',
-						left: width - OPTION_WIDTH,
-						transform: [{ translateX: translateXIcon }]
-					}}
+					style={[
+						styles.actionLeftButtonContainer,
+						{
+							right: width - OPTION_WIDTH,
+							width,
+							transform: [{ translateX }]
+						}
+					]}
 				>
-					<RectButton style={styles.actionButton} onPress={this.toggleRead}>
-						<React.Fragment>
-							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
-							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
-						</React.Fragment>
-					</RectButton>
+					<Animated.View
+						style={[
+							styles.actionLeftButtonContainer,
+							{
+								right: 0,
+								transform: [{ translateX: translateXIcon }]
+							}
+						]}
+					>
+						<RectButton style={styles.actionButton} onPress={this.toggleRead}>
+							<React.Fragment>
+								<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
+								<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+							</React.Fragment>
+						</RectButton>
+					</Animated.View>
 				</Animated.View>
-			</Animated.View>
+			</View>
 		);
 	};
 
 	renderRightActions = () => {
 		const { favorite, width } = this.props;
 		const translateXFav = this._deltaX.interpolate({
-			inputRange: [-OPTION_WIDTH, 0],
-			outputRange: [-OPTION_WIDTH, 0]
+			inputRange: [-width / 2, -OPTION_WIDTH * 2, 0],
+			outputRange: [width / 2, width - OPTION_WIDTH * 2, width]
 		});
 		const translateXHide = this._deltaX.interpolate({
-			inputRange: [-width, -LONG_SWIPE, -OPTION_WIDTH * 2, -OPTION_WIDTH, 0],
-			outputRange: [-width, -LONG_SWIPE, -OPTION_WIDTH, -OPTION_WIDTH / 2, 0]
+			inputRange: [-width, -LONG_SWIPE, -OPTION_WIDTH * 2, 0],
+			outputRange: [0, width - LONG_SWIPE, width - OPTION_WIDTH, width]
 		});
 		return (
-			<React.Fragment>
+			<View
+				style={styles.actionsContainer}
+				pointerEvents='box-none'
+			>
 				<Animated.View
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							left: width,
 							width,
 							backgroundColor: '#ffbb00',
 							transform: [{ translateX: translateXFav }]
@@ -213,7 +221,6 @@ export default class RoomItem extends React.Component {
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							left: width,
 							width,
 							backgroundColor: '#54585e',
 							transform: [{ translateX: translateXHide }]
@@ -227,7 +234,7 @@ export default class RoomItem extends React.Component {
 						</React.Fragment>
 					</RectButton>
 				</Animated.View>
-			</React.Fragment>
+			</View>
 		);
 	};
 
