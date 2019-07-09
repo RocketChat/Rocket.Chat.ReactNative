@@ -100,34 +100,26 @@ export default class RoomItem extends React.Component {
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
 
-	handleLeftButtonPress = () => {
-		this.toggleRead();
-		this.close();
-	}
-
 	close = () => this.interactableElem && this.interactableElem._snapAnchor && this.interactableElem._snapAnchor.x && this.interactableElem._snapAnchor.x.setValue(0)
 
 	toggleFav = () => {
+		this.close();
 		const { toggleFav, rid, favorite } = this.props;
 		if (toggleFav) {
 			toggleFav(rid, favorite);
 		}
-		this.close();
 	}
 
 	toggleRead = () => {
+		this.close();
 		const { toggleRead, rid, isRead } = this.props;
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
 	}
 
-	handleHideButtonPress = () => {
-		this.hideChannel();
-		this.close();
-	}
-
 	hideChannel = () => {
+		this.close();
 		const { hideChannel, rid, type } = this.props;
 		if (hideChannel) {
 			hideChannel(rid, type);
@@ -176,7 +168,7 @@ export default class RoomItem extends React.Component {
 						transform: [{ translateX: translateXIcon }]
 					}}
 				>
-					<RectButton style={styles.actionButton} onPress={this.handleLeftButtonPress}>
+					<RectButton style={styles.actionButton} onPress={this.toggleRead}>
 						<React.Fragment>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
 							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
@@ -228,7 +220,7 @@ export default class RoomItem extends React.Component {
 						}
 					]}
 				>
-					<RectButton style={styles.actionButton} onPress={this.handleHideButtonPress}>
+					<RectButton style={styles.actionButton} onPress={this.hideChannel}>
 						<React.Fragment>
 							<CustomIcon size={20} name='eye-off' color='white' />
 							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
