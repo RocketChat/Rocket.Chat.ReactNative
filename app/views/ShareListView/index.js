@@ -293,10 +293,12 @@ export default class ShareListView extends React.Component {
 		return false;
 	}
 
-	search = async(text) => {
-		const result = await RocketChat.search({ text });
+	search = (text) => {
+		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
+		const subscriptions = database.objects('subscriptions');
+		const data = result.length !== subscriptions.length ? result : [];
 		this.internalSetState({
-			search: result
+			search: data
 		});
 	}
 

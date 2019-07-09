@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
+import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { COLOR_WHITE, HEADER_BACK } from '../constants/colors';
 
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 18,
-		fontWeight: 'bold'
+		...sharedStyles.textBold
 	},
 	content: {
 		fontSize: 14,

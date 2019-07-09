@@ -10,6 +10,15 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
+	centered: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	title: {
+		fontSize: 18,
+		...sharedStyles.textBold,
+		textAlign: 'center'
+	},
 	text: {
 		paddingHorizontal: 16,
 		paddingVertical: 8,
