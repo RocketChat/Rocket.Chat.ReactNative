@@ -70,7 +70,6 @@ export default class RoomItem extends React.Component {
 			[{ nativeEvent: { translationX: dragX } }]
 		);
 		this._value = 0;
-		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -91,10 +90,6 @@ export default class RoomItem extends React.Component {
 		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
 
-	componentWillUnmount() {
-		this.rowTranslation.removeAllListeners();
-	}
-
 	_onHandlerStateChange = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
 			this._handleRelease(nativeEvent);
@@ -105,6 +100,8 @@ export default class RoomItem extends React.Component {
 		const { translationX } = nativeEvent;
 		const { rowState } = this.state;
 		const { width } = this.props;
+		this._value = this._value + translationX;
+
 		const halfScreen = width / 2;
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
@@ -156,6 +153,7 @@ export default class RoomItem extends React.Component {
 	_animateRow = (toValue) => {
 		const { dragX, rowOffSet } = this.state;
 		rowOffSet.setValue(this._value);
+		this._value = toValue;
 		dragX.setValue(0);
 		Animated.spring(rowOffSet, {
 			toValue,
