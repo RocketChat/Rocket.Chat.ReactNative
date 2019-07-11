@@ -268,15 +268,15 @@ export default class RoomItem extends React.Component {
 			inputRange: [-(halfWidth - 20), -2 * OPTION_WIDTH, 0],
 			outputRange: [0, 0, -OPTION_WIDTH]
 		});
-		const iconFavWidth = this.rowTranslation.interpolate({
-			inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
-			extrapolate: 'clamp'
-		});
-		const iconHideWidth = this.rowTranslation.interpolate({
-			inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
-		});
+		// const iconFavWidth = this.rowTranslation.interpolate({
+		// 	inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
+		// 	outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
+		// 	extrapolate: 'clamp'
+		// });
+		// const iconHideWidth = this.rowTranslation.interpolate({
+		// 	inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
+		// 	outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
+		// });
 		return (
 			<Animated.View
 				style={[
@@ -285,7 +285,7 @@ export default class RoomItem extends React.Component {
 				]}
 			>
 				<Animated.View
-					style={{ width: iconFavWidth }}
+					// style={{ width: iconFavWidth }}
 				>
 					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
 						{favorite ? (
@@ -302,7 +302,7 @@ export default class RoomItem extends React.Component {
 					</RectButton>
 				</Animated.View>
 				<Animated.View style={[
-					{ width: iconHideWidth },
+					// { width: iconHideWidth },
 					{ transform: [{ translateX: iconHideTrans }] }
 				]}
 				>
