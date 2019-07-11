@@ -39,6 +39,8 @@ const keyExtractor = item => item.rid;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username,
+	token: state.login.user && state.login.user.token,
 	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
@@ -95,6 +97,8 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -478,6 +482,9 @@ export default class RoomsListView extends React.Component {
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
 					id={id}
+					userId={item.userId}
+					username={item.username}
+					token={item.token}
 					rid={item.rid}
 					type={item.t}
 					baseUrl={baseUrl}

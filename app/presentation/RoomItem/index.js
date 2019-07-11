@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, Animated } from 'react-native';
-import { connect } from 'react-redux';
 import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Avatar from '../../containers/Avatar';
@@ -18,11 +17,7 @@ export { ROW_HEIGHT };
 const OPTION_WIDTH = 80;
 const SMALL_SWIPE = 40;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token
-}))
+
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
