@@ -157,7 +157,8 @@ export default class RoomItem extends React.Component {
 		dragX.setValue(0);
 		Animated.spring(rowOffSet, {
 			toValue,
-			bounciness: 0
+			bounciness: 0,
+			useNativeDriver: true
 		}).start();
 	}
 
