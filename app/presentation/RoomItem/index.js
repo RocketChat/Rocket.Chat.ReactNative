@@ -344,7 +344,7 @@ export default class RoomItem extends React.Component {
 
 		return (
 			<PanGestureHandler
-				minDeltaX={10}
+				minDeltaX={20}
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
