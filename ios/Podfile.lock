@@ -147,6 +147,8 @@ PODS:
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
+  - RNLocalize (1.1.4):
+    - React
   - RNScreens (1.0.0-alpha.22):
     - React
   - RSKImageCropper (2.2.1)
@@ -197,6 +199,7 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
@@ -271,6 +274,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   UMBarCodeScannerInterface:
@@ -346,6 +351,7 @@ SPEC CHECKSUMS:
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
+  RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   UMBarCodeScannerInterface: d5602e23de37f95bb4ee49ee3b2711e128058ae9
@@ -362,6 +368,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: b5e15bac5f306ea636e16393a7a6eb42c017ea99
+PODFILE CHECKSUM: e913a7016ba7fbc295edc5178996383a1f54742e
 
 COCOAPODS: 1.6.2
