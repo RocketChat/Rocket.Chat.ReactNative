@@ -501,7 +501,6 @@ export default class RoomsListView extends React.Component {
 					onPress={() => this._onPressItem(item)}
 					testID={`rooms-list-view-item-${ item.name }`}
 					width={width}
-					height={ROW_HEIGHT}
 					toggleFav={this.toggleFav}
 					toggleRead={this.toggleRead}
 					hideChannel={this.hideChannel}

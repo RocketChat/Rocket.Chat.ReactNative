@@ -37,7 +37,6 @@ export default class RoomItem extends React.Component {
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		width: PropTypes.number,
-		height: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
@@ -72,7 +71,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt, isRead, favorite } = this.props;
+		const { lastMessage, _updatedAt } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -80,12 +79,6 @@ export default class RoomItem extends React.Component {
 			return true;
 		}
 		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
-			return true;
-		}
-		if (isRead !== nextProps.isRead) {
-			return true;
-		}
-		if (favorite !== nextProps.favorite) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -223,7 +216,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -241,10 +234,6 @@ export default class RoomItem extends React.Component {
 
 		if (date) {
 			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
-		}
-
-		if (name === 'emptybstbowpkepohpqiohnau') {
-			console.log('RENRENRENRENRERNERNE')
 		}
 
 		return (
@@ -282,7 +271,7 @@ export default class RoomItem extends React.Component {
 							style={styles.button}
 						>
 							<View
-								style={[styles.container, height && { height }]}
+								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
 								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
