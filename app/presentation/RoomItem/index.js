@@ -81,7 +81,7 @@ export default class RoomItem extends React.Component {
 		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
 			return true;
 		}
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
 			return true;
 		}
 		if (isRead !== nextProps.isRead) {
