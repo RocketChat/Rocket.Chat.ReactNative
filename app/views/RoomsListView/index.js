@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
+import moment from 'moment';
+import 'moment/min/locales';
 
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -52,7 +54,8 @@ const keyExtractor = item => item.rid;
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
@@ -113,7 +116,8 @@ export default class RoomsListView extends React.Component {
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
-		isAuthenticated: PropTypes.bool
+		isAuthenticated: PropTypes.bool,
+		userLanguage: PropTypes.string
 	}
 
 	constructor(props) {
@@ -143,6 +147,9 @@ export default class RoomsListView extends React.Component {
 	}
 
 	componentDidMount() {
+		const { userLanguage } = this.props;
+		moment.locale(userLanguage);
+
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({

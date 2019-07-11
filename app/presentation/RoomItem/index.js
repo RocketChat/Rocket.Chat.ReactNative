@@ -320,12 +320,17 @@ export default class RoomItem extends React.Component {
 		);
 	}
 
+	capitalize = (s) => {
+		if (typeof s !== 'string') { return ''; }
+		return s.charAt(0).toUpperCase() + s.slice(1);
+	}
+
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'h:mm A',
+		sameDay: 'LT',
 		lastWeek: 'dddd',
 		sameElse: 'MMM D'
-	})
+	});
 
 	render() {
 		const {
@@ -381,7 +386,7 @@ export default class RoomItem extends React.Component {
 									<View style={styles.titleContainer}>
 										<TypeIcon type={type} id={id} prid={prid} />
 										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ this.capitalize(date) }</Text> : null}
 									</View>
 									<View style={styles.row}>
 										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
