@@ -8,13 +8,13 @@ import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 
 export const LeftActions = React.memo(({
-	rowTranslation, isRead, width, onToggleReadPress
+	transX, isRead, width, onToggleReadPress
 }) => {
-	const translateX = rowTranslation.interpolate({
+	const translateX = transX.interpolate({
 		inputRange: [0, ACTION_WIDTH],
 		outputRange: [-ACTION_WIDTH, 0]
 	});
-	const translateXIcon = rowTranslation.interpolate({
+	const translateXIcon = transX.interpolate({
 		inputRange: [0, ACTION_WIDTH, LONG_SWIPE - 2, LONG_SWIPE],
 		outputRange: [0, 0, -LONG_SWIPE + ACTION_WIDTH + 2, 0],
 		extrapolate: 'clamp'
@@ -56,13 +56,13 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	rowTranslation, favorite, width, toggleFav, onHidePress
+	transX, favorite, width, toggleFav, onHidePress
 }) => {
-	const translateXFav = rowTranslation.interpolate({
+	const translateXFav = transX.interpolate({
 		inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
 		outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
 	});
-	const translateXHide = rowTranslation.interpolate({
+	const translateXHide = transX.interpolate({
 		inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
 		outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
 	});
@@ -114,14 +114,14 @@ export const RightActions = React.memo(({
 });
 
 LeftActions.propTypes = {
-	rowTranslation: PropTypes.object,
+	transX: PropTypes.object,
 	isRead: PropTypes.bool,
 	width: PropTypes.number,
 	onToggleReadPress: PropTypes.func
 };
 
 RightActions.propTypes = {
-	rowTranslation: PropTypes.object,
+	transX: PropTypes.object,
 	favorite: PropTypes.bool,
 	width: PropTypes.number,
 	toggleFav: PropTypes.func,

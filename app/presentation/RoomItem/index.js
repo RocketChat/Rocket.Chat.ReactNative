@@ -56,7 +56,7 @@ export default class RoomItem extends React.Component {
 		super(props);
 		const dragX = new Animated.Value(0);
 		const rowOffSet = new Animated.Value(0);
-		this.rowTranslation = Animated.add(
+		this.transX = Animated.add(
 			rowOffSet,
 			dragX
 		);
@@ -243,13 +243,13 @@ export default class RoomItem extends React.Component {
 			>
 				<Animated.View>
 					<LeftActions
-						rowTranslation={this.rowTranslation}
+						transX={this.transX}
 						isRead={isRead}
 						width={width}
 						onToggleReadPress={this.onToggleReadPress}
 					/>
 					<RightActions
-						rowTranslation={this.rowTranslation}
+						transX={this.transX}
 						favorite={favorite}
 						width={width}
 						toggleFav={this.toggleFav}
@@ -258,7 +258,7 @@ export default class RoomItem extends React.Component {
 					<Animated.View
 						style={
 							{
-								transform: [{ translateX: this.rowTranslation }]
+								transform: [{ translateX: this.transX }]
 							}
 						}
 					>
