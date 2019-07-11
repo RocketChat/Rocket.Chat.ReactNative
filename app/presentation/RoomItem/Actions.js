@@ -1,12 +1,15 @@
 import React from 'react';
 import { Animated, View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 
-export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleToggleReadPress }) => {
+export const LeftActions = React.memo(({
+	rowTranslation, isRead, width, onToggleReadPress
+}) => {
 	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [0, ACTION_WIDTH],
@@ -25,7 +28,7 @@ export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleTo
 				{ transform: [{ translateX: trans }] }
 			]}
 		>
-			<RectButton style={styles.actionButtonLeft} onPress={handleToggleReadPress}>
+			<RectButton style={styles.actionButtonLeft} onPress={onToggleReadPress}>
 				<Animated.View
 					style={{ transform: [{ translateX: iconTrans }] }}
 				>
@@ -46,7 +49,9 @@ export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleTo
 	);
 });
 
-export const RightActions = React.memo(({ rowTranslation, favorite, width, toggleFav, handleHidePress }) => {
+export const RightActions = React.memo(({
+	rowTranslation, favorite, width, toggleFav, onHidePress
+}) => {
 	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [-ACTION_WIDTH, 0],
@@ -96,7 +101,7 @@ export const RightActions = React.memo(({ rowTranslation, favorite, width, toggl
 			>
 				<RectButton
 					style={[styles.actionButtonRightHide]}
-					onPress={handleHidePress}
+					onPress={onHidePress}
 				>
 					<View style={styles.actionView}>
 						<CustomIcon size={20} name='eye-off' color='white' />
@@ -107,3 +112,18 @@ export const RightActions = React.memo(({ rowTranslation, favorite, width, toggl
 		</Animated.View>
 	);
 });
+
+LeftActions.propTypes = {
+	rowTranslation: PropTypes.object,
+	isRead: PropTypes.bool,
+	width: PropTypes.number,
+	onToggleReadPress: PropTypes.func
+};
+
+RightActions.propTypes = {
+	rowTranslation: PropTypes.object,
+	favorite: PropTypes.bool,
+	width: PropTypes.number,
+	toggleFav: PropTypes.func,
+	onHidePress: PropTypes.func
+};

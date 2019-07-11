@@ -11,12 +11,11 @@ import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { LeftActions, RightActions } from './Actions';
-import { CustomIcon } from '../../lib/Icons';
 
 export { ROW_HEIGHT };
 
 const SMALL_SWIPE = 40;
-const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
+const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width', 'isRead', 'favorite'];
 
 export default class RoomItem extends React.Component {
 	static propTypes = {
@@ -193,12 +192,12 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	handleToggleReadPress = () => {
+	onToggleReadPress = () => {
 		this.toggleRead();
 		this.close();
 	}
 
-	handleHidePress = () => {
+	onHidePress = () => {
 		this.hideChannel();
 		this.close();
 	}
@@ -259,14 +258,14 @@ export default class RoomItem extends React.Component {
 						rowTranslation={this.rowTranslation}
 						isRead={isRead}
 						width={width}
-						handleToggleReadPress={this.handleToggleReadPress}
+						onToggleReadPress={this.onToggleReadPress}
 					/>
 					<RightActions
 						rowTranslation={this.rowTranslation}
 						favorite={favorite}
 						width={width}
 						toggleFav={this.toggleFav}
-						handleHidePress={this.handleHidePress}
+						onHidePress={this.onHidePress}
 					/>
 					<Animated.View
 						style={

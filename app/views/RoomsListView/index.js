@@ -473,7 +473,7 @@ export default class RoomsListView extends React.Component {
 	renderItem = ({ item }) => {
 		const { width } = this.state;
 		const {
-			userId, baseUrl, StoreLastMessage
+			userId, username, token, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -490,9 +490,9 @@ export default class RoomsListView extends React.Component {
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
 					id={id}
-					userId={item.userId}
-					username={item.username}
-					token={item.token}
+					userId={userId}
+					username={username}
+					token={token}
 					rid={item.rid}
 					type={item.t}
 					baseUrl={baseUrl}
