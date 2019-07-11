@@ -7017,10 +7017,10 @@ husky@>=1:
     run-node "^1.0.0"
     slash "^2.0.0"
 
-i18n-js@3.0.11:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.0.11.tgz#f9e96bdb641c5b9d6be12759d7c422089987ef02"
-  integrity sha512-v7dG3kYJTQTyox3NqDabPDE/ZotWntyMI9kh4cYi+XlCSnsIR+KBTS2opPyObL8WndnklcLzbNU92FP/mLge3Q==
+i18n-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.3.0.tgz#05512f7184b5117c087ab597be649720a834c068"
+  integrity sha512-+m8jh84IIWlFwEJgwrWCkeIwIES9ilJKBOj5qx8ZTLLmlPz7bjKnCdxf254wRf6M4pkQHtgXGT9r9lGk0e9aug==
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -11540,13 +11540,6 @@ react-native-gesture-handler@^1.2.1:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
     prop-types "^15.5.10"
-
-react-native-i18n@^2.0.15:
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/react-native-i18n/-/react-native-i18n-2.0.15.tgz#09b5a9836116fa7dbd0054c46e2d1014c1ef3c65"
-  integrity sha512-V8VwUP0TLda3oJvgt5tdnFaOV7WXPhTjCTLO7sXI3C2SHggSbD4bCUryMzNJhesimJidH21V2Owvj4zAylHoQQ==
-  dependencies:
-    i18n-js "3.0.11"
 
 "react-native-image-crop-picker@git+https://github.com/RocketChat/react-native-image-crop-picker.git":
   version "0.21.1"
