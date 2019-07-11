@@ -6,7 +6,9 @@ import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handl
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
-import styles, { ROW_HEIGHT, ACTION_WIDTH } from './styles';
+import styles, {
+	ROW_HEIGHT, ACTION_WIDTH, SMALL_SWIPE, LONG_SWIPE
+} from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
@@ -14,7 +16,6 @@ import { LeftActions, RightActions } from './Actions';
 
 export { ROW_HEIGHT };
 
-const SMALL_SWIPE = 40;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width', 'isRead', 'favorite'];
 
 export default class RoomItem extends React.Component {
@@ -94,22 +95,20 @@ export default class RoomItem extends React.Component {
 	_handleRelease = (nativeEvent) => {
 		const { translationX } = nativeEvent;
 		const { rowState } = this.state;
-		const { width } = this.props;
 		this._value = this._value + translationX;
 
-		const halfScreen = width / 2;
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
-			if (translationX > 0 && translationX < halfScreen) {
+			if (translationX > 0 && translationX < LONG_SWIPE) {
 				toValue = ACTION_WIDTH; // open left option if he swipe right but not enough to trigger action
 				this.setState({ rowState: -1 });
-			} else if (translationX >= halfScreen) {
+			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
 				this.toggleRead();
-			} else if (translationX < 0 && translationX > -halfScreen) {
+			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
 				toValue = -2 * ACTION_WIDTH; // open right option if he swipe left
 				this.setState({ rowState: 1 });
-			} else if (translationX <= -halfScreen) {
+			} else if (translationX <= -LONG_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
 				this.hideChannel();
@@ -122,7 +121,7 @@ export default class RoomItem extends React.Component {
 			if (this._value < SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
-			} else if (this._value > halfScreen) {
+			} else if (this._value > LONG_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
 				this.toggleRead();
@@ -135,7 +134,7 @@ export default class RoomItem extends React.Component {
 			if (this._value > -2 * SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
-			} else if (this._value < -halfScreen) {
+			} else if (this._value < -LONG_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
 				this.hideChannel();
@@ -242,7 +241,7 @@ export default class RoomItem extends React.Component {
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
-				<View style={styles.upperContainer}>
+				<Animated.View>
 					<LeftActions
 						rowTranslation={this.rowTranslation}
 						isRead={isRead}
@@ -289,7 +288,7 @@ export default class RoomItem extends React.Component {
 							</View>
 						</RectButton>
 					</Animated.View>
-				</View>
+				</Animated.View>
 			</PanGestureHandler>
 		);
 	}

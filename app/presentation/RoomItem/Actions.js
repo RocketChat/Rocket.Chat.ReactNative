@@ -4,20 +4,19 @@ import { RectButton } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
-import styles, { ACTION_WIDTH } from './styles';
+import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 
 export const LeftActions = React.memo(({
 	rowTranslation, isRead, width, onToggleReadPress
 }) => {
-	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [0, ACTION_WIDTH],
 		outputRange: [-width, -width + ACTION_WIDTH]
 	});
 
 	const iconTrans = rowTranslation.interpolate({
-		inputRange: [0, ACTION_WIDTH, halfWidth - 1, halfWidth, width],
+		inputRange: [0, ACTION_WIDTH, LONG_SWIPE - 1, LONG_SWIPE, width],
 		outputRange: [0, 0, -(ACTION_WIDTH + 10), 0, 0]
 	});
 
@@ -52,13 +51,12 @@ export const LeftActions = React.memo(({
 export const RightActions = React.memo(({
 	rowTranslation, favorite, width, toggleFav, onHidePress
 }) => {
-	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [-ACTION_WIDTH, 0],
 		outputRange: [width - ACTION_WIDTH, width]
 	});
 	const iconHideTrans = rowTranslation.interpolate({
-		inputRange: [-(halfWidth - 20), -2 * ACTION_WIDTH, 0],
+		inputRange: [-(LONG_SWIPE - 20), -2 * ACTION_WIDTH, 0],
 		outputRange: [0, 0, -ACTION_WIDTH]
 	});
 	// const iconFavWidth = rowTranslation.interpolate({
