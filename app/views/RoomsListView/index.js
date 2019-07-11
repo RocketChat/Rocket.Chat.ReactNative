@@ -591,7 +591,7 @@ export default class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					removeClippedSubviews
+					// removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}
