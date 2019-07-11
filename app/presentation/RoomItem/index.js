@@ -54,19 +54,17 @@ export default class RoomItem extends React.Component {
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props) {
 		super(props);
-		const dragX = new Animated.Value(0);
-		const rowOffSet = new Animated.Value(0);
+		this.dragX = new Animated.Value(0);
+		this.rowOffSet = new Animated.Value(0);
 		this.transX = Animated.add(
-			rowOffSet,
-			dragX
+			this.rowOffSet,
+			this.dragX
 		);
 		this.state = {
-			dragX,
-			rowOffSet,
 			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
 		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: dragX } }]
+			[{ nativeEvent: { translationX: this.dragX } }]
 		);
 		this._value = 0;
 	}
@@ -146,11 +144,10 @@ export default class RoomItem extends React.Component {
 	}
 
 	_animateRow = (toValue) => {
-		const { dragX, rowOffSet } = this.state;
-		rowOffSet.setValue(this._value);
+		this.rowOffSet.setValue(this._value);
 		this._value = toValue;
-		dragX.setValue(0);
-		Animated.spring(rowOffSet, {
+		this.dragX.setValue(0);
+		Animated.spring(this.rowOffSet, {
 			toValue,
 			bounciness: 0,
 			useNativeDriver: true
