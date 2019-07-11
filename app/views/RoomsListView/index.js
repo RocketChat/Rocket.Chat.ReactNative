@@ -399,7 +399,15 @@ export default class RoomsListView extends React.Component {
 
 	toggleFav = async(rid, favorite) => {
 		try {
-			await RocketChat.toggleFavorite(rid, !favorite);
+			const result = await RocketChat.toggleFavorite(rid, !favorite);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					if (sub) {
+						sub.f = favorite;
+					}
+				});
+			}
 		} catch (e) {
 			log('error_toggle_favorite', e);
 		}

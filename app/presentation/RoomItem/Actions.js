@@ -6,7 +6,7 @@ import I18n from '../../i18n';
 import styles, { ACTION_WIDTH } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 
-export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleLeftButtonPress }) => {
+export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleToggleReadPress }) => {
 	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [0, ACTION_WIDTH],
@@ -25,7 +25,7 @@ export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleLe
 				{ transform: [{ translateX: trans }] }
 			]}
 		>
-			<RectButton style={styles.actionButtonLeft} onPress={handleLeftButtonPress}>
+			<RectButton style={styles.actionButtonLeft} onPress={handleToggleReadPress}>
 				<Animated.View
 					style={{ transform: [{ translateX: iconTrans }] }}
 				>
@@ -46,7 +46,7 @@ export const LeftActions = React.memo(({ rowTranslation, isRead, width, handleLe
 	);
 });
 
-export const RightActions = React.memo(({ rowTranslation, favorite, width, toggleFav, hideChannel }) => {
+export const RightActions = React.memo(({ rowTranslation, favorite, width, toggleFav, handleHidePress }) => {
 	const halfWidth = width / 2;
 	const trans = rowTranslation.interpolate({
 		inputRange: [-ACTION_WIDTH, 0],
@@ -96,7 +96,7 @@ export const RightActions = React.memo(({ rowTranslation, favorite, width, toggl
 			>
 				<RectButton
 					style={[styles.actionButtonRightHide]}
-					onPress={hideChannel}
+					onPress={handleHidePress}
 				>
 					<View style={styles.actionView}>
 						<CustomIcon size={20} name='eye-off' color='white' />

@@ -73,7 +73,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt, isRead } = this.props;
+		const { lastMessage, _updatedAt, isRead, favorite } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
@@ -84,6 +84,9 @@ export default class RoomItem extends React.Component {
 			return true;
 		}
 		if (isRead !== nextProps.isRead) {
+			return true;
+		}
+		if (favorite !== nextProps.favorite) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -115,7 +118,8 @@ export default class RoomItem extends React.Component {
 				toValue = -2 * ACTION_WIDTH; // open right option if he swipe left
 				this.setState({ rowState: 1 });
 			} else if (translationX <= -halfScreen) {
-				toValue = -width;
+				toValue = 0;
+				this.setState({ rowState: 0 });
 				this.hideChannel();
 			} else {
 				toValue = 0;
@@ -162,11 +166,6 @@ export default class RoomItem extends React.Component {
 		}).start();
 	}
 
-	handleLeftButtonPress = () => {
-		this.toggleRead();
-		this.close();
-	}
-
 	close = () => {
 		this.setState({ rowState: 0 });
 		this._animateRow(0);
@@ -187,16 +186,21 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	handleHideButtonPress = () => {
-		this.hideChannel();
-		this.close();
-	}
-
 	hideChannel = () => {
 		const { hideChannel, rid, type } = this.props;
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
+	}
+
+	handleToggleReadPress = () => {
+		this.toggleRead();
+		this.close();
+	}
+
+	handleHidePress = () => {
+		this.hideChannel();
+		this.close();
 	}
 
 	onPress = () => {
@@ -255,14 +259,14 @@ export default class RoomItem extends React.Component {
 						rowTranslation={this.rowTranslation}
 						isRead={isRead}
 						width={width}
-						handleLeftButtonPress={this.handleLeftButtonPress}
+						handleToggleReadPress={this.handleToggleReadPress}
 					/>
 					<RightActions
 						rowTranslation={this.rowTranslation}
 						favorite={favorite}
 						width={width}
 						toggleFav={this.toggleFav}
-						hideChannel={this.hideChannel}
+						handleHidePress={this.handleHidePress}
 					/>
 					<Animated.View
 						style={
