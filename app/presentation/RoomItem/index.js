@@ -6,15 +6,15 @@ import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handl
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
-import styles, { ROW_HEIGHT } from './styles';
+import styles, { ROW_HEIGHT, ACTION_WIDTH } from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
+import { LeftActions, RightActions } from './Actions';
 import { CustomIcon } from '../../lib/Icons';
 
 export { ROW_HEIGHT };
 
-const OPTION_WIDTH = 80;
 const SMALL_SWIPE = 40;
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
 
@@ -106,13 +106,13 @@ export default class RoomItem extends React.Component {
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
 			if (translationX > 0 && translationX < halfScreen) {
-				toValue = OPTION_WIDTH; // open left option if he swipe right but not enough to trigger action
+				toValue = ACTION_WIDTH; // open left option if he swipe right but not enough to trigger action
 				this.setState({ rowState: -1 });
 			} else if (translationX >= halfScreen) {
 				toValue = 0;
 				this.toggleRead();
 			} else if (translationX < 0 && translationX > -halfScreen) {
-				toValue = -2 * OPTION_WIDTH; // open right option if he swipe left
+				toValue = -2 * ACTION_WIDTH; // open right option if he swipe left
 				this.setState({ rowState: 1 });
 			} else if (translationX <= -halfScreen) {
 				toValue = -width;
@@ -131,7 +131,7 @@ export default class RoomItem extends React.Component {
 				this.setState({ rowState: 0 });
 				this.toggleRead();
 			} else {
-				toValue = OPTION_WIDTH;
+				toValue = ACTION_WIDTH;
 			}
 		}
 
@@ -144,7 +144,7 @@ export default class RoomItem extends React.Component {
 				this.setState({ rowState: 0 });
 				this.hideChannel();
 			} else {
-				toValue = -2 * OPTION_WIDTH;
+				toValue = -2 * ACTION_WIDTH;
 			}
 		}
 		this._animateRow(toValue);
@@ -210,109 +210,6 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	renderLeftActions = () => {
-		const { isRead, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH],
-			outputRange: [-width, -width + OPTION_WIDTH]
-		});
-
-		const iconTrans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH, halfWidth - 1, halfWidth, width],
-			outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
-		});
-		return (
-			<Animated.View
-				style={[
-					styles.leftAction,
-					{ transform: [{ translateX: trans }] }
-				]}
-			>
-				<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
-					<Animated.View
-						style={{ transform: [{ translateX: iconTrans }] }}
-					>
-						{isRead ? (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='flag' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
-							</View>
-						) : (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='check' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
-							</View>
-						)}
-					</Animated.View>
-				</RectButton>
-			</Animated.View>
-		);
-	};
-
-	renderRightActions = () => {
-		const { favorite, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [-OPTION_WIDTH, 0],
-			outputRange: [width - OPTION_WIDTH, width]
-		});
-		const iconHideTrans = this.rowTranslation.interpolate({
-			inputRange: [-(halfWidth - 20), -2 * OPTION_WIDTH, 0],
-			outputRange: [0, 0, -OPTION_WIDTH]
-		});
-		// const iconFavWidth = this.rowTranslation.interpolate({
-		// 	inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
-		// 	outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
-		// 	extrapolate: 'clamp'
-		// });
-		// const iconHideWidth = this.rowTranslation.interpolate({
-		// 	inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
-		// 	outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
-		// });
-		return (
-			<Animated.View
-				style={[
-					styles.rightAction,
-					{ transform: [{ translateX: trans }] }
-				]}
-			>
-				<Animated.View
-					// style={{ width: iconFavWidth }}
-				>
-					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
-						{favorite ? (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='Star-filled' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
-							</View>
-						) : (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='star' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
-							</View>
-						)}
-					</RectButton>
-				</Animated.View>
-				<Animated.View style={[
-					// { width: iconHideWidth },
-					{ transform: [{ translateX: iconHideTrans }] }
-				]}
-				>
-					<RectButton
-						style={[styles.actionButtonRightHide]}
-						onPress={this.handleHideButtonPress}
-					>
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='eye-off' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
-						</View>
-					</RectButton>
-				</Animated.View>
-			</Animated.View>
-		);
-	}
-
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
@@ -322,7 +219,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage
+			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -342,6 +239,10 @@ export default class RoomItem extends React.Component {
 			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
 		}
 
+		if (name === 'emptybstbowpkepohpqiohnau') {
+			console.log('RENRENRENRENRERNERNE')
+		}
+
 		return (
 			<PanGestureHandler
 				minDeltaX={20}
@@ -349,8 +250,19 @@ export default class RoomItem extends React.Component {
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
 				<View style={styles.upperContainer}>
-					{this.renderLeftActions()}
-					{this.renderRightActions()}
+					<LeftActions
+						rowTranslation={this.rowTranslation}
+						isRead={isRead}
+						width={width}
+						handleLeftButtonPress={this.handleLeftButtonPress}
+					/>
+					<RightActions
+						rowTranslation={this.rowTranslation}
+						favorite={favorite}
+						width={width}
+						toggleFav={this.toggleFav}
+						hideChannel={this.hideChannel}
+					/>
 					<Animated.View
 						style={
 							{

@@ -6,6 +6,7 @@ import {
 } from '../../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const ACTION_WIDTH = 80;
 
 export default StyleSheet.create({
 	container: {
@@ -124,7 +125,7 @@ export default StyleSheet.create({
 		backgroundColor: '#55585D'
 	},
 	actionView: {
-		width: 80,
+		width: ACTION_WIDTH,
 		alignItems: 'center'
 	},
 	leftAction: {
