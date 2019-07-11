@@ -10,104 +10,106 @@ import { CustomIcon } from '../../lib/Icons';
 export const LeftActions = React.memo(({
 	rowTranslation, isRead, width, onToggleReadPress
 }) => {
-	const trans = rowTranslation.interpolate({
+	const translateX = rowTranslation.interpolate({
 		inputRange: [0, ACTION_WIDTH],
-		outputRange: [-width, -width + ACTION_WIDTH]
+		outputRange: [-ACTION_WIDTH, 0]
 	});
-
-	const iconTrans = rowTranslation.interpolate({
-		inputRange: [0, ACTION_WIDTH, LONG_SWIPE - 1, LONG_SWIPE, width],
-		outputRange: [0, 0, -(ACTION_WIDTH + 10), 0, 0]
+	const translateXIcon = rowTranslation.interpolate({
+		inputRange: [0, ACTION_WIDTH, LONG_SWIPE - 2, LONG_SWIPE],
+		outputRange: [0, 0, -LONG_SWIPE + ACTION_WIDTH + 2, 0],
+		extrapolate: 'clamp'
 	});
-
 	return (
-		<Animated.View
-			style={[
-				styles.leftAction,
-				{ transform: [{ translateX: trans }] }
-			]}
+		<View
+			style={styles.actionsContainer}
+			pointerEvents='box-none'
 		>
-			<RectButton style={styles.actionButtonLeft} onPress={onToggleReadPress}>
+			<Animated.View
+				style={[
+					styles.actionLeftButtonContainer,
+					{
+						right: width - ACTION_WIDTH,
+						width,
+						transform: [{ translateX }]
+					}
+				]}
+			>
 				<Animated.View
-					style={{ transform: [{ translateX: iconTrans }] }}
+					style={[
+						styles.actionLeftButtonContainer,
+						{
+							right: 0,
+							transform: [{ translateX: translateXIcon }]
+						}
+					]}
 				>
-					{isRead ? (
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='flag' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
-						</View>
-					) : (
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='check' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Read')}</Text>
-						</View>
-					)}
+					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
+						<React.Fragment>
+							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
+							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+						</React.Fragment>
+					</RectButton>
 				</Animated.View>
-			</RectButton>
-		</Animated.View>
+			</Animated.View>
+		</View>
 	);
 });
 
 export const RightActions = React.memo(({
 	rowTranslation, favorite, width, toggleFav, onHidePress
 }) => {
-	const trans = rowTranslation.interpolate({
-		inputRange: [-ACTION_WIDTH, 0],
-		outputRange: [width - ACTION_WIDTH, width]
+	const translateXFav = rowTranslation.interpolate({
+		inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
+		outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
 	});
-	const iconHideTrans = rowTranslation.interpolate({
-		inputRange: [-(LONG_SWIPE - 20), -2 * ACTION_WIDTH, 0],
-		outputRange: [0, 0, -ACTION_WIDTH]
+	const translateXHide = rowTranslation.interpolate({
+		inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
+		outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
 	});
-	// const iconFavWidth = rowTranslation.interpolate({
-	// 	inputRange: [-halfWidth, -2 * ACTION_WIDTH, 0],
-	// 	outputRange: [0, ACTION_WIDTH, ACTION_WIDTH],
-	// 	extrapolate: 'clamp'
-	// });
-	// const iconHideWidth = rowTranslation.interpolate({
-	// 	inputRange: [-width, -halfWidth, -2 * ACTION_WIDTH, 0],
-	// 	outputRange: [width, halfWidth, ACTION_WIDTH, ACTION_WIDTH]
-	// });
 	return (
-		<Animated.View
-			style={[
-				styles.rightAction,
-				{ transform: [{ translateX: trans }] }
-			]}
+		<View
+			style={{
+				position: 'absolute',
+				left: 0,
+				right: 0,
+				height: 75,
+				flexDirection: 'row'
+			}}
+			pointerEvents='box-none'
 		>
 			<Animated.View
-				// style={{ width: iconFavWidth }}
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width,
+						transform: [{ translateX: translateXFav }]
+					}
+				]}
 			>
-				<RectButton style={[styles.actionButtonRightFav]} onPress={toggleFav}>
-					{favorite ? (
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='Star-filled' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
-						</View>
-					) : (
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='star' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
-						</View>
-					)}
+				<RectButton style={[styles.actionButton, { backgroundColor: '#ffbb00' }]} onPress={toggleFav}>
+					<React.Fragment>
+						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color='white' />
+						<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
+					</React.Fragment>
 				</RectButton>
 			</Animated.View>
-			<Animated.View style={[
-				// { width: iconHideWidth },
-				{ transform: [{ translateX: iconHideTrans }] }
-			]}
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width,
+						transform: [{ translateX: translateXHide }]
+					}
+				]}
 			>
-				<RectButton
-					style={[styles.actionButtonRightHide]}
-					onPress={onHidePress}
-				>
-					<View style={styles.actionView}>
+				<RectButton style={[styles.actionButton, { backgroundColor: '#54585e' }]} onPress={onHidePress}>
+					<React.Fragment>
 						<CustomIcon size={20} name='eye-off' color='white' />
 						<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
-					</View>
+					</React.Fragment>
 				</RectButton>
 			</Animated.View>
-		</Animated.View>
+		</View>
 	);
 });
 
