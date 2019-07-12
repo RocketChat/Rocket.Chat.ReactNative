@@ -147,11 +147,9 @@ export default class RoomsListView extends React.Component {
 	}
 
 	componentDidMount() {
-		const { userLanguage } = this.props;
-		moment.locale(userLanguage);
-
 		this.getSubscriptions();
-		const { navigation } = this.props;
+		const { navigation, userLanguage } = this.props;
+		moment.locale(userLanguage);
 		navigation.setParams({
 			onPressItem: this._onPressItem,
 			initSearchingAndroid: this.initSearchingAndroid,
