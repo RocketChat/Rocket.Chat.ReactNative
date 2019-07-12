@@ -12,7 +12,7 @@ const MessageError = React.memo(({ hasError, onErrorPress }) => {
 	}
 	return (
 		<Touchable onPress={onErrorPress} style={styles.errorButton}>
-			<CustomIcon name='circle-cross' color={COLOR_DANGER} size={20} />
+			<CustomIcon name='warning' color={COLOR_DANGER} size={20} />
 		</Touchable>
 	);
 }, (prevProps, nextProps) => prevProps.hasError === nextProps.hasError);
