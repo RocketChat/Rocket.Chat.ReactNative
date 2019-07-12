@@ -60,7 +60,8 @@ export default class RoomActionsView extends React.Component {
 			membersCount: 0,
 			member: {},
 			joined: this.rooms.length > 0,
-			canViewMembers: false
+			canViewMembers: false,
+			canAutoTranslate: false
 		};
 	}
 
@@ -89,6 +90,10 @@ export default class RoomActionsView extends React.Component {
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
 		}
+
+		const canAutoTranslate = RocketChat.canAutoTranslate();
+		this.setState({ canAutoTranslate });
+
 		safeAddListener(this.rooms, this.updateRoom);
 	}
 
@@ -169,7 +174,7 @@ export default class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, membersCount, canViewMembers, joined
+			room, membersCount, canViewMembers, joined, canAutoTranslate
 		} = this.state;
 		const {
 			rid, t, blocker, notifications
@@ -254,6 +259,16 @@ export default class RoomActionsView extends React.Component {
 			],
 			renderItem: this.renderItem
 		}];
+
+		if (canAutoTranslate) {
+			sections[2].data.push({
+				icon: 'language',
+				name: I18n.t('Auto_Translate'),
+				route: 'AutoTranslateView',
+				params: { rid },
+				testID: 'room-actions-auto-translate'
+			});
+		}
 
 		if (t === 'd') {
 			sections.push({

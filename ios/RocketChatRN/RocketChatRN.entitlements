@@ -8,5 +8,9 @@
 	<array>
 		<string>applinks:go.rocket.chat</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.ios.chat.rocket</string>
+	</array>
 </dict>
 </plist>

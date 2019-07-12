@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import { delay } from 'redux-saga';
 import {
 	takeLatest, take, select, put, all
 } from 'redux-saga/effects';
+import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
@@ -11,6 +11,7 @@ import database from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
+import { isIOS } from '../utils/deviceInfo';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p'
@@ -33,6 +34,10 @@ const handleOpen = function* handleOpen({ params }) {
 		return;
 	}
 
+	if (isIOS) {
+		yield RNUserDefaults.setName('group.ios.chat.rocket');
+	}
+
 	let { host } = params;
 	if (!/^(http|https)/.test(host)) {
 		host = `https://${ params.host }`;
@@ -43,8 +48,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		AsyncStorage.getItem('currentServer'),
-		AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		RNUserDefaults.get('currentServer'),
+		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
 	// TODO: needs better test

@@ -11,8 +11,11 @@ export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: 14,
+		paddingLeft: 14,
 		height: ROW_HEIGHT
+	},
+	button: {
+		backgroundColor: COLOR_WHITE
 	},
 	centerContainer: {
 		flex: 1,
@@ -93,5 +96,46 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		marginRight: 10
+	},
+	actionText: {
+		color: COLOR_WHITE,
+		fontSize: 15,
+		backgroundColor: 'transparent',
+		justifyContent: 'center',
+		marginTop: 4,
+		...sharedStyles.textSemibold
+	},
+	actionButtonLeft: {
+		flex: 1,
+		backgroundColor: '#497AFC',
+		justifyContent: 'center',
+		alignItems: 'flex-end'
+	},
+	actionButtonRightFav: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'flex-start',
+		backgroundColor: '#F4BD3E'
+	},
+	actionButtonRightHide: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'flex-start',
+		backgroundColor: '#55585D'
+	},
+	actionView: {
+		width: 80,
+		alignItems: 'center'
+	},
+	leftAction: {
+		...StyleSheet.absoluteFill,
+		flexDirection: 'row-reverse'
+	},
+	rightAction: {
+		...StyleSheet.absoluteFill,
+		flexDirection: 'row'
+	},
+	upperContainer: {
+		overflow: 'hidden'
 	}
 });

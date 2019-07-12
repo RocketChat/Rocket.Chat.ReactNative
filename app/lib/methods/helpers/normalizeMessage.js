@@ -36,6 +36,9 @@ export default (msg) => {
 	if (!Array.isArray(msg.reactions)) {
 		msg.reactions = Object.keys(msg.reactions).map(key => ({ _id: `${ msg._id }${ key }`, emoji: key, usernames: msg.reactions[key].usernames }));
 	}
+	if (msg.translations && Object.keys(msg.translations).length) {
+		msg.translations = Object.keys(msg.translations).map(key => ({ _id: `${ msg._id }${ key }`, language: key, value: msg.translations[key] }));
+	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
 	msg._updatedAt = new Date();
 	// loadHistory returns msg.starred as object
