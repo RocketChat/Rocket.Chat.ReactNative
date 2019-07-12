@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Dimensions } from 'react-native';
 // import moment from 'moment';
 
 import RoomItemComponent from '../../app/presentation/RoomItem';
@@ -7,6 +7,7 @@ import StoriesSeparator from './StoriesSeparator';
 
 const date = '2017-10-10T10:00:00Z';
 const baseUrl = 'https://open.rocket.chat';
+const { width } = Dimensions.get('window');
 
 const RoomItem = props => (
 	<RoomItemComponent
@@ -14,6 +15,7 @@ const RoomItem = props => (
 		name='rocket.cat'
 		_updatedAt={date}
 		baseUrl={baseUrl}
+		width={width}
 		{...props}
 	/>
 );

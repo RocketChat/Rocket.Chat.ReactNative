@@ -40,7 +40,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textBig: {
-		fontSize: 46,
+		fontSize: 30,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
@@ -55,8 +55,8 @@ export default StyleSheet.create({
 		height: 20
 	},
 	customEmojiBig: {
-		width: 50,
-		height: 50
+		width: 30,
+		height: 30
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
