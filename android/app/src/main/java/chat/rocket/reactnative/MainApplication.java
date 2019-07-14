@@ -34,7 +34,7 @@ import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.reactlibrary.RNRealmPathPackage;
-import com.djorkaeff.alexandre.shareextension.SharePackage;
+import chat.rocket.SharePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 import chat.rocket.reactnative.generated.BasePackageList;
