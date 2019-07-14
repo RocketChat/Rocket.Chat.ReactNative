@@ -21,6 +21,21 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
+		1EAB0F2922DB7A0E006104EE /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0EEA22DB79CC006104EE /* JitsiMeet.framework */; };
+		1EAB0F2A22DB7A0E006104EE /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0EEA22DB79CC006104EE /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1EAB0F2B22DB7A14006104EE /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F2022DB79CC006104EE /* WebRTC.framework */; };
+		1EAB0F2C22DB7A14006104EE /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F2022DB79CC006104EE /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1EAB0F2D22DB7A1B006104EE /* libRNJitsiMeet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F2822DB79F2006104EE /* libRNJitsiMeet.a */; };
+		1EAB0F2F22DB7A43006104EE /* JitsiMeet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EAB0F2E22DB7A43006104EE /* JitsiMeet.storyboard */; };
+		1EAB0F3122DB7AB1006104EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3022DB7AB1006104EE /* AVFoundation.framework */; };
+		1EAB0F3422DB7ABD006104EE /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3222DB7ABD006104EE /* CoreAudio.framework */; };
+		1EAB0F3522DB7ABD006104EE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3322DB7ABD006104EE /* AudioToolbox.framework */; };
+		1EAB0F3722DB7AC8006104EE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3622DB7AC8006104EE /* CoreGraphics.framework */; };
+		1EAB0F3922DB7ACD006104EE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3822DB7ACD006104EE /* GLKit.framework */; };
+		1EAB0F3C22DB7AD8006104EE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3A22DB7AD8006104EE /* CoreVideo.framework */; };
+		1EAB0F3D22DB7AD8006104EE /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3B22DB7AD8006104EE /* VideoToolbox.framework */; };
+		1EAB0F3F22DB7AE8006104EE /* libc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F3E22DB7AE8006104EE /* libc.tbd */; };
+		1EAB0F4122DB7AF2006104EE /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EAB0F4022DB7AF2006104EE /* libsqlite3.tbd */; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		38CEA0ED468E49CFABCD82FD /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A36F9982B71E4662AA8DEB77 /* libRNFirebase.a */; };
 		50046CB6BDA69B9232CF66D9 /* libPods-RocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C235DC7B31A4D1578EDEF219 /* libPods-RocketChatRN.a */; };
@@ -105,6 +120,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNUserDefaults;
+		};
+		1EAB0F2722DB79F2006104EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1EAB0F2322DB79F2006104EE /* RNJitsiMeet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNJitsiMeet;
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -423,6 +445,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1EAB0F2A22DB7A0E006104EE /* JitsiMeet.framework in Embed Frameworks */,
+				1EAB0F2C22DB7A14006104EE /* WebRTC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,6 +476,19 @@
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 		1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUserDefaults.xcodeproj; path = "../node_modules/rn-user-defaults/ios/RNUserDefaults.xcodeproj"; sourceTree = "<group>"; };
+		1EAB0EEA22DB79CC006104EE /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JitsiMeet.framework; path = "../node_modules/react-native-jitsi-meet/ios/JitsiMeet.framework"; sourceTree = "<group>"; };
+		1EAB0F2022DB79CC006104EE /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-jitsi-meet/ios/WebRTC.framework"; sourceTree = "<group>"; };
+		1EAB0F2322DB79F2006104EE /* RNJitsiMeet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNJitsiMeet.xcodeproj; path = "../node_modules/react-native-jitsi-meet/ios/RNJitsiMeet.xcodeproj"; sourceTree = "<group>"; };
+		1EAB0F2E22DB7A43006104EE /* JitsiMeet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = JitsiMeet.storyboard; path = "../node_modules/react-native-jitsi-meet/ios/JitsiMeet.storyboard"; sourceTree = "<group>"; };
+		1EAB0F3022DB7AB1006104EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1EAB0F3222DB7ABD006104EE /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		1EAB0F3322DB7ABD006104EE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1EAB0F3622DB7AC8006104EE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		1EAB0F3822DB7ACD006104EE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		1EAB0F3A22DB7AD8006104EE /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		1EAB0F3B22DB7AD8006104EE /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		1EAB0F3E22DB7AE8006104EE /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		1EAB0F4022DB7AF2006104EE /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		20CE3E407E0D4D9E8C9885F2 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
@@ -491,6 +528,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EAB0F4122DB7AF2006104EE /* libsqlite3.tbd in Frameworks */,
+				1EAB0F3F22DB7AE8006104EE /* libc.tbd in Frameworks */,
+				1EAB0F3C22DB7AD8006104EE /* CoreVideo.framework in Frameworks */,
+				1EAB0F3D22DB7AD8006104EE /* VideoToolbox.framework in Frameworks */,
+				1EAB0F3922DB7ACD006104EE /* GLKit.framework in Frameworks */,
+				1EAB0F3722DB7AC8006104EE /* CoreGraphics.framework in Frameworks */,
+				1EAB0F3422DB7ABD006104EE /* CoreAudio.framework in Frameworks */,
+				1EAB0F3522DB7ABD006104EE /* AudioToolbox.framework in Frameworks */,
+				1EAB0F3122DB7AB1006104EE /* AVFoundation.framework in Frameworks */,
+				1EAB0F2D22DB7A1B006104EE /* libRNJitsiMeet.a in Frameworks */,
+				1EAB0F2922DB7A0E006104EE /* JitsiMeet.framework in Frameworks */,
+				1EAB0F2B22DB7A14006104EE /* WebRTC.framework in Frameworks */,
 				1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
@@ -590,6 +639,7 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
+				1EAB0F2E22DB7A43006104EE /* JitsiMeet.storyboard */,
 				7A006F13229C83B600803143 /* GoogleService-Info.plist */,
 				60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -629,6 +679,14 @@
 			isa = PBXGroup;
 			children = (
 				1E02220D22B2F76400001862 /* libRNUserDefaults.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1EAB0F2422DB79F2006104EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1EAB0F2822DB79F2006104EE /* libRNJitsiMeet.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -730,6 +788,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1EAB0F2322DB79F2006104EE /* RNJitsiMeet.xcodeproj */,
 				1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */,
 				7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */,
 				B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */,
@@ -856,6 +915,17 @@
 		BB4B591B5FC44CD9986DB2A6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1EAB0F4022DB7AF2006104EE /* libsqlite3.tbd */,
+				1EAB0F3E22DB7AE8006104EE /* libc.tbd */,
+				1EAB0F3A22DB7AD8006104EE /* CoreVideo.framework */,
+				1EAB0F3B22DB7AD8006104EE /* VideoToolbox.framework */,
+				1EAB0F3822DB7ACD006104EE /* GLKit.framework */,
+				1EAB0F3622DB7AC8006104EE /* CoreGraphics.framework */,
+				1EAB0F3322DB7ABD006104EE /* AudioToolbox.framework */,
+				1EAB0F3222DB7ABD006104EE /* CoreAudio.framework */,
+				1EAB0F3022DB7AB1006104EE /* AVFoundation.framework */,
+				1EAB0EEA22DB79CC006104EE /* JitsiMeet.framework */,
+				1EAB0F2022DB79CC006104EE /* WebRTC.framework */,
 				7ACD4853222860DE00442C55 /* JavaScriptCore.framework */,
 				B37C79D9BD0742CE936B6982 /* libc++.tbd */,
 				06BB44DD4855498082A744AD /* libz.tbd */,
@@ -879,6 +949,7 @@
 				7A6EDBE020ED6E020086E097 /* Embed Frameworks */,
 				FD0EBB93B02BAD0637E4F286 /* [CP] Copy Pods Resources */,
 				7A006EDA229C7F0A00803143 /* Run Script */,
+				1EAB0F4222DB7B23006104EE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -903,6 +974,9 @@
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -1010,6 +1084,10 @@
 					ProjectRef = 22D3971EAF2E4660B4FAB3DD /* RNI18n.xcodeproj */;
 				},
 				{
+					ProductGroup = 1EAB0F2422DB79F2006104EE /* Products */;
+					ProjectRef = 1EAB0F2322DB79F2006104EE /* RNJitsiMeet.xcodeproj */;
+				},
+				{
 					ProductGroup = 7A8DEB1C20ED0BDE00C5DCE4 /* Products */;
 					ProjectRef = 7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */;
 				},
@@ -1091,6 +1169,13 @@
 			fileType = archive.ar;
 			path = libRNUserDefaults.a;
 			remoteRef = 1E02220C22B2F76400001862 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1EAB0F2822DB79F2006104EE /* libRNJitsiMeet.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNJitsiMeet.a;
+			remoteRef = 1EAB0F2722DB79F2006104EE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1409,6 +1494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A55F1C52236D541005109A0 /* custom.ttf in Resources */,
+				1EAB0F2F22DB7A43006104EE /* JitsiMeet.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 			);
@@ -1430,6 +1516,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		1EAB0F4222DB7B23006104EE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Target architectures: $ARCHS\"\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\n# remove simulator's archs if location is not simulator's directory\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\necho \"No need to remove archs\"\n;;\n*)\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"i386 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"x86_64 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\n;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $\n\ndone\n";
 		};
 		7A006EDA229C7F0A00803143 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1506,6 +1609,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ACD75701AFD1CB848CAB0CB3 /* Pods-RocketChatRN.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
@@ -1515,9 +1619,11 @@
 				CURRENT_PROJECT_VERSION = 100;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(SRCROOT)/../node_modules/react-native-jitsi-meet/ios/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1554,6 +1660,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 66D6B1D0567051BE541450C9 /* Pods-RocketChatRN.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
@@ -1561,10 +1668,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 100;
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(SRCROOT)/../node_modules/react-native-jitsi-meet/ios/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1584,7 +1694,10 @@
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-jitsi-meet/ios/**",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

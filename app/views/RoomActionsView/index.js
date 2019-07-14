@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
@@ -202,13 +203,13 @@ export default class RoomActionsView extends React.Component {
 				{
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
-					disabled: true,
+					event: this.callJitsi,
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
-					disabled: true,
+					event: this.callJitsi,
 					testID: 'room-actions-video'
 				}
 			],
@@ -373,6 +374,16 @@ export default class RoomActionsView extends React.Component {
 			message: permalink
 		});
 	};
+
+	callJitsi = () => {
+		JitsiMeet.initialize();
+		JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
+			console.log('CONFERENCE_LEFT');
+		});
+		setTimeout(() => {
+			JitsiMeet.call('https://meet.jit.si/testRocketChat');
+		}, 1000);
+	}
 
 	leaveChannel = () => {
 		const { room } = this.state;
