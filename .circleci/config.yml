@@ -88,8 +88,9 @@ jobs:
           path: /tmp/screenshots
 
   e2e-test-android:
-    macos:
-      xcode: "10.2.1"
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-27-node
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
     steps:
