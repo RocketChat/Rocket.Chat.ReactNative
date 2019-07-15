@@ -8,6 +8,7 @@ import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
+import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -61,6 +62,10 @@ const FILE_PHOTO_INDEX = 1;
 // Library
 fileOptions.push(I18n.t('Choose_from_library'));
 const FILE_LIBRARY_INDEX = 2;
+
+// File
+fileOptions.push(I18n.t('Choose_file'));
+const FILE_INDEX = 3;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -462,9 +467,8 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	sendImageMessage = async(file) => {
+	sendMediaMessage = async(file) => {
 		const { rid, tmid } = this.props;
-
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
 			name: file.name,
@@ -477,7 +481,7 @@ class MessageBox extends Component {
 		try {
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 		} catch (e) {
-			log('err_send_image', e);
+			log('err_send_media_message', e);
 		}
 	}
 
@@ -499,6 +503,27 @@ class MessageBox extends Component {
 		}
 	}
 
+	uriToPath = uri => uri.replace(/^file:\/\//, '');
+
+	chooseFile = async() => {
+		try {
+			const res = await DocumentPicker.pick({
+				type: [DocumentPicker.types.allFiles]
+			});
+			this.showUploadModal({
+				filename: res.name,
+				size: res.size,
+				mime: res.type,
+				path: this.uriToPath(res.uri)
+			});
+		} catch (error) {
+			if (!DocumentPicker.isCancel(error)) {
+				log('chooseFile', error);
+			}
+		}
+	}
+
+
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
 	}
@@ -519,6 +544,9 @@ class MessageBox extends Component {
 				break;
 			case FILE_LIBRARY_INDEX:
 				this.chooseFromLibrary();
+				break;
+			case FILE_INDEX:
+				this.chooseFile();
 				break;
 			default:
 				break;
@@ -895,7 +923,7 @@ class MessageBox extends Component {
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
-					submit={this.sendImageMessage}
+					submit={this.sendMediaMessage}
 				/>
 			</React.Fragment>
 		);
