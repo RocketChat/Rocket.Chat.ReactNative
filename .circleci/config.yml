@@ -90,8 +90,6 @@ jobs:
   e2e-test-android:
     macos:
       xcode: "10.2.1"
-    environment:
-      BASH_ENV: "$HOME/.bashrc"
     steps:
       - checkout
       - run:
