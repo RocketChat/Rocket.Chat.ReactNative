@@ -21,13 +21,13 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
+		1E27B9E922DD036100CAADB5 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E27B9E622DD035300CAADB5 /* WebRTC.framework */; };
+		1E27B9EA22DD036100CAADB5 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1E27B9E622DD035300CAADB5 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1E27B9EB22DD036400CAADB5 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E27B9E522DD035200CAADB5 /* JitsiMeet.framework */; };
+		1E27B9EC22DD036400CAADB5 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1E27B9E522DD035200CAADB5 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1EE8A83522DCE1B20084CA74 /* JitsiMeetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8A83122DCE1B10084CA74 /* JitsiMeetViewController.m */; };
 		1EE8A83622DCE1B20084CA74 /* JitsiMeetRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8A83322DCE1B20084CA74 /* JitsiMeetRN.m */; };
 		1EE8A83722DCE1B20084CA74 /* JitsiMeet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EE8A83422DCE1B20084CA74 /* JitsiMeet.storyboard */; };
-		1EE8A8F322DCE7FA0084CA74 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8F022DCE7E80084CA74 /* JitsiMeet.framework */; };
-		1EE8A8F422DCE7FA0084CA74 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8F022DCE7E80084CA74 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1EE8A8F522DCE8020084CA74 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8BA22DCE7E80084CA74 /* WebRTC.framework */; };
-		1EE8A8F622DCE8020084CA74 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8BA22DCE7E80084CA74 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1EE8A8F922DCE8AD0084CA74 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8F822DCE8AD0084CA74 /* AVFoundation.framework */; };
 		1EE8A8FB22DCE8B50084CA74 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8FA22DCE8B50084CA74 /* AudioToolbox.framework */; };
 		1EE8A8FD22DCE8BE0084CA74 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8A8FC22DCE8BE0084CA74 /* CoreGraphics.framework */; };
@@ -439,8 +439,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1EE8A8F422DCE7FA0084CA74 /* JitsiMeet.framework in Embed Frameworks */,
-				1EE8A8F622DCE8020084CA74 /* WebRTC.framework in Embed Frameworks */,
+				1E27B9EA22DD036100CAADB5 /* WebRTC.framework in Embed Frameworks */,
+				1E27B9EC22DD036400CAADB5 /* JitsiMeet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,13 +470,13 @@
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 		1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUserDefaults.xcodeproj; path = "../node_modules/rn-user-defaults/ios/RNUserDefaults.xcodeproj"; sourceTree = "<group>"; };
+		1E27B9E522DD035200CAADB5 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
+		1E27B9E622DD035300CAADB5 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
 		1EE8A83022DCE1B10084CA74 /* JitsiMeetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JitsiMeetViewController.h; sourceTree = "<group>"; };
 		1EE8A83122DCE1B10084CA74 /* JitsiMeetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiMeetViewController.m; sourceTree = "<group>"; };
 		1EE8A83222DCE1B10084CA74 /* JitsiMeetRN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JitsiMeetRN.h; sourceTree = "<group>"; };
 		1EE8A83322DCE1B20084CA74 /* JitsiMeetRN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiMeetRN.m; sourceTree = "<group>"; };
 		1EE8A83422DCE1B20084CA74 /* JitsiMeet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JitsiMeet.storyboard; sourceTree = "<group>"; };
-		1EE8A8BA22DCE7E80084CA74 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
-		1EE8A8F022DCE7E80084CA74 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		1EE8A8F822DCE8AD0084CA74 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1EE8A8FA22DCE8B50084CA74 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1EE8A8FC22DCE8BE0084CA74 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -534,8 +534,8 @@
 				1EE8A8FD22DCE8BE0084CA74 /* CoreGraphics.framework in Frameworks */,
 				1EE8A8FB22DCE8B50084CA74 /* AudioToolbox.framework in Frameworks */,
 				1EE8A8F922DCE8AD0084CA74 /* AVFoundation.framework in Frameworks */,
-				1EE8A8F322DCE7FA0084CA74 /* JitsiMeet.framework in Frameworks */,
-				1EE8A8F522DCE8020084CA74 /* WebRTC.framework in Frameworks */,
+				1E27B9EB22DD036400CAADB5 /* JitsiMeet.framework in Frameworks */,
+				1E27B9E922DD036100CAADB5 /* WebRTC.framework in Frameworks */,
 				1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
@@ -916,6 +916,8 @@
 			children = (
 				1EE8A90822DCE9370084CA74 /* libsqlite3.tbd */,
 				1EE8A90622DCE9310084CA74 /* libc.tbd */,
+				1E27B9E522DD035200CAADB5 /* JitsiMeet.framework */,
+				1E27B9E622DD035300CAADB5 /* WebRTC.framework */,
 				1EE8A90422DCE9290084CA74 /* VideoToolbox.framework */,
 				1EE8A90222DCE8D50084CA74 /* CoreVideo.framework */,
 				1EE8A90022DCE8CB0084CA74 /* CoreAudio.framework */,
@@ -923,8 +925,6 @@
 				1EE8A8FC22DCE8BE0084CA74 /* CoreGraphics.framework */,
 				1EE8A8FA22DCE8B50084CA74 /* AudioToolbox.framework */,
 				1EE8A8F822DCE8AD0084CA74 /* AVFoundation.framework */,
-				1EE8A8F022DCE7E80084CA74 /* JitsiMeet.framework */,
-				1EE8A8BA22DCE7E80084CA74 /* WebRTC.framework */,
 				7ACD4853222860DE00442C55 /* JavaScriptCore.framework */,
 				B37C79D9BD0742CE936B6982 /* libc++.tbd */,
 				06BB44DD4855498082A744AD /* libz.tbd */,

@@ -21,9 +21,21 @@
   }
 }
 
-- (void)loadUrl:(NSString *) url {
+- (void)callVoice:(NSString *)url {
   JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
-  [jitsiMeetView loadURLString:url];
+  JitsiMeetConferenceOptions *options = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {        builder.room = url;
+      builder.videoMuted = YES;
+  }];
+  [jitsiMeetView join:options];
+}
+
+- (void)callVideo:(NSString *)url {
+  JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
+  JitsiMeetConferenceOptions *optionsBuilder = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
+    builder.room = url;
+  }];
+  
+  [jitsiMeetView join:optionsBuilder];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE()
     [self sendEventWithName:@"CONFERENCE_JOINED" body:data];
 }
 
-- (void)conferenceLeft:(NSDictionary *)data {
+- (void)conferenceTerminated:(NSDictionary *)data {
     RCTLogInfo(@"Conference left");
     UIViewController* rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
     UINavigationController *navigationController = (UINavigationController *) rootViewController;
@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(initialize)
     jitsiMeetViewController = [storyboard instantiateViewControllerWithIdentifier:@"jitsiMeetStoryBoardID"];
 }
 
-RCT_EXPORT_METHOD(call:(NSString *)urlString)
+RCT_EXPORT_METHOD(callVoice:(NSString *)urlString)
 {
     RCTLogInfo(@"Load URL %@", urlString);
     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -52,8 +52,21 @@ RCT_EXPORT_METHOD(call:(NSString *)urlString)
         UINavigationController *navigationController = (UINavigationController *) rootViewController;
         [navigationController pushViewController:jitsiMeetViewController animated:true];
         [jitsiMeetViewController setDelegate:self];
-        [jitsiMeetViewController loadUrl:urlString];
+        [jitsiMeetViewController callVoice:urlString];
     });
+}
+
+RCT_EXPORT_METHOD(callVideo:(NSString *)urlString)
+{
+  RCTLogInfo(@"Call Video %@", urlString);
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    UIViewController* rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
+    UINavigationController *navigationController = (UINavigationController *) rootViewController;
+    [navigationController pushViewController:jitsiMeetViewController animated:true];
+    [jitsiMeetViewController setDelegate:self];
+    
+    [jitsiMeetViewController callVideo:urlString];
+  });
 }
 
 @end
