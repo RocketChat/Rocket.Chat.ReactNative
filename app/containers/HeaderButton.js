@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
-import { HeaderBackButton } from 'react-navigation';
 
-import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
-import { COLOR_PRIMARY, COLOR_WHITE, HEADER_BACK } from '../constants/colors';
+import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const color = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
 export const headerIconSize = 23;
@@ -54,16 +52,6 @@ export const LegalButton = React.memo(({ navigation, testID }) => (
 	<MoreButton onPress={() => navigation.navigate('LegalView')} testID={testID} />
 ));
 
-export const BackButton = React.memo(({ navigation, testID }) => (
-	<HeaderBackButton
-		title={I18n.t('Back')}
-		backTitleVisible={isIOS}
-		onPress={navigation.goBack}
-		tintColor={HEADER_BACK}
-		testID={testID}
-	/>
-));
-
 DrawerButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	testID: PropTypes.string.isRequired
@@ -81,10 +69,6 @@ MoreButton.propTypes = {
 	testID: PropTypes.string.isRequired
 };
 LegalButton.propTypes = {
-	navigation: PropTypes.object.isRequired,
-	testID: PropTypes.string.isRequired
-};
-BackButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	testID: PropTypes.string.isRequired
 };

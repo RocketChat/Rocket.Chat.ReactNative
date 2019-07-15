@@ -55,6 +55,7 @@ export default class ShareListView extends React.Component {
 		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
 
 		return {
+			headerBackTitle: isIOS ? I18n.t('Back') : null,
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>

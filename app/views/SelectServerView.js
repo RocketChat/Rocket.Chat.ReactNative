@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-navigation';
 import I18n from '../i18n';
 import database from '../lib/realm';
 import StatusBar from '../containers/StatusBar';
-import { BackButton } from '../containers/HeaderButton';
 import { selectServerRequest as selectServerRequestAction } from '../actions/server';
 
 import {
@@ -42,13 +41,7 @@ const styles = StyleSheet.create({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 }))
 export default class SelectServerView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: (
-			<BackButton
-				navigation={navigation}
-				testID='back-button-select-server-view'
-			/>
-		),
+	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
 	})
 

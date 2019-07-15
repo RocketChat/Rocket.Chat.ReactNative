@@ -16,7 +16,7 @@ import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
 import database from '../../lib/realm';
-import { BackButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
@@ -27,12 +27,6 @@ export default class ShareView extends React.Component {
 		const canSend = navigation.getParam('canSend', false);
 
 		return ({
-			headerLeft: (
-				<BackButton
-					navigation={navigation}
-					testID='back-button-share-view'
-				/>
-			),
 			title: I18n.t('Share'),
 			headerRight:
 				canSend
