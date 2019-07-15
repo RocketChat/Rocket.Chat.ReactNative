@@ -19,8 +19,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 18,
 		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal,
-		...sharedStyles.textRegular
+		...sharedStyles.textColorNormal
 	},
 	content: {
 		fontSize: 14,

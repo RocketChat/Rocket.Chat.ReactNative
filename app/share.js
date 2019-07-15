@@ -28,7 +28,8 @@ const InsideNavigator = createStackNavigator({
 const OutsideNavigator = createStackNavigator({
 	WithoutServersView
 }, {
-	initialRouteName: 'WithoutServersView'
+	initialRouteName: 'WithoutServersView',
+	defaultNavigationOptions: defaultHeader
 });
 
 const AppContainer = createAppContainer(createSwitchNavigator(
