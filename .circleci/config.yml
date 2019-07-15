@@ -135,7 +135,7 @@ jobs:
             cd /tmp
             git clone https://github.com/facebook/FBSimulatorControl.git FBSimulatorControl
             cd FBSimulatorControl
-            git checkout 778f9825cb82aabac82f1ed474f1dba1e0276211
+            git checkout master
             ./build.sh fbsimctl build >/dev/null
             cp -r build/Build/Products/Debug/* /usr/local/bin
             which fbsimctl
