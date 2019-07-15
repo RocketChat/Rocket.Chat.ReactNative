@@ -11569,11 +11569,6 @@ react-native-iphone-x-helper@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
   integrity sha512-xIeTo4s77wwKgBZLVRIZC9tM9/PkXS46Ul76NXmvmixEb3ZwqGdQesR3zRiLMOoIdfOURB6N9bba9po7+x9Bag==
 
-react-native-jitsi-meet@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-jitsi-meet/-/react-native-jitsi-meet-1.2.0.tgz#6170c0752f84918aa38ff102962a758f90c5c3c4"
-  integrity sha512-Q2ug4siSr6Ju6219/WJjKvttnH+h6zRSZkICUFX6NbGMz1lACYsJ74OUDI/7GX8x3XRLlwWnL3slbIqSpxjoPA==
-
 react-native-keyboard-aware-scroll-view@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.8.0.tgz#00bcaa38c91323913bb7a733059ad2bc4875f88c"

@@ -6,8 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
 
+import JitsiMeet, { JitsiMeetEvents } from '../../lib/jitsiMeet';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
