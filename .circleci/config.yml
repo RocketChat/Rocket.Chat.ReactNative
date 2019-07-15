@@ -88,9 +88,8 @@ jobs:
           path: /tmp/screenshots
 
   e2e-test-android:
-    <<: *defaults
-    docker:
-      - image: circleci/android:api-27-node
+    macos:
+      xcode: "10.2.1"
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
     steps:
@@ -113,14 +112,14 @@ jobs:
             echo 'KEY_PASSWORD=RocketChatDebug' >> android/gradle.properties
           name: Configure Keystore Variables
 
-      - restore_cache:
-          key: |
-            brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
-      - restore_cache:
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-
-      - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+#      - restore_cache:
+#          key: |
+#            brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
+#      - restore_cache:
+#          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+#
+#      - restore_cache:
+#          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
       - run:
           command: |
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew >/dev/null
@@ -147,20 +146,20 @@ jobs:
           command: |
             yarn global add detox-cli
             yarn
-      - save_cache:
-          key: |
-            brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
-          paths:
-            - /usr/local/Homebrew
-            - ~/Library/Caches/Homebrew
-      - save_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
-      - save_cache:
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
+#      - save_cache:
+#          key: |
+#            brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
+#          paths:
+#            - /usr/local/Homebrew
+#            - ~/Library/Caches/Homebrew
+#      - save_cache:
+#          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+#          paths:
+#            - ./node_modules
+#      - save_cache:
+#          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+#          paths:
+#            - ~/.gradle
 #      - run:
 #          command: echo -e "console.disableYellowBox = true;" >> ./index.js
 #          name: Append "console.disableYellowBox = true;" to index.js
