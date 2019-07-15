@@ -4,21 +4,19 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { HeaderBackButton, SafeAreaView } from 'react-navigation';
-import RNUserDefaults from 'rn-user-defaults';
+import { SafeAreaView } from 'react-navigation';
 
 import I18n from '../i18n';
 import database from '../lib/realm';
 import StatusBar from '../containers/StatusBar';
-import EventEmitter from '../utils/events';
+import { BackButton } from '../containers/HeaderButton';
 import { selectServerRequest as selectServerRequestAction } from '../actions/server';
 
 import {
-	HEADER_BACK, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
 } from '../constants/colors';
 import Navigation from '../lib/Navigation';
 import ServerItem from '../presentation/ServerItem';
-import RocketChat from '../lib/rocketchat';
 
 const getItemLayout = (data, index) => ({ length: 68, offset: 68 * index, index });
 const keyExtractor = item => item.id;
@@ -43,14 +41,12 @@ const styles = StyleSheet.create({
 }), dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 }))
-export default class LoginView extends React.Component {
+export default class SelectServerView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: (
-			<HeaderBackButton
-				title={I18n.t('Back')}
-				backTitleVisible
-				onPress={navigation.goBack}
-				tintColor={HEADER_BACK}
+			<BackButton
+				navigation={navigation}
+				testID='back-button-select-server-view'
 			/>
 		),
 		title: I18n.t('Select_Server')
@@ -61,21 +57,14 @@ export default class LoginView extends React.Component {
 		selectServerRequest: PropTypes.func
 	}
 
-	select = async(server) => {
+	select = (server) => {
 		const {
 			server: currentServer, selectServerRequest
 		} = this.props;
 
 		if (currentServer !== server) {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (!userId) {
-				this.newServerTimeout = setTimeout(() => {
-					EventEmitter.emit('NewServer', { server });
-				}, 1000);
-			} else {
-				selectServerRequest(server);
-				Navigation.navigate('ShareListView');
-			}
+			selectServerRequest(server);
+			Navigation.navigate('ShareListView');
 		}
 	}
 

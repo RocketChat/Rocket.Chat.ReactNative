@@ -43,7 +43,7 @@
 				android:noHistory="true"
 				android:name=".share.ShareActivity"
 				android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-				android:label="@string/title_activity_share"
+				android:label="@string/share_extension_name"
 				android:screenOrientation="portrait"
 				android:theme="@style/AppTheme" >
 				<intent-filter>

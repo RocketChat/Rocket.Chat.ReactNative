@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import Avatar from '../../containers/Avatar';
+import { RectButton } from 'react-native-gesture-handler';
 
+import Avatar from '../../containers/Avatar';
 import styles from './styles';
-import Touch from '../../utils/touch';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 export const ROW_HEIGHT = 56;
@@ -32,10 +32,7 @@ export default class ShareItem extends React.Component {
 		} = this.props;
 
 		return (
-			<Touch
-				activeOpacity={0.8}
-				onPress={onPress}
-			>
+			<RectButton onPress={onPress}>
 				<View style={styles.content}>
 					<Avatar text={name} size={24} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 					<View
@@ -45,7 +42,7 @@ export default class ShareItem extends React.Component {
 						<DisclosureIndicator />
 					</View>
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 }

@@ -10,7 +10,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual } from 'lodash';
 
-import RocketChat from '../../lib/rocketchat';
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
@@ -232,26 +231,6 @@ export default class ShareListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
-	_onPressItem = async(item = {}) => {
-		if (!item.search) {
-			return this.shareMessage(item);
-		}
-		if (item.t === 'd') {
-			// if user is using the search we need first to join/create room
-			try {
-				const { username } = item;
-				const result = await RocketChat.createDirectMessage(username);
-				if (result.success) {
-					return this.shareMessage({ rid: result.room._id, name: username, t: 'd' });
-				}
-			} catch (e) {
-				log('err_on_press_item', e);
-			}
-		} else {
-			return this.shareMessage(item);
-		}
-	}
-
 	shareMessage = (item) => {
 		const { value, isMedia, fileInfo } = this.state;
 		const { navigation } = this.props;
@@ -386,18 +365,13 @@ export default class ShareListView extends React.Component {
 		</View>
 	);
 
-	renderItem = ({ item }) => {
-		if (item.search || (item.isValid && item.isValid())) {
-			return (
-				<ShareItem
-					type={item.t}
-					name={this.getRoomTitle(item)}
-					onPress={() => this._onPressItem(item)}
-				/>
-			);
-		}
-		return null;
-	}
+	renderItem = ({ item }) => (
+		<ShareItem
+			type={item.t}
+			name={this.getRoomTitle(item)}
+			onPress={() => this.shareMessage(item)}
+		/>
+	);
 
 	renderSeparator = () => <View style={styles.separator} />;
 
@@ -452,13 +426,9 @@ export default class ShareListView extends React.Component {
 			? 'error-file-too-large'
 			: 'error-invalid-file-type';
 		return (
-			<View style={[styles.container]}>
-				<View>
-					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
-				</View>
-				<View>
-					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-				</View>
+			<View style={styles.container}>
+				<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+				<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
 				<Text style={styles.fileMime}>{ file.type }</Text>
 			</View>
 		);

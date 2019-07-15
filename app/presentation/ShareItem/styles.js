@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
+
 import sharedStyles from '../../views/Styles';
-import { COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	content: {
@@ -8,16 +8,15 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		alignItems: 'center',
-		marginLeft: 14,
-		paddingRight: 16,
-		backgroundColor: COLOR_WHITE
+		paddingLeft: 14,
+		paddingRight: 16
 	},
 	name: {
 		fontSize: 17,
 		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorNormal,
-		width: '80%'
+		flex: 1
 	},
 	center: {
 		flex: 1,

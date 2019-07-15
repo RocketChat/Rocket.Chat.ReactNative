@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
+import { RectButton } from 'react-native-gesture-handler';
 
-import Touch from '../../utils/touch';
 import log from '../../utils/log';
 import Check from '../../containers/Check';
 import styles from './styles';
@@ -29,7 +29,7 @@ export default class ServerItem extends React.Component {
 		} = this.props;
 
 		return (
-			<Touch onPress={onPress} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
+			<RectButton onPress={onPress} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
 				<View style={styles.serverItemContainer}>
 					{item.iconURL
 						? (
@@ -57,7 +57,7 @@ export default class ServerItem extends React.Component {
 					{item.id === server && hasCheck ? <Check /> : null}
 					{disclosure ? <DisclosureIndicator /> : null}
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 }

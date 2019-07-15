@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
-import firebase from 'react-native-firebase';
 
 import Navigation from './lib/Navigation';
 import store from './lib/createStore';
@@ -14,18 +13,8 @@ import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
 import sharedStyles from './views/Styles';
 import { isNotch } from './utils/deviceInfo';
-import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
+import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 
-const defaultHeader = {
-	headerStyle: {
-		backgroundColor: HEADER_BACKGROUND
-	},
-	headerTitleStyle: {
-		color: HEADER_TITLE
-	},
-	headerBackTitle: null,
-	headerTintColor: HEADER_BACK
-};
 
 const InsideNavigator = createStackNavigator({
 	ShareListView,
@@ -52,26 +41,6 @@ const AppContainer = createAppContainer(createSwitchNavigator(
 		initialRouteName: 'AuthLoading'
 	}
 ));
-
-const getActiveRouteName = (navigationState) => {
-	if (!navigationState) {
-		return null;
-	}
-	const route = navigationState.routes[navigationState.index];
-	if (route.routes) {
-		return getActiveRouteName(route);
-	}
-	return route.routeName;
-};
-
-const onNavigationStateChange = (prevState, currentState) => {
-	const currentScreen = getActiveRouteName(currentState);
-	const prevScreen = getActiveRouteName(prevState);
-
-	if (prevScreen !== currentScreen) {
-		firebase.analytics().setCurrentScreen(currentScreen);
-	}
-};
 
 class Root extends React.Component {
 	constructor(props) {

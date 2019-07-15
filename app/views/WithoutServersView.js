@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-	StyleSheet, View, Text, TouchableOpacity
+	StyleSheet, View, Text
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
+import { CloseShareExtensionButton } from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import { COLOR_WHITE, HEADER_BACK } from '../constants/colors';
+import { COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,27 +18,25 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 18,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	},
 	content: {
 		fontSize: 14,
-		textAlign: 'center'
-	},
-	closeButton: {
-		marginLeft: 16
-	},
-	close: {
-		color: HEADER_BACK,
-		fontSize: 16
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	}
 });
 
 export default class WithoutServerView extends React.Component {
 	static navigationOptions = () => ({
 		headerLeft: (
-			<TouchableOpacity style={styles.closeButton} onPress={() => ShareExtension.close()}>
-				<Text style={styles.close}>{I18n.t('Close')}</Text>
-			</TouchableOpacity>
+			<CloseShareExtensionButton
+				onPress={ShareExtension.close}
+				testID='share-extension-close'
+			/>
 		)
 	})
 

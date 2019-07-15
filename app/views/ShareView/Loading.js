@@ -10,8 +10,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		position: 'absolute',
 		justifyContent: 'center',
-		alignItems: 'center',
-		zIndex: 5
+		alignItems: 'center'
 	}
 });
 

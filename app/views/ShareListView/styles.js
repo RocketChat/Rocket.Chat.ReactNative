@@ -3,7 +3,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_TEXT, HEADER_BACK, COLOR_SEPARATOR, COLOR_DANGER
+	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR, COLOR_DANGER
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -40,17 +40,11 @@ export default StyleSheet.create({
 		paddingTop: 17
 	},
 	headerText: {
-		...sharedStyles.COLOR_TEXT,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular,
 		fontSize: 17,
 		letterSpacing: 0.27,
 		flex: 1
-	},
-	cancelButton: {
-		marginLeft: 16
-	},
-	cancel: {
-		color: HEADER_BACK,
-		fontSize: 17
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -64,10 +58,9 @@ export default StyleSheet.create({
 		color: COLOR_DANGER
 	},
 	fileMime: {
-		color: COLOR_TEXT,
-		...sharedStyles.textColorTitle,
+		...sharedStyles.textColorNormal,
 		...sharedStyles.textBold,
-		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
 		fontSize: 20,
 		marginBottom: 20
 	},

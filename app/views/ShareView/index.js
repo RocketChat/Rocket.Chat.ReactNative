@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, TouchableOpacity, TextInput, Image
+	View, Text, TextInput, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
-import { HeaderBackButton } from 'react-navigation';
 
 import {
-	COLOR_TEXT_DESCRIPTION, HEADER_BACK
+	COLOR_TEXT_DESCRIPTION
 } from '../../constants/colors';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
@@ -16,13 +15,12 @@ import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
-import { isIOS } from '../../utils/deviceInfo';
 import database from '../../lib/realm';
+import { BackButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
-	user: {
-		username: state.login.user && state.login.user.username
-	}
+	username: state.login.user && state.login.user.username
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -30,20 +28,23 @@ export default class ShareView extends React.Component {
 
 		return ({
 			headerLeft: (
-				<HeaderBackButton
-					title={I18n.t('Back')}
-					backTitleVisible={isIOS}
-					onPress={() => navigation.goBack()}
-					tintColor={HEADER_BACK}
+				<BackButton
+					navigation={navigation}
+					testID='back-button-share-view'
 				/>
 			),
 			title: I18n.t('Share'),
 			headerRight:
 				canSend
 					? (
-						<TouchableOpacity onPress={navigation.getParam('sendMessage')} style={styles.sendButton}>
-							<Text style={styles.send}>{I18n.t('Send')}</Text>
-						</TouchableOpacity>
+						<CustomHeaderButtons>
+							<Item
+								title={I18n.t('Send')}
+								onPress={navigation.getParam('sendMessage')}
+								testID='send-message-share-view'
+								buttonStyle={styles.send}
+							/>
+						</CustomHeaderButtons>
 					)
 					: null
 		});
@@ -51,14 +52,12 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		user: PropTypes.shape({
-			username: PropTypes.string.isRequired
-		})
+		username: PropTypes.string.isRequired
 	};
 
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
+		const { navigation, username } = this.props;
 		const rid = navigation.getParam('rid', '');
 		const name = navigation.getParam('name', '');
 		const value = navigation.getParam('value', '');
@@ -75,6 +74,7 @@ export default class ShareView extends React.Component {
 			fileInfo,
 			loading: false,
 			room: this.rooms[0] || { rid },
+			user: { username },
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
@@ -83,39 +83,9 @@ export default class ShareView extends React.Component {
 	}
 
 	componentDidMount() {
+		const { room, user } = this.state;
 		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(this.isReadOnly() || this.isBlocked()) });
-	}
-
-	isOwner = () => {
-		const { room } = this.state;
-		return room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
-	}
-
-	isMuted = () => {
-		const { room } = this.state;
-		const { user } = this.props;
-		return room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
-	}
-
-	isReadOnly = () => {
-		const { room } = this.state;
-		if (this.isOwner()) {
-			return false;
-		}
-		return (room && room.ro) || this.isMuted();
-	}
-
-	isBlocked = () => {
-		const { room } = this.state;
-
-		if (room) {
-			const { t, blocked, blocker } = room;
-			if (t === 'd' && (blocked || blocker)) {
-				return true;
-			}
-		}
-		return false;
+		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, user) || isBlocked(room)) });
 	}
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
@@ -221,28 +191,30 @@ export default class ShareView extends React.Component {
 		);
 	}
 
-	renderError = () => (
-		<View style={[styles.container, styles.centered]}>
-			<Text style={styles.title}>
-				{
-					this.isBlocked() ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')
-				}
-			</Text>
-		</View>
-	);
+	renderError = () => {
+		const { room } = this.state;
+		return (
+			<View style={[styles.container, styles.centered]}>
+				<Text style={styles.title}>
+					{
+						isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')
+					}
+				</Text>
+			</View>
+		);
+	}
 
 	render() {
 		const {
-			name, loading, isMedia
+			name, loading, isMedia, room, user
 		} = this.state;
 
-		if (this.isReadOnly() || this.isBlocked()) {
+		if (isReadOnly(room, user) || isBlocked(room)) {
 			return this.renderError();
 		}
 
 		return (
 			<View style={styles.container}>
-				{ loading ? <Loading /> : null }
 				<View style={isMedia ? styles.toContent : styles.toContentText}>
 					<Text style={styles.text}>
 						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
@@ -252,6 +224,7 @@ export default class ShareView extends React.Component {
 				<View style={styles.content}>
 					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
+				{ loading ? <Loading /> : null }
 			</View>
 		);
 	}
