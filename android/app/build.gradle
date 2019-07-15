@@ -210,6 +210,11 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
     }
+    implementation ('org.jitsi.react:jitsi-meet-sdk:2.1.0', {
+        exclude group: 'com.facebook.react', module:'react-native-vector-icons'
+        exclude group: 'com.facebook.react', module:'react-native-fast-image'
+        transitive = true
+    })
 }
 
 // Run this once to be able to run the application with BUCK
