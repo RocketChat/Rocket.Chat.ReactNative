@@ -2,27 +2,22 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, Animated } from 'react-native';
-import { connect } from 'react-redux';
 import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
-import styles, { ROW_HEIGHT } from './styles';
+import styles, {
+	ROW_HEIGHT, ACTION_WIDTH, SMALL_SWIPE, LONG_SWIPE
+} from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
-import { CustomIcon } from '../../lib/Icons';
+import { LeftActions, RightActions } from './Actions';
 
 export { ROW_HEIGHT };
 
-const OPTION_WIDTH = 80;
-const SMALL_SWIPE = 40;
-const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width'];
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token
-}))
+const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width', 'isRead', 'favorite'];
+
 export default class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
@@ -43,7 +38,6 @@ export default class RoomItem extends React.Component {
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		width: PropTypes.number,
-		height: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
@@ -60,44 +54,34 @@ export default class RoomItem extends React.Component {
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props) {
 		super(props);
-		const dragX = new Animated.Value(0);
-		const rowOffSet = new Animated.Value(0);
-		this.rowTranslation = Animated.add(
-			rowOffSet,
-			dragX
+		this.dragX = new Animated.Value(0);
+		this.rowOffSet = new Animated.Value(0);
+		this.transX = Animated.add(
+			this.rowOffSet,
+			this.dragX
 		);
 		this.state = {
-			dragX,
-			rowOffSet,
 			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
 		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: dragX } }]
+			[{ nativeEvent: { translationX: this.dragX } }]
 		);
 		this._value = 0;
-		this.rowTranslation.addListener(({ value }) => { this._value = value; });
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt, isRead } = this.props;
+		const { lastMessage, _updatedAt } = this.props;
 		const oldlastMessage = lastMessage;
 		const newLastmessage = nextProps.lastMessage;
 
 		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
 			return true;
 		}
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt !== _updatedAt) {
-			return true;
-		}
-		if (isRead !== nextProps.isRead) {
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
 		return attrs.some(key => nextProps[key] !== this.props[key]);
-	}
-
-	componentWillUnmount() {
-		this.rowTranslation.removeAllListeners();
 	}
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
@@ -109,21 +93,22 @@ export default class RoomItem extends React.Component {
 	_handleRelease = (nativeEvent) => {
 		const { translationX } = nativeEvent;
 		const { rowState } = this.state;
-		const { width } = this.props;
-		const halfScreen = width / 2;
+		this._value = this._value + translationX;
+
 		let toValue = 0;
 		if (rowState === 0) { // if no option is opened
-			if (translationX > 0 && translationX < halfScreen) {
-				toValue = OPTION_WIDTH; // open left option if he swipe right but not enough to trigger action
+			if (translationX > 0 && translationX < LONG_SWIPE) {
+				toValue = ACTION_WIDTH; // open left option if he swipe right but not enough to trigger action
 				this.setState({ rowState: -1 });
-			} else if (translationX >= halfScreen) {
+			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
 				this.toggleRead();
-			} else if (translationX < 0 && translationX > -halfScreen) {
-				toValue = -2 * OPTION_WIDTH; // open right option if he swipe left
+			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
+				toValue = -2 * ACTION_WIDTH; // open right option if he swipe left
 				this.setState({ rowState: 1 });
-			} else if (translationX <= -halfScreen) {
-				toValue = -width;
+			} else if (translationX <= -LONG_SWIPE) {
+				toValue = 0;
+				this.setState({ rowState: 0 });
 				this.hideChannel();
 			} else {
 				toValue = 0;
@@ -134,12 +119,12 @@ export default class RoomItem extends React.Component {
 			if (this._value < SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
-			} else if (this._value > halfScreen) {
+			} else if (this._value > LONG_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
 				this.toggleRead();
 			} else {
-				toValue = OPTION_WIDTH;
+				toValue = ACTION_WIDTH;
 			}
 		}
 
@@ -147,30 +132,26 @@ export default class RoomItem extends React.Component {
 			if (this._value > -2 * SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
-			} else if (this._value < -halfScreen) {
+			} else if (this._value < -LONG_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
 				this.hideChannel();
 			} else {
-				toValue = -2 * OPTION_WIDTH;
+				toValue = -2 * ACTION_WIDTH;
 			}
 		}
 		this._animateRow(toValue);
 	}
 
 	_animateRow = (toValue) => {
-		const { dragX, rowOffSet } = this.state;
-		rowOffSet.setValue(this._value);
-		dragX.setValue(0);
-		Animated.spring(rowOffSet, {
+		this.rowOffSet.setValue(this._value);
+		this._value = toValue;
+		this.dragX.setValue(0);
+		Animated.spring(this.rowOffSet, {
 			toValue,
-			bounciness: 0
+			bounciness: 0,
+			useNativeDriver: true
 		}).start();
-	}
-
-	handleLeftButtonPress = () => {
-		this.toggleRead();
-		this.close();
 	}
 
 	close = () => {
@@ -193,16 +174,21 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	handleHideButtonPress = () => {
-		this.hideChannel();
-		this.close();
-	}
-
 	hideChannel = () => {
 		const { hideChannel, rid, type } = this.props;
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
+	}
+
+	onToggleReadPress = () => {
+		this.toggleRead();
+		this.close();
+	}
+
+	onHidePress = () => {
+		this.hideChannel();
+		this.close();
 	}
 
 	onPress = () => {
@@ -217,109 +203,6 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	renderLeftActions = () => {
-		const { isRead, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH],
-			outputRange: [-width, -width + OPTION_WIDTH]
-		});
-
-		const iconTrans = this.rowTranslation.interpolate({
-			inputRange: [0, OPTION_WIDTH, halfWidth - 1, halfWidth, width],
-			outputRange: [0, 0, -(OPTION_WIDTH + 10), 0, 0]
-		});
-		return (
-			<Animated.View
-				style={[
-					styles.leftAction,
-					{ transform: [{ translateX: trans }] }
-				]}
-			>
-				<RectButton style={styles.actionButtonLeft} onPress={this.handleLeftButtonPress}>
-					<Animated.View
-						style={{ transform: [{ translateX: iconTrans }] }}
-					>
-						{isRead ? (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='flag' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Unread')}</Text>
-							</View>
-						) : (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='check' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Read')}</Text>
-							</View>
-						)}
-					</Animated.View>
-				</RectButton>
-			</Animated.View>
-		);
-	};
-
-	renderRightActions = () => {
-		const { favorite, width } = this.props;
-		const halfWidth = width / 2;
-		const trans = this.rowTranslation.interpolate({
-			inputRange: [-OPTION_WIDTH, 0],
-			outputRange: [width - OPTION_WIDTH, width]
-		});
-		const iconHideTrans = this.rowTranslation.interpolate({
-			inputRange: [-(halfWidth - 20), -2 * OPTION_WIDTH, 0],
-			outputRange: [0, 0, -OPTION_WIDTH]
-		});
-		const iconFavWidth = this.rowTranslation.interpolate({
-			inputRange: [-halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [0, OPTION_WIDTH, OPTION_WIDTH],
-			extrapolate: 'clamp'
-		});
-		const iconHideWidth = this.rowTranslation.interpolate({
-			inputRange: [-width, -halfWidth, -2 * OPTION_WIDTH, 0],
-			outputRange: [width, halfWidth, OPTION_WIDTH, OPTION_WIDTH]
-		});
-		return (
-			<Animated.View
-				style={[
-					styles.rightAction,
-					{ transform: [{ translateX: trans }] }
-				]}
-			>
-				<Animated.View
-					style={{ width: iconFavWidth }}
-				>
-					<RectButton style={[styles.actionButtonRightFav]} onPress={this.toggleFav}>
-						{favorite ? (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='Star-filled' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Unfavorite')}</Text>
-							</View>
-						) : (
-							<View style={styles.actionView}>
-								<CustomIcon size={20} name='star' color='white' />
-								<Text style={styles.actionText}>{I18n.t('Favorite')}</Text>
-							</View>
-						)}
-					</RectButton>
-				</Animated.View>
-				<Animated.View style={[
-					{ width: iconHideWidth },
-					{ transform: [{ translateX: iconHideTrans }] }
-				]}
-				>
-					<RectButton
-						style={[styles.actionButtonRightHide]}
-						onPress={this.handleHideButtonPress}
-					>
-						<View style={styles.actionView}>
-							<CustomIcon size={20} name='eye-off' color='white' />
-							<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
-						</View>
-					</RectButton>
-				</Animated.View>
-			</Animated.View>
-		);
-	}
-
 	formatDate = date => moment(date).calendar(null, {
 		lastDay: `[${ I18n.t('Yesterday') }]`,
 		sameDay: 'h:mm A',
@@ -329,7 +212,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
 
 		const date = this.formatDate(_updatedAt);
@@ -351,17 +234,28 @@ export default class RoomItem extends React.Component {
 
 		return (
 			<PanGestureHandler
-				minDeltaX={10}
+				minDeltaX={20}
 				onGestureEvent={this._onGestureEvent}
 				onHandlerStateChange={this._onHandlerStateChange}
 			>
-				<View style={styles.upperContainer}>
-					{this.renderLeftActions()}
-					{this.renderRightActions()}
+				<Animated.View>
+					<LeftActions
+						transX={this.transX}
+						isRead={isRead}
+						width={width}
+						onToggleReadPress={this.onToggleReadPress}
+					/>
+					<RightActions
+						transX={this.transX}
+						favorite={favorite}
+						width={width}
+						toggleFav={this.toggleFav}
+						onHidePress={this.onHidePress}
+					/>
 					<Animated.View
 						style={
 							{
-								transform: [{ translateX: this.rowTranslation }]
+								transform: [{ translateX: this.transX }]
 							}
 						}
 					>
@@ -373,7 +267,7 @@ export default class RoomItem extends React.Component {
 							style={styles.button}
 						>
 							<View
-								style={[styles.container, height && { height }]}
+								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
 								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
@@ -391,7 +285,7 @@ export default class RoomItem extends React.Component {
 							</View>
 						</RectButton>
 					</Animated.View>
-				</View>
+				</Animated.View>
 			</PanGestureHandler>
 		);
 	}
