@@ -104,6 +104,14 @@ jobs:
             echo 'export JAVA_HOME=/Library/Java/Home' >> $BASH_ENV
             source $BASH_ENV
           name: Configure Environment Variables
+      - run:
+          command: |
+            echo 'KEYSTORE=RocketChatDebug' >> android/gradle.properties
+            echo 'KEYSTORE_PASSWORD=RocketChatDebug' >> android/gradle.properties
+            echo 'KEY_ALIAS=RocketChatDebug' >> android/gradle.properties
+            echo 'KEY_PASSWORD=RocketChatDebug' >> android/gradle.properties
+          name: Configure Keystore Variables
+
       - restore_cache:
           key: |
             brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
@@ -152,23 +160,23 @@ jobs:
           key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
-      - run:
-          command: echo -e "console.disableYellowBox = true;" >> ./index.js
-          name: Append "console.disableYellowBox = true;" to index.js
-      - run:
-          background: true
-          command: react-native start
-          name: Start Metro Packager (Background)
+#      - run:
+#          command: echo -e "console.disableYellowBox = true;" >> ./index.js
+#          name: Append "console.disableYellowBox = true;" to index.js
+#      - run:
+#          background: true
+#          command: react-native start
+#          name: Start Metro Packager (Background)
       - run:
           name: Detox Build Android App
           command: |
-            detox build --configuration android.emu.debug
+            detox build --configuration android.emu.release
       - run:
           command: |
             yes | sdkmanager "platform-tools" "tools" >/dev/null
-            yes | sdkmanager "platforms;android-28" "system-images;android-28;google_apis;x86" >/dev/null
+            yes | sdkmanager "platforms;android-27" "system-images;android-27;google_apis;x86" >/dev/null
             yes | sdkmanager "emulator" --channel=3 >/dev/null
-            yes | sdkmanager "build-tools;28.0.3" >/dev/null
+            yes | sdkmanager "build-tools;27.0.3" >/dev/null
             yes | sdkmanager --licenses >/dev/null
             yes | sdkmanager --list
           name: Install Android Emulator
@@ -181,14 +189,14 @@ jobs:
             ls -la ~/.android
           name: ADB Start Stop
       - run:
-          command: avdmanager create avd --force -n TestingAVD -k "system-images;android-28;google_apis;x86"
+          command: avdmanager create avd --force -n Pixel_3_XL_API_27 -k "system-images;android-27;google_apis;x86"
             -g google_apis -d "Nexus 4"
           name: Create Android Emulator
       - run:
           background: true
           command: |
-            /usr/local/share/android-sdk/emulator/emulator @TestingAVD -version
-            /usr/local/share/android-sdk/emulator/emulator @TestingAVD -skin 1440x2880 -cores 2 -gpu auto -accel on -memory 2048 -no-audio -no-snapshot -no-boot-anim -no-window -logcat *:W | grep -i 'ReactNative\|rocket'
+            /usr/local/share/android-sdk/emulator/emulator @Pixel_3_XL_API_27 -version
+            /usr/local/share/android-sdk/emulator/emulator @Pixel_3_XL_API_27 -skin 1440x2880 -cores 2 -gpu auto -accel on -memory 4096 -no-audio -no-snapshot -no-boot-anim -no-window -logcat *:W | grep -i 'ReactNative\|rocket'
           name: Start Android Emulator (background)
       - run:
           command: |
@@ -207,7 +215,7 @@ jobs:
           name: Wait for AVD to be ready
           no_output_timeout: 5m
       - run:
-          command: detox test -c android.emu.debug -l trace --headless
+          command: detox test -c android.emu.release -l trace --headless
           name: Detox Test
       - store_artifacts:
           path: /tmp/screenshots
