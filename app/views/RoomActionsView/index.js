@@ -32,7 +32,8 @@ const renderSeparator = () => <View style={styles.separator} />;
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	jitsiEnabled: state.settings.Jitsi_Enabled || false
 }), dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
 }))
@@ -48,7 +49,8 @@ export default class RoomActionsView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		leaveRoom: PropTypes.func
+		leaveRoom: PropTypes.func,
+		jitsiEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -174,6 +176,7 @@ export default class RoomActionsView extends React.Component {
 	}
 
 	get sections() {
+		const { jitsiEnabled } = this.props;
 		const {
 			room, membersCount, canViewMembers, joined, canAutoTranslate
 		} = this.state;
@@ -203,12 +206,14 @@ export default class RoomActionsView extends React.Component {
 				{
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
+					disabled: !jitsiEnabled,
 					event: () => this.callJitsi(true),
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
+					disabled: !jitsiEnabled,
 					event: () => this.callJitsi(false),
 					testID: 'room-actions-video'
 				}

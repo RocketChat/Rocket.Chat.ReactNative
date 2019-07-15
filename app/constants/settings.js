@@ -17,6 +17,9 @@ export default {
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
+	Jitsi_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
