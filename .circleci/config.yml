@@ -397,9 +397,9 @@ workflows:
 #          type: approval
 #          requires:
 #            - lint-testunit
-      - e2e-test-android:
-          requires:
-            - e2e-hold-android
+      - e2e-test-android
+#          requires:
+#            - e2e-hold-android
 
 #      - ios-build:
 #          requires:
