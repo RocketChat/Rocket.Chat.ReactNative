@@ -131,8 +131,20 @@ jobs:
             node -v
           name: Configure Detox Environment
       - run:
+          name: Install Node 8
           command: |
-            cd /tmp
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn global add detox-cli
+            yarn
+      - run:
+          command: |
             git clone https://github.com/facebook/FBSimulatorControl.git FBSimulatorControl
             cd FBSimulatorControl
             git checkout master
@@ -140,11 +152,6 @@ jobs:
             cp -r build/Build/Products/Debug/* /usr/local/bin
             which fbsimctl
           name: Install FBSimulatorControl
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
 #      - save_cache:
 #          key: |
 #            brew-cache-{{ arch }}-{{ .Environment.CACHE_VERSION }}
