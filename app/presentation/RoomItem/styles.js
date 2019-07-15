@@ -6,6 +6,9 @@ import {
 } from '../../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const ACTION_WIDTH = 80;
+export const SMALL_SWIPE = ACTION_WIDTH / 2;
+export const LONG_SWIPE = ACTION_WIDTH * 3;
 
 export default StyleSheet.create({
 	container: {
@@ -97,6 +100,15 @@ export default StyleSheet.create({
 	avatar: {
 		marginRight: 10
 	},
+	upperContainer: {
+		overflow: 'hidden'
+	},
+	actionsContainer: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: ROW_HEIGHT
+	},
 	actionText: {
 		color: COLOR_WHITE,
 		fontSize: 15,
@@ -105,37 +117,24 @@ export default StyleSheet.create({
 		marginTop: 4,
 		...sharedStyles.textSemibold
 	},
-	actionButtonLeft: {
-		flex: 1,
-		backgroundColor: '#497AFC',
+	actionLeftButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
+		backgroundColor: COLOR_PRIMARY,
 		justifyContent: 'center',
-		alignItems: 'flex-end'
+		top: 0
 	},
-	actionButtonRightFav: {
-		flex: 1,
+	actionRightButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
 		justifyContent: 'center',
-		alignItems: 'flex-start',
-		backgroundColor: '#F4BD3E'
+		top: 0,
+		backgroundColor: '#54585e'
 	},
-	actionButtonRightHide: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start',
-		backgroundColor: '#55585D'
-	},
-	actionView: {
-		width: 80,
-		alignItems: 'center'
-	},
-	leftAction: {
-		...StyleSheet.absoluteFill,
-		flexDirection: 'row-reverse'
-	},
-	rightAction: {
-		...StyleSheet.absoluteFill,
-		flexDirection: 'row'
-	},
-	upperContainer: {
-		overflow: 'hidden'
+	actionButton: {
+		width: ACTION_WIDTH,
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
