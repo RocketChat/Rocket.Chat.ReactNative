@@ -38,6 +38,7 @@ export default (msg) => {
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {
 		msg.translations = Object.keys(msg.translations).map(key => ({ _id: `${ msg._id }${ key }`, language: key, value: msg.translations[key] }));
+		msg.autoTranslate = true;
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
 	msg._updatedAt = new Date();
