@@ -9,6 +9,7 @@ import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
+import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -109,7 +110,7 @@ export default class DirectoryOptions extends PureComponent {
 										<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>
 										<Text style={styles.dropdownItemDescription}>{I18n.t('Search_global_users_description')}</Text>
 									</View>
-									<Switch value={globalUsers} onValueChange={toggleWorkspace} />
+									<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
 								</View>
 							</React.Fragment>
 						)

@@ -1,7 +1,8 @@
 import {
 	put, take, takeLatest, fork, cancel, race
 } from 'redux-saga/effects';
-import { AsyncStorage, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -14,6 +15,7 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -38,13 +40,21 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
-		yield AsyncStorage.setItem('currentServer', server);
-		const userStringified = yield AsyncStorage.getItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const { serversDB } = database.databases;
 
-		if (userStringified) {
-			const user = JSON.parse(userStringified);
-			yield RocketChat.connect({ server, user });
-			yield put(setUser(user));
+		yield RNUserDefaults.set('currentServer', server);
+		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+
+		const servers = yield RNUserDefaults.objectForKey(SERVERS);
+		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+		const userLogin = userCredentials && {
+			token: userCredentials[TOKEN]
+		};
+
+		if (user || userLogin) {
+			yield RocketChat.connect({ server, user: user || userLogin });
+			yield put(setUser(user || userLogin));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });

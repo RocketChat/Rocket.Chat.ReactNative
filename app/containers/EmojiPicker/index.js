@@ -141,7 +141,7 @@ export default class EmojiPicker extends Component {
 	}
 
 	render() {
-		const { show } = this.state;
+		const { show, frequentlyUsed } = this.state;
 		const { tabEmojiStyle } = this.props;
 
 		if (!show) {
@@ -155,15 +155,17 @@ export default class EmojiPicker extends Component {
 			>
 				{
 					categories.tabs.map((tab, i) => (
-						<ScrollView
-							key={tab.category}
-							tabLabel={tab.tabLabel}
-							style={styles.background}
-							{...scrollProps}
-						>
-							{this.renderCategory(tab.category, i)}
-						</ScrollView>
-					))
+						(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
+							: (
+								<ScrollView
+									key={tab.category}
+									tabLabel={tab.tabLabel}
+									style={styles.background}
+									{...scrollProps}
+								>
+									{this.renderCategory(tab.category, i)}
+								</ScrollView>
+							)))
 				}
 			</ScrollableTabView>
 		);

@@ -16,10 +16,9 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
-import { isAndroid } from '../utils/deviceInfo';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../constants/colors';
+import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE, SWITCH_TRACK_COLOR } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -245,8 +244,7 @@ export default class CreateChannelView extends React.Component {
 				value={value}
 				onValueChange={onValueChange}
 				testID={`create-channel-${ id }`}
-				onTintColor='#2de0a5'
-				tintColor={isAndroid ? '#f5455c' : null}
+				trackColor={SWITCH_TRACK_COLOR}
 				disabled={disabled}
 			/>
 		</View>

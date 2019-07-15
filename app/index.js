@@ -33,6 +33,7 @@ import SearchMessagesView from './views/SearchMessagesView';
 import ReadReceiptsView from './views/ReadReceiptView';
 import ThreadMessagesView from './views/ThreadMessagesView';
 import MessagesView from './views/MessagesView';
+import AutoTranslateView from './views/AutoTranslateView';
 import SelectedUsersView from './views/SelectedUsersView';
 import CreateChannelView from './views/CreateChannelView';
 import LegalView from './views/LegalView';
@@ -116,6 +117,7 @@ const ChatsStack = createStackNavigator({
 	SelectedUsersView,
 	ThreadMessagesView,
 	MessagesView,
+	AutoTranslateView,
 	ReadReceiptsView,
 	DirectoryView
 }, {

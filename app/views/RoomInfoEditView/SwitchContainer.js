@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 import sharedStyles from '../Styles';
+import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 
 export default class SwitchContainer extends React.PureComponent {
 	static propTypes = {
@@ -33,6 +34,7 @@ export default class SwitchContainer extends React.PureComponent {
 						onValueChange={onValueChange}
 						value={value}
 						disabled={disabled}
+						trackColor={SWITCH_TRACK_COLOR}
 						testID={testID}
 					/>
 					<View style={styles.switchLabelContainer}>

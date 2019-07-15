@@ -10,6 +10,8 @@ PODS:
   - EXFileSystem (5.0.1):
     - UMCore
     - UMFileSystemInterface
+  - EXHaptics (5.0.1):
+    - UMCore
   - EXPermissions (5.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -171,6 +173,7 @@ DEPENDENCIES:
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - Fabric (~> 1.9.0)
@@ -243,6 +246,9 @@ EXTERNAL SOURCES:
   EXFileSystem:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-file-system/ios"
+  EXHaptics:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-haptics/ios"
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
@@ -313,6 +319,7 @@ SPEC CHECKSUMS:
   EXAppLoaderProvider: 8f2c04a0a8d9be91f7c37c2b8824077ee5d4bc01
   EXConstants: 9fe56eec8bf0a3ee9beb8f3381fa91340a5b1e57
   EXFileSystem: 96624bd4b93a0684335c421a6567a92b25bd7ddb
+  EXHaptics: 6d594612afa321bfc8e167bdfb0b47f940f8f537
   EXPermissions: 8e05008ed4fc8c9be6c17ea95301fc3f3f005a7b
   EXWebBrowser: e03894b4583bb726e5ea05d01b341ba00134c2b5
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655

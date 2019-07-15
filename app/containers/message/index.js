@@ -4,7 +4,7 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getCustomEmoji } from './utils';
+import { SYSTEM_MESSAGES, getCustomEmoji, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
 
 export default class MessageContainer extends React.Component {
@@ -27,6 +27,8 @@ export default class MessageContainer extends React.Component {
 		isReadReceiptEnabled: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
+		autoTranslateRoom: PropTypes.bool,
+		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -49,10 +51,13 @@ export default class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			status, item, _updatedAt
+			status, item, _updatedAt, autoTranslateRoom
 		} = this.props;
 
 		if (status !== nextProps.status) {
+			return true;
+		}
+		if (autoTranslateRoom !== nextProps.autoTranslateRoom) {
 			return true;
 		}
 		if (item.tmsg !== nextProps.item.tmsg) {
@@ -191,16 +196,23 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread
+			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
 		} = item;
+
+		let message = msg;
+		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
+		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
+		if (autoTranslateRoom && autoTranslateMessage) {
+			message = getMessageTranslation(item, autoTranslateLanguage) || message;
+		}
 
 		return (
 			<Message
 				id={_id}
-				msg={msg}
+				msg={message}
 				author={u}
 				ts={ts}
 				type={t}

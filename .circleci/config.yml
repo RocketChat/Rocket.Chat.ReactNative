@@ -15,7 +15,8 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -38,7 +39,8 @@ jobs:
             yarn codecov
 
       - save_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          key: node-modules-{{ checksum "yarn.lock" }}
+          name: Save NPM cache
           paths:
             - ./node_modules
 
@@ -51,6 +53,10 @@ jobs:
 
     steps:
       - checkout
+
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -84,6 +90,12 @@ jobs:
           command: |
             detox test --configuration ios.sim.release --cleanup
 
+      - save_cache:
+          name: Save NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
       - store_artifacts:
           path: /tmp/screenshots
 
@@ -103,7 +115,8 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -111,7 +124,8 @@ jobs:
             yarn
 
       - restore_cache:
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          name: Restore gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: Configure Gradle
@@ -155,12 +169,14 @@ jobs:
           path: /tmp/build/outputs
 
       - save_cache:
-          key: node-modules-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          name: Save NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
       - save_cache:
-          key: android-{{ checksum ".circleci/config.yml" }}-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          name: Save gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
 
@@ -174,6 +190,14 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          name: Restore gems cache
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
+
       - run:
           name: Install Node 8
           command: |
@@ -184,37 +208,48 @@ jobs:
             nvm install 8
 
       - run:
-          name: Update Fastlane
-          command: |
-            brew update
-            brew install ruby
-            sudo gem install fastlane
-
-      - run:
           name: Install NPM modules
           command: |
             yarn
 
       - run:
+          name: Update Fastlane
+          command: |
+            sudo bundle install
+          working_directory: ios
+
+      - run:
           name: Set Google Services
           command: |
-            cd ios
             cp GoogleService-Info.prod.plist GoogleService-Info.plist
+          working_directory: ios
 
       - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
-            cd ios
             agvtool new-version -all $CIRCLE_BUILD_NUM
 
             if [[ $MATCH_KEYCHAIN_NAME ]]; then
-              fastlane ios release
+              bundle exec fastlane ios release
             else
               export MATCH_KEYCHAIN_NAME="temp"
               export MATCH_KEYCHAIN_PASSWORD="temp"
-              fastlane ios build
+              bundle exec fastlane ios build
             fi
+          working_directory: ios
+
+      - save_cache:
+          name: Save NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - save_cache:
+          name: Save gems cache
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - vendor/bundle
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
@@ -235,18 +270,27 @@ jobs:
       - attach_workspace:
           at: ios
 
+      - restore_cache:
+          name: Restore gems cache
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+
       - run:
           name: Update Fastlane
           command: |
-            brew update
-            brew install ruby
-            sudo gem install fastlane
+            sudo bundle install
+          working_directory: ios
 
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            cd ios
-            fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+            bundle exec fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+          working_directory: ios
+
+      - save_cache:
+          name: Save gems cache
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - vendor/bundle
 
 workflows:
   version: 2
