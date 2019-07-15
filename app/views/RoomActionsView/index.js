@@ -203,13 +203,13 @@ export default class RoomActionsView extends React.Component {
 				{
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
-					event: this.callJitsiVoice,
+					event: () => this.callJitsi(true),
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
-					event: this.callJitsiVideo,
+					event: () => this.callJitsi(false),
 					testID: 'room-actions-video'
 				}
 			],
@@ -375,17 +375,12 @@ export default class RoomActionsView extends React.Component {
 		});
 	};
 
-	callJitsiVoice = () => {
+	callJitsi = (videoMuted) => {
 		JitsiMeet.initialize();
 		setTimeout(() => {
-			JitsiMeet.callVoice('https://meet.jit.si/testRocketChat');
-		}, 1000);
-	}
-
-	callJitsiVideo = () => {
-		JitsiMeet.initialize();
-		setTimeout(() => {
-			JitsiMeet.callVideo('https://meet.jit.si/testRocketChat');
+			JitsiMeet.call('https://meet.jit.si/testRocketChat', {
+				videoMuted
+			});
 		}, 1000);
 	}
 

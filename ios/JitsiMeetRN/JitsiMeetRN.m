@@ -44,29 +44,16 @@ RCT_EXPORT_METHOD(initialize)
     jitsiMeetViewController = [storyboard instantiateViewControllerWithIdentifier:@"jitsiMeetStoryBoardID"];
 }
 
-RCT_EXPORT_METHOD(callVoice:(NSString *)urlString)
+RCT_EXPORT_METHOD(call:(NSString *)urlString options:(NSDictionary *)options)
 {
-    RCTLogInfo(@"Load URL %@", urlString);
+    RCTLogInfo(@"Conference on %@ with Options %@", urlString, options);
     dispatch_sync(dispatch_get_main_queue(), ^{
         UIViewController* rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
         UINavigationController *navigationController = (UINavigationController *) rootViewController;
         [navigationController pushViewController:jitsiMeetViewController animated:true];
         [jitsiMeetViewController setDelegate:self];
-        [jitsiMeetViewController callVoice:urlString];
+        [jitsiMeetViewController call:urlString options:options];
     });
-}
-
-RCT_EXPORT_METHOD(callVideo:(NSString *)urlString)
-{
-  RCTLogInfo(@"Call Video %@", urlString);
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    UIViewController* rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
-    UINavigationController *navigationController = (UINavigationController *) rootViewController;
-    [navigationController pushViewController:jitsiMeetViewController animated:true];
-    [jitsiMeetViewController setDelegate:self];
-    
-    [jitsiMeetViewController callVideo:urlString];
-  });
 }
 
 @end

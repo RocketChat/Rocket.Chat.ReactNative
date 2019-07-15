@@ -21,20 +21,28 @@
   }
 }
 
-- (void)callVoice:(NSString *)url {
-  JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
-  JitsiMeetConferenceOptions *options = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {        builder.room = url;
-      builder.videoMuted = YES;
-  }];
-  [jitsiMeetView join:options];
+- (BOOL)checkKey:(NSString *)key options:(NSDictionary *)options
+{
+  id obj = options[key];
+  if (obj != nil) {
+    if (obj != (id)[NSNull null]) {
+      return [[options objectForKey:key] boolValue];
+    }
+    else {
+      return NO;
+    }
+  }
+  else {
+    return NO;
+  }
 }
 
-- (void)callVideo:(NSString *)url {
+
+- (void)call:(NSString *)url options:(NSDictionary *)options {
   JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
-  JitsiMeetConferenceOptions *optionsBuilder = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
-    builder.room = url;
+  JitsiMeetConferenceOptions *optionsBuilder = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {        builder.room = url;
+      builder.videoMuted = [self checkKey:@"videoMuted" options:options];
   }];
-  
   [jitsiMeetView join:optionsBuilder];
 }
 

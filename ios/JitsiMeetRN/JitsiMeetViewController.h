@@ -12,7 +12,6 @@
 @interface JitsiMeetViewController : UIViewController
 
 - (void)setDelegate:(id<JitsiMeetViewDelegate>)delegate;
-- (void)callVoice:(NSString *)url;
-- (void)callVideo:(NSString *)url;
+- (void)call:(NSString *)url options:(NSDictionary *)options;
 
 @end
