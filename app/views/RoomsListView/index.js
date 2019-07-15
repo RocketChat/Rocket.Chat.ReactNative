@@ -404,7 +404,7 @@ export default class RoomsListView extends React.Component {
 				database.write(() => {
 					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
 					if (sub) {
-						sub.f = favorite;
+						sub.f = !favorite;
 					}
 				});
 			}
