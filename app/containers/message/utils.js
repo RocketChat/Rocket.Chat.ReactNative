@@ -66,6 +66,8 @@ export const getInfoMessage = ({
 		return I18n.t('Has_joined_the_conversation');
 	} else if (type === 'r') {
 		return I18n.t('Room_name_changed', { name: msg, userBy: username });
+	} else if (type === 'jitsi_call_started') {
+		return I18n.t('Started_call', { userBy: username });
 	} else if (type === 'message_pinned') {
 		return I18n.t('Message_pinned');
 	} else if (type === 'ul') {
