@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, Animated } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { CustomIcon } from '../../lib/Icons';
+import { capitalize, formatDate } from '../../utils/room';
 
 export { ROW_HEIGHT };
 
@@ -320,24 +320,12 @@ export default class RoomItem extends React.Component {
 		);
 	}
 
-	capitalize = (s) => {
-		if (typeof s !== 'string') { return ''; }
-		return s.charAt(0).toUpperCase() + s.slice(1);
-	}
-
-	formatDate = date => moment(date).calendar(null, {
-		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'LT',
-		lastWeek: 'dddd',
-		sameElse: 'MMM D'
-	});
-
 	render() {
 		const {
 			unread, userMentions, name, _updatedAt, alert, testID, height, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage
 		} = this.props;
 
-		const date = this.formatDate(_updatedAt);
+		const date = formatDate(_updatedAt);
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -386,7 +374,7 @@ export default class RoomItem extends React.Component {
 									<View style={styles.titleContainer}>
 										<TypeIcon type={type} id={id} prid={prid} />
 										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ this.capitalize(date) }</Text> : null}
+										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ capitalize(date) }</Text> : null}
 									</View>
 									<View style={styles.row}>
 										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
