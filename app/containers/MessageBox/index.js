@@ -46,20 +46,11 @@ const onlyUnique = function onlyUnique(value, index, self) {
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
-	avoidEmptySpaceAroundImage: false,
-	cropperChooseText: I18n.t('Choose'),
-	cropperCancelText: I18n.t('Cancel')
+	avoidEmptySpaceAroundImage: false
 };
 
-const fileOptions = [I18n.t('Cancel')];
 const FILE_CANCEL_INDEX = 0;
-
-// Photo
-fileOptions.push(I18n.t('Take_a_photo'));
 const FILE_PHOTO_INDEX = 1;
-
-// Library
-fileOptions.push(I18n.t('Choose_from_library'));
 const FILE_LIBRARY_INDEX = 2;
 
 class MessageBox extends Component {
@@ -107,6 +98,16 @@ class MessageBox extends Component {
 		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.fileOptions = [
+			I18n.t('Cancel'),
+			I18n.t('Take_a_photo'),
+			I18n.t('Choose_from_library')
+		];
+		this.imagePickerConfig = {
+			...imagePickerConfig,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel')
+		};
 	}
 
 	componentDidMount() {
@@ -483,7 +484,7 @@ class MessageBox extends Component {
 
 	takePhoto = async() => {
 		try {
-			const image = await ImagePicker.openCamera(imagePickerConfig);
+			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_take_photo', e);
@@ -492,7 +493,7 @@ class MessageBox extends Component {
 
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(imagePickerConfig);
+			const image = await ImagePicker.openPicker(this.imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_choose_from_library', e);
@@ -505,7 +506,7 @@ class MessageBox extends Component {
 
 	showFileActions = () => {
 		ActionSheet.showActionSheetWithOptions({
-			options: fileOptions,
+			options: this.fileOptions,
 			cancelButtonIndex: FILE_CANCEL_INDEX
 		}, (actionIndex) => {
 			this.handleFileActionPress(actionIndex);
