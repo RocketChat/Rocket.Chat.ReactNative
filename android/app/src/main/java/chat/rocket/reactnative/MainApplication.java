@@ -35,6 +35,7 @@ import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 
 import chat.rocket.reactnative.generated.BasePackageList;
+import chat.rocket.reactnative.jitsi.JitsiMeetRNPackage;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
@@ -67,6 +68,7 @@ public class MainApplication extends Application implements ReactApplication, IN
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
+            new JitsiMeetRNPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),

@@ -24,6 +24,7 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
+import { isIOS } from '../../utils/deviceInfo';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -383,9 +384,13 @@ export default class RoomActionsView extends React.Component {
 	callJitsi = (videoMuted) => {
 		JitsiMeet.initialize();
 		setTimeout(() => {
-			JitsiMeet.call('https://meet.jit.si/testRocketChat', {
-				videoMuted
-			});
+			if (isIOS) {
+				JitsiMeet.call('https://meet.jit.si/testRocketChat', {
+					videoMuted
+				});
+			} else {
+				JitsiMeet.call('https://meet.jit.si/testRocketChat');
+			}
 		}, 1000);
 	}
 
