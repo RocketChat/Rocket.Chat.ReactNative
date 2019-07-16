@@ -96,6 +96,7 @@ jobs:
       - checkout
       - run:
           command: |
+            /usr/libexec/java_home
             echo 'KEYSTORE=RocketChatDebug' >> android/gradle.properties
             echo 'KEYSTORE_PASSWORD=RocketChatDebug' >> android/gradle.properties
             echo 'KEY_ALIAS=RocketChatDebug' >> android/gradle.properties
@@ -136,7 +137,7 @@ jobs:
             echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> ~/.bash_profile
             echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> ~/.bash_profile
             echo 'export QEMU_AUDIO_DRV=none' >> ~/.bash_profile
-            echo 'export JAVA_HOME=/usr/bin/java' >> ~/.bash_profile
+            echo 'export JAVA_HOME=/Library/Java/Home' >> ~/.bash_profile
             source ~/.bash_profile
             echo $ANDROID_HOME
             cat ~/.nvm/nvm.sh
@@ -182,7 +183,6 @@ jobs:
             echo $ANDROID_HOME
             cat ~/.bash_profile
             source ~/.bash_profile
-            which java
             detox build --configuration android.emu.release
       - run:
           command: |
