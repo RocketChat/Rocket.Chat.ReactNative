@@ -233,8 +233,8 @@ jobs:
           no_output_timeout: 5m
       - run:
           command: |
-          source ~/.bash_profile
-          detox test -c android.emu.release -l trace --headless
+            source ~/.bash_profile
+            detox test -c android.emu.release -l trace --headless
           name: Detox Test
       - store_artifacts:
           path: /tmp/screenshots
