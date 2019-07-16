@@ -148,6 +148,8 @@ jobs:
           command: |
             yarn global add detox-cli
             yarn global add fsevents
+            npm r -g watchman
+            brew install watchman
             yarn
       - run:
           command: |
