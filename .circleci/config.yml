@@ -91,11 +91,6 @@ jobs:
     macos:
       xcode: "10.2.1"
     environment:
-      ANDROID_HOME: "/usr/local/share/android-sdk"
-      ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
-      PATH: "$PATH:/usr/local/opt/node@8/bin:~/.yarn/bin:~/project/node_modules/.bin:~/project/example/node_modules/.bin:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools"
-      QEMU_AUDIO_DRV: none
-      JAVA_HOME: "/Library/Java/Home"
       BASH_ENV: "~/.nvm/nvm.sh"
     steps:
       - checkout
