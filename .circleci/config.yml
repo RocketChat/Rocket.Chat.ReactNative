@@ -178,14 +178,8 @@ jobs:
 #          command: react-native start
 #          name: Start Metro Packager (Background)
       - run:
-          name: Detox Build Android App
           command: |
-            echo $ANDROID_HOME
-            cat ~/.bash_profile
-            source ~/.bash_profile
-#            detox build --configuration android.emu.release
-      - run:
-          command: |
+            yes | sdkmanager --licenses
             yes | sdkmanager "platform-tools" "tools" >/dev/null
             yes | sdkmanager "platforms;android-27" "system-images;android-27;google_apis;x86" >/dev/null
             yes | sdkmanager "emulator" --channel=3 >/dev/null
@@ -194,16 +188,25 @@ jobs:
             yes | sdkmanager --list
           name: Install Android Emulator
           shell: /bin/bash -e
+#      - run:
+#          name: Detox Build Android App
+#          command: |
+#            echo $ANDROID_HOME
+#            cat ~/.bash_profile
+#            source ~/.bash_profile
+#            detox build --configuration android.emu.release
       - run:
           command: |
+            source ~/.bash_profile
             adb start-server
             adb devices
             adb kill-server
             ls -la ~/.android
           name: ADB Start Stop
       - run:
-          command: avdmanager create avd --force -n Pixel_3_XL_API_27 -k "system-images;android-27;google_apis;x86"
-            -g google_apis -d "Nexus 4"
+          command: |
+            source ~/.bash_profile
+            avdmanager create avd --force -n Pixel_3_XL_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 4"
           name: Create Android Emulator
       - run:
           background: true
@@ -213,6 +216,7 @@ jobs:
           name: Start Android Emulator (background)
       - run:
           command: |
+            source ~/.bash_profile
             export BOOT=""
             echo "Waiting for AVD to finish booting"
             export PATH=$(dirname $(dirname $(command -v android)))/platform-tools:$PATH
@@ -228,7 +232,9 @@ jobs:
           name: Wait for AVD to be ready
           no_output_timeout: 5m
       - run:
-          command: detox test -c android.emu.release -l trace --headless
+          command: |
+          source ~/.bash_profile
+          detox test -c android.emu.release -l trace --headless
           name: Detox Test
       - store_artifacts:
           path: /tmp/screenshots
