@@ -188,13 +188,13 @@ jobs:
             yes | sdkmanager --list
           name: Install Android Emulator
           shell: /bin/bash -e
-#      - run:
-#          name: Detox Build Android App
-#          command: |
-#            echo $ANDROID_HOME
-#            cat ~/.bash_profile
-#            source ~/.bash_profile
-#            detox build --configuration android.emu.release
+      - run:
+          name: Detox Build Android App
+          command: |
+            echo $ANDROID_HOME
+            cat ~/.bash_profile
+            source ~/.bash_profile
+            detox build --configuration android.emu.release
       - run:
           command: |
             source ~/.bash_profile
