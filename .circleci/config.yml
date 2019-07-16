@@ -139,7 +139,7 @@ jobs:
             echo 'export JAVA_HOME=/Library/Java/Home' >> ~/.bash_profile
             source ~/.bash_profile
             echo $ANDROID_HOME
-            nano ~/.nvm/nvm.sh
+            cat ~/.nvm/nvm.sh
           name: Configure Environment Variables
       - run:
           name: Install NPM modules
@@ -180,7 +180,7 @@ jobs:
           name: Detox Build Android App
           command: |
             echo $ANDROID_HOME
-            nano ~/.bash_profile
+            cat ~/.bash_profile
             source ~/.bash_profile
             detox build --configuration android.emu.release
       - run:
