@@ -503,9 +503,8 @@ class MessageBox extends Component {
 		}
 	}
 
-	uriToPath = uri => uri.replace(/^file:\/\//, '');
-
 	chooseFile = async() => {
+		log('hi');
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
@@ -514,7 +513,7 @@ class MessageBox extends Component {
 				filename: res.name,
 				size: res.size,
 				mime: res.type,
-				path: this.uriToPath(res.uri)
+				path: res.uri
 			});
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
