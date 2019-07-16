@@ -30,7 +30,7 @@ example optionObject : {
 	label: 'Permalink',
 	handler: this.dummy,
 	icon: 'permalink',
-	isDange: true
+	isDanger: true
 }
 
 */
@@ -93,7 +93,8 @@ export default class ActionSheet extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: []
+			options: [],
+			height: 100
 		};
 		this.bottomSheetRef = React.createRef();
 	}
@@ -106,9 +107,10 @@ export default class ActionSheet extends React.Component {
 		EventEmitter.removeListener(LISTENER);
 	}
 
-	handleDisplay = (args) => {
-		this.setState({ options: args.options });
-		this.bottomSheetRef.current.snapTo(args.snapPoint);
+	handleDisplay = ({ options, snapPoint }) => {
+		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight;
+		this.setState({ options, height });
+		this.bottomSheetRef.current.snapTo(snapPoint);
 		vibrate();
 	}
 
@@ -152,8 +154,7 @@ export default class ActionSheet extends React.Component {
 	}
 
 	renderInner = () => {
-		const { options } = this.state;
-		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight;
+		const { options, height } = this.state;
 		return (
 			<View style={[styles.panel, { height }]}>
 				{options.map(option => (
@@ -179,11 +180,13 @@ export default class ActionSheet extends React.Component {
 	}
 
 	render() {
+		const { height } = this.state;
+		const snapPoints = [0, 0.25 * height, 0.5 * height, height];
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}
 				initialSnap={0}
-				snapPoints={[0, 200, 300, 500]}
+				snapPoints={snapPoints}
 				renderHeader={this.renderHeader}
 				renderContent={this.renderInner}
 				enabledManualSnapping

@@ -8,7 +8,6 @@ import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -33,6 +32,8 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
+import { LISTENER, SNAP_POINTS } from '../../views/ActionSheet';
+import EventEmitter from '../../utils/events';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -50,17 +51,6 @@ const imagePickerConfig = {
 	cropperChooseText: I18n.t('Choose'),
 	cropperCancelText: I18n.t('Cancel')
 };
-
-const fileOptions = [I18n.t('Cancel')];
-const FILE_CANCEL_INDEX = 0;
-
-// Photo
-fileOptions.push(I18n.t('Take_a_photo'));
-const FILE_PHOTO_INDEX = 1;
-
-// Library
-fileOptions.push(I18n.t('Choose_from_library'));
-const FILE_LIBRARY_INDEX = 2;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -504,25 +494,11 @@ class MessageBox extends Component {
 	}
 
 	showFileActions = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: fileOptions,
-			cancelButtonIndex: FILE_CANCEL_INDEX
-		}, (actionIndex) => {
-			this.handleFileActionPress(actionIndex);
-		});
-	}
-
-	handleFileActionPress = (actionIndex) => {
-		switch (actionIndex) {
-			case FILE_PHOTO_INDEX:
-				this.takePhoto();
-				break;
-			case FILE_LIBRARY_INDEX:
-				this.chooseFromLibrary();
-				break;
-			default:
-				break;
-		}
+		const options = [
+			{ label: I18n.t('Take_a_photo'), handler: () => this.takePhoto(), icon: 'video' },
+			{ label: I18n.t('Choose_from_library'), handler: () => this.chooseFromLibrary(), icon: 'file-generic' }
+		];
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	editCancel = () => {
