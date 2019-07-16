@@ -15,7 +15,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -78,7 +78,7 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
 					new FastImageViewPackage(),
-					new RNI18nPackage(),
+					new RNLocalizePackage(),
           new RNNotificationsPackage(MainApplication.this),
           new ModuleRegistryAdapter(mModuleRegistryProvider)
       );
