@@ -41,6 +41,8 @@ const keyExtractor = item => item.rid;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username,
+	token: state.login.user && state.login.user.token,
 	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
@@ -98,6 +100,8 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -400,7 +404,15 @@ export default class RoomsListView extends React.Component {
 
 	toggleFav = async(rid, favorite) => {
 		try {
-			await RocketChat.toggleFavorite(rid, !favorite);
+			const result = await RocketChat.toggleFavorite(rid, !favorite);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					if (sub) {
+						sub.f = !favorite;
+					}
+				});
+			}
 		} catch (e) {
 			log('error_toggle_favorite', e);
 		}
@@ -466,7 +478,7 @@ export default class RoomsListView extends React.Component {
 	renderItem = ({ item }) => {
 		const { width } = this.state;
 		const {
-			userId, baseUrl, StoreLastMessage
+			userId, username, token, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -483,6 +495,9 @@ export default class RoomsListView extends React.Component {
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
 					id={id}
+					userId={userId}
+					username={username}
+					token={token}
 					rid={item.rid}
 					type={item.t}
 					baseUrl={baseUrl}
@@ -491,7 +506,6 @@ export default class RoomsListView extends React.Component {
 					onPress={() => this._onPressItem(item)}
 					testID={`rooms-list-view-item-${ item.name }`}
 					width={width}
-					height={ROW_HEIGHT}
 					toggleFav={this.toggleFav}
 					toggleRead={this.toggleRead}
 					hideChannel={this.hideChannel}
@@ -596,7 +610,7 @@ export default class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					removeClippedSubviews
+					// removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}
