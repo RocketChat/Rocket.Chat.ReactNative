@@ -504,7 +504,6 @@ class MessageBox extends Component {
 	}
 
 	chooseFile = async() => {
-		log('hi');
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
