@@ -133,7 +133,6 @@ jobs:
             cd ~
             ls -la
             touch ~/.bashrc
-            echo 'export PATH="$PATH:/usr/local/opt/node@8/bin:~/.yarn/bin:~/project/node_modules/.bin:~/project/example/node_modules/.bin"' >> ~/.bashrc
             echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> ~/.bashrc
             echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> ~/.bashrc
             echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> ~/.bashrc
