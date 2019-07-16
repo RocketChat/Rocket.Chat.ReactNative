@@ -132,13 +132,13 @@ jobs:
           command: |
             cd ~
             ls -la
-            touch ~/.bashrc
             echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> ~/.bash_profile
             echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> ~/.bash_profile
             echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> ~/.bash_profile
             echo 'export QEMU_AUDIO_DRV=none' >> ~/.bash_profile
             echo 'export JAVA_HOME=/Library/Java/Home' >> ~/.bash_profile
             source ~/.bash_profile
+            echo $ANDROID_HOME
           name: Configure Environment Variables
       - run:
           name: Install NPM modules
