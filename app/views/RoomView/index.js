@@ -381,11 +381,15 @@ export default class RoomView extends React.Component {
 		}
 		// Delete
 		if (this.allowDelete(item)) {
-			options.push({ label: I18n.t('Delete'), handler: () => this.handleDelete(item), icon: 'cross' });
+			options.push({
+				label: I18n.t('Delete'), handler: () => this.handleDelete(item), icon: 'cross', isDanger: true
+			});
 		}
 
 		// Report
-		options.push({ label: I18n.t('Report'), handler: () => this.handleReport(item), icon: 'flag' });
+		options.push({
+			label: I18n.t('Report'), handler: () => this.handleReport(item), icon: 'flag', isDanger: true
+		});
 
 		// Toggle - translate
 		if (autoTranslate && item.u && item.u._id !== user.id) {
