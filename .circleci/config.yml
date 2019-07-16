@@ -130,13 +130,14 @@ jobs:
             nvm install 8
       - run:
           command: |
-            echo 'export PATH="$PATH:/usr/local/opt/node@8/bin:~/.yarn/bin:~/project/node_modules/.bin:~/project/example/node_modules/.bin"' >> $HOME./bash_profile
-            echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> $HOME./bash_profile
-            echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> $HOME./bash_profile
-            echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> $HOME./bash_profile
-            echo 'export QEMU_AUDIO_DRV=none' >> $HOME./bash_profile
-            echo 'export JAVA_HOME=/Library/Java/Home' >> $HOME./bash_profile
-            source $HOME./bash_profile
+            ls ~
+            echo 'export PATH="$PATH:/usr/local/opt/node@8/bin:~/.yarn/bin:~/project/node_modules/.bin:~/project/example/node_modules/.bin"' >> ~/.bashrc
+            echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> ~/.bashrc
+            echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> ~/.bashrc
+            echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> ~/.bashrc
+            echo 'export QEMU_AUDIO_DRV=none' >> ~/.bashrc
+            echo 'export JAVA_HOME=/Library/Java/Home' >> ~/.bashrc
+            source ~/.bashrc
           name: Configure Environment Variables
       - run:
           name: Install NPM modules
