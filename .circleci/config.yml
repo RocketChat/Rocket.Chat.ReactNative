@@ -182,6 +182,7 @@ jobs:
             echo $ANDROID_HOME
             cat ~/.bash_profile
             source ~/.bash_profile
+            which java
             detox build --configuration android.emu.release
       - run:
           command: |
