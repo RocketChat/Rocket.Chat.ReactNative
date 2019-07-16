@@ -132,7 +132,6 @@ jobs:
             nvm install 8
       - run:
           command: |
-            cd ~
             ls -la
             /usr/libexec/java_home -v 1.8
             ls /Library/Java/JavaVirtualMachines
@@ -148,6 +147,7 @@ jobs:
           name: Install NPM modules
           command: |
             yarn global add detox-cli
+            yarn global add fsevents
             yarn
       - run:
           command: |
