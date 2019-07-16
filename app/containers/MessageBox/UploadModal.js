@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
 import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_DANGER, COLOR_TEXT
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_DANGER
 } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
 		color: COLOR_DANGER
 	},
 	fileMime: {
-		color: COLOR_TEXT,
 		...sharedStyles.textColorTitle,
 		...sharedStyles.textBold,
 		textAlign: 'center',
