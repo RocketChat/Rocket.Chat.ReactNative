@@ -262,6 +262,7 @@ export default {
 	Private_Channel: 'Private Channel',
 	Private_Groups: 'Private Groups',
 	Private: 'Private',
+	Processing: 'Processing...',
 	Profile_saved_successfully: 'Profile saved successfully!',
 	Profile: 'Profile',
 	Public_Channel: 'Public Channel',

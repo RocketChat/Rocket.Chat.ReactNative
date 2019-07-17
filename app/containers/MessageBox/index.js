@@ -113,20 +113,22 @@ class MessageBox extends Component {
 			I18n.t('Take_a_video'),
 			I18n.t('Choose_from_library')
 		];
+		const libPickerLabels = {
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			loadingLabelText: I18n.t('Processing')
+		};
 		this.imagePickerConfig = {
 			...imagePickerConfig,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel')
+			...libPickerLabels
 		};
 		this.libraryPickerConfig = {
 			...libraryPickerConfig,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel')
+			...libPickerLabels
 		};
 		this.videoPickerConfig = {
 			...videoPickerConfig,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel')
+			...libPickerLabels
 		};
 	}
 
