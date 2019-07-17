@@ -4,10 +4,10 @@ import { Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../../containers/Avatar';
-import styles from './styles';
+import styles, { ROW_HEIGHT } from './styles';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
-export const ROW_HEIGHT = 56;
+export { ROW_HEIGHT };
 
 const ShareItem = React.memo(({
 	baseUrl, userId, token, name, type, onPress

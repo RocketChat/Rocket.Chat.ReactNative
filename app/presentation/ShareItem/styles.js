@@ -2,9 +2,11 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
+export const ROW_HEIGHT = 40;
+
 export default StyleSheet.create({
 	content: {
-		height: 40,
+		height: ROW_HEIGHT,
 		flexDirection: 'row',
 		width: '100%',
 		alignItems: 'center',

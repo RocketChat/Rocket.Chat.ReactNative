@@ -6,10 +6,10 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import log from '../../utils/log';
 import Check from '../../containers/Check';
-import styles from './styles';
+import styles, { ROW_HEIGHT } from './styles';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
-export const ROW_HEIGHT = 68;
+export { ROW_HEIGHT };
 
 const ServerItem = React.memo(({
 	server, item, onPress, hasCheck, disclosure

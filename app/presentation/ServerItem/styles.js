@@ -3,9 +3,11 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
 
+export const ROW_HEIGHT = 68;
+
 export default StyleSheet.create({
 	serverItem: {
-		height: 68,
+		height: ROW_HEIGHT,
 		backgroundColor: COLOR_WHITE,
 		justifyContent: 'center'
 	},
