@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import database from '../lib/realm';
@@ -18,7 +17,6 @@ import {
 import Navigation from '../lib/Navigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
-import RocketChat from '../lib/rocketchat';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
@@ -57,10 +55,7 @@ export default class SelectServerView extends React.Component {
 		super(props);
 		const { serversDB } = database.databases;
 		const servers = serversDB.objects('servers');
-		const filteredServers = servers.filter(async(server) => {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			return userId;
-		});
+		const filteredServers = servers.filter(server => server.roomsUpdatedAt);
 		this.state = {
 			servers: filteredServers
 		};
