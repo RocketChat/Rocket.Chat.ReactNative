@@ -192,9 +192,7 @@ export default class UploadModal extends Component {
 		}
 		if (file.mime && file.mime.match(/video/)) {
 			return (
-				<View
-					style={styles.video}
-				>
+				<View style={styles.video}>
 					<CustomIcon name='play' size={72} color={COLOR_WHITE} />
 				</View>
 			);

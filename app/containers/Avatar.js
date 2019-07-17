@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
+	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
+);
+
 const Avatar = React.memo(({
 	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token
 }) => {
@@ -26,7 +30,14 @@ const Avatar = React.memo(({
 		avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
 	}
 
-	const uri = avatar || `${ baseUrl }/avatar/${ room }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`;
+
+	let uri;
+	if (avatar) {
+		uri = avatar.includes('http') ? avatar : formatUrl(avatar, baseUrl, uriSize, avatarAuthURLFragment);
+	} else {
+		uri = formatUrl(`/avatar/${ room }`, baseUrl, uriSize, avatarAuthURLFragment);
+	}
+
 
 	const image = (
 		<FastImage

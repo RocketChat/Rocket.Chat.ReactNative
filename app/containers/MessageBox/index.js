@@ -46,9 +46,7 @@ const onlyUnique = function onlyUnique(value, index, self) {
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
-	avoidEmptySpaceAroundImage: false,
-	cropperChooseText: I18n.t('Choose'),
-	cropperCancelText: I18n.t('Cancel')
+	avoidEmptySpaceAroundImage: false
 };
 
 const libraryPickerConfig = {
@@ -59,20 +57,9 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-const fileOptions = [I18n.t('Cancel')];
 const FILE_CANCEL_INDEX = 0;
-
-// Photo
-fileOptions.push(I18n.t('Take_a_photo'));
 const FILE_PHOTO_INDEX = 1;
-
-// Video
-
-fileOptions.push(I18n.t('Take_a_video'));
 const FILE_VIDEO_INDEX = 2;
-
-// Library
-fileOptions.push(I18n.t('Choose_from_library'));
 const FILE_LIBRARY_INDEX = 3;
 
 class MessageBox extends Component {
@@ -120,6 +107,27 @@ class MessageBox extends Component {
 		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.fileOptions = [
+			I18n.t('Cancel'),
+			I18n.t('Take_a_photo'),
+			I18n.t('Take_a_video'),
+			I18n.t('Choose_from_library')
+		];
+		this.imagePickerConfig = {
+			...imagePickerConfig,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel')
+		};
+		this.libraryPickerConfig = {
+			...libraryPickerConfig,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel')
+		};
+		this.videoPickerConfig = {
+			...videoPickerConfig,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel')
+		};
 	}
 
 	componentDidMount() {
@@ -495,9 +503,8 @@ class MessageBox extends Component {
 	}
 
 	takePhoto = async() => {
-		console.warn('take photo');
 		try {
-			const image = await ImagePicker.openCamera(imagePickerConfig);
+			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_take_photo', e);
@@ -506,7 +513,7 @@ class MessageBox extends Component {
 
 	takeVideo = async() => {
 		try {
-			const video = await ImagePicker.openCamera(videoPickerConfig);
+			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			this.showUploadModal(video);
 		} catch (e) {
 			log('err_take_video', e);
@@ -515,7 +522,7 @@ class MessageBox extends Component {
 
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(libraryPickerConfig);
+			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_choose_from_library', e);
@@ -528,7 +535,7 @@ class MessageBox extends Component {
 
 	showFileActions = () => {
 		ActionSheet.showActionSheetWithOptions({
-			options: fileOptions,
+			options: this.fileOptions,
 			cancelButtonIndex: FILE_CANCEL_INDEX
 		}, (actionIndex) => {
 			this.handleFileActionPress(actionIndex);

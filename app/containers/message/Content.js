@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
@@ -12,26 +12,35 @@ const Content = React.memo((props) => {
 		return <Text style={styles.textInfo}>{getInfoMessage({ ...props })}</Text>;
 	}
 
+	let content = null;
+
 	if (props.tmid && !props.msg) {
-		return <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+		content = <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+	} else {
+		content = (
+			<Markdown
+				msg={props.msg}
+				baseUrl={props.baseUrl}
+				username={props.user.username}
+				isEdited={props.isEdited}
+				mentions={props.mentions}
+				channels={props.channels}
+				numberOfLines={props.tmid ? 1 : 0}
+				getCustomEmoji={props.getCustomEmoji}
+				useMarkdown={props.useMarkdown}
+			/>
+		);
 	}
 
 	return (
-		<Markdown
-			msg={props.msg}
-			baseUrl={props.baseUrl}
-			username={props.user.username}
-			isEdited={props.isEdited}
-			mentions={props.mentions}
-			channels={props.channels}
-			numberOfLines={props.tmid ? 1 : 0}
-			getCustomEmoji={props.getCustomEmoji}
-			useMarkdown={props.useMarkdown}
-		/>
+		<View style={props.isTemp && styles.temp}>
+			{content}
+		</View>
 	);
-}, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
+}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp && prevProps.msg === nextProps.msg);
 
 Content.propTypes = {
+	isTemp: PropTypes.bool,
 	isInfo: PropTypes.bool,
 	isEdited: PropTypes.bool,
 	useMarkdown: PropTypes.bool,
