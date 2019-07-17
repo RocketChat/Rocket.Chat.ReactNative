@@ -45,8 +45,7 @@ const keyExtractor = item => item.rid;
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
-	showFavorites: state.sortPreferences.showFavorites,
-	showUnread: state.sortPreferences.showUnread
+	showFavorites: state.sortPreferences.showFavorites
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
@@ -99,8 +98,7 @@ export default class ShareListView extends React.Component {
 		userId: PropTypes.string,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
-		showFavorites: PropTypes.bool,
-		showUnread: PropTypes.bool
+		showFavorites: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -116,7 +114,6 @@ export default class ShareListView extends React.Component {
 			search: [],
 			discussions: [],
 			channels: [],
-			unread: [],
 			favorites: [],
 			chats: [],
 			privateGroup: [],
@@ -199,7 +196,7 @@ export default class ShareListView extends React.Component {
 		}
 
 		const {
-			server, sortBy, showUnread, showFavorites, groupByType
+			server, sortBy, showFavorites, groupByType
 		} = this.props;
 		const { serversDB } = database.databases;
 
@@ -213,18 +210,13 @@ export default class ShareListView extends React.Component {
 			// servers
 			this.servers = serversDB.objects('servers');
 
-			// unread
-			if (showUnread) {
-				this.unread = this.data.filtered('(unread > 0 || alert == true)');
-			} else {
-				this.unread = [];
-			}
 			// favorites
 			if (showFavorites) {
 				this.favorites = this.data.filtered('f == true');
 			} else {
 				this.favorites = [];
 			}
+
 			// type
 			if (groupByType) {
 				this.discussions = this.data.filtered('prid != null');
@@ -232,8 +224,6 @@ export default class ShareListView extends React.Component {
 				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
 				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
 				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
-			} else if (showUnread) {
-				this.chats = this.data.filtered('(unread == 0 && alert == false)');
 			} else {
 				this.chats = this.data;
 			}
@@ -248,7 +238,6 @@ export default class ShareListView extends React.Component {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
-				unread: this.unread ? this.unread.slice() : [],
 				favorites: this.favorites ? this.favorites.slice() : [],
 				discussions: this.discussions ? this.discussions.slice() : [],
 				channels: this.channels ? this.channels.slice() : [],
@@ -416,7 +405,7 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			discussions, channels, privateGroup, direct, livechat, search, chats, favorites, unread
+			discussions, channels, privateGroup, direct, livechat, search, chats, favorites
 		} = this.state;
 
 		if (search.length > 0) {
@@ -441,7 +430,6 @@ export default class ShareListView extends React.Component {
 		return (
 			<View style={styles.content}>
 				{this.renderServerSelector()}
-				{this.renderSection(unread, 'Unread')}
 				{this.renderSection(favorites, 'Favorites')}
 				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
