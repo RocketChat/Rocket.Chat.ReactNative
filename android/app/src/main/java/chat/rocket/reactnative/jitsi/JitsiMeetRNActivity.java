@@ -55,7 +55,7 @@ public class JitsiMeetRNActivity extends FragmentActivity implements JitsiMeetVi
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
             .setRoom(url)
             .build();
-        // view.join(options); <- issue here
+        view.join(options); // <- issue here
 
         setContentView(view);
     }
