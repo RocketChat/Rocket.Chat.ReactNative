@@ -7,12 +7,11 @@ import { RectButton } from 'react-native-gesture-handler';
 import log from '../../utils/log';
 import Check from '../../containers/Check';
 import styles, { ROW_HEIGHT } from './styles';
-import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 export { ROW_HEIGHT };
 
 const ServerItem = React.memo(({
-	server, item, onPress, hasCheck, disclosure
+	server, item, onPress, hasCheck
 }) => (
 	<RectButton onPress={onPress} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
 		<View style={styles.serverItemContainer}>
@@ -40,7 +39,6 @@ const ServerItem = React.memo(({
 				<Text style={styles.serverUrl}>{item.id}</Text>
 			</View>
 			{item.id === server && hasCheck ? <Check /> : null}
-			{disclosure ? <DisclosureIndicator /> : null}
 		</View>
 	</RectButton>
 ));
@@ -49,7 +47,6 @@ ServerItem.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	item: PropTypes.object.isRequired,
 	hasCheck: PropTypes.bool,
-	disclosure: PropTypes.bool,
 	server: PropTypes.string
 };
 

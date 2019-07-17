@@ -32,16 +32,14 @@ const OutsideNavigator = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-const AppContainer = createAppContainer(createSwitchNavigator(
-	{
-		OutsideStack: OutsideNavigator,
-		InsideStack: InsideNavigator,
-		AuthLoading: AuthLoadingView
-	},
-	{
-		initialRouteName: 'AuthLoading'
-	}
-));
+const AppContainer = createAppContainer(createSwitchNavigator({
+	OutsideStack: OutsideNavigator,
+	InsideStack: InsideNavigator,
+	AuthLoading: AuthLoadingView
+},
+{
+	initialRouteName: 'AuthLoading'
+}));
 
 class Root extends React.Component {
 	constructor(props) {

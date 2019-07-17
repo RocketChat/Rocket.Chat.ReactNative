@@ -86,21 +86,18 @@ export default class SelectServerView extends React.Component {
 			>
 				<StatusBar />
 				<View style={styles.list}>
-					{servers && servers.length > 0
-						? (
-							<FlatList
-								data={servers}
-								keyExtractor={keyExtractor}
-								renderItem={this.renderItem}
-								getItemLayout={getItemLayout}
-								ItemSeparatorComponent={this.renderSeparator}
-								enableEmptySections
-								removeClippedSubviews
-								keyboardShouldPersistTaps='always'
-								windowSize={7}
-								bounces={false}
-							/>
-						) : null}
+					<FlatList
+						data={servers}
+						keyExtractor={keyExtractor}
+						renderItem={this.renderItem}
+						getItemLayout={getItemLayout}
+						ItemSeparatorComponent={this.renderSeparator}
+						enableEmptySections
+						removeClippedSubviews
+						keyboardShouldPersistTaps='always'
+						windowSize={7}
+						bounces={false}
+					/>
 				</View>
 			</SafeAreaView>
 		);

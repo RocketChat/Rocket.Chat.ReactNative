@@ -4,6 +4,8 @@ import { COLOR_WHITE, COLOR_SEPARATOR, COLOR_PRIMARY } from '../../constants/col
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
+export const ROW_HEIGHT = 54;
+
 export default StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
@@ -99,7 +101,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	directoryItemButton: {
-		height: 54,
+		height: ROW_HEIGHT,
 		backgroundColor: COLOR_WHITE
 	},
 	directoryItemContainer: {

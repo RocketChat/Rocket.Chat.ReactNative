@@ -15,7 +15,6 @@ import database, { safeAddListener } from '../../lib/realm';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import ShareItem, { ROW_HEIGHT } from '../../presentation/ShareItem';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import {
@@ -28,9 +27,10 @@ import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 import ShareListHeader from './Header';
 
 import styles from './styles';
+import DirectoryItem, { ROW_HEIGHT } from '../DirectoryView/DirectoryItem';
 
 const SCROLL_OFFSET = 56;
-const getItemLayoutShare = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayoutChannel = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const getItemLayoutServer = (data, index) => ({ length: ROW_HEIGHT_SERVER, offset: ROW_HEIGHT_SERVER * index, index });
 const keyExtractor = item => item.rid;
 
@@ -42,7 +42,11 @@ const keyExtractor = item => item.rid;
 	server: state.server.server,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	sortBy: state.sortPreferences.sortBy,
+	groupByType: state.sortPreferences.groupByType,
+	showFavorites: state.sortPreferences.showFavorites,
+	showUnread: state.sortPreferences.showUnread
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
@@ -92,7 +96,11 @@ export default class ShareListView extends React.Component {
 		closeSearchHeader: PropTypes.func,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
-		userId: PropTypes.string
+		userId: PropTypes.string,
+		sortBy: PropTypes.string,
+		groupByType: PropTypes.bool,
+		showFavorites: PropTypes.bool,
+		showUnread: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -108,6 +116,9 @@ export default class ShareListView extends React.Component {
 			search: [],
 			discussions: [],
 			channels: [],
+			unread: [],
+			favorites: [],
+			chats: [],
 			privateGroup: [],
 			direct: [],
 			livechat: [],
@@ -187,17 +198,45 @@ export default class ShareListView extends React.Component {
 			this.data.removeAllListeners();
 		}
 
+		const {
+			server, sortBy, showUnread, showFavorites, groupByType
+		} = this.props;
 		const { serversDB } = database.databases;
-		const { server } = this.props;
 
 		if (server) {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
-			this.discussions = this.data.filtered('prid != null');
-			this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
-			this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
-			this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
-			this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
+			if (sortBy === 'alphabetical') {
+				this.data = this.data.sorted('name', false);
+			} else {
+				this.data = this.data.sorted('roomUpdatedAt', true);
+			}
+			// servers
 			this.servers = serversDB.objects('servers');
+
+			// unread
+			if (showUnread) {
+				this.unread = this.data.filtered('(unread > 0 || alert == true)');
+			} else {
+				this.unread = [];
+			}
+			// favorites
+			if (showFavorites) {
+				this.favorites = this.data.filtered('f == true');
+			} else {
+				this.favorites = [];
+			}
+			// type
+			if (groupByType) {
+				this.discussions = this.data.filtered('prid != null');
+				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
+				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
+				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
+				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
+			} else if (showUnread) {
+				this.chats = this.data.filtered('(unread == 0 && alert == false)');
+			} else {
+				this.chats = this.data;
+			}
 			safeAddListener(this.data, this.updateState);
 		}
 	}, 300);
@@ -208,6 +247,9 @@ export default class ShareListView extends React.Component {
 	updateState = debounce(() => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
+				chats: this.chats ? this.chats.slice() : [],
+				unread: this.unread ? this.unread.slice() : [],
+				favorites: this.favorites ? this.favorites.slice() : [],
 				discussions: this.discussions ? this.discussions.slice() : [],
 				channels: this.channels ? this.channels.slice() : [],
 				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
@@ -306,13 +348,22 @@ export default class ShareListView extends React.Component {
 	renderItem = ({ item }) => {
 		const { userId, token, baseUrl } = this.props;
 		return (
-			<ShareItem
-				userId={userId}
-				token={token}
+			<DirectoryItem
+				user={{
+					userId,
+					token
+				}}
+				title={this.getRoomTitle(item)}
 				baseUrl={baseUrl}
+				avatar={this.getRoomTitle(item)}
+				description={
+					item.t === 'c'
+						? (item.topic || item.description)
+						: item.fname
+				}
 				type={item.t}
-				name={this.getRoomTitle(item)}
 				onPress={() => this.shareMessage(item)}
+				testID={`share-extension-item-${ item.name }`}
 			/>
 		);
 	}
@@ -322,7 +373,7 @@ export default class ShareListView extends React.Component {
 	renderSection = (data, header) => {
 		if (data && data.length > 0) {
 			return (
-				<View>
+				<React.Fragment>
 					{this.renderSectionHeader(header)}
 					<View style={styles.bordered}>
 						<FlatList
@@ -339,7 +390,7 @@ export default class ShareListView extends React.Component {
 							windowSize={20}
 						/>
 					</View>
-				</View>
+				</React.Fragment>
 			);
 		}
 		return null;
@@ -357,7 +408,6 @@ export default class ShareListView extends React.Component {
 						server={server}
 						onPress={() => Navigation.navigate('SelectServerView')}
 						item={currentServer}
-						disclosure
 					/>
 				</View>
 			</React.Fragment>
@@ -366,7 +416,7 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			discussions, channels, privateGroup, direct, livechat, search
+			discussions, channels, privateGroup, direct, livechat, search, chats, favorites, unread
 		} = this.state;
 
 		if (search.length > 0) {
@@ -377,7 +427,7 @@ export default class ShareListView extends React.Component {
 					keyExtractor={keyExtractor}
 					style={styles.flatlist}
 					renderItem={this.renderItem}
-					getItemLayout={getItemLayoutShare}
+					getItemLayout={getItemLayoutChannel}
 					ItemSeparatorComponent={this.renderSeparator}
 					enableEmptySections
 					removeClippedSubviews
@@ -391,11 +441,14 @@ export default class ShareListView extends React.Component {
 		return (
 			<View style={styles.content}>
 				{this.renderServerSelector()}
+				{this.renderSection(unread, 'Unread')}
+				{this.renderSection(favorites, 'Favorites')}
 				{this.renderSection(discussions, 'Discussions')}
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
 				{this.renderSection(privateGroup, 'Private_Groups')}
 				{this.renderSection(livechat, 'Livechat')}
+				{this.renderSection(chats, 'Chats')}
 			</View>
 		);
 	}
