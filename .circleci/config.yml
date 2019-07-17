@@ -238,6 +238,7 @@ jobs:
       - run:
           command: |
             source ~/.bash_profile
+            /usr/local/share/android-sdk/platform-tools/adb -s emulator-5554 install -r -g -t "/Users/distiller/project/android/app/build/outputs/apk/release/app-release.apk"
             detox test -c android.emu.release -l trace --headless
           name: Detox Test
       - store_artifacts:
