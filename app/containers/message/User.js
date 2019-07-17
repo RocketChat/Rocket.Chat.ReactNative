@@ -46,9 +46,9 @@ const User = React.memo(({
 						{alias || username}
 						{aliasUsername}
 					</Text>
-					{ hasError && <MessageError hasError={hasError} {...props} /> }
 				</View>
 				<Text style={messageStyles.time}>{time}</Text>
+				{ hasError && <MessageError hasError={hasError} {...props} /> }
 			</View>
 		);
 	}
