@@ -51,7 +51,7 @@ export default class ShareView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { navigation, username } = this.props;
+		const { navigation } = this.props;
 		const rid = navigation.getParam('rid', '');
 		const name = navigation.getParam('name', '');
 		const value = navigation.getParam('value', '');
@@ -68,7 +68,6 @@ export default class ShareView extends React.Component {
 			fileInfo,
 			loading: false,
 			room: this.rooms[0] || { rid },
-			user: { username },
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
@@ -77,9 +76,9 @@ export default class ShareView extends React.Component {
 	}
 
 	componentDidMount() {
-		const { room, user } = this.state;
-		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, user) || isBlocked(room)) });
+		const { room } = this.state;
+		const { navigation, username } = this.props;
+		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
 	}
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
@@ -199,11 +198,12 @@ export default class ShareView extends React.Component {
 	}
 
 	render() {
+		const { username } = this.props;
 		const {
-			name, loading, isMedia, room, user
+			name, loading, isMedia, room
 		} = this.state;
 
-		if (isReadOnly(room, user) || isBlocked(room)) {
+		if (isReadOnly(room, { username }) || isBlocked(room)) {
 			return this.renderError();
 		}
 

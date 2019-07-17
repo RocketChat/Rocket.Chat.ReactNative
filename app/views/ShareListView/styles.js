@@ -3,7 +3,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR, COLOR_DANGER
+	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_DANGER
 } from '../../constants/colors';
 
 export default StyleSheet.create({
@@ -11,17 +11,11 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 1,
-		width: '100%',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
-	},
-	list: {
-		width: '100%',
-		backgroundColor: COLOR_WHITE
 	},
 	content: {
 		flex: 1,
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8',
-		width: '100%'
+		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
 	},
 	flatlist: {
 		width: '100%',
@@ -47,8 +41,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	separator: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
+		...sharedStyles.separatorBottom,
 		marginLeft: 48
 	},
 	loading: {

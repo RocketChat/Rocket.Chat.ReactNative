@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	FlatList, View, StyleSheet
+	FlatList, StyleSheet, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,12 +12,13 @@ import StatusBar from '../containers/StatusBar';
 import { selectServerRequest as selectServerRequestAction } from '../actions/server';
 
 import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+	COLOR_BACKGROUND_CONTAINER
 } from '../constants/colors';
 import Navigation from '../lib/Navigation';
-import ServerItem from '../presentation/ServerItem';
+import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
+import sharedStyles from './Styles';
 
-const getItemLayout = (data, index) => ({ length: 68, offset: 68 * index, index });
+const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
 
 const styles = StyleSheet.create({
@@ -26,12 +27,12 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	list: {
-		width: '100%',
-		flex: 1,
-		paddingVertical: 32
+		marginVertical: 32,
+		...sharedStyles.separatorVertical
 	},
-	server: {
-		backgroundColor: COLOR_WHITE
+	separator: {
+		...sharedStyles.separatorBottom,
+		marginLeft: 48
 	}
 });
 
@@ -61,47 +62,46 @@ export default class SelectServerView extends React.Component {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<View style={styles.server}>
+	renderItem = ({ item }) => {
+		const { server } = this.props;
+		return (
 			<ServerItem
+				server={server}
 				onPress={() => this.select(item.id)}
 				item={item}
 				hasCheck
 			/>
-		</View>
-	);
-
-	renderList = () => {
-		const { serversDB } = database.databases;
-		const servers = serversDB.objects('servers');
-
-		if (servers && servers.length > 0) {
-			return (
-				<FlatList
-					data={servers}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={this.renderItem}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
-				/>
-			);
-		}
-		return null;
+		);
 	}
 
+	renderSeparator = () => <View style={styles.separator} />;
+
 	render() {
+		const { serversDB } = database.databases;
+		const servers = serversDB.objects('servers');
 		return (
 			<SafeAreaView
 				style={styles.container}
 				forceInset={{ bottom: 'never' }}
 			>
 				<StatusBar />
-				{this.renderList()}
+				<View style={styles.list}>
+					{servers && servers.length > 0
+						? (
+							<FlatList
+								data={servers}
+								keyExtractor={keyExtractor}
+								renderItem={this.renderItem}
+								getItemLayout={getItemLayout}
+								ItemSeparatorComponent={this.renderSeparator}
+								enableEmptySections
+								removeClippedSubviews
+								keyboardShouldPersistTaps='always'
+								windowSize={7}
+								bounces={false}
+							/>
+						) : null}
+				</View>
 			</SafeAreaView>
 		);
 	}

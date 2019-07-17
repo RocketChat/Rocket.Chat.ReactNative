@@ -33,7 +33,6 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
-import com.reactlibrary.RNRealmPathPackage;
 import chat.rocket.SharePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
@@ -72,7 +71,6 @@ public class MainApplication extends Application implements ReactApplication, IN
             new SplashScreenReactPackage(),
             new SharePackage(),
             new RNFetchBlobPackage(),
-          new RNRealmPathPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),

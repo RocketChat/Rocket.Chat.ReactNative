@@ -22,7 +22,7 @@ import {
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction
 } from '../../actions/rooms';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem, { ROW_HEIGHT as ROW_HEIGHT_SERVER } from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 import ShareListHeader from './Header';
@@ -30,8 +30,8 @@ import ShareListHeader from './Header';
 import styles from './styles';
 
 const SCROLL_OFFSET = 56;
-
-const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayoutShare = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayoutServer = (data, index) => ({ length: ROW_HEIGHT_SERVER, offset: ROW_HEIGHT_SERVER * index, index });
 const keyExtractor = item => item.rid;
 
 @connect(state => ({
@@ -40,9 +40,9 @@ const keyExtractor = item => item.rid;
 	useRealName: state.settings.UI_Use_Real_Name,
 	searchText: state.rooms.searchText,
 	server: state.server.server,
-	loadingServer: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
@@ -86,11 +86,13 @@ export default class ShareListView extends React.Component {
 		server: PropTypes.string,
 		useRealName: PropTypes.bool,
 		searchText: PropTypes.string,
-		loadingServer: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
 		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func
+		closeSearchHeader: PropTypes.func,
+		baseUrl: PropTypes.string,
+		token: PropTypes.string,
+		userId: PropTypes.string
 	}
 
 	constructor(props) {
@@ -148,15 +150,9 @@ export default class ShareListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText } = this.props;
+		const { searchText } = this.props;
 
-		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
-			if (nextProps.loadingServer) {
-				this.internalSetState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
-		} else if (searchText !== nextProps.searchText) {
+		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		}
 	}
@@ -194,7 +190,7 @@ export default class ShareListView extends React.Component {
 		const { serversDB } = database.databases;
 		const { server } = this.props;
 
-		if (server && this.hasActiveDB()) {
+		if (server) {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
 			this.discussions = this.data.filtered('prid != null');
 			this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
@@ -223,9 +219,6 @@ export default class ShareListView extends React.Component {
 			this.forceUpdate();
 		});
 	}, 300);
-
-	// this is necessary during development (enables Cmd + r)
-	hasActiveDB = () => database && database.databases && database.databases.activeDB;
 
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
@@ -333,9 +326,9 @@ export default class ShareListView extends React.Component {
 					data={search}
 					extraData={search}
 					keyExtractor={keyExtractor}
-					style={styles.list}
+					style={styles.flatlist}
 					renderItem={this.renderItem}
-					getItemLayout={getItemLayout}
+					getItemLayout={getItemLayoutShare}
 					ItemSeparatorComponent={this.renderSeparator}
 					enableEmptySections
 					removeClippedSubviews
@@ -366,13 +359,19 @@ export default class ShareListView extends React.Component {
 		</View>
 	);
 
-	renderItem = ({ item }) => (
-		<ShareItem
-			type={item.t}
-			name={this.getRoomTitle(item)}
-			onPress={() => this.shareMessage(item)}
-		/>
-	);
+	renderItem = ({ item }) => {
+		const { userId, token, baseUrl } = this.props;
+		return (
+			<ShareItem
+				userId={userId}
+				token={token}
+				baseUrl={baseUrl}
+				type={item.t}
+				name={this.getRoomTitle(item)}
+				onPress={() => this.shareMessage(item)}
+			/>
+		);
+	}
 
 	renderSeparator = () => <View style={styles.separator} />;
 
@@ -388,7 +387,7 @@ export default class ShareListView extends React.Component {
 							style={styles.flatlist}
 							renderItem={this.renderItem}
 							ItemSeparatorComponent={this.renderSeparator}
-							getItemLayout={getItemLayout}
+							getItemLayout={getItemLayoutServer}
 							enableEmptySections
 							removeClippedSubviews
 							keyboardShouldPersistTaps='always'
@@ -407,22 +406,23 @@ export default class ShareListView extends React.Component {
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
-			<View>
+			<React.Fragment>
 				{this.renderSectionHeader('Select_Server')}
 				<View style={styles.bordered}>
 					<ServerItem
+						server={server}
 						onPress={() => Navigation.navigate('SelectServerView')}
 						item={currentServer}
 						disclosure
 					/>
 				</View>
-			</View>
+			</React.Fragment>
 		) : null;
 	};
 
 	renderError = () => {
-		const { FileUpload_MaxFileSize } = this.props;
 		const { fileInfo: file } = this.state;
+		const { FileUpload_MaxFileSize } = this.props;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
 			: 'error-invalid-file-type';

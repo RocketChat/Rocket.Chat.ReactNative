@@ -8,8 +8,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		alignItems: 'center',
-		paddingLeft: 14,
-		paddingRight: 16
+		paddingLeft: 14
 	},
 	name: {
 		fontSize: 17,
@@ -23,7 +22,6 @@ export default StyleSheet.create({
 		height: '100%',
 		width: '100%',
 		alignItems: 'center',
-		justifyContent: 'space-between',
 		flexDirection: 'row'
 	},
 	avatar: {

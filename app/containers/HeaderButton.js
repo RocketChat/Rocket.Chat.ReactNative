@@ -32,15 +32,14 @@ export const CloseModalButton = React.memo(({ navigation, testID }) => (
 	</CustomHeaderButtons>
 ));
 
-export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (isIOS ? (
+export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons left>
-		<Item title='cancel' onPress={onPress} testID={testID} />
+		{isIOS
+			? <Item title='cancel' onPress={onPress} testID={testID} />
+			: <Item title='close' iconName='cross' onPress={onPress} testID={testID} />
+		}
 	</CustomHeaderButtons>
-) : (
-	<CustomHeaderButtons left>
-		<Item title='close' iconName='cross' onPress={onPress} testID={testID} />
-	</CustomHeaderButtons>
-)));
+));
 
 export const MoreButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons>

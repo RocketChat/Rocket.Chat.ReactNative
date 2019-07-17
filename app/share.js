@@ -61,7 +61,7 @@ class Root extends React.Component {
 		const { isLandscape } = this.state;
 		return (
 			<View
-				style={[{ ...sharedStyles.container }, isLandscape && isNotch ? { ...sharedStyles.notchLandscapeContainer } : {}]}
+				style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
 				onLayout={this.handleLayout}
 			>
 				<Provider store={store}>

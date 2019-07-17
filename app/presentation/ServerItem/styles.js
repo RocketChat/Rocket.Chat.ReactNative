@@ -6,7 +6,8 @@ import { COLOR_WHITE } from '../../constants/colors';
 export default StyleSheet.create({
 	serverItem: {
 		height: 68,
-		backgroundColor: COLOR_WHITE
+		backgroundColor: COLOR_WHITE,
+		justifyContent: 'center'
 	},
 	serverItemContainer: {
 		flexDirection: 'row',
@@ -16,7 +17,6 @@ export default StyleSheet.create({
 		width: 42,
 		height: 42,
 		marginHorizontal: 15,
-		marginVertical: 13,
 		borderRadius: 4
 	},
 	serverTextContainer: {
