@@ -21,13 +21,13 @@ import {
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction
 } from '../../actions/rooms';
+import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem, { ROW_HEIGHT as ROW_HEIGHT_SERVER } from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 import ShareListHeader from './Header';
 
 import styles from './styles';
-import DirectoryItem, { ROW_HEIGHT } from '../DirectoryView/DirectoryItem';
 
 const SCROLL_OFFSET = 56;
 const getItemLayoutChannel = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
