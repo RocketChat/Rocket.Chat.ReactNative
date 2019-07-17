@@ -90,6 +90,15 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	video: {
+		flex: 1,
+		borderRadius: 4,
+		height: 150,
+		backgroundColor: '#1f2329',
+		marginBottom: 6,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 
 });
@@ -172,18 +181,13 @@ export default class UploadModal extends Component {
 		return false;
 	}
 
+	uriToPath = uri => uri.replace(/^file:\/\//, '');
+
 	submit = () => {
 		const { file, submit } = this.props;
 		const { name, description } = this.state;
+		file.path = this.uriToPath(file.path);
 		submit({ ...file, name, description });
-	}
-
-	renderPreview() {
-		const { file } = this.props;
-		if (file.mime && file.mime.match(/image/)) {
-			return (<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />);
-		}
-		return (<CustomIcon name='file-generic' size={72} style={styles.fileIcon} />);
 	}
 
 	renderError = () => {
@@ -271,6 +275,21 @@ export default class UploadModal extends Component {
 				</TouchableHighlight>
 			</View>
 		);
+	}
+
+	renderPreview() {
+		const { file } = this.props;
+		if (file.mime && file.mime.match(/image/)) {
+			return (<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />);
+		}
+		if (file.mime && file.mime.match(/video/)) {
+			return (
+				<View style={styles.video}>
+					<CustomIcon name='play' size={72} color={COLOR_WHITE} />
+				</View>
+			);
+		}
+		return (<CustomIcon name='file-generic' size={72} style={styles.fileIcon} />);
 	}
 
 	render() {
