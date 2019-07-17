@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { COLOR_WHITE } from '../../constants/colors';
 
-export const ROW_HEIGHT = 68;
+export const ROW_HEIGHT = 56;
 
 export default StyleSheet.create({
 	serverItem: {
@@ -16,8 +16,8 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	serverIcon: {
-		width: 42,
-		height: 42,
+		width: 38,
+		height: 38,
 		marginHorizontal: 15,
 		borderRadius: 4
 	},
