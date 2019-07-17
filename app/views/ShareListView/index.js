@@ -236,7 +236,7 @@ export default class ShareListView extends React.Component {
 			fileInfo,
 			name: this.getRoomTitle(item)
 		});
-	};
+	}
 
 	canUploadFile = () => {
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
@@ -295,69 +295,13 @@ export default class ShareListView extends React.Component {
 
 	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
 
-	renderScrollView = () => {
-		const { mediaLoading, loading } = this.state;
-		if (mediaLoading || loading) {
-			return <ActivityIndicator style={styles.loading} />;
-		}
-
-		return (
-			<ScrollView
-				style={styles.scroll}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-				keyboardShouldPersistTaps='never'
-			>
-				{this.renderListHeader()}
-				{this.renderContent()}
-			</ScrollView>
-		);
-	}
-
-	getScrollRef = ref => this.scroll = ref;
-
-	renderContent = () => {
-		const {
-			discussions, channels, privateGroup, direct, livechat, search
-		} = this.state;
-
-		if (search.length > 0) {
-			return (
-				<FlatList
-					data={search}
-					extraData={search}
-					keyExtractor={keyExtractor}
-					style={styles.flatlist}
-					renderItem={this.renderItem}
-					getItemLayout={getItemLayoutShare}
-					ItemSeparatorComponent={this.renderSeparator}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={7}
-				/>
-			);
-		}
-
-		return (
-			<View style={styles.content}>
-				{this.renderServerSelector()}
-				{this.renderSection(discussions, 'Discussions')}
-				{this.renderSection(channels, 'Channels')}
-				{this.renderSection(direct, 'Direct_Messages')}
-				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(livechat, 'Livechat')}
-			</View>
-		);
-	}
-
 	renderSectionHeader = header => (
 		<View style={styles.headerContainer}>
 			<Text style={styles.headerText}>
 				{I18n.t(header)}
 			</Text>
 		</View>
-	);
+	)
 
 	renderItem = ({ item }) => {
 		const { userId, token, baseUrl } = this.props;
@@ -392,7 +336,7 @@ export default class ShareListView extends React.Component {
 							removeClippedSubviews
 							keyboardShouldPersistTaps='always'
 							initialNumToRender={12}
-							windowSize={7}
+							windowSize={20}
 						/>
 					</View>
 				</View>
@@ -418,7 +362,62 @@ export default class ShareListView extends React.Component {
 				</View>
 			</React.Fragment>
 		) : null;
-	};
+	}
+
+	renderContent = () => {
+		const {
+			discussions, channels, privateGroup, direct, livechat, search
+		} = this.state;
+
+		if (search.length > 0) {
+			return (
+				<FlatList
+					data={search}
+					extraData={search}
+					keyExtractor={keyExtractor}
+					style={styles.flatlist}
+					renderItem={this.renderItem}
+					getItemLayout={getItemLayoutShare}
+					ItemSeparatorComponent={this.renderSeparator}
+					enableEmptySections
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+					initialNumToRender={12}
+					windowSize={20}
+				/>
+			);
+		}
+
+		return (
+			<View style={styles.content}>
+				{this.renderServerSelector()}
+				{this.renderSection(discussions, 'Discussions')}
+				{this.renderSection(channels, 'Channels')}
+				{this.renderSection(direct, 'Direct_Messages')}
+				{this.renderSection(privateGroup, 'Private_Groups')}
+				{this.renderSection(livechat, 'Livechat')}
+			</View>
+		);
+	}
+
+
+	renderScrollView = () => {
+		const { mediaLoading, loading } = this.state;
+		if (mediaLoading || loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+
+		return (
+			<ScrollView
+				style={styles.scroll}
+				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				keyboardShouldPersistTaps='never'
+			>
+				{this.renderListHeader()}
+				{this.renderContent()}
+			</ScrollView>
+		);
+	}
 
 	renderError = () => {
 		const { fileInfo: file } = this.state;
