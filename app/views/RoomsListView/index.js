@@ -612,6 +612,17 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
+	renderSafe = () => {
+		try {
+			return this.renderScroll();
+		} catch (e) {
+			if (e.message.includes('Accessing object of type')) {
+				return null;
+			}
+			throw e;
+		}
+	}
+
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -621,7 +632,7 @@ export default class RoomsListView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				{this.renderScroll()}
+				{this.renderSafe()}
 				{showSortDropdown
 					? (
 						<SortDropdown
