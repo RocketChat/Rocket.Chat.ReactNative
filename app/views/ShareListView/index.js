@@ -452,7 +452,7 @@ export default class ShareListView extends React.Component {
 			<ScrollView
 				style={styles.scroll}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-				keyboardShouldPersistTaps='never'
+				keyboardShouldPersistTaps='always'
 			>
 				{this.renderListHeader()}
 				{this.renderContent()}
