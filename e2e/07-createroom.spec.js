@@ -6,7 +6,7 @@ const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 const { searchRoom } = require('./helpers/roomListView');
 
-describe('Create room screen', () => {
+describe.only('Create room screen', () => {
 	before(async() => {
 		await sleep(5000);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);

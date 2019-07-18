@@ -5,7 +5,7 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { navigateToLogin, tapBack } = require('./helpers/app');
 const data = require('./data');
 
-describe('Login screen', () => {
+describe.only('Login screen', () => {
 	before(async() => {
 		await navigateToLogin();
 	});

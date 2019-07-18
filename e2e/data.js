@@ -1,5 +1,6 @@
 const random = require('./helpers/random');
-const value = random(20);
+// const value = random(20);
+const value = 'uiouio1';
 const data = {
     server: 'https://ilarion.rocket.chat',
     alternateServer: 'https://stable.rocket.chat',
