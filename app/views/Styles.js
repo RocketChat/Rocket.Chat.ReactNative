@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY
+	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY, HEADER_BACK
 } from '../constants/colors';
 
 export default StyleSheet.create({
@@ -71,6 +71,9 @@ export default StyleSheet.create({
 	},
 	textAlignRight: {
 		textAlign: 'right'
+	},
+	textAlignCenter: {
+		textAlign: 'center'
 	},
 	opacity5: {
 		opacity: 0.5
@@ -176,6 +179,9 @@ export default StyleSheet.create({
 	textColorDescription: {
 		color: COLOR_TEXT_DESCRIPTION
 	},
+	textColorHeaderBack: {
+		color: HEADER_BACK
+	},
 	colorPrimary: {
 		color: COLOR_PRIMARY
 	},
@@ -192,5 +198,10 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		backgroundColor: COLOR_WHITE,
 		marginVertical: 10
+	},
+	notchLandscapeContainer: {
+		marginTop: -44,
+		paddingHorizontal: 30,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	}
 });

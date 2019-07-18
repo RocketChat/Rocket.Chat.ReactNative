@@ -52,6 +52,40 @@ target 'RocketChatRN' do
 
 end
 
+target 'ShareRocketChatRN' do
+
+  rn_path = '../node_modules/react-native'
+
+  pod 'React', path: rn_path, subspecs: [
+    'Core',
+    'RCTActionSheet',
+    'RCTAnimation',
+#    'RCTGeolocation',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTNetwork',
+    'RCTSettings',
+    'RCTText',
+    'RCTVibration',
+    'RCTWebSocket'
+  ]
+  
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
+  pod 'GoogleIDFASupport', '~> 3.14.0'
+  pod 'Firebase/Performance', '~> 5.20.1'
+
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     if target.name == "React"

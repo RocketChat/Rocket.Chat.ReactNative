@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
-import DirectoryItem from './DirectoryItem';
+import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import Touch from '../../utils/touch';

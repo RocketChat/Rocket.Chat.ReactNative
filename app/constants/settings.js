@@ -68,16 +68,16 @@ export default {
 	Threads_enabled: {
 		type: null
 	},
-	API_Gitlab_URL: {
-		type: 'valueAsString'
-	},
-	AutoTranslate_Enabled: {
-		type: 'valueAsBoolean'
-	},
 	FileUpload_MediaTypeWhiteList: {
 		type: 'valueAsString'
 	},
 	FileUpload_MaxFileSize: {
 		type: 'valueAsNumber'
+	},
+	API_Gitlab_URL: {
+		type: 'valueAsString'
+	},
+	AutoTranslate_Enabled: {
+		type: 'valueAsBoolean'
 	}
 };
