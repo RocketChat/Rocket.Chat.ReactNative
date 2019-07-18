@@ -396,7 +396,7 @@ export default class RoomView extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({ label: I18n.t('Read_Receipt'), handler: () => this.handleReadReceipt(item), icon: 'flag' });
 		}
-		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.HALF });
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	onOpenFileModal = (attachment) => {

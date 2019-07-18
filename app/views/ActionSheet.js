@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View, Text, StyleSheet, Keyboard
+} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { RectButton } from 'react-native-gesture-handler';
@@ -37,9 +39,8 @@ example optionObject : {
 export const LISTENER = 'actionSheet';
 export const SNAP_POINTS = {
 	HIDE: 0,
-	SHORT: 1,
-	HALF: 2,
-	FULL: 3
+	HALF: 1,
+	FULL: 2
 };
 
 const bottomSheetHeaderHeight = 25;
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
 	},
 	panelButton: {
 		padding: 18,
-		backgroundColor: 'transparent',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: COLOR_SEPARATOR,
 		flexDirection: 'row'
@@ -109,6 +109,7 @@ export default class ActionSheet extends React.Component {
 	}
 
 	handleDisplay = ({ options, snapPoint }) => {
+		Keyboard.dismiss();
 		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight + 2 * panelPaddingV;
 		this.setState({ options, height });
 		this.bottomSheetRef.current.snapTo(snapPoint);
@@ -182,7 +183,7 @@ export default class ActionSheet extends React.Component {
 
 	render() {
 		const { height } = this.state;
-		const snapPoints = [0, 0.25 * height, 0.5 * height, height];
+		const snapPoints = [0, 0.5 * height, height];
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}

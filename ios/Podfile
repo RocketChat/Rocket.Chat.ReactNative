@@ -45,10 +45,9 @@ target 'RocketChatRN' do
   pod 'Crashlytics', '~> 3.12.0'
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Performance', '~> 5.20.1'
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
   use_unimodules!
-
-  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
 end
 

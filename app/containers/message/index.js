@@ -80,12 +80,12 @@ export default class MessageContainer extends React.Component {
 	}, 300, true);
 
 	onLongPress = () => {
-		const { archived, onLongPress, item } = this.props;
+		const { archived, onLongPress } = this.props;
 		if (this.isInfo || this.hasError || archived) {
 			return;
 		}
 		if (onLongPress) {
-			onLongPress(item);
+			onLongPress(this.parseMessage());
 		}
 	}
 
