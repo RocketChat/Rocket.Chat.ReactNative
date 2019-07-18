@@ -11510,6 +11510,11 @@ react-native-dialog@^5.6.0:
     prop-types "^15.7.2"
     react-native-modal "^9.0.0"
 
+react-native-document-picker@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-3.2.2.tgz#d9774cb95d44f9b993600a048b0f18e7dd5ecea2"
+  integrity sha512-0vnWKfAWNxKlo7swZE0I66uF4zqp7uy6eUD/TjhD+xd1xkX9WNX5rbD/xMS46KOAcyZsp+OatxRWd7acPSL/Xg==
+
 react-native-easy-toast@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-easy-toast/-/react-native-easy-toast-1.2.0.tgz#0f70bcb99e3306cda4800c244bfb4a67d42276ed"

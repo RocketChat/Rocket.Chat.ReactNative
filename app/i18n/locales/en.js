@@ -120,6 +120,7 @@ export default {
 	Close_emoji_selector: 'Close emoji selector',
 	Choose: 'Choose',
 	Choose_from_library: 'Choose from library',
+	Choose_file: 'Choose file',
 	Code: 'Code',
 	Collaborative: 'Collaborative',
 	Confirm: 'Confirm',
