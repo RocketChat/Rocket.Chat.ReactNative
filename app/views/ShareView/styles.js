@@ -54,20 +54,28 @@ export default StyleSheet.create({
 	},
 	mediaContent: {
 		flexDirection: 'row',
-		paddingHorizontal: 16,
-		paddingVertical: 9,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		padding: 16,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		alignItems: 'center'
+	},
+	mediaImage: {
+		height: 64,
+		width: 64
 	},
 	mediaIcon: {
-		height: 80,
-		width: 80
+		fontSize: 64,
+		...sharedStyles.textColorNormal
+	},
+	mediaIconContainer: {
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	mediaInfo: {
-		marginLeft: 9
+		marginLeft: 16,
+		flex: 1
 	},
 	mediaText: {
-		fontSize: 18,
-		marginBottom: 10,
+		fontSize: 16,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
@@ -77,7 +85,7 @@ export default StyleSheet.create({
 		backgroundColor: COLOR_WHITE
 	},
 	input: {
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular,
 		backgroundColor: COLOR_WHITE
@@ -87,18 +95,18 @@ export default StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	mediaNameInput: {
-		marginLeft: 24,
-		paddingRight: 24,
-		paddingVertical: 12,
+		marginLeft: 16,
+		paddingRight: 16,
+		paddingVertical: 8,
 		backgroundColor: COLOR_WHITE,
 		...sharedStyles.separatorBottom
 	},
 	mediaDescriptionInput: {
-		marginLeft: 24,
-		marginVertical: 12,
-		paddingRight: 24,
-		height: 100,
-		backgroundColor: COLOR_WHITE
+		marginLeft: 16,
+		paddingRight: 16,
+		marginVertical: 8,
+		backgroundColor: COLOR_WHITE,
+		height: 100
 	},
 	send: {
 		...sharedStyles.textColorHeaderBack,

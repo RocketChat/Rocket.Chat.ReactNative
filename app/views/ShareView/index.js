@@ -125,14 +125,18 @@ export default class ShareView extends React.Component {
 		const { fileInfo } = this.state;
 
 		const icon = fileInfo.type.match(/image/)
-			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaIcon} />
-			: <CustomIcon name='file-generic' size={72} />;
+			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaImage} />
+			: (
+				<View style={styles.mediaIconContainer}>
+					<CustomIcon name='file-generic' style={styles.mediaIcon} />
+				</View>
+			);
 
 		return (
 			<View style={styles.mediaContent}>
 				{icon}
 				<View style={styles.mediaInfo}>
-					<Text style={styles.mediaText}>{fileInfo.name}</Text>
+					<Text style={styles.mediaText} numberOfLines={1}>{fileInfo.name}</Text>
 					<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
 				</View>
 			</View>
@@ -162,6 +166,7 @@ export default class ShareView extends React.Component {
 						multiline
 						textAlignVertical='top'
 						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+						autoFocus
 					/>
 				</View>
 			</View>
@@ -180,6 +185,7 @@ export default class ShareView extends React.Component {
 				multiline
 				textAlignVertical='top'
 				placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+				autoFocus
 			/>
 		);
 	}
@@ -210,7 +216,7 @@ export default class ShareView extends React.Component {
 		return (
 			<View style={styles.container}>
 				<View style={isMedia ? styles.toContent : styles.toContentText}>
-					<Text style={styles.text}>
+					<Text style={styles.text} numberOfLines={1}>
 						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
 						<Text style={styles.name}>{`${ name }`}</Text>
 					</Text>
