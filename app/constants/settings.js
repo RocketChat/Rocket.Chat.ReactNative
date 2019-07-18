@@ -73,5 +73,11 @@ export default {
 	},
 	AutoTranslate_Enabled: {
 		type: 'valueAsBoolean'
+	},
+	FileUpload_MediaTypeWhiteList: {
+		type: 'valueAsString'
+	},
+	FileUpload_MaxFileSize: {
+		type: 'valueAsNumber'
 	}
 };
