@@ -11547,8 +11547,8 @@ react-native-gesture-handler@^1.2.1:
     prop-types "^15.5.10"
 
 "react-native-image-crop-picker@git+https://github.com/RocketChat/react-native-image-crop-picker.git":
-  version "0.21.1"
-  resolved "git+https://github.com/RocketChat/react-native-image-crop-picker.git#6c205596b5496b207daa93408c9cef886e04bdbb"
+  version "0.24.1"
+  resolved "git+https://github.com/RocketChat/react-native-image-crop-picker.git#d3e92c13fee5ce2f2dd3655ba719a70ba99a7d36"
 
 react-native-image-pan-zoom@^2.1.9:
   version "2.1.11"

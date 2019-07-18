@@ -49,9 +49,18 @@ const imagePickerConfig = {
 	avoidEmptySpaceAroundImage: false
 };
 
+const libraryPickerConfig = {
+	mediaType: 'any'
+};
+
+const videoPickerConfig = {
+	mediaType: 'video'
+};
+
 const FILE_CANCEL_INDEX = 0;
 const FILE_PHOTO_INDEX = 1;
-const FILE_LIBRARY_INDEX = 2;
+const FILE_VIDEO_INDEX = 2;
+const FILE_LIBRARY_INDEX = 3;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -101,12 +110,25 @@ class MessageBox extends Component {
 		this.fileOptions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
+			I18n.t('Take_a_video'),
 			I18n.t('Choose_from_library')
 		];
+		const libPickerLabels = {
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			loadingLabelText: I18n.t('Processing')
+		};
 		this.imagePickerConfig = {
 			...imagePickerConfig,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel')
+			...libPickerLabels
+		};
+		this.libraryPickerConfig = {
+			...libraryPickerConfig,
+			...libPickerLabels
+		};
+		this.videoPickerConfig = {
+			...videoPickerConfig,
+			...libPickerLabels
 		};
 	}
 
@@ -463,7 +485,7 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	sendImageMessage = async(file) => {
+	sendMediaMessage = async(file) => {
 		const { rid, tmid } = this.props;
 
 		this.setState({ file: { isVisible: false } });
@@ -491,9 +513,18 @@ class MessageBox extends Component {
 		}
 	}
 
+	takeVideo = async() => {
+		try {
+			const video = await ImagePicker.openCamera(this.videoPickerConfig);
+			this.showUploadModal(video);
+		} catch (e) {
+			log('err_take_video', e);
+		}
+	}
+
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(this.imagePickerConfig);
+			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_choose_from_library', e);
@@ -517,6 +548,9 @@ class MessageBox extends Component {
 		switch (actionIndex) {
 			case FILE_PHOTO_INDEX:
 				this.takePhoto();
+				break;
+			case FILE_VIDEO_INDEX:
+				this.takeVideo();
 				break;
 			case FILE_LIBRARY_INDEX:
 				this.chooseFromLibrary();
@@ -896,7 +930,7 @@ class MessageBox extends Component {
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
-					submit={this.sendImageMessage}
+					submit={this.sendMediaMessage}
 				/>
 			</React.Fragment>
 		);
