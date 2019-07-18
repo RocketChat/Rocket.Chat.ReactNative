@@ -68,8 +68,8 @@ export default class SelectServerView extends React.Component {
 
 		if (currentServer !== server) {
 			selectServerRequest(server);
-			Navigation.navigate('ShareListView');
 		}
+		Navigation.navigate('ShareListView');
 	}
 
 	renderItem = ({ item }) => {
