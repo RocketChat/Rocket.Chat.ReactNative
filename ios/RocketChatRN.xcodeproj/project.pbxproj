@@ -12,6 +12,7 @@
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
+		0BFA93B8E2ED67D4832E0C76 /* libPods-ShareRocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B41F834F20FC0ACC547296 /* libPods-ShareRocketChatRN.a */; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -21,6 +22,39 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
+		1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */; };
+		1E25743222CBA2C2005A877F /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743022CBA2AD005A877F /* libRNRealmPath.a */; };
+		1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
+		1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
+		1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743A22CBA2F9005A877F /* libRNFetchBlob.a */; };
+		1E25743C22CBA313005A877F /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		1E25743D22CBA31B005A877F /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8DEB5220ED0BDE00C5DCE4 /* libRNNotifications.a */; };
+		1E25743E22CBA322005A877F /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD44CF521518C610099D147 /* libRNGestureHandler.a */; };
+		1E25743F22CBA32B005A877F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1E25744022CBA333005A877F /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
+		1E25744122CBA33B005A877F /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
+		1E25744222CBA33F005A877F /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		1E25744322CBA345005A877F /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
+		1E25744422CBA34B005A877F /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B88F58461FBF55E200B352B8 /* libRCTPushNotification.a */; };
+		1E25744522CBA351005A877F /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
+		1E25744622CBA356005A877F /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
+		1E25744722CBA362005A877F /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
+		1E25744822CBA36A005A877F /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		1E25744922CBA36E005A877F /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
+		1E25744C22CBA37F005A877F /* libdouble-conversion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 607D61111F325B7E00F639C4 /* libdouble-conversion.a */; };
+		1E25744D22CBA385005A877F /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
+		1E25744E22CBA38C005A877F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB8E718229C6146006B474A /* libRNFirebase.a */; };
+		1E25744F22CBA391005A877F /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 607D61161F325B7E00F639C4 /* libRealmReact.a */; };
+		1E25745022CBA39A005A877F /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A770EC220BECDC7001AD51A /* libFastImage.a */; };
+		1E25745722CBA3E1005A877F /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25745622CBA3DB005A877F /* libSplashScreen.a */; };
+		1E25745822CBA3E6005A877F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E79A911F3CCC6D005B464F /* libRNVectorIcons.a */; };
+		1E25745922CBA3F1005A877F /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743022CBA2AD005A877F /* libRNRealmPath.a */; };
+		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
+		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */; };
+		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
+		1ED59D5022CBA8ED00C54289 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A55F1C42236D541005109A0 /* custom.ttf */; };
+		1EDDE57A22DFAD8E0078F69D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EDDE57922DFAD8E0078F69D /* Images.xcassets */; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		38CEA0ED468E49CFABCD82FD /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A36F9982B71E4662AA8DEB77 /* libRNFirebase.a */; };
 		50046CB6BDA69B9232CF66D9 /* libPods-RocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C235DC7B31A4D1578EDEF219 /* libPods-RocketChatRN.a */; };
@@ -104,6 +138,41 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNUserDefaults;
+		};
+		1E25741E22CBA263005A877F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 41B5DE301D0B505800949BD5;
+			remoteInfo = ReactNativeShareExtension;
+		};
+		1E25742F22CBA2AD005A877F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNRealmPath;
+		};
+		1E25743922CBA2F9005A877F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A15C300E1CD25C330074CB35;
+			remoteInfo = RNFetchBlob;
+		};
+		1E25745522CBA3DB005A877F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E25745122CBA3DB005A877F /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
+		};
+		1EC6ACB922CB9FC300A41C61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EC6ACAF22CB9FC300A41C61;
+			remoteInfo = ShareRocketChatRN;
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -402,6 +471,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1EC6ACF422CB9FC300A41C61 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7A6EDBE020ED6E020086E097 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -421,6 +501,8 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
+		037C33B0D9A54FB4CB670FB7 /* Pods-ShareRocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareRocketChatRN.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareRocketChatRN/Pods-ShareRocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
+		0383633C4523666C176CAA52 /* Pods-ShareRocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareRocketChatRN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareRocketChatRN/Pods-ShareRocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1132AD7934954A958E143199 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		1142E3442BA94B19BCF52814 /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
@@ -437,6 +519,18 @@
 		1A34D902CC074FF1BCC7DB48 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		1D3BB00B9ABF44EA9BD71318 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 		1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUserDefaults.xcodeproj; path = "../node_modules/rn-user-defaults/ios/RNUserDefaults.xcodeproj"; sourceTree = "<group>"; };
+		1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeShareExtension.xcodeproj; path = "../node_modules/rn-extensions-share/ios/ReactNativeShareExtension.xcodeproj"; sourceTree = "<group>"; };
+		1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRealmPath.xcodeproj; path = "../node_modules/react-native-realm-path/ios/RNRealmPath.xcodeproj"; sourceTree = "<group>"; };
+		1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		1E25744A22CBA374005A877F /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E25745122CBA3DB005A877F /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EC6ACB622CB9FC300A41C61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		1EC6ACB822CB9FC300A41C61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareRocketChatRN.m; sourceTree = "<group>"; };
+		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
+		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1EDDE57922DFAD8E0078F69D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		20CE3E407E0D4D9E8C9885F2 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		3B696712EE2345A59F007A88 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
@@ -457,6 +551,7 @@
 		A36F9982B71E4662AA8DEB77 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		ACD75701AFD1CB848CAB0CB3 /* Pods-RocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatRN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatRN/Pods-RocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 		AD0379F2BCE84C968538CDAF /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		B0B41F834F20FC0ACC547296 /* libPods-ShareRocketChatRN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareRocketChatRN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1A58A7ACB0E4453A44AEC38 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		B2607FA180F14E6584301101 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -475,6 +570,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E25745922CBA3F1005A877F /* libRNRealmPath.a in Frameworks */,
 				1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
@@ -502,6 +598,40 @@
 				50046CB6BDA69B9232CF66D9 /* libPods-RocketChatRN.a in Frameworks */,
 				95E57ADEB9A0487791D2C50E /* libRNGestureHandler.a in Frameworks */,
 				38CEA0ED468E49CFABCD82FD /* libRNFirebase.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EC6ACAD22CB9FC300A41C61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E25745822CBA3E6005A877F /* libRNVectorIcons.a in Frameworks */,
+				1E25745722CBA3E1005A877F /* libSplashScreen.a in Frameworks */,
+				1E25745022CBA39A005A877F /* libFastImage.a in Frameworks */,
+				1E25744F22CBA391005A877F /* libRealmReact.a in Frameworks */,
+				1E25744E22CBA38C005A877F /* libRNFirebase.a in Frameworks */,
+				1E25744D22CBA385005A877F /* libcxxreact.a in Frameworks */,
+				1E25744C22CBA37F005A877F /* libdouble-conversion.a in Frameworks */,
+				1E25744922CBA36E005A877F /* libRCTActionSheet.a in Frameworks */,
+				1E25744822CBA36A005A877F /* libRCTAnimation.a in Frameworks */,
+				1E25744722CBA362005A877F /* libRCTImage.a in Frameworks */,
+				1E25744622CBA356005A877F /* libRCTLinking.a in Frameworks */,
+				1E25744522CBA351005A877F /* libRCTNetwork.a in Frameworks */,
+				1E25744422CBA34B005A877F /* libRCTPushNotification.a in Frameworks */,
+				1E25744322CBA345005A877F /* libRCTSettings.a in Frameworks */,
+				1E25744222CBA33F005A877F /* libRCTText.a in Frameworks */,
+				1E25744122CBA33B005A877F /* libRCTVibration.a in Frameworks */,
+				1E25744022CBA333005A877F /* libRCTWebSocket.a in Frameworks */,
+				1E25743F22CBA32B005A877F /* libReact.a in Frameworks */,
+				1E25743E22CBA322005A877F /* libRNGestureHandler.a in Frameworks */,
+				1E25743D22CBA31B005A877F /* libRNNotifications.a in Frameworks */,
+				1E25743C22CBA313005A877F /* (null) in Frameworks */,
+				1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */,
+				1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */,
+				1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */,
+				1E25743222CBA2C2005A877F /* libRNRealmPath.a in Frameworks */,
+				1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */,
+				0BFA93B8E2ED67D4832E0C76 /* libPods-ShareRocketChatRN.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,11 +746,58 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		1E2573F122CBA263005A877F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E25742C22CBA2AC005A877F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E25743022CBA2AD005A877F /* libRNRealmPath.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E25743622CBA2F8005A877F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E25743A22CBA2F9005A877F /* libRNFetchBlob.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E25745222CBA3DB005A877F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E25745622CBA3DB005A877F /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */ = {
+			isa = PBXGroup;
+			children = (
+				1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */,
+				1EDDE57922DFAD8E0078F69D /* Images.xcassets */,
+				1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */,
+				1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */,
+				1EC6ACB822CB9FC300A41C61 /* Info.plist */,
+				1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */,
+			);
+			path = ShareRocketChatRN;
+			sourceTree = "<group>";
+		};
 		22CA7F59107E0C79C2506C7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				ACD75701AFD1CB848CAB0CB3 /* Pods-RocketChatRN.debug.xcconfig */,
 				66D6B1D0567051BE541450C9 /* Pods-RocketChatRN.release.xcconfig */,
+				0383633C4523666C176CAA52 /* Pods-ShareRocketChatRN.debug.xcconfig */,
+				037C33B0D9A54FB4CB670FB7 /* Pods-ShareRocketChatRN.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -704,6 +881,10 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1E25745122CBA3DB005A877F /* SplashScreen.xcodeproj */,
+				1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */,
+				1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */,
+				1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */,
 				1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */,
 				7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */,
 				B8971BAC202A091D0000D245 /* KeyboardTrackingView.xcodeproj */,
@@ -745,6 +926,7 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* RocketChatRN */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				BB4B591B5FC44CD9986DB2A6 /* Frameworks */,
 				AF5E16F0398347E6A80C8CBE /* Resources */,
@@ -759,6 +941,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* RocketChatRN.app */,
+				1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -829,10 +1012,12 @@
 		BB4B591B5FC44CD9986DB2A6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E25744A22CBA374005A877F /* libDoubleConversion.a */,
 				7ACD4853222860DE00442C55 /* JavaScriptCore.framework */,
 				B37C79D9BD0742CE936B6982 /* libc++.tbd */,
 				06BB44DD4855498082A744AD /* libz.tbd */,
 				C235DC7B31A4D1578EDEF219 /* libPods-RocketChatRN.a */,
+				B0B41F834F20FC0ACC547296 /* libPods-ShareRocketChatRN.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -852,15 +1037,36 @@
 				7A6EDBE020ED6E020086E097 /* Embed Frameworks */,
 				FD0EBB93B02BAD0637E4F286 /* [CP] Copy Pods Resources */,
 				7A006EDA229C7F0A00803143 /* Run Script */,
+				1EC6ACF422CB9FC300A41C61 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1EC6ACBA22CB9FC300A41C61 /* PBXTargetDependency */,
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* RocketChatRN.app */;
 			productType = "com.apple.product-type.application";
+		};
+		1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EC6ACF322CB9FC300A41C61 /* Build configuration list for PBXNativeTarget "ShareRocketChatRN" */;
+			buildPhases = (
+				A68B7A0986AFB750F727793A /* [CP] Check Pods Manifest.lock */,
+				1EC6ACAC22CB9FC300A41C61 /* Sources */,
+				1EC6ACAD22CB9FC300A41C61 /* Frameworks */,
+				1EC6ACAE22CB9FC300A41C61 /* Resources */,
+				1EFE4DC322CBF36300B766B7 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareRocketChatRN;
+			productName = ShareRocketChatRN;
+			productReference = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -868,6 +1074,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Original;
 				LastUpgradeCheck = 610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -883,6 +1090,16 @@
 							};
 							com.apple.iCloud = {
 								enabled = 0;
+							};
+						};
+					};
+					1EC6ACAF22CB9FC300A41C61 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = S6UPZG7ZR3;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
 							};
 						};
 					};
@@ -966,12 +1183,20 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 1E2573F122CBA263005A877F /* Products */;
+					ProjectRef = 1E2573F022CBA263005A877F /* ReactNativeShareExtension.xcodeproj */;
+				},
+				{
 					ProductGroup = 607D60ED1F325B7D00F639C4 /* Products */;
 					ProjectRef = 5A8684E7C27E426C9206E980 /* RealmReact.xcodeproj */;
 				},
 				{
 					ProductGroup = A9A6C941204DD556006B7D9D /* Products */;
 					ProjectRef = C21010507E5B4B37BA0E4C9D /* RNAudio.xcodeproj */;
+				},
+				{
+					ProductGroup = 1E25743622CBA2F8005A877F /* Products */;
+					ProjectRef = 1E25743522CBA2F8005A877F /* RNFetchBlob.xcodeproj */;
 				},
 				{
 					ProductGroup = 7AB8E714229C6145006B474A /* Products */;
@@ -986,6 +1211,10 @@
 					ProjectRef = 7A8DEB1B20ED0BDE00C5DCE4 /* RNNotifications.xcodeproj */;
 				},
 				{
+					ProductGroup = 1E25742C22CBA2AC005A877F /* Products */;
+					ProjectRef = 1E25742B22CBA2AC005A877F /* RNRealmPath.xcodeproj */;
+				},
+				{
 					ProductGroup = 1E0221D622B2F76300001862 /* Products */;
 					ProjectRef = 1E0221D522B2F76300001862 /* RNUserDefaults.xcodeproj */;
 				},
@@ -993,10 +1222,15 @@
 					ProductGroup = B8E79A8A1F3CCC6C005B464F /* Products */;
 					ProjectRef = 22A8B76C8EBA443BB97CE82D /* RNVectorIcons.xcodeproj */;
 				},
+				{
+					ProductGroup = 1E25745222CBA3DB005A877F /* Products */;
+					ProjectRef = 1E25745122CBA3DB005A877F /* SplashScreen.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* RocketChatRN */,
+				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
 			);
 		};
 /* End PBXProject section */
@@ -1063,6 +1297,34 @@
 			fileType = archive.ar;
 			path = libRNUserDefaults.a;
 			remoteRef = 1E02220C22B2F76400001862 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeShareExtension.a;
+			remoteRef = 1E25741E22CBA263005A877F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E25743022CBA2AD005A877F /* libRNRealmPath.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNRealmPath.a;
+			remoteRef = 1E25742F22CBA2AD005A877F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E25743A22CBA2F9005A877F /* libRNFetchBlob.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFetchBlob.a;
+			remoteRef = 1E25743922CBA2F9005A877F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E25745622CBA3DB005A877F /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = 1E25745522CBA3DB005A877F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1372,6 +1634,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EC6ACAE22CB9FC300A41C61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ED59D5022CBA8ED00C54289 /* custom.ttf in Resources */,
+				1EDDE57A22DFAD8E0078F69D /* Images.xcassets in Resources */,
+				1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */,
+				1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1383,6 +1656,23 @@
 			inputPaths = (
 			);
 			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		1EFE4DC322CBF36300B766B7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1406,6 +1696,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		A68B7A0986AFB750F727793A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShareRocketChatRN-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		FB4AC4FF76ACF097F2431C74 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1457,7 +1769,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EC6ACAC22CB9FC300A41C61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1EC6ACBA22CB9FC300A41C61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */;
+			targetProxy = 1EC6ACB922CB9FC300A41C61 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1EC6ACB622CB9FC300A41C61 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -1555,6 +1894,99 @@
 			};
 			name = Release;
 		};
+		1EC6ACBC22CB9FC300A41C61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0383633C4523666C176CAA52 /* Pods-ShareRocketChatRN.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareRocketChatRN/ShareRocketChatRN.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+				);
+				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareRocketChatRN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1EC6ACBD22CB9FC300A41C61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 037C33B0D9A54FB4CB670FB7 /* Pods-ShareRocketChatRN.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareRocketChatRN/ShareRocketChatRN.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+				);
+				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareRocketChatRN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1639,6 +2071,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EC6ACF322CB9FC300A41C61 /* Build configuration list for PBXNativeTarget "ShareRocketChatRN" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EC6ACBC22CB9FC300A41C61 /* Debug */,
+				1EC6ACBD22CB9FC300A41C61 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

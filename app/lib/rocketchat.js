@@ -730,14 +730,14 @@ const RocketChat = {
 		return JSON.parse(useMarkdown);
 	},
 	async getSortPreferences() {
-		const prefs = await AsyncStorage.getItem(SORT_PREFS_KEY);
-		return JSON.parse(prefs);
+		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
+		return prefs;
 	},
 	async saveSortPreference(param) {
 		try {
 			let prefs = await RocketChat.getSortPreferences();
 			prefs = { ...prefs, ...param };
-			return await AsyncStorage.setItem(SORT_PREFS_KEY, JSON.stringify(prefs));
+			return await RNUserDefaults.setObjectForKey(SORT_PREFS_KEY, prefs);
 		} catch (error) {
 			console.warn(error);
 		}
