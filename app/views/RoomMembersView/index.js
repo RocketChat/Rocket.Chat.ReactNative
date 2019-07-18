@@ -61,7 +61,6 @@ export default class RoomMembersView extends React.Component {
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
-		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
