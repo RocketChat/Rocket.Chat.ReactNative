@@ -343,7 +343,6 @@ export default class RoomView extends React.Component {
 			return;
 		}
 		const options = [
-			// { label: I18n.t('Cancel'), handler: () => {}, icon: 'circle-cross' },
 			{ label: I18n.t('Permalink'), handler: () => this.handlePermalink(item), icon: 'permalink' },
 			{ label: I18n.t('Copy'), handler: () => this.handleCopy(item), icon: 'copy' },
 			{ label: I18n.t('Share'), handler: () => this.handleShare(item), icon: 'share' }
@@ -464,7 +463,7 @@ export default class RoomView extends React.Component {
 		const options = [
 			{ label: I18n.t('Resend'), handler: () => this.handleResend(item), icon: 'reply' },
 			{
-				label: I18n.t('Delete'), handler: () => this.handleDelete(item), icon: 'cross', isDanger: true
+				label: I18n.t('Delete'), handler: () => this.handleResendDelete(item), icon: 'cross', isDanger: true
 			}
 		];
 		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });

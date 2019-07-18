@@ -70,7 +70,6 @@ public class MainApplication extends Application implements ReactApplication, IN
             new SplashScreenReactPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
-					new ActionSheetPackage(),
 					new RNDeviceInfo(),
 					new PickerPackage(),
 					new VectorIconsPackage(),
