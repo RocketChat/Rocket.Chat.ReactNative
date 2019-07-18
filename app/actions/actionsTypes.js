@@ -14,6 +14,10 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SET_SERVICES',
 	'SET_PREFERENCE'
 ]);
+export const JITSI = createRequestTypes('JITSI', [
+	'START_CALL',
+	'FINISH_CALL'
+]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,

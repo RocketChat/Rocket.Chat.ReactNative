@@ -38,6 +38,7 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 @connect(state => ({
+	inCall: state.jitsi.inCall,
 	userId: state.login.user && state.login.user.id,
 	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
@@ -113,7 +114,8 @@ export default class RoomsListView extends React.Component {
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
-		isAuthenticated: PropTypes.bool
+		isAuthenticated: PropTypes.bool,
+		inCall: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -612,27 +614,16 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
-	renderSafe = () => {
-		try {
-			return this.renderScroll();
-		} catch (e) {
-			if (e.message.includes('Accessing object of type')) {
-				return null;
-			}
-			throw e;
-		}
-	}
-
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, inCall
 		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<StatusBar />
-				{this.renderSafe()}
+				{ !inCall ? this.renderScroll() : null }
 				{showSortDropdown
 					? (
 						<SortDropdown

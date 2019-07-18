@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import JitsiMeet from '../../lib/jitsiMeet';
+import JitsiMeet, { JitsiMeetEvents } from '../../lib/jitsiMeet';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
+import { startCall as startCallAction, finishCall as finishCallAction } from '../../actions/jitsi';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -36,7 +37,9 @@ const renderSeparator = () => <View style={styles.separator} />;
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	jitsiEnabled: state.settings.Jitsi_Enabled || false
 }), dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
+	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	startCall: () => dispatch(startCallAction()),
+	finishCall: () => dispatch(finishCallAction())
 }))
 export default class RoomActionsView extends React.Component {
 	static navigationOptions = {
@@ -51,6 +54,8 @@ export default class RoomActionsView extends React.Component {
 			token: PropTypes.string
 		}),
 		leaveRoom: PropTypes.func,
+		startCall: PropTypes.func,
+		finishCall: PropTypes.func,
 		jitsiEnabled: PropTypes.bool
 	}
 
@@ -382,7 +387,12 @@ export default class RoomActionsView extends React.Component {
 	};
 
 	callJitsi = (videoMuted) => {
+		const { startCall, finishCall } = this.props;
+		startCall();
 		JitsiMeet.initialize();
+		JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
+			finishCall();
+		});
 		setTimeout(() => {
 			if (isIOS) {
 				JitsiMeet.call('https://meet.jit.si/testRocketChat', {
