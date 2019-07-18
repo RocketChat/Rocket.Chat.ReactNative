@@ -27,6 +27,7 @@ target 'RocketChatRN' do
 
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
   pod 'RNScreens', :path => '../node_modules/react-native-screens'
 

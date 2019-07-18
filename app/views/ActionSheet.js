@@ -39,8 +39,7 @@ example optionObject : {
 export const LISTENER = 'actionSheet';
 export const SNAP_POINTS = {
 	HIDE: 0,
-	HALF: 1,
-	FULL: 2
+	FULL: 1
 };
 
 const bottomSheetHeaderHeight = 25;
@@ -183,7 +182,7 @@ export default class ActionSheet extends React.Component {
 
 	render() {
 		const { height } = this.state;
-		const snapPoints = [0, 0.5 * height, height];
+		const snapPoints = [0, height];
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}
