@@ -55,14 +55,14 @@ describe('Login screen', () => {
 			await expect(element(by.id('register-view'))).toBeVisible();
 			await tapBack();
 		});
-	
+
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
 			await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('forgot-password-view'))).toBeVisible();
 			await tapBack();
 		});
-	
+
 		it('should insert wrong password and get error', async() => {
 			await element(by.id('login-view-email')).replaceText(data.user);
 			await element(by.id('login-view-password')).replaceText('error');
@@ -71,7 +71,7 @@ describe('Login screen', () => {
 			await expect(element(by.text('Your credentials were rejected! Please try again.'))).toBeVisible();
 			await element(by.text('OK')).tap();
 		});
-	
+
 		it('should login with success', async() => {
 			await element(by.id('login-view-password')).replaceText(data.password);
 			await element(by.id('login-view-submit')).tap();

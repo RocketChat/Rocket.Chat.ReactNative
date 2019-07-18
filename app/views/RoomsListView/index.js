@@ -29,6 +29,7 @@ import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
+import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 
 const SCROLL_OFFSET = 56;
 
@@ -56,7 +57,8 @@ const keyExtractor = item => item.rid;
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction())
+	roomsRequest: () => dispatch(roomsRequestAction()),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 }))
 export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {

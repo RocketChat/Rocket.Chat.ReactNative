@@ -437,12 +437,10 @@ export default class RoomView extends React.Component {
 
 	joinRoom = async() => {
 		try {
-			const result = await RocketChat.joinRoom(this.rid);
-			if (result.success) {
-				this.internalSetState({
-					joined: true
-				});
-			}
+			await RocketChat.joinRoom(this.rid, this.t);
+			this.internalSetState({
+				joined: true
+			});
 		} catch (e) {
 			log('err_join_room', e);
 		}
@@ -450,7 +448,7 @@ export default class RoomView extends React.Component {
 
 	isOwner = () => {
 		const { room } = this.state;
-		return room && room.roles && Array.from(Object.keys(room.roles), i => room.roles[i].value).includes('owner');
+		return room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
 	}
 
 	isMuted = () => {
@@ -461,7 +459,10 @@ export default class RoomView extends React.Component {
 
 	isReadOnly = () => {
 		const { room } = this.state;
-		return (room.ro && !room.broadcast) || this.isMuted() || room.archived;
+		if (this.isOwner()) {
+			return false;
+		}
+		return (room && room.ro) || this.isMuted();
 	}
 
 	isBlocked = () => {

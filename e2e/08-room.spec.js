@@ -186,12 +186,14 @@ describe('Room screen', () => {
 			});
 
 			it('should show command Preview', async() => {
-				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText('/giphy no');
-				await element(by.id('messagebox-input')).typeText('way');
-				await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
-				await expect(element(by.id('commandbox-container'))).toBeVisible();
-				await element(by.id('messagebox-input')).clearText();
+				if (device.getPlatform() === 'ios') {
+					await element(by.id('messagebox-input')).tap();
+					await element(by.id('messagebox-input')).replaceText('/giphy no');
+					await element(by.id('messagebox-input')).typeText('way');
+					await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
+					await expect(element(by.id('commandbox-container'))).toBeVisible();
+					await element(by.id('messagebox-input')).clearText();
+				}
 			});
 		});
 

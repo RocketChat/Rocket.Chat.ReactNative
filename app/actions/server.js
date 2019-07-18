@@ -17,6 +17,12 @@ export function selectServerSuccess(server, version) {
 	};
 }
 
+export function selectServerFailure() {
+	return {
+		type: SERVER.SELECT_FAILURE
+	};
+}
+
 export function serverRequest(server) {
 	return {
 		type: SERVER.REQUEST,
