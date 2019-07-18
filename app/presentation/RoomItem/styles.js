@@ -6,13 +6,19 @@ import {
 } from '../../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const ACTION_WIDTH = 80;
+export const SMALL_SWIPE = ACTION_WIDTH / 2;
+export const LONG_SWIPE = ACTION_WIDTH * 3;
 
 export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: 14,
+		paddingLeft: 14,
 		height: ROW_HEIGHT
+	},
+	button: {
+		backgroundColor: COLOR_WHITE
 	},
 	centerContainer: {
 		flex: 1,
@@ -93,5 +99,42 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		marginRight: 10
+	},
+	upperContainer: {
+		overflow: 'hidden'
+	},
+	actionsContainer: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: ROW_HEIGHT
+	},
+	actionText: {
+		color: COLOR_WHITE,
+		fontSize: 15,
+		backgroundColor: 'transparent',
+		justifyContent: 'center',
+		marginTop: 4,
+		...sharedStyles.textSemibold
+	},
+	actionLeftButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
+		backgroundColor: COLOR_PRIMARY,
+		justifyContent: 'center',
+		top: 0
+	},
+	actionRightButtonContainer: {
+		position: 'absolute',
+		height: ROW_HEIGHT,
+		justifyContent: 'center',
+		top: 0,
+		backgroundColor: '#54585e'
+	},
+	actionButton: {
+		width: ACTION_WIDTH,
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });

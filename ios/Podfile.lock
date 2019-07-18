@@ -10,6 +10,8 @@ PODS:
   - EXFileSystem (5.0.1):
     - UMCore
     - UMFileSystemInterface
+  - EXHaptics (5.0.1):
+    - UMCore
   - EXPermissions (5.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -145,6 +147,8 @@ PODS:
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
+  - RNLocalize (1.1.4):
+    - React
   - RNScreens (1.0.0-alpha.22):
     - React
   - RSKImageCropper (2.2.1)
@@ -171,6 +175,7 @@ DEPENDENCIES:
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - Fabric (~> 1.9.0)
@@ -194,6 +199,7 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
@@ -243,6 +249,9 @@ EXTERNAL SOURCES:
   EXFileSystem:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-file-system/ios"
+  EXHaptics:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-haptics/ios"
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
@@ -265,6 +274,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   UMBarCodeScannerInterface:
@@ -313,6 +324,7 @@ SPEC CHECKSUMS:
   EXAppLoaderProvider: 8f2c04a0a8d9be91f7c37c2b8824077ee5d4bc01
   EXConstants: 9fe56eec8bf0a3ee9beb8f3381fa91340a5b1e57
   EXFileSystem: 96624bd4b93a0684335c421a6567a92b25bd7ddb
+  EXHaptics: 6d594612afa321bfc8e167bdfb0b47f940f8f537
   EXPermissions: 8e05008ed4fc8c9be6c17ea95301fc3f3f005a7b
   EXWebBrowser: e03894b4583bb726e5ea05d01b341ba00134c2b5
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
@@ -339,6 +351,7 @@ SPEC CHECKSUMS:
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
   RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
+  RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   UMBarCodeScannerInterface: d5602e23de37f95bb4ee49ee3b2711e128058ae9
@@ -355,6 +368,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: b5e15bac5f306ea636e16393a7a6eb42c017ea99
+PODFILE CHECKSUM: e913a7016ba7fbc295edc5178996383a1f54742e
 
 COCOAPODS: 1.6.2

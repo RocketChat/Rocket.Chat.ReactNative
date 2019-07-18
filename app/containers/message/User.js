@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 
+import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 
@@ -31,9 +32,9 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat
+	isHeader, useRealName, author, alias, ts, timeFormat, hasError, ...props
 }) => {
-	if (isHeader) {
+	if (isHeader || hasError) {
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
@@ -47,6 +48,7 @@ const User = React.memo(({
 					</Text>
 				</View>
 				<Text style={messageStyles.time}>{time}</Text>
+				{ hasError && <MessageError hasError={hasError} {...props} /> }
 			</View>
 		);
 	}
@@ -55,6 +57,7 @@ const User = React.memo(({
 
 User.propTypes = {
 	isHeader: PropTypes.bool,
+	hasError: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	author: PropTypes.object,
 	alias: PropTypes.string,

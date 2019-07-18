@@ -15,7 +15,7 @@ let disconnectedListener;
 let streamListener;
 let subServer;
 
-export default async function subscribeRooms() {
+export default function subscribeRooms() {
 	let timer = null;
 	const loop = () => {
 		if (timer) {
@@ -156,12 +156,13 @@ export default async function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = this.sdk.client.host;
-		await this.sdk.subscribeNotifyUser();
+		this.sdk.subscribeNotifyUser().catch(e => console.log(e));
+
+		return {
+			stop: () => stop()
+		};
 	} catch (e) {
 		log('err_subscribe_rooms', e);
+		return Promise.reject();
 	}
-
-	return {
-		stop: () => stop()
-	};
 }

@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
+import moment from 'moment';
+import 'moment/min/locales';
 
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -39,6 +41,9 @@ const keyExtractor = item => item.rid;
 
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username,
+	token: state.login.user && state.login.user.token,
+	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
@@ -51,7 +56,8 @@ const keyExtractor = item => item.rid;
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	userLanguage: state.login.user && state.login.user.language
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
@@ -94,6 +100,8 @@ export default class RoomsListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
 		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -111,7 +119,9 @@ export default class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func
+		roomsRequest: PropTypes.func,
+		isAuthenticated: PropTypes.bool,
+		userLanguage: PropTypes.string
 	}
 
 	constructor(props) {
@@ -119,6 +129,7 @@ export default class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
+		const { width } = Dimensions.get('window');
 		this.data = [];
 		this.state = {
 			searching: false,
@@ -131,7 +142,8 @@ export default class RoomsListView extends React.Component {
 			channels: [],
 			privateGroup: [],
 			direct: [],
-			livechat: []
+			livechat: [],
+			width
 		};
 		Orientation.unlockAllOrientations();
 		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
@@ -140,12 +152,14 @@ export default class RoomsListView extends React.Component {
 
 	componentDidMount() {
 		this.getSubscriptions();
-		const { navigation } = this.props;
+		const { navigation, userLanguage } = this.props;
+		moment.locale(userLanguage);
 		navigation.setParams({
 			onPressItem: this._onPressItem,
 			initSearchingAndroid: this.initSearchingAndroid,
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
+		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -170,11 +184,15 @@ export default class RoomsListView extends React.Component {
 			return true;
 		}
 
-		const { loading, searching } = this.state;
+		const { loading, searching, width } = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.width !== width) {
 			return true;
 		}
 
@@ -187,7 +205,7 @@ export default class RoomsListView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest
+			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest, isAuthenticated
 		} = this.props;
 
 		if (!(
@@ -197,7 +215,7 @@ export default class RoomsListView extends React.Component {
 			&& (prevProps.showUnread === showUnread)
 		)) {
 			this.getSubscriptions();
-		} else if (appState === 'foreground' && appState !== prevProps.appState) {
+		} else if (appState === 'foreground' && appState !== prevProps.appState && isAuthenticated) {
 			roomsRequest();
 		}
 	}
@@ -218,8 +236,11 @@ export default class RoomsListView extends React.Component {
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
+		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
+
+	onDimensionsChange = ({ window: { width } }) => this.setState({ width })
 
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
@@ -381,6 +402,52 @@ export default class RoomsListView extends React.Component {
 		}, 100);
 	}
 
+	toggleFav = async(rid, favorite) => {
+		try {
+			const result = await RocketChat.toggleFavorite(rid, !favorite);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					if (sub) {
+						sub.f = !favorite;
+					}
+				});
+			}
+		} catch (e) {
+			log('error_toggle_favorite', e);
+		}
+	}
+
+	toggleRead = async(rid, isRead) => {
+		try {
+			const result = await RocketChat.toggleRead(isRead, rid);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					if (sub) {
+						sub.alert = isRead;
+					}
+				});
+			}
+		} catch (e) {
+			log('error_toggle_read', e);
+		}
+	}
+
+	hideChannel = async(rid, type) => {
+		try {
+			const result = await RocketChat.hideRoom(rid, type);
+			if (result.success) {
+				database.write(() => {
+					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					database.delete(sub);
+				});
+			}
+		} catch (e) {
+			log('error_hide_channel', e);
+		}
+	}
+
 	goDirectory = () => {
 		const { navigation } = this.props;
 		navigation.navigate('DirectoryView');
@@ -402,9 +469,16 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
+	getIsRead = (item) => {
+		let isUnread = (item.archived !== true && item.open === true); // item is not archived and not opened
+		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+		return !isUnread;
+	}
+
 	renderItem = ({ item }) => {
+		const { width } = this.state;
 		const {
-			userId, baseUrl, StoreLastMessage
+			userId, username, token, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -414,19 +488,27 @@ export default class RoomsListView extends React.Component {
 					alert={item.alert}
 					unread={item.unread}
 					userMentions={item.userMentions}
+					isRead={this.getIsRead(item)}
 					favorite={item.f}
 					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
 					id={id}
+					userId={userId}
+					username={username}
+					token={token}
+					rid={item.rid}
 					type={item.t}
 					baseUrl={baseUrl}
 					prid={item.prid}
 					showLastMessage={StoreLastMessage}
 					onPress={() => this._onPressItem(item)}
 					testID={`rooms-list-view-item-${ item.name }`}
-					height={ROW_HEIGHT}
+					width={width}
+					toggleFav={this.toggleFav}
+					toggleRead={this.toggleRead}
+					hideChannel={this.hideChannel}
 				/>
 			);
 		}
@@ -528,7 +610,7 @@ export default class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					removeClippedSubviews
+					// removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}

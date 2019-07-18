@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import EJSON from 'ejson';
+import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -39,7 +40,6 @@ import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
-import { vibrate } from '../../utils/vibration';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { Toast } from '../../utils/info';
 
@@ -138,6 +138,7 @@ export default class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			joined: this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
@@ -145,7 +146,8 @@ export default class RoomView extends React.Component {
 			photoModalVisible: false,
 			reactionsModalVisible: false,
 			selectedAttachment: {},
-			selectedMessage: {}
+			selectedMessage: {},
+			canAutoTranslate
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -180,7 +182,7 @@ export default class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen, photoModalVisible, reactionsModalVisible
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -201,6 +203,8 @@ export default class RoomView extends React.Component {
 		} else if (room.archived !== nextState.room.archived) {
 			return true;
 		} else if (joined !== nextState.joined) {
+			return true;
+		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
 			return true;
 		} else if (showActions !== nextProps.showActions) {
 			return true;
@@ -298,6 +302,11 @@ export default class RoomView extends React.Component {
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
+
+				// We run `canAutoTranslate` again in order to refetch auto translate permission
+				// in case of a missing connection or poor connection on room open
+				const canAutoTranslate = RocketChat.canAutoTranslate();
+				this.setState({ canAutoTranslate });
 			});
 		} catch (e) {
 			log('err_room_init', e);
@@ -332,7 +341,7 @@ export default class RoomView extends React.Component {
 
 	onReactionLongPress = (message) => {
 		this.setState({ selectedMessage: message, reactionsModalVisible: true });
-		vibrate();
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
 
 	onCloseReactionsModal = () => {
@@ -500,7 +509,7 @@ export default class RoomView extends React.Component {
 	}
 
 	renderItem = (item, previousItem) => {
-		const { room, lastOpen } = this.state;
+		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
 			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
 		} = this.props;
@@ -545,6 +554,8 @@ export default class RoomView extends React.Component {
 				useRealName={useRealName}
 				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
+				autoTranslateLanguage={room.autoTranslateLanguage}
 			/>
 		);
 

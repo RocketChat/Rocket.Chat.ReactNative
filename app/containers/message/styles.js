@@ -39,6 +39,11 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
+	textBig: {
+		fontSize: 30,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
+	},
 	textInfo: {
 		fontStyle: 'italic',
 		fontSize: 16,
@@ -48,6 +53,10 @@ export default StyleSheet.create({
 	customEmoji: {
 		width: 20,
 		height: 20
+	},
+	customEmojiBig: {
+		width: 30,
+		height: 30
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
@@ -105,7 +114,7 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY
 	},
 	errorButton: {
-		paddingHorizontal: 15,
+		paddingLeft: 10,
 		paddingVertical: 5
 	},
 	buttonContainer: {

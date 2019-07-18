@@ -152,7 +152,7 @@ export default class Sidebar extends Component {
 			const permissionsFiltered = database.objects('permissions')
 				.filter(permission => permissions.includes(permission._id));
 			return permissionsFiltered.reduce((result, permission) => (
-				result || permission.roles.some(r => roles.includes(r))),
+				result || permission.roles.some(r => roles.indexOf(r) !== -1)),
 			false);
 		}
 		return false;
