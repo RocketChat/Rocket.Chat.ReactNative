@@ -109,6 +109,8 @@ PODS:
   - QBImagePickerController (3.4.0)
   - React (0.59.8):
     - React/Core (= 0.59.8)
+  - react-native-document-picker (3.2.2):
+    - React
   - react-native-orientation-locker (1.1.5):
     - React
   - react-native-splash-screen (3.2.0):
@@ -143,7 +145,7 @@ PODS:
     - React/RCTBlob
   - RNDeviceInfo (1.6.1):
     - React
-  - RNImageCropPicker (0.21.1):
+  - RNImageCropPicker (0.24.1):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
@@ -186,6 +188,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleIDFASupport (~> 3.14.0)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -267,6 +270,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-splash-screen:
@@ -351,11 +356,12 @@ SPEC CHECKSUMS:
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
-  RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
+  RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNReanimated: 7a52c90473b5e81c13408d40d797b98387eaddde
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
@@ -374,6 +380,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 43e64c132abc7dba6a953399f52f4156e20857a4
+PODFILE CHECKSUM: 8649ddbe9408e0d5f3531213dc270fc88b3d7e9a
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.6.2
