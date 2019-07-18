@@ -125,6 +125,7 @@ export default {
 	Close_emoji_selector: 'Fechar seletor de emojis',
 	Choose: 'Escolher',
 	Choose_from_library: 'Escolha da biblioteca',
+	Choose_file: 'Enviar arquivo',
 	Code: 'Código',
 	Collaborative: 'Colaborativo',
 	Confirm: 'Confirmar',

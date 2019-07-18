@@ -109,6 +109,8 @@ PODS:
   - QBImagePickerController (3.4.0)
   - React (0.59.8):
     - React/Core (= 0.59.8)
+  - react-native-document-picker (3.2.2):
+    - React
   - react-native-orientation-locker (1.1.5):
     - React
   - react-native-splash-screen (3.2.0):
@@ -184,6 +186,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleIDFASupport (~> 3.14.0)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -264,6 +267,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-splash-screen:
@@ -346,6 +351,7 @@ SPEC CHECKSUMS:
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
@@ -368,6 +374,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: e913a7016ba7fbc295edc5178996383a1f54742e
+PODFILE CHECKSUM: 1aa23cca853663acc12b10c4eb90f42b7b91533a
 
 COCOAPODS: 1.6.2
