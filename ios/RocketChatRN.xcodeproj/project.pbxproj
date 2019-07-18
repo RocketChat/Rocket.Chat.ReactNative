@@ -1088,6 +1088,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
 						};
 					};
 					1EC6ACAF22CB9FC300A41C61 = {

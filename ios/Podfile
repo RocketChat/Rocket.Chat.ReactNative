@@ -46,6 +46,7 @@ target 'RocketChatRN' do
   pod 'Crashlytics', '~> 3.12.0'
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Performance', '~> 5.20.1'
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
   use_unimodules!
 

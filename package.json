@@ -41,6 +41,7 @@
     "react-native-console-time-polyfill": "^1.2.1",
     "react-native-device-info": "1.6.1",
     "react-native-dialog": "^5.6.0",
+    "react-native-document-picker": "^3.2.2",
     "react-native-easy-toast": "^1.2.0",
     "react-native-fast-image": "5.3.0",
     "react-native-firebase": "^5.4.0",
