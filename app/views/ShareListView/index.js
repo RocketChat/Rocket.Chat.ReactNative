@@ -40,6 +40,7 @@ const keyExtractor = item => item.rid;
 	useRealName: state.settings.UI_Use_Real_Name,
 	searchText: state.rooms.searchText,
 	server: state.server.server,
+	loading: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
@@ -98,7 +99,8 @@ export default class ShareListView extends React.Component {
 		userId: PropTypes.string,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
-		showFavorites: PropTypes.bool
+		showFavorites: PropTypes.bool,
+		loading: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -158,9 +160,15 @@ export default class ShareListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { searchText } = this.props;
+		const { searchText, loading } = this.props;
 
-		if (searchText !== nextProps.searchText) {
+		if (nextProps.server && loading !== nextProps.loading) {
+			if (nextProps.loading) {
+				this.internalSetState({ loading: true });
+			} else {
+				this.getSubscriptions();
+			}
+		} else if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		}
 	}
