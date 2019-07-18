@@ -132,12 +132,9 @@ export default class UploadModal extends Component {
 		return false;
 	}
 
-	uriToPath = uri => uri.replace(/^file:\/\//, '');
-
 	submit = () => {
 		const { file, submit } = this.props;
 		const { name, description } = this.state;
-		file.path = this.uriToPath(file.path);
 		submit({ ...file, name, description });
 	}
 
