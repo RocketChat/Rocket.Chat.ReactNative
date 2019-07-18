@@ -145,7 +145,7 @@ PODS:
     - React/RCTBlob
   - RNDeviceInfo (1.6.1):
     - React
-  - RNImageCropPicker (0.21.1):
+  - RNImageCropPicker (0.24.1):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
@@ -356,7 +356,7 @@ SPEC CHECKSUMS:
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
-  RNImageCropPicker: e608efe182652dc8690268cb99cb5a201f2b5ea3
+  RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
@@ -374,6 +374,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 1aa23cca853663acc12b10c4eb90f42b7b91533a
+PODFILE CHECKSUM: 7875ef440f1c2fb6583ee808c642c97d1410140d
 
 COCOAPODS: 1.6.2
