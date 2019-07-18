@@ -31,7 +31,6 @@ import com.wix.reactnativenotifications.core.notification.INotificationsApplicat
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 

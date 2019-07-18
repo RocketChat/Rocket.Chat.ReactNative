@@ -13,7 +13,6 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
-	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction,
@@ -27,7 +26,6 @@ import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
-import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
@@ -78,7 +76,6 @@ import { LISTENER, SNAP_POINTS } from '../ActionSheet';
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
 	deleteRequest: message => dispatch(deleteRequestAction(message)),
 	editInit: message => dispatch(editInitAction(message)),
@@ -141,7 +138,6 @@ export default class RoomView extends React.Component {
 		editCancel: PropTypes.func,
 		replyCancel: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		errorActionsShow: PropTypes.func,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
@@ -464,9 +460,14 @@ export default class RoomView extends React.Component {
 		replyBroadcast(message);
 	}
 
-	errorActionsShow = (message) => {
-		const { errorActionsShow } = this.props;
-		errorActionsShow(message);
+	errorActionsShow = (item) => {
+		const options = [
+			{ label: I18n.t('Resend'), handler: () => this.handleResend(item), icon: 'reply' },
+			{
+				label: I18n.t('Delete'), handler: () => this.handleDelete(item), icon: 'cross', isDanger: true
+			}
+		];
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	handleConnected = () => {
@@ -696,6 +697,21 @@ export default class RoomView extends React.Component {
 		);
 	}
 
+	handleResend = async(item) => {
+		try {
+			await RocketChat.resendMessage(item._id);
+		} catch (err) {
+			log('err_resend_message', err);
+		}
+	}
+
+	handleResendDelete = (item) => {
+		database.write(() => {
+			const msg = database.objects('messages').filtered('_id = $0', item._id);
+			database.delete(msg);
+		});
+	}
+
 	handleEdit = (item) => {
 		const { editInit } = this.props;
 		const { _id, msg, rid } = item;
@@ -888,18 +904,6 @@ export default class RoomView extends React.Component {
 		);
 	};
 
-	renderActions = () => {
-		const { showErrorActions, navigation } = this.props;
-		if (!navigation.isFocused()) {
-			return null;
-		}
-		return (
-			<React.Fragment>
-				{showErrorActions ? <MessageErrorActions /> : null}
-			</React.Fragment>
-		);
-	}
-
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -913,7 +917,6 @@ export default class RoomView extends React.Component {
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
-				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} />
 				<FileModal

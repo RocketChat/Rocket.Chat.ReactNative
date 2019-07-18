@@ -3,12 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { RectButton } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
-import { verticalScale } from '../utils/scaling';
 import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
 import EventEmitter from '../utils/events';
-import vibrate from '../utils/throttle';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_SEPARATOR } from '../constants/colors';
 import { isIOS } from '../utils/deviceInfo';
 
@@ -44,17 +43,18 @@ export const SNAP_POINTS = {
 };
 
 const bottomSheetHeaderHeight = 25;
-const buttonPaddingSize = verticalScale(35);
-const textSize = 13;
+const buttonPaddingSize = 40;
+const textSize = 15;
+const panelPaddingV = 15;
 
 const styles = StyleSheet.create({
 	panel: {
-		paddingVertical: verticalScale(15),
-		paddingHorizontal: verticalScale(10),
+		paddingVertical: panelPaddingV,
+		paddingHorizontal: 10,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	panelButton: {
-		padding: verticalScale(15),
+		padding: 18,
 		backgroundColor: 'transparent',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: COLOR_SEPARATOR,
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		...sharedStyles.textRegular,
+		...sharedStyles.textColorNormal,
 		fontSize: 16
 	},
 	danger: {
@@ -108,10 +109,10 @@ export default class ActionSheet extends React.Component {
 	}
 
 	handleDisplay = ({ options, snapPoint }) => {
-		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight;
+		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight + 2 * panelPaddingV;
 		this.setState({ options, height });
 		this.bottomSheetRef.current.snapTo(snapPoint);
-		vibrate();
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
 
 	hideActionSheet = () => {

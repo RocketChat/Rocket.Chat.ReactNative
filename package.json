@@ -35,7 +35,6 @@
     "react": "16.8.3",
     "react-emojione": "^5.0.1",
     "react-native": "0.59.8",
-    "react-native-action-sheet": "^2.2.0",
     "react-native-audio": "^4.3.0",
     "react-native-console-time-polyfill": "^1.2.1",
     "react-native-device-info": "1.6.1",

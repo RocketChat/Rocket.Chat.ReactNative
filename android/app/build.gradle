@@ -180,7 +180,6 @@ dependencies {
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
-    implementation project(':react-native-action-sheet')
     implementation(project(":react-native-device-info"),  {
         exclude group: "com.google.android.gms"
     })
