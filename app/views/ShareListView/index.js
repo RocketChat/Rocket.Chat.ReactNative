@@ -269,7 +269,7 @@ export default class ShareListView extends React.Component {
 	search = (text) => {
 		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
 		const subscriptions = database.objects('subscriptions');
-		const data = result.length !== subscriptions.length ? result : [];
+		const data = result.length !== subscriptions.length ? result.slice(0, 50) : [];
 		this.internalSetState({
 			search: data
 		});
