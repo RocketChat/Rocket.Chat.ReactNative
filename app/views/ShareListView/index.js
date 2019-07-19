@@ -332,6 +332,8 @@ export default class ShareListView extends React.Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
+	renderBorderBottom = () => <View style={styles.borderBottom} />;
+
 	renderServerSelector = () => {
 		const { servers } = this.state;
 		const { server } = this.props;
@@ -393,6 +395,7 @@ export default class ShareListView extends React.Component {
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
+				ListFooterComponent={!isSearching && this.renderBorderBottom}
 				ListHeaderComponentStyle={!isSearching ? styles.borderBottom : {}}
 				ListEmptyComponent={this.renderEmptyComponent}
 				enableEmptySections
