@@ -1,16 +1,15 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
+	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import VideoPlayer from 'react-native-video-controls';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
+import ImageViewer from './ImageViewer';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -41,9 +40,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Indicator = React.memo(() => (
+/* const Indicator = React.memo(() => (
 	<ActivityIndicator style={styles.indicator} />
-));
+)); */
 
 const ModalContent = React.memo(({
 	attachment, onClose, user, baseUrl
@@ -59,14 +58,7 @@ const ModalContent = React.memo(({
 					</View>
 				</TouchableWithoutFeedback>
 				<ImageViewer
-					imageUrls={[{ url }]}
-					onClick={onClose}
-					backgroundColor='transparent'
-					enableSwipeDown
-					onSwipeDown={onClose}
-					renderIndicator={() => null}
-					renderImage={props => <FastImage {...props} />}
-					loadingRender={() => <Indicator />}
+					source={url}
 				/>
 			</SafeAreaView>
 		);
@@ -96,6 +88,7 @@ const FileModal = React.memo(({
 		onBackButtonPress={onClose}
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
+		propagateSwipe
 	>
 		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
 	</Modal>
