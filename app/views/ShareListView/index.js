@@ -22,7 +22,7 @@ import {
 	closeSearchHeader as closeSearchHeaderAction
 } from '../../actions/rooms';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
-import ServerItem, { ROW_HEIGHT as ROW_HEIGHT_SERVER } from '../../presentation/ServerItem';
+import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 import ShareListHeader from './Header';
@@ -31,8 +31,7 @@ import styles from './styles';
 
 const SCROLL_OFFSET = 56;
 const LIMIT = 50;
-const getItemLayoutChannel = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
-const getItemLayoutServer = (data, index) => ({ length: ROW_HEIGHT_SERVER, offset: ROW_HEIGHT_SERVER * index, index });
+const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 @connect(state => ({
@@ -102,6 +101,7 @@ export default class ShareListView extends React.Component {
 		super(props);
 		this.data = [];
 		this.state = {
+			isSearching: false,
 			searching: false,
 			value: '',
 			isMedia: false,
@@ -332,32 +332,6 @@ export default class ShareListView extends React.Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderSection = (data, header) => {
-		if (data && data.length > 0) {
-			return (
-				<React.Fragment>
-					{this.renderSectionHeader(header)}
-					<View style={styles.bordered}>
-						<FlatList
-							data={data}
-							keyExtractor={keyExtractor}
-							style={styles.flatlist}
-							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
-							getItemLayout={getItemLayoutServer}
-							enableEmptySections
-							removeClippedSubviews
-							keyboardShouldPersistTaps='always'
-							initialNumToRender={12}
-							windowSize={20}
-						/>
-					</View>
-				</React.Fragment>
-			);
-		}
-		return null;
-	}
-
 	renderServerSelector = () => {
 		const { servers } = this.state;
 		const { server } = this.props;
@@ -377,7 +351,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderEmptyComponent = () => (
-		<View style={styles.content}>
+		<View style={styles.container}>
 			<Text style={styles.title}>{I18n.t('No_results_found')}</Text>
 		</View>
 	);
@@ -412,20 +386,18 @@ export default class ShareListView extends React.Component {
 		return (
 			<FlatList
 				data={isSearching ? search : chats}
-				extraData={search}
 				keyExtractor={keyExtractor}
 				style={styles.flatlist}
 				renderItem={this.renderItem}
-				getItemLayout={getItemLayoutChannel}
+				getItemLayout={getItemLayout}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
-				ListHeaderComponentStyle={styles.borderBottom}
+				ListHeaderComponentStyle={!isSearching ? styles.borderBottom : {}}
 				ListEmptyComponent={this.renderEmptyComponent}
 				enableEmptySections
 				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
-				initialNumToRender={12}
 				windowSize={20}
 			/>
 		);

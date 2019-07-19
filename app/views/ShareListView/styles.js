@@ -21,7 +21,7 @@ export default StyleSheet.create({
 	},
 	flatlist: {
 		width: '100%',
-		backgroundColor: COLOR_WHITE
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	bordered: {
 		...sharedStyles.separatorVertical
