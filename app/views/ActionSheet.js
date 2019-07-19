@@ -6,35 +6,13 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { SafeAreaView } from 'react-navigation';
 
 import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
 import EventEmitter from '../utils/events';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_SEPARATOR } from '../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_SEPARATOR, COLOR_DANGER } from '../constants/colors';
 import { isIOS } from '../utils/deviceInfo';
-
-
-/*
-To use this emit an event to LISTENER and pass an object with snapPoint and options as parameter
-
-example object = {
-	snapPoint: SNAP_POINT.HALF,
-	options: {}
-}
-
-option object that you pass should have
-1. label
-2. handler
-3. icon // if not provided gives an flag icon
-
-example optionObject : {
-	label: 'Permalink',
-	handler: this.dummy,
-	icon: 'permalink',
-	isDanger: true
-}
-
-*/
 
 export const LISTENER = 'actionSheet';
 export const SNAP_POINTS = {
@@ -42,31 +20,32 @@ export const SNAP_POINTS = {
 	FULL: 1
 };
 
-const bottomSheetHeaderHeight = 25;
-const buttonPaddingSize = 40;
-const textSize = 15;
-const panelPaddingV = 15;
+const bottomSheetHeaderHeight = 24;
+const panelPaddingVertical = 8;
+const ROW_HEIGHT = 40;
 
 const styles = StyleSheet.create({
 	panel: {
-		paddingVertical: panelPaddingV,
-		paddingHorizontal: 10,
+		paddingVertical: panelPaddingVertical,
+		paddingBottom: 300,
+		paddingHorizontal: 8,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	panelButton: {
-		padding: 18,
+		height: ROW_HEIGHT,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: COLOR_SEPARATOR,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	panelButtonIcon: {
-		paddingRight: 10
+		paddingHorizontal: 16
 	},
 	header: {
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		paddingTop: 15,
-		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20,
+		paddingTop: 16,
+		// borderTopLeftRadius: 20,
+		// borderTopRightRadius: 20,
 		alignItems: 'center'
 	},
 	panelHandle: {
@@ -85,7 +64,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	danger: {
-		color: 'red'
+		color: COLOR_DANGER
 	}
 });
 
@@ -94,7 +73,7 @@ export default class ActionSheet extends React.Component {
 		super(props);
 		this.state = {
 			options: [],
-			height: 100
+			snapPoints: [0, 100]
 		};
 		this.bottomSheetRef = React.createRef();
 	}
@@ -109,8 +88,9 @@ export default class ActionSheet extends React.Component {
 
 	handleDisplay = ({ options, snapPoint }) => {
 		Keyboard.dismiss();
-		const height = options.length * buttonPaddingSize + options.length * textSize + bottomSheetHeaderHeight + 2 * panelPaddingV;
-		this.setState({ options, height });
+		const height = options.length * ROW_HEIGHT + bottomSheetHeaderHeight + (2 * panelPaddingVertical) + 20;
+		const snapPoints = [0, height];
+		this.setState({ options, snapPoints });
 		this.bottomSheetRef.current.snapTo(snapPoint);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
@@ -155,9 +135,9 @@ export default class ActionSheet extends React.Component {
 	}
 
 	renderInner = () => {
-		const { options, height } = this.state;
+		const { options } = this.state;
 		return (
-			<View style={[styles.panel, { height }]}>
+			<SafeAreaView style={styles.panel}>
 				{options.map(option => (
 					isIOS
 						? (
@@ -176,13 +156,12 @@ export default class ActionSheet extends React.Component {
 							</View>
 						)
 				))}
-			</View>
+			</SafeAreaView>
 		);
 	}
 
 	render() {
-		const { height } = this.state;
-		const snapPoints = [0, height];
+		const { snapPoints } = this.state;
 		return (
 			<BottomSheet
 				ref={this.bottomSheetRef}
@@ -190,9 +169,9 @@ export default class ActionSheet extends React.Component {
 				snapPoints={snapPoints}
 				renderHeader={this.renderHeader}
 				renderContent={this.renderInner}
-				enabledManualSnapping
-				enabledGestureInteraction
-				enabledInnerScrolling
+				enabledManualSnapping={false}
+				enabledInnerScrolling={false}
+				overdragResistanceFactor={5}
 			/>
 		);
 	}
