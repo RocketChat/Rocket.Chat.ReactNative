@@ -6,27 +6,30 @@ import { Provider } from 'react-redux';
 import Navigation from './lib/Navigation';
 import store from './lib/createStore';
 import { appInit } from './actions';
-import ShareListView from './views/ShareListView';
-import ShareView from './views/ShareView';
-import SelectServerView from './views/SelectServerView';
-import AuthLoadingView from './views/AuthLoadingView';
-import WithoutServersView from './views/WithoutServersView';
 import sharedStyles from './views/Styles';
 import { isNotch } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 
 
 const InsideNavigator = createStackNavigator({
-	ShareListView,
-	ShareView,
-	SelectServerView
+	ShareListView: {
+		getScreen: () => require('./views/ShareListView').default
+	},
+	ShareView: {
+		getScreen: () => require('./views/ShareView').default
+	},
+	SelectServerView: {
+		getScreen: () => require('./views/SelectServerView').default
+	}
 }, {
 	initialRouteName: 'ShareListView',
 	defaultNavigationOptions: defaultHeader
 });
 
 const OutsideNavigator = createStackNavigator({
-	WithoutServersView
+	WithoutServersView: {
+		getScreen: () => require('./views/WithoutServersView').default
+	}
 }, {
 	initialRouteName: 'WithoutServersView',
 	defaultNavigationOptions: defaultHeader
@@ -35,7 +38,9 @@ const OutsideNavigator = createStackNavigator({
 const AppContainer = createAppContainer(createSwitchNavigator({
 	OutsideStack: OutsideNavigator,
 	InsideStack: InsideNavigator,
-	AuthLoading: AuthLoadingView
+	AuthLoading: {
+		getScreen: () => require('./views/AuthLoadingView').default
+	}
 },
 {
 	initialRouteName: 'AuthLoading'

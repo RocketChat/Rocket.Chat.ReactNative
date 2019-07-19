@@ -126,8 +126,6 @@ export default class ShareListView extends React.Component {
 	}
 
 	async componentDidMount() {
-		this.getSubscriptions();
-
 		const { navigation } = this.props;
 		navigation.setParams({
 			initSearchingAndroid: this.initSearchingAndroid,
