@@ -372,7 +372,7 @@ export default class ShareListView extends React.Component {
 					{this.renderSectionHeader(header)}
 					<View style={styles.bordered}>
 						<FlatList
-							data={data}
+							data={data.slice(0, 50)}
 							keyExtractor={keyExtractor}
 							style={styles.flatlist}
 							renderItem={this.renderItem}
