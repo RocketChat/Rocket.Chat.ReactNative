@@ -43,10 +43,7 @@ const keyExtractor = item => item.rid;
 	loading: state.server.loading,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	sortBy: state.sortPreferences.sortBy,
-	groupByType: state.sortPreferences.groupByType,
-	showFavorites: state.sortPreferences.showFavorites
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
@@ -97,9 +94,6 @@ export default class ShareListView extends React.Component {
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		sortBy: PropTypes.string,
-		groupByType: PropTypes.bool,
-		showFavorites: PropTypes.bool,
 		loading: PropTypes.bool
 	}
 
@@ -114,13 +108,7 @@ export default class ShareListView extends React.Component {
 			loading: true,
 			fileInfo: null,
 			search: [],
-			discussions: [],
-			channels: [],
-			favorites: [],
 			chats: [],
-			privateGroup: [],
-			direct: [],
-			livechat: [],
 			servers: []
 		};
 	}
@@ -201,38 +189,19 @@ export default class ShareListView extends React.Component {
 			this.data.removeAllListeners();
 		}
 
-		const {
-			server, sortBy, showFavorites, groupByType
-		} = this.props;
 		const { serversDB } = database.databases;
+		const {	server } = this.props;
 
 		if (server) {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
-			if (sortBy === 'alphabetical') {
-				this.data = this.data.sorted('name', false);
-			} else {
-				this.data = this.data.sorted('roomUpdatedAt', true);
-			}
+
 			// servers
 			this.servers = serversDB.objects('servers');
 
-			// favorites
-			if (showFavorites) {
-				this.favorites = this.data.filtered('f == true');
-			} else {
-				this.favorites = [];
-			}
+			// chats
+			this.data = this.data.sorted('roomUpdatedAt', true);
+			this.chats = this.data.slice(0, 50);
 
-			// type
-			if (groupByType) {
-				this.discussions = this.data.filtered('prid != null');
-				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
-				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
-				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
-				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
-			} else {
-				this.chats = this.data;
-			}
 			safeAddListener(this.data, this.updateState);
 		}
 	}, 300);
@@ -244,12 +213,6 @@ export default class ShareListView extends React.Component {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
-				favorites: this.favorites ? this.favorites.slice() : [],
-				discussions: this.discussions ? this.discussions.slice() : [],
-				channels: this.channels ? this.channels.slice() : [],
-				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
-				direct: this.direct ? this.direct.slice() : [],
-				livechat: this.livechat ? this.livechat.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false
 			});
@@ -411,7 +374,7 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			discussions, channels, privateGroup, direct, livechat, search, chats, favorites
+			search, chats
 		} = this.state;
 
 		if (search.length > 0) {
@@ -436,12 +399,6 @@ export default class ShareListView extends React.Component {
 		return (
 			<View style={styles.content}>
 				{this.renderServerSelector()}
-				{this.renderSection(favorites, 'Favorites')}
-				{this.renderSection(discussions, 'Discussions')}
-				{this.renderSection(channels, 'Channels')}
-				{this.renderSection(direct, 'Direct_Messages')}
-				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(livechat, 'Livechat')}
 				{this.renderSection(chats, 'Chats')}
 			</View>
 		);
