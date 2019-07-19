@@ -35,7 +35,7 @@ const DirectoryItem = ({
 					<RoomTypeIcon type={type} />
 					<Text style={styles.directoryItemName} numberOfLines={1}>{title}</Text>
 				</View>
-				<Text style={styles.directoryItemUsername} numberOfLines={1}>{description}</Text>
+				{ description ? <Text style={styles.directoryItemUsername} numberOfLines={1}>{description}</Text> : null }
 			</View>
 			<DirectoryItemLabel text={rightLabel} />
 		</View>

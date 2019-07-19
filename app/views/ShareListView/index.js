@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator, Keyboard
+	View, Text, LayoutAnimation, InteractionManager, FlatList, ActivityIndicator, Keyboard
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -30,6 +30,7 @@ import ShareListHeader from './Header';
 import styles from './styles';
 
 const SCROLL_OFFSET = 56;
+const LIMIT = 50;
 const getItemLayoutChannel = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const getItemLayoutServer = (data, index) => ({ length: ROW_HEIGHT_SERVER, offset: ROW_HEIGHT_SERVER * index, index });
 const keyExtractor = item => item.rid;
@@ -200,7 +201,7 @@ export default class ShareListView extends React.Component {
 
 			// chats
 			this.data = this.data.sorted('roomUpdatedAt', true);
-			this.chats = this.data.slice(0, 50);
+			this.chats = this.data.slice(0, LIMIT);
 
 			safeAddListener(this.data, this.updateState);
 		}
@@ -268,10 +269,9 @@ export default class ShareListView extends React.Component {
 
 	search = (text) => {
 		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
-		const subscriptions = database.objects('subscriptions');
-		const data = result.length !== subscriptions.length ? result.slice(0, 50) : [];
 		this.internalSetState({
-			search: data
+			search: result.slice(0, LIMIT),
+			isSearching: text !== ''
 		});
 	}
 
@@ -295,13 +295,17 @@ export default class ShareListView extends React.Component {
 
 	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
 
-	renderSectionHeader = header => (
-		<View style={styles.headerContainer}>
-			<Text style={styles.headerText}>
-				{I18n.t(header)}
-			</Text>
-		</View>
-	)
+	renderSectionHeader = (header) => {
+		const { isSearching } = this.state;
+		if (isSearching) { return null; }
+		return (
+			<View style={styles.headerContainer}>
+				<Text style={styles.headerText}>
+					{I18n.t(header)}
+				</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => {
 		const { userId, token, baseUrl } = this.props;
@@ -372,54 +376,58 @@ export default class ShareListView extends React.Component {
 		) : null;
 	}
 
-	renderContent = () => {
-		const {
-			search, chats
-		} = this.state;
+	renderEmptyComponent = () => (
+		<View style={styles.content}>
+			<Text style={styles.title}>{I18n.t('No_results_found')}</Text>
+		</View>
+	);
 
-		if (search.length > 0) {
-			return (
-				<FlatList
-					data={search}
-					extraData={search}
-					keyExtractor={keyExtractor}
-					style={styles.flatlist}
-					renderItem={this.renderItem}
-					getItemLayout={getItemLayoutChannel}
-					ItemSeparatorComponent={this.renderSeparator}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={20}
-				/>
-			);
-		}
-
+	renderHeader = () => {
+		const { isSearching } = this.state;
 		return (
-			<View style={styles.content}>
-				{this.renderServerSelector()}
-				{this.renderSection(chats, 'Chats')}
-			</View>
+			<React.Fragment>
+				{this.renderListHeader()}
+				{ !isSearching
+					? (
+						<React.Fragment>
+							{this.renderServerSelector()}
+							{this.renderSectionHeader('Chats')}
+						</React.Fragment>
+					)
+					: null
+				}
+			</React.Fragment>
 		);
 	}
 
+	renderContent = () => {
+		const {
+			search, chats, mediaLoading, loading, isSearching
+		} = this.state;
 
-	renderScrollView = () => {
-		const { mediaLoading, loading } = this.state;
 		if (mediaLoading || loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
 		return (
-			<ScrollView
-				style={styles.scroll}
+			<FlatList
+				data={isSearching ? search : chats}
+				extraData={search}
+				keyExtractor={keyExtractor}
+				style={styles.flatlist}
+				renderItem={this.renderItem}
+				getItemLayout={getItemLayoutChannel}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				ItemSeparatorComponent={this.renderSeparator}
+				ListHeaderComponent={this.renderHeader}
+				ListHeaderComponentStyle={styles.borderBottom}
+				ListEmptyComponent={this.renderEmptyComponent}
+				enableEmptySections
+				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
-			>
-				{this.renderListHeader()}
-				{this.renderContent()}
-			</ScrollView>
+				initialNumToRender={12}
+				windowSize={20}
+			/>
 		);
 	}
 
@@ -442,7 +450,7 @@ export default class ShareListView extends React.Component {
 		const showError = !this.canUploadFile();
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
-				{ showError ? this.renderError() : this.renderScrollView() }
+				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>
 		);
 	}

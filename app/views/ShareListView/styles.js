@@ -15,7 +15,9 @@ export default StyleSheet.create({
 	},
 	content: {
 		flex: 1,
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8',
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	flatlist: {
 		width: '100%',
@@ -24,8 +26,8 @@ export default StyleSheet.create({
 	bordered: {
 		...sharedStyles.separatorVertical
 	},
-	scroll: {
-		width: '100%'
+	borderBottom: {
+		...sharedStyles.separatorBottom
 	},
 	headerContainer: {
 		paddingHorizontal: 15,
