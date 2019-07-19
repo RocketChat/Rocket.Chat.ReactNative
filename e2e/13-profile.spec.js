@@ -79,10 +79,11 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-username')).replaceText(`${ data.user }new`);
 			await element(by.id('profile-view-list')).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			if (device.getPlatform() === 'ios') {
+				await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
+				await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			}
 		});
 
 		it('should change email and password', async() => {
@@ -97,19 +98,21 @@ describe('Profile screen', () => {
 			} else {
 				await element(by.text('Save')).tap();
 			}
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			if (device.getPlatform() === 'ios') {
+				await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
+				await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			}
 		});
 
 		it('should reset avatar', async() => {
 			await element(by.id('profile-view-list')).swipe('up');
 			await element(by.id('profile-view-reset-avatar')).tap();
-			await waitFor(element(by.text('Avatar changed successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Avatar changed successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Avatar changed successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Avatar changed successfully!'))).toBeNotVisible();
+			if (device.getPlatform() === 'ios') {
+				await waitFor(element(by.text('Avatar changed successfully!'))).toBeVisible().withTimeout(10000);
+				await waitFor(element(by.text('Avatar changed successfully!'))).toBeNotVisible().withTimeout(10000);
+				await expect(element(by.text('Avatar changed successfully!'))).toBeNotVisible();
+			}
 		});
 
 		after(async() => {

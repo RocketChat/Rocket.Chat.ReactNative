@@ -158,9 +158,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${ room }new`);
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-name'))).toHaveText(`${ room }new`).withTimeout(60000);
@@ -171,9 +173,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${ room }`);
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await element(by.id('room-info-edit-view-list')).swipe('down');
 			});
 	
@@ -207,10 +211,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-description')).replaceText('new description');
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-description'))).toHaveText('new description').withTimeout(60000);
@@ -224,10 +229,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-topic'))).toHaveText('new topic').withTimeout(60000);
@@ -241,10 +247,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id('room-info-view-announcement'))).toHaveText('new announcement').withTimeout(60000);
@@ -258,25 +265,28 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-password')).replaceText('password');
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 			});
 	
 			it('should change room type', async() => {
 				await element(by.id('room-info-edit-view-t')).tap();
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				await element(by.id('room-info-edit-view-t')).tap();
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 			});
 	
 			it('should change room read only and allow reactions', async() => {
@@ -285,10 +295,11 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toBeVisible();
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await element(by.id('room-info-edit-view-submit')).tap();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
-				// await expect(element(by.text('Settings succesfully changed!'))).toBeVisible();
-				await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				if (device.getPlatform() === 'ios') {
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeVisible().withTimeout(10000);
+					await waitFor(element(by.text('Settings succesfully changed!'))).toBeNotVisible().withTimeout(10000);
+					await expect(element(by.text('Settings succesfully changed!'))).toBeNotVisible();
+				}
 				// TODO: test if it's possible to react
 			});
 	

@@ -339,18 +339,20 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.text('Mute'))).toBeVisible().withTimeout(5000);
 					await expect(element(by.text('Mute'))).toBeVisible();
 					await element(by.text('Mute')).tap();
-					await waitFor(element(by.text('User has been muted!'))).toBeVisible().withTimeout(10000);
-					// await expect(element(by.text('User has been muted!'))).toBeVisible();
-					await waitFor(element(by.text('User has been muted!'))).toBeNotVisible().withTimeout(10000);
-					await expect(element(by.text('User has been muted!'))).toBeNotVisible();
+					if (device.getPlatform() === 'ios') {
+						await waitFor(element(by.text('User has been muted!'))).toBeVisible().withTimeout(10000);
+						await waitFor(element(by.text('User has been muted!'))).toBeNotVisible().withTimeout(10000);
+						await expect(element(by.text('User has been muted!'))).toBeNotVisible();
+					}
 					await element(by.id(`room-members-view-item-${ data.alternateUser }`)).longPress();
 					await waitFor(element(by.text('Unmute'))).toBeVisible().withTimeout(2000);
 					await expect(element(by.text('Unmute'))).toBeVisible();
 					await element(by.text('Unmute')).tap();
-					await waitFor(element(by.text('User has been unmuted!'))).toBeVisible().withTimeout(10000);
-					// await expect(element(by.text('User has been unmuted!'))).toBeVisible();
-					await waitFor(element(by.text('User has been unmuted!'))).toBeNotVisible().withTimeout(10000);
-					await expect(element(by.text('User has been unmuted!'))).toBeNotVisible();
+					if (device.getPlatform() === 'ios') {
+						await waitFor(element(by.text('User has been unmuted!'))).toBeVisible().withTimeout(10000);
+						await waitFor(element(by.text('User has been unmuted!'))).toBeNotVisible().withTimeout(10000);
+						await expect(element(by.text('User has been unmuted!'))).toBeNotVisible();
+					}
 				});
 
 				it('should navigate to direct room', async() => {
