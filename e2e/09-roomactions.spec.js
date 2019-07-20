@@ -27,7 +27,7 @@ async function navigateToRoomActions(type) {
 
 async function backToActions() {
 	await tapBack();
-	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 	await expect(element(by.id('room-actions-view'))).toBeVisible();
 }
 
@@ -48,45 +48,45 @@ describe('Room actions screen', () => {
 			it('should have room actions screen', async() => {
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
 			});
-	
+
 			it('should have info', async() => {
 				await expect(element(by.id('room-actions-info'))).toBeVisible();
 			});
-	
+
 			it('should have voice', async() => {
 				await expect(element(by.id('room-actions-voice'))).toBeVisible();
 			});
-	
+
 			it('should have video', async() => {
 				await expect(element(by.id('room-actions-video'))).toBeVisible();
 			});
-	
+
 			it('should have files', async() => {
 				await expect(element(by.id('room-actions-files'))).toBeVisible();
 			});
-	
+
 			it('should have mentions', async() => {
 				await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			});
-	
+
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			});
-	
+
 			it('should have search', async() => {
 				await expect(element(by.id('room-actions-search'))).toBeVisible();
 			});
-	
+
 			it('should have share', async() => {
 				await waitFor(element(by.id('room-actions-share'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
-	
+
 			it('should have pinned', async() => {
 				await waitFor(element(by.id('room-actions-pinned'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			});
-	
+
 			it('should have notifications', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-notifications'))).toBeVisible();
@@ -110,15 +110,15 @@ describe('Room actions screen', () => {
 			it('should have room actions screen', async() => {
 				await expect(element(by.id('room-actions-view'))).toBeVisible();
 			});
-	
+
 			it('should have info', async() => {
 				await expect(element(by.id('room-actions-info'))).toBeVisible();
 			});
-	
+
 			it('should have voice', async() => {
 				await expect(element(by.id('room-actions-voice'))).toBeVisible();
 			});
-	
+
 			it('should have video', async() => {
 				await expect(element(by.id('room-actions-video'))).toBeVisible();
 			});
@@ -130,38 +130,38 @@ describe('Room actions screen', () => {
 			it('should have add user', async() => {
 				await expect(element(by.id('room-actions-add-user'))).toBeVisible();
 			});
-	
+
 			it('should have files', async() => {
 				await expect(element(by.id('room-actions-files'))).toBeVisible();
 			});
-	
+
 			it('should have mentions', async() => {
 				await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			});
-	
+
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			});
-	
+
 			it('should have search', async() => {
 				await expect(element(by.id('room-actions-search'))).toBeVisible();
 			});
-	
+
 			it('should have share', async() => {
 				await waitFor(element(by.id('room-actions-share'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
-	
+
 			it('should have pinned', async() => {
 				await waitFor(element(by.id('room-actions-pinned'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			});
-	
+
 			it('should have notifications', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-notifications'))).toBeVisible();
 			});
-	
+
 			it('should have leave channel', async() => {
 				await waitFor(element(by.id('room-actions-leave-channel'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
@@ -296,7 +296,7 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible().withTimeout(5000);
 					await expect(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible();
 					await element(by.id('selected-users-view-submit')).tap();
-					await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+					await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 					await element(by.id('room-actions-members')).tap();
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
