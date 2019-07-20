@@ -435,34 +435,34 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-#      - lint-testunit
+      - lint-testunit
 
-#      - e2e-hold-ios:
-#          type: approval
-#          requires:
-#            - lint-testunit
-#      - e2e-test-ios:
-#          requires:
-#            - e2e-hold-ios
-#      - e2e-hold-android:
-#          type: approval
-#          requires:
-#            - lint-testunit
-      - e2e-test-android
-#          requires:
-#            - e2e-hold-android
+      - e2e-hold-ios:
+          type: approval
+          requires:
+            - lint-testunit
+      - e2e-test-ios:
+          requires:
+            - e2e-hold-ios
+      - e2e-hold-android:
+          type: approval
+          requires:
+            - lint-testunit
+      - e2e-test-android:
+          requires:
+            - e2e-hold-android
 
-#      - ios-build:
-#          requires:
-#            - lint-testunit
-#      - ios-hold-testflight:
-#          type: approval
-#          requires:
-#            - ios-build
-#      - ios-testflight:
-#          requires:
-#            - ios-hold-testflight
+      - ios-build:
+          requires:
+            - lint-testunit
+      - ios-hold-testflight:
+          type: approval
+          requires:
+            - ios-build
+      - ios-testflight:
+          requires:
+            - ios-hold-testflight
 
-#      - android-build:
-#          requires:
-#            - lint-testunit
+      - android-build:
+          requires:
+            - lint-testunit
