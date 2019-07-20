@@ -24,7 +24,7 @@ import {
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
-import SearchBar from '../RoomsListView/ListHeader/SearchBar';
+import SearchBar from './SearchBar';
 import ShareListHeader from './Header';
 
 import styles from './styles';
@@ -293,7 +293,7 @@ export default class ShareListView extends React.Component {
 		}
 	}
 
-	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
+	renderSearchBar = () => <SearchBar onChangeSearchText={this.search} />;
 
 	renderSectionHeader = (header) => {
 		const { isSearching } = this.state;
@@ -362,7 +362,7 @@ export default class ShareListView extends React.Component {
 		const { isSearching } = this.state;
 		return (
 			<React.Fragment>
-				{this.renderListHeader()}
+				{this.renderSearchBar()}
 				{ !isSearching
 					? (
 						<React.Fragment>
