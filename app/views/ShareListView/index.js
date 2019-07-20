@@ -107,13 +107,12 @@ export default class ShareListView extends React.Component {
 			fileInfo: null,
 			search: [],
 			chats: [],
-			servers: []
+			servers: [],
+			loading: true
 		};
 	}
 
 	async componentDidMount() {
-		this.getSubscriptions();
-
 		const { navigation } = this.props;
 		navigation.setParams({
 			initSearchingAndroid: this.initSearchingAndroid,
@@ -143,12 +142,15 @@ export default class ShareListView extends React.Component {
 			log('err_process_media_share_extension', e);
 			this.setState({ mediaLoading: false });
 		}
+
+		this.getSubscriptions();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const { searchText, server } = this.props;
 
 		if (server !== nextProps.server) {
+			this.setState({ loading: true });
 			this.getSubscriptions();
 		} else if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
@@ -211,7 +213,8 @@ export default class ShareListView extends React.Component {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
-				servers: this.servers ? this.servers.slice() : []
+				servers: this.servers ? this.servers.slice() : [],
+				loading: false
 			});
 			this.forceUpdate();
 		});
@@ -374,10 +377,10 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			search, chats, mediaLoading, isSearching
+			search, chats, mediaLoading, loading, isSearching
 		} = this.state;
 
-		if (mediaLoading) {
+		if (mediaLoading || loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
