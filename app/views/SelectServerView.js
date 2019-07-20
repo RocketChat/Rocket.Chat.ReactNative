@@ -5,18 +5,21 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import database from '../lib/realm';
 import StatusBar from '../containers/StatusBar';
-import { selectServerRequest as selectServerRequestAction } from '../actions/server';
-
+import { selectServerSuccess as selectServerSuccessAction } from '../actions/server';
+import { setUser as setUserAction } from '../actions/login';
+import { addSettings as addSettingsAction } from '../actions';
 import {
 	COLOR_BACKGROUND_CONTAINER
 } from '../constants/colors';
 import Navigation from '../lib/Navigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
+import RocketChat from '../lib/rocketchat';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
@@ -39,7 +42,9 @@ const styles = StyleSheet.create({
 @connect(state => ({
 	server: state.server.server
 }), dispatch => ({
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	setUser: user => dispatch(setUserAction(user)),
+	addSettings: settings => dispatch(addSettingsAction(settings)),
+	selectServerSuccess: server => dispatch(selectServerSuccessAction(server))
 }))
 export default class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
@@ -48,7 +53,9 @@ export default class SelectServerView extends React.Component {
 
 	static propTypes = {
 		server: PropTypes.string,
-		selectServerRequest: PropTypes.func
+		setUser: PropTypes.func,
+		addSettings: PropTypes.func,
+		selectServerSuccess: PropTypes.func
 	}
 
 	constructor(props) {
@@ -61,13 +68,31 @@ export default class SelectServerView extends React.Component {
 		};
 	}
 
-	select = (server) => {
+	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest
+			server: currentServer, selectServerSuccess, setUser, addSettings
 		} = this.props;
 
 		if (currentServer !== server) {
-			selectServerRequest(server);
+			const { serversDB } = database.databases;
+
+			// server
+			database.setActiveDB(server);
+			const serverInfo = serversDB.objectForPrimaryKey('servers', server);
+			selectServerSuccess(server, serverInfo.version);
+
+			// add settings to upload media
+			addSettings({
+				Site_Url: serverInfo.id,
+				useRealName: serverInfo.useRealName,
+				FileUpload_MediaTypeWhiteList: serverInfo.FileUpload_MediaTypeWhiteList,
+				FileUpload_MaxFileSize: serverInfo.FileUpload_MaxFileSize
+			});
+
+			// user
+			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const user = userId && serversDB.objectForPrimaryKey('user', userId);
+			setUser(user);
 		}
 		Navigation.navigate('ShareListView');
 	}

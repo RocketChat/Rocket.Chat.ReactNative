@@ -37,13 +37,12 @@ const keyExtractor = item => item.rid;
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	token: state.login.user && state.login.user.token,
-	useRealName: state.settings.UI_Use_Real_Name,
 	searchText: state.rooms.searchText,
 	server: state.server.server,
-	loading: state.server.loading,
+	useRealName: state.settings.UI_Use_Real_Name,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : ''
+	baseUrl: state.server ? state.server.server : ''
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
@@ -93,8 +92,7 @@ export default class ShareListView extends React.Component {
 		closeSearchHeader: PropTypes.func,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
-		userId: PropTypes.string,
-		loading: PropTypes.bool
+		userId: PropTypes.string
 	}
 
 	constructor(props) {
@@ -106,7 +104,6 @@ export default class ShareListView extends React.Component {
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
-			loading: true,
 			fileInfo: null,
 			search: [],
 			chats: [],
@@ -115,6 +112,8 @@ export default class ShareListView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.getSubscriptions();
+
 		const { navigation } = this.props;
 		navigation.setParams({
 			initSearchingAndroid: this.initSearchingAndroid,
@@ -147,25 +146,23 @@ export default class ShareListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { searchText, loading } = this.props;
+		const { searchText, server } = this.props;
 
-		if (nextProps.server && loading !== nextProps.loading) {
-			if (nextProps.loading) {
-				this.internalSetState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
+		if (server !== nextProps.server) {
+			this.getSubscriptions();
 		} else if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, searching } = this.state;
-		if (nextState.loading !== loading) {
+		const { searching } = this.state;
+		if (nextState.searching !== searching) {
 			return true;
 		}
-		if (nextState.searching !== searching) {
+
+		const { server } = this.props;
+		if (server !== nextProps.server) {
 			return true;
 		}
 
@@ -214,8 +211,7 @@ export default class ShareListView extends React.Component {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
-				servers: this.servers ? this.servers.slice() : [],
-				loading: false
+				servers: this.servers ? this.servers.slice() : []
 			});
 			this.forceUpdate();
 		});
@@ -241,9 +237,9 @@ export default class ShareListView extends React.Component {
 
 	canUploadFile = () => {
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const { fileInfo: file, mediaLoading, loading } = this.state;
+		const { fileInfo: file, mediaLoading } = this.state;
 
-		if (loading || mediaLoading) {
+		if (mediaLoading) {
 			return true;
 		}
 		if (!(file && file.path)) {
@@ -378,10 +374,10 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			search, chats, mediaLoading, loading, isSearching
+			search, chats, mediaLoading, isSearching
 		} = this.state;
 
-		if (mediaLoading || loading) {
+		if (mediaLoading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
@@ -422,7 +418,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	render() {
-		const showError = !this.canUploadFile();
+		const showError = false; // !this.canUploadFile();
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
 				{ showError ? this.renderError() : this.renderContent() }
