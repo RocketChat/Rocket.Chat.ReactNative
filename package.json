@@ -37,6 +37,7 @@
     "react-native-action-sheet": "^2.2.0",
     "react-native-audio": "^4.3.0",
     "react-native-console-time-polyfill": "^1.2.1",
+    "react-native-contacts": "^5.0.1",
     "react-native-device-info": "1.6.1",
     "react-native-dialog": "^5.6.0",
     "react-native-easy-toast": "^1.2.0",

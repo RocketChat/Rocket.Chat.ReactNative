@@ -39,6 +39,7 @@ target 'RocketChatRN' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
   
   pod 'Firebase/Core', '~> 5.20.1'
   pod 'Fabric', '~> 1.9.0'
