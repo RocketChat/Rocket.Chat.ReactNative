@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 		backgroundColor: HEADER_BACKGROUND,
 		width: '100%',
 		flexDirection: 'row',
-		marginBottom: 10,
 		...sharedStyles.separatorBottom
 	}
 });

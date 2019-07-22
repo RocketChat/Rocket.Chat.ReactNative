@@ -27,6 +27,7 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	flatlist: {
+		marginTop: isIOS ? 6 : 0, // the height of the navigation bar with the searchbar is larger
 		width: '100%',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
