@@ -1,5 +1,5 @@
 const localeKeys = {
-	en: 'en-au',
+	en: 'en',
 	ru: 'ru',
 	'pt-BR': 'pt-br',
 	'zh-CN': 'zh-cn',
