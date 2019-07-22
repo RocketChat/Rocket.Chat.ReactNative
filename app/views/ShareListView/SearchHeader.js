@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import SearchBox from '../../containers/SearchBox';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isNotch } from '../../utils/deviceInfo';
 import { CloseShareExtensionButton } from '../../containers/HeaderButton';
 import { HEADER_BACKGROUND } from '../../constants/colors';
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		backgroundColor: HEADER_BACKGROUND,
 		width: '100%',
 		flexDirection: 'row',
-		paddingTop: getStatusBarHeight(),
+		paddingTop: getStatusBarHeight() + (isNotch ? 20 : 0),
 		...sharedStyles.separatorBottom
 	}
 });
