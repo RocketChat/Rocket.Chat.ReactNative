@@ -256,12 +256,7 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		RocketChat.getUseCrashlytics()
-			.then((enableCrashlytics) => {
-				if (enableCrashlytics) {
-					firebase.crashlytics().enableCrashlyticsCollection();
-				}
-			});
+		this.crashlytics();
 	}
 
 	componentDidMount() {
@@ -289,6 +284,15 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	crashlytics = () => {
+		RocketChat.getUseCrashlytics()
+			.then((enableCrashlytics) => {
+				if (enableCrashlytics) {
+					firebase.crashlytics().enableCrashlyticsCollection();
+				}
+			});
 	}
 
 	render() {
