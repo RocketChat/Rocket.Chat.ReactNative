@@ -27,6 +27,7 @@ import {
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { toMomentLocale } from '../../utils/moment';
 import RoomsListHeaderView from './Header';
 import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -153,7 +154,7 @@ export default class RoomsListView extends React.Component {
 	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation, userLanguage } = this.props;
-		moment.locale(userLanguage);
+		moment.locale(toMomentLocale(userLanguage));
 		navigation.setParams({
 			onPressItem: this._onPressItem,
 			initSearchingAndroid: this.initSearchingAndroid,
