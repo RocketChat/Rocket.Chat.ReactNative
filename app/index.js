@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import firebase from 'react-native-firebase';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -16,6 +17,7 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import RocketChat from './lib/rocketchat';
 
 useScreens();
 
@@ -254,6 +256,12 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
+		RocketChat.getUseCrashlytics()
+			.then((enableCrashlytics) => {
+				if (enableCrashlytics) {
+					firebase.crashlytics().enableCrashlyticsCollection();
+				}
+			});
 	}
 
 	componentDidMount() {

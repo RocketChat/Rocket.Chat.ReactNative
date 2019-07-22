@@ -87,6 +87,7 @@ export default {
 	alerts: 'alerts',
 	All_users_in_the_channel_can_write_new_messages: 'All users in the channel can write new messages',
 	All: 'All',
+	Allow_crashlytics: 'Allow crashlytics',
 	Allow_Reactions: 'Allow Reactions',
 	Alphabetical: 'Alphabetical',
 	and_more: 'and more',

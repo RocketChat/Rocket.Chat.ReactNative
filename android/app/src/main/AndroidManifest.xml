@@ -11,6 +11,10 @@
 	<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 	<uses-permission-sdk-23 android:name="android.permission.VIBRATE"/>
 
+	<meta-data
+    android:name="firebase_crashlytics_collection_enabled"
+    android:value="false" />
+
 	<application
 		android:name=".MainApplication"
 		android:allowBackup="true"

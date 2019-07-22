@@ -42,6 +42,7 @@ import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
+export const CRASHLYTICS_KEY = 'RC_CRASHLYTICS_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -728,6 +729,13 @@ const RocketChat = {
 			return true;
 		}
 		return JSON.parse(useMarkdown);
+	},
+	async getUseCrashlytics() {
+		const useCrashlytics = await AsyncStorage.getItem(CRASHLYTICS_KEY);
+		if (useCrashlytics === null) {
+			return false;
+		}
+		return JSON.parse(useCrashlytics);
 	},
 	async getSortPreferences() {
 		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
