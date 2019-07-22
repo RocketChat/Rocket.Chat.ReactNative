@@ -99,6 +99,7 @@ export default class ShareListView extends React.Component {
 		super(props);
 		this.data = [];
 		this.state = {
+			showError: false,
 			isSearching: false,
 			searching: false,
 			value: '',
@@ -214,7 +215,8 @@ export default class ShareListView extends React.Component {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
-				loading: false
+				loading: false,
+				showError: !this.canUploadFile()
 			});
 			this.forceUpdate();
 		});
@@ -421,7 +423,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	render() {
-		const showError = false; // !this.canUploadFile();
+		const { showError } = this.state;
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
 				{ showError ? this.renderError() : this.renderContent() }
