@@ -1,17 +1,14 @@
 import React, { PureComponent } from 'react';
 import {
-	View, StyleSheet, Text, Platform
+	View, StyleSheet, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TextInput } from 'react-native-gesture-handler';
 
-import I18n from '../../i18n';
-import { COLOR_WHITE, HEADER_TITLE } from '../../constants/colors';
-import sharedStyles from '../Styles';
-import { setSearch as setSearchAction } from '../../actions/rooms';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
-import SearchHeader from './SearchHeader';
+import I18n from '../../../i18n';
+import { COLOR_WHITE, HEADER_TITLE } from '../../../constants/colors';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,30 +21,19 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	title: {
-		...Platform.select({
-			ios: {
-				fontSize: 17,
-				...sharedStyles.textSemibold,
-				color: HEADER_TITLE
-			},
-			android: {
-				fontSize: 20,
-				...sharedStyles.textRegular,
-				color: HEADER_TITLE
-			}
-		})
+		fontSize: 20,
+		...sharedStyles.textRegular,
+		color: HEADER_TITLE
 	}
 });
 
 @connect(state => ({
 	showSearchHeader: state.rooms.showSearchHeader
-}), dispatch => ({
-	setSearch: searchText => dispatch(setSearchAction(searchText))
 }))
-class ShareListHeader extends PureComponent {
+class Header extends PureComponent {
 	static propTypes = {
 		showSearchHeader: PropTypes.bool,
-		setSearch: PropTypes.func
+		onChangeSearchText: PropTypes.func
 	}
 
 	componentDidUpdate(prevProps) {
@@ -59,21 +45,16 @@ class ShareListHeader extends PureComponent {
 		}
 	}
 
-	onSearchChangeText = (text) => {
-		const { setSearch } = this.props;
-		setSearch(text.trim());
-	}
-
 	setSearchInputRef = (ref) => {
 		this.searchInputRef = ref;
 	}
 
 	render() {
 		const {
-			showSearchHeader
+			showSearchHeader, onChangeSearchText
 		} = this.props;
 
-		if (showSearchHeader && isAndroid) {
+		if (showSearchHeader) {
 			return (
 				<View style={styles.container}>
 					<TextInput
@@ -81,19 +62,13 @@ class ShareListHeader extends PureComponent {
 						style={styles.search}
 						placeholder={I18n.t('Search')}
 						placeholderTextColor='rgba(255, 255, 255, 0.5)'
-						onChangeText={this.onSearchChangeText}
+						onChangeText={onChangeSearchText}
 					/>
 				</View>
-			);
-		} else if (isIOS) {
-			return (
-				<SearchHeader
-					onChangeSearchText={this.onSearchChangeText}
-				/>
 			);
 		}
 		return <Text style={styles.title}>{I18n.t('Select_Channels')}</Text>;
 	}
 }
 
-export default ShareListHeader;
+export default Header;
