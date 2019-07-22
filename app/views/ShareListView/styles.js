@@ -8,14 +8,16 @@ import {
 
 export default StyleSheet.create({
 	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
 		flex: 1,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	content: {
 		flex: 1,
 		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	centered: {
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -39,8 +41,7 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular,
 		fontSize: 17,
-		letterSpacing: 0.27,
-		flex: 1
+		letterSpacing: 0.27
 	},
 	separator: {
 		...sharedStyles.separatorBottom,

@@ -415,9 +415,12 @@ export default class ShareListView extends React.Component {
 			: 'error-invalid-file-type';
 		return (
 			<View style={styles.container}>
-				<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
-				<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-				<Text style={styles.fileMime}>{ file.type }</Text>
+				{ this.renderServerSelector() }
+				<View style={[styles.container, styles.centered]}>
+					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
+					<Text style={styles.fileMime}>{ file.type }</Text>
+				</View>
 			</View>
 		);
 	}
