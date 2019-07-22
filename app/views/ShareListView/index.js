@@ -242,9 +242,12 @@ export default class ShareListView extends React.Component {
 
 	canUploadFile = () => {
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const { fileInfo: file, mediaLoading } = this.state;
+		const { fileInfo: file, mediaLoading, isMedia } = this.state;
 
 		if (mediaLoading) {
+			return true;
+		}
+		if (!isMedia) {
 			return true;
 		}
 		if (!(file && file.path)) {
@@ -408,11 +411,16 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderError = () => {
-		const { fileInfo: file } = this.state;
+		const { fileInfo: file, loading } = this.state;
 		const { FileUpload_MaxFileSize } = this.props;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
 			: 'error-invalid-file-type';
+
+		if (loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+
 		return (
 			<View style={styles.container}>
 				{ this.renderServerSelector() }
