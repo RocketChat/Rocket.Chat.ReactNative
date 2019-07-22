@@ -56,7 +56,7 @@ export default class ShareListView extends React.Component {
 		if (isIOS) {
 			return {
 				headerBackTitle: I18n.t('Back'),
-				header: <ShareListHeader />
+				headerTitle: <ShareListHeader />
 			};
 		}
 
@@ -364,7 +364,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderEmptyComponent = () => (
-		<View style={styles.container}>
+		<View style={[styles.container, styles.emptyContainer]}>
 			<Text style={styles.title}>{I18n.t('No_results_found')}</Text>
 		</View>
 	);

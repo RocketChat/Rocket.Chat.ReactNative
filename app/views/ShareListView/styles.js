@@ -11,6 +11,11 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
+	emptyContainer: {
+		padding: 20,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	content: {
 		flex: 1,
 		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8',

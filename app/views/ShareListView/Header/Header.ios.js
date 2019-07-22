@@ -4,10 +4,8 @@ import {
 	Keyboard, LayoutAnimation, View, StyleSheet
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import SearchBox from '../../../containers/SearchBox';
-import { isNotch } from '../../../utils/deviceInfo';
 import { CloseShareExtensionButton } from '../../../containers/HeaderButton';
 import { HEADER_BACKGROUND } from '../../../constants/colors';
 
@@ -18,7 +16,7 @@ const styles = StyleSheet.create({
 		backgroundColor: HEADER_BACKGROUND,
 		width: '100%',
 		flexDirection: 'row',
-		paddingTop: getStatusBarHeight() + (isNotch ? 20 : 0),
+		marginBottom: 10,
 		...sharedStyles.separatorBottom
 	}
 });
