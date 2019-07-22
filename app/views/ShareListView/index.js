@@ -18,8 +18,7 @@ import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import {
 	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction,
-	setSearch as setSearchAction
+	closeSearchHeader as closeSearchHeaderAction
 } from '../../actions/rooms';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
@@ -43,8 +42,7 @@ const keyExtractor = item => item.rid;
 	baseUrl: state.server ? state.server.server : ''
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	setSearch: searchText => dispatch(setSearchAction(searchText))
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
@@ -96,7 +94,6 @@ export default class ShareListView extends React.Component {
 		FileUpload_MaxFileSize: PropTypes.number,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
-		setSearch: PropTypes.func,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string
@@ -236,7 +233,7 @@ export default class ShareListView extends React.Component {
 
 	shareMessage = (item) => {
 		const { value, isMedia, fileInfo } = this.state;
-		const { navigation, setSearch } = this.props;
+		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
 			rid: item.rid,
@@ -245,8 +242,6 @@ export default class ShareListView extends React.Component {
 			fileInfo,
 			name: this.getRoomTitle(item)
 		});
-
-		setSearch('');
 	}
 
 	canUploadFile = () => {
