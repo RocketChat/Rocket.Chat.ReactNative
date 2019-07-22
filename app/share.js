@@ -81,7 +81,7 @@ class Root extends React.Component {
 			}));
 
 			// user
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 			const user = userId && serversDB.objectForPrimaryKey('user', userId);
 			store.dispatch(setUser(user));
 
