@@ -18,8 +18,6 @@ describe('Broadcast room', () => {
 		before(async () => {
 			if (device.getPlatform() === 'ios') {
 				await device.reloadReactNative();
-				await navigateToLogin();
-				await login();
 			}
 		});
 
