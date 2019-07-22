@@ -242,7 +242,6 @@ export default class ShareListView extends React.Component {
 			fileInfo,
 			name: this.getRoomTitle(item)
 		});
-		this.search('');
 	}
 
 	canUploadFile = () => {

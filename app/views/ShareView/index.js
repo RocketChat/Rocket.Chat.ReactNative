@@ -18,9 +18,12 @@ import Loading from './Loading';
 import database from '../../lib/realm';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { setSearch as setSearchAction } from '../../actions/rooms';
 
 @connect(state => ({
 	username: state.login.user && state.login.user.username
+}), dispatch => ({
+	setSearch: searchText => dispatch(setSearchAction(searchText))
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -46,7 +49,8 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		username: PropTypes.string
+		username: PropTypes.string,
+		setSearch: PropTypes.func
 	};
 
 	constructor(props) {
@@ -79,6 +83,11 @@ export default class ShareView extends React.Component {
 		const { room } = this.state;
 		const { navigation, username } = this.props;
 		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
+	}
+
+	componentDidUpdate() {
+		const { setSearch } = this.props;
+		setSearch('');
 	}
 
 	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
