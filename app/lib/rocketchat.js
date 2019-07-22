@@ -520,9 +520,6 @@ const RocketChat = {
 	reportMessage(messageId) {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
-	markMessageAsUnread(firstUnreadMessageId) {
-		return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: firstUnreadMessageId } });
-	},
 	getRoom(rid) {
 		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
 		if (!result) {
@@ -585,11 +582,17 @@ const RocketChat = {
 		// RC 0.64.0
 		return this.sdk.post('rooms.favorite', { roomId, favorite });
 	},
-	toggleRead(read, roomId) {
+	toggleRead(read, roomId, firstUnreadMessageId) {
 		if (read) {
-			return this.sdk.post('subscriptions.unread', { roomId });
+			if (roomId !== undefined) {
+				return this.sdk.post('subscriptions.unread', { roomId });
+			}
+			if (firstUnreadMessageId !== undefined) {
+				return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: firstUnreadMessageId } });
+			}
+		} else {
+			return this.sdk.post('subscriptions.read', { rid: roomId });
 		}
-		return this.sdk.post('subscriptions.read', { rid: roomId });
 	},
 	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
 		// RC 0.42.0

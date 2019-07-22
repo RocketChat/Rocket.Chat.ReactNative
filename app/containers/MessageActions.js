@@ -82,10 +82,6 @@ export default class MessageActions extends React.Component {
 			this.REPLY_INDEX = this.options.length - 1;
 		}
 
-		// Mark as unread
-		this.options.push(I18n.t('Mark_as_unread'));
-		this.UNREAD_INDEX = this.options.length - 1;
-
 		// Edit
 		if (this.allowEdit(props)) {
 			this.options.push(I18n.t('Edit'));
@@ -132,6 +128,12 @@ export default class MessageActions extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			this.options.push(I18n.t('Read_Receipt'));
 			this.READ_RECEIPT_INDEX = this.options.length - 1;
+		}
+
+		// Mark as unread
+		if (props.actionMessage.u && props.actionMessage.u._id !== props.user.id) {
+			this.options.push(I18n.t('Mark_as_unread'));
+			this.UNREAD_INDEX = this.options.length - 1;
 		}
 
 		// Toggle Auto-translate
@@ -317,7 +319,7 @@ export default class MessageActions extends React.Component {
 	handleUnread = () => {
 		const { actionMessage } = this.props;
 		try {
-			RocketChat.markMessageAsUnread(actionMessage._id);
+			RocketChat.toggleRead(true, undefined, actionMessage._id);
 			Navigation.navigate('RoomsListView');
 		} catch (err) {
 			log('err_mark_unread_message', err);
