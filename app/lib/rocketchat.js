@@ -10,10 +10,12 @@ import database from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 
+import { addSettings } from '../actions';
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
+import { selectServerSuccess } from '../actions/server';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -217,18 +219,36 @@ const RocketChat = {
 		});
 	},
 
-	async simpleConnect({ server, token }) {
+	async shareExtensionInit(currentServer) {
+		database.setActiveDB(currentServer);
+
 		if (this.sdk) {
 			this.sdk.disconnect();
 			this.sdk = null;
 		}
 
 		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
+		const useSsl = !/http:\/\//.test(currentServer);
 
-		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		this.sdk = new RocketchatClient({ host: currentServer, protocol: 'ddp', useSsl });
 
-		await this.sdk.login({ resume: token });
+		// set Server
+		const { serversDB } = database.databases;
+		const server = serversDB.objectForPrimaryKey('servers', currentServer);
+		reduxStore.dispatch(selectServerSuccess(currentServer, server.version));
+
+		// set File configs
+		reduxStore.dispatch(addSettings({
+			Site_Url: server.id,
+			useRealName: server.useRealName,
+			FileUpload_MediaTypeWhiteList: server.FileUpload_MediaTypeWhiteList,
+			FileUpload_MaxFileSize: server.FileUpload_MaxFileSize
+		}));
+
+		// set User info
+		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+		reduxStore.dispatch(setUser(user));
 	},
 
 	register(credentials) {

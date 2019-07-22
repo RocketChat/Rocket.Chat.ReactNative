@@ -21,8 +21,7 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
 	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token,
-	server: state.server.server
+	token: state.login.user && state.login.user.token
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -48,9 +47,8 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		server: PropTypes.string,
-		token: PropTypes.string,
-		username: PropTypes.string.isRequired
+		username: PropTypes.string,
+		token: PropTypes.string
 	};
 
 	constructor(props) {
@@ -116,10 +114,10 @@ export default class ShareView extends React.Component {
 
 	sendTextMessage = async() => {
 		const { value, rid } = this.state;
-		const { server, token } = this.props;
+		const { token } = this.props;
 		if (value !== '' && rid !== '') {
 			try {
-				await RocketChat.simpleConnect({ server, token });
+				await RocketChat.login({ resume: token });
 				await RocketChat.sendMessage(rid, value, undefined);
 			} catch (error) {
 				log('err_share_extension_send_message', error);
