@@ -23,12 +23,10 @@ import {
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
-import SearchBar from './SearchBar';
 import ShareListHeader from './Header';
 
 import styles from './styles';
 
-const SCROLL_OFFSET = 56;
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
@@ -53,8 +51,15 @@ export default class ShareListView extends React.Component {
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
 		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
 
+		if (isIOS) {
+			return {
+				headerBackTitle: I18n.t('Back'),
+				header: <ShareListHeader />
+			};
+		}
+
 		return {
-			headerBackTitle: isIOS ? I18n.t('Back') : null,
+			headerBackTitle: null,
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>
@@ -296,8 +301,6 @@ export default class ShareListView extends React.Component {
 		}
 	}
 
-	renderSearchBar = () => <SearchBar onChangeSearchText={this.search} />;
-
 	renderSectionHeader = (header) => {
 		const { isSearching } = this.state;
 		if (isSearching) { return null; }
@@ -365,7 +368,6 @@ export default class ShareListView extends React.Component {
 		const { isSearching } = this.state;
 		return (
 			<React.Fragment>
-				{this.renderSearchBar()}
 				{ !isSearching
 					? (
 						<React.Fragment>
@@ -395,7 +397,6 @@ export default class ShareListView extends React.Component {
 				style={styles.flatlist}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={!isSearching && this.renderBorderBottom}
@@ -411,7 +412,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderError = () => {
-		const { fileInfo: file, loading } = this.state;
+		const { fileInfo: file, loading, isSearching } = this.state;
 		const { FileUpload_MaxFileSize } = this.props;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
@@ -423,7 +424,14 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				{ this.renderSelectServer() }
+				{ !isSearching
+					? (
+						<React.Fragment>
+							{this.renderSelectServer()}
+						</React.Fragment>
+					)
+					: null
+				}
 				<View style={[styles.container, styles.centered]}>
 					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
 					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />

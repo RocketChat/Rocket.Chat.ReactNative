@@ -10,7 +10,8 @@ import I18n from '../../i18n';
 import { COLOR_WHITE, HEADER_TITLE } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { setSearch as setSearchAction } from '../../actions/rooms';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import SearchHeader from './SearchHeader';
 
 const styles = StyleSheet.create({
 	container: {
@@ -83,6 +84,12 @@ class ShareListHeader extends PureComponent {
 						onChangeText={this.onSearchChangeText}
 					/>
 				</View>
+			);
+		} else if (isIOS) {
+			return (
+				<SearchHeader
+					onChangeSearchText={this.onSearchChangeText}
+				/>
 			);
 		}
 		return <Text style={styles.title}>{I18n.t('Select_Channels')}</Text>;

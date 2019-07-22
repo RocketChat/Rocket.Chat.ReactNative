@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		flex: 1
 	},
 	searchBox: {
 		alignItems: 'center',
