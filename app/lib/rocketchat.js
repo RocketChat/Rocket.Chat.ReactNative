@@ -217,6 +217,20 @@ const RocketChat = {
 		});
 	},
 
+	async simpleConnect({ server, token }) {
+		if (this.sdk) {
+			this.sdk.disconnect();
+			this.sdk = null;
+		}
+
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		await this.sdk.login({ resume: token });
+	},
+
 	register(credentials) {
 		// RC 0.50.0
 		return this.sdk.post('users.register', credentials, false);
