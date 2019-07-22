@@ -12,7 +12,6 @@ import { isEqual } from 'lodash';
 
 import Navigation from '../../lib/Navigation';
 import database, { safeAddListener } from '../../lib/realm';
-import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -185,7 +184,7 @@ export default class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = debounce(() => {
+	getSubscriptions = () => {
 		if (this.data && this.data.removeAllListeners) {
 			this.data.removeAllListeners();
 		}
@@ -205,12 +204,12 @@ export default class ShareListView extends React.Component {
 
 			safeAddListener(this.data, this.updateState);
 		}
-	}, 300);
+	};
 
 	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
+	updateState = () => {
 		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
@@ -220,7 +219,7 @@ export default class ShareListView extends React.Component {
 			});
 			this.forceUpdate();
 		});
-	}, 300);
+	};
 
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
