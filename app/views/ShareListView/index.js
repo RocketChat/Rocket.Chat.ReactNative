@@ -147,13 +147,13 @@ export default class ShareListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { searchText, server } = this.props;
+		const { searchText } = this.props;
 
-		if (server !== nextProps.server) {
+		if (searchText !== nextProps.searchText) {
+			this.search(nextProps.searchText);
+		} else {
 			this.setState({ loading: true });
 			this.getSubscriptions();
-		} else if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
 		}
 	}
 
@@ -337,7 +337,7 @@ export default class ShareListView extends React.Component {
 
 	renderBorderBottom = () => <View style={styles.borderBottom} />;
 
-	renderServerSelector = () => {
+	renderSelectServer = () => {
 		const { servers } = this.state;
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
@@ -369,7 +369,7 @@ export default class ShareListView extends React.Component {
 				{ !isSearching
 					? (
 						<React.Fragment>
-							{this.renderServerSelector()}
+							{this.renderSelectServer()}
 							{this.renderSectionHeader('Chats')}
 						</React.Fragment>
 					)
@@ -404,6 +404,7 @@ export default class ShareListView extends React.Component {
 				enableEmptySections
 				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
+				initialNumToRender={12}
 				windowSize={20}
 			/>
 		);
@@ -422,7 +423,7 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				{ this.renderServerSelector() }
+				{ this.renderSelectServer() }
 				<View style={[styles.container, styles.centered]}>
 					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
 					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
