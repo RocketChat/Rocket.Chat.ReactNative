@@ -20,8 +20,7 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token
+	username: state.login.user && state.login.user.username
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -47,8 +46,7 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		username: PropTypes.string,
-		token: PropTypes.string
+		username: PropTypes.string
 	};
 
 	constructor(props) {
@@ -114,10 +112,8 @@ export default class ShareView extends React.Component {
 
 	sendTextMessage = async() => {
 		const { value, rid } = this.state;
-		const { token } = this.props;
 		if (value !== '' && rid !== '') {
 			try {
-				await RocketChat.login({ resume: token });
 				await RocketChat.sendMessage(rid, value, undefined);
 			} catch (error) {
 				log('err_share_extension_send_message', error);

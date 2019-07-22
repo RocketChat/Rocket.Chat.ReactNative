@@ -22,7 +22,9 @@ const SearchBar = React.memo(({ onChangeSearchText }) => {
 
 	const onFocus = () => {
 		setHasCancel(true);
-		LayoutAnimation.easeInEaseOut();
+		if (isIOS) {
+			LayoutAnimation.easeInEaseOut();
+		}
 	};
 
 	if (isIOS) {
