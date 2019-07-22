@@ -60,10 +60,10 @@ export default class SelectServerView extends React.Component {
 			server: currentServer
 		} = this.props;
 
+		Navigation.navigate('ShareListView');
 		if (currentServer !== server) {
 			await RocketChat.shareExtensionInit(server);
 		}
-		Navigation.navigate('ShareListView');
 	}
 
 	renderItem = ({ item }) => {

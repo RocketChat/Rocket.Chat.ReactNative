@@ -62,8 +62,8 @@ class Root extends React.Component {
 		const currentServer = await RNUserDefaults.get('currentServer');
 
 		if (currentServer) {
-			await RocketChat.shareExtensionInit(currentServer);
 			await Navigation.navigate('InsideStack');
+			await RocketChat.shareExtensionInit(currentServer);
 		} else {
 			await Navigation.navigate('OutsideStack');
 		}
