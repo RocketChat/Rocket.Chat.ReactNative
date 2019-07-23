@@ -13,7 +13,9 @@ import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, Toast } from '../../utils/info';
+import { showErrorAlert } from '../../utils/info';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log from '../../utils/log';
@@ -222,7 +224,7 @@ export default class ProfileView extends React.Component {
 					setUser({ ...params });
 				}
 				this.setState({ saving: false, showPasswordAlert: false });
-				this.toast.show(I18n.t('Profile_saved_successfully'));
+				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
 		} catch (e) {
@@ -235,7 +237,7 @@ export default class ProfileView extends React.Component {
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
-			this.toast.show(I18n.t('Avatar_changed_successfully'));
+			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
 			this.init();
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
@@ -386,7 +388,6 @@ export default class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<Toast ref={toast => this.toast = toast} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='profile-view-list'
