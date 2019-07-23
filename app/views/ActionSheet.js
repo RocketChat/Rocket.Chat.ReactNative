@@ -81,13 +81,15 @@ const styles = StyleSheet.create({
 	},
 	androidCancelButtonView: {
 		height: ROW_HEIGHT,
-		alignItems: 'center'
+		alignItems: 'center',
+		flex: 1
 	},
 	cancelButton: {
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		paddingVertical: 5,
-		paddingHorizontal: 60,
+		paddingVertical: 6,
+		alignItems: 'center',
 		marginTop: 5,
+		marginHorizontal: 20,
 		borderRadius: 20
 	},
 	backdrop: {
