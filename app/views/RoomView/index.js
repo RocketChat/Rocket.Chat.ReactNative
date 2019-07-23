@@ -41,7 +41,7 @@ import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { Toast } from '../../utils/info';
+import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
@@ -472,7 +472,7 @@ export default class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
 			log('err_toggle_follow_thread', e);
 		}
@@ -600,7 +600,7 @@ export default class RoomView extends React.Component {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} toast={this.toast} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -638,7 +638,6 @@ export default class RoomView extends React.Component {
 					user={user}
 					baseUrl={baseUrl}
 				/>
-				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}
