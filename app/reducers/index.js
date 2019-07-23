@@ -11,7 +11,7 @@ import app from './app';
 import sortPreferences from './sortPreferences';
 import notification from './notification';
 import markdown from './markdown';
-import crashlytics from './crashlytics';
+import crashReport from './crashReport';
 
 export default combineReducers({
 	settings,
@@ -26,5 +26,5 @@ export default combineReducers({
 	sortPreferences,
 	notification,
 	markdown,
-	crashlytics
+	crashReport
 });

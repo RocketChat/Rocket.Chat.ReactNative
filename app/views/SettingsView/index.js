@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
-import { toggleCrashlytics as toggleCrashlyticsAction } from '../../actions/crashlytics';
+import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -15,7 +15,7 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import { MARKDOWN_KEY, CRASHLYTICS_KEY } from '../../lib/rocketchat';
+import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -29,10 +29,10 @@ const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBo
 @connect(state => ({
 	server: state.server,
 	useMarkdown: state.markdown.useMarkdown,
-	useCrashlytics: state.crashlytics.useCrashlytics
+	allowCrashReport: state.crashReport.allowCrashReport
 }), dispatch => ({
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
-	toggleCrashlytics: params => dispatch(toggleCrashlyticsAction(params))
+	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 }))
 export default class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -44,9 +44,9 @@ export default class SettingsView extends React.Component {
 		navigation: PropTypes.object,
 		server:	PropTypes.object,
 		useMarkdown: PropTypes.bool,
-		useCrashlytics: PropTypes.bool,
+		allowCrashReport: PropTypes.bool,
 		toggleMarkdown: PropTypes.func,
-		toggleCrashlytics: PropTypes.func
+		toggleCrashReport: PropTypes.func
 	}
 
 	toggleMarkdown = (value) => {
@@ -55,10 +55,10 @@ export default class SettingsView extends React.Component {
 		toggleMarkdown(value);
 	}
 
-	toggleCrashlytics = (value) => {
-		AsyncStorage.setItem(CRASHLYTICS_KEY, JSON.stringify(value));
-		const { toggleCrashlytics } = this.props;
-		toggleCrashlytics(value);
+	toggleCrashReport = (value) => {
+		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
+		const { toggleCrashReport } = this.props;
+		toggleCrashReport(value);
 		if (value) {
 			firebase.crashlytics().enableCrashlyticsCollection();
 		}
@@ -98,13 +98,13 @@ export default class SettingsView extends React.Component {
 		);
 	}
 
-	renderCrashlyticsSwitch = () => {
-		const { useCrashlytics } = this.props;
+	renderCrashReportSwitch = () => {
+		const { allowCrashReport } = this.props;
 		return (
 			<Switch
-				value={useCrashlytics}
+				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleCrashlytics}
+				onValueChange={this.toggleCrashReport}
 			/>
 		);
 	}
@@ -175,11 +175,13 @@ export default class SettingsView extends React.Component {
 						testID='settings-view-markdown'
 						right={() => this.renderMarkdownSwitch()}
 					/>
-					<Separator />
+
+					<SectionSeparator />
+
 					<ListItem
-						title={I18n.t('Allow_crashlytics')}
-						testID='settings-view-crashlytics'
-						right={() => this.renderCrashlyticsSwitch()}
+						title={I18n.t('Send_crash_report')}
+						testID='settings-view-crash-report'
+						right={() => this.renderCrashReportSwitch()}
 					/>
 				</ScrollView>
 			</SafeAreaView>

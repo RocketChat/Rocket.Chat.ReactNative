@@ -7,7 +7,7 @@ import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleMarkdown } from '../actions/markdown';
-import { toggleCrashlytics } from '../actions/crashlytics';
+import { toggleCrashReport } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -67,8 +67,8 @@ const restore = function* restore() {
 		const useMarkdown = yield RocketChat.getUseMarkdown();
 		yield put(toggleMarkdown(useMarkdown));
 
-		const useCrashlytics = yield RocketChat.getUseCrashlytics();
-		yield put(toggleCrashlytics(useCrashlytics));
+		const allowCrashReport = yield RocketChat.getAllowCrashReport();
+		yield put(toggleCrashReport(allowCrashReport));
 
 		if (!token || !server) {
 			yield all([

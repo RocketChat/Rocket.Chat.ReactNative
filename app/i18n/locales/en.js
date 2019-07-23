@@ -87,7 +87,6 @@ export default {
 	alerts: 'alerts',
 	All_users_in_the_channel_can_write_new_messages: 'All users in the channel can write new messages',
 	All: 'All',
-	Allow_crashlytics: 'Allow crashlytics',
 	Allow_Reactions: 'Allow Reactions',
 	Alphabetical: 'Alphabetical',
 	and_more: 'and more',
@@ -408,5 +407,5 @@ export default {
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	Change_Language: 'Change Language',
-	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order '
+	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order to identify problems and fix it.'
 };

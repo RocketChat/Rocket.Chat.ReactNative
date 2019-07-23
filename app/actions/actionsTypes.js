@@ -69,4 +69,4 @@ export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
 export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
-export const TOGGLE_CRASHLYTICS = 'TOGGLE_CRASHLYTICS';
+export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';

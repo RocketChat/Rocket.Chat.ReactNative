@@ -1,15 +1,15 @@
-import { TOGGLE_CRASHLYTICS } from '../actions/actionsTypes';
+import { TOGGLE_CRASH_REPORT } from '../actions/actionsTypes';
 
 const initialState = {
-	useCrashlytics: false
+	allowCrashReport: false
 };
 
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case TOGGLE_CRASHLYTICS:
+		case TOGGLE_CRASH_REPORT:
 			return {
-				useCrashlytics: action.payload
+				allowCrashReport: action.payload
 			};
 		default:
 			return state;
