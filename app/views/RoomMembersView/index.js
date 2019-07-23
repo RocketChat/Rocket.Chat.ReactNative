@@ -12,7 +12,8 @@ import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
-import { Toast } from '../../utils/info';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
@@ -232,7 +233,7 @@ export default class RoomMembersView extends React.Component {
 		const { rid, userLongPressed } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			this.toast.show(I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }));
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log('err_handle_mute', e);
 		}
@@ -299,7 +300,6 @@ export default class RoomMembersView extends React.Component {
 					windowSize={10}
 					{...scrollPersistTaps}
 				/>
-				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}
