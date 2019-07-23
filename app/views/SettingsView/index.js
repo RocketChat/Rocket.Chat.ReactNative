@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -25,6 +25,14 @@ import sharedStyles from '../Styles';
 
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
+const ItemInfo = React.memo(({ info }) => (
+	<View style={styles.infoContainer}>
+		<Text style={styles.infoText}>{info}</Text>
+	</View>
+));
+ItemInfo.propTypes = {
+	info: PropTypes.string
+};
 
 @connect(state => ({
 	server: state.server,
@@ -116,7 +124,7 @@ export default class SettingsView extends React.Component {
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={sharedStyles.listContentContainer}
+					contentContainerStyle={[sharedStyles.listContentContainer, styles.listWithoutBorderBottom]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
@@ -182,6 +190,10 @@ export default class SettingsView extends React.Component {
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
 						right={() => this.renderCrashReportSwitch()}
+					/>
+					<Separator />
+					<ItemInfo
+						info={I18n.t('Crash_report_disclaimer')}
 					/>
 				</ScrollView>
 			</SafeAreaView>
