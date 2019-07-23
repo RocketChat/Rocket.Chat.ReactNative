@@ -3,6 +3,7 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -15,7 +16,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -33,6 +34,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
+import chat.rocket.SharePackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import chat.rocket.reactnative.generated.BasePackageList;
 
@@ -60,6 +63,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new DocumentPickerPackage(),
             new RNFirebasePackage(),
             new RNFirebaseCrashlyticsPackage(),
             new RNFirebaseAnalyticsPackage(),
@@ -67,6 +71,8 @@ public class MainApplication extends Application implements ReactApplication, IN
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
+            new SharePackage(),
+            new RNFetchBlobPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),
@@ -78,7 +84,7 @@ public class MainApplication extends Application implements ReactApplication, IN
 					new ReactNativeAudioPackage(),
 					new KeyboardInputPackage(MainApplication.this),
 					new FastImageViewPackage(),
-					new RNI18nPackage(),
+					new RNLocalizePackage(),
           new RNNotificationsPackage(MainApplication.this),
           new ModuleRegistryAdapter(mModuleRegistryProvider)
       );

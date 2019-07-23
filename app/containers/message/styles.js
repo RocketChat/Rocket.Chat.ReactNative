@@ -114,7 +114,7 @@ export default StyleSheet.create({
 		color: COLOR_PRIMARY
 	},
 	errorButton: {
-		paddingHorizontal: 15,
+		paddingLeft: 10,
 		paddingVertical: 5
 	},
 	buttonContainer: {

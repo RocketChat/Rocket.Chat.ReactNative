@@ -110,7 +110,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.16.1"
+        versionName "1.17.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -174,6 +174,9 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
+    implementation project(':rn-extensions-share')
+    implementation project(':rn-fetch-blob')
+    implementation project(':react-native-document-picker')
     implementation project(':react-native-firebase')
     implementation project(':react-native-webview')
     implementation project(':react-native-orientation-locker')
@@ -185,7 +188,7 @@ dependencies {
     })
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-i18n')
+    implementation project(':react-native-localize')
     implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
     implementation project(':react-native-video')
