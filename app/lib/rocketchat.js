@@ -733,7 +733,7 @@ const RocketChat = {
 	async getAllowCrashReport() {
 		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
 		if (allowCrashReport === null) {
-			return false;
+			return true;
 		}
 		return JSON.parse(allowCrashReport);
 	},
