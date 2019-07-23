@@ -128,6 +128,9 @@ export default class MessageContainer extends React.Component {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
 		} = this.props;
+		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
+			return true;
+		}
 		if (previousItem && (
 			(previousItem.ts.toDateString() === item.ts.toDateString())
 			&& (previousItem.u.username === item.u.username)

@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
-import styles from './styles';
+import styles, { ROW_HEIGHT } from './styles';
+
+export { ROW_HEIGHT };
 
 const DirectoryItemLabel = React.memo(({ text }) => {
 	if (!text) {
@@ -30,7 +32,7 @@ const DirectoryItem = ({
 			/>
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>
-					<RoomTypeIcon type='c' />
+					<RoomTypeIcon type={type} />
 					<Text style={styles.directoryItemName} numberOfLines={1}>{title}</Text>
 				</View>
 				<Text style={styles.directoryItemUsername} numberOfLines={1}>{description}</Text>
