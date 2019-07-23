@@ -129,7 +129,6 @@ export default {
 	Copied_to_clipboard: 'Copié dans le presse-papier!',
 	Copy: 'Copier',
 	Permalink: 'Lien permanent',
-	Mark_as_unread: 'Marquer comme non lu',
 	Create_account: 'Créer un compte',
 	Create_Channel: 'Créer un canal',
 	Created_snippet: 'Créé un extrait',

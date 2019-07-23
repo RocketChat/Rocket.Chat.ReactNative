@@ -133,7 +133,6 @@ export default {
 	Copied_to_clipboard: 'In die Zwischenablage kopiert!',
 	Copy: 'Kopieren',
 	Permalink: 'Permalink',
-	Mark_as_unread: 'Als ungelesen markieren',
 	Create_account: 'Ein Konto erstellen',
 	Create_Channel: 'Kanal erstellen',
 	Created_snippet: 'Erstellt ein Snippet',

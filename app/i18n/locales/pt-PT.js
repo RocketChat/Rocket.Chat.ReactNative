@@ -129,7 +129,6 @@ export default {
 	Copied_to_clipboard: 'Copiado para a área de transferência!',
 	Copy: 'Copiar',
 	Permalink: 'Link permanente',
-	Mark_as_unread: 'Marcar como não lido',
 	Create_account: 'Criar uma conta',
 	Create_Channel: 'Criar Canal',
 	Created_snippet: 'Criado um extracto',
