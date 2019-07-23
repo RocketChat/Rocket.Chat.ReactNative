@@ -21,7 +21,7 @@ import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
-import { LISTENER } from '../helperComponent/Toast';
+import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 
 @connect(

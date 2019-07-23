@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
-import { LISTENER } from '../../helperComponent/Toast';
+import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';

@@ -41,7 +41,7 @@ import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { LISTENER } from '../../helperComponent/Toast';
+import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({

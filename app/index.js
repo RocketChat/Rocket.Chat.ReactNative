@@ -16,7 +16,7 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
-import Toast from './helperComponent/Toast';
+import Toast from './containers/Toast';
 
 useScreens();
 

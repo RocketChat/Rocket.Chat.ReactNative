@@ -12,7 +12,7 @@ import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database, { safeAddListener } from '../../lib/realm';
-import { LISTENER } from '../../helperComponent/Toast';
+import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
 import I18n from '../../i18n';
