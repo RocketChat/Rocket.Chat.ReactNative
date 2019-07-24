@@ -151,6 +151,13 @@ export default class ShareListView extends React.Component {
 		this.getSubscriptions();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const { server } = this.props;
+		if (nextProps.server !== server) {
+			this.getSubscriptions();
+		}
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		const { searching } = this.state;
 		if (nextState.searching !== searching) {
