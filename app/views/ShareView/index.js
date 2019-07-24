@@ -24,7 +24,7 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
-		const canSend = navigation.getParam('canSend', false);
+		const canSend = navigation.getParam('canSend', true);
 
 		return ({
 			title: I18n.t('Share'),
