@@ -1,9 +1,8 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
 	View, StyleSheet, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { TextInput } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
@@ -28,48 +27,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	showSearchHeader: state.rooms.showSearchHeader
-}))
-class Header extends PureComponent {
-	static propTypes = {
-		showSearchHeader: PropTypes.bool,
-		onChangeSearchText: PropTypes.func
+const Header = React.memo(({ showSearchHeader, onChangeSearchText }) => {
+	if (showSearchHeader) {
+		return (
+			<View style={styles.container}>
+				<TextInput
+					style={styles.search}
+					placeholder={I18n.t('Search')}
+					placeholderTextColor='rgba(255, 255, 255, 0.5)'
+					onChangeText={onChangeSearchText}
+					autoFocus
+				/>
+			</View>
+		);
 	}
+	return <Text style={styles.title}>{I18n.t('Send_to')}</Text>;
+});
 
-	componentDidUpdate(prevProps) {
-		const { showSearchHeader } = this.props;
-		if (showSearchHeader && prevProps.showSearchHeader !== showSearchHeader) {
-			setTimeout(() => {
-				this.searchInputRef.focus();
-			}, 300);
-		}
-	}
-
-	setSearchInputRef = (ref) => {
-		this.searchInputRef = ref;
-	}
-
-	render() {
-		const {
-			showSearchHeader, onChangeSearchText
-		} = this.props;
-
-		if (showSearchHeader) {
-			return (
-				<View style={styles.container}>
-					<TextInput
-						ref={this.setSearchInputRef}
-						style={styles.search}
-						placeholder={I18n.t('Search')}
-						placeholderTextColor='rgba(255, 255, 255, 0.5)'
-						onChangeText={onChangeSearchText}
-					/>
-				</View>
-			);
-		}
-		return <Text style={styles.title}>{I18n.t('Send_to')}</Text>;
-	}
-}
+Header.propTypes = {
+	showSearchHeader: PropTypes.bool,
+	onChangeSearchText: PropTypes.func
+};
 
 export default Header;

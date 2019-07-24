@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import { setSearch as setSearchAction } from '../../../actions/rooms';
 import Header from './Header';
 
-@connect(() => ({}), dispatch => ({
+@connect(state => ({
+	showSearchHeader: state.rooms.showSearchHeader
+}), dispatch => ({
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 }))
 class ShareListHeader extends PureComponent {
 	static propTypes = {
+		showSearchHeader: PropTypes.bool,
 		setSearch: PropTypes.func
 	}
 
@@ -19,8 +22,11 @@ class ShareListHeader extends PureComponent {
 	}
 
 	render() {
+		const { showSearchHeader } = this.props;
+
 		return (
 			<Header
+				showSearchHeader={showSearchHeader}
 				onChangeSearchText={this.onSearchChangeText}
 			/>
 		);
