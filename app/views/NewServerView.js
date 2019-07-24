@@ -74,9 +74,7 @@ export default class NewServerView extends React.Component {
 			connectServer(server);
 			this.setState({ text: server });
 		} else {
-			this.timeout = setTimeout(() => {
-				this.input.focus();
-			}, 600);
+			this.input;
 		}
 	}
 
@@ -169,6 +167,7 @@ export default class NewServerView extends React.Component {
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							inputRef={e => this.input = e}
+							autoFocus={this.props.focus || true}
 							containerStyle={styles.inputContainer}
 							placeholder={defaultServer}
 							value={text}

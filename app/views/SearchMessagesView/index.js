@@ -47,7 +47,7 @@ export default class SearchMessagesView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.name.focus();
+		this.name;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -137,6 +137,7 @@ export default class SearchMessagesView extends React.Component {
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						inputRef={(e) => { this.name = e; }}
+						autoFocus={this.props.focus || true}
 						label={I18n.t('Search')}
 						onChangeText={this.search}
 						placeholder={I18n.t('Search_Messages')}

@@ -71,9 +71,7 @@ export default class RegisterView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.nameInput.focus();
-		}, 600);
+		this.nameInput;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -207,6 +205,7 @@ export default class RegisterView extends React.Component {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							inputRef={(e) => { this.nameInput = e; }}
+							autoFocus={this.props.focus || true}
 							placeholder={I18n.t('Name')}
 							returnKeyType='next'
 							iconLeft='user'

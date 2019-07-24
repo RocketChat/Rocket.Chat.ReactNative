@@ -33,9 +33,7 @@ export default class ForgotPasswordView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.emailInput.focus();
-		}, 600);
+			this.emailInput;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -100,6 +98,7 @@ export default class ForgotPasswordView extends React.Component {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>
 						<TextInput
 							inputRef={(e) => { this.emailInput = e; }}
+							autoFocus={this.props.focus || true}
 							placeholder={I18n.t('Email')}
 							keyboardType='email-address'
 							iconLeft='mail'
