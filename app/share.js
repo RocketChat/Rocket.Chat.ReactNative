@@ -60,8 +60,9 @@ class Root extends React.Component {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
 		const currentServer = await RNUserDefaults.get('currentServer');
+		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
-		if (currentServer) {
+		if (currentServer && token) {
 			await Navigation.navigate('InsideStack');
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
