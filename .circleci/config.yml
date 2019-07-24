@@ -89,7 +89,7 @@ jobs:
           name: Test
           command: |
             detox clean-framework-cache && detox build-framework-cache
-            detox test --configuration ios.sim.release --cleanup --loglevel verbose
+            detox test --configuration ios.sim.release --cleanup
 
       - save_cache:
           name: Save NPM cache
@@ -148,8 +148,11 @@ jobs:
             echo 'export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH"' >> ~/.bash_profile
             echo 'export QEMU_AUDIO_DRV=none' >> ~/.bash_profile
             echo 'export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home' >> ~/.bash_profile
-            source ~/.bash_profile
           name: Configure Environment Variables
+      - run:
+          command: |
+            sed -i "s/minSdkVersion = 21/minSdkVersion = 24/g" android/build.gradle
+          name: Configure minSdkVersion = 24
       - run:
           name: Install NPM modules
           command: |
@@ -234,7 +237,7 @@ jobs:
           command: |
             source ~/.bash_profile
             /usr/local/share/android-sdk/platform-tools/adb -s emulator-5554 install -r -g -t "/Users/distiller/project/android/app/build/outputs/apk/release/app-release.apk"
-            detox test -c android.emu.release -l trace --headless
+            detox test -c android.emu.release --headless
           name: Detox Test
       - store_artifacts:
           path: /tmp/screenshots

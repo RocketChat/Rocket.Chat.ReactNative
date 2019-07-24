@@ -5,7 +5,7 @@ const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
 const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login, tapBack, sleep } = require('./helpers/app');
-const { searchRoom } = require('./helpers/roomListView');
+const { searchRoom } = require('./helpers/rooms');
 const data = require('./data');
 
 // Tests randomly fail on Android platform - they can fail on:

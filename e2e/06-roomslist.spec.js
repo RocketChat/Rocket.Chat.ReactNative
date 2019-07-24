@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const { login, navigateToLogin, tapBack, sleep } = require('./helpers/app');
-const { searchRoom } = require('./helpers/roomListView');
+const { searchRoom } = require('./helpers/rooms');
 const data = require('./data');
 
 describe('Rooms list screen', () => {

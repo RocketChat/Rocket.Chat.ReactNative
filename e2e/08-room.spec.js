@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
-const { searchRoom } = require('./helpers/roomListView');
+const { searchRoom } = require('./helpers/rooms');
 
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
