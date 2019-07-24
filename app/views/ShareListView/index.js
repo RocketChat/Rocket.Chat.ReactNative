@@ -22,6 +22,7 @@ import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../cont
 import ShareListHeader from './Header';
 
 import styles from './styles';
+import StatusBar from '../../containers/StatusBar';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -425,6 +426,7 @@ export default class ShareListView extends React.Component {
 		const { showError } = this.state;
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+				<StatusBar />
 				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>
 		);
