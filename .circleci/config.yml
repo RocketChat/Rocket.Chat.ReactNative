@@ -157,9 +157,12 @@ jobs:
           name: Install NPM modules
           command: |
             yarn global add detox-cli
+            yarn
+      - run:
+          name: Install watchman
+          command: |
             npm r -g watchman
             HOMEBREW_NO_AUTO_UPDATE=1 brew install watchman
-            yarn
       - run:
           command: |
             git clone https://github.com/facebook/FBSimulatorControl.git FBSimulatorControl
@@ -226,7 +229,6 @@ jobs:
               sleep 5
               export BOOT=$(adb -e shell getprop sys.boot_completed 2>&1)
             done
-            sleep 15
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
