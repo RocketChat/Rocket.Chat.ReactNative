@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, InteractionManager, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -11,15 +11,11 @@ import * as mime from 'react-native-mime-types';
 import { isEqual } from 'lodash';
 
 import Navigation from '../../lib/Navigation';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/realm';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
-import {
-	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction
-} from '../../actions/rooms';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
@@ -34,27 +30,30 @@ const keyExtractor = item => item.rid;
 @connect(state => ({
 	userId: state.login.user && state.login.user.id,
 	token: state.login.user && state.login.user.token,
-	searchText: state.rooms.searchText,
 	server: state.server.server,
 	useRealName: state.settings.UI_Use_Real_Name,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	baseUrl: state.server ? state.server.server : ''
-}), dispatch => ({
-	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
-		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+		const initSearch = navigation.getParam('initSearch', () => {});
+		const cancelSearch = navigation.getParam('cancelSearch', () => {});
+		const search = navigation.getParam('search', () => {});
 
 		if (isIOS) {
 			return {
-				headerBackTitle: I18n.t('Back'),
-				headerTitle: <ShareListHeader />
+				headerTitle: (
+					<ShareListHeader
+						searching={searching}
+						initSearch={initSearch}
+						cancelSearch={cancelSearch}
+						search={search}
+					/>
+				)
 			};
 		}
 
@@ -63,7 +62,7 @@ export default class ShareListView extends React.Component {
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
 					</CustomHeaderButtons>
 				)
 				: (
@@ -72,13 +71,13 @@ export default class ShareListView extends React.Component {
 						testID='share-extension-close'
 					/>
 				),
-			headerTitle: <ShareListHeader />,
+			headerTitle: <ShareListHeader searching={searching} search={search} />,
 			headerRight: (
 				searching
 					? null
 					: (
 						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
+							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearch} /> : null}
 						</CustomHeaderButtons>
 					)
 			)
@@ -89,11 +88,8 @@ export default class ShareListView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		useRealName: PropTypes.bool,
-		searchText: PropTypes.string,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
-		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string
@@ -110,7 +106,7 @@ export default class ShareListView extends React.Component {
 			isMedia: false,
 			mediaLoading: false,
 			fileInfo: null,
-			search: [],
+			searchResults: [],
 			chats: [],
 			servers: [],
 			loading: true
@@ -122,8 +118,9 @@ export default class ShareListView extends React.Component {
 	async componentDidMount() {
 		const { navigation } = this.props;
 		navigation.setParams({
-			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			initSearch: this.initSearch,
+			cancelSearch: this.cancelSearch,
+			search: this.search
 		});
 
 		try {
@@ -153,16 +150,6 @@ export default class ShareListView extends React.Component {
 		this.getSubscriptions();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const { searchText } = this.props;
-
-		if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
-		} else {
-			this.getSubscriptions();
-		}
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const { searching } = this.state;
 		if (nextState.searching !== searching) {
@@ -174,8 +161,8 @@ export default class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { search } = this.state;
-		if (!isEqual(nextState.search, search)) {
+		const { searchResults } = this.state;
+		if (!isEqual(nextState.searchResults, searchResults)) {
 			return true;
 		}
 		return false;
@@ -191,32 +178,14 @@ export default class ShareListView extends React.Component {
 	}
 
 	getSubscriptions = () => {
-		if (this.data && this.data.removeAllListeners) {
-			this.data.removeAllListeners();
-		}
-
 		const { serversDB } = database.databases;
 		const {	server } = this.props;
 
 		if (server) {
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
-
-			// servers
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.servers = serversDB.objects('servers');
-
-			// chats
-			this.data = this.data.sorted('roomUpdatedAt', true);
 			this.chats = this.data.slice(0, LIMIT);
 
-			safeAddListener(this.data, this.updateState);
-		}
-	};
-
-	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
-
-	// eslint-disable-next-line react/sort-comp
-	updateState = () => {
-		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
@@ -224,8 +193,10 @@ export default class ShareListView extends React.Component {
 				showError: !this.canUploadFile()
 			});
 			this.forceUpdate();
-		});
+		}
 	};
+
+	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
@@ -279,33 +250,29 @@ export default class ShareListView extends React.Component {
 	search = (text) => {
 		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
 		this.internalSetState({
-			search: result.slice(0, LIMIT),
+			searchResults: result.slice(0, LIMIT),
 			searchText: text
 		});
 	}
 
-	initSearchingAndroid = () => {
+	initSearch = () => {
 		const { chats } = this.state;
-		const { openSearchHeader, navigation } = this.props;
-		this.setState({ searching: true, search: chats });
+		const { navigation } = this.props;
+		this.setState({ searching: true, searchResults: chats });
 		navigation.setParams({ searching: true });
-		openSearchHeader();
 	}
 
-	cancelSearchingAndroid = () => {
-		if (isAndroid) {
-			const { closeSearchHeader, navigation } = this.props;
-			this.internalSetState({ searching: false, search: [], searchText: '' });
-			navigation.setParams({ searching: false });
-			closeSearchHeader();
-			Keyboard.dismiss();
-		}
+	cancelSearch = () => {
+		const { navigation } = this.props;
+		this.internalSetState({ searching: false, searchResults: [], searchText: '' });
+		navigation.setParams({ searching: false });
+		Keyboard.dismiss();
 	}
 
 	handleBackPress = () => {
 		const { searching } = this.state;
 		if (searching) {
-			this.cancelSearchingAndroid();
+			this.cancelSearch();
 			return true;
 		}
 		return false;
@@ -396,7 +363,7 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			chats, mediaLoading, loading, search, searching, searchText
+			chats, mediaLoading, loading, searchResults, searching, searchText
 		} = this.state;
 
 		if (mediaLoading || loading) {
@@ -405,7 +372,7 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<FlatList
-				data={searching ? search : chats}
+				data={searching ? searchResults : chats}
 				keyExtractor={keyExtractor}
 				style={styles.flatlist}
 				renderItem={this.renderItem}

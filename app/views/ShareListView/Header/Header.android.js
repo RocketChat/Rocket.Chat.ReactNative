@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ showSearchHeader, onChangeSearchText }) => {
-	if (showSearchHeader) {
+const Header = React.memo(({ searching, onChangeSearchText }) => {
+	if (searching) {
 		return (
 			<View style={styles.container}>
 				<TextInput
@@ -45,7 +45,7 @@ const Header = React.memo(({ showSearchHeader, onChangeSearchText }) => {
 });
 
 Header.propTypes = {
-	showSearchHeader: PropTypes.bool,
+	searching: PropTypes.bool,
 	onChangeSearchText: PropTypes.func
 };
 

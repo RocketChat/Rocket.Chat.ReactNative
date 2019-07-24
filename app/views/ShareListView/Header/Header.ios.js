@@ -14,15 +14,15 @@ import sharedStyles from '../../Styles';
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: HEADER_BACKGROUND,
-		width: '100%',
 		flexDirection: 'row',
 		...sharedStyles.separatorBottom
 	}
 });
 
-const Header = React.memo(({ onChangeSearchText }) => {
+const Header = React.memo(({
+	searching, onChangeSearchText, initSearch, cancelSearch
+}) => {
 	const [text, setText] = useState('');
-	const [hasCancel, setHasCancel] = useState(false);
 
 	const onChangeText = (searchText) => {
 		onChangeSearchText(searchText);
@@ -32,19 +32,19 @@ const Header = React.memo(({ onChangeSearchText }) => {
 	const onCancelPress = () => {
 		Keyboard.dismiss();
 		onChangeText('');
-		setHasCancel(false);
+		cancelSearch();
 		LayoutAnimation.easeInEaseOut();
 	};
 
 	const onFocus = () => {
-		setHasCancel(true);
+		initSearch();
 		LayoutAnimation.easeInEaseOut();
 	};
 
 	return (
 		<View style={styles.container}>
 			{
-				!hasCancel
+				!searching
 					? (
 						<CloseShareExtensionButton
 							onPress={ShareExtension.close}
@@ -55,7 +55,7 @@ const Header = React.memo(({ onChangeSearchText }) => {
 			}
 			<SearchBox
 				value={text}
-				hasCancel={hasCancel}
+				hasCancel={searching}
 				onFocus={onFocus}
 				onCancelPress={onCancelPress}
 				onChangeText={onChangeText}
@@ -67,7 +67,10 @@ const Header = React.memo(({ onChangeSearchText }) => {
 });
 
 Header.propTypes = {
-	onChangeSearchText: PropTypes.func
+	searching: PropTypes.bool,
+	onChangeSearchText: PropTypes.func,
+	initSearch: PropTypes.func,
+	cancelSearch: PropTypes.func
 };
 
 export default Header;
