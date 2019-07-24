@@ -151,7 +151,7 @@ jobs:
           name: Configure Environment Variables
       - run:
           command: |
-            sed -i "s/minSdkVersion = 21/minSdkVersion = 24/g" android/build.gradle
+            sed -i '' "s/minSdkVersion = 21/minSdkVersion = 24/g" android/build.gradle
           name: Configure minSdkVersion = 24
       - run:
           name: Install NPM modules
