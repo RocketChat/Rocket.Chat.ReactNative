@@ -70,12 +70,6 @@ export default class RegisterView extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.nameInput.focus();
-		}, 600);
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const { customFields } = this.state;
 		if (!equal(nextState.customFields, customFields)) {
@@ -207,6 +201,7 @@ export default class RegisterView extends React.Component {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							inputRef={(e) => { this.nameInput = e; }}
+							autoFocus
 							placeholder={I18n.t('Name')}
 							returnKeyType='next'
 							iconLeft='user'

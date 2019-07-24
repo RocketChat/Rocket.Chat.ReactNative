@@ -83,12 +83,6 @@ export default class LoginView extends React.Component {
 		this.setTitle(Site_Name);
 	}
 
-	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.usernameInput.focus();
-		}, 600);
-	}
-
 	componentWillReceiveProps(nextProps) {
 		const { Site_Name, error } = this.props;
 		if (nextProps.Site_Name && nextProps.Site_Name !== Site_Name) {
@@ -199,6 +193,7 @@ export default class LoginView extends React.Component {
 				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
+					autoFocus
 					onChangeText={value => this.setState({ code: value })}
 					keyboardType='numeric'
 					returnKeyType='send'
