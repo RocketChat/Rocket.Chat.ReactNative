@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text
+	View, StyleSheet, Text, TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { TextInput } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
 import { COLOR_WHITE, HEADER_TITLE } from '../../../constants/colors';
@@ -17,7 +16,8 @@ const styles = StyleSheet.create({
 	search: {
 		fontSize: 20,
 		color: COLOR_WHITE,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		marginHorizontal: 14
 	},
 	title: {
 		fontSize: 20,

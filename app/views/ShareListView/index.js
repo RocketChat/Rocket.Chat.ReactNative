@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, InteractionManager, FlatList, ActivityIndicator, Keyboard
+	View, Text, LayoutAnimation, InteractionManager, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -104,8 +104,8 @@ export default class ShareListView extends React.Component {
 		this.data = [];
 		this.state = {
 			showError: false,
-			isSearching: false,
 			searching: false,
+			searchText: '',
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
@@ -115,6 +115,8 @@ export default class ShareListView extends React.Component {
 			servers: [],
 			loading: true
 		};
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	async componentDidMount() {
@@ -157,7 +159,6 @@ export default class ShareListView extends React.Component {
 		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		} else {
-			this.setState({ loading: true });
 			this.getSubscriptions();
 		}
 	}
@@ -279,13 +280,14 @@ export default class ShareListView extends React.Component {
 		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
 		this.internalSetState({
 			search: result.slice(0, LIMIT),
-			isSearching: text !== ''
+			searchText: text
 		});
 	}
 
 	initSearchingAndroid = () => {
+		const { chats } = this.state;
 		const { openSearchHeader, navigation } = this.props;
-		this.setState({ searching: true });
+		this.setState({ searching: true, search: chats });
 		navigation.setParams({ searching: true });
 		openSearchHeader();
 	}
@@ -293,17 +295,28 @@ export default class ShareListView extends React.Component {
 	cancelSearchingAndroid = () => {
 		if (isAndroid) {
 			const { closeSearchHeader, navigation } = this.props;
-			this.setState({ searching: false });
+			this.internalSetState({ searching: false, search: [], searchText: '' });
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
-			this.internalSetState({ search: [] });
 			Keyboard.dismiss();
 		}
 	}
 
+	handleBackPress = () => {
+		const { searching } = this.state;
+		if (searching) {
+			this.cancelSearchingAndroid();
+			return true;
+		}
+		return false;
+	}
+
 	renderSectionHeader = (header) => {
-		const { isSearching } = this.state;
-		if (isSearching) { return null; }
+		const { searching } = this.state;
+		if (searching) {
+			return null;
+		}
+
 		return (
 			<View style={styles.headerContainer}>
 				<Text style={styles.headerText}>
@@ -365,10 +378,10 @@ export default class ShareListView extends React.Component {
 	);
 
 	renderHeader = () => {
-		const { isSearching } = this.state;
+		const { searching } = this.state;
 		return (
 			<React.Fragment>
-				{ !isSearching
+				{ !searching
 					? (
 						<React.Fragment>
 							{this.renderSelectServer()}
@@ -383,7 +396,7 @@ export default class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			search, chats, mediaLoading, loading, isSearching
+			chats, mediaLoading, loading, search, searching, searchText
 		} = this.state;
 
 		if (mediaLoading || loading) {
@@ -392,16 +405,16 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<FlatList
-				data={isSearching ? search : chats}
+				data={searching ? search : chats}
 				keyExtractor={keyExtractor}
 				style={styles.flatlist}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={!isSearching && this.renderBorderBottom}
-				ListHeaderComponentStyle={!isSearching ? styles.borderBottom : {}}
-				ListEmptyComponent={this.renderEmptyComponent}
+				ListFooterComponent={!searching && this.renderBorderBottom}
+				ListHeaderComponentStyle={!searching ? styles.borderBottom : {}}
+				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
 				enableEmptySections
 				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
@@ -412,7 +425,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderError = () => {
-		const { fileInfo: file, loading, isSearching } = this.state;
+		const { fileInfo: file, loading, searching } = this.state;
 		const { FileUpload_MaxFileSize } = this.props;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
@@ -424,7 +437,7 @@ export default class ShareListView extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				{ !isSearching
+				{ !searching
 					? (
 						<React.Fragment>
 							{this.renderSelectServer()}
