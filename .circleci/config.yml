@@ -157,8 +157,8 @@ jobs:
           name: Install NPM modules
           command: |
             yarn global add detox-cli
-            npm r -g watchman
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install watchman
+#            npm r -g watchman
+#            HOMEBREW_NO_AUTO_UPDATE=1 brew install watchman
             yarn
       - run:
           command: |
