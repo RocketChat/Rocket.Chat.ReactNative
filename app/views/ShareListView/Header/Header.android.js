@@ -22,8 +22,9 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 20,
-		...sharedStyles.textRegular,
-		color: HEADER_TITLE
+		...sharedStyles.textBold,
+		color: HEADER_TITLE,
+		marginHorizontal: 16
 	}
 });
 
@@ -67,7 +68,7 @@ class Header extends PureComponent {
 				</View>
 			);
 		}
-		return <Text style={styles.title}>{I18n.t('Select_Channels')}</Text>;
+		return <Text style={styles.title}>{I18n.t('Send_to')}</Text>;
 	}
 }
 
