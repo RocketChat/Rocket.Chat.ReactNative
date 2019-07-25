@@ -1,36 +1,30 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
-import { setSearch as setSearchAction } from '../../../actions/rooms';
 import Header from './Header';
 
-@connect(state => ({
-	showSearchHeader: state.rooms.showSearchHeader
-}), dispatch => ({
-	setSearch: searchText => dispatch(setSearchAction(searchText))
-}))
-class ShareListHeader extends PureComponent {
-	static propTypes = {
-		showSearchHeader: PropTypes.bool,
-		setSearch: PropTypes.func
-	}
+const ShareListHeader = React.memo(({
+	searching, initSearch, cancelSearch, search
+}) => {
+	const onSearchChangeText = (text) => {
+		search(text.trim());
+	};
 
-	onSearchChangeText = (text) => {
-		const { setSearch } = this.props;
-		setSearch(text.trim());
-	}
+	return (
+		<Header
+			searching={searching}
+			initSearch={initSearch}
+			cancelSearch={cancelSearch}
+			onChangeSearchText={onSearchChangeText}
+		/>
+	);
+});
 
-	render() {
-		const { showSearchHeader } = this.props;
-
-		return (
-			<Header
-				showSearchHeader={showSearchHeader}
-				onChangeSearchText={this.onSearchChangeText}
-			/>
-		);
-	}
-}
+ShareListHeader.propTypes = {
+	searching: PropTypes.bool,
+	initSearch: PropTypes.func,
+	cancelSearch: PropTypes.func,
+	search: PropTypes.func
+};
 
 export default ShareListHeader;
