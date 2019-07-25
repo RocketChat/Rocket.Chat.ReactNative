@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	View, StyleSheet, FlatList, Text, TextInput, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -47,6 +47,68 @@ const styles = StyleSheet.create({
 		color: COLOR_PRIMARY,
 		fontSize: 17,
 		...sharedStyles.textRegular
+	},
+	headerContainer: {
+		flexDirection: 'column',
+		paddingTop: 55,
+		paddingHorizontal: 8,
+		height: 142,
+		backgroundColor: '#f9f9f9',
+		borderBottomWidth: 0.3,
+		borderColor: '#b2b2b2'
+	},
+	headerContainer2: {
+		flexDirection: 'row'
+	},
+	textContainer: {
+		flex: 1,
+		backgroundColor: COLOR_WHITE,
+		justifyContent: 'center'
+	},
+	headerTitleContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	headerTitleText: {
+		flex: 1,
+		textAlign: 'center',
+		fontFamily: 'System',
+		fontSize: 17,
+		fontWeight: '600'
+	},
+	backButtonContainer: {
+		flex: 1,
+		flexDirection: 'row'
+	},
+	backButtonImage: {
+		height: 22,
+		width: 18
+	},
+	backButtonText: {
+		fontSize: 17,
+		fontWeight: '400',
+		color: '#007aff'
+	},
+	searchContainer: {
+		flexDirection: 'row',
+		height: 43,
+		marginTop: 12,
+		alignItems: 'center',
+		backgroundColor: '#E6E8E9',
+		borderRadius: 10
+	},
+	searchBar: {
+		flex: 1,
+		paddingHorizontal: 8,
+		height: 28,
+		backgroundColor: '#E6E8E9',
+		fontSize: 17
+	},
+	searchBarImage: {
+		marginLeft: 10,
+		height: 17,
+		width: 17
 	}
 });
 
@@ -59,8 +121,28 @@ const styles = StyleSheet.create({
 }))
 export default class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
-		title: I18n.t('New_Message')
+		header: (
+			<View style={styles.headerContainer}>
+				<View style={styles.headerContainer2}>
+					<View style={styles.backButtonContainer}>
+						<Image
+							source={require('../../icons/ios-filled-back.png')}
+							resizeMode='contain'
+							style={styles.backButtonImage}
+						/>
+						<Text style={styles.backButtonText}>Messages</Text>
+					</View>
+					<View style={styles.headerTitleContainer}>
+						<Text style={styles.headerTitleText}>{I18n.t('New_Message')}</Text>
+					</View>
+					<View style={{ flex: 1 }} />
+				</View>
+				<View style={styles.searchContainer}>
+					<Image source={require('../../icons/Search.png')} style={styles.searchBarImage} />
+					<TextInput style={styles.searchBar} placeholder='Search' placeholderTextColor='#8e8e93' />
+				</View>
+			</View>
+		)
 	})
 
 	static propTypes = {
