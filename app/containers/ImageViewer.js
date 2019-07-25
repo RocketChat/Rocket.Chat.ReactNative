@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+	View, StyleSheet, Dimensions, ActivityIndicator
+} from 'react-native';
 import {
 	PanGestureHandler,
 	State,
@@ -13,17 +15,19 @@ import PropTypes from 'prop-types';
 //     sum = 0;
 //   while (iters-- > 0) sum += iters;
 // }, 300);
+const IMAGE_WIDTH = Dimensions.get('window').width * (2 / 3);
+const IMAGE_HEIGHT = Dimensions.get('window').height * (2 / 3);
 
 const styles = StyleSheet.create({
 	wrapper: {
-		borderColor: 'green',
-		borderWidth: 2,
-		overflow: 'hidden'
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	image: {
-		width: 300,
-		height: 300,
-		backgroundColor: 'black'
+		width: IMAGE_WIDTH,
+		height: IMAGE_HEIGHT,
+		backgroundColor: 'white'
 	}
 });
 const {
@@ -273,7 +277,7 @@ pinchRef = React.createRef();
 panRef = React.createRef();
 
 static propTypes = {
-	source: PropTypes.string
+	uri: PropTypes.string
 }
 
 constructor(props) {
@@ -383,13 +387,17 @@ constructor(props) {
 			panFriction
 		)
 	);
+	this.state = {
+		loading: true
+	};
 }
 
 render() {
 // The below two animated values makes it so that scale appears to be done
 // from the top left corner of the image view instead of its center. This
 // is required for the "scale focal point" math to work correctly
-	const { source } = this.props;
+	const { uri } = this.props;
+	const { loading } = this.state;
 	const scaleTopLeftFixX = divide(multiply(WIDTH, add(this._scale, -1)), 2);
 	const scaleTopLeftFixY = divide(multiply(HEIGHT, add(this._scale, -1)), 2);
 	return (
@@ -423,16 +431,15 @@ render() {
 									]
 								}
 							]}
-							resizeMode='stretch'
-							source={source}
+							resizeMode='contain'
+							source={{ uri }}
+							onLoadEnd={() => { this.setState({ loading: false }); }}
 						>
-							{/* <FastImage
-								source={{ uri: source }}
-							/> */}
 						</Animated.Image>
 					</PanGestureHandler>
 				</Animated.View>
 			</PinchGestureHandler>
+			{loading ? <ActivityIndicator /> : null }
 		</View>
 	);
 }

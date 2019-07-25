@@ -217,7 +217,10 @@ const NewMessageStack = createStackNavigator({
 
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
-	NewMessageStack
+	NewMessageStack,
+	ImageModal: {
+		getScreen: () => require('./views/ImageModal').default
+	}
 },
 {
 	mode: 'modal',
