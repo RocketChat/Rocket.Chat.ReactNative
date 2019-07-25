@@ -7,6 +7,7 @@ import random from '../../utils/random';
 
 export const getMessage = (rid, msg = '', tmid) => {
 	const _id = random(17);
+	const { login, share } = reduxStore.getState();
 	const message = {
 		_id,
 		rid,
@@ -16,8 +17,8 @@ export const getMessage = (rid, msg = '', tmid) => {
 		_updatedAt: new Date(),
 		status: messagesStatus.TEMP,
 		u: {
-			_id: reduxStore.getState().login.user.id || reduxStore.getState().share.user.id || '1',
-			username: reduxStore.getState().login.user.username || reduxStore.getState().share.user.username
+			_id: login.user.id || share.user.id || '1',
+			username: login.user.username || share.user.username
 		}
 	};
 	try {
