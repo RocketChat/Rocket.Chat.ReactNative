@@ -8,6 +8,7 @@ import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
+import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -49,9 +50,19 @@ const imagePickerConfig = {
 	avoidEmptySpaceAroundImage: false
 };
 
+const libraryPickerConfig = {
+	mediaType: 'any'
+};
+
+const videoPickerConfig = {
+	mediaType: 'video'
+};
+
 const FILE_CANCEL_INDEX = 0;
 const FILE_PHOTO_INDEX = 1;
-const FILE_LIBRARY_INDEX = 2;
+const FILE_VIDEO_INDEX = 2;
+const FILE_LIBRARY_INDEX = 3;
+const FILE_DOCUMENT_INDEX = 4;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -101,12 +112,26 @@ class MessageBox extends Component {
 		this.fileOptions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
-			I18n.t('Choose_from_library')
+			I18n.t('Take_a_video'),
+			I18n.t('Choose_from_library'),
+			I18n.t('Choose_file')
 		];
+		const libPickerLabels = {
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			loadingLabelText: I18n.t('Processing')
+		};
 		this.imagePickerConfig = {
 			...imagePickerConfig,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel')
+			...libPickerLabels
+		};
+		this.libraryPickerConfig = {
+			...libraryPickerConfig,
+			...libPickerLabels
+		};
+		this.videoPickerConfig = {
+			...videoPickerConfig,
+			...libPickerLabels
 		};
 	}
 
@@ -463,9 +488,8 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	sendImageMessage = async(file) => {
+	sendMediaMessage = async(file) => {
 		const { rid, tmid } = this.props;
-
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
 			name: file.name,
@@ -478,7 +502,7 @@ class MessageBox extends Component {
 		try {
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
 		} catch (e) {
-			log('err_send_image', e);
+			log('err_send_media_message', e);
 		}
 	}
 
@@ -491,14 +515,42 @@ class MessageBox extends Component {
 		}
 	}
 
+	takeVideo = async() => {
+		try {
+			const video = await ImagePicker.openCamera(this.videoPickerConfig);
+			this.showUploadModal(video);
+		} catch (e) {
+			log('err_take_video', e);
+		}
+	}
+
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(this.imagePickerConfig);
+			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_choose_from_library', e);
 		}
 	}
+
+	chooseFile = async() => {
+		try {
+			const res = await DocumentPicker.pick({
+				type: [DocumentPicker.types.allFiles]
+			});
+			this.showUploadModal({
+				filename: res.name,
+				size: res.size,
+				mime: res.type,
+				path: res.uri
+			});
+		} catch (error) {
+			if (!DocumentPicker.isCancel(error)) {
+				log('chooseFile', error);
+			}
+		}
+	}
+
 
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
@@ -518,8 +570,14 @@ class MessageBox extends Component {
 			case FILE_PHOTO_INDEX:
 				this.takePhoto();
 				break;
+			case FILE_VIDEO_INDEX:
+				this.takeVideo();
+				break;
 			case FILE_LIBRARY_INDEX:
 				this.chooseFromLibrary();
+				break;
+			case FILE_DOCUMENT_INDEX:
+				this.chooseFile();
 				break;
 			default:
 				break;
@@ -896,7 +954,7 @@ class MessageBox extends Component {
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
-					submit={this.sendImageMessage}
+					submit={this.sendMediaMessage}
 				/>
 			</React.Fragment>
 		);

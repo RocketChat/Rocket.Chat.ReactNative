@@ -47,8 +47,43 @@ target 'RocketChatRN' do
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Performance', '~> 5.20.1'
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
   use_unimodules!
+
+end
+
+target 'ShareRocketChatRN' do
+
+  rn_path = '../node_modules/react-native'
+
+  pod 'React', path: rn_path, subspecs: [
+    'Core',
+    'RCTActionSheet',
+    'RCTAnimation',
+#    'RCTGeolocation',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTNetwork',
+    'RCTSettings',
+    'RCTText',
+    'RCTVibration',
+    'RCTWebSocket'
+  ]
+  
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
+  pod 'GoogleIDFASupport', '~> 3.14.0'
+  pod 'Firebase/Performance', '~> 5.20.1'
 
 end
 

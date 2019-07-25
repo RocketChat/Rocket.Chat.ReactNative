@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.swmansion.reanimated.ReanimatedPackage;
+import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -34,6 +35,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.actionsheet.ActionSheetPackage;
 import io.realm.react.RealmReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
+import chat.rocket.SharePackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import chat.rocket.reactnative.generated.BasePackageList;
 
@@ -62,6 +65,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new ReanimatedPackage(),
+            new DocumentPickerPackage(),
             new RNFirebasePackage(),
             new RNFirebaseCrashlyticsPackage(),
             new RNFirebaseAnalyticsPackage(),
@@ -69,6 +73,8 @@ public class MainApplication extends Application implements ReactApplication, IN
             new RNCWebViewPackage(),
             new OrientationPackage(),
             new SplashScreenReactPackage(),
+            new SharePackage(),
+            new RNFetchBlobPackage(),
 		  		new RNGestureHandlerPackage(),
 					new RNScreensPackage(),
 					new ActionSheetPackage(),

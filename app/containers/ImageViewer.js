@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-	View, StyleSheet, Dimensions, ActivityIndicator
+	View, StyleSheet, ActivityIndicator
 } from 'react-native';
 import {
 	PanGestureHandler,
 	State,
 	PinchGestureHandler
 } from 'react-native-gesture-handler';
+import { ResponsiveComponent } from 'react-native-responsive-ui';
 import Animated, { Easing } from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
@@ -15,8 +16,6 @@ import PropTypes from 'prop-types';
 //     sum = 0;
 //   while (iters-- > 0) sum += iters;
 // }, 300);
-const IMAGE_WIDTH = Dimensions.get('window').width * (2 / 3);
-const IMAGE_HEIGHT = Dimensions.get('window').height * (2 / 3);
 
 const styles = StyleSheet.create({
 	wrapper: {
@@ -25,8 +24,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	image: {
-		width: IMAGE_WIDTH,
-		height: IMAGE_HEIGHT,
 		backgroundColor: 'white'
 	}
 });
@@ -271,7 +268,7 @@ function bouncy(
 const WIDTH = 300;
 const HEIGHT = 300;
 
-export default class ImageViewer extends Component {
+export default class ImageViewer extends ResponsiveComponent {
 pinchRef = React.createRef();
 
 panRef = React.createRef();
@@ -387,9 +384,6 @@ constructor(props) {
 			panFriction
 		)
 	);
-	this.state = {
-		loading: true
-	};
 }
 
 render() {
@@ -397,7 +391,10 @@ render() {
 // from the top left corner of the image view instead of its center. This
 // is required for the "scale focal point" math to work correctly
 	const { uri } = this.props;
-	const { loading } = this.state;
+	const { loaded } = this.state;
+	const { width, height } = this.state.window;
+	const imageWidth = width * (2 / 3);
+	const imageHeight = height * (2 / 3);
 	const scaleTopLeftFixX = divide(multiply(WIDTH, add(this._scale, -1)), 2);
 	const scaleTopLeftFixY = divide(multiply(HEIGHT, add(this._scale, -1)), 2);
 	return (
@@ -420,6 +417,10 @@ render() {
 							style={[
 								styles.image,
 								{
+									width: imageWidth,
+									height: imageHeight
+								},
+								{
 									transform: [
 										{ translateX: this._panTransX },
 										{ translateY: this._panTransY },
@@ -433,13 +434,13 @@ render() {
 							]}
 							resizeMode='contain'
 							source={{ uri }}
-							onLoadEnd={() => { this.setState({ loading: false }); }}
+							onLoadEnd={() => { this.setState({ loaded: true }); }}
 						>
 						</Animated.Image>
 					</PanGestureHandler>
 				</Animated.View>
 			</PinchGestureHandler>
-			{loading ? <ActivityIndicator /> : null }
+			{loaded ? null : <ActivityIndicator /> }
 		</View>
 	);
 }

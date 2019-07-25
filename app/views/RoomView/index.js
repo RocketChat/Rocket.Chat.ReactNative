@@ -41,7 +41,8 @@ import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { Toast } from '../../utils/info';
+import { LISTENER } from '../../containers/Toast';
+import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(state => ({
 	user: {
@@ -455,37 +456,6 @@ export default class RoomView extends React.Component {
 		}
 	};
 
-	isOwner = () => {
-		const { room } = this.state;
-		return room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
-	}
-
-	isMuted = () => {
-		const { room } = this.state;
-		const { user } = this.props;
-		return room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
-	}
-
-	isReadOnly = () => {
-		const { room } = this.state;
-		if (this.isOwner()) {
-			return false;
-		}
-		return (room && room.ro) || this.isMuted();
-	}
-
-	isBlocked = () => {
-		const { room } = this.state;
-
-		if (room) {
-			const { t, blocked, blocker } = room;
-			if (t === 'd' && (blocked || blocker)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid) => {
 		try {
@@ -502,7 +472,7 @@ export default class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			this.toast.show(isFollowingThread ? 'Unfollowed thread' : 'Following thread');
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
 			log('err_toggle_follow_thread', e);
 		}
@@ -576,7 +546,7 @@ export default class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const { joined, room } = this.state;
-		const { navigation } = this.props;
+		const { navigation, user } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
@@ -593,14 +563,14 @@ export default class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly()) {
+		if (isReadOnly(room, user)) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
-		if (this.isBlocked()) {
+		if (isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
@@ -630,7 +600,7 @@ export default class RoomView extends React.Component {
 		return (
 			<React.Fragment>
 				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} toast={this.toast} />
+					? <MessageActions room={room} tmid={this.tmid} user={user} />
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
@@ -668,7 +638,6 @@ export default class RoomView extends React.Component {
 					user={user}
 					baseUrl={baseUrl}
 				/>
-				<Toast ref={toast => this.toast = toast} />
 			</SafeAreaView>
 		);
 	}
