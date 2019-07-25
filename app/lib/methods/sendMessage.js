@@ -16,8 +16,8 @@ export const getMessage = (rid, msg = '', tmid) => {
 		_updatedAt: new Date(),
 		status: messagesStatus.TEMP,
 		u: {
-			_id: reduxStore.getState().login.user.id || '1',
-			username: reduxStore.getState().login.user.username
+			_id: reduxStore.getState().login.user.id || reduxStore.getState().share.user.id || '1',
+			username: reduxStore.getState().login.user.username || reduxStore.getState().share.user.username
 		}
 	};
 	try {

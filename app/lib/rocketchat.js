@@ -248,11 +248,9 @@ const RocketChat = {
 		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
 		reduxStore.dispatch(shareSetUser({
-			user: {
-				userId: user.id,
-				token: user.token,
-				username: user.username
-			}
+			id: user.id,
+			token: user.token,
+			username: user.username
 		}));
 
 		await RocketChat.login({ resume: user.token });
