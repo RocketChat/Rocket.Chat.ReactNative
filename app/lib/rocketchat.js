@@ -10,12 +10,13 @@ import database from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 
-import { addSettings } from '../actions';
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import { selectServerSuccess } from '../actions/server';
+import {
+	shareSelectServer, shareSetServerInfo, shareSetUser
+} from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -235,20 +236,24 @@ const RocketChat = {
 		// set Server
 		const { serversDB } = database.databases;
 		const server = serversDB.objectForPrimaryKey('servers', currentServer);
-		reduxStore.dispatch(selectServerSuccess(currentServer, server.version));
+		reduxStore.dispatch(shareSelectServer(currentServer));
 
 		// set File configs
-		reduxStore.dispatch(addSettings({
+		reduxStore.dispatch(shareSetServerInfo({
 			Site_Url: server.id,
-			useRealName: server.useRealName,
-			FileUpload_MediaTypeWhiteList: server.FileUpload_MediaTypeWhiteList,
-			FileUpload_MaxFileSize: server.FileUpload_MaxFileSize
+			...server
 		}));
 
 		// set User info
 		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
-		reduxStore.dispatch(setUser(user));
+		reduxStore.dispatch(shareSetUser({
+			user: {
+				userId: user.id,
+				token: user.token,
+				username: user.username
+			}
+		}));
 
 		await RocketChat.login({ resume: user.token });
 	},

@@ -10,7 +10,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual } from 'lodash';
 
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/ShareNavigation';
 import database, { safeAddListener } from '../../lib/realm';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
@@ -31,15 +31,14 @@ const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	token: state.login.user && state.login.user.token,
-	searchText: state.rooms.searchText,
-	server: state.server.server,
-	useRealName: state.settings.UI_Use_Real_Name,
-	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	baseUrl: state.server ? state.server.server : ''
+@connect(({ share }) => ({
+	userId: share.user && share.user.id,
+	token: share.user && share.user.token,
+	server: share.server,
+	useRealName: share.serverInfo.UI_Use_Real_Name,
+	FileUpload_MediaTypeWhiteList: share.serverInfo.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: share.serverInfo.FileUpload_MaxFileSize,
+	baseUrl: share ? share.server : ''
 }), dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction())

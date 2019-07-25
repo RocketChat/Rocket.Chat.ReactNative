@@ -19,8 +19,8 @@ import database from '../../lib/realm';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
-@connect(state => ({
-	username: state.login.user && state.login.user.username
+@connect(({ share }) => ({
+	username: share.user && share.user.username
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {

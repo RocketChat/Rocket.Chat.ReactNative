@@ -4,7 +4,7 @@ import { createAppContainer, createStackNavigator, createSwitchNavigator } from 
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
-import Navigation from './lib/Navigation';
+import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';

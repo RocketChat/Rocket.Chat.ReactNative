@@ -10,7 +10,7 @@ import I18n from '../i18n';
 import database from '../lib/realm';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_BACKGROUND_CONTAINER } from '../constants/colors';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/ShareNavigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server
+@connect(({ share }) => ({
+	server: share.server
 }))
 export default class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
