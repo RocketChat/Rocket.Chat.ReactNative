@@ -92,7 +92,7 @@ export default class ShareView extends React.Component {
 		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
 	}
 
-	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
+	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
 
 	_sendMessage = async() => {
 		const { isMedia } = this.state;
