@@ -25,7 +25,8 @@ export function cancelUpload(path) {
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise((resolve, reject) => {
 		try {
-			const { FileUpload_MaxFileSize, Site_Url } = database.objectForPrimaryKey('servers', server);
+			const { serversDB } = database.databases;
+			const { FileUpload_MaxFileSize, id: Site_Url } = serversDB.objectForPrimaryKey('servers', server);
 			const { id, token } = user;
 
 			// -1 maxFileSize means there is no limit
