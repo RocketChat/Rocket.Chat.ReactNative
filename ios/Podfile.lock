@@ -145,7 +145,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - rn-extensions-share (2.3.8):
+  - rn-extensions-share (2.3.10):
     - React
   - RNDeviceInfo (1.6.1):
     - React
@@ -366,7 +366,7 @@ SPEC CHECKSUMS:
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
-  rn-extensions-share: 1b6c523f87e168c887262a3830e8e1af22d9dffb
+  rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
