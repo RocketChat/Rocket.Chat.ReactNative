@@ -23,16 +23,12 @@ export function cancelUpload(path) {
 	}
 }
 
-export function sendFileMessage(rid, fileInfo, tmid) {
+export function sendFileMessage(rid, fileInfo, tmid, shareExtension = false) {
 	return new Promise((resolve, reject) => {
 		try {
 			const { settings, share, login } = reduxStore.getState();
-			const { FileUpload_MaxFileSize, Site_Url } = Object.entries(settings).length !== 0
-				? settings
-				: share.serverInfo;
-			const { id, token } = Object.entries(login.user).length !== 0
-				? login.user
-				: share.user;
+			const { FileUpload_MaxFileSize, Site_Url } = shareExtension ? share.serverInfo : settings;
+			const { id, token } = shareExtension ? share.user : login.user;
 
 			// -1 maxFileSize means there is no limit
 			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {

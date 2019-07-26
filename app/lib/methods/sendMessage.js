@@ -5,7 +5,7 @@ import reduxStore from '../createStore';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export const getMessage = (rid, msg = '', tmid) => {
+export const getMessage = (rid, msg = '', tmid, shareExtension) => {
 	const _id = random(17);
 	const { login, share } = reduxStore.getState();
 	const message = {
@@ -17,8 +17,8 @@ export const getMessage = (rid, msg = '', tmid) => {
 		_updatedAt: new Date(),
 		status: messagesStatus.TEMP,
 		u: {
-			_id: login.user.id || share.user.id || '1',
-			username: login.user.username || share.user.username
+			_id: (shareExtension ? share.user.id : login.user.id) || '1',
+			username: shareExtension ? share.user.username : login.user.username
 		}
 	};
 	try {
@@ -44,9 +44,9 @@ export async function sendMessageCall(message) {
 	return data;
 }
 
-export default async function(rid, msg, tmid) {
+export default async function(rid, msg, tmid, shareExtension = false) {
 	try {
-		const message = getMessage(rid, msg, tmid);
+		const message = getMessage(rid, msg, tmid, shareExtension);
 		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
 		if (room) {

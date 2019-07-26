@@ -103,7 +103,7 @@ export default class ShareView extends React.Component {
 		const fileMessage = { ...fileInfo, name, description };
 		if (fileInfo && rid !== '') {
 			try {
-				await RocketChat.sendFileMessage(rid, fileMessage, undefined);
+				await RocketChat.sendFileMessage(rid, fileMessage, undefined, true);
 			} catch (e) {
 				log('err_send_media_message', e);
 			}
@@ -114,7 +114,7 @@ export default class ShareView extends React.Component {
 		const { value, rid } = this.state;
 		if (value !== '' && rid !== '') {
 			try {
-				await RocketChat.sendMessage(rid, value, undefined);
+				await RocketChat.sendMessage(rid, value, undefined, true);
 			} catch (error) {
 				log('err_share_extension_send_message', error);
 			}
