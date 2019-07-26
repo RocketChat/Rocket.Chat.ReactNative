@@ -624,7 +624,7 @@ export default class RoomView extends React.Component {
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				<UploadProgress rid={this.rid} />
+				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
 				<FileModal
 					attachment={selectedAttachment}
 					isVisible={photoModalVisible}

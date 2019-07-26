@@ -24,7 +24,8 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 		id: share.user && share.user.id,
 		username: share.user && share.user.username,
 		token: share.user && share.user.token
-	}
+	},
+	baseUrl: share ? share.server : ''
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -54,7 +55,8 @@ export default class ShareView extends React.Component {
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
-		})
+		}),
+		baseUrl: PropTypes.string.isRequired
 	};
 
 	constructor(props) {
@@ -108,11 +110,12 @@ export default class ShareView extends React.Component {
 
 	sendMediaMessage = async() => {
 		const { rid, fileInfo, file } = this.state;
+		const { baseUrl: server, user } = this.props;
 		const { name, description } = file;
 		const fileMessage = { ...fileInfo, name, description };
 		if (fileInfo && rid !== '') {
 			try {
-				await RocketChat.sendFileMessage(rid, fileMessage, undefined, true);
+				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
 			} catch (e) {
 				log('err_send_media_message', e);
 			}
