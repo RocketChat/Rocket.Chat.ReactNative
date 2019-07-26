@@ -20,7 +20,11 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 @connect(({ share }) => ({
-	username: share.user && share.user.username
+	user: {
+		id: share.user && share.user.id,
+		username: share.user && share.user.username,
+		token: share.user && share.user.token
+	}
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -46,7 +50,11 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		username: PropTypes.string
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		})
 	};
 
 	constructor(props) {
@@ -77,7 +85,8 @@ export default class ShareView extends React.Component {
 
 	componentDidMount() {
 		const { room } = this.state;
-		const { navigation, username } = this.props;
+		const { navigation, user } = this.props;
+		const { username } = user;
 		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
 	}
 
@@ -112,9 +121,10 @@ export default class ShareView extends React.Component {
 
 	sendTextMessage = async() => {
 		const { value, rid } = this.state;
+		const { user } = this.props;
 		if (value !== '' && rid !== '') {
 			try {
-				await RocketChat.sendMessage(rid, value, undefined, true);
+				await RocketChat.sendMessage(rid, value, undefined, user);
 			} catch (error) {
 				log('err_share_extension_send_message', error);
 			}
@@ -204,7 +214,8 @@ export default class ShareView extends React.Component {
 	}
 
 	render() {
-		const { username } = this.props;
+		const { user } = this.props;
+		const { username } = user;
 		const {
 			name, loading, isMedia, room
 		} = this.state;

@@ -410,8 +410,9 @@ export default class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
+		const { user } = this.props;
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid).then(() => {
+		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
 	};
