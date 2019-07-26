@@ -2,12 +2,15 @@ import {
 	put, call, takeLatest, select, take, fork, cancel
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
+import moment from 'moment';
+import 'moment/min/locales';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import { loginFailure, loginSuccess, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
+import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
@@ -72,6 +75,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchUserPresence);
 
 		I18n.locale = user.language;
+		moment.locale(toMomentLocale(user.language));
 
 		const { serversDB } = database.databases;
 		serversDB.write(() => {
@@ -132,6 +136,7 @@ const handleLogout = function* handleLogout() {
 const handleSetUser = function handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
+		moment.locale(toMomentLocale(user.language));
 	}
 };
 
