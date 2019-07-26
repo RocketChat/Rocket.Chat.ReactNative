@@ -113,6 +113,8 @@ PODS:
     - React
   - react-native-orientation-locker (1.1.5):
     - React
+  - react-native-realm-path (1.2.11):
+    - React
   - react-native-splash-screen (3.2.0):
     - React
   - react-native-webview (5.8.1):
@@ -188,6 +190,7 @@ DEPENDENCIES:
   - GoogleIDFASupport (~> 3.14.0)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-realm-path (from `../node_modules/react-native-realm-path`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
@@ -271,6 +274,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-document-picker"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
+  react-native-realm-path:
+    :path: "../node_modules/react-native-realm-path"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
@@ -353,6 +358,7 @@ SPEC CHECKSUMS:
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
   react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
   react-native-orientation-locker: 132a63bab4dddd2a5709f6f7935ad9676b0af7c5
+  react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: f3e28b48461c78db833f727feec08b13285e7b61
   RNDeviceInfo: 958a1ed6f94e04557b865b8ef848cfc83db0ebba
@@ -374,6 +380,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 7875ef440f1c2fb6583ee808c642c97d1410140d
+PODFILE CHECKSUM: 80852b4c5177be5c007dca7daf4b6f34a3cb68cb
 
 COCOAPODS: 1.6.2
