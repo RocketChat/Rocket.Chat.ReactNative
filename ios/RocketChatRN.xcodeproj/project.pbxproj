@@ -22,7 +22,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
-		1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */; };
 		1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
 		1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
 		1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743A22CBA2F9005A877F /* libRNFetchBlob.a */; };
@@ -624,7 +623,6 @@
 				1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */,
 				1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */,
 				1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */,
-				1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */,
 				0BFA93B8E2ED67D4832E0C76 /* libPods-ShareRocketChatRN.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

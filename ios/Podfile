@@ -75,6 +75,7 @@ target 'ShareRocketChatRN' do
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
   pod 'react-native-realm-path', :path => '../node_modules/react-native-realm-path'
+  pod 'rn-extensions-share', :path => '../node_modules/rn-extensions-share'
 
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
