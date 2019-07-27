@@ -193,7 +193,7 @@ export default class ShareListView extends React.Component {
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !this.canUploadFile(server),
+				showError: !this.canUploadFile(serverInfo),
 				serverInfo
 			});
 			this.forceUpdate();
@@ -221,10 +221,9 @@ export default class ShareListView extends React.Component {
 		});
 	}
 
-	canUploadFile = (server) => {
+	canUploadFile = (serverInfo) => {
 		const { fileInfo: file, mediaLoading, isMedia } = this.state;
-		const { serversDB } = database.databases;
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serversDB.objectForPrimaryKey('servers', server);
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
 
 		if (mediaLoading) {
 			return true;
