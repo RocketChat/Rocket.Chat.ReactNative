@@ -13,10 +13,3 @@ export function shareSetUser(user) {
 		user
 	};
 }
-
-export function shareSetServerInfo(serverInfo) {
-	return {
-		type: SHARE.SET_SERVER_INFO,
-		serverInfo
-	};
-}

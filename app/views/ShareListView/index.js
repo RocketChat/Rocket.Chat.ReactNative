@@ -32,9 +32,6 @@ const keyExtractor = item => item.rid;
 	userId: share.user && share.user.id,
 	token: share.user && share.user.token,
 	server: share.server,
-	useRealName: share.serverInfo.UI_Use_Real_Name,
-	FileUpload_MediaTypeWhiteList: share.serverInfo.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: share.serverInfo.FileUpload_MaxFileSize,
 	baseUrl: share ? share.server : ''
 }))
 /** @extends React.Component */
@@ -88,9 +85,6 @@ export default class ShareListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
-		useRealName: PropTypes.bool,
-		FileUpload_MediaTypeWhiteList: PropTypes.string,
-		FileUpload_MaxFileSize: PropTypes.number,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string
@@ -110,14 +104,15 @@ export default class ShareListView extends React.Component {
 			searchResults: [],
 			chats: [],
 			servers: [],
-			loading: true
+			loading: true,
+			serverInfo: null
 		};
 		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	async componentDidMount() {
-		const { navigation } = this.props;
+		const { navigation, server } = this.props;
 		navigation.setParams({
 			initSearch: this.initSearch,
 			cancelSearch: this.cancelSearch,
@@ -148,13 +143,13 @@ export default class ShareListView extends React.Component {
 			this.setState({ mediaLoading: false });
 		}
 
-		this.getSubscriptions();
+		this.getSubscriptions(server);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const { server } = this.props;
 		if (nextProps.server !== server) {
-			this.getSubscriptions();
+			this.getSubscriptions(nextProps.server);
 		}
 	}
 
@@ -185,20 +180,21 @@ export default class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = () => {
+	getSubscriptions = (server) => {
 		const { serversDB } = database.databases;
-		const {	server } = this.props;
 
 		if (server) {
 			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.servers = serversDB.objects('servers');
 			this.chats = this.data.slice(0, LIMIT);
+			const serverInfo = serversDB.objectForPrimaryKey('servers', server);
 
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !this.canUploadFile()
+				showError: !this.canUploadFile(server),
+				serverInfo
 			});
 			this.forceUpdate();
 		}
@@ -207,7 +203,8 @@ export default class ShareListView extends React.Component {
 	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	getRoomTitle = (item) => {
-		const { useRealName } = this.props;
+		const { serverInfo } = this.state;
+		const { useRealName } = serverInfo;
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
@@ -224,9 +221,10 @@ export default class ShareListView extends React.Component {
 		});
 	}
 
-	canUploadFile = () => {
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+	canUploadFile = (server) => {
 		const { fileInfo: file, mediaLoading, isMedia } = this.state;
+		const { serversDB } = database.databases;
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serversDB.objectForPrimaryKey('servers', server);
 
 		if (mediaLoading) {
 			return true;
@@ -400,8 +398,10 @@ export default class ShareListView extends React.Component {
 	}
 
 	renderError = () => {
-		const { fileInfo: file, loading, searching } = this.state;
-		const { FileUpload_MaxFileSize } = this.props;
+		const {
+			fileInfo: file, loading, searching, serverInfo
+		} = this.state;
+		const { FileUpload_MaxFileSize } = serverInfo;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
 			: 'error-invalid-file-type';

@@ -2,8 +2,7 @@ import { SHARE } from '../actions/actionsTypes';
 
 const initialState = {
 	user: {},
-	server: '',
-	serverInfo: {}
+	server: ''
 };
 
 export default function share(state = initialState, action) {
@@ -17,11 +16,6 @@ export default function share(state = initialState, action) {
 			return {
 				...state,
 				user: action.user
-			};
-		case SHARE.SET_SERVER_INFO:
-			return {
-				...state,
-				serverInfo: action.serverInfo
 			};
 		default:
 			return state;

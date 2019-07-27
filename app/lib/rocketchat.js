@@ -15,7 +15,7 @@ import {
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import {
-	shareSelectServer, shareSetServerInfo, shareSetUser
+	shareSelectServer, shareSetUser
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
@@ -220,8 +220,8 @@ const RocketChat = {
 		});
 	},
 
-	async shareExtensionInit(currentServer) {
-		database.setActiveDB(currentServer);
+	async shareExtensionInit(server) {
+		database.setActiveDB(server);
 
 		if (this.sdk) {
 			this.sdk.disconnect();
@@ -229,23 +229,16 @@ const RocketChat = {
 		}
 
 		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(currentServer);
+		const useSsl = !/http:\/\//.test(server);
 
-		this.sdk = new RocketchatClient({ host: currentServer, protocol: 'ddp', useSsl });
+		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 
 		// set Server
 		const { serversDB } = database.databases;
-		const server = serversDB.objectForPrimaryKey('servers', currentServer);
-		reduxStore.dispatch(shareSelectServer(currentServer));
-
-		// set File configs
-		reduxStore.dispatch(shareSetServerInfo({
-			Site_Url: server.id,
-			...server
-		}));
+		reduxStore.dispatch(shareSelectServer(server));
 
 		// set User info
-		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
+		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const user = userId && serversDB.objectForPrimaryKey('user', userId);
 		reduxStore.dispatch(shareSetUser({
 			id: user.id,
