@@ -166,8 +166,9 @@ export default class UploadModal extends Component {
 		if (file.size > FileUpload_MaxFileSize) {
 			return false;
 		}
+		// if white list is empty, all media types are enabled
 		if (!FileUpload_MediaTypeWhiteList) {
-			return false;
+			return true;
 		}
 		const allowedMime = FileUpload_MediaTypeWhiteList.split(',');
 		if (allowedMime.includes(file.mime)) {
