@@ -15,7 +15,9 @@ import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../cons
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
-		height: '100%'
+		flex: 1,
+		height: '100%',
+		marginRight: 15
 	},
 	titleContainer: {
 		flex: 6,
@@ -88,7 +90,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting
+	title, type, status, usersTyping, width, height, prid, tmid, connecting
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -106,7 +108,7 @@ const Header = React.memo(({
 	}
 
 	return (
-		<View style={[styles.container, { width: width - widthOffset }]}>
+		<View style={[styles.container, { width: width - (width * tmid ? 0.2 : 0.3) }]}>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
@@ -139,7 +141,6 @@ Header.propTypes = {
 	tmid: PropTypes.string,
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool
 };
 
