@@ -98,46 +98,6 @@ export default StyleSheet.create({
 		marginHorizontal: 15,
 		flex: 1
 	},
-	directoryItemButton: {
-		height: 54,
-		backgroundColor: COLOR_WHITE
-	},
-	directoryItemContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingHorizontal: 15
-	},
-	directoryItemAvatar: {
-		marginRight: 12
-	},
-	directoryItemTextTitle: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	directoryItemTextContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center'
-	},
-	directoryItemName: {
-		flex: 1,
-		fontSize: 17,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
-	},
-	directoryItemUsername: {
-		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
-	},
-	directoryItemLabel: {
-		fontSize: 14,
-		paddingLeft: 10,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
-	},
 	inverted: {
 		transform: [{ scaleY: -1 }]
 	},

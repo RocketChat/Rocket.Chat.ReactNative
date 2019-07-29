@@ -1,4 +1,5 @@
 import Realm from 'realm';
+import RNRealmPath from 'react-native-realm-path';
 
 // import { AsyncStorage } from 'react-native';
 // Realm.clearTestState();
@@ -25,6 +26,9 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
+		useRealName: { type: 'bool', optional: true },
+		FileUpload_MediaTypeWhiteList: { type: 'string', optional: true },
+		FileUpload_MaxFileSize: { type: 'int', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
 	}
@@ -408,12 +412,12 @@ const inMemorySchema = [usersTypingSchema, activeUsersSchema];
 class DB {
 	databases = {
 		serversDB: new Realm({
-			path: 'default.realm',
+			path: `${ RNRealmPath.realmPath }default.realm`,
 			schema: [
 				userSchema,
 				serversSchema
 			],
-			schemaVersion: 9,
+			schemaVersion: 10,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 9) {
 					const newServers = newRealm.objects('servers');
@@ -426,7 +430,7 @@ class DB {
 			}
 		}),
 		inMemoryDB: new Realm({
-			path: 'memory.realm',
+			path: `${ RNRealmPath.realmPath }memory.realm`,
 			schema: inMemorySchema,
 			schemaVersion: 2,
 			inMemory: true
@@ -468,7 +472,7 @@ class DB {
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
 		return this.databases.activeDB = new Realm({
-			path: `${ path }.realm`,
+			path: `${ RNRealmPath.realmPath }${ path }.realm`,
 			schema,
 			schemaVersion: 13,
 			migration: (oldRealm, newRealm) => {

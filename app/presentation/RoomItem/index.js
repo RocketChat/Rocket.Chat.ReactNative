@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, Text, Animated } from 'react-native';
 import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
@@ -12,6 +11,7 @@ import styles, {
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
+import { capitalize, formatDate } from '../../utils/room';
 import { LeftActions, RightActions } from './Actions';
 
 export { ROW_HEIGHT };
@@ -203,19 +203,12 @@ export default class RoomItem extends React.Component {
 		}
 	}
 
-	formatDate = date => moment(date).calendar(null, {
-		lastDay: `[${ I18n.t('Yesterday') }]`,
-		sameDay: 'h:mm A',
-		lastWeek: 'dddd',
-		sameElse: 'MMM D'
-	})
-
 	render() {
 		const {
 			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
 
-		const date = this.formatDate(_updatedAt);
+		const date = formatDate(_updatedAt);
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -275,7 +268,7 @@ export default class RoomItem extends React.Component {
 									<View style={styles.titleContainer}>
 										<TypeIcon type={type} id={id} prid={prid} />
 										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ date }</Text> : null}
+										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ capitalize(date) }</Text> : null}
 									</View>
 									<View style={styles.row}>
 										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />

@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
-import MessageError from './MessageError';
 import styles from './styles';
 import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
@@ -45,7 +44,7 @@ const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
 		return (
-			<View style={[styles.container, props.style, props.isTemp && styles.temp]}>
+			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
 					<MessageAvatar small {...props} />
@@ -62,7 +61,7 @@ const Message = React.memo((props) => {
 		);
 	}
 	return (
-		<View style={[styles.container, props.style, props.isTemp && styles.temp]}>
+		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View
@@ -86,8 +85,7 @@ Message.displayName = 'Message';
 const MessageTouchable = React.memo((props) => {
 	if (props.hasError) {
 		return (
-			<View style={styles.root}>
-				<MessageError {...props} />
+			<View>
 				<Message {...props} />
 			</View>
 		);
