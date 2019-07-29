@@ -3,7 +3,6 @@ const {
 } = require('detox');
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
-const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login, tapBack, sleep } = require('./helpers/app');
 const { searchRoom } = require('./helpers/rooms');
 const data = require('./data');
@@ -129,10 +128,6 @@ describe('Broadcast room', () => {
 				// await waitFor(element(by.text(`${ data.random }message`))).toBeVisible().withTimeout(60000);
 				// await expect(element(by.text(`${ data.random }message`))).toBeVisible();
 			}
-		});
-
-		afterEach(async () => {
-			takeScreenshot();
 		});
 
 		after(async () => {

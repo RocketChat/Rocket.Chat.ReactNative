@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login } = require('./helpers/app');
 
 describe('Settings screen', () => {
@@ -48,10 +47,6 @@ describe('Settings screen', () => {
 		it('should have enable markdown', async() => {
 			await expect(element(by.id('settings-view-markdown'))).toExist();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Language', async() => {
@@ -86,9 +81,6 @@ describe('Settings screen', () => {
 			await expect(element(by.text('Settings'))).toBeVisible();
 			await element(by.text('Settings')).tap();
 			await expect(element(by.id('settings-view'))).toBeVisible();
-		});
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 });

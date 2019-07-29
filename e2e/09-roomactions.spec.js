@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 const { searchRoom } = require('./helpers/rooms');
@@ -167,10 +166,6 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 			});
 		});
-
-		afterEach(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -195,10 +190,6 @@ describe('Room actions screen', () => {
 			// 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 			// 	await expect(element(by.id('room-actions-view'))).toBeVisible();
 			// });
-
-			after(async() => {
-				takeScreenshot();
-			});
 		});
 
 		describe('Common', async() => {
@@ -261,10 +252,6 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.text('Disable notifications'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Disable notifications'))).toBeVisible();
 			});
-
-			afterEach(async() => {
-				takeScreenshot();
-			});
 		});
 
 		describe('Channel/Group', async() => {
@@ -279,7 +266,6 @@ describe('Room actions screen', () => {
 				await element(by.text('Yes, leave it!')).tap();
 				await waitFor(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('You are the last owner. Please set new owner before leaving the room.'))).toBeVisible();
-				await takeScreenshot();
 				await element(by.text('OK')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 			});
@@ -302,10 +288,6 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
 					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeVisible();
 					await backToActions(1);
-				});
-
-				after(async() => {
-					takeScreenshot();
 				});
 			});
 
@@ -365,10 +347,6 @@ describe('Room actions screen', () => {
 					await tapBack();
 					await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				});
-
-				afterEach(async() => {
-					takeScreenshot();
-				});
 			});
 		})
 
@@ -385,10 +363,6 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-block-user')).tap();
 				await waitFor(element(by.text('Block user'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.text('Block user'))).toBeVisible();
-			});
-
-			after(async() => {
-				takeScreenshot();
 			});
 		});
 	});
