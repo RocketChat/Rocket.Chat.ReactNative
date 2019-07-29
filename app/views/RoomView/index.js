@@ -410,8 +410,9 @@ export default class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
+		const { user } = this.props;
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid).then(() => {
+		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
 	};
@@ -623,7 +624,7 @@ export default class RoomView extends React.Component {
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
-				<UploadProgress rid={this.rid} />
+				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
 				<FileModal
 					attachment={selectedAttachment}
 					isVisible={photoModalVisible}
