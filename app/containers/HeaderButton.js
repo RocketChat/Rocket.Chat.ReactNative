@@ -5,6 +5,7 @@ import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-butto
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import I18n from '../i18n';
 
 const color = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
 export const headerIconSize = 23;
@@ -32,6 +33,15 @@ export const CloseModalButton = React.memo(({ navigation, testID }) => (
 	</CustomHeaderButtons>
 ));
 
+export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (
+	<CustomHeaderButtons left>
+		{isIOS
+			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
+			: <Item title='close' iconName='cross' onPress={onPress} testID={testID} />
+		}
+	</CustomHeaderButtons>
+));
+
 export const MoreButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons>
 		<Item title='more' iconName='menu' onPress={onPress} testID={testID} />
@@ -48,6 +58,10 @@ DrawerButton.propTypes = {
 };
 CloseModalButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	testID: PropTypes.string.isRequired
+};
+CloseShareExtensionButton.propTypes = {
+	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired
 };
 MoreButton.propTypes = {

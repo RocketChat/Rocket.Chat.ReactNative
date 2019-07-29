@@ -8,6 +8,7 @@ import { emojify } from 'react-emojione';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
+import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -46,21 +47,22 @@ const onlyUnique = function onlyUnique(value, index, self) {
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
-	avoidEmptySpaceAroundImage: false,
-	cropperChooseText: I18n.t('Choose'),
-	cropperCancelText: I18n.t('Cancel')
+	avoidEmptySpaceAroundImage: false
 };
 
-const fileOptions = [I18n.t('Cancel')];
+const libraryPickerConfig = {
+	mediaType: 'any'
+};
+
+const videoPickerConfig = {
+	mediaType: 'video'
+};
+
 const FILE_CANCEL_INDEX = 0;
-
-// Photo
-fileOptions.push(I18n.t('Take_a_photo'));
 const FILE_PHOTO_INDEX = 1;
-
-// Library
-fileOptions.push(I18n.t('Choose_from_library'));
-const FILE_LIBRARY_INDEX = 2;
+const FILE_VIDEO_INDEX = 2;
+const FILE_LIBRARY_INDEX = 3;
+const FILE_DOCUMENT_INDEX = 4;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -107,6 +109,30 @@ class MessageBox extends Component {
 		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.fileOptions = [
+			I18n.t('Cancel'),
+			I18n.t('Take_a_photo'),
+			I18n.t('Take_a_video'),
+			I18n.t('Choose_from_library'),
+			I18n.t('Choose_file')
+		];
+		const libPickerLabels = {
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			loadingLabelText: I18n.t('Processing')
+		};
+		this.imagePickerConfig = {
+			...imagePickerConfig,
+			...libPickerLabels
+		};
+		this.libraryPickerConfig = {
+			...libraryPickerConfig,
+			...libPickerLabels
+		};
+		this.videoPickerConfig = {
+			...videoPickerConfig,
+			...libPickerLabels
+		};
 	}
 
 	componentDidMount() {
@@ -462,9 +488,10 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
-	sendImageMessage = async(file) => {
-		const { rid, tmid } = this.props;
-
+	sendMediaMessage = async(file) => {
+		const {
+			rid, tmid, baseUrl: server, user
+		} = this.props;
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
 			name: file.name,
@@ -475,29 +502,57 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid);
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 		} catch (e) {
-			log('err_send_image', e);
+			log('err_send_media_message', e);
 		}
 	}
 
 	takePhoto = async() => {
 		try {
-			const image = await ImagePicker.openCamera(imagePickerConfig);
+			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_take_photo', e);
 		}
 	}
 
+	takeVideo = async() => {
+		try {
+			const video = await ImagePicker.openCamera(this.videoPickerConfig);
+			this.showUploadModal(video);
+		} catch (e) {
+			log('err_take_video', e);
+		}
+	}
+
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(imagePickerConfig);
+			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
 			log('err_choose_from_library', e);
 		}
 	}
+
+	chooseFile = async() => {
+		try {
+			const res = await DocumentPicker.pick({
+				type: [DocumentPicker.types.allFiles]
+			});
+			this.showUploadModal({
+				filename: res.name,
+				size: res.size,
+				mime: res.type,
+				path: res.uri
+			});
+		} catch (error) {
+			if (!DocumentPicker.isCancel(error)) {
+				log('chooseFile', error);
+			}
+		}
+	}
+
 
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
@@ -505,7 +560,7 @@ class MessageBox extends Component {
 
 	showFileActions = () => {
 		ActionSheet.showActionSheetWithOptions({
-			options: fileOptions,
+			options: this.fileOptions,
 			cancelButtonIndex: FILE_CANCEL_INDEX
 		}, (actionIndex) => {
 			this.handleFileActionPress(actionIndex);
@@ -517,8 +572,14 @@ class MessageBox extends Component {
 			case FILE_PHOTO_INDEX:
 				this.takePhoto();
 				break;
+			case FILE_VIDEO_INDEX:
+				this.takeVideo();
+				break;
 			case FILE_LIBRARY_INDEX:
 				this.chooseFromLibrary();
+				break;
+			case FILE_DOCUMENT_INDEX:
+				this.chooseFile();
 				break;
 			default:
 				break;
@@ -543,14 +604,16 @@ class MessageBox extends Component {
 	}
 
 	finishAudioMessage = async(fileInfo) => {
-		const { rid, tmid } = this.props;
+		const {
+			rid, tmid, baseUrl: server, user
+		} = this.props;
 
 		this.setState({
 			recording: false
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo, tmid);
+				await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 			} catch (e) {
 				if (e && e.error === 'error-file-too-large') {
 					return Alert.alert(I18n.t(e.error));
@@ -895,7 +958,7 @@ class MessageBox extends Component {
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
-					submit={this.sendImageMessage}
+					submit={this.sendMediaMessage}
 				/>
 			</React.Fragment>
 		);

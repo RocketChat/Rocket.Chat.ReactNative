@@ -5,47 +5,18 @@ import {
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
-import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
-import OnboardingView from './views/OnboardingView';
-import NewServerView from './views/NewServerView';
-import LoginSignupView from './views/LoginSignupView';
-import AuthLoadingView from './views/AuthLoadingView';
-import RoomsListView from './views/RoomsListView';
-import RoomView from './views/RoomView';
-import NewMessageView from './views/NewMessageView';
-import DirectoryView from './views/DirectoryView';
-import LoginView from './views/LoginView';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
-import ProfileView from './views/ProfileView';
-import SettingsView from './views/SettingsView';
-import LanguageView from './views/LanguageView';
-import AdminPanelView from './views/AdminPanelView';
-import RoomActionsView from './views/RoomActionsView';
-import RoomInfoView from './views/RoomInfoView';
-import RoomInfoEditView from './views/RoomInfoEditView';
-import RoomMembersView from './views/RoomMembersView';
-import SearchMessagesView from './views/SearchMessagesView';
-import ReadReceiptsView from './views/ReadReceiptView';
-import ThreadMessagesView from './views/ThreadMessagesView';
-import MessagesView from './views/MessagesView';
-import AutoTranslateView from './views/AutoTranslateView';
-import SelectedUsersView from './views/SelectedUsersView';
-import CreateChannelView from './views/CreateChannelView';
-import LegalView from './views/LegalView';
-import ForgotPasswordView from './views/ForgotPasswordView';
-import RegisterView from './views/RegisterView';
-import OAuthView from './views/OAuthView';
-import SetUsernameView from './views/SetUsernameView';
-import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from './constants/colors';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
+import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import Toast from './containers/Toast';
 
 useScreens();
 
@@ -63,35 +34,38 @@ const parseDeepLinking = (url) => {
 	return null;
 };
 
-const defaultHeader = {
-	headerStyle: {
-		backgroundColor: HEADER_BACKGROUND
-	},
-	headerTitleStyle: {
-		color: HEADER_TITLE
-	},
-	headerBackTitle: null,
-	headerTintColor: HEADER_BACK
-};
-
 // Outside
 const OutsideStack = createStackNavigator({
 	OnboardingView: {
-		screen: OnboardingView,
+		getScreen: () => require('./views/OnboardingView').default,
 		header: null
 	},
-	NewServerView,
-	LoginSignupView,
-	LoginView,
-	ForgotPasswordView,
-	RegisterView,
-	LegalView
+	NewServerView: {
+		getScreen: () => require('./views/NewServerView').default
+	},
+	LoginSignupView: {
+		getScreen: () => require('./views/LoginSignupView').default
+	},
+	LoginView: {
+		getScreen: () => require('./views/LoginView').default
+	},
+	ForgotPasswordView: {
+		getScreen: () => require('./views/ForgotPasswordView').default
+	},
+	RegisterView: {
+		getScreen: () => require('./views/RegisterView').default
+	},
+	LegalView: {
+		getScreen: () => require('./views/LegalView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
 const OAuthStack = createStackNavigator({
-	OAuthView
+	OAuthView: {
+		getScreen: () => require('./views/OAuthView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -107,19 +81,45 @@ const OutsideStackModal = createStackNavigator({
 
 // Inside
 const ChatsStack = createStackNavigator({
-	RoomsListView,
-	RoomView,
-	RoomActionsView,
-	RoomInfoView,
-	RoomInfoEditView,
-	RoomMembersView,
-	SearchMessagesView,
-	SelectedUsersView,
-	ThreadMessagesView,
-	MessagesView,
-	AutoTranslateView,
-	ReadReceiptsView,
-	DirectoryView
+	RoomsListView: {
+		getScreen: () => require('./views/RoomsListView').default
+	},
+	RoomView: {
+		getScreen: () => require('./views/RoomView').default
+	},
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	},
+	RoomInfoEditView: {
+		getScreen: () => require('./views/RoomInfoEditView').default
+	},
+	RoomMembersView: {
+		getScreen: () => require('./views/RoomMembersView').default
+	},
+	SearchMessagesView: {
+		getScreen: () => require('./views/SearchMessagesView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	ThreadMessagesView: {
+		getScreen: () => require('./views/ThreadMessagesView').default
+	},
+	MessagesView: {
+		getScreen: () => require('./views/MessagesView').default
+	},
+	AutoTranslateView: {
+		getScreen: () => require('./views/AutoTranslateView').default
+	},
+	ReadReceiptsView: {
+		getScreen: () => require('./views/ReadReceiptView').default
+	},
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -135,7 +135,9 @@ ChatsStack.navigationOptions = ({ navigation }) => {
 };
 
 const ProfileStack = createStackNavigator({
-	ProfileView
+	ProfileView: {
+		getScreen: () => require('./views/ProfileView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -151,14 +153,20 @@ ProfileStack.navigationOptions = ({ navigation }) => {
 };
 
 const SettingsStack = createStackNavigator({
-	SettingsView,
-	LanguageView
+	SettingsView: {
+		getScreen: () => require('./views/SettingsView').default
+	},
+	LanguageView: {
+		getScreen: () => require('./views/LanguageView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
 const AdminPanelStack = createStackNavigator({
-	AdminPanelView
+	AdminPanelView: {
+		getScreen: () => require('./views/AdminPanelView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -183,9 +191,15 @@ const ChatsDrawer = createDrawerNavigator({
 });
 
 const NewMessageStack = createStackNavigator({
-	NewMessageView,
-	SelectedUsersViewCreateChannel: SelectedUsersView,
-	CreateChannelView
+	NewMessageView: {
+		getScreen: () => require('./views/NewMessageView').default
+	},
+	SelectedUsersViewCreateChannel: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	CreateChannelView: {
+		getScreen: () => require('./views/CreateChannelView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -200,7 +214,9 @@ const InsideStackModal = createStackNavigator({
 });
 
 const SetUsernameStack = createStackNavigator({
-	SetUsernameView
+	SetUsernameView: {
+		getScreen: () => require('./views/SetUsernameView').default
+	}
 });
 
 class CustomInsideStack extends React.Component {
@@ -216,6 +232,7 @@ class CustomInsideStack extends React.Component {
 			<React.Fragment>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
+				<Toast />
 			</React.Fragment>
 		);
 	}
@@ -225,35 +242,15 @@ const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
 		InsideStack: CustomInsideStack,
-		AuthLoading: AuthLoadingView,
+		AuthLoading: {
+			getScreen: () => require('./views/AuthLoadingView').default
+		},
 		SetUsernameStack
 	},
 	{
 		initialRouteName: 'AuthLoading'
 	}
 ));
-
-// gets the current screen from navigation state
-const getActiveRouteName = (navigationState) => {
-	if (!navigationState) {
-		return null;
-	}
-	const route = navigationState.routes[navigationState.index];
-	// dive into nested navigators
-	if (route.routes) {
-		return getActiveRouteName(route);
-	}
-	return route.routeName;
-};
-
-const onNavigationStateChange = (prevState, currentState) => {
-	const currentScreen = getActiveRouteName(currentState);
-	const prevScreen = getActiveRouteName(prevState);
-
-	if (prevScreen !== currentScreen) {
-		firebase.analytics().setCurrentScreen(currentScreen);
-	}
-};
 
 export default class Root extends React.Component {
 	constructor(props) {

@@ -21,6 +21,8 @@ import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
+import { LISTENER } from './Toast';
+import EventEmitter from '../utils/events';
 
 @connect(
 	state => ({
@@ -48,7 +50,6 @@ export default class MessageActions extends React.Component {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		actionMessage: PropTypes.object,
-		toast: PropTypes.element,
 		user: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
@@ -275,9 +276,9 @@ export default class MessageActions extends React.Component {
 	}
 
 	handleCopy = async() => {
-		const { actionMessage, toast } = this.props;
+		const { actionMessage } = this.props;
 		await Clipboard.setString(actionMessage.msg);
-		toast.show(I18n.t('Copied_to_clipboard'));
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
 	handleShare = async() => {
@@ -294,10 +295,10 @@ export default class MessageActions extends React.Component {
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage, toast } = this.props;
+		const { actionMessage } = this.props;
 		const permalink = await this.getPermalink(actionMessage);
 		Clipboard.setString(permalink);
-		toast.show(I18n.t('Permalink_copied_to_clipboard'));
+		EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 	}
 
 	handlePin = () => {
