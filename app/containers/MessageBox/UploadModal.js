@@ -13,6 +13,7 @@ import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
+import { canUploadFile } from '../../utils/media';
 import {
 	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_DANGER
 } from '../../constants/colors';
@@ -291,9 +292,11 @@ export default class UploadModal extends Component {
 	}
 
 	render() {
-		const { window: { width }, isVisible, close } = this.props;
+		const {
+			window: { width }, isVisible, close, file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize
+		} = this.props;
 		const { name, description } = this.state;
-		const showError = !this.canUploadFile();
+		const showError = !canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
 		return (
 			<Modal
 				isVisible={isVisible}

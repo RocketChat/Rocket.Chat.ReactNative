@@ -16,6 +16,7 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
+import { canUploadFile } from '../../utils/media';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
@@ -130,7 +131,7 @@ export default class ShareListView extends React.Component {
 					name: data.filename,
 					description: '',
 					size: data.size,
-					type: mime.lookup(data.path),
+					mime: mime.lookup(data.path),
 					store: 'Uploads',
 					path: isIOS ? data.path : `file://${ data.path }`
 				};
@@ -187,6 +188,7 @@ export default class ShareListView extends React.Component {
 	}
 
 	getSubscriptions = (server, fileInfo) => {
+		const { fileInfo: fileData } = this.state;
 		const { serversDB } = database.databases;
 
 		if (server) {
@@ -199,7 +201,7 @@ export default class ShareListView extends React.Component {
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !this.canUploadFile(serverInfo, fileInfo),
+				showError: !canUploadFile(fileInfo || fileData, serverInfo),
 				serverInfo
 			});
 			this.forceUpdate();
@@ -225,32 +227,6 @@ export default class ShareListView extends React.Component {
 			fileInfo,
 			name: this.getRoomTitle(item)
 		});
-	}
-
-	canUploadFile = (serverInfo, fileInfo) => {
-		const { fileInfo: fileData } = this.state;
-		const file = fileInfo || fileData;
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
-
-		if (!(file && file.path)) {
-			return true;
-		}
-		if (file.size > FileUpload_MaxFileSize) {
-			return false;
-		}
-		if (!FileUpload_MediaTypeWhiteList) {
-			return false;
-		}
-		const allowedMime = FileUpload_MediaTypeWhiteList.split(',');
-		if (allowedMime.includes(file.type)) {
-			return true;
-		}
-		const wildCardGlob = '/*';
-		const wildCards = allowedMime.filter(item => item.indexOf(wildCardGlob) > 0);
-		if (wildCards.includes(file.type.replace(/(\/.*)$/, wildCardGlob))) {
-			return true;
-		}
-		return false;
 	}
 
 	search = (text) => {
@@ -423,7 +399,7 @@ export default class ShareListView extends React.Component {
 				<View style={[styles.container, styles.centered]}>
 					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
 					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-					<Text style={styles.fileMime}>{ file.type }</Text>
+					<Text style={styles.fileMime}>{ file.mime }</Text>
 				</View>
 			</View>
 		);
