@@ -137,7 +137,7 @@ export default class ShareView extends React.Component {
 	renderPreview = () => {
 		const { fileInfo } = this.state;
 
-		const icon = fileInfo.type.match(/image/)
+		const icon = fileInfo.mime.match(/image/)
 			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaImage} />
 			: (
 				<View style={styles.mediaIconContainer}>
