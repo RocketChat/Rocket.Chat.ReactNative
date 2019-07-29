@@ -1,12 +1,12 @@
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
-import reduxStore from '../createStore';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export const getMessage = (rid, msg = '', tmid) => {
+export const getMessage = (rid, msg = '', tmid, user) => {
 	const _id = random(17);
+	const { id, username } = user;
 	const message = {
 		_id,
 		rid,
@@ -16,8 +16,8 @@ export const getMessage = (rid, msg = '', tmid) => {
 		_updatedAt: new Date(),
 		status: messagesStatus.TEMP,
 		u: {
-			_id: reduxStore.getState().login.user.id || '1',
-			username: reduxStore.getState().login.user.username
+			_id: id || '1',
+			username
 		}
 	};
 	try {
@@ -43,9 +43,9 @@ export async function sendMessageCall(message) {
 	return data;
 }
 
-export default async function(rid, msg, tmid) {
+export default async function(rid, msg, tmid, user) {
 	try {
-		const message = getMessage(rid, msg, tmid);
+		const message = getMessage(rid, msg, tmid, user);
 		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
 		if (room) {

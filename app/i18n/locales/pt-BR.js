@@ -302,12 +302,12 @@ export default {
 	Search_global_users: 'Busca por usuários globais',
 	Search_global_users_description: 'Caso ativado, busca por usuários de outras empresas ou servidores.',
 	Select_Avatar: 'Selecionar Avatar',
-	Select_Channels: 'Selecionar Canais',
 	Select_Server: 'Selecionar Servidor',
 	Select_Users: 'Selecionar Usuários',
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',
+	Send_to: 'Enviar para...',
 	Sent_an_attachment: 'Enviou um anexo',
 	Server: 'Servidor',
 	Set_username_subtitle: 'O usuário é utilizado para permitir que você seja mencionado em mensagens',
@@ -383,5 +383,6 @@ export default {
 	you_were_mentioned: 'você foi mencionado',
 	you: 'você',
 	You: 'Você',
+	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Você precisa acessar ao menos um servidor Rocket.Chat para compartilhar.',
 	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!'
 };
