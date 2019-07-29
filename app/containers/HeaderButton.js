@@ -5,6 +5,7 @@ import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-butto
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import I18n from '../i18n';
 
 const color = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
 export const headerIconSize = 23;
@@ -35,7 +36,7 @@ export const CloseModalButton = React.memo(({ navigation, testID }) => (
 export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons left>
 		{isIOS
-			? <Item title='cancel' onPress={onPress} testID={testID} />
+			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
 			: <Item title='close' iconName='cross' onPress={onPress} testID={testID} />
 		}
 	</CustomHeaderButtons>

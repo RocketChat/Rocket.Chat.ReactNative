@@ -19,12 +19,17 @@ import database from '../../lib/realm';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
-@connect(state => ({
-	username: state.login.user && state.login.user.username
+@connect(({ share }) => ({
+	user: {
+		id: share.user && share.user.id,
+		username: share.user && share.user.username,
+		token: share.user && share.user.token
+	},
+	baseUrl: share ? share.server : ''
 }))
 export default class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
-		const canSend = navigation.getParam('canSend', false);
+		const canSend = navigation.getParam('canSend', true);
 
 		return ({
 			title: I18n.t('Share'),
@@ -46,7 +51,12 @@ export default class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		username: PropTypes.string.isRequired
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
+		baseUrl: PropTypes.string.isRequired
 	};
 
 	constructor(props) {
@@ -77,11 +87,12 @@ export default class ShareView extends React.Component {
 
 	componentDidMount() {
 		const { room } = this.state;
-		const { navigation, username } = this.props;
+		const { navigation, user } = this.props;
+		const { username } = user;
 		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
 	}
 
-	bytesToSize = bits => `${ ((bits / 8) / 1048576).toFixed(2) }MB`;
+	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
 
 	_sendMessage = async() => {
 		const { isMedia } = this.state;
@@ -99,11 +110,12 @@ export default class ShareView extends React.Component {
 
 	sendMediaMessage = async() => {
 		const { rid, fileInfo, file } = this.state;
+		const { baseUrl: server, user } = this.props;
 		const { name, description } = file;
 		const fileMessage = { ...fileInfo, name, description };
 		if (fileInfo && rid !== '') {
 			try {
-				await RocketChat.sendFileMessage(rid, fileMessage, undefined);
+				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
 			} catch (e) {
 				log('err_send_media_message', e);
 			}
@@ -112,9 +124,10 @@ export default class ShareView extends React.Component {
 
 	sendTextMessage = async() => {
 		const { value, rid } = this.state;
+		const { user } = this.props;
 		if (value !== '' && rid !== '') {
 			try {
-				await RocketChat.sendMessage(rid, value, undefined);
+				await RocketChat.sendMessage(rid, value, undefined, user);
 			} catch (error) {
 				log('err_share_extension_send_message', error);
 			}
@@ -204,7 +217,8 @@ export default class ShareView extends React.Component {
 	}
 
 	render() {
-		const { username } = this.props;
+		const { user } = this.props;
+		const { username } = user;
 		const {
 			name, loading, isMedia, room
 		} = this.state;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, InteractionManager, FlatList, ScrollView, ActivityIndicator, Keyboard
+	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -10,60 +10,57 @@ import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual } from 'lodash';
 
-import Navigation from '../../lib/Navigation';
-import database, { safeAddListener } from '../../lib/realm';
-import debounce from '../../utils/debounce';
+import Navigation from '../../lib/ShareNavigation';
+import database from '../../lib/realm';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
-import {
-	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction
-} from '../../actions/rooms';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
-import ServerItem, { ROW_HEIGHT as ROW_HEIGHT_SERVER } from '../../presentation/ServerItem';
+import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
-import SearchBar from '../RoomsListView/ListHeader/SearchBar';
 import ShareListHeader from './Header';
 
 import styles from './styles';
+import StatusBar from '../../containers/StatusBar';
 
-const SCROLL_OFFSET = 56;
-const getItemLayoutChannel = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
-const getItemLayoutServer = (data, index) => ({ length: ROW_HEIGHT_SERVER, offset: ROW_HEIGHT_SERVER * index, index });
+const LIMIT = 50;
+const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	token: state.login.user && state.login.user.token,
-	useRealName: state.settings.UI_Use_Real_Name,
-	searchText: state.rooms.searchText,
-	server: state.server.server,
-	loading: state.server.loading,
-	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	sortBy: state.sortPreferences.sortBy,
-	groupByType: state.sortPreferences.groupByType,
-	showFavorites: state.sortPreferences.showFavorites
-}), dispatch => ({
-	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction())
+@connect(({ share }) => ({
+	userId: share.user && share.user.id,
+	token: share.user && share.user.token,
+	server: share.server,
+	baseUrl: share ? share.server : ''
 }))
 /** @extends React.Component */
 export default class ShareListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
-		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+		const initSearch = navigation.getParam('initSearch', () => {});
+		const cancelSearch = navigation.getParam('cancelSearch', () => {});
+		const search = navigation.getParam('search', () => {});
+
+		if (isIOS) {
+			return {
+				headerTitle: (
+					<ShareListHeader
+						searching={searching}
+						initSearch={initSearch}
+						cancelSearch={cancelSearch}
+						search={search}
+					/>
+				)
+			};
+		}
 
 		return {
-			headerBackTitle: isIOS ? I18n.t('Back') : null,
+			headerBackTitle: null,
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
 					</CustomHeaderButtons>
 				)
 				: (
@@ -72,13 +69,13 @@ export default class ShareListView extends React.Component {
 						testID='share-extension-close'
 					/>
 				),
-			headerTitle: <ShareListHeader />,
+			headerTitle: <ShareListHeader searching={searching} search={search} />,
 			headerRight: (
 				searching
 					? null
 					: (
 						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
+							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearch} /> : null}
 						</CustomHeaderButtons>
 					)
 			)
@@ -88,50 +85,38 @@ export default class ShareListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
-		useRealName: PropTypes.bool,
-		searchText: PropTypes.string,
-		FileUpload_MediaTypeWhiteList: PropTypes.string,
-		FileUpload_MaxFileSize: PropTypes.number,
-		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
-		userId: PropTypes.string,
-		sortBy: PropTypes.string,
-		groupByType: PropTypes.bool,
-		showFavorites: PropTypes.bool,
-		loading: PropTypes.bool
+		userId: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
 		this.data = [];
 		this.state = {
+			showError: false,
 			searching: false,
+			searchText: '',
 			value: '',
 			isMedia: false,
 			mediaLoading: false,
-			loading: true,
 			fileInfo: null,
-			search: [],
-			discussions: [],
-			channels: [],
-			favorites: [],
+			searchResults: [],
 			chats: [],
-			privateGroup: [],
-			direct: [],
-			livechat: [],
-			servers: []
+			servers: [],
+			loading: true,
+			serverInfo: null
 		};
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	async componentDidMount() {
-		this.getSubscriptions();
-
-		const { navigation } = this.props;
+		const { navigation, server } = this.props;
 		navigation.setParams({
-			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			initSearch: this.initSearch,
+			cancelSearch: this.cancelSearch,
+			search: this.search
 		});
 
 		try {
@@ -157,33 +142,36 @@ export default class ShareListView extends React.Component {
 			log('err_process_media_share_extension', e);
 			this.setState({ mediaLoading: false });
 		}
+
+		this.getSubscriptions(server);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { searchText, loading } = this.props;
-
-		if (nextProps.server && loading !== nextProps.loading) {
-			if (nextProps.loading) {
-				this.internalSetState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
-		} else if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
+		const { server } = this.props;
+		if (nextProps.server !== server) {
+			this.getSubscriptions(nextProps.server);
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, searching } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
-		}
+		const { searching } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
 		}
 
-		const { search } = this.state;
-		if (!isEqual(nextState.search, search)) {
+		const { isMedia } = this.state;
+		if (nextState.isMedia !== isMedia) {
+			this.getSubscriptions(nextProps.server, nextState.fileInfo);
+			return true;
+		}
+
+		const { server } = this.props;
+		if (server !== nextProps.server) {
+			return true;
+		}
+
+		const { searchResults } = this.state;
+		if (!isEqual(nextState.searchResults, searchResults)) {
 			return true;
 		}
 		return false;
@@ -198,69 +186,31 @@ export default class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = debounce(() => {
-		if (this.data && this.data.removeAllListeners) {
-			this.data.removeAllListeners();
-		}
-
-		const {
-			server, sortBy, showFavorites, groupByType
-		} = this.props;
+	getSubscriptions = (server, fileInfo) => {
 		const { serversDB } = database.databases;
 
 		if (server) {
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true');
-			if (sortBy === 'alphabetical') {
-				this.data = this.data.sorted('name', false);
-			} else {
-				this.data = this.data.sorted('roomUpdatedAt', true);
-			}
-			// servers
+			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
 			this.servers = serversDB.objects('servers');
+			this.chats = this.data.slice(0, LIMIT);
+			const serverInfo = serversDB.objectForPrimaryKey('servers', server);
 
-			// favorites
-			if (showFavorites) {
-				this.favorites = this.data.filtered('f == true');
-			} else {
-				this.favorites = [];
-			}
-
-			// type
-			if (groupByType) {
-				this.discussions = this.data.filtered('prid != null');
-				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
-				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
-				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
-				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
-			} else {
-				this.chats = this.data;
-			}
-			safeAddListener(this.data, this.updateState);
+			this.internalSetState({
+				chats: this.chats ? this.chats.slice() : [],
+				servers: this.servers ? this.servers.slice() : [],
+				loading: false,
+				showError: !this.canUploadFile(serverInfo, fileInfo),
+				serverInfo
+			});
+			this.forceUpdate();
 		}
-	}, 300);
+	};
 
 	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
-	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-			this.internalSetState({
-				chats: this.chats ? this.chats.slice() : [],
-				favorites: this.favorites ? this.favorites.slice() : [],
-				discussions: this.discussions ? this.discussions.slice() : [],
-				channels: this.channels ? this.channels.slice() : [],
-				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
-				direct: this.direct ? this.direct.slice() : [],
-				livechat: this.livechat ? this.livechat.slice() : [],
-				servers: this.servers ? this.servers.slice() : [],
-				loading: false
-			});
-			this.forceUpdate();
-		});
-	}, 300);
-
 	getRoomTitle = (item) => {
-		const { useRealName } = this.props;
+		const { serverInfo } = this.state;
+		const { useRealName } = serverInfo;
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
@@ -277,13 +227,11 @@ export default class ShareListView extends React.Component {
 		});
 	}
 
-	canUploadFile = () => {
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const { fileInfo: file, mediaLoading, loading } = this.state;
+	canUploadFile = (serverInfo, fileInfo) => {
+		const { fileInfo: fileData } = this.state;
+		const file = fileInfo || fileData;
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
 
-		if (loading || mediaLoading) {
-			return true;
-		}
 		if (!(file && file.path)) {
 			return true;
 		}
@@ -307,40 +255,49 @@ export default class ShareListView extends React.Component {
 
 	search = (text) => {
 		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
-		const subscriptions = database.objects('subscriptions');
-		const data = result.length !== subscriptions.length ? result : [];
 		this.internalSetState({
-			search: data
+			searchResults: result.slice(0, LIMIT),
+			searchText: text
 		});
 	}
 
-	initSearchingAndroid = () => {
-		const { openSearchHeader, navigation } = this.props;
-		this.setState({ searching: true });
+	initSearch = () => {
+		const { chats } = this.state;
+		const { navigation } = this.props;
+		this.setState({ searching: true, searchResults: chats });
 		navigation.setParams({ searching: true });
-		openSearchHeader();
 	}
 
-	cancelSearchingAndroid = () => {
-		if (isAndroid) {
-			const { closeSearchHeader, navigation } = this.props;
-			this.setState({ searching: false });
-			navigation.setParams({ searching: false });
-			closeSearchHeader();
-			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
+	cancelSearch = () => {
+		const { navigation } = this.props;
+		this.internalSetState({ searching: false, searchResults: [], searchText: '' });
+		navigation.setParams({ searching: false });
+		Keyboard.dismiss();
+	}
+
+	handleBackPress = () => {
+		const { searching } = this.state;
+		if (searching) {
+			this.cancelSearch();
+			return true;
 		}
+		return false;
 	}
 
-	renderListHeader = () => <SearchBar onChangeSearchText={this.search} />;
+	renderSectionHeader = (header) => {
+		const { searching } = this.state;
+		if (searching) {
+			return null;
+		}
 
-	renderSectionHeader = header => (
-		<View style={styles.headerContainer}>
-			<Text style={styles.headerText}>
-				{I18n.t(header)}
-			</Text>
-		</View>
-	)
+		return (
+			<View style={styles.headerContainer}>
+				<Text style={styles.headerText}>
+					{I18n.t(header)}
+				</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => {
 		const { userId, token, baseUrl } = this.props;
@@ -367,33 +324,9 @@ export default class ShareListView extends React.Component {
 
 	renderSeparator = () => <View style={styles.separator} />;
 
-	renderSection = (data, header) => {
-		if (data && data.length > 0) {
-			return (
-				<React.Fragment>
-					{this.renderSectionHeader(header)}
-					<View style={styles.bordered}>
-						<FlatList
-							data={data}
-							keyExtractor={keyExtractor}
-							style={styles.flatlist}
-							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
-							getItemLayout={getItemLayoutServer}
-							enableEmptySections
-							removeClippedSubviews
-							keyboardShouldPersistTaps='always'
-							initialNumToRender={12}
-							windowSize={20}
-						/>
-					</View>
-				</React.Fragment>
-			);
-		}
-		return null;
-	}
+	renderBorderBottom = () => <View style={styles.borderBottom} />;
 
-	renderServerSelector = () => {
+	renderSelectServer = () => {
 		const { servers } = this.state;
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
@@ -411,83 +344,97 @@ export default class ShareListView extends React.Component {
 		) : null;
 	}
 
-	renderContent = () => {
-		const {
-			discussions, channels, privateGroup, direct, livechat, search, chats, favorites
-		} = this.state;
+	renderEmptyComponent = () => (
+		<View style={[styles.container, styles.emptyContainer]}>
+			<Text style={styles.title}>{I18n.t('No_results_found')}</Text>
+		</View>
+	);
 
-		if (search.length > 0) {
-			return (
-				<FlatList
-					data={search}
-					extraData={search}
-					keyExtractor={keyExtractor}
-					style={styles.flatlist}
-					renderItem={this.renderItem}
-					getItemLayout={getItemLayoutChannel}
-					ItemSeparatorComponent={this.renderSeparator}
-					enableEmptySections
-					removeClippedSubviews
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
-					windowSize={20}
-				/>
-			);
-		}
-
+	renderHeader = () => {
+		const { searching } = this.state;
 		return (
-			<View style={styles.content}>
-				{this.renderServerSelector()}
-				{this.renderSection(favorites, 'Favorites')}
-				{this.renderSection(discussions, 'Discussions')}
-				{this.renderSection(channels, 'Channels')}
-				{this.renderSection(direct, 'Direct_Messages')}
-				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(livechat, 'Livechat')}
-				{this.renderSection(chats, 'Chats')}
-			</View>
+			<React.Fragment>
+				{ !searching
+					? (
+						<React.Fragment>
+							{this.renderSelectServer()}
+							{this.renderSectionHeader('Chats')}
+						</React.Fragment>
+					)
+					: null
+				}
+			</React.Fragment>
 		);
 	}
 
+	renderContent = () => {
+		const {
+			chats, mediaLoading, loading, searchResults, searching, searchText
+		} = this.state;
 
-	renderScrollView = () => {
-		const { mediaLoading, loading } = this.state;
 		if (mediaLoading || loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
 		return (
-			<ScrollView
-				style={styles.scroll}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+			<FlatList
+				data={searching ? searchResults : chats}
+				keyExtractor={keyExtractor}
+				style={styles.flatlist}
+				renderItem={this.renderItem}
+				getItemLayout={getItemLayout}
+				ItemSeparatorComponent={this.renderSeparator}
+				ListHeaderComponent={this.renderHeader}
+				ListFooterComponent={!searching && this.renderBorderBottom}
+				ListHeaderComponentStyle={!searching ? styles.borderBottom : {}}
+				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
+				enableEmptySections
+				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
-			>
-				{this.renderListHeader()}
-				{this.renderContent()}
-			</ScrollView>
+				initialNumToRender={12}
+				windowSize={20}
+			/>
 		);
 	}
 
 	renderError = () => {
-		const { fileInfo: file } = this.state;
-		const { FileUpload_MaxFileSize } = this.props;
+		const {
+			fileInfo: file, loading, searching, serverInfo
+		} = this.state;
+		const { FileUpload_MaxFileSize } = serverInfo;
 		const errorMessage = (FileUpload_MaxFileSize < file.size)
 			? 'error-file-too-large'
 			: 'error-invalid-file-type';
+
+		if (loading) {
+			return <ActivityIndicator style={styles.loading} />;
+		}
+
 		return (
 			<View style={styles.container}>
-				<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
-				<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-				<Text style={styles.fileMime}>{ file.type }</Text>
+				{ !searching
+					? (
+						<React.Fragment>
+							{this.renderSelectServer()}
+						</React.Fragment>
+					)
+					: null
+				}
+				<View style={[styles.container, styles.centered]}>
+					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
+					<Text style={styles.fileMime}>{ file.type }</Text>
+				</View>
 			</View>
 		);
 	}
 
 	render() {
-		const showError = !this.canUploadFile();
+		const { showError } = this.state;
 		return (
 			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
-				{ showError ? this.renderError() : this.renderScrollView() }
+				<StatusBar />
+				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>
 		);
 	}

@@ -11686,10 +11686,10 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-realm-path@^1.2.10:
-  version "1.2.10"
-  resolved "https://registry.yarnpkg.com/react-native-realm-path/-/react-native-realm-path-1.2.10.tgz#886493e334c62279bee631789172cfa7cfd6dc8d"
-  integrity sha512-+FFjA+8fH2ubmAOeF+++4t+QG9qUEg4u3nvVN21zIMpkqj8TIuA0NZ5cdW5YZOx3hjFrYSxyCkq24Zu5QHv2Jw==
+react-native-realm-path@^1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/react-native-realm-path/-/react-native-realm-path-1.2.11.tgz#5380add5b0975d9ccc185a1f680825d8bf23bc78"
+  integrity sha512-kK8tPW14KwsmZUVb+mKXjbaQ/qBlYLUO5knZrOOSt4Xx0VZk+julJbEVUh+tD3g4xllGhrMrrnmQl3Gm0B/+eA==
 
 react-native-responsive-ui@^1.1.1:
   version "1.1.1"
@@ -12629,10 +12629,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@^2.3.7:
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.7.tgz#9f1387af25124c21e92854570cd088ed788b60ac"
-  integrity sha512-8SP3HTKf9g+/4hm/ER+IcbpImaqsTny7WUNOC18Vvq5Js+2O9MAKaQB+gHSP7IC6JYsbOzh+cc2jNRfc0zJpOA==
+rn-extensions-share@^2.3.10:
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.10.tgz#17b9cf101b325cfe4c150f4c2585ca1e78f965a5"
+  integrity sha512-gff32w15VXnuKdGG9QfrysI+Cga4beSWT8xdp1DvVJ1HezJ7XsDR1ELj3Wajij5OlW31VAunO8g91HgUfplmSQ==
 
 rn-fetch-blob@^0.10.15:
   version "0.10.15"

@@ -14,6 +14,11 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	'SET_SERVICES',
 	'SET_PREFERENCE'
 ]);
+export const SHARE = createRequestTypes('SHARE', [
+	'SELECT_SERVER',
+	'SET_USER',
+	'SET_SERVER_INFO'
+]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
