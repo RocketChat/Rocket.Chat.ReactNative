@@ -22,12 +22,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
-		1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25741F22CBA263005A877F /* libReactNativeShareExtension.a */; };
-		1E25743222CBA2C2005A877F /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743022CBA2AD005A877F /* libRNRealmPath.a */; };
 		1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E02220D22B2F76400001862 /* libRNUserDefaults.a */; };
 		1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
 		1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743A22CBA2F9005A877F /* libRNFetchBlob.a */; };
-		1E25743C22CBA313005A877F /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		1E25743D22CBA31B005A877F /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8DEB5220ED0BDE00C5DCE4 /* libRNNotifications.a */; };
 		1E25743E22CBA322005A877F /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD44CF521518C610099D147 /* libRNGestureHandler.a */; };
 		1E25743F22CBA32B005A877F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
@@ -48,7 +45,6 @@
 		1E25745022CBA39A005A877F /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A770EC220BECDC7001AD51A /* libFastImage.a */; };
 		1E25745722CBA3E1005A877F /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25745622CBA3DB005A877F /* libSplashScreen.a */; };
 		1E25745822CBA3E6005A877F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E79A911F3CCC6D005B464F /* libRNVectorIcons.a */; };
-		1E25745922CBA3F1005A877F /* libRNRealmPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E25743022CBA2AD005A877F /* libRNRealmPath.a */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
 		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */; };
@@ -570,7 +566,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E25745922CBA3F1005A877F /* libRNRealmPath.a in Frameworks */,
 				1E02221122B2F76B00001862 /* libRNUserDefaults.a in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				7A8DEB5A20ED0BEC00C5DCE4 /* libRNNotifications.a in Frameworks */,
@@ -625,12 +620,9 @@
 				1E25743F22CBA32B005A877F /* libReact.a in Frameworks */,
 				1E25743E22CBA322005A877F /* libRNGestureHandler.a in Frameworks */,
 				1E25743D22CBA31B005A877F /* libRNNotifications.a in Frameworks */,
-				1E25743C22CBA313005A877F /* (null) in Frameworks */,
 				1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */,
 				1E25743B22CBA301005A877F /* libRNFetchBlob.a in Frameworks */,
 				1E25743322CBA2C7005A877F /* libRNUserDefaults.a in Frameworks */,
-				1E25743222CBA2C2005A877F /* libRNRealmPath.a in Frameworks */,
-				1E25743122CBA2BE005A877F /* libReactNativeShareExtension.a in Frameworks */,
 				0BFA93B8E2ED67D4832E0C76 /* libPods-ShareRocketChatRN.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1930,7 +1922,7 @@
 					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1938,7 +1930,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Development chat.rocket.reactnative.ShareExtension";
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1978,14 +1970,14 @@
 					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.ShareExtension AppStore";
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

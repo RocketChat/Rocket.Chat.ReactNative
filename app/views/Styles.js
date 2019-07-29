@@ -200,7 +200,7 @@ export default StyleSheet.create({
 		marginVertical: 10
 	},
 	notchLandscapeContainer: {
-		marginTop: -44,
+		marginTop: -34,
 		paddingHorizontal: 30,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	}
