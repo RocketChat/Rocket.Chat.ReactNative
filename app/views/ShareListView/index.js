@@ -132,7 +132,6 @@ export default class ShareListView extends React.Component {
 					description: '',
 					size: data.size,
 					mime: mime.lookup(data.path),
-					store: 'Uploads',
 					path: isIOS ? data.path : `file://${ data.path }`
 				};
 			}
