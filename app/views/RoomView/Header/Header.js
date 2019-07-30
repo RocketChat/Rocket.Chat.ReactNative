@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		height: '100%',
-		marginRight: 15
+		marginHorizontal: 20
 	},
 	titleContainer: {
 		flex: 6,

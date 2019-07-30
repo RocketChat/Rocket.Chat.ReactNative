@@ -81,10 +81,6 @@ export default class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount') > 0 ? navigation.getParam('unreadsCount') : null;
 		return {
-			headerLeftContainerStyle: {
-				position: 'relative',
-				backgroundColor: 'white'
-			},
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}
