@@ -12,7 +12,8 @@
     "log-android": "react-native log-android",
     "android": "react-native run-android",
     "snyk-protect": "snyk protect",
-    "precommit": "eslint . && jest"
+    "precommit": "eslint . && jest",
+    "detox-android-build": "sh ./scripts/detox-android-prebuild.sh; detox build --configuration android.emu.release; sh ./scripts/detox-android-postbuild.sh;"
   },
   "husky": {
     "hooks": {
