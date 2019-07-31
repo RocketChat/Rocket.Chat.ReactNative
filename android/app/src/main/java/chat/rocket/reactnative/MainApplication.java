@@ -1,6 +1,11 @@
 package chat.rocket.reactnative;
 
 import android.app.Application;
+import android.util.Log;
+
+import com.facebook.react.PackageList;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
 
 import com.facebook.react.ReactApplication;
 import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
@@ -61,33 +66,12 @@ public class MainApplication extends Application implements ReactApplication, IN
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new DocumentPickerPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseCrashlyticsPackage(),
-            new RNFirebaseAnalyticsPackage(),
-            new RNFirebasePerformancePackage(),
-            new RNCWebViewPackage(),
-            new OrientationPackage(),
-            new SplashScreenReactPackage(),
-            new SharePackage(),
-            new RNFetchBlobPackage(),
-		  		new RNGestureHandlerPackage(),
-					new RNScreensPackage(),
-					new ActionSheetPackage(),
-					new RNDeviceInfo(),
-					new PickerPackage(),
-					new VectorIconsPackage(),
-					new RealmReactPackage(),
-					new ReactVideoPackage(),
-					new ReactNativeAudioPackage(),
-					new KeyboardInputPackage(MainApplication.this),
-					new FastImageViewPackage(),
-					new RNLocalizePackage(),
-          new RNNotificationsPackage(MainApplication.this),
-          new ModuleRegistryAdapter(mModuleRegistryProvider)
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      return packages;
     }
 
     @Override
