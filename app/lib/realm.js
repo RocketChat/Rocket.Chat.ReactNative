@@ -414,7 +414,7 @@ class DB {
 				userSchema,
 				serversSchema
 			],
-			schemaVersion: 9,
+			schemaVersion: 10,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 9) {
 					const newServers = newRealm.objects('servers');
