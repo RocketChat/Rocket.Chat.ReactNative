@@ -203,26 +203,11 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
-    implementation project(':rn-extensions-share')
-    implementation project(':rn-fetch-blob')
-    implementation project(':react-native-document-picker')
-    implementation project(':react-native-firebase')
-    implementation project(':react-native-webview')
-    implementation project(':react-native-orientation-locker')
-    implementation project(':react-native-splash-screen')
-    implementation project(':react-native-screens')
     implementation project(':react-native-action-sheet')
     implementation(project(":react-native-device-info"),  {
         exclude group: "com.google.android.gms"
     })
-    implementation project(':react-native-gesture-handler')
-    implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-localize')
-    implementation project(':react-native-audio')
     implementation project(":reactnativekeyboardinput")
-    implementation project(':react-native-video')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-fast-image')
     implementation project(':realm')
     implementation project(':reactnativenotifications')
     implementation fileTree(dir: "libs", include: ["*.jar"])

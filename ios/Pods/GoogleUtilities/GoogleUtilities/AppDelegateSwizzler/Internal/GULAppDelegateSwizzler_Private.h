@@ -17,7 +17,7 @@
 #import <GoogleUtilities/GULAppDelegateSwizzler.h>
 #import <GoogleUtilities/GULMutableDictionary.h>
 
-@class UIApplication;
+@class GULApplication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** ISA Swizzles the given appDelegate as the original app delegate would be.
  *
  *  @param appDelegate The object that needs to be isa swizzled. This should conform to the
- *      UIApplicationDelegate protocol.
+ *      application delegate protocol.
  */
-+ (void)proxyAppDelegate:(id<UIApplicationDelegate>)appDelegate;
++ (void)proxyAppDelegate:(id<GULApplicationDelegate>)appDelegate;
 
 /** Returns a dictionary containing interceptor IDs mapped to a GULZeroingWeakContainer.
  *
@@ -36,8 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
  *      the interceptorID.
  */
 + (GULMutableDictionary *)interceptors;
-
-#ifdef GUL_APP_DELEGATE_TESTING  // Methods only used in tests.
 
 /** Deletes all the registered interceptors. */
 + (void)clearInterceptors;
@@ -49,9 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return The original app delegate instance that was proxied.
  */
-+ (id<UIApplicationDelegate>)originalDelegate;
-
-#endif  // GUL_APP_DELEGATE_TESTING
++ (id<GULApplicationDelegate>)originalDelegate;
 
 @end
 

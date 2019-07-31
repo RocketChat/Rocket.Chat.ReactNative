@@ -24,6 +24,7 @@
 #import <GoogleUtilities/GULAppEnvironmentUtil.h>
 #import "FIRInstanceID+Private.h"
 #import "FIRInstanceIDAuthService.h"
+#import "FIRInstanceIDCheckinPreferences.h"
 #import "FIRInstanceIDCombinedHandler.h"
 #import "FIRInstanceIDConstants.h"
 #import "FIRInstanceIDDefines.h"
@@ -57,7 +58,12 @@ int64_t const kMinRetryIntervalForDefaultTokenInSeconds = 10;       // 10 second
 // change.
 NSInteger const kMaxRetryCountForDefaultToken = 5;
 
+#if TARGET_OS_IOS || TARGET_OS_TV
 static NSString *const kEntitlementsAPSEnvironmentKey = @"Entitlements.aps-environment";
+#else
+static NSString *const kEntitlementsAPSEnvironmentKey = @"com.apple.developer.aps-environment";
+#endif
+static NSString *const kEntitlementsKeyForMac = @"Entitlements";
 static NSString *const kAPSEnvironmentDevelopmentValue = @"development";
 /// FIRMessaging selector that returns the current FIRMessaging auto init
 /// enabled flag.
@@ -71,7 +77,6 @@ static NSString *const kFIRIIDAppNameKey = @"FIRAppNameKey";
 static NSString *const kFIRIIDErrorDomain = @"com.firebase.instanceid";
 static NSString *const kFIRIIDServiceInstanceID = @"InstanceID";
 
-// This should be the same value as FIRErrorCodeInstanceIDFailed, which we can't import directly
 static NSInteger const kFIRIIDErrorCodeInstanceIDFailed = -121;
 
 typedef void (^FIRInstanceIDKeyPairHandler)(FIRInstanceIDKeyPair *keyPair, NSError *error);
@@ -258,8 +263,6 @@ static FIRInstanceID *gInstanceID;
                             scope:(NSString *)scope
                           options:(NSDictionary *)options
                           handler:(FIRInstanceIDTokenHandler)handler {
-  _FIRInstanceIDDevAssert(handler != nil && [authorizedEntity length] && [scope length],
-                          @"Invalid authorizedEntity or scope to new token");
   if (!handler) {
     FIRInstanceIDLoggerError(kFIRInstanceIDMessageCodeInstanceID000,
                              kFIRInstanceIDInvalidNilHandlerError);
@@ -367,9 +370,6 @@ static FIRInstanceID *gInstanceID;
 - (void)deleteTokenWithAuthorizedEntity:(NSString *)authorizedEntity
                                   scope:(NSString *)scope
                                 handler:(FIRInstanceIDDeleteTokenHandler)handler {
-  _FIRInstanceIDDevAssert(handler != nil && [authorizedEntity length] && [scope length],
-                          @"Invalid authorizedEntity or scope to delete token");
-
   if (!handler) {
     FIRInstanceIDLoggerError(kFIRInstanceIDMessageCodeInstanceID001,
                              kFIRInstanceIDInvalidNilHandlerError);
@@ -462,8 +462,6 @@ static FIRInstanceID *gInstanceID;
 #pragma mark - Identity
 
 - (void)getIDWithHandler:(FIRInstanceIDHandler)handler {
-  _FIRInstanceIDDevAssert(handler, @"Invalid nil handler to getIdentity");
-
   if (!handler) {
     FIRInstanceIDLoggerError(kFIRInstanceIDMessageCodeInstanceID003,
                              kFIRInstanceIDInvalidNilHandlerError);
@@ -490,18 +488,13 @@ static FIRInstanceID *gInstanceID;
     // When getID is explicitly called, trigger getToken to make sure token always exists.
     // This is to avoid ID conflict (ID is not checked for conflict until we generate a token)
     if (appIdentity) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
       [self token];
-#pragma clang diagnostic pop
     }
     callHandlerOnMainThread(appIdentity, error);
   });
 }
 
 - (void)deleteIDWithHandler:(FIRInstanceIDDeleteHandler)handler {
-  _FIRInstanceIDDevAssert(handler, @"Invalid nil handler to delete Identity");
-
   if (!handler) {
     FIRInstanceIDLoggerError(kFIRInstanceIDMessageCodeInstanceID004,
                              kFIRInstanceIDInvalidNilHandlerError);
@@ -615,6 +608,26 @@ static FIRInstanceID *gInstanceID;
   }];
 }
 
+#pragma mark - Checkin
+
+- (BOOL)tryToLoadValidCheckinInfo {
+  FIRInstanceIDCheckinPreferences *checkinPreferences =
+      [self.tokenManager.authService checkinPreferences];
+  return [checkinPreferences hasValidCheckinInfo];
+}
+
+- (NSString *)deviceAuthID {
+  return [self.tokenManager.authService checkinPreferences].deviceID;
+}
+
+- (NSString *)secretToken {
+  return [self.tokenManager.authService checkinPreferences].secretToken;
+}
+
+- (NSString *)versionInfo {
+  return [self.tokenManager.authService checkinPreferences].versionInfo;
+}
+
 #pragma mark - Config
 
 + (void)load {
@@ -707,20 +720,14 @@ static FIRInstanceID *gInstanceID;
       [self defaultTokenWithHandler:nil];
     }
     // Notify FCM with the default token.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.defaultFCMToken = [self token];
-#pragma clang diagnostic pop
   } else if ([self isFCMAutoInitEnabled]) {
     // When there is no cached token, must check auto init is enabled.
     // If it's disabled, don't initiate token generation/refresh.
     // If no cache token and auto init is enabled, fetch a token from server.
     [self defaultTokenWithHandler:nil];
     // Notify FCM with the default token.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.defaultFCMToken = [self token];
-#pragma clang diagnostic pop
   }
   // ONLY checkin when auto data collection is turned on.
   if ([self isFCMAutoInitEnabled]) {
@@ -1053,43 +1060,27 @@ static FIRInstanceID *gInstanceID;
   const BOOL defaultAppTypeProd = YES;
 
   NSError *error = nil;
-
-  Class envClass = NSClassFromString(@"FIRAppEnvironmentUtil");
-  SEL isSimulatorSelector = NSSelectorFromString(@"isSimulator");
-  if ([envClass respondsToSelector:isSimulatorSelector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    if ([envClass performSelector:isSimulatorSelector]) {
-#pragma clang diagnostic pop
-      [self logAPNSConfigurationError:@"Running InstanceID on a simulator doesn't have APNS. "
-                                      @"Use prod profile by default."];
-      return defaultAppTypeProd;
-    }
+  if ([GULAppEnvironmentUtil isSimulator]) {
+    [self logAPNSConfigurationError:@"Running InstanceID on a simulator doesn't have APNS. "
+                                    @"Use prod profile by default."];
+    return defaultAppTypeProd;
   }
 
+  if ([GULAppEnvironmentUtil isFromAppStore]) {
+    // Apps distributed via AppStore or TestFlight use the Production APNS certificates.
+    return defaultAppTypeProd;
+  }
+#if TARGET_OS_IOS || TARGET_OS_TV
   NSString *path = [[[NSBundle mainBundle] bundlePath]
       stringByAppendingPathComponent:@"embedded.mobileprovision"];
+#elif TARGET_OS_OSX
+  NSString *path = [[[[NSBundle mainBundle] resourcePath] stringByDeletingLastPathComponent]
+      stringByAppendingPathComponent:@"embedded.provisionprofile"];
+#endif
 
-  // Apps distributed via AppStore or TestFlight use the Production APNS certificates.
-  SEL isFromAppStoreSelector = NSSelectorFromString(@"isFromAppStore");
-  if ([envClass respondsToSelector:isFromAppStoreSelector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    if ([envClass performSelector:isFromAppStoreSelector]) {
-#pragma clang diagnostic pop
-      return defaultAppTypeProd;
-    }
-  }
-
-  SEL isAppStoreReceiptSandboxSelector = NSSelectorFromString(@"isAppStoreReceiptSandbox");
-  if ([envClass respondsToSelector:isAppStoreReceiptSandboxSelector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    if ([envClass performSelector:isAppStoreReceiptSandboxSelector] && !path.length) {
-#pragma clang diagnostic pop
-      // Distributed via TestFlight
-      return defaultAppTypeProd;
-    }
+  if ([GULAppEnvironmentUtil isAppStoreReceiptSandbox] && !path.length) {
+    // Distributed via TestFlight
+    return defaultAppTypeProd;
   }
 
   NSMutableData *profileData = [NSMutableData dataWithContentsOfFile:path options:0 error:&error];
@@ -1162,7 +1153,13 @@ static FIRInstanceID *gInstanceID;
                              @"most likely a Dev profile.");
   }
 
+#if TARGET_OS_IOS || TARGET_OS_TV
   NSString *apsEnvironment = [plistMap valueForKeyPath:kEntitlementsAPSEnvironmentKey];
+#elif TARGET_OS_OSX
+  NSDictionary *entitlements = [plistMap valueForKey:kEntitlementsKeyForMac];
+  NSString *apsEnvironment = [entitlements valueForKey:kEntitlementsAPSEnvironmentKey];
+#endif
+
   NSString *debugString __unused =
       [NSString stringWithFormat:@"APNS Environment in profile: %@", apsEnvironment];
   FIRInstanceIDLoggerDebug(kFIRInstanceIDMessageCodeInstanceID013, @"%@", debugString);
