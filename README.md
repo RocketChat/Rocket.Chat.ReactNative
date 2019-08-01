@@ -1,13 +1,11 @@
 # Rocket.Chat React Native Mobile
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/RocketChat/Rocket.Chat.ReactNative.svg)](https://greenkeeper.io/)
-[![Build Status](https://img.shields.io/travis/RocketChat/Rocket.Chat.ReactNative/master.svg)](https://travis-ci.org/RocketChat/Rocket.Chat.ReactNative)
 [![Project Dependencies](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative.svg)](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb15e2392a71473ea59d3f634f35c54e)](https://www.codacy.com/app/RocketChat/Rocket.Chat.ReactNative?utm_source=github.com&utm_medium=referral&utm_content=RocketChat/Rocket.Chat.ReactNative&utm_campaign=badger)
 [![codecov](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative/branch/master/graph/badge.svg)](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative)
 [![CodeFactor](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative/badge)](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative)
 
-**Supported Server Versions:** 0.66.0+
+**Supported Server Versions:** 0.70.0+
 
 ## Download
 <a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
@@ -59,55 +57,53 @@ If you don't need multiple servers, there is a branch `single-server` just for t
 Readme will guide you on how to config.
 
 ## Current priorities
-1) [NEW] Jitsi integration ([#711][i711])
-2) [NEW] Federation ([#706][i706])
-3) [NEW] Record video ([#712][i712])
-4) [NEW] Slash Commands ([#405][i405])
-5) [NEW] Share extension ([#391][i391])
-
-[i711]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/711
-[i706]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/706 
-[i707]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/707
-[i712]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/712
-[i708]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/708
-[i391]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/391
-[i405]: https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/405
+1) Jitsi integration
+2) Notification Preferences
+3) Two-way authentication
+4) Authentication via SAML
+5) Authentication via Custom OAuth
+6) Authentication via CAS
+7) Bugsnag
+8) Optional Analytics
+9) Typescript
+10) Prettier
 
 ## Features
 | Feature                                                   	    | Status 	|
 |---------------------------------------------------------------	|--------	|
 | Jitsi Integration                                             	| ❌    	|
-| Federation (Directory)                                        	| ❌    	|
-| Threads                                                       	| ✅     	|
+| Federation (Directory)                                        	| ✅    	|
+| Discussions                                                     | ❌    	|
+| Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|
-| Record Video                                                  	| ❌    	|
-| Commands                                                      	| ❌    	|
+| Record Video                                                  	| ✅    	|
+| Commands                                                      	| ✅    	|
 | Draft message per room                                        	| ✅    	|
-| Share Extension                                               	| ❌    	|
+| Share Extension                                               	| ✅    	|
 | Notifications Preferences                                     	| ✅    	|
 | Edited status                                                 	| ✅    	|
-| Upload video                                                  	| ❌    	|
+| Upload video                                                  	| ✅    	|
 | Grouped messages                                              	| ✅    	|
-| Mark room as read                                             	| ❌    	|
-| Mark room as unread                                           	| ❌    	|
+| Mark room as read                                             	| ✅    	|
+| Mark room as unread                                           	| ✅    	|
 | Tablet Support                                                	| ❌    	|
-| Read receipt                                                  	| ❌    	|
+| Read receipt                                                  	| ✅    	|
 | Broadbast Channel                                             	| ✅    	|
 | Authentication via SAML                                       	| ❌    	|
 | Authentication via CAS                                        	| ❌    	|
-| Custom Fields on Signup                                       	| ❌    	|
-| Report message                                                	| ❌    	|
+| Custom Fields on Signup                                       	| ✅    	|
+| Report message                                                	| ✅    	|
 | Theming                                                       	| ❌    	|
 | Settings -> Review the App                                    	| ❌    	|
 | Settings -> Default Browser                                   	| ❌    	|
 | Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ❌    	|
 | Unread counter banner on message list                         	| ✅    	|
-| E2E                                                           	| ❌    	|
+| E2E Encryption                                                 	| ❌    	|
 | Join a Protected Room                                         	| ❌    	|
 | Optional Analytics                                            	| ❌    	|
 | Settings -> About us                                          	| ❌    	|
-| Settings -> Contact us                                        	| ❌    	|
+| Settings -> Contact us                                        	| ✅    	|
 | Settings -> Update App Icon                                   	| ❌    	|
 | Settings -> Share                                             	| ❌    	|
 | Accessibility (Medium)                                        	| ❌    	|

@@ -14,6 +14,9 @@ import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
+import {
+	shareSelectServer, shareSetUser
+} from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -215,6 +218,35 @@ const RocketChat = {
 
 			resolve();
 		});
+	},
+
+	async shareExtensionInit(server) {
+		database.setActiveDB(server);
+
+		if (this.sdk) {
+			this.sdk.disconnect();
+			this.sdk = null;
+		}
+
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		// set Server
+		const { serversDB } = database.databases;
+		reduxStore.dispatch(shareSelectServer(server));
+
+		// set User info
+		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+		reduxStore.dispatch(shareSetUser({
+			id: user.id,
+			token: user.token,
+			username: user.username
+		}));
+
+		await RocketChat.login({ resume: user.token });
 	},
 
 	register(credentials) {

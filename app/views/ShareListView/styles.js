@@ -8,24 +8,34 @@ import {
 
 export default StyleSheet.create({
 	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
 		flex: 1,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
+	emptyContainer: {
+		padding: 20,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	content: {
 		flex: 1,
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	centered: {
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	flatlist: {
+		marginTop: isIOS ? 6 : 0, // the height of the navigation bar with the searchbar is larger
 		width: '100%',
-		backgroundColor: COLOR_WHITE
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	bordered: {
 		...sharedStyles.separatorVertical
 	},
-	scroll: {
-		width: '100%'
+	borderBottom: {
+		...sharedStyles.separatorBottom
 	},
 	headerContainer: {
 		paddingHorizontal: 15,
@@ -37,8 +47,7 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular,
 		fontSize: 17,
-		letterSpacing: 0.27,
-		flex: 1
+		letterSpacing: 0.27
 	},
 	separator: {
 		...sharedStyles.separatorBottom,
