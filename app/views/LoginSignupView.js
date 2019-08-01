@@ -229,10 +229,12 @@ export default class LoginSignupView extends React.Component {
 
 	onPressCustomOAuth = (loginService) => {
 		const { server } = this.props;
-		const { serverURL, authorizePath, clientId, scope, service } = loginService;
-		const redirectUri = `${ server }/_oauth/${ service }`
+		const {
+			serverURL, authorizePath, clientId, scope, service
+		} = loginService;
+		const redirectUri = `${ server }/_oauth/${ service }`;
 		const state = this.getOAuthState();
-		const params = `?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}&scope=${scope}`;
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirectUri }&response_type=code&state=${ state }&scope=${ scope }`;
 		const url = `${ serverURL }${ authorizePath }${ params }`;
 		this.openOAuth(url);
 	}
@@ -311,13 +313,14 @@ export default class LoginSignupView extends React.Component {
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let onPress = () => {};
 
-		switch(service.authType) {
+		switch (service.authType) {
 			case 'oauth': {
 				onPress = this.getSocialOauthProvider(service.name);
 				break;
 			}
 			case 'oauth_custom': {
 				onPress = this.onPressCustomOAuth.bind(this, service);
+				break;
 			}
 			default:
 				break;
@@ -336,14 +339,14 @@ export default class LoginSignupView extends React.Component {
 
 	getSocialOauthProvider = (name) => {
 		const oauthProviders = {
-			'facebook': this.onPressFacebook,
-			'github': this.onPressGithub,
-			'gitlab': this.onPressGitlab,
-			'google': this.onPressGoogle,
-			'linkedin': this.onPressLinkedin,
+			facebook: this.onPressFacebook,
+			github: this.onPressGithub,
+			gitlab: this.onPressGitlab,
+			google: this.onPressGoogle,
+			linkedin: this.onPressLinkedin,
 			'meteor-developer': this.onPressMeteor,
-			'twitter': this.onPressTwitter
-		}
+			twitter: this.onPressTwitter
+		};
 
 		return oauthProviders[name];
 	}
