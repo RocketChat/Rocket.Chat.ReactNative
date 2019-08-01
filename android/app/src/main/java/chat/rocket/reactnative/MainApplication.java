@@ -2,6 +2,8 @@ package chat.rocket.reactnative;
 
 import android.app.Application;
 import android.util.Log;
+import android.content.Context;
+import android.os.Bundle;
 
 import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
@@ -18,6 +20,11 @@ import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
 import com.wix.reactnativenotifications.RNNotificationsPackage;
+import com.wix.reactnativenotifications.core.AppLaunchHelper;
+import com.wix.reactnativenotifications.core.AppLifecycleFacade;
+import com.wix.reactnativenotifications.core.JsIOHelper;
+import com.wix.reactnativenotifications.core.notification.INotificationsApplication;
+import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
 import io.invertase.firebase.RNFirebasePackage;
@@ -28,7 +35,7 @@ import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
 
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), Arrays.<SingletonModule>asList());
 
@@ -47,6 +54,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new RNFirebaseAnalyticsPackage());
       packages.add(new RNFirebasePerformancePackage());
       packages.add(new KeyboardInputPackage(MainApplication.this));
+      packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       return packages;
     }
@@ -66,5 +74,16 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+  }
+
+  @Override
+  public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
+      return new CustomPushNotification(
+              context,
+              bundle,
+              defaultFacade,
+              defaultAppLaunchHelper,
+              new JsIOHelper()
+      );
   }
 }
