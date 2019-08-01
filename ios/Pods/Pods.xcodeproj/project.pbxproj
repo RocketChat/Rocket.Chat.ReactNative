@@ -14790,7 +14790,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 916A280A563FEBC753648A0864FC02F7 /* RNImageCropPicker.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -16527,7 +16527,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 12B95BBFA60CB784B0690536F79A6AE2 /* React-DevSupport.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -16575,7 +16575,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 12B95BBFA60CB784B0690536F79A6AE2 /* React-DevSupport.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -16674,7 +16674,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 916A280A563FEBC753648A0864FC02F7 /* RNImageCropPicker.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
