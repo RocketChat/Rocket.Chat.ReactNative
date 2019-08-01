@@ -153,6 +153,8 @@ PODS:
     - React
   - react-native-keyboard-input (5.3.1):
     - React
+  - react-native-keyboard-tracking-view (5.5.0):
+    - React
   - react-native-notifications (1.2.6):
     - React
   - react-native-orientation-locker (1.1.6):
@@ -272,6 +274,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-keyboard-input (from `../node_modules/react-native-keyboard-input`)
+  - react-native-keyboard-tracking-view (from `../node_modules/react-native-keyboard-tracking-view`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-realm-path (from `../node_modules/react-native-realm-path`)
@@ -377,6 +380,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-document-picker"
   react-native-keyboard-input:
     :path: "../node_modules/react-native-keyboard-input"
+  react-native-keyboard-tracking-view:
+    :path: "../node_modules/react-native-keyboard-tracking-view"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
@@ -504,6 +509,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 73f24a02fa684ed6a2b828ba116874a2191ded88
   react-native-document-picker: 94a07ce0494c559e2ae9fa86621d6c624d810fec
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
+  react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
   react-native-notifications: dddb6bee55ca4ab303c17c27c75fb5955784c4b3
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
@@ -549,6 +555,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: a0388e2c4da05c0b98d2b1012c761b33a9f9123c
+PODFILE CHECKSUM: c9c0e4d6e34886493451eb2fdba48bc7e89d4551
 
 COCOAPODS: 1.6.2
