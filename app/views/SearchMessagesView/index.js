@@ -132,7 +132,7 @@ export default class SearchMessagesView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput

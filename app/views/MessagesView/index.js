@@ -252,7 +252,7 @@ export default class MessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={messages}

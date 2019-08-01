@@ -247,7 +247,7 @@ export default class RoomInfoView extends React.Component {
 		return (
 			<ScrollView style={styles.scroll}>
 				<StatusBar />
-				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
+				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>

@@ -215,7 +215,7 @@ export default class DirectoryView extends React.Component {
 		} = this.state;
 		const { isFederationEnabled } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={data}

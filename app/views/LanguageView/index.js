@@ -141,7 +141,7 @@ export default class LanguageView extends React.Component {
 	render() {
 		const { saving } = this.state;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={LANGUAGES}

@@ -81,7 +81,7 @@ export default class LegalView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'terms-of-service', testID: 'legal-terms-button' })}

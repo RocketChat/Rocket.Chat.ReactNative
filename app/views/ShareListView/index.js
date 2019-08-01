@@ -486,7 +486,7 @@ export default class ShareListView extends React.Component {
 	render() {
 		const showError = !this.canUploadFile();
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} forceInset={{ vertical: 'never' }}>
 				{ showError ? this.renderError() : this.renderScrollView() }
 			</SafeAreaView>
 		);

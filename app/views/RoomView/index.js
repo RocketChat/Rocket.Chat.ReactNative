@@ -617,7 +617,7 @@ export default class RoomView extends React.Component {
 		const { rid, t } = room;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}

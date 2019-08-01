@@ -183,7 +183,7 @@ export default class NewMessageView extends React.Component {
 	}
 
 	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
+		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ vertical: 'never' }}>
 			<StatusBar />
 			{this.renderList()}
 		</SafeAreaView>

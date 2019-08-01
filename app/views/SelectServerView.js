@@ -91,7 +91,7 @@ export default class SelectServerView extends React.Component {
 		return (
 			<SafeAreaView
 				style={styles.container}
-				forceInset={{ bottom: 'never' }}
+				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
 				<View style={styles.list}>

@@ -279,7 +279,7 @@ export default class RoomMembersView extends React.Component {
 		// 	return <ActivityIndicator style={styles.loading} />;
 		// }
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={filtering ? membersFiltered : members}

@@ -633,7 +633,7 @@ export default class RoomsListView extends React.Component {
 		} = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				{this.renderScroll()}
 				{showSortDropdown

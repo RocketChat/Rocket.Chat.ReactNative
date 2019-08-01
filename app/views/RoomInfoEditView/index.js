@@ -299,7 +299,7 @@ export default class RoomInfoEditView extends React.Component {
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view' forceInset={{ vertical: 'never' }}>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}

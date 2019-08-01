@@ -483,7 +483,7 @@ export default class RoomActionsView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}

@@ -249,7 +249,7 @@ export default class ThreadMessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={messages}
