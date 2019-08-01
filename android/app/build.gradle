@@ -201,26 +201,38 @@ android {
 }
 
 dependencies {
+    // addUnimodulesDependencies()
+    // implementation "org.webkit:android-jsc:r241213"
+    // implementation project(':react-native-action-sheet')
+    // implementation(project(":react-native-device-info"),  {
+    //     exclude group: "com.google.android.gms"
+    // })
+    // implementation project(":reactnativekeyboardinput")
+    // implementation project(':realm')
+    // implementation project(':reactnativenotifications')
+    // implementation fileTree(dir: "libs", include: ["*.jar"])
+    // implementation "com.android.support:appcompat-v7:${ rootProject.ext.supportLibVersion }"
+    // implementation "com.android.support:support-v4:${ rootProject.ext.supportLibVersion }"
+    // implementation "com.android.support:customtabs:${ rootProject.ext.supportLibVersion }"
+    // implementation "com.android.support:design:${ rootProject.ext.supportLibVersion }"
+    // implementation "com.facebook.react:react-native:+"  // From node_modules
+    // implementation 'com.facebook.fresco:fresco:1.10.0'
+    // implementation 'com.facebook.fresco:animated-gif:1.10.0'
+    // implementation 'com.facebook.fresco:animated-webp:1.10.0'
+    // implementation 'com.facebook.fresco:webpsupport:1.10.0'
+    // implementation "com.google.android.gms:play-services-base:16.1.0"
+    // implementation "com.google.firebase:firebase-messaging:18.0.0"
+    // implementation "com.google.firebase:firebase-core:16.0.9"
+    // implementation "com.google.firebase:firebase-perf:16.2.5"
+    // implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
+    //     transitive = true
+    // }
     addUnimodulesDependencies()
-    implementation "org.webkit:android-jsc:r241213"
-    implementation project(':react-native-action-sheet')
-    implementation(project(":react-native-device-info"),  {
-        exclude group: "com.google.android.gms"
-    })
-    implementation project(":reactnativekeyboardinput")
-    implementation project(':realm')
     implementation project(':reactnativenotifications')
+    implementation project(':react-native-firebase')
+    implementation project(":reactnativekeyboardinput")
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:${ rootProject.ext.supportLibVersion }"
-    implementation "com.android.support:support-v4:${ rootProject.ext.supportLibVersion }"
-    implementation "com.android.support:customtabs:${ rootProject.ext.supportLibVersion }"
-    implementation "com.android.support:design:${ rootProject.ext.supportLibVersion }"
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation 'com.facebook.fresco:fresco:1.10.0'
-    implementation 'com.facebook.fresco:animated-gif:1.10.0'
-    implementation 'com.facebook.fresco:animated-webp:1.10.0'
-    implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    implementation "com.google.android.gms:play-services-base:16.1.0"
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-core:16.0.9"
     implementation "com.google.firebase:firebase-perf:16.2.5"

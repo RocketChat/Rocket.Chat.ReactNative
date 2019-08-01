@@ -1,42 +1,22 @@
-diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
-index 69ef9f3..10729c8 100644
---- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
-+++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
-@@ -1,7 +1,7 @@
- package com.wix.reactnativekeyboardinput;
+diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java
+index 3c8d37e..2fb804d 100644
+--- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java
++++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java
+@@ -13,10 +13,10 @@ public class CustomKeyboardRootViewShadow extends LayoutShadowNode {
+         mLayout.setShadowNode(this);
+     }
  
- import android.content.Context;
--import android.support.annotation.NonNull;
-+import androidx.annotation.NonNull;
- import android.view.View;
- import android.widget.FrameLayout;
+-    @Override
+-    public void onBeforeLayout() {
+-        mLayout.setShadowNode(this);
+-    }
++    // @Override
++    // public void onBeforeLayout() {
++    //     mLayout.setShadowNode(this);
++    // }
  
-diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
-index eecb682..f4d3712 100644
---- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
-+++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
-@@ -1,7 +1,7 @@
- package com.wix.reactnativekeyboardinput;
- 
- import android.graphics.Rect;
--import android.support.annotation.Nullable;
-+import androidx.annotation.Nullable;
- import android.view.ViewTreeObserver;
- 
- import com.facebook.react.ReactRootView;
-diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
-index 5eda46a..39c30a7 100644
---- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
-+++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
-@@ -1,7 +1,7 @@
- package com.wix.reactnativekeyboardinput.utils;
- 
- import android.app.Activity;
--import android.support.annotation.Nullable;
-+import androidx.annotation.Nullable;
- import android.view.View;
- import android.view.ViewGroup;
- import android.view.Window;
+     public void setHeight(int heightPx) {
+         setStyleHeight(heightPx);
 diff --git a/node_modules/react-native-keyboard-input/react-native-keyboard-input.podspec b/node_modules/react-native-keyboard-input/react-native-keyboard-input.podspec
 new file mode 100644
 index 0000000..1d08ca1
