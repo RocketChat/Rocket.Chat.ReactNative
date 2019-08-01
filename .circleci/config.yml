@@ -206,12 +206,11 @@ jobs:
             # https://github.com/creationix/nvm/issues/1394
             set +e
             nvm install 8
-            brew install watchman
 
       - run:
           name: Install NPM modules
           command: |
-            yarn global add react-native
+            yarn global add react-native react-native-cli
             yarn
 
       - run:
