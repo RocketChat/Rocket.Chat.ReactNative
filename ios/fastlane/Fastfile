@@ -58,6 +58,8 @@ platform :ios do
     pem()
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
     # frameit
+    upload_symbols_to_bugsnag
+    send_build_to_bugsnag
   end
 
   desc "Build App for development"
