@@ -206,6 +206,7 @@ jobs:
             # https://github.com/creationix/nvm/issues/1394
             set +e
             nvm install 8
+            brew install watchman
 
       - run:
           name: Install NPM modules
