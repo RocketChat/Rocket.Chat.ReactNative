@@ -1,4 +1,3 @@
-import reduxStore from '../createStore';
 import database from '../realm';
 import log from '../../utils/log';
 
@@ -23,11 +22,12 @@ export function cancelUpload(path) {
 	}
 }
 
-export function sendFileMessage(rid, fileInfo, tmid) {
+export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise((resolve, reject) => {
 		try {
-			const { FileUpload_MaxFileSize, Site_Url } = reduxStore.getState().settings;
-			const { id, token } = reduxStore.getState().login.user;
+			const { serversDB } = database.databases;
+			const { FileUpload_MaxFileSize, id: Site_Url } = serversDB.objectForPrimaryKey('servers', server);
+			const { id, token } = user;
 
 			// -1 maxFileSize means there is no limit
 			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {

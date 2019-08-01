@@ -26,6 +26,9 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
+		useRealName: { type: 'bool', optional: true },
+		FileUpload_MediaTypeWhiteList: { type: 'string', optional: true },
+		FileUpload_MaxFileSize: { type: 'int', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
 	}
