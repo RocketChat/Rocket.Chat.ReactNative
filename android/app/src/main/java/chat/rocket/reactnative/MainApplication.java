@@ -3,6 +3,7 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.bugsnag.BugsnagReactNative;
 import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
@@ -63,6 +64,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            BugsnagReactNative.getPackage(),
             new DocumentPickerPackage(),
             new RNFirebasePackage(),
             new RNFirebaseCrashlyticsPackage(),

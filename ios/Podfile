@@ -51,6 +51,9 @@ target 'RocketChatRN' do
 
   use_unimodules!
 
+
+  pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
+
 end
 
 target 'ShareRocketChatRN' do

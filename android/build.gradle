@@ -21,7 +21,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.25.4'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
-
+        classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -44,16 +44,16 @@ allprojects {
     }
 }
 
-subprojects { subproject ->	
-    afterEvaluate {	
-        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {	
-            android {	
-                compileSdkVersion 28	
-                buildToolsVersion "28.0.3"	
-                defaultConfig {	
-                    targetSdkVersion 28	
-                }	
-            }	
-        }	
-    }	
+subprojects { subproject ->
+    afterEvaluate {
+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
+                defaultConfig {
+                    targetSdkVersion 28
+                }
+            }
+        }
+    }
 }

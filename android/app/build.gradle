@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
+apply plugin: 'com.bugsnag.android.gradle'
 
 import com.android.build.OutputFile
 
@@ -172,6 +173,7 @@ android {
 }
 
 dependencies {
+    implementation project(':bugsnag-react-native')
     addUnimodulesDependencies()
     implementation "org.webkit:android-jsc:r241213"
     implementation project(':rn-extensions-share')
