@@ -1,23 +1,23 @@
 module.exports = {
 	dependencies: {
-		'realm': {
+		realm: {
 			platforms: {
-				ios: null,
-			},
+				ios: null
+			}
 		},
 		'react-native-notifications': {
 			platforms: {
-			  	android: null
+				android: null
 			}
 		},
 		'react-native-firebase': {
 			platforms: {
-			  	android: null
+				android: null
 			}
 		},
 		'react-native-keyboard-input': {
 			platforms: {
-			  	android: null
+				android: null
 			}
 		}
 	}
