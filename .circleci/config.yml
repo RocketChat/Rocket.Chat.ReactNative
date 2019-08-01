@@ -210,6 +210,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
+            yarn global add react-native
             yarn
 
       - run:
