@@ -122,7 +122,8 @@ jobs:
             # https://github.com/creationix/nvm/issues/1394
             set +e
             nvm install 8
-            export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"
+            echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
+            source ~/.bash_profile
 
       - restore_cache:
           name: Restore NPM cache
