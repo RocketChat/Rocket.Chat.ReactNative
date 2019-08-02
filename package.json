@@ -29,7 +29,6 @@
     "i18n-js": "^3.3.0",
     "js-base64": "^2.5.1",
     "js-sha256": "^0.9.0",
-    "jsc-android": "^241213.2.0",
     "lodash": "^4.17.11",
     "markdown-it-flowdock": "^0.3.7",
     "moment": "^2.24.0",
