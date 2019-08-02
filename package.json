@@ -69,7 +69,7 @@
     "react-native-slowlog": "^1.0.2",
     "react-native-splash-screen": "^3.2.0",
     "react-native-unimodules": "^0.5.2",
-    "react-native-vector-icons": "^6.4.2",
+    "react-native-vector-icons": "6.6.0",
     "react-native-video": "^5.0.0",
     "react-native-video-controls": "^2.2.3",
     "react-native-webview": "^5.12.1",
