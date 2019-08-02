@@ -13,7 +13,7 @@
     "android": "react-native run-android",
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package && jetify"
   },
   "husky": {
     "hooks": {
