@@ -72,7 +72,7 @@
     "react-native-vector-icons": "6.6.0",
     "react-native-video": "^5.0.0",
     "react-native-video-controls": "^2.2.3",
-    "react-native-webview": "^5.12.1",
+    "react-native-webview": "^6.6.0",
     "react-navigation": "^3.11.1",
     "react-navigation-header-buttons": "^2.3.1",
     "react-redux": "^6.0.0",
