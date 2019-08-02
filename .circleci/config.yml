@@ -155,8 +155,7 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            pwd
-            ls
+            npm i -g react-native react-native-cli
             react-native bundle     --platform android     --dev false     --entry-file index.js     --bundle-output android-release.bundle     --sourcemap-output android-release.bundle.map
             curl https://upload.bugsnag.com/react-native-source-map  -F apiKey=72a0364cb361fc8f0fdc6cbf605f9963  -F appVersionCode=$CIRCLE_BUILD_NUM  -F dev=false  -F platform=android  -F sourceMap=@android-release.bundle.map  -F bundle=@android-release.bundle  -F projectRoot=app.bugsnag.com/rocketchat-1
 
