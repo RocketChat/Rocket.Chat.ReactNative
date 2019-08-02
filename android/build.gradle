@@ -5,8 +5,11 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 28
         targetSdkVersion = 28
-        supportLibVersion = "28.0.0"
         glideVersion = "4.9.0"
+        // googlePlayServicesVersion = "17.0.0"
+        // supportLibVersion = "1.0.2"
+        // mediaCompatVersion = '1.0.1'
+        // supportV4Version = '1.0.0'
     }
     repositories {
         mavenLocal()
@@ -47,16 +50,16 @@ allprojects {
     }
 }
 
-subprojects { subproject ->	
-    afterEvaluate {	
-        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {	
-            android {	
-                compileSdkVersion 28	
-                buildToolsVersion "28.0.3"	
-                defaultConfig {	
-                    targetSdkVersion 28	
-                }	
-            }	
-        }	
-    }	
-}
+// subprojects { subproject ->	
+//     afterEvaluate {	
+//         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {	
+//             android {	
+//                 compileSdkVersion 28	
+//                 buildToolsVersion "28.0.3"	
+//                 defaultConfig {	
+//                     targetSdkVersion 28	
+//                 }	
+//             }	
+//         }	
+//     }	
+// }

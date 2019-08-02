@@ -17,7 +17,6 @@
 		android:label="@string/app_name"
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
-		tools:replace="android:appComponentFactory"
 	>
 		<activity
 			android:name=".MainActivity"

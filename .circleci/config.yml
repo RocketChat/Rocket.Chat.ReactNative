@@ -102,30 +102,32 @@ jobs:
   android-build:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
 
     environment:
       # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
-      JVM_OPTS: -Xmx4096m
+      # GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
+      # JVM_OPTS: -Xmx4096m
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
 
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      # - restore_cache:
+      #     name: Restore NPM cache
+      #     key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
           command: |
             yarn
 
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      # - restore_cache:
+      #     name: Restore gradle cache
+      #     key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: Configure Gradle
@@ -133,7 +135,7 @@ jobs:
             cd android
 
             echo -e "" > ./gradle.properties
-            echo -e "android.enableAapt2=false" >> ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -154,6 +156,7 @@ jobs:
       - run:
           name: Build Android App
           command: |
+            npx jetify
             cd android
             if [[ $KEYSTORE ]]; then
               ./gradlew bundleRelease
