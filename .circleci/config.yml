@@ -149,19 +149,20 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cd android/app
             cp google-services.prod.json google-services.json
+          working_directory: android/app
 
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
+            pwd
+            ls
             react-native bundle     --platform android     --dev false     --entry-file index.js     --bundle-output android-release.bundle     --sourcemap-output android-release.bundle.map
             curl https://upload.bugsnag.com/react-native-source-map  -F apiKey=72a0364cb361fc8f0fdc6cbf605f9963  -F appVersionCode=$CIRCLE_BUILD_NUM  -F dev=false  -F platform=android  -F sourceMap=@android-release.bundle.map  -F bundle=@android-release.bundle  -F projectRoot=app.bugsnag.com/rocketchat-1
 
       - run:
           name: Build Android App
           command: |
-            cd android
             if [[ $KEYSTORE ]]; then
               ./gradlew bundleRelease
             else
@@ -171,6 +172,7 @@ jobs:
             mkdir -p /tmp/build
 
             mv app/build/outputs /tmp/build/
+          working_directory: android
 
       - store_artifacts:
           path: /tmp/build/outputs
