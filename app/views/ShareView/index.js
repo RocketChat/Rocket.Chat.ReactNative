@@ -112,7 +112,14 @@ export default class ShareView extends React.Component {
 		const { rid, fileInfo, file } = this.state;
 		const { baseUrl: server, user } = this.props;
 		const { name, description } = file;
-		const fileMessage = { ...fileInfo, name, description };
+		const fileMessage = {
+			name,
+			description,
+			size: fileInfo.size,
+			type: fileInfo.mime,
+			store: 'Uploads',
+			path: fileInfo.path
+		};
 		if (fileInfo && rid !== '') {
 			try {
 				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
