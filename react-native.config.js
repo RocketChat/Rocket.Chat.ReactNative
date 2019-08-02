@@ -10,11 +10,6 @@ module.exports = {
 				android: null
 			}
 		},
-		'react-native-firebase': {
-			platforms: {
-				android: null
-			}
-		},
 		'react-native-keyboard-input': {
 			platforms: {
 				android: null
