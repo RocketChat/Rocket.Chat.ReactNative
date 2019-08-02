@@ -11,11 +11,11 @@ import android.content.res.Configuration;
 
 public class MainActivity extends ReactFragmentActivity {
 
-    // @Override
-    // protected void onCreate(Bundle savedInstanceState) {
-    //     SplashScreen.show(this);
-    //     super.onCreate(null);
-    // }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);
+        super.onCreate(null);
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -36,12 +36,13 @@ public class MainActivity extends ReactFragmentActivity {
       };
     }
 
-    // @Override
-    // public void onConfigurationChanged(Configuration newConfig) {
-    //     super.onConfigurationChanged(newConfig);
-    //     Intent intent = new Intent("onConfigurationChanged");
-    //     intent.putExtra("newConfig", newConfig);
-    //     this.sendBroadcast(intent);
-    // }
+    // from react-native-orientation
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
+    }
 }
 
