@@ -46,7 +46,7 @@ const restore = function* restore() {
 							serversDB.create('servers', serverInfo, true);
 							await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
 						} catch (e) {
-							log('err_create_servers', e);
+							log(e);
 						}
 					});
 				});
@@ -79,7 +79,7 @@ const restore = function* restore() {
 
 		yield put(actions.appReady({}));
 	} catch (e) {
-		log('err_restore', e);
+		log(e);
 	}
 };
 

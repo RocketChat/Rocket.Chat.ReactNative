@@ -209,7 +209,7 @@ export default class RoomInfoEditView extends React.Component {
 				this.setState({ nameError: e });
 			}
 			error = true;
-			log('err_save_room_settings', e);
+			log(e);
 		}
 
 		await this.setState({ saving: false });
@@ -264,7 +264,7 @@ export default class RoomInfoEditView extends React.Component {
 						try {
 							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
-							log('err_toggle_archive', e);
+							log(e);
 						}
 					}
 				}

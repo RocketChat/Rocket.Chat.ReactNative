@@ -85,7 +85,7 @@ const RocketChat = {
 				return result;
 			}
 		} catch (e) {
-			log('err_get_server_info', e);
+			log(e);
 		}
 		return {
 			success: false,
@@ -433,7 +433,7 @@ const RocketChat = {
 					database.create('messages', message, true);
 				});
 			} catch (e) {
-				log('err_resend_message', e);
+				log(e);
 			}
 		}
 	},
@@ -564,7 +564,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			log('err_get_permalink', e);
+			log(e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;
@@ -933,7 +933,7 @@ const RocketChat = {
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
 		} catch (error) {
-			log('err_can_auto_translate', error);
+			log(error);
 			return false;
 		}
 	},

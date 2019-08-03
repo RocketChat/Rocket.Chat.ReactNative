@@ -63,7 +63,7 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[username] = null;
 			}
 		} catch (error) {
-			log('err_remove_user_typing', error);
+			log(error);
 		}
 	};
 
@@ -85,7 +85,7 @@ export default function subscribeRoom({ rid }) {
 					removeUserTyping(username);
 				}, 10000);
 			} catch (error) {
-				log('err_add_user_typing', error);
+				log(error);
 			}
 		}
 	};
@@ -198,7 +198,7 @@ export default function subscribeRoom({ rid }) {
 	try {
 		promises = this.sdk.subscribeRoom(rid);
 	} catch (e) {
-		log('err_subscribe_room', e);
+		log(e);
 	}
 
 	return {

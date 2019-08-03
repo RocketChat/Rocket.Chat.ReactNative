@@ -108,7 +108,7 @@ export default class DirectoryView extends React.Component {
 				this.setState({ loading: false });
 			}
 		} catch (error) {
-			log('err_load_directory', error);
+			log(error);
 			this.setState({ loading: false });
 		}
 	}, 200)

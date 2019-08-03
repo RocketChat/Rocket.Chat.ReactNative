@@ -124,7 +124,7 @@ export default class ShareView extends React.Component {
 			try {
 				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
 			} catch (e) {
-				log('err_send_media_message', e);
+				log(e);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ export default class ShareView extends React.Component {
 			try {
 				await RocketChat.sendMessage(rid, value, undefined, user);
 			} catch (error) {
-				log('err_share_extension_send_message', error);
+				log(error);
 			}
 		}
 	};

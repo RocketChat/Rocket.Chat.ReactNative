@@ -82,7 +82,7 @@ export default class SearchMessagesView extends React.Component {
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			log('err_search_messages', error);
+			log(error);
 		}
 	}, 1000)
 

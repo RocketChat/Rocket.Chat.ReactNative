@@ -12,7 +12,9 @@
     "log-android": "react-native log-android",
     "android": "react-native run-android",
     "snyk-protect": "snyk protect",
-    "precommit": "eslint . && jest"
+    "precommit": "eslint . && jest",
+    "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
+    "generate-source-maps-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-release.bundle --sourcemap-output android-release.bundle.map"
   },
   "husky": {
     "hooks": {

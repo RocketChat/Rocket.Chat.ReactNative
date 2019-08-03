@@ -170,7 +170,7 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            react-native bundle     --platform android     --dev false     --entry-file index.js     --bundle-output android-release.bundle     --sourcemap-output android-release.bundle.map
+            yarn generate-source-maps-android
             curl https://upload.bugsnag.com/react-native-source-map  -F apiKey=72a0364cb361fc8f0fdc6cbf605f9963  -F appVersionCode=$CIRCLE_BUILD_NUM  -F dev=false  -F platform=android  -F sourceMap=@android-release.bundle.map  -F bundle=@android-release.bundle  -F projectRoot=app.bugsnag.com/rocketchat-1
 
       - run:
@@ -250,7 +250,7 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            react-native bundle     --platform ios     --dev false     --entry-file index.js     --bundle-output ios-release.bundle     --sourcemap-output ios-release.bundle.map
+            yarn generate-source-maps-ios
             curl https://upload.bugsnag.com/react-native-source-map  -F apiKey=72a0364cb361fc8f0fdc6cbf605f9963  -F appBundleVersion=$CIRCLE_BUILD_NUM  -F dev=false  -F platform=ios  -F sourceMap=@ios-release.bundle.map  -F bundle=@ios-release.bundle  -F projectRoot=app.bugsnag.com/rocketchat-1
 
       - run:

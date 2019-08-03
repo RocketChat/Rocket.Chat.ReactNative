@@ -65,7 +65,7 @@ export default function subscribeRooms() {
 						database.delete(subscription);
 					});
 				} catch (e) {
-					log('err_stream_msg_received_sub_removed', e);
+					log(e);
 				}
 			} else {
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
@@ -76,7 +76,7 @@ export default function subscribeRooms() {
 						database.delete(rooms);
 					});
 				} catch (e) {
-					log('err_stream_msg_received_sub_updated', e);
+					log(e);
 				}
 			}
 		}
@@ -89,7 +89,7 @@ export default function subscribeRooms() {
 						database.create('subscriptions', tmp, true);
 					});
 				} catch (e) {
-					log('err_stream_msg_received_room_updated', e);
+					log(e);
 				}
 			} else if (type === 'inserted') {
 				try {
@@ -97,7 +97,7 @@ export default function subscribeRooms() {
 						database.create('rooms', data, true);
 					});
 				} catch (e) {
-					log('err_stream_msg_received_room_inserted', e);
+					log(e);
 				}
 			}
 		}
@@ -122,7 +122,7 @@ export default function subscribeRooms() {
 						database.create('messages', message, true);
 					});
 				} catch (e) {
-					log('err_stream_msg_received_message', e);
+					log(e);
 				}
 			});
 		}
@@ -162,7 +162,7 @@ export default function subscribeRooms() {
 			stop: () => stop()
 		};
 	} catch (e) {
-		log('err_subscribe_rooms', e);
+		log(e);
 		return Promise.reject();
 	}
 }

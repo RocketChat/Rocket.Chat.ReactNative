@@ -310,7 +310,7 @@ export default class RoomView extends React.Component {
 				this.setState({ canAutoTranslate });
 			});
 		} catch (e) {
-			log('err_room_init', e);
+			log(e);
 		}
 	}
 
@@ -336,7 +336,7 @@ export default class RoomView extends React.Component {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			log('err_room_on_reaction_press', e);
+			log(e);
 		}
 	};
 
@@ -432,7 +432,7 @@ export default class RoomView extends React.Component {
 			}
 			return Promise.resolve();
 		} catch (e) {
-			log('err_get_messages', e);
+			log(e);
 		}
 	}
 
@@ -440,7 +440,7 @@ export default class RoomView extends React.Component {
 		try {
 			return RocketChat.loadThreadMessages({ tmid: this.tmid });
 		} catch (e) {
-			log('err_get_thread_messages', e);
+			log(e);
 		}
 	}
 
@@ -453,7 +453,7 @@ export default class RoomView extends React.Component {
 				joined: true
 			});
 		} catch (e) {
-			log('err_join_room', e);
+			log(e);
 		}
 	};
 
@@ -466,7 +466,7 @@ export default class RoomView extends React.Component {
 				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
 		} catch (error) {
-			log('err_fetch_thread_name', error);
+			log(error);
 		}
 	}
 
@@ -475,7 +475,7 @@ export default class RoomView extends React.Component {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
-			log('err_toggle_follow_thread', e);
+			log(e);
 		}
 	}
 
