@@ -24,6 +24,15 @@ export const merge = (subscription, room) => {
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
+		// Notifications
+		subscription.emailNotifications = room.emailNotifications;
+		subscription.disableNotifications = room.disableNotifications;
+		subscription.muteGroupMentions = room.muteGroupMentions;
+		subscription.hideUnreadStatus = room.hideUnreadStatus;
+		subscription.audioNotifications = room.audioNotifications;
+		subscription.audioNotificationValue = room.audioNotificationValue;
+		subscription.desktopNotificationDuration = room.desktopNotificationDuration;
+		subscription.mobilePushNotifications = room.mobilePushNotifications;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}
@@ -32,12 +41,6 @@ export const merge = (subscription, room) => {
 		} else {
 			subscription.muted = [];
 		}
-	}
-
-	if (subscription.mobilePushNotifications === 'nothing') {
-		subscription.notifications = true;
-	} else {
-		subscription.notifications = false;
 	}
 
 	if (!subscription.name) {

@@ -95,14 +95,22 @@ const subscriptionSchema = {
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
-		notifications: { type: 'bool', optional: true },
 		muted: 'string[]',
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true },
 		lastThreadSync: 'date?',
 		autoTranslate: 'bool?',
-		autoTranslateLanguage: 'string?'
+		autoTranslateLanguage: 'string?',
+		// Notifications
+		emailNotifications: { type: 'string', default: 'default' },
+		disableNotifications: { type: 'bool', default: false },
+		muteGroupMentions: { type: 'bool', default: true },
+		hideUnreadStatus: { type: 'bool', default: false },
+		audioNotifications: { type: 'string', default: 'default' },
+		audioNotificationValue: { type: 'string', default: 'default' },
+		desktopNotificationDuration: { type: 'string', default: 'default' },
+		mobilePushNotifications: { type: 'string', default: 'default' }
 	}
 };
 
