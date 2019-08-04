@@ -334,7 +334,6 @@ export default class CreateChannelView extends React.Component {
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput
-								ref={ref => this.channelNameRef = ref}
 								autoFocus
 								style={styles.input}
 								label={I18n.t('Channel_Name')}

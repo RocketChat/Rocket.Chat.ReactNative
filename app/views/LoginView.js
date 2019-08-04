@@ -222,7 +222,7 @@ export default class LoginView extends React.Component {
 			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
 				<TextInput
-					inputRef={(e) => { this.usernameInput = e; }}
+					autoFocus
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'

@@ -110,7 +110,6 @@ export default class SetUsernameView extends React.Component {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Set_username_subtitle')}</Text>
 						<TextInput
-							inputRef={e => this.usernameInput = e}
 							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'

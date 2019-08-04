@@ -93,7 +93,6 @@ export default class ForgotPasswordView extends React.Component {
 					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>
 						<TextInput
-							inputRef={(e) => { this.emailInput = e; }}
 							autoFocus
 							placeholder={I18n.t('Email')}
 							keyboardType='email-address'

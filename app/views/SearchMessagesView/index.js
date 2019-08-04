@@ -132,7 +132,6 @@ export default class SearchMessagesView extends React.Component {
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
-						inputRef={(e) => { this.name = e; }}
 						autoFocus
 						label={I18n.t('Search')}
 						onChangeText={this.search}

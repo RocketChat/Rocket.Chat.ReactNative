@@ -200,7 +200,6 @@ export default class RegisterView extends React.Component {
 					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
-							inputRef={(e) => { this.nameInput = e; }}
 							autoFocus
 							placeholder={I18n.t('Name')}
 							returnKeyType='next'

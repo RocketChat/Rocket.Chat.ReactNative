@@ -164,7 +164,6 @@ export default class NewServerView extends React.Component {
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
-							inputRef={e => this.input = e}
 							autoFocus
 							containerStyle={styles.inputContainer}
 							placeholder={defaultServer}
