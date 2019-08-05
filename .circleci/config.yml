@@ -102,7 +102,7 @@ jobs:
   android-build:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: circleci/android:api-28-node
 
     environment:
       # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
@@ -125,9 +125,9 @@ jobs:
           command: |
             yarn
 
-      # - restore_cache:
-      #     name: Restore gradle cache
-      #     key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - restore_cache:
+          name: Restore gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: Configure Gradle
