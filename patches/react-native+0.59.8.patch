@@ -1,0 +1,51 @@
+diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+index 2ddbb8a..7e9bbf2 100644
+--- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
++++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+@@ -165,4 +165,46 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+   [delegate URLRequest:task didCompleteWithError:error];
+ }
+ 
++-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
++    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
++  } else {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    NSString* pfile = [[NSBundle mainBundle] pathForResource:@"CER_NAME" ofType:@"p12" ];
++
++    NSData *p12data = [NSData dataWithContentsOfFile:pfile];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:@"PASSWORD" };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                (__bridge CFDictionaryRef)options,
++                                &rawItems);
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++    
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    SecIdentityCopyCertificate(identity, &certificate);
++    if (certificate) { CFRelease(certificate); }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);   
++  }
++}
++
+ @end
