@@ -14,9 +14,9 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     name: Restore NPM cache
-      #     key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -38,11 +38,11 @@ jobs:
           command: |
             yarn codecov
 
-      # - save_cache:
-      #     key: node-modules-{{ checksum "yarn.lock" }}
-      #     name: Save NPM cache
-      #     paths:
-      #       - ./node_modules
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+          name: Save NPM cache
+          paths:
+            - ./node_modules
 
   e2e-test:
     macos:
@@ -116,18 +116,18 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     name: Restore NPM cache
-      #     key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
           command: |
             yarn
 
-      # - restore_cache:
-      #     name: Restore gradle cache
-      #     key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - restore_cache:
+          name: Restore gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: Configure Gradle
@@ -173,17 +173,17 @@ jobs:
       - store_artifacts:
           path: /tmp/build/outputs
 
-      # - save_cache:
-      #     name: Save NPM cache
-      #     key: node-modules-{{ checksum "yarn.lock" }}
-      #     paths:
-      #       - ./node_modules
+      - save_cache:
+          name: Save NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
-      # - save_cache:
-      #     name: Save gradle cache
-      #     key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-      #     paths:
-      #       - ~/.gradle
+      - save_cache:
+          name: Save gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          paths:
+            - ~/.gradle
 
   ios-build:
     macos:
