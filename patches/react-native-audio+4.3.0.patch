@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-audio/android/src/main/java/com/rnim/rn/audio/AudioRecorderManager.java b/node_modules/react-native-audio/android/src/main/java/com/rnim/rn/audio/AudioRecorderManager.java
+index f6cecf6..e9070b5 100644
+--- a/node_modules/react-native-audio/android/src/main/java/com/rnim/rn/audio/AudioRecorderManager.java
++++ b/node_modules/react-native-audio/android/src/main/java/com/rnim/rn/audio/AudioRecorderManager.java
+@@ -27,8 +27,8 @@ import android.os.Build;
+ import android.os.Environment;
+ import android.media.MediaRecorder;
+ import android.media.AudioManager;
+-import android.support.v4.app.ActivityCompat;
+-import android.support.v4.content.ContextCompat;
++import androidx.core.app.ActivityCompat;
++import androidx.core.content.ContextCompat;
+ import android.util.Base64;
+ import android.util.Log;
+ import com.facebook.react.modules.core.DeviceEventManagerModule;
