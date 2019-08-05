@@ -11,6 +11,11 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
 	},
+	scrollView: {
+		flex: 1,
+		flexDirection: 'column',
+		backgroundColor: COLOR_WHITE
+	},
 	list: {
 		width: '100%',
 		backgroundColor: COLOR_WHITE

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager, Dimensions
+	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, Animated, LayoutAnimation, InteractionManager, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -18,8 +19,6 @@ import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import {
 	toggleSortDropdown as toggleSortDropdownAction,
-	openSearchHeader as openSearchHeaderAction,
-	closeSearchHeader as closeSearchHeaderAction,
 	roomsRequest as roomsRequestAction
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
@@ -57,39 +56,23 @@ const keyExtractor = item => item.rid;
 	StoreLastMessage: state.settings.Store_Last_Message
 }), dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
-	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
 	roomsRequest: () => dispatch(roomsRequestAction()),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 }))
 export default class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
-		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
 		const onPressItem = navigation.getParam('onPressItem', () => {});
-		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
 
 		return {
 			headerLeft: (
-				searching
-					? (
-						<CustomHeaderButtons left>
-							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
-						</CustomHeaderButtons>
-					)
-					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
+				<DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
 			),
 			headerTitle: <RoomsListHeaderView />,
 			headerRight: (
-				searching
-					? null
-					: (
-						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
-							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
-						</CustomHeaderButtons>
-					)
+				<CustomHeaderButtons>
+					<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
+				</CustomHeaderButtons>
 			)
 		};
 	}
@@ -113,8 +96,6 @@ export default class RoomsListView extends React.Component {
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
-		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
 		isAuthenticated: PropTypes.bool
@@ -151,8 +132,8 @@ export default class RoomsListView extends React.Component {
 		const { navigation } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
-			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			initSearching: this.initSearching,
+			cancelSearching: this.cancelSearching
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -309,22 +290,18 @@ export default class RoomsListView extends React.Component {
 		});
 	}, 300);
 
-	initSearchingAndroid = () => {
-		const { openSearchHeader, navigation } = this.props;
+	initSearching = () => {
+		const { navigation } = this.props;
 		this.setState({ searching: true });
 		navigation.setParams({ searching: true });
-		openSearchHeader();
 	}
 
-	cancelSearchingAndroid = () => {
-		if (isAndroid) {
-			const { closeSearchHeader, navigation } = this.props;
-			this.setState({ searching: false });
-			navigation.setParams({ searching: false });
-			closeSearchHeader();
-			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
-		}
+	cancelSearching = () => {
+		const { navigation } = this.props;
+		this.setState({ searching: false });
+		navigation.setParams({ searching: false });
+		this.internalSetState({ search: [] });
+		Keyboard.dismiss();
 	}
 
 	// this is necessary during development (enables Cmd + r)
@@ -334,7 +311,7 @@ export default class RoomsListView extends React.Component {
 		const { searching } = this.state;
 		const { appStart } = this.props;
 		if (searching) {
-			this.cancelSearchingAndroid();
+			this.cancelSearching();
 			return true;
 		}
 		appStart('background');
@@ -356,7 +333,7 @@ export default class RoomsListView extends React.Component {
 	}
 
 	goRoom = (item) => {
-		this.cancelSearchingAndroid();
+		this.cancelSearching();
 		const { navigation } = this.props;
 		navigation.navigate('RoomView', {
 			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
@@ -451,7 +428,7 @@ export default class RoomsListView extends React.Component {
 	getScrollRef = ref => this.scroll = ref
 
 	renderListHeader = () => {
-		const { search } = this.state;
+		const { search, searching } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
@@ -460,6 +437,8 @@ export default class RoomsListView extends React.Component {
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				onCancelPress={this.cancelSearching}
+				showSearch={searching}
 			/>
 		);
 	}
@@ -626,6 +605,18 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 
+	onHandlerStateChange = (event) => {
+		const { translationY } = event.nativeEvent;
+
+		if (event.nativeEvent.oldState === State.ACTIVE) {
+			if (translationY > 0) {
+				this.initSearching();
+			} else {
+				this.cancelSearching();
+			}
+		}
+	}
+
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -634,21 +625,28 @@ export default class RoomsListView extends React.Component {
 
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
-				<StatusBar />
-				{this.renderScroll()}
-				{showSortDropdown
-					? (
-						<SortDropdown
-							close={this.toggleSort}
-							sortBy={sortBy}
-							groupByType={groupByType}
-							showFavorites={showFavorites}
-							showUnread={showUnread}
-						/>
-					)
-					: null
-				}
-				{showServerDropdown ? <ServerDropdown /> : null}
+				<PanGestureHandler
+					onHandlerStateChange={this.onHandlerStateChange}
+					minDeltaY={20}
+				>
+					<Animated.ScrollView style={styles.scrollView}>
+						<StatusBar />
+						{this.renderScroll()}
+						{showSortDropdown
+							? (
+								<SortDropdown
+									close={this.toggleSort}
+									sortBy={sortBy}
+									groupByType={groupByType}
+									showFavorites={showFavorites}
+									showUnread={showUnread}
+								/>
+							)
+							: null
+						}
+						{showServerDropdown ? <ServerDropdown /> : null}
+					</Animated.ScrollView>
+				</PanGestureHandler>
 			</SafeAreaView>
 		);
 	}
