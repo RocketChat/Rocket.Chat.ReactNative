@@ -136,6 +136,8 @@ jobs:
 
             echo -e "" > ./gradle.properties
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -157,13 +159,12 @@ jobs:
           name: Build Android App
           command: |
             npx jetify
-            yarn android
             cd android
-            # if [[ $KEYSTORE ]]; then
-            #   ./gradlew bundleRelease
-            # else
-            #   ./gradlew assembleDebug
-            # fi
+            if [[ $KEYSTORE ]]; then
+              ./gradlew bundleRelease
+            else
+              ./gradlew assembleDebug
+            fi
 
             mkdir -p /tmp/build
 
