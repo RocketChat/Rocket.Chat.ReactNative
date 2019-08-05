@@ -1,0 +1,35 @@
+diff --git a/node_modules/expo-haptics/android/build.gradle b/node_modules/expo-haptics/android/build.gradle
+index 7ae218d..60aedd5 100644
+--- a/node_modules/expo-haptics/android/build.gradle
++++ b/node_modules/expo-haptics/android/build.gradle
+@@ -69,5 +69,5 @@ if (new File(rootProject.projectDir.parentFile, 'package.json').exists()) {
+ dependencies {
+   unimodule 'unimodules-core'
+ 
+-  api "com.android.support:support-annotations:${safeExtGet("supportLibVersion", "28.0.0")}"
++  api "androidx.annotation:annotation:1.0.0"
+ }
+diff --git a/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsImpactType.java b/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsImpactType.java
+index 48656d4..0cf3313 100644
+--- a/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsImpactType.java
++++ b/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsImpactType.java
+@@ -1,6 +1,6 @@
+ package expo.modules.haptics.arguments;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ public enum HapticsImpactType implements HapticsVibrationType {
+   LIGHT(
+diff --git a/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsNotificationType.java b/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsNotificationType.java
+index cebff5c..b3c3fe3 100644
+--- a/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsNotificationType.java
++++ b/node_modules/expo-haptics/android/src/main/java/expo/modules/haptics/arguments/HapticsNotificationType.java
+@@ -1,6 +1,6 @@
+ package expo.modules.haptics.arguments;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ public enum HapticsNotificationType implements HapticsVibrationType {
+   SUCCESS(
