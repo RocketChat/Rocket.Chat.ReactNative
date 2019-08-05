@@ -15,3 +15,16 @@ index 70d03a5..d17b348 100644
 +  implementation 'com.facebook.react:react-native:+'
    api 'com.github.bumptech.glide:glide:4.9.0'
  }
+diff --git a/node_modules/@unimodules/react-native-adapter/android/src/main/java/org/unimodules/adapters/react/services/UIManagerModuleWrapper.java b/node_modules/@unimodules/react-native-adapter/android/src/main/java/org/unimodules/adapters/react/services/UIManagerModuleWrapper.java
+index 6541f47..d86d4d3 100644
+--- a/node_modules/@unimodules/react-native-adapter/android/src/main/java/org/unimodules/adapters/react/services/UIManagerModuleWrapper.java
++++ b/node_modules/@unimodules/react-native-adapter/android/src/main/java/org/unimodules/adapters/react/services/UIManagerModuleWrapper.java
+@@ -5,7 +5,7 @@ import android.content.Intent;
+ import android.graphics.Bitmap;
+ import android.graphics.drawable.Drawable;
+ import android.os.AsyncTask;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ import android.view.View;
+ 
