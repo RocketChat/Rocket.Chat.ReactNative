@@ -7,7 +7,7 @@ PODS:
   - EXConstants (6.0.0):
     - UMConstantsInterface
     - UMCore
-  - EXFileSystem (6.0.0):
+  - EXFileSystem (6.0.2):
     - UMCore
     - UMFileSystemInterface
   - EXHaptics (6.0.0):
@@ -155,7 +155,7 @@ PODS:
     - React
   - react-native-keyboard-tracking-view (5.5.0):
     - React
-  - react-native-notifications (1.2.6):
+  - react-native-notifications (2.0.3):
     - React
   - react-native-orientation-locker (1.1.6):
     - React
@@ -168,7 +168,7 @@ PODS:
     - react-native-video/Video (= 5.0.0)
   - react-native-video/Video (5.0.0):
     - React
-  - react-native-webview (6.6.0):
+  - react-native-webview (6.8.0):
     - React
   - React-RCTActionSheet (0.60.4):
     - React-Core (= 0.60.4)
@@ -483,7 +483,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXAppLoaderProvider: 7a8185228d8ba9e689a0e2d6d957fe9bdd49c8a0
   EXConstants: 5d81e84ca71b9a552529889cc798b4a04e9e22b3
-  EXFileSystem: a5a7b8409e7d11f3948804e674ea91720fa84cd5
+  EXFileSystem: 091907902fcec9f9182b656fdead41a82f30986a
   EXHaptics: f84c93d605e0905c47654e4a6e5dfbff78ed6906
   EXPermissions: 99e52dc3e5f8e55153f1958004f6df2a30a1f2f5
   EXWebBrowser: def838b95aa9d396f9ce71ace4e614ee16e7ee30
@@ -510,12 +510,12 @@ SPEC CHECKSUMS:
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
-  react-native-notifications: dddb6bee55ca4ab303c17c27c75fb5955784c4b3
+  react-native-notifications: 3385ff44e246c62e0eabe7ee414fc5e2e6a61fec
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: 6555881252c8ca039760e1cd6df28ac28ffb2baf
-  react-native-webview: 7c83b03b51b3dbef50e61fe529e967e2dccb30a1
+  react-native-webview: 9f588ea09ede9bd1f5443f4aa4ddfadeb51fcd28
   React-RCTActionSheet: 9f71d7ae3e8fb10e08d162cbf14c621349dbfab3
   React-RCTAnimation: 981d8c95b0e30918a9832ccac32af83562a27fae
   React-RCTBlob: 21e73d1020a302a75fed30dbaee9f15287b80baa
