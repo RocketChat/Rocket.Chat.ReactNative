@@ -176,7 +176,7 @@ const OPTIONS = {
 }))
 export default class NotificationPrefView extends React.Component {
 	static navigationOptions = () => ({
-		title: 'Notification Preferences'
+		title: I18n.t('Notification_Preference')
 	})
 
 	static propTypes = {
@@ -208,7 +208,7 @@ export default class NotificationPrefView extends React.Component {
 
 	onValueChange = (key, value) => {
 		const { room: newRoom } = this.state;
-		newRoom[key] = value;
+		newRoom[key] = key === 'disableNotifications' ? !value : value;
 		this.setState({ room: newRoom });
 	}
 
@@ -218,7 +218,10 @@ export default class NotificationPrefView extends React.Component {
 			<RNPickerSelect
 				testID={key}
 				value={room[key]}
+				textInputProps={{ style: { color: 'blue', paddingRight: 30 } }}
+				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
+				InputAccessoryView={() => null}
 				onValueChange={value => this.onValueChange(key, value)}
 				items={OPTIONS[key]}
 			/>
@@ -312,72 +315,72 @@ export default class NotificationPrefView extends React.Component {
 					testID='notificationPref-view-list'
 				>
 					<ListItem
-						title='Receive Notification'
+						title={I18n.t('Receive_Notification')}
 						testID='notificationPref-view-receive-notification'
 						right={() => this.renderSwitch('disableNotifications')}
 					/>
 					<Separator />
-					<Info info='Receive notifications from pranav padney' />
+					<Info info={I18n.t('Receive_notification_from', { name: 'pranav pandey' })} />
 					<SectionSeparator />
 
 					<Separator />
 					<ListItem
-						title='Show Unread Counter'
-						testID='notificationPref-view-unreadcount'
+						title={I18n.t('Show_Unread_Counter')}
+						testID='notificationPref-view-unread_count'
 						right={() => this.renderSwitch('hideUnreadStatus')}
 					/>
 					<Separator />
-					<Info info='Unread counter is displayed as a badge on the right of the channel, in the list' />
+					<Info info={I18n.t('Show_Unread_Counter_Info')} />
 
 					<SectionSeparator />
-					<SectionTitle title='IN-APP AND DESKTOP' />
+					<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} />
 
 					<ListItem
-						title='Alert'
+						title={I18n.t('Alert')}
 						testID='notificationPref-view-alert'
 						right={() => this.renderPicker('desktopNotifications')}
 					/>
 					<Separator />
-					<Info info='Displays a banner at the top of the screen when app is open, and displays a notification on desktop' />
+					<Info info={I18n.t('In_App_and_Desktop_Alert_info')} />
 
 					<SectionSeparator />
-					<SectionTitle title='PUSH NOTIFICATIONS' />
+					<SectionTitle title={I18n.t('Push_Notifications')} />
 
 					<ListItem
-						title='Alert'
+						title={I18n.t('Alert')}
 						testID='notificationPref-view-push-notification'
 						right={() => this.renderPicker('mobilePushNotifications')}
 					/>
 					<Separator />
-					<Info info='These notifications are delivered to you when the app is not open' />
+					<Info info={I18n.t('Push_Notifications_Alert_Info')} />
 
 					<SectionSeparator />
-					<SectionTitle title='DESKTOP OPTIONS' />
+					<SectionTitle title={I18n.t('Desktop_Options')} />
 
 					<ListItem
-						title='Audio'
+						title={I18n.t('Audio')}
 						testID='notificationPref-view-audio'
 						right={() => this.renderPicker('audioNotifications')}
 					/>
 					<Separator />
 					<ListItem
-						title='Sound'
+						title={I18n.t('Sound')}
 						testID='notificationPref-view-sound'
 						right={() => this.renderPicker('audioNotificationValue')}
 					/>
 					<Separator />
 					<ListItem
-						title='Notification Duration'
+						title={I18n.t('Notification_Duration')}
 						testID='notificationPref-view-notification-duration'
 						right={() => this.renderPicker('desktopNotificationDuration')}
 					/>
 					<Separator />
 
 					<SectionSeparator />
-					<SectionTitle title='EMAIL' />
+					<SectionTitle title={I18n.t('Email')} />
 
 					<ListItem
-						title='Alert'
+						title={I18n.t('Alert')}
 						testID='notificationPref-view-email_alert'
 						right={() => this.renderPicker('emailNotifications')}
 					/>
