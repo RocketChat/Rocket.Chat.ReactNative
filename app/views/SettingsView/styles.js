@@ -8,5 +8,18 @@ export default StyleSheet.create({
 		...sharedStyles.separatorVertical,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 10
+	},
+	listWithoutBorderBottom: {
+		borderBottomWidth: 0
+	},
+	infoContainer: {
+		padding: 15,
+		paddingBottom: 40,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	infoText: {
+		fontSize: 14,
+		...sharedStyles.textColorNormal,
+		...sharedStyles.textRegular
 	}
 });
