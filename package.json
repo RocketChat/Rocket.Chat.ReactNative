@@ -73,7 +73,7 @@
     "react-native-video-controls": "^2.2.3",
     "react-native-webview": "6.8.0",
     "react-navigation": "^3.11.1",
-    "react-navigation-header-buttons": "^2.3.1",
+    "react-navigation-header-buttons": "3.0.1",
     "react-redux": "7.1.0",
     "reactotron-react-native": "3.6.4",
     "realm": "^2.29.1",
