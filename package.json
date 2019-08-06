@@ -58,7 +58,7 @@
     "react-native-notifications": "1.2.6",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-orientation-locker": "^1.1.6",
-    "react-native-picker-select": "^5.2.3",
+    "react-native-picker-select": "6.3.0",
     "react-native-platform-touchable": "^1.1.1",
     "react-native-realm-path": "^1.2.11",
     "react-native-responsive-ui": "^1.1.1",

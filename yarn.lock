@@ -9692,10 +9692,10 @@ react-native-orientation-locker@^1.1.6:
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.6.tgz#7d66a62cdbf4dd1548522efe69a4e04af5daf929"
   integrity sha512-yXTC8KmKfhuEAh+gCOcehx0v4IjYapV0lJ6W1muafoISvxMsT+Cizzy+Iz78hQywVZTJNB/Xusl7WMXev7OxDQ==
 
-react-native-picker-select@^5.2.3:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-5.2.4.tgz#ce0307a8fa4c2b1e3f9756282f2056b0805f2f7e"
-  integrity sha512-x0NTsOBjFIO40XPc+UxQ5fjCRx7ghwMDejEUyhU7VRKViHxaaScvO0jxpnW/2L1kFcqbZWqWhjC1DuuDnE6jyA==
+react-native-picker-select@6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-6.3.0.tgz#0a4a4692085e80580662d6914eb1750e30b05b71"
+  integrity sha512-1NGlZzPDTyJYU3aMC3zJTBydCCejKd4n2h8KDtpyPcYGAYIzvHXOQgvrjgPz0gRTFQes14KoICCKqc+b1Eewig==
   dependencies:
     lodash.isequal "^4.5.0"
 
