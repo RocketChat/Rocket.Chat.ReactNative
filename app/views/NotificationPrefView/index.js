@@ -257,22 +257,22 @@ export default class NotificationPrefView extends React.Component {
 		const params = {};
 
 		if (this.room.emailNotifications !== emailNotifications) {
-			params.emailNotifications = emailNotifications.toString();
+			params.emailNotifications = emailNotifications;
 		}
 		if (this.room.disableNotifications !== disableNotifications) {
-			params.disableNotifications = disableNotifications.toString();
+			params.disableNotifications = disableNotifications ? '1' : '0';
 		}
 		if (this.room.muteGroupMentions !== muteGroupMentions) {
-			params.muteGroupMentions = muteGroupMentions.toString();
+			params.muteGroupMentions = muteGroupMentions;
 		}
 		if (this.room.hideUnreadStatus !== hideUnreadStatus) {
-			params.hideUnreadStatus = hideUnreadStatus.toString();
+			params.hideUnreadStatus = hideUnreadStatus ? '1' : '0';
 		}
 		if (this.room.audioNotifications !== audioNotifications) {
-			params.audioNotifications = audioNotifications.toString();
+			params.audioNotifications = audioNotifications;
 		}
 		if (this.room.mobilePushNotifications !== mobilePushNotifications) {
-			params.mobilePushNotifications = mobilePushNotifications.toString();
+			params.mobilePushNotifications = mobilePushNotifications;
 		}
 		if (this.room.desktopNotificationDuration !== desktopNotificationDuration) {
 			try {
@@ -389,7 +389,7 @@ export default class NotificationPrefView extends React.Component {
 							style={[styles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
-							testID='room-notification-edit-view-submit'
+							testID='notificationPref-view-submit'
 						>
 							<Text style={sharedStyles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
 						</TouchableOpacity>
