@@ -203,7 +203,6 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':reactnativenotifications')
-    // implementation project(':react-native-firebase')
     implementation project(":reactnativekeyboardinput")
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
