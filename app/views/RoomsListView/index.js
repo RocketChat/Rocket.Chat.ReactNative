@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
-import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -31,6 +31,7 @@ import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 
 const SCROLL_OFFSET = 56;
+const MIN_SWIPE = 10;
 
 const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'StoreLastMessage', 'appState'];
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -598,6 +599,7 @@ export default class RoomsListView extends React.Component {
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyboardShouldPersistTaps='always'
 				testID='rooms-list-view-list'
+				onScroll={this.onHandlerStateChange}
 			>
 				{this.renderListHeader()}
 				{this.renderList()}
@@ -607,11 +609,14 @@ export default class RoomsListView extends React.Component {
 
 	onHandlerStateChange = (event) => {
 		const { translationY } = event.nativeEvent;
+		const { searching } = this.state;
 
-		if (event.nativeEvent.oldState === State.ACTIVE) {
-			if (translationY > 0) {
+		if (translationY >= MIN_SWIPE) {
+			if (searching === false) {
 				this.initSearching();
-			} else {
+			}
+		} else if (translationY <= -MIN_SWIPE) {
+			if (searching === true) {
 				this.cancelSearching();
 			}
 		}
@@ -627,7 +632,6 @@ export default class RoomsListView extends React.Component {
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
 				<PanGestureHandler
 					onHandlerStateChange={this.onHandlerStateChange}
-					minDeltaY={20}
 				>
 					<Animated.ScrollView style={styles.scrollView}>
 						<StatusBar />
