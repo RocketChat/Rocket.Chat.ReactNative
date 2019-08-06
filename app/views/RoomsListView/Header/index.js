@@ -7,20 +7,7 @@ import {
 } from '../../../actions/rooms';
 import Header from './Header';
 
-@connect(state => ({
-	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
-	showSearchHeader: state.rooms.showSearchHeader,
-	connecting: state.meteor.connecting || state.server.loading,
-	isFetching: state.rooms.isFetching,
-	serverName: state.settings.Site_Name
-}), dispatch => ({
-	close: () => dispatch(closeServerDropdown()),
-	open: () => dispatch(toggleServerDropdown()),
-	closeSort: () => dispatch(closeSortDropdown()),
-	setSearch: searchText => dispatch(setSearchAction(searchText))
-}))
-export default class RoomsListHeaderView extends PureComponent {
+class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -87,3 +74,21 @@ export default class RoomsListHeaderView extends PureComponent {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	showServerDropdown: state.rooms.showServerDropdown,
+	showSortDropdown: state.rooms.showSortDropdown,
+	showSearchHeader: state.rooms.showSearchHeader,
+	connecting: state.meteor.connecting || state.server.loading,
+	isFetching: state.rooms.isFetching,
+	serverName: state.settings.Site_Name
+});
+
+const mapDispatchtoProps = dispatch => ({
+	close: () => dispatch(closeServerDropdown()),
+	open: () => dispatch(toggleServerDropdown()),
+	closeSort: () => dispatch(closeSortDropdown()),
+	setSearch: searchText => dispatch(setSearchAction(searchText))
+});
+
+export default connect(mapStateToProps, mapDispatchtoProps)(RoomsListHeaderView);

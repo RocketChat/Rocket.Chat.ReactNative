@@ -46,12 +46,7 @@ const styles = StyleSheet.create({
 
 const defaultServer = 'https://open.rocket.chat';
 
-@connect(state => ({
-	connecting: state.server.connecting
-}), dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
-}))
-export default class NewServerView extends React.Component {
+class NewServerView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -193,3 +188,13 @@ export default class NewServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	connecting: state.server.connecting
+});
+
+const mapDispatchToProps = dispatch => ({
+	connectServer: server => dispatch(serverRequest(server))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);

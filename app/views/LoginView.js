@@ -41,17 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	isFetching: state.login.isFetching,
-	failure: state.login.failure,
-	error: state.login.error && state.login.error.data,
-	Site_Name: state.settings.Site_Name,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class LoginView extends React.Component {
+class LoginView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -291,3 +281,18 @@ export default class LoginView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error && state.login.error.data,
+	Site_Name: state.settings.Site_Name,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

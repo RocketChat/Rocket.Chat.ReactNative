@@ -25,13 +25,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server,
-	token: state.login.user && state.login.user.token
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class SetUsernameView extends React.Component {
+class SetUsernameView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
 		return {
@@ -138,3 +132,14 @@ export default class SetUsernameView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	token: state.login.user && state.login.user.token
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SetUsernameView);

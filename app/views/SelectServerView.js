@@ -33,10 +33,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(({ share }) => ({
-	server: share.server
-}))
-export default class SelectServerView extends React.Component {
+class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
 	})
@@ -106,3 +103,9 @@ export default class SelectServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (({ share }) => ({
+	server: share.server
+}));
+
+export default connect(mapStateToProps)(SelectServerView);

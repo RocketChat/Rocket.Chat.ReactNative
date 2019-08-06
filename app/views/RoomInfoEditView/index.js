@@ -40,10 +40,7 @@ const PERMISSIONS_ARRAY = [
 	PERMISSION_DELETE_P
 ];
 
-@connect(null, dispatch => ({
-	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
-}))
-export default class RoomInfoEditView extends React.Component {
+class RoomInfoEditView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Room_Info_Edit')
 	}
@@ -436,3 +433,9 @@ export default class RoomInfoEditView extends React.Component {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
+});
+
+export default connect(null, mapDispatchToProps)(RoomInfoEditView);

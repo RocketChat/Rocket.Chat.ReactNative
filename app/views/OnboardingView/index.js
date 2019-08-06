@@ -19,16 +19,7 @@ import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
-@connect(state => ({
-	currentServer: state.server.server,
-	adding: state.server.adding
-}), dispatch => ({
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
-}))
-export default class OnboardingView extends React.Component {
+class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -168,3 +159,17 @@ export default class OnboardingView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	currentServer: state.server.server,
+	adding: state.server.adding
+});
+
+const mapDispatchToProps = dispatch => ({
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	selectServer: server => dispatch(selectServerRequest(server)),
+	appStart: root => dispatch(appStartAction(root))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingView);

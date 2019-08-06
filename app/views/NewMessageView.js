@@ -50,14 +50,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
-}))
-export default class NewMessageView extends React.Component {
+class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
@@ -189,3 +182,13 @@ export default class NewMessageView extends React.Component {
 		</SafeAreaView>
 	);
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+export default connect(mapStateToProps)(NewMessageView);

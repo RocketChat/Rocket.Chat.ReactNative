@@ -52,10 +52,7 @@ const styles = StyleSheet.create({
 
 const Separator = () => <View style={styles.separator} />;
 
-@connect(state => ({
-	server: state.server.server
-}))
-export default class LegalView extends React.Component {
+class LegalView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Legal')
 	})
@@ -92,3 +89,9 @@ export default class LegalView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server
+});
+
+export default connect(mapStateToProps)(LegalView);
