@@ -119,6 +119,9 @@ const ChatsStack = createStackNavigator({
 	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPrefView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader

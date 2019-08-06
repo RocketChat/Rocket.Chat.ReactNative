@@ -177,13 +177,14 @@ export default class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, joined, canAutoTranslate
 		} = this.state;
 		const {
-			rid, t, blocker, notifications
+			rid, t, blocker
 		} = room;
 
 		const notificationsAction = {
-			icon: notifications ? 'bell' : 'Bell-off',
-			name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
-			event: this.toggleNotifications,
+			icon: 'bell',
+			name: 'Notifications',
+			route: 'NotificationPrefView',
+			params: { rid },
 			testID: 'room-actions-notifications'
 		};
 
@@ -393,18 +394,6 @@ export default class RoomActionsView extends React.Component {
 				}
 			]
 		);
-	}
-
-	toggleNotifications = () => {
-		const { room } = this.state;
-		try {
-			const notifications = {
-				mobilePushNotifications: room.notifications ? 'default' : 'nothing'
-			};
-			RocketChat.saveNotificationSettings(room.rid, notifications);
-		} catch (e) {
-			log('err_toggle_notifications', e);
-		}
 	}
 
 	renderRoomInfo = ({ item }) => {
