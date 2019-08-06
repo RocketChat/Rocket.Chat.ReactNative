@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_PRIMARY } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -29,5 +29,10 @@ export default StyleSheet.create({
 	},
 	container: {
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	pickerText: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		color: COLOR_PRIMARY
 	}
 });

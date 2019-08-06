@@ -188,7 +188,6 @@ export default class NotificationPrefView extends React.Component {
 		this.rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-		log('room', this.room);
 		this.state = {
 			room: JSON.parse(JSON.stringify(this.rooms[0] || {}))
 		};
@@ -198,17 +197,17 @@ export default class NotificationPrefView extends React.Component {
 		const { room } = this.state;
 		return (
 			<Switch
-				value={key === 'disableNotifications' ? !room[key] : room[key]}
+				value={!room[key]}
 				testID={key}
 				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={value => this.onValueChange(key, value)}
+				onValueChange={value => this.onValueChange(key, !value)}
 			/>
 		);
 	}
 
 	onValueChange = (key, value) => {
 		const { room: newRoom } = this.state;
-		newRoom[key] = key === 'disableNotifications' ? !value : value;
+		newRoom[key] = value;
 		this.setState({ room: newRoom });
 	}
 
@@ -218,7 +217,7 @@ export default class NotificationPrefView extends React.Component {
 			<RNPickerSelect
 				testID={key}
 				value={room[key]}
-				textInputProps={{ style: { color: 'blue', paddingRight: 30 } }}
+				textInputProps={{ style: styles.pickerText }}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
 				InputAccessoryView={() => null}
@@ -242,10 +241,6 @@ export default class NotificationPrefView extends React.Component {
 			&& this.room.audioNotificationValue === audioNotificationValue
 			&& this.room.desktopNotificationDuration === desktopNotificationDuration
 		);
-	}
-
-	Icon = () => {
-
 	}
 
 	submit = async() => {
@@ -300,6 +295,7 @@ export default class NotificationPrefView extends React.Component {
 				log('err_save_notification_settings', err);
 			}
 		}
+		this.room = JSON.parse(JSON.stringify(room));
 		EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
 	}
 
@@ -320,7 +316,7 @@ export default class NotificationPrefView extends React.Component {
 						right={() => this.renderSwitch('disableNotifications')}
 					/>
 					<Separator />
-					<Info info={I18n.t('Receive_notification_from', { name: 'pranav pandey' })} />
+					<Info info={I18n.t('Receive_notifications_from', { name: this.room.name })} />
 					<SectionSeparator />
 
 					<Separator />
