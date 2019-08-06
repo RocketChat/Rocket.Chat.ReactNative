@@ -121,8 +121,7 @@
     "react-dom": "16.8.6",
     "react-test-renderer": "16.8.6",
     "reactotron-redux": "3.1.1",
-    "reactotron-redux-saga": "4.2.2",
-    "regenerator-runtime": "^0.13.1"
+    "reactotron-redux-saga": "4.2.2"
   },
   "jest": {
     "testPathIgnorePatterns": [
