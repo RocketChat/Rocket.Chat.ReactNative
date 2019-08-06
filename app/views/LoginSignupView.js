@@ -239,6 +239,15 @@ export default class LoginSignupView extends React.Component {
 		this.openOAuth(url);
 	}
 
+	onPressSaml = (loginService) => {
+		const { server } = this.props;
+		const {	clientConfig } = loginService;
+		const {	provider } = clientConfig;
+		const samlToken = random(17);
+		const url = `${ server }/_saml/authorize/${ provider }/${ samlToken }`;
+		this.openSSO(url, samlToken);
+	}
+
 	getOAuthState = () => {
 		const credentialToken = random(43);
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
@@ -247,6 +256,11 @@ export default class LoginSignupView extends React.Component {
 	openOAuth = (oAuthUrl) => {
 		const { navigation } = this.props;
 		navigation.navigate('OAuthView', { oAuthUrl });
+	}
+
+	openSSO = (ssoUrl, ssoToken) => {
+		const { navigation } = this.props;
+		navigation.navigate('SSOView', { ssoUrl, ssoToken });
 	}
 
 	login = () => {
@@ -308,22 +322,35 @@ export default class LoginSignupView extends React.Component {
 
 	renderItem = (service) => {
 		let { name } = service;
-		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
-		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let onPress = () => {};
 
 		switch (service.authType) {
 			case 'oauth': {
 				onPress = this.getSocialOauthProvider(service.name);
+				name = name === 'meteor-developer' ? 'meteor' : name;
 				break;
 			}
 			case 'oauth_custom': {
 				onPress = this.onPressCustomOAuth.bind(this, service);
 				break;
 			}
+			case 'saml': {
+				onPress = this.onPressSaml.bind(this, service);
+				break;
+			}
 			default:
 				break;
+		}
+		name = name.charAt(0).toUpperCase() + name.slice(1);
+		if (service.service === 'saml') {
+			return (
+				<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
+					<View style={styles.serviceButtonContainer}>
+						<Text style={styles.serviceName}>{name}</Text>
+					</View>
+				</RectButton>
+			);
 		}
 		return (
 			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>

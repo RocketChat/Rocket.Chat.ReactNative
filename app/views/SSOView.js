@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
-import { connect } from 'react-redux';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
@@ -24,18 +23,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server
-}))
-export default class OAuthView extends React.PureComponent {
+export default class SSOView extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <CloseModalButton navigation={navigation} />,
-		title: 'OAuth'
+		title: 'SSO'
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -44,7 +39,6 @@ export default class OAuthView extends React.PureComponent {
 			logging: false,
 			loading: false
 		};
-		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
 	dismiss = () => {
@@ -72,20 +66,24 @@ export default class OAuthView extends React.PureComponent {
 	render() {
 		const { navigation } = this.props;
 		const { loading } = this.state;
-		const oAuthUrl = navigation.getParam('oAuthUrl');
+		const ssoUrl = navigation.getParam('ssoUrl');
+		const ssoToken = navigation.getParam('ssoToken');
 		return (
 			<React.Fragment>
 				<StatusBar />
 				<WebView
 					useWebKit
-					source={{ uri: oAuthUrl }}
+					source={{ uri: ssoUrl }}
 					userAgent={userAgent}
 					onNavigationStateChange={(webViewState) => {
 						const url = decodeURIComponent(webViewState.url);
-						if (this.redirectRegex.test(url)) {
-							const parts = url.split('#');
-							const credentials = JSON.parse(parts[1]);
-							this.login({ oauth: { ...credentials } });
+						if (url.includes('ticket') || url.includes('validate')) {
+							const payload = `{ "saml": true, "credentialToken": "${ ssoToken }" }`;
+							// We need to set a timeout when the login is done with SSO in order to make it work on our side.
+							// It is actually due to the SSO server processing the response.
+							setTimeout(() => {
+								this.login(JSON.parse(payload));
+							}, 3000);
 						}
 					}}
 					onLoadStart={() => {
