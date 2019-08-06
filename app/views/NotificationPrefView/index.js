@@ -199,6 +199,7 @@ export default class NotificationPrefView extends React.Component {
 		return (
 			<Switch
 				value={key === 'disableNotifications' ? !room[key] : room[key]}
+				testID={key}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={value => this.onValueChange(key, value)}
 			/>
@@ -215,7 +216,9 @@ export default class NotificationPrefView extends React.Component {
 		const { room } = this.state;
 		return (
 			<RNPickerSelect
+				testID={key}
 				value={room[key]}
+				placeholder={{}}
 				onValueChange={value => this.onValueChange(key, value)}
 				items={OPTIONS[key]}
 			/>
@@ -310,18 +313,21 @@ export default class NotificationPrefView extends React.Component {
 				>
 					<ListItem
 						title='Receive Notification'
-						testID='notificationPref-view-receiveNotification'
+						testID='notificationPref-view-receive-notification'
 						right={() => this.renderSwitch('disableNotifications')}
 					/>
+					<Separator />
 					<Info info='Receive notifications from pranav padney' />
 					<SectionSeparator />
 
+					<Separator />
 					<ListItem
 						title='Show Unread Counter'
-						testID='notificationPref-view-unreadCount'
+						testID='notificationPref-view-unreadcount'
 						right={() => this.renderSwitch('hideUnreadStatus')}
 					/>
-					<Info info='Unread counter is displayed as a badge on the right of the channel,in the list' />
+					<Separator />
+					<Info info='Unread counter is displayed as a badge on the right of the channel, in the list' />
 
 					<SectionSeparator />
 					<SectionTitle title='IN-APP AND DESKTOP' />
@@ -331,6 +337,7 @@ export default class NotificationPrefView extends React.Component {
 						testID='notificationPref-view-alert'
 						right={() => this.renderPicker('desktopNotifications')}
 					/>
+					<Separator />
 					<Info info='Displays a banner at the top of the screen when app is open, and displays a notification on desktop' />
 
 					<SectionSeparator />
@@ -338,9 +345,10 @@ export default class NotificationPrefView extends React.Component {
 
 					<ListItem
 						title='Alert'
-						testID='notificationPref-view-alert'
+						testID='notificationPref-view-push-notification'
 						right={() => this.renderPicker('mobilePushNotifications')}
 					/>
+					<Separator />
 					<Info info='These notifications are delivered to you when the app is not open' />
 
 					<SectionSeparator />
@@ -348,30 +356,33 @@ export default class NotificationPrefView extends React.Component {
 
 					<ListItem
 						title='Audio'
-						testID='notificationPref-view-alert'
+						testID='notificationPref-view-audio'
 						right={() => this.renderPicker('audioNotifications')}
 					/>
 					<Separator />
 					<ListItem
 						title='Sound'
-						testID='notificationPref-view-alert'
+						testID='notificationPref-view-sound'
 						right={() => this.renderPicker('audioNotificationValue')}
 					/>
 					<Separator />
 					<ListItem
 						title='Notification Duration'
-						testID='notificationPref-view-alert'
+						testID='notificationPref-view-notification-duration'
 						right={() => this.renderPicker('desktopNotificationDuration')}
 					/>
+					<Separator />
 
 					<SectionSeparator />
 					<SectionTitle title='EMAIL' />
 
 					<ListItem
 						title='Alert'
-						testID='notificationPref-view-alert'
+						testID='notificationPref-view-email_alert'
 						right={() => this.renderPicker('emailNotifications')}
 					/>
+					<Separator />
+
 					<View
 						style={styles.container}
 					>
@@ -379,7 +390,7 @@ export default class NotificationPrefView extends React.Component {
 							style={[styles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
-							testID='room-info-edit-view-submit'
+							testID='room-notification-edit-view-submit'
 						>
 							<Text style={sharedStyles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
 						</TouchableOpacity>

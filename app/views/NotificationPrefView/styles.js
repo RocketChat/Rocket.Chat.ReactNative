@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { COLOR_BACKGROUND_CONTAINER } from '../../constants/colors';
-// import sharedStyles from '../Styles';
+import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	sectionSeparatorBorder: {
@@ -13,6 +13,7 @@ export default StyleSheet.create({
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	sectionTitle: {
+		...sharedStyles.separatorBottom,
 		paddingHorizontal: 15,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
