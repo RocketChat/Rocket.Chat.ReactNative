@@ -30,6 +30,7 @@ export const merge = (subscription, room) => {
 		subscription.muteGroupMentions = room.muteGroupMentions;
 		subscription.hideUnreadStatus = room.hideUnreadStatus;
 		subscription.audioNotifications = room.audioNotifications;
+		subscription.desktopNotifications = room.desktopNotifications;
 		subscription.audioNotificationValue = room.audioNotificationValue;
 		subscription.desktopNotificationDuration = room.desktopNotificationDuration;
 		subscription.mobilePushNotifications = room.mobilePushNotifications;

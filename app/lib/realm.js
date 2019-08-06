@@ -108,8 +108,9 @@ const subscriptionSchema = {
 		muteGroupMentions: { type: 'bool', default: true },
 		hideUnreadStatus: { type: 'bool', default: false },
 		audioNotifications: { type: 'string', default: 'default' },
-		audioNotificationValue: { type: 'string', default: 'default' },
-		desktopNotificationDuration: { type: 'string', default: 'default' },
+		desktopNotifications: { type: 'string', default: 'default' },
+		audioNotificationValue: { type: 'string', default: '0 Default' },
+		desktopNotificationDuration: { type: 'int', default: 0 },
 		mobilePushNotifications: { type: 'string', default: 'default' }
 	}
 };

@@ -697,6 +697,12 @@ const RocketChat = {
 		// RC 0.63.0
 		return this.sdk.post('rooms.saveNotification', { roomId, notifications });
 	},
+	saveAudioNotificationValue(rid, params) {
+		return this.sdk.methodCall('saveAudioNotificationValue', rid, params);
+	},
+	saveDesktopNotificationDuration(rid, params) {
+		return this.sdk.methodCall('saveDesktopNotificationDuration', rid, params);
+	},
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
