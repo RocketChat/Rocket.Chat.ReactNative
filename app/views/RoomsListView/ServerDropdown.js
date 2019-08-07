@@ -22,14 +22,6 @@ import Check from '../../containers/Check';
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
 
-@connect(state => ({
-	closeServerDropdown: state.rooms.closeServerDropdown,
-	server: state.server.server
-}), dispatch => ({
-	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	appStart: () => dispatch(appStartAction('outside'))
-}))
 class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -211,4 +203,16 @@ class ServerDropdown extends Component {
 		);
 	}
 }
-export default withNavigation(ServerDropdown);
+
+const mapStateToProps = state => ({
+	closeServerDropdown: state.rooms.closeServerDropdown,
+	server: state.server.server
+});
+
+const mapDispatchToProps = dispatch => ({
+	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	appStart: () => dispatch(appStartAction('outside'))
+});
+
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(ServerDropdown));

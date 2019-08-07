@@ -60,11 +60,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-@responsive
-export default class UploadProgress extends Component {
+class UploadProgress extends Component {
 	static propTypes = {
 		window: PropTypes.object,
-		rid: PropTypes.string
+		rid: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
+			token: PropTypes.string.isRequired
+		}),
+		baseUrl: PropTypes.string.isRequired
 	}
 
 	constructor(props) {
@@ -124,13 +129,13 @@ export default class UploadProgress extends Component {
 	}
 
 	tryAgain = async(item) => {
-		const { rid } = this.props;
+		const { rid, baseUrl: server, user } = this.props;
 
 		try {
 			database.write(() => {
 				item.error = false;
 			});
-			await RocketChat.sendFileMessage(rid, item);
+			await RocketChat.sendFileMessage(rid, item, undefined, server, user);
 		} catch (e) {
 			log('err_upload_progress_try_again', e);
 		}
@@ -187,3 +192,5 @@ export default class UploadProgress extends Component {
 		);
 	}
 }
+
+export default responsive(UploadProgress);

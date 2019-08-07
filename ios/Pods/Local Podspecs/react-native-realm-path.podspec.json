@@ -1,0 +1,21 @@
+{
+  "name": "react-native-realm-path",
+  "version": "1.2.11",
+  "summary": "A helper to Realm Path on AppGroup iOS.",
+  "license": "MIT",
+  "authors": "Djorkaeff Alexandre",
+  "homepage": "https://github.com/rocketchat/react-native-realm-path",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": "https://github.com/RocketChat/react-native-realm-path.git",
+    "tag": "v1.2.11"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

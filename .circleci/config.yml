@@ -106,8 +106,10 @@ jobs:
 
     environment:
       # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
-      JVM_OPTS: -Xmx4096m
+      # GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
+      # JVM_OPTS: -Xmx4096m
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
       TERM: dumb
       BASH_ENV: "~/.nvm/nvm.sh"
 
@@ -133,7 +135,9 @@ jobs:
             cd android
 
             echo -e "" > ./gradle.properties
-            echo -e "android.enableAapt2=false" >> ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -154,6 +158,7 @@ jobs:
       - run:
           name: Build Android App
           command: |
+            npx jetify
             cd android
             if [[ $KEYSTORE ]]; then
               ./gradlew bundleRelease

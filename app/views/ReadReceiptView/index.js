@@ -13,13 +13,7 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 
-@connect(state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	userId: state.login.user && state.login.user.id,
-	token: state.login.user && state.login.user.token
-}))
-export default class ReadReceiptsView extends React.Component {
+class ReadReceiptView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Read_Receipt')
 	}
@@ -144,3 +138,12 @@ export default class ReadReceiptsView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	userId: state.login.user && state.login.user.id,
+	token: state.login.user && state.login.user.token
+});
+
+export default connect(mapStateToProps)(ReadReceiptView);

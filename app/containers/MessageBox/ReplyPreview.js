@@ -48,11 +48,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}))
-export default class ReplyPreview extends Component {
+class ReplyPreview extends Component {
 	static propTypes = {
 		message: PropTypes.object.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
@@ -89,3 +85,10 @@ export default class ReplyPreview extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+export default connect(mapStateToProps)(ReplyPreview);

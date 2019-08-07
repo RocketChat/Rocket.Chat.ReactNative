@@ -40,6 +40,15 @@ export default async function() {
 					if (setting._id === 'Site_Name') {
 						updateServer.call(this, { name: setting.valueAsString });
 					}
+					if (setting._id === 'UI_Use_Real_Name') {
+						updateServer.call(this, { useRealName: setting.valueAsBoolean });
+					}
+					if (setting._id === 'FileUpload_MediaTypeWhiteList') {
+						updateServer.call(this, { FileUpload_MediaTypeWhiteList: setting.valueAsString });
+					}
+					if (setting._id === 'FileUpload_MaxFileSize') {
+						updateServer.call(this, { FileUpload_MaxFileSize: setting.valueAsNumber });
+					}
 				})
 			)
 		);

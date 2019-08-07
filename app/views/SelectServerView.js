@@ -9,14 +9,11 @@ import { SafeAreaView } from 'react-navigation';
 import I18n from '../i18n';
 import database from '../lib/realm';
 import StatusBar from '../containers/StatusBar';
-import { selectServerRequest as selectServerRequestAction } from '../actions/server';
-
-import {
-	COLOR_BACKGROUND_CONTAINER
-} from '../constants/colors';
-import Navigation from '../lib/Navigation';
+import { COLOR_BACKGROUND_CONTAINER } from '../constants/colors';
+import Navigation from '../lib/ShareNavigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
+import RocketChat from '../lib/rocketchat';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
@@ -36,19 +33,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server
-}), dispatch => ({
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
-}))
-export default class SelectServerView extends React.Component {
+class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
 	})
 
 	static propTypes = {
-		server: PropTypes.string,
-		selectServerRequest: PropTypes.func
+		server: PropTypes.string
 	}
 
 	constructor(props) {
@@ -61,15 +52,15 @@ export default class SelectServerView extends React.Component {
 		};
 	}
 
-	select = (server) => {
+	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest
+			server: currentServer
 		} = this.props;
 
-		if (currentServer !== server) {
-			selectServerRequest(server);
-		}
 		Navigation.navigate('ShareListView');
+		if (currentServer !== server) {
+			await RocketChat.shareExtensionInit(server);
+		}
 	}
 
 	renderItem = ({ item }) => {
@@ -91,7 +82,7 @@ export default class SelectServerView extends React.Component {
 		return (
 			<SafeAreaView
 				style={styles.container}
-				forceInset={{ bottom: 'never' }}
+				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
 				<View style={styles.list}>
@@ -112,3 +103,9 @@ export default class SelectServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (({ share }) => ({
+	server: share.server
+}));
+
+export default connect(mapStateToProps)(SelectServerView);

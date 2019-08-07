@@ -26,6 +26,9 @@ const serversSchema = {
 		id: 'string',
 		name: { type: 'string', optional: true },
 		iconURL: { type: 'string', optional: true },
+		useRealName: { type: 'bool', optional: true },
+		FileUpload_MediaTypeWhiteList: { type: 'string', optional: true },
+		FileUpload_MaxFileSize: { type: 'int', optional: true },
 		roomsUpdatedAt: { type: 'date', optional: true },
 		version: 'string?'
 	}
@@ -414,7 +417,7 @@ class DB {
 				userSchema,
 				serversSchema
 			],
-			schemaVersion: 9,
+			schemaVersion: 10,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 1 && newRealm.schemaVersion <= 9) {
 					const newServers = newRealm.objects('servers');

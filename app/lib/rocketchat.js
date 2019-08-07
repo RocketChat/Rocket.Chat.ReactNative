@@ -14,6 +14,9 @@ import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
 } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
+import {
+	shareSelectServer, shareSetUser
+} from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeRoom from './methods/subscriptions/room';
@@ -215,6 +218,35 @@ const RocketChat = {
 
 			resolve();
 		});
+	},
+
+	async shareExtensionInit(server) {
+		database.setActiveDB(server);
+
+		if (this.sdk) {
+			this.sdk.disconnect();
+			this.sdk = null;
+		}
+
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		// set Server
+		const { serversDB } = database.databases;
+		reduxStore.dispatch(shareSelectServer(server));
+
+		// set User info
+		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+		reduxStore.dispatch(shareSetUser({
+			id: user.id,
+			token: user.token,
+			username: user.username
+		}));
+
+		await RocketChat.login({ resume: user.token });
 	},
 
 	register(credentials) {
@@ -746,13 +778,19 @@ const RocketChat = {
 		try {
 			let loginServicesFilter = [];
 			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
-			// TODO: remove this after SAML and custom oauth
-			const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
+
 			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
 				const { services } = loginServicesResult;
-				loginServicesFilter = services.filter(item => availableOAuth.includes(item.name));
+				loginServicesFilter = services.filter(item => item.custom !== undefined); // TODO: remove this after SAML and CAS
+
 				const loginServicesReducer = loginServicesFilter.reduce((ret, item) => {
-					ret[item.name] = item;
+					const name = item.name ? item.name : item.service;
+					const authType = this._determineAuthType(item);
+
+					if (authType !== 'not_supported') {
+						ret[name] = { ...item, name, authType };
+					}
+
 					return ret;
 				}, {});
 				reduxStore.dispatch(setLoginServices(loginServicesReducer));
@@ -762,6 +800,17 @@ const RocketChat = {
 			console.warn(error);
 			return Promise.reject();
 		}
+	},
+	_determineAuthType(service) {
+		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
+		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
+		const { name, custom } = service;
+
+		if (custom) {
+			return 'oauth_custom';
+		}
+
+		return availableOAuth.includes(name) ? 'oauth' : 'not_supported';
 	},
 	getUsernameSuggestion() {
 		// RC 0.65.0
