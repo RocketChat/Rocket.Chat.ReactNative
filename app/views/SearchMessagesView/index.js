@@ -17,15 +17,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	}
-}))
-export default class SearchMessagesView extends React.Component {
+class SearchMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Search')
 	}
@@ -132,7 +124,7 @@ export default class SearchMessagesView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
@@ -150,3 +142,14 @@ export default class SearchMessagesView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+export default connect(mapStateToProps)(SearchMessagesView);

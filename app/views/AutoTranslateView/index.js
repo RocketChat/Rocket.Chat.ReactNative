@@ -127,7 +127,7 @@ export default class AutoTranslateView extends React.Component {
 	render() {
 		const { languages } = this.state;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='auto-translate-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='auto-translate-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}

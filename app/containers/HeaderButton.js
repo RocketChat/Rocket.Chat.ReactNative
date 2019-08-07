@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
+import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';

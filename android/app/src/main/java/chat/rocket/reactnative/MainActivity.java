@@ -36,6 +36,7 @@ public class MainActivity extends ReactFragmentActivity {
       };
     }
 
+    // from react-native-orientation
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

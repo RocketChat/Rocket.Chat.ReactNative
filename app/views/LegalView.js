@@ -52,10 +52,7 @@ const styles = StyleSheet.create({
 
 const Separator = () => <View style={styles.separator} />;
 
-@connect(state => ({
-	server: state.server.server
-}))
-export default class LegalView extends React.Component {
+class LegalView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Legal')
 	})
@@ -81,7 +78,7 @@ export default class LegalView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'terms-of-service', testID: 'legal-terms-button' })}
@@ -92,3 +89,9 @@ export default class LegalView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server
+});
+
+export default connect(mapStateToProps)(LegalView);

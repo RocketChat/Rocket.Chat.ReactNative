@@ -104,12 +104,7 @@ const styles = StyleSheet.create({
 
 });
 
-@responsive
-@connect(state => ({
-	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
-}))
-export default class UploadModal extends Component {
+class UploadModal extends Component {
 	static propTypes = {
 		isVisible: PropTypes.bool,
 		file: PropTypes.object,
@@ -336,3 +331,10 @@ export default class UploadModal extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+});
+
+export default responsive(connect(mapStateToProps)(UploadModal));

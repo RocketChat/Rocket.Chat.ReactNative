@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native/React/Modules/RCTRedBox.m b/node_modules/react-native/React/Modules/RCTRedBox.m
+index 7ed4900..bb85402 100644
+--- a/node_modules/react-native/React/Modules/RCTRedBox.m
++++ b/node_modules/react-native/React/Modules/RCTRedBox.m
+@@ -161,7 +161,7 @@ - (instancetype)initWithFrame:(CGRect)frame
+ - (NSInteger)bottomSafeViewHeight
+ {
+     if (@available(iOS 11.0, *)) {
+-        return [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;
++        return RCTSharedApplication().delegate.window.safeAreaInsets.bottom;
+     } else {
+         return 0;
+     }

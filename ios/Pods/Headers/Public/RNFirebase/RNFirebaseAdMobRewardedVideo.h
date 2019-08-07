@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-firebase/ios/RNFirebase/admob/RNFirebaseAdMobRewardedVideo.h

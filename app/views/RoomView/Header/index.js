@@ -8,31 +8,7 @@ import database, { safeAddListener } from '../../../lib/realm';
 import Header from './Header';
 import RightButtons from './RightButtons';
 
-@responsive
-@connect((state, ownProps) => {
-	let status;
-	let userId;
-	let isLoggedUser = false;
-	const { rid, type } = ownProps;
-	if (type === 'd') {
-		if (state.login.user && state.login.user.id) {
-			const { id: loggedUserId } = state.login.user;
-			userId = rid.replace(loggedUserId, '').trim();
-			isLoggedUser = userId === loggedUserId;
-			if (isLoggedUser) {
-				status = state.login.user.status; // eslint-disable-line
-			}
-		}
-	}
-
-	return {
-		connecting: state.meteor.connecting,
-		userId,
-		isLoggedUser,
-		status
-	};
-})
-export default class RoomHeaderView extends Component {
+class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		type: PropTypes.string,
@@ -142,5 +118,31 @@ export default class RoomHeaderView extends Component {
 		);
 	}
 }
+
+const mapStateToProps = (state, ownProps) => {
+	let status;
+	let userId;
+	let isLoggedUser = false;
+	const { rid, type } = ownProps;
+	if (type === 'd') {
+		if (state.login.user && state.login.user.id) {
+			const { id: loggedUserId } = state.login.user;
+			userId = rid.replace(loggedUserId, '').trim();
+			isLoggedUser = userId === loggedUserId;
+			if (isLoggedUser) {
+				status = state.login.user.status; // eslint-disable-line
+			}
+		}
+	}
+
+	return {
+		connecting: state.meteor.connecting,
+		userId,
+		isLoggedUser,
+		status
+	};
+};
+
+export default responsive(connect(mapStateToProps)(RoomHeaderView));
 
 export { RightButtons };
