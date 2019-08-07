@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec b/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec
+new file mode 100644
+index 0000000..a6dbe01
+--- /dev/null
++++ b/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec
+@@ -0,0 +1,19 @@
++require 'json'
++
++package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
++
++Pod::Spec.new do |s|
++  s.name         = package['name']
++  s.version      = package['version']
++  s.summary      = package['description']
++  s.license      = package['license']
++
++  s.authors      = package['author']
++  s.homepage     = package['homepage']
++  s.platform     = :ios, "9.0"
++
++  s.source       = { :git => "https://github.com/wix/react-native-keyboard-tracking-view.git", :tag => "v#{s.version}" }
++  s.source_files  = "lib/**/*.{h,m}"
++
++  s.dependency 'React'
++end
+\ No newline at end of file
