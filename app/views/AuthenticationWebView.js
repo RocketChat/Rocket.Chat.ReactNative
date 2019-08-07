@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class OAuthView extends React.PureComponent {
+class AuthenticationWebView extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => {
 		const authType = navigation.getParam('authType', 'oauth');
 		return {
@@ -123,4 +123,4 @@ const mapStateToProps = state => ({
 	server: state.server.server
 });
 
-export default connect(mapStateToProps)(OAuthView);
+export default connect(mapStateToProps)(AuthenticationWebView);

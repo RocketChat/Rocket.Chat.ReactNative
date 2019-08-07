@@ -249,7 +249,7 @@ class LoginSignupView extends React.Component {
 
 	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {
 		const { navigation } = this.props;
-		navigation.navigate('OAuthView', { url, authType, ssoToken });
+		navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 	}
 
 	login = () => {
