@@ -11,9 +11,10 @@ import DisclosureIndicator from '../../../containers/DisclosureIndicator';
 
 const Directory = React.memo(({ goDirectory }) => (
 	<Touch
-		key='rooms-list-view-sort'
+		key='rooms-list-view-directory'
 		onPress={goDirectory}
 		style={styles.dropdownContainerHeader}
+		testID='rooms-list-view-directory'
 	>
 		<View style={styles.sortItemContainer}>
 			<CustomIcon style={styles.directoryIcon} size={22} name='discover' />

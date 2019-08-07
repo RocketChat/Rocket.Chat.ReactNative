@@ -154,12 +154,12 @@ export default class DirectoryView extends React.Component {
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
-					testID='federation-view-search'
+					testID='directory-view-search'
 				/>
-				<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>
+				<Touch onPress={this.toggleDropdown} testID='directory-view-filter-drop-down'>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer]}>
 						<CustomIcon style={styles.toggleDropdownIcon} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
-						<Text style={styles.toggleDropdownText}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
+						<Text style={styles.toggleDropdownText} testID='directory-view-filter-text'>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
 						<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
 					</View>
 				</Touch>
@@ -182,7 +182,7 @@ export default class DirectoryView extends React.Component {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item.name }`,
+			testID: `directory-view-list-item-${ item.name }`,
 			style,
 			user
 		};

@@ -64,7 +64,7 @@ export default class DirectoryOptions extends PureComponent {
 		}
 
 		return (
-			<Touch style={styles.dropdownItemButton} onPress={() => changeType(itemType)}>
+			<Touch style={styles.dropdownItemButton} onPress={() => changeType(itemType)} testID={`directory-view-filter-drop-down-${ itemType }`}>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon style={styles.dropdownItemIcon} size={22} name={icon} />
 					<Text style={styles.dropdownItemText}>{I18n.t(text)}</Text>
@@ -93,6 +93,7 @@ export default class DirectoryOptions extends PureComponent {
 					<Touch
 						onPress={this.close}
 						style={styles.dropdownContainerHeader}
+						testID='directory-view-filter-drop-down-close'
 					>
 						<View style={styles.dropdownItemContainer}>
 							<Text style={styles.dropdownToggleText}>{I18n.t('Search_by')}</Text>
