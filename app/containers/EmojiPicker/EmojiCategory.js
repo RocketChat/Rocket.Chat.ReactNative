@@ -23,9 +23,7 @@ const renderEmoji = (emoji, size, baseUrl) => {
 	);
 };
 
-
-@responsive
-export default class EmojiCategory extends React.Component {
+class EmojiCategory extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		emojis: PropTypes.any,
@@ -79,3 +77,5 @@ export default class EmojiCategory extends React.Component {
 		);
 	}
 }
+
+export default responsive(EmojiCategory);
