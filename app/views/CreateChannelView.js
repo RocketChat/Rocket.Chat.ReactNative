@@ -178,12 +178,6 @@ class CreateChannelView extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	onChangeText = (channelName) => {
 		const { navigation } = this.props;
 		navigation.setParams({ showSubmit: channelName.trim().length > 0 });

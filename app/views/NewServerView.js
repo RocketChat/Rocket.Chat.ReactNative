@@ -87,12 +87,6 @@ class NewServerView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	onChangeText = (text) => {
 		this.setState({ text });
 	}

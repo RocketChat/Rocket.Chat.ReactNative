@@ -81,12 +81,6 @@ class RegisterView extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	setTitle = (title) => {
 		const { navigation } = this.props;
 		navigation.setParams({ title });

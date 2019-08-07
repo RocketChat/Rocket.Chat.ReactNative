@@ -46,12 +46,6 @@ export default class ForgotPasswordView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	validate = (email) => {
 		if (!isValidEmail(email)) {
 			this.setState({ invalidEmail: true });

@@ -81,11 +81,6 @@ class LoginView extends React.Component {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {
 				LayoutAnimation.easeInEaseOut();
 				this.setState({ showTOTP: true });
-				setTimeout(() => {
-					if (this.codeInput && this.codeInput.focus) {
-						this.codeInput.focus();
-					}
-				}, 300);
 				return;
 			}
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
@@ -130,12 +125,6 @@ class LoginView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
 	}
 
 	setTitle = (title) => {

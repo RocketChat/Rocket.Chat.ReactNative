@@ -70,12 +70,6 @@ class SetUsernameView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	submit = async() => {
 		const { username } = this.state;
 		const { loginRequest, token } = this.props;
