@@ -69,19 +69,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@responsive
-@connect(
-	state => ({
-		userId: state.login.user && state.login.user.id,
-		baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-		token: state.login.user && state.login.user.token,
-		notification: state.notification
-	}),
-	dispatch => ({
-		removeNotification: () => dispatch(removeNotificationAction())
-	})
-)
-export default class NotificationBadge extends React.Component {
+class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
@@ -227,3 +215,16 @@ export default class NotificationBadge extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	userId: state.login.user && state.login.user.id,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	token: state.login.user && state.login.user.token,
+	notification: state.notification
+});
+
+const mapDispatchToProps = dispatch => ({
+	removeNotification: () => dispatch(removeNotificationAction())
+});
+
+export default responsive(connect(mapStateToProps, mapDispatchToProps)(NotificationBadge));

@@ -88,13 +88,7 @@ const styles = StyleSheet.create({
 const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
-@connect(state => ({
-	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Gitlab_URL: state.settings.API_Gitlab_URL,
-	services: state.login.services
-}))
-export default class LoginSignupView extends React.Component {
+class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -365,7 +359,7 @@ export default class LoginSignupView extends React.Component {
 		return (
 			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
 				<StatusBar />
-				<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
+				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
 					<Button
@@ -385,3 +379,12 @@ export default class LoginSignupView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	Site_Name: state.settings.Site_Name,
+	Gitlab_URL: state.settings.API_Gitlab_URL,
+	services: state.login.services
+});
+
+export default connect(mapStateToProps)(LoginSignupView);
