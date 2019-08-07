@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, setSearchInputRef, showSearchHeader, onSearchChangeText, onPress
+	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, onSearchChangeText, onPress
 }) => {
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
-					ref={setSearchInputRef}
+					autoFocus
 					style={styles.server}
 					placeholder='Search'
 					placeholderTextColor='rgba(255, 255, 255, 0.5)'
@@ -81,7 +81,6 @@ Header.propTypes = {
 	showSearchHeader: PropTypes.bool.isRequired,
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
-	setSearchInputRef: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string
