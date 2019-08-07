@@ -277,6 +277,19 @@ class LoginSignupView extends React.Component {
 		this.setState(prevState => ({ collapsed: !prevState.collapsed }));
 	}
 
+	getSocialOauthProvider = (name) => {
+		const oauthProviders = {
+			facebook: this.onPressFacebook,
+			github: this.onPressGithub,
+			gitlab: this.onPressGitlab,
+			google: this.onPressGoogle,
+			linkedin: this.onPressLinkedin,
+			'meteor-developer': this.onPressMeteor,
+			twitter: this.onPressTwitter
+		};
+		return oauthProviders[name];
+	}
+
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
 		const { services } = this.props;
@@ -313,7 +326,7 @@ class LoginSignupView extends React.Component {
 				break;
 			}
 			case 'oauth_custom': {
-				onPress = this.onPressCustomOAuth.bind(this, service);
+				onPress = () => this.onPressCustomOAuth(service);
 				break;
 			}
 			default:
@@ -322,27 +335,13 @@ class LoginSignupView extends React.Component {
 		return (
 			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
 				<View style={styles.serviceButtonContainer}>
-					<Image source={{ uri: icon }} style={styles.serviceIcon} />
+					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
 					<Text style={styles.serviceText}>
 						{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
 					</Text>
 				</View>
 			</RectButton>
 		);
-	}
-
-	getSocialOauthProvider = (name) => {
-		const oauthProviders = {
-			facebook: this.onPressFacebook,
-			github: this.onPressGithub,
-			gitlab: this.onPressGitlab,
-			google: this.onPressGoogle,
-			linkedin: this.onPressLinkedin,
-			'meteor-developer': this.onPressMeteor,
-			twitter: this.onPressTwitter
-		};
-
-		return oauthProviders[name];
 	}
 
 	renderServices = () => {
