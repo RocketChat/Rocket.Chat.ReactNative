@@ -156,7 +156,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressGithub = () => {
@@ -167,7 +167,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'user:email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
-		this.openOAuth(`${ endpoint }${ encodeURIComponent(params) }`);
+		this.openOAuth({ url: `${ endpoint }${ encodeURIComponent(params) }` });
 	}
 
 	onPressGitlab = () => {
@@ -179,7 +179,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'read_user';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressGoogle = () => {
@@ -190,7 +190,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressLinkedin = () => {
@@ -201,7 +201,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'r_emailaddress';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressMeteor = () => {
@@ -211,14 +211,14 @@ class LoginSignupView extends React.Component {
 		const redirect_uri = `${ server }/_oauth/meteor-developer`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressTwitter = () => {
 		const { server } = this.props;
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
-		this.openOAuth(url);
+		this.openOAuth({ url });
 	}
 
 	onPressCustomOAuth = (loginService) => {
@@ -230,16 +230,16 @@ class LoginSignupView extends React.Component {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirectUri }&response_type=code&state=${ state }&scope=${ scope }`;
 		const url = `${ serverURL }${ authorizePath }${ params }`;
-		this.openOAuth(url);
+		this.openOAuth({ url });
 	}
 
 	onPressSaml = (loginService) => {
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
 		const {	provider } = clientConfig;
-		const samlToken = random(17);
-		const url = `${ server }/_saml/authorize/${ provider }/${ samlToken }`;
-		this.openSSO(url, samlToken);
+		const ssoToken = random(17);
+		const url = `${ server }/_saml/authorize/${ provider }/${ ssoToken }`;
+		this.openOAuth({ url, ssoToken, authType: 'saml' });
 	}
 
 	getOAuthState = () => {
@@ -247,14 +247,9 @@ class LoginSignupView extends React.Component {
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
 	}
 
-	openOAuth = (oAuthUrl) => {
+	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {
 		const { navigation } = this.props;
-		navigation.navigate('OAuthView', { oAuthUrl });
-	}
-
-	openSSO = (ssoUrl, ssoToken) => {
-		const { navigation } = this.props;
-		navigation.navigate('SSOView', { ssoUrl, ssoToken });
+		navigation.navigate('OAuthView', { url, authType, ssoToken });
 	}
 
 	login = () => {
