@@ -37,21 +37,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	users: state.selectedUsers.users,
-	loading: state.selectedUsers.loading,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
-}), dispatch => ({
-	addUser: user => dispatch(addUserAction(user)),
-	removeUser: user => dispatch(removeUserAction(user)),
-	reset: () => dispatch(resetAction()),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
-}))
-export default class SelectedUsersView extends React.Component {
+class SelectedUsersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
 		const nextAction = navigation.getParam('nextAction', () => {});
@@ -270,7 +256,7 @@ export default class SelectedUsersView extends React.Component {
 	render = () => {
 		const { loading } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
@@ -278,3 +264,22 @@ export default class SelectedUsersView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	users: state.selectedUsers.users,
+	loading: state.selectedUsers.loading,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+const mapDispatchToProps = dispatch => ({
+	addUser: user => dispatch(addUserAction(user)),
+	removeUser: user => dispatch(removeUserAction(user)),
+	reset: () => dispatch(resetAction()),
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedUsersView);

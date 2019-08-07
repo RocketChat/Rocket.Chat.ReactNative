@@ -23,12 +23,7 @@ import log from '../utils/log';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
-@connect(state => ({
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class RegisterView extends React.Component {
+class RegisterView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -203,7 +198,7 @@ export default class RegisterView extends React.Component {
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							inputRef={(e) => { this.nameInput = e; }}
@@ -261,3 +256,13 @@ export default class RegisterView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

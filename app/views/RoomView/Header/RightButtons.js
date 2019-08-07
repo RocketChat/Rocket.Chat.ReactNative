@@ -19,10 +19,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	threadsEnabled: state.settings.Threads_enabled
-}))
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
 		userId: PropTypes.string,
@@ -123,4 +119,9 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 }
 
-export default RightButtonsContainer;
+const mapStateToProps = state => ({
+	userId: state.login.user && state.login.user.id,
+	threadsEnabled: state.settings.Threads_enabled
+});
+
+export default connect(mapStateToProps)(RightButtonsContainer);

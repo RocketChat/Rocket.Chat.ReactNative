@@ -88,13 +88,7 @@ const styles = StyleSheet.create({
 const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
-@connect(state => ({
-	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Gitlab_URL: state.settings.API_Gitlab_URL,
-	services: state.login.services
-}))
-export default class LoginSignupView extends React.Component {
+class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -227,6 +221,18 @@ export default class LoginSignupView extends React.Component {
 		this.openOAuth(url);
 	}
 
+	onPressCustomOAuth = (loginService) => {
+		const { server } = this.props;
+		const {
+			serverURL, authorizePath, clientId, scope, service
+		} = loginService;
+		const redirectUri = `${ server }/_oauth/${ service }`;
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirectUri }&response_type=code&state=${ state }&scope=${ scope }`;
+		const url = `${ serverURL }${ authorizePath }${ params }`;
+		this.openOAuth(url);
+	}
+
 	getOAuthState = () => {
 		const credentialToken = random(43);
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
@@ -271,6 +277,19 @@ export default class LoginSignupView extends React.Component {
 		this.setState(prevState => ({ collapsed: !prevState.collapsed }));
 	}
 
+	getSocialOauthProvider = (name) => {
+		const oauthProviders = {
+			facebook: this.onPressFacebook,
+			github: this.onPressGithub,
+			gitlab: this.onPressGitlab,
+			google: this.onPressGoogle,
+			linkedin: this.onPressLinkedin,
+			'meteor-developer': this.onPressMeteor,
+			twitter: this.onPressTwitter
+		};
+		return oauthProviders[name];
+	}
+
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
 		const { services } = this.props;
@@ -300,35 +319,23 @@ export default class LoginSignupView extends React.Component {
 		const icon = `icon_${ name }`;
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let onPress = () => {};
-		switch (service.name) {
-			case 'facebook':
-				onPress = this.onPressFacebook;
+
+		switch (service.authType) {
+			case 'oauth': {
+				onPress = this.getSocialOauthProvider(service.name);
 				break;
-			case 'github':
-				onPress = this.onPressGithub;
+			}
+			case 'oauth_custom': {
+				onPress = () => this.onPressCustomOAuth(service);
 				break;
-			case 'gitlab':
-				onPress = this.onPressGitlab;
-				break;
-			case 'google':
-				onPress = this.onPressGoogle;
-				break;
-			case 'linkedin':
-				onPress = this.onPressLinkedin;
-				break;
-			case 'meteor-developer':
-				onPress = this.onPressMeteor;
-				break;
-			case 'twitter':
-				onPress = this.onPressTwitter;
-				break;
+			}
 			default:
 				break;
 		}
 		return (
 			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
 				<View style={styles.serviceButtonContainer}>
-					<Image source={{ uri: icon }} style={styles.serviceIcon} />
+					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
 					<Text style={styles.serviceText}>
 						{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
 					</Text>
@@ -365,7 +372,7 @@ export default class LoginSignupView extends React.Component {
 		return (
 			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
 				<StatusBar />
-				<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
+				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
 					<Button
@@ -385,3 +392,12 @@ export default class LoginSignupView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	Site_Name: state.settings.Site_Name,
+	Gitlab_URL: state.settings.API_Gitlab_URL,
+	services: state.login.services
+});
+
+export default connect(mapStateToProps)(LoginSignupView);

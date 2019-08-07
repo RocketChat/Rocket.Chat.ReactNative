@@ -9,15 +9,7 @@ import database from '../lib/realm';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
 
-@connect(
-	state => ({
-		actionMessage: state.messages.actionMessage
-	}),
-	dispatch => ({
-		errorActionsHide: () => dispatch(errorActionsHideAction())
-	})
-)
-export default class MessageErrorActions extends React.Component {
+class MessageErrorActions extends React.Component {
 	static propTypes = {
 		errorActionsHide: PropTypes.func.isRequired,
 		actionMessage: PropTypes.object
@@ -81,3 +73,13 @@ export default class MessageErrorActions extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	actionMessage: state.messages.actionMessage
+});
+
+const mapDispatchToProps = dispatch => ({
+	errorActionsHide: () => dispatch(errorActionsHideAction())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageErrorActions);
