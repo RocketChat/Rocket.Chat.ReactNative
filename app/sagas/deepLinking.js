@@ -1,6 +1,5 @@
-import { delay } from 'redux-saga';
 import {
-	takeLatest, take, select, put, all
+	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 

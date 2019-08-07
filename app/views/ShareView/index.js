@@ -19,15 +19,7 @@ import database from '../../lib/realm';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
-@connect(({ share }) => ({
-	user: {
-		id: share.user && share.user.id,
-		username: share.user && share.user.username,
-		token: share.user && share.user.token
-	},
-	baseUrl: share ? share.server : ''
-}))
-export default class ShareView extends React.Component {
+class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const canSend = navigation.getParam('canSend', true);
 
@@ -112,7 +104,14 @@ export default class ShareView extends React.Component {
 		const { rid, fileInfo, file } = this.state;
 		const { baseUrl: server, user } = this.props;
 		const { name, description } = file;
-		const fileMessage = { ...fileInfo, name, description };
+		const fileMessage = {
+			name,
+			description,
+			size: fileInfo.size,
+			type: fileInfo.mime,
+			store: 'Uploads',
+			path: fileInfo.path
+		};
 		if (fileInfo && rid !== '') {
 			try {
 				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
@@ -243,3 +242,14 @@ export default class ShareView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (({ share }) => ({
+	user: {
+		id: share.user && share.user.id,
+		username: share.user && share.user.username,
+		token: share.user && share.user.token
+	},
+	baseUrl: share ? share.server : ''
+}));
+
+export default connect(mapStateToProps)(ShareView);
