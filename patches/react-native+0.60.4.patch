@@ -1,11 +1,69 @@
+diff --git a/node_modules/react-native/Libraries/.DS_Store b/node_modules/react-native/Libraries/.DS_Store
+new file mode 100644
+index 0000000..2f4ccbb
+Binary files /dev/null and b/node_modules/react-native/Libraries/.DS_Store differ
+diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.ios.js b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.ios.js
+new file mode 100644
+index 0000000..7adbeb3
+--- /dev/null
++++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.ios.js
+@@ -0,0 +1,30 @@
++/**
++ * Copyright (c) Facebook, Inc. and its affiliates.
++ *
++ * This source code is licensed under the MIT license found in the
++ * LICENSE file in the root directory of this source tree.
++ *
++ * @format
++ * @flow
++ */
++
++'use strict';
++
++const NativeEventEmitter = require('../EventEmitter/NativeEventEmitter');
++const RCTHTTPRequestHandler = require('../BatchedBridge/NativeModules')
++  .HTTPRequestHandler;
++
++class RCTHTTPRequestHandler extends NativeEventEmitter {
++  constructor() {
++    super(RCTHTTPRequestHandler);
++  }
++
++  setCertInfo(
++    path: string,
++    password: string
++  ) {
++    RCTHTTPRequestHandler.setCertInfo(path, password);
++  }
++}
++
++module.exports = new RCTHTTPRequestHandler();
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 76131fa..3389fea 100644
+index 76131fa..030d943 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -177,4 +177,46 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+@@ -25,6 +25,10 @@ @implementation RCTHTTPRequestHandler
+ @synthesize bridge = _bridge;
+ @synthesize methodQueue = _methodQueue;
+ 
++// SSL Pinning
++NSString* _path = @"";
++NSString* _password = @"";
++
+ RCT_EXPORT_MODULE()
+ 
+ - (void)invalidate
+@@ -177,4 +181,53 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
    [delegate URLRequest:task didCompleteWithError:error];
  }
  
++// Set certificate info to SSL Pinning URL SESSION
++RCT_EXPORT_METHOD(setCertInfo:(NSString *)path password:(NSString *)password)
++{
++  _path = path;
++  _password = password;
++}
++
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
 +  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
@@ -21,10 +79,10 @@ index 76131fa..3389fea 100644
 +    SecTrustResultType result;
 +    SecTrustEvaluate(serverTrust, &result);
 +
-+    NSString* pfile = [[NSBundle mainBundle] pathForResource:@"CER_NAME" ofType:@"p12" ];
++    NSString* pfile = [[NSBundle mainBundle] pathForResource:_path ofType:@"p12" ];
 +
 +    NSData *p12data = [NSData dataWithContentsOfFile:pfile];
-+    NSDictionary* options = @{ (id)kSecImportExportPassphrase:@"PASSWORD" };
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:_password };
 +    CFArrayRef rawItems = NULL;
 +    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
 +                                (__bridge CFDictionaryRef)options,
