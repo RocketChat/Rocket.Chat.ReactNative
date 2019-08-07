@@ -18,15 +18,7 @@ import FileModal from '../../containers/FileModal';
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	}
-}))
-export default class MessagesView extends React.Component {
+class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.state.params.name
 	});
@@ -252,7 +244,7 @@ export default class MessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={messages}
@@ -273,3 +265,14 @@ export default class MessagesView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+export default connect(mapStateToProps)(MessagesView);

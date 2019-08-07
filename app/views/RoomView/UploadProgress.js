@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@responsive
-export default class UploadProgress extends Component {
+class UploadProgress extends Component {
 	static propTypes = {
 		window: PropTypes.object,
 		rid: PropTypes.string,
@@ -193,3 +192,5 @@ export default class UploadProgress extends Component {
 		);
 	}
 }
+
+export default responsive(UploadProgress);

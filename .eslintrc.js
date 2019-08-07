@@ -46,6 +46,7 @@ module.exports = {
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,
 		"import/prefer-default-export": 0,
+		"import/no-cycle": 0,
 		"camelcase": 0,
 		"no-underscore-dangle": 0,
 		"no-return-assign": 0,
