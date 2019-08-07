@@ -46,12 +46,7 @@ const styles = StyleSheet.create({
 
 const defaultServer = 'https://open.rocket.chat';
 
-@connect(state => ({
-	connecting: state.server.connecting
-}), dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
-}))
-export default class NewServerView extends React.Component {
+class NewServerView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -164,7 +159,7 @@ export default class NewServerView extends React.Component {
 			>
 				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ vertical: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
@@ -193,3 +188,13 @@ export default class NewServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	connecting: state.server.connecting
+});
+
+const mapDispatchToProps = dispatch => ({
+	connectServer: server => dispatch(serverRequest(server))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);

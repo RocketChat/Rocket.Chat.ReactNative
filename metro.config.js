@@ -13,5 +13,6 @@ module.exports = {
 				inlineRequires: true
 			}
 		})
-	}
+	},
+	maxWorkers: 2
 };
