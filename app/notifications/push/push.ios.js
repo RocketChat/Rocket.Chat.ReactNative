@@ -10,8 +10,9 @@ class PushNotification {
 			this.deviceToken = deviceToken;
 		});
 
-		NotificationsIOS.addEventListener('notificationOpened', (notification) => {
+		NotificationsIOS.addEventListener('notificationOpened', (notification, completion) => {
 			this.onNotification(notification);
+			completion();
 		});
 
 		NotificationsIOS.requestPermissions();
@@ -30,7 +31,7 @@ class PushNotification {
 		this.onNotification = params.onNotification;
 
 		const initial = await NotificationsIOS.getInitialNotification();
-		NotificationsIOS.consumeBackgroundQueue();
+		// NotificationsIOS.consumeBackgroundQueue();
 		return Promise.resolve(initial);
 	}
 }

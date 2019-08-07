@@ -29,14 +29,7 @@ const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
-@connect(({ share }) => ({
-	userId: share.user && share.user.id,
-	token: share.user && share.user.token,
-	server: share.server,
-	baseUrl: share ? share.server : ''
-}))
-/** @extends React.Component */
-export default class ShareListView extends React.Component {
+class ShareListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
 		const initSearch = navigation.getParam('initSearch', () => {});
@@ -407,10 +400,19 @@ export default class ShareListView extends React.Component {
 	render() {
 		const { showError } = this.state;
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>
 		);
 	}
 }
+
+const mapStateToProps = (({ share }) => ({
+	userId: share.user && share.user.id,
+	token: share.user && share.user.token,
+	server: share.server,
+	baseUrl: share ? share.server : ''
+}));
+
+export default connect(mapStateToProps)(ShareListView);

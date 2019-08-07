@@ -51,7 +51,6 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				services: {
-					...state.services,
 					...action.data
 				}
 			};

@@ -1,0 +1,122 @@
+diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+index 76131fa..3389fea 100644
+--- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
++++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+@@ -177,4 +177,46 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+   [delegate URLRequest:task didCompleteWithError:error];
+ }
+ 
++-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
++    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
++  } else {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    NSString* pfile = [[NSBundle mainBundle] pathForResource:@"CER_NAME" ofType:@"p12" ];
++
++    NSData *p12data = [NSData dataWithContentsOfFile:pfile];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:@"PASSWORD" };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                (__bridge CFDictionaryRef)options,
++                                &rawItems);
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++    
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    SecIdentityCopyCertificate(identity, &certificate);
++    if (certificate) { CFRelease(certificate); }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);   
++  }
++}
++
+ @end
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+index 6f1e5e8..b36552a 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+@@ -516,6 +516,40 @@ - (void)_initializeStreams;
+     RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
+ #endif
+ 
++    // start here ============================================================================================
++    NSString *path = [[NSBundle mainBundle] pathForResource:@"CER_NAME" ofType:@"p12"];
++    NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
++
++    CFArrayRef keyref = NULL;
++    OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
++                                          (__bridge CFDictionaryRef)[NSDictionary
++                                                                      dictionaryWithObject:@"PASSWORD"
++                                                                      forKey:(__bridge id)kSecImportExportPassphrase],
++                                          &keyref);
++    if (sanityChesk != noErr) {
++      NSLog(@"Err_importing_pkcs12 [%d]", sanityChesk);
++    } else
++      NSLog(@"Success - p12 certificate.");
++
++    CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
++    SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict,
++                                                                      kSecImportItemIdentity);
++
++    SecCertificateRef cert = NULL;
++    OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
++    if (status)
++      NSLog(@"SecIdentityCopyCertificate_failed.");
++
++    NSArray *myCerts = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
++
++    [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLValidatesCertificateChain];
++    [SSLOptions setObject:[NSString stringWithFormat:@"%@:%d", host, port] forKey:(NSString *)kCFStreamSSLPeerName];
++    [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamSSLLevel];
++    [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamPropertySocketSecurityLevel];
++    [SSLOptions setObject:myCerts forKey:(NSString *)kCFStreamSSLCertificates];
++    [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLIsServer];
++    // finish here ============================================================================================
++
+     [_outputStream setProperty:SSLOptions
+                         forKey:(__bridge id)kCFStreamPropertySSLSettings];
+   }
+diff --git a/node_modules/react-native/React/Modules/RCTRedBox.m b/node_modules/react-native/React/Modules/RCTRedBox.m
+index 7ed4900..bb85402 100644
+--- a/node_modules/react-native/React/Modules/RCTRedBox.m
++++ b/node_modules/react-native/React/Modules/RCTRedBox.m
+@@ -161,7 +161,7 @@ - (instancetype)initWithFrame:(CGRect)frame
+ - (NSInteger)bottomSafeViewHeight
+ {
+     if (@available(iOS 11.0, *)) {
+-        return [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;
++        return RCTSharedApplication().delegate.window.safeAreaInsets.bottom;
+     } else {
+         return 0;
+     }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
+index cf5ca40..262f22a 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
+@@ -91,7 +91,7 @@ public class AndroidInfoModule extends ReactContextBaseJavaModule {
+ 
+   private Boolean isRunningScreenshotTest() {
+     try {
+-      Class.forName("android.support.test.rule.ActivityTestRule");
++      Class.forName("androidx.test.rule.ActivityTestRule");
+       return true;
+     } catch (ClassNotFoundException ignored) {
+       return false;

@@ -1,6 +1,5 @@
-import { delay } from 'redux-saga';
 import {
-	put, select, race, take, fork, cancel, takeLatest
+	put, select, race, take, fork, cancel, takeLatest, delay
 } from 'redux-saga/effects';
 import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
