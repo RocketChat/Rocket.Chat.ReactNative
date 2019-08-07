@@ -79,7 +79,7 @@ export default class RoomView extends React.Component {
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
-		const unreadsCount = navigation.getParam('unreadsCount') > 0 ? navigation.getParam('unreadsCount') : null;
+		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
 			headerLeftContainerStyle: {
 				position: 'relative',
@@ -104,17 +104,12 @@ export default class RoomView extends React.Component {
 				/>
 			),
 			headerLeft: (
-				<View onLayout={(event) => {
-					console.warn(event.nativeEvent.layout);
-				}}
-				>
-					<HeaderBackButton
-						title={unreadsCount > 999 ? '+999' : unreadsCount}
-						backTitleVisible
-						onPress={() => navigation.goBack()}
-						tintColor={HEADER_BACK}
-					/>
-				</View>
+				<HeaderBackButton
+					title={unreadsCount > 999 ? '+999' : unreadsCount}
+					backTitleVisible
+					onPress={navigation.goBack}
+					tintColor={HEADER_BACK}
+				/>
 			)
 		};
 	}
