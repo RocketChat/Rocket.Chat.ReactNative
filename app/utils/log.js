@@ -1,6 +1,7 @@
 import { Client } from 'bugsnag-react-native';
+import config from '../../config';
 
-const bugsnag = new Client('72a0364cb361fc8f0fdc6cbf605f9963');
+const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
 export const loggerConfig = bugsnag.config;
 export default bugsnag.notify;
