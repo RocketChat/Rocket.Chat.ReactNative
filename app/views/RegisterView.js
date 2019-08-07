@@ -65,12 +65,6 @@ class RegisterView extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.nameInput.focus();
-		}, 600);
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const { customFields } = this.state;
 		if (!equal(nextState.customFields, customFields)) {
@@ -84,12 +78,6 @@ class RegisterView extends React.Component {
 		const { Site_Name } = this.props;
 		if (Site_Name && prevProps.Site_Name !== Site_Name) {
 			this.setTitle(Site_Name);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
 		}
 	}
 
@@ -201,7 +189,7 @@ class RegisterView extends React.Component {
 					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
-							inputRef={(e) => { this.nameInput = e; }}
+							autoFocus
 							placeholder={I18n.t('Name')}
 							returnKeyType='next'
 							iconLeft='user'

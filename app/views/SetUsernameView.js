@@ -53,9 +53,6 @@ class SetUsernameView extends React.Component {
 	}
 
 	async componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.usernameInput.focus();
-		}, 600);
 		const suggestion = await RocketChat.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
@@ -71,12 +68,6 @@ class SetUsernameView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
 	}
 
 	submit = async() => {
@@ -107,7 +98,7 @@ class SetUsernameView extends React.Component {
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Set_username_subtitle')}</Text>
 						<TextInput
-							inputRef={e => this.usernameInput = e}
+							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
 							iconLeft='at'
