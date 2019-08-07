@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import DocumentPicker from 'react-native-document-picker';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -18,6 +19,7 @@ import { isIOS, isNotch } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	image: {
@@ -41,6 +43,21 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		paddingHorizontal: 9,
 		left: 15
+	},
+	certificatePicker: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	chooseCertificateTitle: {
+		fontSize: 15,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
+	},
+	chooseCertificate: {
+		fontSize: 15,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorHeaderBack
 	}
 });
 
@@ -107,6 +124,19 @@ class NewServerView extends React.Component {
 		}
 	}
 
+	chooseCertificate = async() => {
+		try {
+			const res = await DocumentPicker.pick({
+				type: ['com.rsa.pkcs-12']
+			});
+			console.log(res);
+		} catch (error) {
+			if (!DocumentPicker.isCancel(error)) {
+				log('chooseCertificate', error);
+			}
+		}
+	}
+
 	completeUrl = (url) => {
 		url = url && url.trim();
 
@@ -148,6 +178,15 @@ class NewServerView extends React.Component {
 		);
 	}
 
+	renderCertificatePicker = () => (
+		<View style={styles.certificatePicker}>
+			<Text style={styles.chooseCertificateTitle}>{I18n.t('Do_you_have_a_certificate')}</Text>
+			<TouchableOpacity onPress={this.chooseCertificate} testID='new-server-choose-certificate'>
+				<Text style={styles.chooseCertificate}>{I18n.t('Apply_Your_Certificate')}</Text>
+			</TouchableOpacity>
+		</View>
+	);
+
 	render() {
 		const { connecting } = this.props;
 		const { text } = this.state;
@@ -181,6 +220,7 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
+						{this.renderCertificatePicker()}
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
