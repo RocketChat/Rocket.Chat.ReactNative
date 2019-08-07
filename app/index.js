@@ -70,18 +70,9 @@ const OAuthStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-const SSOStack = createStackNavigator({
-	SSOView: {
-		getScreen: () => require('./views/SSOView').default
-	}
-}, {
-	defaultNavigationOptions: defaultHeader
-});
-
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
-	OAuthStack,
-	SSOStack
+	OAuthStack
 },
 {
 	mode: 'modal',
