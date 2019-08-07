@@ -329,60 +329,45 @@ class LoginSignupView extends React.Component {
 
 	renderItem = (service) => {
 		let { name } = service;
+		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
 		let onPress = () => {};
 
 		switch (service.authType) {
 			case 'oauth': {
 				onPress = this.getSocialOauthProvider(service.name);
-				name = name === 'meteor-developer' ? 'meteor' : name;
 				break;
 			}
 			case 'oauth_custom': {
-				onPress = this.onPressCustomOAuth.bind(this, service);
+				onPress = () => this.onPressCustomOAuth(service);
 				break;
 			}
 			case 'saml': {
-				onPress = this.onPressSaml.bind(this, service);
+				onPress = () => this.onPressSaml(service);
 				break;
 			}
 			default:
 				break;
 		}
 		name = name.charAt(0).toUpperCase() + name.slice(1);
+		let buttonText;
 		if (service.service === 'saml') {
-			return (
-				<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
-					<View style={styles.serviceButtonContainer}>
-						<Text style={styles.serviceName}>{name}</Text>
-					</View>
-				</RectButton>
+			buttonText = <Text style={styles.serviceName}>{name}</Text>;
+		} else {
+			buttonText = (
+				<>
+					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
+				</>
 			);
 		}
 		return (
 			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
 				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
-					<Text style={styles.serviceText}>
-						{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
-					</Text>
+					<Text style={styles.serviceText}>{buttonText}</Text>
 				</View>
 			</RectButton>
 		);
-	}
-
-	getSocialOauthProvider = (name) => {
-		const oauthProviders = {
-			facebook: this.onPressFacebook,
-			github: this.onPressGithub,
-			gitlab: this.onPressGitlab,
-			google: this.onPressGoogle,
-			linkedin: this.onPressLinkedin,
-			'meteor-developer': this.onPressMeteor,
-			twitter: this.onPressTwitter
-		};
-
-		return oauthProviders[name];
 	}
 
 	renderServices = () => {
