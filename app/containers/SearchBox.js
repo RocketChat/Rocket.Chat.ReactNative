@@ -25,7 +25,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		fontSize: 17,
 		height: 36,
-		margin: 16,
+		marginBottom: 16,
+		marginRight: 15,
+		marginTop: 16,
+		marginLeft: 16,
 		marginVertical: 10,
 		paddingHorizontal: 10,
 		flex: 1
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	cancel: {
-		marginRight: 10
+		marginRight: 14
 	},
 	cancelText: {
 		...sharedStyles.textRegular,

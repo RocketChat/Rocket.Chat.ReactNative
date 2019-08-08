@@ -296,9 +296,10 @@ class RoomsListView extends React.Component {
 			this.setState({ searching: false });
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
-			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
 		}
+
+		this.internalSetState({ search: [] });
+		Keyboard.dismiss();
 	}
 
 	// this is necessary during development (enables Cmd + r)
@@ -424,6 +425,10 @@ class RoomsListView extends React.Component {
 
 	getScrollRef = ref => this.scroll = ref
 
+	onCancelPress = () => {
+		this.cancelSearchingAndroid();
+	}
+
 	renderListHeader = () => {
 		const { search } = this.state;
 		const { sortBy } = this.props;
@@ -434,6 +439,8 @@ class RoomsListView extends React.Component {
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				hasCancel={isIOS}
+				onCancelPress={this.onCancelPress}
 			/>
 		);
 	}

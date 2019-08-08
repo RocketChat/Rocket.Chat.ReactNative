@@ -6,10 +6,10 @@ import Directory from './Directory';
 import Sort from './Sort';
 
 const ListHeader = React.memo(({
-	searchLength, sortBy, onChangeSearchText, toggleSort, goDirectory
+	searchLength, sortBy, onChangeSearchText, toggleSort, goDirectory, onCancelPress, hasCancel
 }) => (
 	<React.Fragment>
-		<SearchBar onChangeSearchText={onChangeSearchText} />
+		<SearchBar onChangeSearchText={onChangeSearchText} onCancelPress={onCancelPress} hasCancel={hasCancel} />
 		<Directory goDirectory={goDirectory} />
 		<Sort searchLength={searchLength} sortBy={sortBy} toggleSort={toggleSort} />
 	</React.Fragment>
@@ -20,7 +20,9 @@ ListHeader.propTypes = {
 	sortBy: PropTypes.string,
 	onChangeSearchText: PropTypes.func,
 	toggleSort: PropTypes.func,
-	goDirectory: PropTypes.func
+	goDirectory: PropTypes.func,
+	onCancelPress: PropTypes.func,
+	hasCancel: PropTypes.bool
 };
 
 export default ListHeader;
