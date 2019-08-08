@@ -2,44 +2,9 @@ apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()
 
 rootProject.name = 'RocketChatRN'
-include ':react-native-document-picker'
-project(':react-native-document-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-document-picker/android')
-include ':react-native-firebase'
-project(':react-native-firebase').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-firebase/android')
-include ':react-native-webview'
-project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview/android')
-include ':react-native-orientation-locker'
-project(':react-native-orientation-locker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation-locker/android')
-include ':react-native-splash-screen'
-project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
-include ':react-native-screens'
-project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
-include ':react-native-action-sheet'
-project(':react-native-action-sheet').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-action-sheet/android')
-include ':react-native-device-info'
-project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
-include ':react-native-gesture-handler'
-project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
-include ':react-native-image-crop-picker'
-project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
-include ':react-native-localize'
-project(':react-native-localize').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-localize/android')
-include ':react-native-fast-image'
-project(':react-native-fast-image').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fast-image/android')
-include ':react-native-audio'
-project(':react-native-audio').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audio/android')
+include ':reactnativenotifications'
+project(':reactnativenotifications').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-notifications/android/app')
 include ':reactnativekeyboardinput'
 project(':reactnativekeyboardinput').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-keyboard-input/lib/android')
-include ':react-native-video'
-project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
-include ':react-native-vector-icons'
-project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':realm'
-project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
-include ':reactnativenotifications'
-project(':reactnativenotifications').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-notifications/android')
-include ':rn-fetch-blob'                                                                                                  
-project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
-include ':app', ':rn-extensions-share'
-project(':rn-extensions-share').projectDir = new File(rootProject.projectDir, '../node_modules/rn-extensions-share/android')
-
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'

@@ -41,17 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	isFetching: state.login.isFetching,
-	failure: state.login.failure,
-	error: state.login.error && state.login.error.data,
-	Site_Name: state.settings.Site_Name,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class LoginView extends React.Component {
+class LoginView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -83,12 +73,6 @@ export default class LoginView extends React.Component {
 		this.setTitle(Site_Name);
 	}
 
-	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.usernameInput.focus();
-		}, 600);
-	}
-
 	componentWillReceiveProps(nextProps) {
 		const { Site_Name, error } = this.props;
 		if (nextProps.Site_Name && nextProps.Site_Name !== Site_Name) {
@@ -97,11 +81,6 @@ export default class LoginView extends React.Component {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {
 				LayoutAnimation.easeInEaseOut();
 				this.setState({ showTOTP: true });
-				setTimeout(() => {
-					if (this.codeInput && this.codeInput.focus) {
-						this.codeInput.focus();
-					}
-				}, 300);
 				return;
 			}
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
@@ -148,12 +127,6 @@ export default class LoginView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-	}
-
 	setTitle = (title) => {
 		const { navigation } = this.props;
 		navigation.setParams({ title });
@@ -194,11 +167,12 @@ export default class LoginView extends React.Component {
 	renderTOTP = () => {
 		const { isFetching } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
 				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
+					autoFocus
 					onChangeText={value => this.setState({ code: value })}
 					keyboardType='numeric'
 					returnKeyType='send'
@@ -224,10 +198,10 @@ export default class LoginView extends React.Component {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
 		} = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
 				<TextInput
-					inputRef={(e) => { this.usernameInput = e; }}
+					autoFocus
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'
@@ -291,3 +265,18 @@ export default class LoginView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error && state.login.error.data,
+	Site_Name: state.settings.Site_Name,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

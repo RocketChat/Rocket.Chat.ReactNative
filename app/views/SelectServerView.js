@@ -33,10 +33,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(({ share }) => ({
-	server: share.server
-}))
-export default class SelectServerView extends React.Component {
+class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
 	})
@@ -85,7 +82,7 @@ export default class SelectServerView extends React.Component {
 		return (
 			<SafeAreaView
 				style={styles.container}
-				forceInset={{ bottom: 'never' }}
+				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
 				<View style={styles.list}>
@@ -106,3 +103,9 @@ export default class SelectServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (({ share }) => ({
+	server: share.server
+}));
+
+export default connect(mapStateToProps)(SelectServerView);

@@ -25,13 +25,7 @@ import { PLAY_MARKET_LINK, APP_STORE_LINK } from '../../constants/links';
 const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 
-@connect(state => ({
-	server: state.server,
-	useMarkdown: state.markdown.useMarkdown
-}), dispatch => ({
-	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
-}))
-export default class SettingsView extends React.Component {
+class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
@@ -160,3 +154,14 @@ export default class SettingsView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server,
+	useMarkdown: state.markdown.useMarkdown
+});
+
+const mapDispatchToProps = dispatch => ({
+	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

@@ -1,0 +1,40 @@
+{
+  "name": "RNFirebase",
+  "version": "5.5.6",
+  "description": "A well tested, feature rich Firebase implementation for React Native, supporting iOS & Android. Individual module support for Admob, Analytics, Auth, Crash Reporting, Cloud Firestore, Database, Dynamic Links, Functions, Messaging (FCM), Remote Config, Storage and more.",
+  "summary": "A well tested feature rich Firebase implementation for React Native, supporting iOS & Android.",
+  "homepage": "http://invertase.io/oss/react-native-firebase",
+  "license": "Apache-2.0",
+  "authors": "Invertase Limited",
+  "source": {
+    "git": "https://github.com/invertase/react-native-firebase.git",
+    "tag": "v5.5.6"
+  },
+  "social_media_url": "http://twitter.com/invertaseio",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "RNFirebase/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "Firebase/Core": [
+
+    ]
+  },
+  "static_framework": true,
+  "subspecs": [
+    {
+      "name": "Crashlytics",
+      "dependencies": {
+        "Fabric": [
+
+        ],
+        "Crashlytics": [
+
+        ]
+      }
+    }
+  ]
+}

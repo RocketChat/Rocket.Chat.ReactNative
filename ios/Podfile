@@ -1,99 +1,70 @@
 platform :ios, '10.0'
-
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
-
 target 'RocketChatRN' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/React'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
 
-  # Pods for RocketChatRN
-  # this is very important to have!
-  rn_path = '../node_modules/react-native'
-
-  pod 'React', path: rn_path, subspecs: [
-    'Core',
-    'RCTActionSheet',
-    'RCTAnimation',
-#    'RCTGeolocation',
-    'RCTImage',
-    'RCTLinkingIOS',
-    'RCTNetwork',
-    'RCTSettings',
-    'RCTText',
-    'RCTVibration',
-    'RCTWebSocket'
-  ]
-
-  pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
-
-  pod 'RNScreens', :path => '../node_modules/react-native-screens'
-
-  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
-
-  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
-  pod 'react-native-realm-path', :path => '../node_modules/react-native-realm-path'
-
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-  
-  pod 'Firebase/Core', '~> 5.20.1'
-  pod 'Fabric', '~> 1.9.0'
-  pod 'Crashlytics', '~> 3.12.0'
-  pod 'GoogleIDFASupport', '~> 3.14.0'
-  pod 'Firebase/Performance', '~> 5.20.1'
-  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
+  use_native_modules!
   use_unimodules!
-
 end
 
 target 'ShareRocketChatRN' do
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/React'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
 
-  rn_path = '../node_modules/react-native'
-
-  pod 'React', path: rn_path, subspecs: [
-    'Core',
-    'RCTActionSheet',
-    'RCTAnimation',
-#    'RCTGeolocation',
-    'RCTImage',
-    'RCTLinkingIOS',
-    'RCTNetwork',
-    'RCTSettings',
-    'RCTText',
-    'RCTVibration',
-    'RCTWebSocket'
-  ]
-  
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
-
-  pod 'react-native-realm-path', :path => '../node_modules/react-native-realm-path'
-  pod 'rn-extensions-share', :path => '../node_modules/rn-extensions-share'
-
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'Firebase/Core', '~> 5.20.1'
-  pod 'Fabric', '~> 1.9.0'
-  pod 'Crashlytics', '~> 3.12.0'
-  pod 'GoogleIDFASupport', '~> 3.14.0'
-  pod 'Firebase/Performance', '~> 5.20.1'
-
+  use_native_modules!
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    if target.name == "React"
-      target.remove_from_project
+    target.build_configurations.each do |config|
+      config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
     end
   end
 end
