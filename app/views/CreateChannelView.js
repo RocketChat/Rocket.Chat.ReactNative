@@ -120,9 +120,6 @@ class CreateChannelView extends React.Component {
 	componentDidMount() {
 		const { navigation } = this.props;
 		navigation.setParams({ submit: this.submit });
-		this.timeout = setTimeout(() => {
-			this.channelNameRef.focus();
-		}, 600);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -178,12 +175,6 @@ class CreateChannelView extends React.Component {
 					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
 				}
 			}, 300);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
 		}
 	}
 
@@ -322,7 +313,7 @@ class CreateChannelView extends React.Component {
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput
-								ref={ref => this.channelNameRef = ref}
+								autoFocus
 								style={styles.input}
 								label={I18n.t('Channel_Name')}
 								value={channelName}
