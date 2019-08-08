@@ -69,17 +69,17 @@ const OPTIONS = {
 		label: 'Nothing', value: 'nothing'
 	}],
 	desktopNotificationDuration: [{
-		label: 'Default', value: '0'
+		label: 'Default', value: 0
 	}, {
-		label: '1 second', value: '1'
+		label: '1 second', value: 1
 	}, {
-		label: '2 seconds', value: '2'
+		label: '2 seconds', value: 2
 	}, {
-		label: '3 seconds', value: '3'
+		label: '3 seconds', value: 3
 	}, {
-		label: '4 seconds', value: '4'
+		label: '4 seconds', value: 4
 	}, {
-		label: '5 seconds', value: '5'
+		label: '5 seconds', value: 5
 	}],
 	audioNotificationValue: [{
 		label: 'None', value: 'none None'
@@ -113,7 +113,6 @@ export default class NotificationPreferencesView extends React.Component {
 		super(props);
 		this.rid = props.navigation.getParam('rid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
 		this.state = {
 			room: JSON.parse(JSON.stringify(this.rooms[0] || {}))
 		};
@@ -138,7 +137,7 @@ export default class NotificationPreferencesView extends React.Component {
 		newRoom[key] = value;
 		this.setState({ room: newRoom });
 		const params = {
-			[key]: value
+			[key]: value.toString()
 		};
 		try {
 			await RocketChat.saveNotificationSettings(this.rid, params);
@@ -176,6 +175,7 @@ export default class NotificationPreferencesView extends React.Component {
 	}
 
 	render() {
+		const { room } = this.state;
 		return (
 			<SafeAreaView style={sharedStyles.listSafeArea} testID='notificationPreference-view'>
 				<StatusBar />
@@ -191,7 +191,7 @@ export default class NotificationPreferencesView extends React.Component {
 						right={() => this.renderSwitch('disableNotifications')}
 					/>
 					<Separator />
-					<Info info={I18n.t('Receive_notifications_from', { name: this.room.name })} />
+					<Info info={I18n.t('Receive_notifications_from', { name: room.name })} />
 					<SectionSeparator />
 
 					<Separator />
