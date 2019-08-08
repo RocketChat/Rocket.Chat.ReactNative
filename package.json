@@ -13,7 +13,8 @@
     "android": "react-native run-android",
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
-    "postinstall": "patch-package && jetify"
+    "postinstall": "patch-package && jetify",
+    "prepublish": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -86,7 +87,7 @@
     "rn-fetch-blob": "^0.10.16",
     "rn-user-defaults": "^1.3.5",
     "semver": "6.3.0",
-    "snyk": "1.210.0",
+    "snyk": "^1.211.0",
     "strip-ansi": "5.2.0"
   },
   "devDependencies": {
