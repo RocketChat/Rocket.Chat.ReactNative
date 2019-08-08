@@ -20,15 +20,7 @@ import log from '../../utils/log';
 import Options from './Options';
 import styles from './styles';
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
-	isFederationEnabled: state.settings.FEDERATION_Enabled
-}))
-export default class DirectoryView extends React.Component {
+class DirectoryView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Directory')
 	})
@@ -215,7 +207,7 @@ export default class DirectoryView extends React.Component {
 		} = this.state;
 		const { isFederationEnabled } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -246,3 +238,14 @@ export default class DirectoryView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
+	isFederationEnabled: state.settings.FEDERATION_Enabled
+});
+
+export default connect(mapStateToProps)(DirectoryView);

@@ -21,16 +21,7 @@ import debounce from '../../utils/debounce';
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
-	useRealName: state.settings.UI_Use_Real_Name
-}))
-export default class ThreadMessagesView extends React.Component {
+class ThreadMessagesView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Threads')
 	}
@@ -249,7 +240,7 @@ export default class ThreadMessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={messages}
@@ -269,3 +260,15 @@ export default class ThreadMessagesView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	useRealName: state.settings.UI_Use_Real_Name
+});
+
+export default connect(mapStateToProps)(ThreadMessagesView);

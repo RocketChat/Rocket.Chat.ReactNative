@@ -34,7 +34,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -239,7 +241,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -444,7 +448,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -631,7 +637,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -818,7 +826,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -905,7 +915,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -992,7 +1004,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1197,7 +1211,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1302,7 +1318,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1503,7 +1521,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1722,7 +1742,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -1927,7 +1949,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2132,7 +2156,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2337,7 +2363,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2626,7 +2654,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -2831,7 +2861,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -3036,7 +3068,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -3283,7 +3317,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -3498,7 +3534,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -3716,7 +3754,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -3937,7 +3977,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -4142,7 +4184,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -4333,6 +4377,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4342,6 +4387,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4404,6 +4450,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4413,6 +4460,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4479,6 +4527,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4488,6 +4537,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4550,6 +4600,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4559,6 +4610,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4639,7 +4691,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -4830,6 +4884,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4839,6 +4894,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4905,6 +4961,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4914,6 +4971,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4980,6 +5038,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -4989,6 +5048,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5055,6 +5115,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5064,6 +5125,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5126,6 +5188,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5135,6 +5198,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5197,6 +5261,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5206,6 +5271,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5268,6 +5334,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5277,6 +5344,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5339,6 +5407,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5348,6 +5417,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5410,6 +5480,7 @@ exports[`Storyshots Message list 1`] = `
                 </View>
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -5419,6 +5490,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5499,7 +5571,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -5686,7 +5760,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -5873,7 +5949,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -6060,7 +6138,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -6265,7 +6345,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -6517,7 +6599,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -6751,7 +6835,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -6838,7 +6924,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -7064,7 +7152,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -7269,7 +7359,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -7417,7 +7509,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -7509,7 +7603,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -7657,7 +7753,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -7780,7 +7878,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -7928,7 +8028,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -8023,7 +8125,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -8171,7 +8275,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -8239,7 +8345,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -8403,6 +8511,7 @@ exports[`Storyshots Message list 1`] = `
                 View
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 12,
@@ -8412,6 +8521,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -8631,7 +8741,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -8718,7 +8830,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -8782,6 +8896,7 @@ exports[`Storyshots Message list 1`] = `
                 View
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 12,
@@ -8791,6 +8906,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -8997,7 +9113,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -9061,6 +9179,7 @@ exports[`Storyshots Message list 1`] = `
                 View
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 12,
@@ -9070,6 +9189,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -9244,7 +9364,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -9308,6 +9430,7 @@ exports[`Storyshots Message list 1`] = `
                 View
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 12,
@@ -9317,6 +9440,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -9509,7 +9633,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -9691,7 +9817,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -9802,7 +9930,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -9984,7 +10114,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -10126,7 +10258,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -10313,7 +10447,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -10400,7 +10536,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -10609,7 +10747,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -10736,7 +10876,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -11004,7 +11146,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -11272,7 +11416,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -11489,7 +11635,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -11706,7 +11854,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -11923,7 +12073,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -12140,7 +12292,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -12357,7 +12511,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -12574,7 +12730,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -12789,7 +12947,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13057,7 +13217,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13199,7 +13361,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13341,7 +13505,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13481,7 +13647,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13698,7 +13866,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13840,7 +14010,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -13982,7 +14154,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -14122,7 +14296,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -14306,6 +14482,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -14315,6 +14492,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -14392,7 +14570,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -14576,6 +14756,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -14585,6 +14766,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -14664,7 +14846,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -14848,6 +15032,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -14857,6 +15042,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -14936,7 +15122,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -15120,6 +15308,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={false}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -15129,6 +15318,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -15226,7 +15416,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -15374,7 +15566,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -15470,7 +15664,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -15538,7 +15734,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -15733,7 +15931,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -15801,7 +16001,9 @@ exports[`Storyshots Message list 1`] = `
     </View>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -15849,7 +16051,9 @@ exports[`Storyshots Message list 1`] = `
               <View />
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -15935,7 +16139,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -16117,7 +16323,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -16456,7 +16664,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -16638,7 +16848,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -16834,7 +17046,9 @@ exports[`Storyshots Message list 1`] = `
               </View>
               <View
                 accessible={true}
+                clickable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -17053,7 +17267,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -17244,6 +17460,7 @@ exports[`Storyshots Message list 1`] = `
               >
                 <View
                   accessible={true}
+                  clickable={true}
                   hitSlop={
                     Object {
                       "bottom": 4,
@@ -17253,6 +17470,7 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                   isTVSelectable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -17335,7 +17553,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -17671,6 +17891,7 @@ exports[`Storyshots Message list 1`] = `
               </Text>
               <View
                 accessible={true}
+                clickable={true}
                 hitSlop={
                   Object {
                     "bottom": 4,
@@ -17680,6 +17901,7 @@ exports[`Storyshots Message list 1`] = `
                   }
                 }
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -17838,6 +18060,7 @@ exports[`Storyshots Message list 1`] = `
               </Text>
               <View
                 accessible={true}
+                clickable={true}
                 hitSlop={
                   Object {
                     "bottom": 4,
@@ -17847,6 +18070,7 @@ exports[`Storyshots Message list 1`] = `
                   }
                 }
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -17942,7 +18166,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18153,7 +18379,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18358,7 +18586,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18497,7 +18727,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18636,7 +18868,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18775,7 +19009,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -18914,7 +19150,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19053,7 +19291,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19192,7 +19432,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19331,7 +19573,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19470,7 +19714,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19609,7 +19855,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19748,7 +19996,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -19887,7 +20137,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20026,7 +20278,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20165,7 +20419,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20304,7 +20560,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20443,7 +20701,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20653,7 +20913,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -20925,7 +21187,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -21275,7 +21539,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -21516,7 +21782,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -21720,7 +21988,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -21973,7 +22243,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -22189,7 +22461,9 @@ exports[`Storyshots Message list 1`] = `
     </Text>
     <View
       accessible={true}
+      clickable={false}
       isTVSelectable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
