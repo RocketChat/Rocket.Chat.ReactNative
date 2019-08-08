@@ -104,7 +104,7 @@ class LoginSignupView extends React.Component {
 		Site_Name: PropTypes.string,
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
-		CAS_login_url: PropTypes.string,
+		CAS_login_url: PropTypes.string
 	}
 
 	constructor(props) {
@@ -247,7 +247,7 @@ class LoginSignupView extends React.Component {
 	onPressCas = () => {
 		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
-		const url = `${ CAS_login_url }/?service=${ server }/_cas/${ casToken }`;
+		const url = `${ CAS_login_url }/?service=${ server }/_cas/${ ssoToken }`;
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
 	}
 
@@ -361,7 +361,7 @@ class LoginSignupView extends React.Component {
 		let buttonText;
 		if (service.service === 'saml') {
 			buttonText = <Text style={styles.serviceName}>{name}</Text>;
-		} else if ( service.service === 'cas' && CAS_enabled) {
+		} else if (service.service === 'cas' && this.CAS_enabled) {
 			buttonText = <Text style={styles.serviceName}>{name}</Text>;
 		} else {
 			buttonText = (

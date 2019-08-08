@@ -85,5 +85,5 @@ export default {
 	},
 	CAS_login_url: {
 		type: 'valueAsString'
-	},
+	}
 };
