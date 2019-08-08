@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Share
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,14 +14,14 @@ import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
+import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 
-const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 
 class SettingsView extends React.Component {
@@ -60,6 +60,10 @@ class SettingsView extends React.Component {
 		} catch (e) {
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
+	}
+
+	shareApp = () => {
+		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
 	onPressLicense = () => openLink(LICENSE_LINK)
@@ -105,18 +109,19 @@ class SettingsView extends React.Component {
 					/>
 					<Separator />
 					<ListItem
+						title={I18n.t('Share_this_app')}
+						onPress={this.shareApp}
+						showActionIndicator
+						testID='settings-view-share-app'
+					/>
+					<Separator />
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
 					/>
 					<Separator />
-					<ListItem
-						title={I18n.t('Share_this_app')}
-						showActionIndicator
-						disabled
-						testID='settings-view-share-app'
-					/>
 
 					<SectionSeparator />
 
