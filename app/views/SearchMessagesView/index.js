@@ -38,10 +38,6 @@ class SearchMessagesView extends React.Component {
 		this.rid = props.navigation.getParam('rid');
 	}
 
-	componentDidMount() {
-		this.name.focus();
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, searchText, messages } = this.state;
 		if (nextState.loading !== loading) {
@@ -128,7 +124,7 @@ class SearchMessagesView extends React.Component {
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
-						inputRef={(e) => { this.name = e; }}
+						autoFocus
 						label={I18n.t('Search')}
 						onChangeText={this.search}
 						placeholder={I18n.t('Search_Messages')}
