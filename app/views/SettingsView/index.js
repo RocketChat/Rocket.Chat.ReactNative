@@ -20,9 +20,8 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import { PLAY_MARKET_LINK, APP_STORE_LINK } from '../../constants/links';
+import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 
-const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 
 class SettingsView extends React.Component {
