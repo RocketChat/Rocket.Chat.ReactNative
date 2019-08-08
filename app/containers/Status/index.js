@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import Status from './Status';
 import database, { safeAddListener } from '../../lib/realm';
 
-@connect(state => ({
-	offline: !state.meteor.connected
-}))
-export default class StatusContainer extends React.PureComponent {
+class StatusContainer extends React.PureComponent {
 	static propTypes = {
 		id: PropTypes.string,
 		style: PropTypes.any,
@@ -53,3 +50,9 @@ export default class StatusContainer extends React.PureComponent {
 		return <Status size={size} style={style} status={this.status} />;
 	}
 }
+
+const mapStateToProps = state => ({
+	offline: !state.meteor.connected
+});
+
+export default connect(mapStateToProps)(StatusContainer);

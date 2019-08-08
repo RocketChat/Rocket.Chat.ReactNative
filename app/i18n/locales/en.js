@@ -251,7 +251,7 @@ export default {
 	Notify_active_in_this_room: 'Notify active users in this room',
 	Notify_all_in_this_room: 'Notify all in this room',
 	Notification_Duration: 'Notification Duration',
-	Notification_Preference: 'Notification Preference',
+	Notification_Preferences: 'Notification Preferences',
 	Offline: 'Offline',
 	Oops: 'Oops!',
 	Online: 'Online',

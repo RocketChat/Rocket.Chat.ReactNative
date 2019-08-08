@@ -110,7 +110,7 @@ const subscriptionSchema = {
 		audioNotifications: { type: 'string', default: 'default' },
 		desktopNotifications: { type: 'string', default: 'default' },
 		audioNotificationValue: { type: 'string', default: '0 Default' },
-		desktopNotificationDuration: { type: 'int', default: 0 },
+		desktopNotificationDuration: { type: 'string', default: '0' },
 		mobilePushNotifications: { type: 'string', default: 'default' }
 	}
 };

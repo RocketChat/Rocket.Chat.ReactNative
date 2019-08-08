@@ -44,34 +44,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
-@connect(state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
-	actionMessage: state.messages.actionMessage,
-	editing: state.messages.editing,
-	replying: state.messages.replying,
-	showActions: state.messages.showActions,
-	showErrorActions: state.messages.showErrorActions,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	useRealName: state.settings.UI_Use_Real_Name,
-	isAuthenticated: state.login.isAuthenticated,
-	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	useMarkdown: state.markdown.useMarkdown,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
-}), dispatch => ({
-	editCancel: () => dispatch(editCancelAction()),
-	replyCancel: () => dispatch(replyCancelAction()),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
-}))
-export default class RoomView extends React.Component {
+class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
@@ -618,7 +591,7 @@ export default class RoomView extends React.Component {
 		const { rid, t } = room;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
@@ -643,3 +616,35 @@ export default class RoomView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		username: state.login.user && state.login.user.username,
+		token: state.login.user && state.login.user.token
+	},
+	actionMessage: state.messages.actionMessage,
+	editing: state.messages.editing,
+	replying: state.messages.replying,
+	showActions: state.messages.showActions,
+	showErrorActions: state.messages.showErrorActions,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	useRealName: state.settings.UI_Use_Real_Name,
+	isAuthenticated: state.login.isAuthenticated,
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
+	Message_TimeFormat: state.settings.Message_TimeFormat,
+	useMarkdown: state.markdown.useMarkdown,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
+});
+
+const mapDispatchToProps = dispatch => ({
+	editCancel: () => dispatch(editCancelAction()),
+	replyCancel: () => dispatch(replyCancelAction()),
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
+	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomView);
