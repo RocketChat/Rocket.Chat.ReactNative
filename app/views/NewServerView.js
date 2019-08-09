@@ -75,20 +75,20 @@ class NewServerView extends React.Component {
 		connectServer: PropTypes.func.isRequired
 	}
 
-	state = {
-		text: ''
+	constructor(props) {
+		super(props);
+		const server = props.navigation.getParam('server');
+		this.state = {
+			text: server || '',
+			autoFocus: !server
+		};
 	}
 
 	componentDidMount() {
-		const { navigation, connectServer } = this.props;
-		const server = navigation.getParam('server');
-		if (server) {
-			connectServer(server);
-			this.setState({ text: server });
-		} else {
-			this.timeout = setTimeout(() => {
-				this.input.focus();
-			}, 600);
+		const { text } = this.state;
+		const { connectServer } = this.props;
+		if (text) {
+			connectServer(text);
 		}
 	}
 
@@ -102,12 +102,6 @@ class NewServerView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
 	}
 
 	onChangeText = (text) => {
@@ -189,7 +183,7 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting } = this.props;
-		const { text } = this.state;
+		const { text, autoFocus } = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -198,11 +192,11 @@ class NewServerView extends React.Component {
 			>
 				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
-							inputRef={e => this.input = e}
+							autoFocus={autoFocus}
 							containerStyle={styles.inputContainer}
 							placeholder={defaultServer}
 							value={text}
@@ -216,7 +210,7 @@ class NewServerView extends React.Component {
 							title={I18n.t('Connect')}
 							type='primary'
 							onPress={this.submit}
-							disabled={text.length === 0}
+							disabled={!text}
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
