@@ -784,9 +784,7 @@ const RocketChat = {
 				loginServices = services;
 
 				const loginServicesReducer = loginServices.reduce((ret, item) => {
-					let name = item.name ? item.name : item.buttonLabelText;
-					if (!name || name.length === 0) { name = item.service; }
-
+					const name = item.name || item.buttonLabelText || item.service;
 					const authType = this._determineAuthType(item);
 
 					if (authType !== 'not_supported') {

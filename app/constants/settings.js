@@ -11,6 +11,9 @@ export default {
 	Accounts_PasswordPlaceholder: {
 		type: 'valueAsString'
 	},
+	Accounts_PasswordReset: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
