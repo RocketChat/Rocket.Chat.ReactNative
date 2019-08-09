@@ -358,8 +358,9 @@ class LoginSignupView extends React.Component {
 				break;
 		}
 		name = name.charAt(0).toUpperCase() + name.slice(1);
+		const { CAS_enabled } = this.props;
 		let buttonText;
-		if (service.service === 'saml' || (service.service === 'cas' && this.props.CAS_enabled)) {
+		if (service.service === 'saml' || (service.service === 'cas' && CAS_enabled)) {
 			buttonText = <Text style={styles.serviceName}>{name}</Text>;
 		} else {
 			buttonText = (

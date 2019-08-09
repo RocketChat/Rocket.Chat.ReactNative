@@ -77,15 +77,16 @@ class AuthenticationWebView extends React.PureComponent {
 			const ssoToken = navigation.getParam('ssoToken');
 			if (url.includes('ticket') || url.includes('validate')) {
 				let payload;
+				const credentialToken = { credentialToken: ssoToken };
 				if (this.authType === 'saml') {
-					payload = `{ "saml": true, "credentialToken": "${ ssoToken }" }`;
+					payload = { ...credentialToken, saml: true };
 				} else {
-					payload = `{ "cas": { "credentialToken": "${ ssoToken }" } }`;
+					payload = { cas: credentialToken };
 				}
 				// We need to set a timeout when the login is done with SSO in order to make it work on our side.
 				// It is actually due to the SSO server processing the response.
 				setTimeout(() => {
-					this.login(JSON.parse(payload));
+					this.login(payload);
 				}, 3000);
 			}
 		}
