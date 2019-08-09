@@ -1,11 +1,9 @@
 diff --git a/node_modules/react-native/.DS_Store b/node_modules/react-native/.DS_Store
 new file mode 100644
-index 0000000..2f45b44
-Binary files /dev/null and b/node_modules/react-native/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native/Libraries/.DS_Store b/node_modules/react-native/Libraries/.DS_Store
 new file mode 100644
-index 0000000..45d32b5
-Binary files /dev/null and b/node_modules/react-native/Libraries/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 index 76131fa..65128b9 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
@@ -95,38 +93,42 @@ index 76131fa..65128b9 100644
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index 6f1e5e8..dc3c110 100644
+index 6f1e5e8..7e9c877 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -479,6 +479,27 @@ - (void)didConnect
+@@ -479,6 +479,31 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
 +- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
 +{
 +    NSString *filepath = [[NSBundle mainBundle] pathForResource:path ofType:@"p12"];
-+    NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:filepath];
-+    NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
-+    CFArrayRef keyref = NULL;
-+    OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
-+                                           (__bridge CFDictionaryRef)certOptions,
-+                                           &keyref);
-+    if (sanityChesk == noErr) {
++    
++    if ([[NSFileManager defaultManager] fileExistsAtPath:filepath])
++    {
++      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:filepath];
++      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
++      CFArrayRef keyref = NULL;
++      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
++                                              (__bridge CFDictionaryRef)certOptions,
++                                              &keyref);
++      if (sanityChesk == noErr) {
 +        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
 +        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
 +        SecCertificateRef cert = NULL;
 +        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
 +        if (!status) {
-+            NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
-+            [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
++          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
++          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
 +        }
++      }
 +    }
 +}
 +
  - (void)_initializeStreams;
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -516,6 +537,15 @@ - (void)_initializeStreams;
+@@ -516,6 +541,15 @@ - (void)_initializeStreams;
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
