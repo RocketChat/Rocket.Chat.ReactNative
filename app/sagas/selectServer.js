@@ -77,8 +77,24 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
+const extractHostname = (url) => {
+	let hostname;
+
+	if (url.indexOf('//') > -1) {
+		[,, hostname] = url.split('/');
+	} else {
+		[hostname] = url.split('/');
+	}
+	[hostname] = hostname.split(':');
+	[hostname] = hostname.split('?');
+
+	return hostname;
+};
+
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
+		yield RNUserDefaults.setObjectForKey(extractHostname(server), { path: 'CER_NAME', password: 'PASSWORD' });
+
 		const serverInfo = yield getServerInfo({ server });
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
