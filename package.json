@@ -32,8 +32,6 @@
     "lodash": "4.17.15",
     "markdown-it-flowdock": "0.3.8",
     "moment": "^2.24.0",
-    "patch-package": "^6.1.2",
-    "postinstall-postinstall": "^2.0.0",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-emojione": "^5.0.1",

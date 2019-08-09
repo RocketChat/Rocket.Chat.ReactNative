@@ -214,7 +214,7 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
-						{this.renderCertificatePicker()}
+						{isIOS ? this.renderCertificatePicker() : null}
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
