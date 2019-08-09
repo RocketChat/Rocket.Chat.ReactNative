@@ -1,5 +1,7 @@
 import NotificationsIOS from 'react-native-notifications';
 
+import reduxStore from '../../lib/createStore';
+
 class PushNotification {
 	constructor() {
 		this.onRegister = null;
@@ -11,7 +13,10 @@ class PushNotification {
 		});
 
 		NotificationsIOS.addEventListener('notificationOpened', (notification, completion) => {
-			this.onNotification(notification);
+			const { background } = reduxStore.getState().app;
+			if (background) {
+				this.onNotification(notification);
+			}
 			completion();
 		});
 
