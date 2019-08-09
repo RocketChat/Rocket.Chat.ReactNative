@@ -297,7 +297,7 @@ const RocketChat = {
 		}
 	},
 
-	async loginOAuth(params) {
+	async loginOAuthOrSso(params) {
 		try {
 			const result = await this.login(params);
 			reduxStore.dispatch(loginRequest({ resume: result.token }));
@@ -776,15 +776,15 @@ const RocketChat = {
 	},
 	async getLoginServices(server) {
 		try {
-			let loginServicesFilter = [];
+			let loginServices = [];
 			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
 
 			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
 				const { services } = loginServicesResult;
-				loginServicesFilter = services.filter(item => item.custom !== undefined); // TODO: remove this after SAML and CAS
+				loginServices = services;
 
-				const loginServicesReducer = loginServicesFilter.reduce((ret, item) => {
-					const name = item.name ? item.name : item.service;
+				const loginServicesReducer = loginServices.reduce((ret, item) => {
+					const name = item.name || item.buttonLabelText || item.service;
 					const authType = this._determineAuthType(item);
 
 					if (authType !== 'not_supported') {
@@ -795,21 +795,25 @@ const RocketChat = {
 				}, {});
 				reduxStore.dispatch(setLoginServices(loginServicesReducer));
 			}
-			return Promise.resolve(loginServicesFilter.length);
+			return Promise.resolve(loginServices.length);
 		} catch (error) {
 			console.warn(error);
 			return Promise.reject();
 		}
 	},
-	_determineAuthType(service) {
-		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
-		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
-		const { name, custom } = service;
+	_determineAuthType(services) {
+		const { name, custom, service } = services;
 
 		if (custom) {
 			return 'oauth_custom';
 		}
 
+		if (service === 'saml') {
+			return 'saml';
+		}
+
+		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
+		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
 		return availableOAuth.includes(name) ? 'oauth' : 'not_supported';
 	},
 	getUsernameSuggestion() {
