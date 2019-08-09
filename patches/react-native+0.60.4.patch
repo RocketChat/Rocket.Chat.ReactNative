@@ -39,10 +39,18 @@ index 0000000..7adbeb3
 +
 +module.exports = new RCTHTTPRequestHandler();
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 76131fa..030d943 100644
+index 76131fa..09ddfbe 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -25,6 +25,10 @@ @implementation RCTHTTPRequestHandler
+@@ -10,6 +10,7 @@
+ #import <mutex>
+ 
+ #import "RCTNetworking.h"
++#import <React/RCTLog.h>
+ 
+ @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate>
+ 
+@@ -25,6 +26,10 @@ @implementation RCTHTTPRequestHandler
  @synthesize bridge = _bridge;
  @synthesize methodQueue = _methodQueue;
  
@@ -53,7 +61,7 @@ index 76131fa..030d943 100644
  RCT_EXPORT_MODULE()
  
  - (void)invalidate
-@@ -177,4 +181,53 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+@@ -177,4 +182,52 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
    [delegate URLRequest:task didCompleteWithError:error];
  }
  
@@ -79,14 +87,13 @@ index 76131fa..030d943 100644
 +    SecTrustResultType result;
 +    SecTrustEvaluate(serverTrust, &result);
 +
-+    NSString* pfile = [[NSBundle mainBundle] pathForResource:_path ofType:@"p12" ];
-+
++    NSString *pfile = [[NSBundle mainBundle] pathForResource:_path ofType:@"p12" ];
 +    NSData *p12data = [NSData dataWithContentsOfFile:pfile];
 +    NSDictionary* options = @{ (id)kSecImportExportPassphrase:_password };
 +    CFArrayRef rawItems = NULL;
 +    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
-+                                (__bridge CFDictionaryRef)options,
-+                                &rawItems);
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
 +    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
 +    NSDictionary* firstItem = nil;
 +    if ((status == errSecSuccess) && ([items count]>0)) {
@@ -97,61 +104,184 @@ index 76131fa..030d943 100644
 +    SecCertificateRef certificate = NULL;
 +    SecIdentityCopyCertificate(identity, &certificate);
 +    if (certificate) { CFRelease(certificate); }
-+
++    
 +    NSMutableArray *certificates = [[NSMutableArray alloc] init];
 +    [certificates addObject:CFBridgingRelease(certificate)];
-+
++    
 +    NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
-+    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);   
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 +  }
 +}
 +
  @end
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.h b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.h
+index 1b17cff..912490a 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.h
++++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.h
+@@ -88,6 +88,9 @@ extern NSString *const RCTSRHTTPResponseErrorKey;
+ // Send Data (can be nil) in a ping message.
+ - (void)sendPing:(NSData *)data;
+ 
++// SSL Pinning
++- (void)setSSLPinning:(NSString *)server path:(NSString *)path password:(NSString *)password;
++
+ @end
+ 
+ #pragma mark - RCTSRWebSocketDelegate
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index 6f1e5e8..b36552a 100644
+index 6f1e5e8..413aa8c 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -516,6 +516,40 @@ - (void)_initializeStreams;
+@@ -54,6 +54,10 @@ typedef NS_ENUM(NSInteger, RCTSROpCode)  {
+ #define RCTSRLog(...) do { } while (0)
+ #endif
+ 
++NSString *_certServer;
++NSString *_certPath;
++NSString *_certPassword;
++
+ // This is a hack, and probably not optimal
+ static inline int32_t validate_dispatch_data_partial_string(NSData *data)
+ {
+@@ -479,6 +483,13 @@ - (void)didConnect
+   [self _readHTTPHeader];
+ }
+ 
++- (void)setSSLPinning:(NSString *)server path:(NSString *)path password:(NSString *)password;
++{
++  _certServer = server;
++  _certPath = path;
++  _certPassword = password;
++}
++
+ - (void)_initializeStreams;
+ {
+   assert(_url.port.unsignedIntValue <= UINT32_MAX);
+@@ -516,6 +527,40 @@ - (void)_initializeStreams;
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
-+    // start here ============================================================================================
-+    NSString *path = [[NSBundle mainBundle] pathForResource:@"CER_NAME" ofType:@"p12"];
-+    NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
++    if ([_certServer containsString:[_urlRequest.URL host]]) {
++      NSString *path = [[NSBundle mainBundle] pathForResource:_certPath ofType:@"p12"];
++      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
 +
-+    CFArrayRef keyref = NULL;
-+    OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
-+                                          (__bridge CFDictionaryRef)[NSDictionary
-+                                                                      dictionaryWithObject:@"PASSWORD"
-+                                                                      forKey:(__bridge id)kSecImportExportPassphrase],
-+                                          &keyref);
-+    if (sanityChesk != noErr) {
-+      NSLog(@"Err_importing_pkcs12 [%d]", sanityChesk);
-+    } else
-+      NSLog(@"Success - p12 certificate.");
++      CFArrayRef keyref = NULL;
++      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
++                                            (__bridge CFDictionaryRef)[NSDictionary
++                                                                        dictionaryWithObject:_certPassword
++                                                                        forKey:(__bridge id)kSecImportExportPassphrase],
++                                            &keyref);
++      if (sanityChesk != noErr) {
++        NSLog(@"Err_importing_pkcs12 [%d]", sanityChesk);
++      } else
++        NSLog(@"Success - p12 certificate.");
 +
-+    CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
-+    SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict,
-+                                                                      kSecImportItemIdentity);
++      CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
++      SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict,
++                                                                        kSecImportItemIdentity);
 +
-+    SecCertificateRef cert = NULL;
-+    OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
-+    if (status)
-+      NSLog(@"SecIdentityCopyCertificate_failed.");
++      SecCertificateRef cert = NULL;
++      OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
++      if (status)
++        NSLog(@"SecIdentityCopyCertificate_failed.");
 +
-+    NSArray *myCerts = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
++      NSArray *myCerts = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
 +
-+    [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLValidatesCertificateChain];
-+    [SSLOptions setObject:[NSString stringWithFormat:@"%@:%d", host, port] forKey:(NSString *)kCFStreamSSLPeerName];
-+    [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamSSLLevel];
-+    [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamPropertySocketSecurityLevel];
-+    [SSLOptions setObject:myCerts forKey:(NSString *)kCFStreamSSLCertificates];
-+    [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLIsServer];
-+    // finish here ============================================================================================
++      [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLValidatesCertificateChain];
++      [SSLOptions setObject:[NSString stringWithFormat:@"%@:%d", host, port] forKey:(NSString *)kCFStreamSSLPeerName];
++      [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamSSLLevel];
++      [SSLOptions setObject:(NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(NSString*)kCFStreamPropertySocketSecurityLevel];
++      [SSLOptions setObject:myCerts forKey:(NSString *)kCFStreamSSLCertificates];
++      [SSLOptions setObject:[NSNumber numberWithBool:NO] forKey:(NSString *)kCFStreamSSLIsServer];
++    }
 +
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.ios.js b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.ios.js
+new file mode 100644
+index 0000000..41bafb4
+--- /dev/null
++++ b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.ios.js
+@@ -0,0 +1,31 @@
++/**
++ * Copyright (c) Facebook, Inc. and its affiliates.
++ *
++ * This source code is licensed under the MIT license found in the
++ * LICENSE file in the root directory of this source tree.
++ *
++ * @format
++ * @flow
++ */
++
++'use strict';
++
++const NativeEventEmitter = require('../EventEmitter/NativeEventEmitter');
++const RCTWebSocketModule = require('../BatchedBridge/NativeModules')
++  .WebSocketModule;
++
++class RCTWebSocketModule extends NativeEventEmitter {
++  constructor() {
++    super(RCTWebSocketModule);
++  }
++
++  sslPinning(
++    server: string,
++    path: string,
++    password: string
++  ) {
++    RCTWebSocketModule.sslPinning(server, path, password);
++  }
++}
++
++module.exports = new RCTWebSocketModule();
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
+index 0150cd5..9f695c6 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
+@@ -11,9 +11,14 @@
+ 
+ #import <React/RCTConvert.h>
+ #import <React/RCTUtils.h>
++#import <React/RCTLog.h>
+ 
+ #import "RCTSRWebSocket.h"
+ 
++NSString *_server;
++NSString *_cerPath;
++NSString *_cerPassword;
++
+ @implementation RCTSRWebSocket (React)
+ 
+ - (NSNumber *)reactTag
+@@ -60,6 +65,14 @@ - (void)invalidate
+   }
+ }
+ 
++// Set certificate info to SSL Pinning WEB SOCKET
++RCT_EXPORT_METHOD(sslPinning:(NSString *)server path:(NSString *)path password:(NSString *)password)
++{
++  _server = server;
++  _cerPath = path;
++  _cerPassword = password;
++}
++
+ RCT_EXPORT_METHOD(connect:(NSURL *)URL protocols:(NSArray *)protocols options:(NSDictionary *)options socketID:(nonnull NSNumber *)socketID)
+ {
+   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+@@ -83,6 +96,12 @@ - (void)invalidate
+ 
+   RCTSRWebSocket *webSocket = [[RCTSRWebSocket alloc] initWithURLRequest:request protocols:protocols];
+   [webSocket setDelegateDispatchQueue:_methodQueue];
++
++  // for ssl pinning
++  if ([_server containsString:[URL host]]) {
++    [webSocket setSSLPinning:_server path:_cerPath password:_cerPassword];
++  }
++
+   webSocket.delegate = self;
+   webSocket.reactTag = socketID;
+   if (!_sockets) {
 diff --git a/node_modules/react-native/React/Modules/RCTRedBox.m b/node_modules/react-native/React/Modules/RCTRedBox.m
 index 7ed4900..bb85402 100644
 --- a/node_modules/react-native/React/Modules/RCTRedBox.m

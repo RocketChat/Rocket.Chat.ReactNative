@@ -13,6 +13,7 @@ import {
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
+import SSLPinning from '../lib/sslPinning';
 import log from '../utils/log';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
@@ -79,6 +80,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server }) {
 	try {
+		SSLPinning.setCertificateInfo(server, 'CER_NAME', 'PASSWORD');
+
 		const serverInfo = yield getServerInfo({ server });
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);

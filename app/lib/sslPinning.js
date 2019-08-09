@@ -1,9 +1,10 @@
 import { NativeModules } from 'react-native';
 
-const { HTTPRequestHandler } = NativeModules;
+const { HTTPRequestHandler, WebSocketModule } = NativeModules;
 
 export default {
-	setCertificateInfo: (path, password) => {
+	setCertificateInfo: (server, path, password) => {
+		WebSocketModule.sslPinning(server, path, password);
 		HTTPRequestHandler.setCertInfo(path, password);
 	}
 };

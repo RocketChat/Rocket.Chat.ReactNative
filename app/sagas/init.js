@@ -12,7 +12,6 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
-import SSLPinning from '../lib/sslPinning';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
@@ -30,8 +29,6 @@ const restore = function* restore() {
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
 			server: RNUserDefaults.get('currentServer')
 		});
-
-		SSLPinning.setCertificateInfo('CER_NAME', 'PASSWORD');
 
 		// get native credentials
 		if (isIOS && !hasMigration) {
