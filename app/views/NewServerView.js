@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import DocumentPicker from 'react-native-document-picker';
+import Dialog from 'react-native-dialog';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -58,7 +59,16 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textColorHeaderBack
-	}
+	},
+	dialogInput: Platform.select({
+		ios: {},
+		android: {
+			borderRadius: 4,
+			borderColor: 'rgba(0,0,0,.15)',
+			borderWidth: 2,
+			paddingHorizontal: 10
+		}
+	})
 });
 
 const defaultServer = 'https://open.rocket.chat';
@@ -81,7 +91,9 @@ class NewServerView extends React.Component {
 		this.state = {
 			text: server || '',
 			autoFocus: !server,
+			showPasswordAlert: false,
 			path: null,
+			password: null,
 			name: null
 		};
 	}
@@ -95,12 +107,15 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text, name } = this.state;
+		const { text, name, showPasswordAlert } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
 			return true;
 		}
 		if (nextState.name !== name) {
+			return true;
+		}
+		if (nextState.showPasswordAlert !== showPasswordAlert) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -114,10 +129,10 @@ class NewServerView extends React.Component {
 	}
 
 	submit = () => {
-		const { text, path } = this.state;
+		const { text, path, password } = this.state;
 		const { connectServer } = this.props;
 
-		const certificate = { path, password: 'PASSWORD' };
+		const certificate = { path, password };
 
 		if (text) {
 			Keyboard.dismiss();
@@ -130,7 +145,7 @@ class NewServerView extends React.Component {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
 			});
-			this.setState({ path: res.uri.replace('file://', ''), name: res.name });
+			this.setState({ path: res.uri.replace('file://', ''), name: res.name, showPasswordAlert: true });
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('chooseCertificate', error);
@@ -179,11 +194,34 @@ class NewServerView extends React.Component {
 		);
 	}
 
+	saveCertificate = () => this.setState({ showPasswordAlert: false });
+
+	renderCertificatePassword = () => {
+		const { showPasswordAlert } = this.state;
+		return (
+			<Dialog.Container visible={showPasswordAlert}>
+				<Dialog.Title>
+					{I18n.t('Certificate_password')}
+				</Dialog.Title>
+				<Dialog.Description>
+					{I18n.t('Whats_the_password_for_your_certificate')}
+				</Dialog.Description>
+				<Dialog.Input
+					onChangeText={value => this.setState({ password: value })}
+					secureTextEntry
+					testID='certificate-password-input'
+					style={styles.dialogInput}
+				/>
+				<Dialog.Button label='OK' onPress={this.saveCertificate} />
+			</Dialog.Container>
+		);
+	}
+
 	renderCertificatePicker = () => {
 		const { name } = this.state;
 		return (
 			<View style={styles.certificatePicker}>
-				<Text style={styles.chooseCertificateTitle}>{I18n.t('Do_you_have_a_certificate')}</Text>
+				<Text style={styles.chooseCertificateTitle}>{name ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
 				<TouchableOpacity onPress={this.chooseCertificate} testID='new-server-choose-certificate'>
 					<Text style={styles.chooseCertificate}>{name || I18n.t('Apply_Your_Certificate')}</Text>
 				</TouchableOpacity>
@@ -225,6 +263,7 @@ class NewServerView extends React.Component {
 							testID='new-server-view-button'
 						/>
 						{isIOS ? this.renderCertificatePicker() : null}
+						{isIOS ? this.renderCertificatePassword() : null}
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
