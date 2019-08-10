@@ -91,9 +91,9 @@ const extractHostname = (url) => {
 	return hostname;
 };
 
-const handleServerRequest = function* handleServerRequest({ server }) {
+const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
-		yield RNUserDefaults.setObjectForKey(extractHostname(server), { path: 'CER_NAME', password: 'PASSWORD' });
+		yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
 
 		const serverInfo = yield getServerInfo({ server });
 

@@ -80,7 +80,9 @@ class NewServerView extends React.Component {
 		const server = props.navigation.getParam('server');
 		this.state = {
 			text: server || '',
-			autoFocus: !server
+			autoFocus: !server,
+			path: null,
+			name: null
 		};
 	}
 
@@ -93,9 +95,12 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text } = this.state;
+		const { text, name } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
+			return true;
+		}
+		if (nextState.name !== name) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -109,12 +114,14 @@ class NewServerView extends React.Component {
 	}
 
 	submit = () => {
-		const { text } = this.state;
+		const { text, path } = this.state;
 		const { connectServer } = this.props;
+
+		const certificate = { path, password: 'PASSWORD' };
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text));
+			connectServer(this.completeUrl(text), certificate);
 		}
 	}
 
@@ -123,7 +130,7 @@ class NewServerView extends React.Component {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
 			});
-			console.log(res);
+			this.setState({ path: res.uri.replace('file://', ''), name: res.name });
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('chooseCertificate', error);
@@ -172,14 +179,17 @@ class NewServerView extends React.Component {
 		);
 	}
 
-	renderCertificatePicker = () => (
-		<View style={styles.certificatePicker}>
-			<Text style={styles.chooseCertificateTitle}>{I18n.t('Do_you_have_a_certificate')}</Text>
-			<TouchableOpacity onPress={this.chooseCertificate} testID='new-server-choose-certificate'>
-				<Text style={styles.chooseCertificate}>{I18n.t('Apply_Your_Certificate')}</Text>
-			</TouchableOpacity>
-		</View>
-	);
+	renderCertificatePicker = () => {
+		const { name } = this.state;
+		return (
+			<View style={styles.certificatePicker}>
+				<Text style={styles.chooseCertificateTitle}>{I18n.t('Do_you_have_a_certificate')}</Text>
+				<TouchableOpacity onPress={this.chooseCertificate} testID='new-server-choose-certificate'>
+					<Text style={styles.chooseCertificate}>{name || I18n.t('Apply_Your_Certificate')}</Text>
+				</TouchableOpacity>
+			</View>
+		);
+	}
 
 	render() {
 		const { connecting } = this.props;
@@ -228,7 +238,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
+	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);

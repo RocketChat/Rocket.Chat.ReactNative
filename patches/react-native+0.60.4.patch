@@ -5,10 +5,10 @@ diff --git a/node_modules/react-native/Libraries/.DS_Store b/node_modules/react-
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 76131fa..65128b9 100644
+index 76131fa..59804aa 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -55,6 +55,61 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+@@ -55,6 +55,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -27,14 +27,12 @@ index 76131fa..65128b9 100644
 +    SecTrustResultType result;
 +    SecTrustEvaluate(serverTrust, &result);
 +
-+    NSString *pfile = [[NSBundle mainBundle] pathForResource:path ofType:@"p12" ];
-+
-+    if (![[NSFileManager defaultManager] fileExistsAtPath:pfile])
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
 +    {
 +      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +    }
 +
-+    NSData *p12data = [NSData dataWithContentsOfFile:pfile];
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
 +    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
 +    CFArrayRef rawItems = NULL;
 +    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
@@ -70,7 +68,7 @@ index 76131fa..65128b9 100644
  - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
-@@ -177,4 +232,21 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+@@ -177,4 +230,21 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
    [delegate URLRequest:task didCompleteWithError:error];
  }
  
@@ -93,20 +91,18 @@ index 76131fa..65128b9 100644
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index 6f1e5e8..7e9c877 100644
+index 6f1e5e8..91f79a9 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -479,6 +479,31 @@ - (void)didConnect
+@@ -479,6 +479,29 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
 +- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
-+{
-+    NSString *filepath = [[NSBundle mainBundle] pathForResource:path ofType:@"p12"];
-+    
-+    if ([[NSFileManager defaultManager] fileExistsAtPath:filepath])
++{    
++    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
 +    {
-+      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:filepath];
++      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
 +      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
 +      CFArrayRef keyref = NULL;
 +      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
@@ -128,7 +124,7 @@ index 6f1e5e8..7e9c877 100644
  - (void)_initializeStreams;
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -516,6 +541,15 @@ - (void)_initializeStreams;
+@@ -516,6 +539,15 @@ - (void)_initializeStreams;
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
