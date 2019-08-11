@@ -24,28 +24,7 @@ import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 
-@connect(
-	state => ({
-		actionMessage: state.messages.actionMessage,
-		Message_AllowDeleting: state.settings.Message_AllowDeleting,
-		Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
-		Message_AllowEditing: state.settings.Message_AllowEditing,
-		Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
-		Message_AllowPinning: state.settings.Message_AllowPinning,
-		Message_AllowStarring: state.settings.Message_AllowStarring,
-		Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
-	}),
-	dispatch => ({
-		actionsHide: () => dispatch(actionsHideAction()),
-		deleteRequest: message => dispatch(deleteRequestAction(message)),
-		editInit: message => dispatch(editInitAction(message)),
-		toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
-		togglePinRequest: message => dispatch(togglePinRequestAction(message)),
-		toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-		replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
-	})
-)
-export default class MessageActions extends React.Component {
+class MessageActions extends React.Component {
 	static propTypes = {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
@@ -409,3 +388,26 @@ export default class MessageActions extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	actionMessage: state.messages.actionMessage,
+	Message_AllowDeleting: state.settings.Message_AllowDeleting,
+	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
+	Message_AllowEditing: state.settings.Message_AllowEditing,
+	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
+	Message_AllowPinning: state.settings.Message_AllowPinning,
+	Message_AllowStarring: state.settings.Message_AllowStarring,
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
+});
+
+const mapDispatchToProps = dispatch => ({
+	actionsHide: () => dispatch(actionsHideAction()),
+	deleteRequest: message => dispatch(deleteRequestAction(message)),
+	editInit: message => dispatch(editInitAction(message)),
+	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
+	togglePinRequest: message => dispatch(togglePinRequestAction(message)),
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
+	replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageActions);

@@ -1,8 +1,7 @@
 import { Alert } from 'react-native';
 import {
-	call, takeLatest, take, select
+	call, takeLatest, take, select, delay
 } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';

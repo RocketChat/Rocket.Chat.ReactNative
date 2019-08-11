@@ -37,33 +37,7 @@ const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
-@connect(state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token,
-	isAuthenticated: state.login.isAuthenticated,
-	server: state.server.server,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	searchText: state.rooms.searchText,
-	loadingServer: state.server.loading,
-	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
-	sortBy: state.sortPreferences.sortBy,
-	groupByType: state.sortPreferences.groupByType,
-	showFavorites: state.sortPreferences.showFavorites,
-	showUnread: state.sortPreferences.showUnread,
-	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
-}), dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
-	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
-}))
-export default class RoomsListView extends React.Component {
+class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
@@ -633,7 +607,7 @@ export default class RoomsListView extends React.Component {
 		} = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				{this.renderScroll()}
 				{showSortDropdown
@@ -653,3 +627,34 @@ export default class RoomsListView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	userId: state.login.user && state.login.user.id,
+	username: state.login.user && state.login.user.username,
+	token: state.login.user && state.login.user.token,
+	isAuthenticated: state.login.isAuthenticated,
+	server: state.server.server,
+	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	searchText: state.rooms.searchText,
+	loadingServer: state.server.loading,
+	showServerDropdown: state.rooms.showServerDropdown,
+	showSortDropdown: state.rooms.showSortDropdown,
+	sortBy: state.sortPreferences.sortBy,
+	groupByType: state.sortPreferences.groupByType,
+	showFavorites: state.sortPreferences.showFavorites,
+	showUnread: state.sortPreferences.showUnread,
+	useRealName: state.settings.UI_Use_Real_Name,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	StoreLastMessage: state.settings.Store_Last_Message
+});
+
+const mapDispatchToProps = dispatch => ({
+	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
+	openSearchHeader: () => dispatch(openSearchHeaderAction()),
+	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
+	appStart: () => dispatch(appStartAction()),
+	roomsRequest: () => dispatch(roomsRequestAction()),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);

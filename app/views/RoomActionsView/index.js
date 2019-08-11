@@ -26,16 +26,7 @@ import { COLOR_WHITE } from '../../constants/colors';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
-@connect(state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}), dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
-}))
-export default class RoomActionsView extends React.Component {
+class RoomActionsView extends React.Component {
 	static navigationOptions = {
 		title: I18n.t('Actions')
 	}
@@ -483,7 +474,7 @@ export default class RoomActionsView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<SectionList
 					contentContainerStyle={styles.contentContainer}
@@ -500,3 +491,17 @@ export default class RoomActionsView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomActionsView);

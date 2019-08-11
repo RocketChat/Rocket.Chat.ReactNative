@@ -16,12 +16,7 @@ import Check from '../../containers/Check';
 
 const ANIMATION_DURATION = 200;
 
-@connect(state => ({
-	closeSortDropdown: state.rooms.closeSortDropdown
-}), dispatch => ({
-	setSortPreference: preference => dispatch(setPreference(preference))
-}))
-export default class Sort extends PureComponent {
+class Sort extends PureComponent {
 	static propTypes = {
 		closeSortDropdown: PropTypes.bool,
 		close: PropTypes.func,
@@ -176,3 +171,13 @@ export default class Sort extends PureComponent {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	closeSortDropdown: state.rooms.closeSortDropdown
+});
+
+const mapDispatchToProps = dispatch => ({
+	setSortPreference: preference => dispatch(setPreference(preference))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sort);

@@ -23,12 +23,7 @@ import log from '../utils/log';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
-@connect(state => ({
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class RegisterView extends React.Component {
+class RegisterView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
@@ -70,12 +65,6 @@ export default class RegisterView extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.nameInput.focus();
-		}, 600);
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const { customFields } = this.state;
 		if (!equal(nextState.customFields, customFields)) {
@@ -89,12 +78,6 @@ export default class RegisterView extends React.Component {
 		const { Site_Name } = this.props;
 		if (Site_Name && prevProps.Site_Name !== Site_Name) {
 			this.setTitle(Site_Name);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
 		}
 	}
 
@@ -203,10 +186,10 @@ export default class RegisterView extends React.Component {
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
-							inputRef={(e) => { this.nameInput = e; }}
+							autoFocus
 							placeholder={I18n.t('Name')}
 							returnKeyType='next'
 							iconLeft='user'
@@ -261,3 +244,13 @@ export default class RegisterView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	Accounts_CustomFields: state.settings.Accounts_CustomFields
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

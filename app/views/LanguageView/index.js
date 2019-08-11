@@ -41,12 +41,7 @@ const LANGUAGES = [
 	}
 ];
 
-@connect(state => ({
-	userLanguage: state.login.user && state.login.user.language
-}), dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
-}))
-export default class LanguageView extends React.Component {
+class LanguageView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
 	})
@@ -141,7 +136,7 @@ export default class LanguageView extends React.Component {
 	render() {
 		const { saving } = this.state;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={LANGUAGES}
@@ -155,3 +150,13 @@ export default class LanguageView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	userLanguage: state.login.user && state.login.user.language
+});
+
+const mapDispatchToProps = dispatch => ({
+	setUser: params => dispatch(setUserAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageView);

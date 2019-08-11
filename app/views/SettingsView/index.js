@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel } from '../../utils/deviceInfo';
+import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
@@ -23,8 +23,8 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig } from '../../utils/log';
 import analytics from '../../utils/analytics';
+import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 
-const LICENSE_LINK = 'https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/LICENSE';
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const ItemInfo = React.memo(({ info }) => (
 	<View style={styles.infoContainer}>
@@ -35,15 +35,7 @@ ItemInfo.propTypes = {
 	info: PropTypes.string
 };
 
-@connect(state => ({
-	server: state.server,
-	useMarkdown: state.markdown.useMarkdown,
-	allowCrashReport: state.crashReport.allowCrashReport
-}), dispatch => ({
-	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
-	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
-}))
-export default class SettingsView extends React.Component {
+class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
@@ -95,6 +87,10 @@ export default class SettingsView extends React.Component {
 		} catch (e) {
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
+	}
+
+	shareApp = () => {
+		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
 	onPressLicense = () => openLink(LICENSE_LINK)
@@ -163,6 +159,7 @@ export default class SettingsView extends React.Component {
 						disabled
 						testID='settings-view-share-app'
 					/>
+					<Separator />
 
 					<SectionSeparator />
 
@@ -206,3 +203,16 @@ export default class SettingsView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server,
+	useMarkdown: state.markdown.useMarkdown,
+	allowCrashReport: state.crashReport.allowCrashReport
+});
+
+const mapDispatchToProps = dispatch => ({
+	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
+	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

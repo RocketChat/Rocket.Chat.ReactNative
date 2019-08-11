@@ -24,10 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server
-}))
-export default class OAuthView extends React.PureComponent {
+class OAuthView extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <CloseModalButton navigation={navigation} />,
 		title: 'OAuth'
@@ -101,3 +98,9 @@ export default class OAuthView extends React.PureComponent {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server
+});
+
+export default connect(mapStateToProps)(OAuthView);

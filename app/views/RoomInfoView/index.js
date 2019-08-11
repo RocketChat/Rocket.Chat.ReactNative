@@ -30,15 +30,7 @@ const getRoomTitle = room => (room.t === 'd'
 	)
 );
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
-	Message_TimeFormat: state.settings.Message_TimeFormat
-}))
-export default class RoomInfoView extends React.Component {
+class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
@@ -247,7 +239,7 @@ export default class RoomInfoView extends React.Component {
 		return (
 			<ScrollView style={styles.scroll}>
 				<StatusBar />
-				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ bottom: 'never' }}>
+				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
@@ -264,3 +256,14 @@ export default class RoomInfoView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	},
+	Message_TimeFormat: state.settings.Message_TimeFormat
+});
+
+export default connect(mapStateToProps)(RoomInfoView);

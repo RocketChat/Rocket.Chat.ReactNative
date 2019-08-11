@@ -1,0 +1,32 @@
+{
+  "name": "react-native-notifications",
+  "version": "2.0.3",
+  "summary": "Advanced Push Notifications (Silent, interactive notifications) for iOS & Android",
+  "description": "Advanced Push Notifications (Silent, interactive notifications) for iOS & Android",
+  "license": "MIT",
+  "authors": "Lidan Hifi <lidan.hifi@gmail.com>",
+  "homepage": "https://github.com/wix/react-native-notifications",
+  "source": {
+    "git": "https://github.com/wix/react-native-notifications",
+    "tag": "2.0.3"
+  },
+  "requires_arc": true,
+  "platforms": {
+    "ios": "8.0"
+  },
+  "preserve_paths": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "notification.ios.js",
+    "notification.android.js",
+    "index.android.js",
+    "index.ios.js"
+  ],
+  "source_files": "RNNotifications/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

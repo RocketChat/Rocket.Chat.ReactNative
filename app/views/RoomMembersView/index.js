@@ -23,14 +23,7 @@ import StatusBar from '../../containers/StatusBar';
 
 const PAGE_SIZE = 25;
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
-}))
-export default class RoomMembersView extends React.Component {
+class RoomMembersView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
@@ -279,7 +272,7 @@ export default class RoomMembersView extends React.Component {
 		// 	return <ActivityIndicator style={styles.loading} />;
 		// }
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ bottom: 'never' }}>
+			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={filtering ? membersFiltered : members}
@@ -304,3 +297,13 @@ export default class RoomMembersView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+export default connect(mapStateToProps)(RoomMembersView);

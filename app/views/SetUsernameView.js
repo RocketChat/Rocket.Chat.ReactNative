@@ -25,13 +25,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	server: state.server.server,
-	token: state.login.user && state.login.user.token
-}), dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-}))
-export default class SetUsernameView extends React.Component {
+class SetUsernameView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const title = navigation.getParam('title');
 		return {
@@ -59,9 +53,6 @@ export default class SetUsernameView extends React.Component {
 	}
 
 	async componentDidMount() {
-		this.timeout = setTimeout(() => {
-			this.usernameInput.focus();
-		}, 600);
 		const suggestion = await RocketChat.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
@@ -77,12 +68,6 @@ export default class SetUsernameView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
 	}
 
 	submit = async() => {
@@ -109,11 +94,11 @@ export default class SetUsernameView extends React.Component {
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Set_username_subtitle')}</Text>
 						<TextInput
-							inputRef={e => this.usernameInput = e}
+							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
 							iconLeft='at'
@@ -138,3 +123,14 @@ export default class SetUsernameView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	server: state.server.server,
+	token: state.login.user && state.login.user.token
+});
+
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SetUsernameView);

@@ -29,21 +29,7 @@ import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_TEXT } from '../../constants/colors';
 
-@connect(state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		name: state.login.user && state.login.user.name,
-		username: state.login.user && state.login.user.username,
-		customFields: state.login.user && state.login.user.customFields,
-		emails: state.login.user && state.login.user.emails,
-		token: state.login.user && state.login.user.token
-	},
-	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}), dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
-}))
-export default class ProfileView extends React.Component {
+class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
@@ -393,7 +379,7 @@ export default class ProfileView extends React.Component {
 					testID='profile-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
@@ -487,3 +473,22 @@ export default class ProfileView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	user: {
+		id: state.login.user && state.login.user.id,
+		name: state.login.user && state.login.user.name,
+		username: state.login.user && state.login.user.username,
+		customFields: state.login.user && state.login.user.customFields,
+		emails: state.login.user && state.login.user.emails,
+		token: state.login.user && state.login.user.token
+	},
+	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	setUser: params => dispatch(setUserAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

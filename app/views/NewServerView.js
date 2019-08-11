@@ -46,12 +46,7 @@ const styles = StyleSheet.create({
 
 const defaultServer = 'https://open.rocket.chat';
 
-@connect(state => ({
-	connecting: state.server.connecting
-}), dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
-}))
-export default class NewServerView extends React.Component {
+class NewServerView extends React.Component {
 	static navigationOptions = () => ({
 		header: null
 	})
@@ -63,20 +58,20 @@ export default class NewServerView extends React.Component {
 		connectServer: PropTypes.func.isRequired
 	}
 
-	state = {
-		text: ''
+	constructor(props) {
+		super(props);
+		const server = props.navigation.getParam('server');
+		this.state = {
+			text: server || '',
+			autoFocus: !server
+		};
 	}
 
 	componentDidMount() {
-		const { navigation, connectServer } = this.props;
-		const server = navigation.getParam('server');
-		if (server) {
-			connectServer(server);
-			this.setState({ text: server });
-		} else {
-			this.timeout = setTimeout(() => {
-				this.input.focus();
-			}, 600);
+		const { text } = this.state;
+		const { connectServer } = this.props;
+		if (text) {
+			connectServer(text);
 		}
 	}
 
@@ -90,12 +85,6 @@ export default class NewServerView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
 	}
 
 	onChangeText = (text) => {
@@ -155,7 +144,7 @@ export default class NewServerView extends React.Component {
 
 	render() {
 		const { connecting } = this.props;
-		const { text } = this.state;
+		const { text, autoFocus } = this.state;
 		return (
 			<KeyboardView
 				contentContainerStyle={sharedStyles.container}
@@ -164,11 +153,11 @@ export default class NewServerView extends React.Component {
 			>
 				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ bottom: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view' forceInset={{ vertical: 'never' }}>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
-							inputRef={e => this.input = e}
+							autoFocus={autoFocus}
 							containerStyle={styles.inputContainer}
 							placeholder={defaultServer}
 							value={text}
@@ -182,7 +171,7 @@ export default class NewServerView extends React.Component {
 							title={I18n.t('Connect')}
 							type='primary'
 							onPress={this.submit}
-							disabled={text.length === 0}
+							disabled={!text}
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
@@ -193,3 +182,13 @@ export default class NewServerView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	connecting: state.server.connecting
+});
+
+const mapDispatchToProps = dispatch => ({
+	connectServer: server => dispatch(serverRequest(server))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);
