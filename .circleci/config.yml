@@ -191,7 +191,6 @@ jobs:
             mkdir -p /tmp/build
 
             mv app/build/outputs /tmp/build/
-          working_directory: android
 
       - store_artifacts:
           path: /tmp/build/outputs
