@@ -65,9 +65,9 @@ const OutsideStack = createStackNavigator({
 	defaultNavigationOptions: defaultHeader
 });
 
-const OAuthStack = createStackNavigator({
-	OAuthView: {
-		getScreen: () => require('./views/OAuthView').default
+const AuthenticationWebViewStack = createStackNavigator({
+	AuthenticationWebView: {
+		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -75,7 +75,7 @@ const OAuthStack = createStackNavigator({
 
 const OutsideStackModal = createStackNavigator({
 	OutsideStack,
-	OAuthStack
+	AuthenticationWebViewStack
 },
 {
 	mode: 'modal',

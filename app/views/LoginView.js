@@ -57,8 +57,13 @@ class LoginView extends React.Component {
 		Site_Name: PropTypes.string,
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
+		Accounts_PasswordReset: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		failure: PropTypes.bool
+	}
+
+	static defaultProps = {
+		Accounts_PasswordReset: true
 	}
 
 	constructor(props) {
@@ -195,7 +200,7 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, isFetching
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching
 		} = this.props;
 		return (
 			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
@@ -229,12 +234,14 @@ class LoginView extends React.Component {
 					loading={isFetching}
 					disabled={!this.valid()}
 				/>
-				<Button
-					title={I18n.t('Forgot_password')}
-					type='secondary'
-					onPress={this.forgotPassword}
-					testID='login-view-forgot-password'
-				/>
+				{Accounts_PasswordReset && (
+					<Button
+						title={I18n.t('Forgot_password')}
+						type='secondary'
+						onPress={this.forgotPassword}
+						testID='login-view-forgot-password'
+					/>
+				)}
 				<View style={styles.bottomContainer}>
 					<Text style={styles.dontHaveAccount}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
@@ -272,7 +279,8 @@ const mapStateToProps = state => ({
 	error: state.login.error && state.login.error.data,
 	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
 });
 
 const mapDispatchToProps = dispatch => ({
