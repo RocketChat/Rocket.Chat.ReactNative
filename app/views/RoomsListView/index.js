@@ -435,7 +435,7 @@ class RoomsListView extends React.Component {
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
-				onCancelPress={() => this.cancelSearching()}
+				onCancelPress={this.cancelSearching}
 				hasCancel={isIOS}
 			/>
 		);
