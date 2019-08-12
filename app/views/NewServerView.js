@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import DocumentPicker from 'react-native-document-picker';
 import Dialog from 'react-native-dialog';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -145,7 +146,7 @@ class NewServerView extends React.Component {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
 			});
-			this.setState({ path: res.uri.replace('file://', ''), name: res.name, showPasswordAlert: true });
+			this.setState({ path: this.uriToPath(res.uri), name: res.name, showPasswordAlert: true });
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('chooseCertificate', error);
@@ -194,7 +195,15 @@ class NewServerView extends React.Component {
 		);
 	}
 
-	saveCertificate = () => this.setState({ showPasswordAlert: false });
+	uriToPath = uri => uri.replace('file://', '');
+
+	saveCertificate = async() => {
+		const { name, path } = this.state;
+		const documents = RNFetchBlob.fs.dirs.DocumentDir;
+		const certificatePath = `${ documents }/${ name }`;
+		await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath); // copy from tmp to documents dir
+		this.setState({ showPasswordAlert: false, path: certificatePath });
+	}
 
 	renderCertificatePassword = () => {
 		const { showPasswordAlert } = this.state;
