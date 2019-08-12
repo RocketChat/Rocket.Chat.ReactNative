@@ -29,7 +29,7 @@ class AuthenticationWebView extends React.PureComponent {
 		const authType = navigation.getParam('authType', 'oauth');
 		return {
 			headerLeft: <CloseModalButton navigation={navigation} />,
-			title: authType === 'saml' ? 'SSO' : 'OAuth'
+			title: authType === 'saml' || authType === 'cas' ? 'SSO' : 'OAuth'
 		};
 	}
 
@@ -72,15 +72,21 @@ class AuthenticationWebView extends React.PureComponent {
 
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
-		if (this.authType === 'saml') {
+		if (this.authType === 'saml' || this.authType === 'cas') {
 			const { navigation } = this.props;
 			const ssoToken = navigation.getParam('ssoToken');
 			if (url.includes('ticket') || url.includes('validate')) {
-				const payload = `{ "saml": true, "credentialToken": "${ ssoToken }" }`;
+				let payload;
+				const credentialToken = { credentialToken: ssoToken };
+				if (this.authType === 'saml') {
+					payload = { ...credentialToken, saml: true };
+				} else {
+					payload = { cas: credentialToken };
+				}
 				// We need to set a timeout when the login is done with SSO in order to make it work on our side.
 				// It is actually due to the SSO server processing the response.
 				setTimeout(() => {
-					this.login(JSON.parse(payload));
+					this.login(payload);
 				}, 3000);
 			}
 		}

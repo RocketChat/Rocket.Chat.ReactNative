@@ -82,5 +82,11 @@ export default {
 	},
 	AutoTranslate_Enabled: {
 		type: 'valueAsBoolean'
+	},
+	CAS_enabled: {
+		type: 'valueAsBoolean'
+	},
+	CAS_login_url: {
+		type: 'valueAsString'
 	}
 };
