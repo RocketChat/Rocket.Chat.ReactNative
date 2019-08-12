@@ -812,6 +812,10 @@ const RocketChat = {
 			return 'saml';
 		}
 
+		if (service === 'cas') {
+			return 'cas';
+		}
+
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
 		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
 		return availableOAuth.includes(name) ? 'oauth' : 'not_supported';
