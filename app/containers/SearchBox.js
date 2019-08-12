@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, TextInput, Text
+	View, StyleSheet, TextInput, Text, ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
@@ -49,14 +49,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CancelButton = onCancelPress => (
-	<Touchable onPress={onCancelPress} style={styles.cancel}>
+const CancelButton = ({ onCancelPress, propsStyles }) => (
+	<Touchable onPress={onCancelPress} style={propsStyles ? propsStyles.cancel : styles.cancel}>
 		<Text style={styles.cancelText}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, ...props
+	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, propsStyles, ...props
 }) => (
 	<View style={styles.container}>
 		<View style={styles.searchBox}>
@@ -76,7 +76,7 @@ const SearchBox = ({
 				{...props}
 			/>
 		</View>
-		{ hasCancel ? CancelButton(onCancelPress) : null }
+		{ hasCancel ? CancelButton({ onCancelPress, propsStyles }) : null }
 	</View>
 );
 
@@ -85,7 +85,17 @@ SearchBox.propTypes = {
 	onSubmitEditing: PropTypes.func,
 	hasCancel: PropTypes.bool,
 	onCancelPress: PropTypes.func,
-	testID: PropTypes.string
+	testID: PropTypes.string,
+	propsStyles: PropTypes.shape({
+		cancel: ViewPropTypes.style
+	})
+};
+
+CancelButton.propTypes = {
+	onCancelPress: PropTypes.func,
+	propsStyles: PropTypes.shape({
+		cancel: ViewPropTypes.style
+	})
 };
 
 export default SearchBox;
