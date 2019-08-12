@@ -425,10 +425,6 @@ class RoomsListView extends React.Component {
 
 	getScrollRef = ref => this.scroll = ref
 
-	onCancelPress = () => {
-		this.cancelSearching();
-	}
-
 	renderListHeader = () => {
 		const { search } = this.state;
 		const { sortBy } = this.props;
@@ -439,7 +435,7 @@ class RoomsListView extends React.Component {
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
-				onCancelPress={this.onCancelPress}
+				onCancelPress={() => this.cancelSearching()}
 				hasCancel={isIOS}
 			/>
 		);

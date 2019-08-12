@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 const CancelButton = ({ onCancelPress, propsStyles }) => (
-	<Touchable onPress={onCancelPress} style={propsStyles ? propsStyles.cancel : styles.cancel}>
+	<Touchable onPress={onCancelPress} style={propsStyles ? [styles.cancel, propsStyles.cancel] : styles.cancel}>
 		<Text style={styles.cancelText}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
