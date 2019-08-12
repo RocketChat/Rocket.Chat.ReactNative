@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 	},
 	certificatePicker: {
 		flex: 1,
+		marginTop: 40,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -108,12 +109,9 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text, name, showPasswordAlert } = this.state;
+		const { text, showPasswordAlert } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
-			return true;
-		}
-		if (nextState.name !== name) {
 			return true;
 		}
 		if (nextState.showPasswordAlert !== showPasswordAlert) {

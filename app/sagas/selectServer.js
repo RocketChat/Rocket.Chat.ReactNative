@@ -14,6 +14,7 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
@@ -75,20 +76,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerFailure());
 		log('err_select_server', e);
 	}
-};
-
-const extractHostname = (url) => {
-	let hostname;
-
-	if (url.indexOf('//') > -1) {
-		[,, hostname] = url.split('/');
-	} else {
-		[hostname] = url.split('/');
-	}
-	[hostname] = hostname.split(':');
-	[hostname] = hostname.split('?');
-
-	return hostname;
 };
 
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
