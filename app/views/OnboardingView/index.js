@@ -125,7 +125,7 @@ class OnboardingView extends React.Component {
 
 	render() {
 		return (
-			<SafeAreaView style={styles.container} testID='onboarding-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={styles.container} testID='onboarding-view'>
 				<StatusBar light />
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
