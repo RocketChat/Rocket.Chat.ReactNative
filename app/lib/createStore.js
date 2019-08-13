@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import Reactotron from 'reactotron-react-native';
 import createSagaMiddleware from 'redux-saga';
 import applyAppStateListener from 'redux-enhancer-react-native-appstate';
 
@@ -10,8 +9,8 @@ let sagaMiddleware;
 let enhancers;
 
 if (__DEV__) {
-	/* eslint-disable global-require */
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
+	const Reactotron = require('reactotron-react-native').default;
 	sagaMiddleware = createSagaMiddleware({
 		sagaMonitor: Reactotron.createSagaMonitor()
 	});
