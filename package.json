@@ -55,7 +55,7 @@
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-mime-types": "^2.2.1",
     "react-native-modal": "^11.3.0",
-    "react-native-notifications": "2.0.3",
+    "react-native-notifications": "^2.0.6",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-orientation-locker": "^1.1.6",
     "react-native-picker-select": "6.3.0",
