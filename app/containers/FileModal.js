@@ -1,16 +1,22 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView, NativeModules, Alert, Dimensions
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import VideoPlayer from 'react-native-video-controls';
+import { Video } from 'expo-av';
+import { isNotch, isIOS } from '../utils/deviceInfo';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
+
+const { StatusBarManager } = NativeModules;
+
+const IOSStatusBarHeight = (isNotch ? 45 : 20);
+const STATUSBAR_HEIGHT = isIOS ? IOSStatusBarHeight : StatusBarManager.HEIGHT;
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -38,6 +44,23 @@ const styles = StyleSheet.create({
 	},
 	indicator: {
 		flex: 1
+	},
+	video: {
+		width: Dimensions.get('window').width,
+		height: Dimensions.get('window').height - STATUSBAR_HEIGHT
+	},
+	poster: {
+		backgroundColor: 'black'
+		// opacity: 0.1
+	},
+	loading: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
@@ -46,7 +69,7 @@ const Indicator = React.memo(() => (
 ));
 
 const ModalContent = React.memo(({
-	attachment, onClose, user, baseUrl
+	attachment, onClose, user, baseUrl, loading, setLoading
 }) => {
 	if (attachment && attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
@@ -75,11 +98,23 @@ const ModalContent = React.memo(({
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
 			<SafeAreaView style={styles.safeArea}>
-				<VideoPlayer
+				<Video
 					source={{ uri }}
-					onBack={onClose}
-					disableVolume
+					rate={1.0}
+					volume={1.0}
+					isMuted={false}
+					resizeMode='cover'
+					shouldPlay
+					isLooping={false}
+					style={styles.video}
+					posterStyle={styles.poster}
+					usePoster
+					useNativeControls
+					onReadyForDisplay={() => setLoading(false)}
+					onLoadStart={() => setLoading(true)}
+					onError={Alert.alert}
 				/>
+				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
 			</SafeAreaView>
 		);
 	}
@@ -87,7 +122,7 @@ const ModalContent = React.memo(({
 });
 
 const FileModal = React.memo(({
-	isVisible, onClose, attachment, user, baseUrl
+	isVisible, onClose, attachment, user, baseUrl, setLoading, loading
 }) => (
 	<Modal
 		style={styles.modal}
@@ -97,16 +132,18 @@ const FileModal = React.memo(({
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
-		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
+		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} loading={loading} setLoading={setLoading} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
+), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading);
 
 FileModal.propTypes = {
 	isVisible: PropTypes.bool,
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	onClose: PropTypes.func
+	onClose: PropTypes.func,
+	loading: PropTypes.bool,
+	setLoading: PropTypes.func
 };
 FileModal.displayName = 'FileModal';
 
@@ -114,7 +151,9 @@ ModalContent.propTypes = {
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	onClose: PropTypes.func
+	onClose: PropTypes.func,
+	loading: PropTypes.bool,
+	setLoading: PropTypes.func
 };
 ModalContent.displayName = 'FileModalContent';
 
