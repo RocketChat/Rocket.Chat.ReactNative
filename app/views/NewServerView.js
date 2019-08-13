@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import DocumentPicker from 'react-native-document-picker';
 import Dialog from 'react-native-dialog';
 import RNFetchBlob from 'rn-fetch-blob';
+import ActionSheet from 'react-native-action-sheet';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -90,6 +91,15 @@ class NewServerView extends React.Component {
 	constructor(props) {
 		super(props);
 		const server = props.navigation.getParam('server');
+
+		// Cancel
+		this.options = [I18n.t('Cancel')];
+		this.CANCEL_INDEX = 0;
+
+		// Delete
+		this.options.push(I18n.t('Delete'));
+		this.DELETE_INDEX = 1;
+
 		this.state = {
 			text: server || '',
 			autoFocus: !server,
@@ -109,12 +119,15 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text, showPasswordAlert } = this.state;
+		const { text, showPasswordAlert, name } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
 			return true;
 		}
 		if (nextState.showPasswordAlert !== showPasswordAlert) {
+			return true;
+		}
+		if (nextState.name !== name) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -147,7 +160,7 @@ class NewServerView extends React.Component {
 			this.setState({ path: this.uriToPath(res.uri), name: res.name, showPasswordAlert: true });
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
-				log('chooseCertificate', error);
+				log('err_choose_certificate', error);
 			}
 		}
 	}
@@ -199,8 +212,46 @@ class NewServerView extends React.Component {
 		const { name, path } = this.state;
 		const documents = RNFetchBlob.fs.dirs.DocumentDir;
 		const certificatePath = `${ documents }/${ name }`;
-		await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath); // copy from tmp to documents dir
+		try {
+			await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath); // copy from tmp to documents dir
+		} catch (error) {
+			log('err_save_certificate', error);
+		}
 		this.setState({ showPasswordAlert: false, path: certificatePath });
+	}
+
+	handleDelete = async() => {
+		const { name } = this.state;
+		const documents = RNFetchBlob.fs.dirs.DocumentDir;
+		const certificatePath = `${ documents }/${ name }`;
+		try {
+			await RNFetchBlob.fs.unlink(certificatePath);
+		} catch (error) {
+			log('err_remove_certificate', error);
+		}
+		this.setState({ name: null, path: null, password: null });
+	}
+
+	handleActionPress = (actionIndex) => {
+		if (actionIndex) {
+			switch (actionIndex) {
+				case this.DELETE_INDEX:
+					this.handleDelete();
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	renderCertificatePassword = () => {
@@ -229,7 +280,7 @@ class NewServerView extends React.Component {
 		return (
 			<View style={styles.certificatePicker}>
 				<Text style={styles.chooseCertificateTitle}>{name ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
-				<TouchableOpacity onPress={this.chooseCertificate} testID='new-server-choose-certificate'>
+				<TouchableOpacity onPress={name ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
 					<Text style={styles.chooseCertificate}>{name || I18n.t('Apply_Your_Certificate')}</Text>
 				</TouchableOpacity>
 			</View>
