@@ -23,6 +23,7 @@ import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 import log from '../utils/log';
+import random from '../utils/random';
 
 const styles = StyleSheet.create({
 	image: {
@@ -157,7 +158,7 @@ class NewServerView extends React.Component {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
 			});
-			this.setState({ path: this.uriToPath(res.uri), name: res.name, showPasswordAlert: true });
+			this.setState({ path: res.uri, name: res.name, showPasswordAlert: true });
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('err_choose_certificate', error);
@@ -210,10 +211,9 @@ class NewServerView extends React.Component {
 
 	saveCertificate = async() => {
 		const { name, path } = this.state;
-		const documents = RNFetchBlob.fs.dirs.DocumentDir;
-		const certificatePath = `${ documents }/${ name }`;
+		const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ name }${ random(4) }`;
 		try {
-			await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath); // copy from tmp to documents dir
+			await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath);
 		} catch (error) {
 			log('err_save_certificate', error);
 		}
@@ -222,8 +222,7 @@ class NewServerView extends React.Component {
 
 	handleDelete = async() => {
 		const { name } = this.state;
-		const documents = RNFetchBlob.fs.dirs.DocumentDir;
-		const certificatePath = `${ documents }/${ name }`;
+		const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ name }`;
 		try {
 			await RNFetchBlob.fs.unlink(certificatePath);
 		} catch (error) {
@@ -320,8 +319,16 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
-						{isIOS ? this.renderCertificatePicker() : null}
-						{isIOS ? this.renderCertificatePassword() : null}
+						{
+							isIOS
+								? (
+									<>
+										{this.renderCertificatePicker()}
+										{this.renderCertificatePassword()}
+									</>
+								)
+								: null
+						}
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
