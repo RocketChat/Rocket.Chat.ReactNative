@@ -7,6 +7,7 @@ const data = require('./data');
 
 describe('Directory', () => {
 	before(async () => {
+		await device.reloadReactNative();
 		await element(by.id('rooms-list-view-directory')).tap();
 	});
 
@@ -36,6 +37,7 @@ describe('Directory', () => {
 			await waitFor(element(by.id('directory-view-filter-text'))).toHaveValue('Channels').withTimeout(2000);
 			// search for 'general' channel
 			await element(by.id('directory-view-search')).tap();
+			// await sleep(2000);
 			await element(by.id('directory-view-search')).typeText(`${room}\n`);
 			await sleep(2000);
 			await waitFor(element(by.id(`directory-view-list-item-${room}`))).toBeVisible().withTimeout(60000);
