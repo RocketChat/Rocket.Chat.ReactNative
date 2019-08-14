@@ -250,21 +250,65 @@ describe('Room actions screen', () => {
 				await backToActions();
 			});
 
-			it('should enable/disable notifications', async() => {
+			afterEach(async() => {
+				takeScreenshot();
+			});
+		});
+
+		describe('Notification', async() => {
+			it('should navigate to notification preference view', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
-				await expect(element(by.text('Disable notifications'))).toBeVisible();
+				await expect(element(by.id('room-actions-notifications'))).toBeVisible();
 				await element(by.id('room-actions-notifications')).tap();
-				await waitFor(element(by.text('Enable notifications'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text('Enable notifications'))).toBeVisible();
-				await element(by.id('room-actions-notifications')).tap();
-				await waitFor(element(by.text('Disable notifications'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text('Disable notifications'))).toBeVisible();
+				await waitFor(element(by.text('notificationPreference-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('notificationPreference-view'))).toBeVisible();
+			});
+
+			it('should have receive notification option', async() => {
+				await expect(element(by.id('notificationPreference-view-receive-notification'))).toBeVisible();
+			});
+
+			it('should have show unread count option', async() => {
+				await expect(element(by.id('notificationPreference-view-unread_count'))).toBeVisible();
+			});
+
+			it('should have notification alert option', async() => {
+				await expect(element(by.id('notificationPreference-view-alert'))).toBeVisible();
+			});
+
+			it('should have push notification option', async() => {
+				await waitFor(element(by.id('notificationPreference-view-push-notification'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notificationPreference-view-push-notification'))).toBeVisible();
+			});
+
+			it('should have notification audio option', async() => {
+				await waitFor(element(by.id('notificationPreference-view-audio'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notificationPreference-view-audio'))).toBeVisible();
+			});
+
+			it('should have notification sound option', async() => {
+				await waitFor(element(by.id('notificationPreference-view-sound'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notificationPreference-view-sound'))).toBeVisible();
+			});
+
+			it('should have notification duration option', async() => {
+				await waitFor(element(by.id('notificationPreference-view-notification-duration'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notificationPreference-view-notification-duration'))).toBeVisible();
+			});
+
+			it('should have email alert option', async() => {
+				await waitFor(element(by.id('notificationPreference-view-email_alert'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notificationPreference-view-email_alert'))).toBeVisible();
 			});
 
 			afterEach(async() => {
 				takeScreenshot();
 			});
-		});
+
+			after(async() => {
+				await backToActions();
+			});
+		})
 
 		describe('Channel/Group', async() => {
 			// Currently, there's no way to add more owners to the room
