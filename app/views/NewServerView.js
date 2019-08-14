@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import Dialog from 'react-native-dialog';
-import RNFetchBlob from 'rn-fetch-blob';
 import ActionSheet from 'react-native-action-sheet';
 import isEqual from 'deep-equal';
 
@@ -145,13 +145,16 @@ class NewServerView extends React.Component {
 		let cert = null;
 
 		if (certificate) {
-			const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ certificate.name }`;
+			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
 			try {
-				await RNFetchBlob.fs.cp(this.uriToPath(certificate.path), certificatePath);
+				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (error) {
 				log('err_save_certificate', error);
 			}
-			cert = { path: certificatePath, password: certificate.password };
+			cert = {
+				path: this.uriToPath(certificatePath), // file:// isn't allowed by obj-C
+				password: certificate.password
+			};
 		}
 
 		if (text) {
@@ -204,14 +207,14 @@ class NewServerView extends React.Component {
 	saveCertificate = () => {
 		const { certificate } = this.state;
 		const { path } = certificate;
-		this.setState({ showPasswordAlert: false, certificate: { path: this.uriToPath(path), ...certificate } });
+		this.setState({ showPasswordAlert: false, certificate: { path, ...certificate } });
 	}
 
 	handleDelete = async() => {
 		const { certificate } = this.state;
 		const { path } = certificate;
 		try {
-			await RNFetchBlob.fs.unlink(path);
+			await FileSystem.deleteAsync(path);
 		} catch (error) {
 			log('err_remove_certificate', error);
 		}

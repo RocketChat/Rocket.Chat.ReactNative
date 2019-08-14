@@ -2,7 +2,7 @@ import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
-import RNFetchBlob from 'rn-fetch-blob';
+import * as FileSystem from 'expo-file-system';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -364,7 +364,7 @@ const RocketChat = {
 			const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
 			if (certificate && certificate.path) {
 				await RNUserDefaults.clear(extractHostname(server));
-				await RNFetchBlob.fs.unlink(certificate.path);
+				await FileSystem.deleteAsync(certificate.path);
 			}
 		} catch (error) {
 			console.log('logout_rn_user_defaults', error);
