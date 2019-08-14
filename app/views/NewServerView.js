@@ -9,6 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import Dialog from 'react-native-dialog';
 import RNFetchBlob from 'rn-fetch-blob';
 import ActionSheet from 'react-native-action-sheet';
+import isEqual from 'deep-equal';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -23,7 +24,6 @@ import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 import log from '../utils/log';
-import random from '../utils/random';
 
 const styles = StyleSheet.create({
 	image: {
@@ -105,9 +105,7 @@ class NewServerView extends React.Component {
 			text: server || '',
 			autoFocus: !server,
 			showPasswordAlert: false,
-			path: null,
-			password: null,
-			name: null
+			certificate: null
 		};
 	}
 
@@ -120,7 +118,7 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text, showPasswordAlert, name } = this.state;
+		const { text, showPasswordAlert, certificate } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
 			return true;
@@ -128,7 +126,7 @@ class NewServerView extends React.Component {
 		if (nextState.showPasswordAlert !== showPasswordAlert) {
 			return true;
 		}
-		if (nextState.name !== name) {
+		if (isEqual(nextState.certificate, certificate)) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -141,15 +139,24 @@ class NewServerView extends React.Component {
 		this.setState({ text });
 	}
 
-	submit = () => {
-		const { text, path, password } = this.state;
+	submit = async() => {
+		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
+		let cert = null;
 
-		const certificate = { path, password };
+		if (certificate) {
+			const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ certificate.name }`;
+			try {
+				await RNFetchBlob.fs.cp(this.uriToPath(certificate.path), certificatePath);
+			} catch (error) {
+				log('err_save_certificate', error);
+			}
+			cert = { path: certificatePath, password: certificate.password };
+		}
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text), certificate);
+			connectServer(this.completeUrl(text), cert);
 		}
 	}
 
@@ -158,7 +165,14 @@ class NewServerView extends React.Component {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
 			});
-			this.setState({ path: res.uri, name: res.name, showPasswordAlert: true });
+			const { uri: path, name } = res;
+			this.setState({
+				certificate: {
+					path,
+					name
+				},
+				showPasswordAlert: true
+			});
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('err_choose_certificate', error);
@@ -187,25 +201,21 @@ class NewServerView extends React.Component {
 
 	uriToPath = uri => uri.replace('file://', '');
 
-	saveCertificate = async() => {
-		const { name, path } = this.state;
-		const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ name }${ random(4) }`;
-		try {
-			await RNFetchBlob.fs.cp(this.uriToPath(path), certificatePath);
-		} catch (error) {
-			log('err_save_certificate', error);
-		}
-		this.setState({ showPasswordAlert: false, path: certificatePath });
+	saveCertificate = () => {
+		const { certificate } = this.state;
+		const { path } = certificate;
+		this.setState({ showPasswordAlert: false, certificate: { path: this.uriToPath(path), ...certificate } });
 	}
 
 	handleDelete = async() => {
-		const { path } = this.state;
+		const { certificate } = this.state;
+		const { path } = certificate;
 		try {
 			await RNFetchBlob.fs.unlink(path);
 		} catch (error) {
 			log('err_remove_certificate', error);
 		}
-		this.setState({ name: null, path: null, password: null });
+		this.setState({ certificate: null });
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -253,7 +263,7 @@ class NewServerView extends React.Component {
 	}
 
 	renderCertificatePassword = () => {
-		const { showPasswordAlert } = this.state;
+		const { showPasswordAlert, certificate } = this.state;
 		return (
 			<Dialog.Container visible={showPasswordAlert}>
 				<Dialog.Title>
@@ -263,7 +273,7 @@ class NewServerView extends React.Component {
 					{I18n.t('Whats_the_password_for_your_certificate')}
 				</Dialog.Description>
 				<Dialog.Input
-					onChangeText={value => this.setState({ password: value })}
+					onChangeText={value => this.setState({ certificate: { ...certificate, password: value } })}
 					secureTextEntry
 					testID='certificate-password-input'
 					style={styles.dialogInput}
@@ -274,12 +284,12 @@ class NewServerView extends React.Component {
 	}
 
 	renderCertificatePicker = () => {
-		const { name } = this.state;
+		const { certificate } = this.state;
 		return (
 			<View style={styles.certificatePicker}>
-				<Text style={styles.chooseCertificateTitle}>{name ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
-				<TouchableOpacity onPress={name ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
-					<Text style={styles.chooseCertificate}>{name || I18n.t('Apply_Your_Certificate')}</Text>
+				<Text style={styles.chooseCertificateTitle}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
+				<TouchableOpacity onPress={certificate ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
+					<Text style={styles.chooseCertificate}>{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}</Text>
 				</TouchableOpacity>
 			</View>
 		);

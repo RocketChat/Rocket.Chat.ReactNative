@@ -80,7 +80,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
-		yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+		if (certificate) {
+			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+		}
 
 		const serverInfo = yield getServerInfo({ server });
 
