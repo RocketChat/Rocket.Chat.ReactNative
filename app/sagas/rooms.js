@@ -1,11 +1,20 @@
 import {
-	put, select, race, take, fork, cancel, takeLatest, delay
+	put,
+	select,
+	race,
+	take,
+	fork,
+	cancel,
+	takeLatest,
+	delay
 } from 'redux-saga/effects';
 import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import database from '../lib/realm';
+import watermelon from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
@@ -18,16 +27,54 @@ const removeSub = function removeSub() {
 	}
 };
 
+const assignSub = (sub, newSub) => {
+	sub.t = newSub.t;
+	sub.ts = newSub.ts;
+	sub.ls = newSub.ls;
+	sub.name = newSub.name;
+	sub.fname = newSub.fname;
+	sub.rid = newSub.rid;
+	sub.open = newSub.open;
+	sub.alert = newSub.alert;
+	sub.unread = newSub.unread;
+	sub.userMentions = newSub.userMentions;
+	sub.roomUpdatedAt = newSub.roomUpdatedAt;
+	sub.ro = newSub.ro;
+	sub.lastOpen = newSub.lastOpen;
+	sub.description = newSub.description;
+	sub.announcement = newSub.announcement;
+	sub.topic = newSub.topic;
+	sub.blocked = newSub.blocked;
+	sub.blocker = newSub.blocker;
+	sub.reactWhenReadOnly = newSub.reactWhenReadOnly;
+	sub.archived = newSub.archived;
+	sub.joinCodeRequired = newSub.joinCodeRequired;
+	sub.notifications = newSub.notifications;
+	sub.broadcast = newSub.broadcast;
+	sub.prid = newSub.prid;
+	sub.draftMessage = newSub.draftMessage;
+	sub.lastThreadSync = newSub.lastThreadSync;
+	sub.autoTranslate = newSub.autoTranslate;
+	sub.autoTranslateLanguage = newSub.autoTranslateLanguage;
+};
+
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
 		removeSub();
 		roomsSub = yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
-		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
+		const [serverRecord] = database.databases.serversDB
+			.objects('servers')
+			.filtered('id = $0', server);
 		const { roomsUpdatedAt } = serverRecord;
-		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
-		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
+		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(
+			roomsUpdatedAt
+		);
+		const { subscriptions } = mergeSubscriptionsRooms(
+			subscriptionsResult,
+			roomsResult
+		);
 
 		database.write(() => {
 			subscriptions.forEach((subscription) => {
@@ -38,13 +85,52 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				}
 			});
 		});
-		database.databases.serversDB.write(() => {
+		yield watermelon.action(async(action) => {
+			// await action.subAction(() => watermelon.unsafeResetDatabase());
+			const subCollection = watermelon.collections.get('subscriptions');
+			const existingSubs = await subCollection.query().fetch();
+			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1.id === i2._id));
+			const subsToCreate = subscriptions.filter(
+				i1 => !existingSubs.find(i2 => i1._id === i2.id)
+			);
+			// console.log('TCL: handleRoomsRequest -> existingSubs', existingSubs);
+			// console.log('TCL: handleRoomsRequest -> subsToUpdate', subsToUpdate);
+			// console.log('TCL: handleRoomsRequest -> subsToCreate', subsToCreate);
+
+			const allRecords = [
+				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
+					s._raw = sanitizedRaw(
+						{
+							id: subscription._id
+						},
+						subCollection.schema
+					);
+					assignSub(s, subscription);
+				})),
+				...subsToUpdate.map((subscription) => {
+					const newSub = subscriptions.find(
+						s => s._id === subscription.id
+					);
+					return subscription.prepareUpdate(() => {
+						assignSub(subscription, newSub);
+					});
+				})
+			];
+			console.log(allRecords);
 			try {
-				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
+				await watermelon.batch(...allRecords);
 			} catch (e) {
-				log('err_rooms_request_update', e);
+				console.log('TCL: batch watermelon -> e', e);
 			}
+			return allRecords.length;
 		});
+		// database.databases.serversDB.write(() => {
+		// 	try {
+		// 		database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
+		// 	} catch (e) {
+		// 		log('err_rooms_request_update', e);
+		// 	}
+		// });
 
 		yield put(roomsSuccess());
 	} catch (e) {
@@ -61,7 +147,9 @@ const root = function* root() {
 	yield takeLatest(types.LOGOUT, handleLogout);
 	while (true) {
 		const params = yield take(types.ROOMS.REQUEST);
-		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		const isAuthenticated = yield select(
+			state => state.login.isAuthenticated
+		);
 		if (isAuthenticated) {
 			const roomsRequestTask = yield fork(handleRoomsRequest, params);
 			yield race({
@@ -78,3 +166,5 @@ const root = function* root() {
 	}
 };
 export default root;
+
+console.disableYellowBox = true;
