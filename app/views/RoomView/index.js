@@ -74,9 +74,9 @@ class RoomView extends React.Component {
 			),
 			headerLeft: (
 				<HeaderBackButton
-					title={unreadsCount > 999 ? '+999' : unreadsCount}
+					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 					backTitleVisible
-					onPress={navigation.goBack}
+					onPress={() => navigation.goBack()} // on Android onPress={navigation.goBack} doesn't work
 					tintColor={HEADER_BACK}
 				/>
 			)
