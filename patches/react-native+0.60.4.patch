@@ -1,9 +1,3 @@
-diff --git a/node_modules/react-native/.DS_Store b/node_modules/react-native/.DS_Store
-new file mode 100644
-index 0000000..e69de29
-diff --git a/node_modules/react-native/Libraries/.DS_Store b/node_modules/react-native/Libraries/.DS_Store
-new file mode 100644
-index 0000000..e69de29
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 index 76131fa..59804aa 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
@@ -91,7 +85,7 @@ index 76131fa..59804aa 100644
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index 6f1e5e8..91f79a9 100644
+index 6f1e5e8..f268d93 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -479,6 +479,29 @@ - (void)didConnect
@@ -140,6 +134,14 @@ index 6f1e5e8..91f79a9 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
+@@ -595,6 +627,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
+       }
+     }
+ 
++    [self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:YES];
+     [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
+   });
+ }
 diff --git a/node_modules/react-native/React/Modules/RCTRedBox.m b/node_modules/react-native/React/Modules/RCTRedBox.m
 index 7ed4900..bb85402 100644
 --- a/node_modules/react-native/React/Modules/RCTRedBox.m
