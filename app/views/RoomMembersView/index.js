@@ -18,7 +18,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { LISTENER as ACTION_SHEET_LISTENER, SNAP_POINTS } from '../ActionSheet';
+import { LISTENER as ACTION_SHEET_LISTENER } from '../ActionSheet';
 
 const PAGE_SIZE = 25;
 
@@ -160,7 +160,7 @@ class RoomMembersView extends React.Component {
 			});
 		}
 		this.setState({ userLongPressed: user });
-		EventEmitter.emit(ACTION_SHEET_LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
+		EventEmitter.emit(ACTION_SHEET_LISTENER, { options });
 	}
 
 	toggleStatus = () => {

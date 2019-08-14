@@ -33,7 +33,7 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
-import { LISTENER, SNAP_POINTS } from '../../views/ActionSheet';
+import { LISTENER } from '../../views/ActionSheet';
 import EventEmitter from '../../utils/events';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
@@ -553,7 +553,7 @@ class MessageBox extends Component {
 	}
 
 	showFileActions = () => {
-		EventEmitter.emit(LISTENER, { options: this.options, snapPoint: SNAP_POINTS.FULL });
+		EventEmitter.emit(LISTENER, { options: this.options });
 	}
 
 	editCancel = () => {

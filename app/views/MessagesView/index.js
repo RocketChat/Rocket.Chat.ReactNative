@@ -13,7 +13,7 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import FileModal from '../../containers/FileModal';
-import { LISTENER, SNAP_POINTS } from '../ActionSheet';
+import { LISTENER } from '../ActionSheet';
 import EventEmitter from '../../utils/events';
 
 class MessagesView extends React.Component {
@@ -203,7 +203,7 @@ class MessagesView extends React.Component {
 		const options = [
 			{ label: this.content.actionTitle, handler: () => this.handleActionPress(), icon: this.content.icon }
 		];
-		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
+		EventEmitter.emit(LISTENER, { options });
 	}
 
 	handleActionPress = async() => {

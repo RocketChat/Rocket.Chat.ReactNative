@@ -9672,6 +9672,11 @@ react-native-modal@^9.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
 
+react-native-modalize@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-1.2.1.tgz#7c42f5ed22e1fa21314afa5b634c7e39d514a9f9"
+  integrity sha512-j3+uJB0UtlSeQbwDZ+DEcvyUYN4vfZt4bczwPdG2NAoMbePSNV4iWcD6co0UonDuHZAcD0G9xZU6PU/wSGjGRQ==
+
 react-native-notifications@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.0.6.tgz#5355fad1ea53327fb00fd5e8a6570279fe32f2a9"

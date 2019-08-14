@@ -43,8 +43,9 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { getMessageTranslation } from '../../containers/message/utils';
-import { LISTENER, SNAP_POINTS } from '../ActionSheet';
+import { LISTENER as ACTION_SHEET_LISTENER } from '../ActionSheet';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { LISTENER } from '../../containers/Toast';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -358,7 +359,7 @@ class RoomView extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({ label: I18n.t('Read_Receipt'), handler: () => this.handleReadReceipt(item), icon: 'flag' });
 		}
-		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
+		EventEmitter.emit(ACTION_SHEET_LISTENER, { options });
 	}
 
 	onOpenFileModal = (attachment) => {
@@ -429,7 +430,7 @@ class RoomView extends React.Component {
 				label: I18n.t('Delete'), handler: () => this.handleResendDelete(item), icon: 'cross', isDanger: true
 			}
 		];
-		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
+		EventEmitter.emit(LISTENER, { options });
 	}
 
 	handleConnected = () => {
