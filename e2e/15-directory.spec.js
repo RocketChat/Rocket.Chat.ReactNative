@@ -15,7 +15,7 @@ describe('Directory', () => {
 			await expect(element(by.id('directory-view'))).toBeVisible();
     });
 
-		it('should display directory screen', async() => {
+		it('should display directory screen search input', async() => {
 			await expect(element(by.id('directory-view-search'))).toBeVisible();
 		});
 
@@ -56,8 +56,6 @@ describe('Directory', () => {
 		});
 
 		it('should search user and open room view', async() => {
-			const userName = 'Rocket.Cat';
-			const userNickName = 'rocket.cat';
 			// check filter drop-down value = Channels
 			await waitFor(element(by.id('directory-view-filter-text'))).toHaveValue('Channels').withTimeout(2000);
 			// change filter to Users
@@ -67,16 +65,16 @@ describe('Directory', () => {
 			await waitFor(element(by.id('directory-view-filter-text'))).toHaveValue('Users').withTimeout(2000);
 			// search user rocket.cat
 			await element(by.id('directory-view-search')).tap();
-			await element(by.id('directory-view-search')).typeText(`${userName}\n`);
+			await element(by.id('directory-view-search')).typeText('Rocket.Cat\n');
 			await sleep(2000);
-			await waitFor(element(by.id(`directory-view-list-item-${userName}`))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id(`directory-view-list-item-${userName}`))).toBeVisible();
+			await waitFor(element(by.id('directory-view-list-item-Rocket.Cat'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('directory-view-list-item-Rocket.Cat'))).toBeVisible();
 			// go to Room View
-			await element(by.id(`directory-view-list-item-${userName}`)).tap();
+			await element(by.id('directory-view-list-item-Rocket.Cat')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.text(userNickName))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text(userNickName))).toBeVisible();
+			await waitFor(element(by.text('rocket.cat'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.text('rocket.cat'))).toBeVisible();
 			// return back to directory view
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
