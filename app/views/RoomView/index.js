@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, InteractionManager
+	Text, View, LayoutAnimation, InteractionManager, Alert, Clipboard, Share
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
@@ -13,18 +13,19 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
-	actionsShow as actionsShowAction,
-	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction,
-	replyBroadcast as replyBroadcastAction
+	replyBroadcast as replyBroadcastAction,
+	deleteRequest as deleteRequestAction,
+	editInit as editInitAction,
+	replyInit as replyInitAction,
+	togglePinRequest as togglePinRequestAction,
+	toggleStarRequest as toggleStarRequestAction
 } from '../../actions/messages';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
-import MessageActions from '../../containers/MessageActions';
-import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
@@ -41,7 +42,8 @@ import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { LISTENER } from '../../containers/Toast';
+import { getMessageTranslation } from '../../containers/message/utils';
+import { LISTENER, SNAP_POINTS } from '../ActionSheet';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
 class RoomView extends React.Component {
@@ -83,7 +85,6 @@ class RoomView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
 		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
@@ -97,11 +98,21 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		useMarkdown: PropTypes.bool,
 		toggleReactionPicker: PropTypes.func,
-		actionsShow: PropTypes.func,
 		editCancel: PropTypes.func,
 		replyCancel: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		errorActionsShow: PropTypes.func
+		deleteRequest: PropTypes.func.isRequired,
+		editInit: PropTypes.func.isRequired,
+		toggleStarRequest: PropTypes.func.isRequired,
+		togglePinRequest: PropTypes.func.isRequired,
+		replyInit: PropTypes.func.isRequired,
+		Message_AllowDeleting: PropTypes.bool,
+		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
+		Message_AllowEditing: PropTypes.bool,
+		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
+		Message_AllowPinning: PropTypes.bool,
+		Message_AllowStarring: PropTypes.bool,
+		Message_Read_Receipt_Store_Users: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -158,7 +169,7 @@ class RoomView extends React.Component {
 		const {
 			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
 		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+		const { showErrorActions, appState } = this.props;
 
 		if (lastOpen !== nextState.lastOpen) {
 			return true;
@@ -179,8 +190,6 @@ class RoomView extends React.Component {
 		} else if (joined !== nextState.joined) {
 			return true;
 		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-			return true;
-		} else if (showActions !== nextProps.showActions) {
 			return true;
 		} else if (showErrorActions !== nextProps.showErrorActions) {
 			return true;
@@ -287,9 +296,69 @@ class RoomView extends React.Component {
 		}
 	}
 
-	onMessageLongPress = (message) => {
-		const { actionsShow } = this.props;
-		actionsShow({ ...message, rid: this.rid });
+	onMessageLongPress = (item) => {
+		const {
+			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user
+		} = this.props;
+		// eslint-disable-next-line react/destructuring-assignment
+		const { archived, autoTranslate } = this.state.room;
+		if (this.isInfo || this.hasError || archived) {
+			return;
+		}
+		const options = [
+			{ label: I18n.t('Permalink'), handler: () => this.handlePermalink(item), icon: 'permalink' },
+			{ label: I18n.t('Copy'), handler: () => this.handleCopy(item), icon: 'copy' },
+			{ label: I18n.t('Share'), handler: () => this.handleShare(item), icon: 'share' }
+		];
+
+		// Reply
+		if (!this.isRoomReadOnly()) {
+			options.push({ label: I18n.t('Reply'), handler: () => this.handleReply(item), icon: 'reply' });
+		}
+
+		// Edit
+		if (this.allowEdit(item)) {
+			options.push({ label: I18n.t('Edit'), handler: () => this.handleEdit(item), icon: 'edit' });
+		}
+		// Quote
+		if (!this.isRoomReadOnly()) {
+			options.push({ label: I18n.t('Quote'), handler: () => this.handleQuote(item), icon: 'quote' });
+		}
+		// Star
+		if (Message_AllowStarring) {
+			options.push({ label: I18n.t(item && item.starred ? 'Unstar' : 'Star'), handler: () => this.handleStar(item), icon: 'star' });
+		}
+		// Pin
+		if (Message_AllowPinning) {
+			options.push({ label: I18n.t(item && item.pinned ? 'Unpin' : 'Pin'), handler: () => this.handlePin(item), icon: 'pin' });
+		}
+
+		// Reaction
+		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
+			options.push({ label: I18n.t('Add_Reaction'), handler: () => this.handleReaction(item), icon: 'emoji' });
+		}
+		// Delete
+		if (this.allowDelete(item)) {
+			options.push({
+				label: I18n.t('Delete'), handler: () => this.handleDelete(item), icon: 'cross', isDanger: true
+			});
+		}
+
+		// Report
+		options.push({
+			label: I18n.t('Report'), handler: () => this.handleReport(item), icon: 'flag', isDanger: true
+		});
+
+		// Toggle - translate
+		if (autoTranslate && item.u && item.u._id !== user.id) {
+			options.push({ lable: I18n.t(item.autoTranslate ? 'View_Original' : 'Translate'), handler: () => this.handleToggleTranslation(item), icon: 'flag' });
+		}
+
+		// Read Receipts
+		if (Message_Read_Receipt_Store_Users) {
+			options.push({ label: I18n.t('Read_Receipt'), handler: () => this.handleReadReceipt(item), icon: 'flag' });
+		}
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	onOpenFileModal = (attachment) => {
@@ -353,9 +422,14 @@ class RoomView extends React.Component {
 		replyBroadcast(message);
 	}
 
-	errorActionsShow = (message) => {
-		const { errorActionsShow } = this.props;
-		errorActionsShow(message);
+	errorActionsShow = (item) => {
+		const options = [
+			{ label: I18n.t('Resend'), handler: () => this.handleResend(item), icon: 'reply' },
+			{
+				label: I18n.t('Delete'), handler: () => this.handleResendDelete(item), icon: 'cross', isDanger: true
+			}
+		];
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	handleConnected = () => {
@@ -452,6 +526,203 @@ class RoomView extends React.Component {
 		}
 	}
 
+	parseMessage = item => JSON.parse(JSON.stringify(item));
+
+	getPermalink = async(message) => {
+		try {
+			return await RocketChat.getPermalinkMessage(message);
+		} catch (error) {
+			return null;
+		}
+	}
+
+	isOwn = (item, user) => item.u && item.u._id === user.id;
+
+	isRoomReadOnly = () => {
+		const { room } = this.state;
+		return room.ro;
+	}
+
+	canReactWhenReadOnly = () => {
+		const { room } = this.state;
+		return room.reactWhenReadOnly;
+	}
+
+	allowEdit = (item) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
+		const { user } = this.props;
+		const editOwn = this.isOwn(item, user);
+		const { Message_AllowEditing: isEditAllowed, Message_AllowEditing_BlockEditInMinutes } = this.props;
+
+		if (!(this.hasEditPermission || (isEditAllowed && editOwn))) {
+			return false;
+		}
+
+		const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
+		if (blockEditInMinutes) {
+			let msgTs;
+			if (item.ts != null) {
+				msgTs = moment(item.ts);
+			}
+			let currentTsDiff;
+			if (msgTs != null) {
+				currentTsDiff = moment().diff(msgTs, 'minutes');
+			}
+			return currentTsDiff < blockEditInMinutes;
+		}
+		return true;
+	}
+
+	allowDelete = (item) => {
+		if (this.isRoomReadOnly()) {
+			return false;
+		}
+		const {
+			Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes, user
+		} = this.props;
+
+		// Prevent from deleting thread start message when positioned inside the thread
+		if (this.tmid && this.tmid === item._id) {
+			return false;
+		}
+		const deleteOwn = this.isOwn(item, user);
+		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
+			return false;
+		}
+		if (this.hasForceDeletePermission) {
+			return true;
+		}
+		const blockDeleteInMinutes = Message_AllowDeleting_BlockDeleteInMinutes;
+		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
+			let msgTs;
+			if (item.ts != null) {
+				msgTs = moment(item.ts);
+			}
+			let currentTsDiff;
+			if (msgTs != null) {
+				currentTsDiff = moment().diff(msgTs, 'minutes');
+			}
+			return currentTsDiff < blockDeleteInMinutes;
+		}
+		return true;
+	}
+
+	handleDelete = (item) => {
+		const { deleteRequest } = this.props;
+		Alert.alert(
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('You_will_not_be_able_to_recover_this_message'),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Yes_action_it', { action: 'delete' }),
+					style: 'destructive',
+					onPress: () => deleteRequest(item)
+				}
+			],
+			{ cancelable: false }
+		);
+	}
+
+	handleResend = async(item) => {
+		try {
+			await RocketChat.resendMessage(item._id);
+		} catch (err) {
+			log('err_resend_message', err);
+		}
+	}
+
+	handleResendDelete = (item) => {
+		database.write(() => {
+			const msg = database.objects('messages').filtered('_id = $0', item._id);
+			database.delete(msg);
+		});
+	}
+
+	handleEdit = (item) => {
+		const { editInit } = this.props;
+		const { _id, msg, rid } = item;
+		editInit({ _id, msg, rid });
+	}
+
+	handleCopy = async(item) => {
+		await Clipboard.setString(item.msg);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+	}
+
+	handleShare = async(item) => {
+		const permalink = await this.getPermalink(item);
+		Share.share({
+			message: permalink
+		});
+	};
+
+	handleStar = (item) => {
+		const { toggleStarRequest } = this.props;
+		toggleStarRequest(item);
+	}
+
+	handlePermalink = async(item) => {
+		const permalink = await this.getPermalink(item);
+		Clipboard.setString(permalink);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
+	}
+
+	handlePin = (item) => {
+		const { togglePinRequest } = this.props;
+		togglePinRequest(item);
+	}
+
+	handleReply = (item) => {
+		const { replyInit } = this.props;
+		replyInit(item, true);
+	}
+
+	handleQuote = (item) => {
+		const { replyInit } = this.props;
+		replyInit(item, false);
+	}
+
+	handleReaction = (item) => {
+		this.toggleReactionPicker(this.parseMessage(item));
+	}
+
+	handleReadReceipt = (item) => {
+		const { navigation } = this.props;
+		navigation.navigate('ReadReceiptsView', { messageId: item._id });
+	}
+
+	handleReport = async(item) => {
+		try {
+			await RocketChat.reportMessage(item._id);
+			Alert.alert(I18n.t('Message_Reported'));
+		} catch (err) {
+			log('err_report_message', err);
+		}
+	}
+
+	handleToggleTranslation = async(item) => {
+		const { room } = this.state;
+		try {
+			const message = database.objectForPrimaryKey('messages', item._id);
+			database.write(() => {
+				message.autoTranslate = !message.autoTranslate;
+				message._updatedAt = new Date();
+			});
+			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
+			if (!translatedMessage) {
+				await RocketChat.translateMessage(item, room.autoTranslateLanguage);
+			}
+		} catch (err) {
+			log('err_toggle_translation', err);
+		}
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -485,7 +756,6 @@ class RoomView extends React.Component {
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
 				onReactionLongPress={this.onReactionLongPress}
-				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				onOpenFileModal={this.onOpenFileModal}
@@ -493,6 +763,7 @@ class RoomView extends React.Component {
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
 				baseUrl={baseUrl}
+				onLongPress={this.onMessageLongPress}
 				Message_GroupingPeriod={Message_GroupingPeriod}
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
@@ -500,6 +771,7 @@ class RoomView extends React.Component {
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
+				room={room}
 			/>
 		);
 
@@ -563,25 +835,6 @@ class RoomView extends React.Component {
 		);
 	};
 
-	renderActions = () => {
-		const { room } = this.state;
-		const {
-			user, showActions, showErrorActions, navigation
-		} = this.props;
-		if (!navigation.isFocused()) {
-			return null;
-		}
-		return (
-			<React.Fragment>
-				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} />
-					: null
-				}
-				{showErrorActions ? <MessageErrorActions /> : null}
-			</React.Fragment>
-		);
-	}
-
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -595,7 +848,6 @@ class RoomView extends React.Component {
 				<StatusBar />
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
-				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
 				<FileModal
@@ -635,16 +887,26 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
+	Message_AllowDeleting: state.settings.Message_AllowDeleting,
+	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
+	Message_AllowEditing: state.settings.Message_AllowEditing,
+	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
+	Message_AllowPinning: state.settings.Message_AllowPinning,
+	Message_AllowStarring: state.settings.Message_AllowStarring,
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 });
 
 const mapDispatchToProps = dispatch => ({
 	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+	deleteRequest: message => dispatch(deleteRequestAction(message)),
+	editInit: message => dispatch(editInitAction(message)),
+	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
+	togglePinRequest: message => dispatch(togglePinRequestAction(message)),
+	replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomView);

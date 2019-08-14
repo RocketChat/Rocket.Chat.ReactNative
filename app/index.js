@@ -17,6 +17,7 @@ import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import Toast from './containers/Toast';
+import ActionSheet from './views/ActionSheet';
 
 useScreens();
 
@@ -232,6 +233,7 @@ class CustomInsideStack extends React.Component {
 			<React.Fragment>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
+				<ActionSheet />
 				<Toast />
 			</React.Fragment>
 		);

@@ -8754,7 +8754,7 @@ pad-component@0.0.1:
   resolved "https://registry.yarnpkg.com/pad-component/-/pad-component-0.0.1.tgz#ad1f22ce1bf0fdc0d6ddd908af17f351a404b8ac"
   integrity sha1-rR8izhvw/cDW3dkIrxfzUaQEuKw=
 
-"paho-mqtt@github:eclipse/paho.mqtt.javascript#master":
+paho-mqtt@eclipse/paho.mqtt.javascript#master:
   version "1.1.0"
   resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/f5859463aba9a9b7c19f99ab7c4849a723f8d832"
 
@@ -9709,6 +9709,11 @@ react-native-realm-path@^1.2.11:
   resolved "https://registry.yarnpkg.com/react-native-realm-path/-/react-native-realm-path-1.2.11.tgz#5380add5b0975d9ccc185a1f680825d8bf23bc78"
   integrity sha512-kK8tPW14KwsmZUVb+mKXjbaQ/qBlYLUO5knZrOOSt4Xx0VZk+julJbEVUh+tD3g4xllGhrMrrnmQl3Gm0B/+eA==
 
+react-native-reanimated@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.2.0.tgz#9219227a52a5dfa4d34c324596d6726ccd874293"
+  integrity sha512-vkWRHrPK5qfHP/ZawlRoo38oeYe9NZaaOH/lmFxRcsKzaSK6x3H5ZPXI8lK6MfTLveqwo1QhJje3zIKXO4nQQw==
+
 react-native-responsive-ui@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-responsive-ui/-/react-native-responsive-ui-1.1.1.tgz#eb41839d4f3951ff025660185c36a9a9ce33759f"
@@ -10170,6 +10175,11 @@ realpath-native@^1.1.0:
   integrity sha512-wlgPA6cCIIg9gKz0fgAPjnzh4yR/LnXovwuo9hvyGvx3h8nX4+/iLZplfUWasXpqD8BdnGnP5njOFjkUwPzvjA==
   dependencies:
     util.promisify "^1.0.0"
+
+reanimated-bottom-sheet@^1.0.0-alpha.13:
+  version "1.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/reanimated-bottom-sheet/-/reanimated-bottom-sheet-1.0.0-alpha.13.tgz#15a585ced256dd9d3c8450016a5acb263e29dcb9"
+  integrity sha512-RuZ2riqZiWhSNDOpKmOD7JYtDS2ygTAPCDEQ9qVmBsQ/1RuJ1sh8WZRWuqdNFqExG8u2ZCj/dGg5hPAS1CtU5Q==
 
 recompose@^0.30.0:
   version "0.30.0"

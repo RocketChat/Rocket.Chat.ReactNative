@@ -4,7 +4,6 @@ import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message/Message';
@@ -14,9 +13,8 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import FileModal from '../../containers/FileModal';
-
-const ACTION_INDEX = 0;
-const CANCEL_INDEX = 1;
+import { LISTENER, SNAP_POINTS } from '../ActionSheet';
+import EventEmitter from '../../utils/events';
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -80,6 +78,7 @@ class MessagesView extends React.Component {
 			// Files Messages Screen
 			Files: {
 				name: I18n.t('Files'),
+				icon: 'file-generic',
 				fetchFunc: async() => {
 					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
 					return { ...result, messages: result.files };
@@ -104,6 +103,7 @@ class MessagesView extends React.Component {
 			// Mentions Messages Screen
 			Mentions: {
 				name: I18n.t('Mentions'),
+				icon: 'at',
 				fetchFunc: () => RocketChat.getMessages(
 					this.rid,
 					this.t,
@@ -122,6 +122,7 @@ class MessagesView extends React.Component {
 			// Starred Messages Screen
 			Starred: {
 				name: I18n.t('Starred'),
+				icon: 'star',
 				fetchFunc: () => RocketChat.getMessages(
 					this.rid,
 					this.t,
@@ -143,6 +144,7 @@ class MessagesView extends React.Component {
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
+				icon: 'pin',
 				fetchFunc: () => RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length),
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
@@ -198,30 +200,25 @@ class MessagesView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: [this.content.actionTitle, I18n.t('Cancel')],
-			cancelButtonIndex: CANCEL_INDEX,
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		const options = [
+			{ label: this.content.actionTitle, handler: () => this.handleActionPress(), icon: this.content.icon }
+		];
+		EventEmitter.emit(LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
-	handleActionPress = async(actionIndex) => {
-		if (actionIndex === ACTION_INDEX) {
-			const { message } = this.state;
+	handleActionPress = async() => {
+		const { message } = this.state;
 
-			try {
-				const result = await this.content.handleActionPress(message);
-				if (result.success) {
-					this.setState(prevState => ({
-						messages: prevState.messages.filter(item => item._id !== message._id),
-						total: prevState.total - 1
-					}));
-				}
-			} catch (error) {
-				console.warn('MessagesView -> handleActionPress -> catch -> error', error);
+		try {
+			const result = await this.content.handleActionPress(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id),
+					total: prevState.total - 1
+				}));
 			}
+		} catch (error) {
+			console.warn('MessagesView -> handleActionPress -> catch -> error', error);
 		}
 	}
 

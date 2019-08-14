@@ -155,7 +155,7 @@ PODS:
     - React
   - react-native-keyboard-tracking-view (5.5.0):
     - React
-  - react-native-notifications (2.0.3):
+  - react-native-notifications (2.0.6):
     - React
   - react-native-orientation-locker (1.1.6):
     - React
@@ -223,6 +223,8 @@ PODS:
     - React-RCTImage
     - RSKImageCropper
   - RNLocalize (1.1.4):
+    - React
+  - RNReanimated (1.2.0):
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
@@ -300,6 +302,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNUserDefaults (from `../node_modules/rn-user-defaults`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -432,6 +435,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNUserDefaults:
@@ -510,7 +515,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
-  react-native-notifications: 3385ff44e246c62e0eabe7ee414fc5e2e6a61fec
+  react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -535,6 +540,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNImageCropPicker: 0a731d984e64ee4c28bddaa7ce52262e4b80979f
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
+  RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   RNUserDefaults: 8a4928443510aa99e4ccb3b53f1bf186593d690b
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
@@ -557,4 +563,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c9c0e4d6e34886493451eb2fdba48bc7e89d4551
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.7.2

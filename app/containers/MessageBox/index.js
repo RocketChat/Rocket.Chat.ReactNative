@@ -9,7 +9,6 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
@@ -34,6 +33,8 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
+import { LISTENER, SNAP_POINTS } from '../../views/ActionSheet';
+import EventEmitter from '../../utils/events';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -57,12 +58,6 @@ const libraryPickerConfig = {
 const videoPickerConfig = {
 	mediaType: 'video'
 };
-
-const FILE_CANCEL_INDEX = 0;
-const FILE_PHOTO_INDEX = 1;
-const FILE_VIDEO_INDEX = 2;
-const FILE_LIBRARY_INDEX = 3;
-const FILE_DOCUMENT_INDEX = 4;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -109,12 +104,11 @@ class MessageBox extends Component {
 		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
-		this.fileOptions = [
-			I18n.t('Cancel'),
-			I18n.t('Take_a_photo'),
-			I18n.t('Take_a_video'),
-			I18n.t('Choose_from_library'),
-			I18n.t('Choose_file')
+		this.options = [
+			{ label: I18n.t('Take_a_photo'), handler: () => this.takePhoto(), icon: 'video' },
+			{ label: I18n.t('Take_a_video'), handler: () => this.takeVideo(), icon: 'video' },
+			{ label: I18n.t('Choose_from_library'), handler: () => this.chooseFromLibrary(), icon: 'file-generic' },
+			{ label: I18n.t('Choose_file'), handler: () => this.chooseFile(), icon: 'file-generic' }
 		];
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -559,31 +553,7 @@ class MessageBox extends Component {
 	}
 
 	showFileActions = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.fileOptions,
-			cancelButtonIndex: FILE_CANCEL_INDEX
-		}, (actionIndex) => {
-			this.handleFileActionPress(actionIndex);
-		});
-	}
-
-	handleFileActionPress = (actionIndex) => {
-		switch (actionIndex) {
-			case FILE_PHOTO_INDEX:
-				this.takePhoto();
-				break;
-			case FILE_VIDEO_INDEX:
-				this.takeVideo();
-				break;
-			case FILE_LIBRARY_INDEX:
-				this.chooseFromLibrary();
-				break;
-			case FILE_DOCUMENT_INDEX:
-				this.chooseFile();
-				break;
-			default:
-				break;
-		}
+		EventEmitter.emit(LISTENER, { options: this.options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	editCancel = () => {

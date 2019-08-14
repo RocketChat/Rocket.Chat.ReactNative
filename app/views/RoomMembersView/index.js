@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, ActivityIndicator } from 'react-native';
-import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import * as Haptics from 'expo-haptics';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -20,6 +18,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { LISTENER as ACTION_SHEET_LISTENER, SNAP_POINTS } from '../ActionSheet';
 
 const PAGE_SIZE = 25;
 
@@ -55,7 +54,6 @@ class RoomMembersView extends React.Component {
 
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
-		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
@@ -149,17 +147,20 @@ class RoomMembersView extends React.Component {
 		const { room } = this.state;
 		const { muted } = room;
 
-		this.actionSheetOptions = [I18n.t('Cancel')];
+		const options = [];
 		const userIsMuted = !!muted.find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
-			this.actionSheetOptions.push(I18n.t('Unmute'));
+			options.push({
+				label: I18n.t('Unmute'), handler: () => this.handleMute(), icon: 'bell'
+			});
 		} else {
-			this.actionSheetOptions.push(I18n.t('Mute'));
+			options.push({
+				label: I18n.t('Mute'), handler: () => this.handleMute(), icon: 'Bell-off'
+			});
 		}
 		this.setState({ userLongPressed: user });
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		this.showActionSheet();
+		EventEmitter.emit(ACTION_SHEET_LISTENER, { options, snapPoint: SNAP_POINTS.FULL });
 	}
 
 	toggleStatus = () => {
@@ -171,16 +172,6 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log('err_toggle_status', e);
 		}
-	}
-
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.actionSheetOptions,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
 	}
 
 	// eslint-disable-next-line react/sort-comp
