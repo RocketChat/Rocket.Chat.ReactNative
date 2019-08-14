@@ -173,7 +173,7 @@ class RoomActionsView extends React.Component {
 
 		const notificationsAction = {
 			icon: 'bell',
-			name: 'Notifications',
+			name: I18n.t('Notifications'),
 			route: 'NotificationPrefView',
 			params: { rid },
 			testID: 'room-actions-notifications'

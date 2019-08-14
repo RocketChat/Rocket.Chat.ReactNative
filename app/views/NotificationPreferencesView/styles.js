@@ -11,14 +11,18 @@ export default StyleSheet.create({
 	infoText: {
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorNormal,
-		fontSize: 14,
+		fontSize: 13,
 		paddingHorizontal: 15,
+		paddingVertical: 10,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	},
 	sectionTitle: {
 		...sharedStyles.separatorBottom,
 		paddingHorizontal: 15,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		paddingVertical: 10,
+		fontSize: 14,
+		...sharedStyles.textColorNormal
 	},
 	viewContainer: {
 		justifyContent: 'center'
