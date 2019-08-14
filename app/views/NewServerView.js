@@ -185,28 +185,6 @@ class NewServerView extends React.Component {
 		return url.replace(/\/+$/, '');
 	}
 
-	renderBack = () => {
-		const { navigation } = this.props;
-
-		let top = 15;
-		if (isIOS) {
-			top = isNotch ? 45 : 30;
-		}
-
-		return (
-			<TouchableOpacity
-				style={[styles.backButton, { top }]}
-				onPress={() => navigation.pop()}
-			>
-				<CustomIcon
-					name='back'
-					size={30}
-					color={COLOR_PRIMARY}
-				/>
-			</TouchableOpacity>
-		);
-	}
-
 	uriToPath = uri => uri.replace('file://', '');
 
 	saveCertificate = async() => {
@@ -221,10 +199,9 @@ class NewServerView extends React.Component {
 	}
 
 	handleDelete = async() => {
-		const { name } = this.state;
-		const certificatePath = `${ RNFetchBlob.fs.dirs.DocumentDir }/${ name }`;
+		const { path } = this.state;
 		try {
-			await RNFetchBlob.fs.unlink(certificatePath);
+			await RNFetchBlob.fs.unlink(path);
 		} catch (error) {
 			log('err_remove_certificate', error);
 		}
@@ -251,6 +228,28 @@ class NewServerView extends React.Component {
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
+	}
+
+	renderBack = () => {
+		const { navigation } = this.props;
+
+		let top = 15;
+		if (isIOS) {
+			top = isNotch ? 45 : 30;
+		}
+
+		return (
+			<TouchableOpacity
+				style={[styles.backButton, { top }]}
+				onPress={() => navigation.pop()}
+			>
+				<CustomIcon
+					name='back'
+					size={30}
+					color={COLOR_PRIMARY}
+				/>
+			</TouchableOpacity>
+		);
 	}
 
 	renderCertificatePassword = () => {
