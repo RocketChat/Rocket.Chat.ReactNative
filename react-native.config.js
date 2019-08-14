@@ -14,6 +14,12 @@ module.exports = {
 			platforms: {
 				android: null
 			}
+		},
+		'@nozbe/watermelondb': {
+			platforms: {
+				android: null,
+				ios: null
+			}
 		}
 	}
 };

@@ -21,6 +21,8 @@
     }
   },
   "dependencies": {
+    "@nozbe/watermelondb": "^0.14.0",
+    "@nozbe/with-observables": "^1.0.5",
     "@rocket.chat/sdk": "1.0.0-alpha.30",
     "deep-equal": "^1.0.1",
     "ejson": "2.2.0",
@@ -91,6 +93,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/runtime": "^7.5.5",
     "@storybook/addon-actions": "5.1.10",
     "@storybook/addon-links": "5.1.10",

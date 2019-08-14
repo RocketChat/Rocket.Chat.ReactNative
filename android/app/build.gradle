@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
 
@@ -202,6 +203,7 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
+    implementation project(':watermelondb')
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation fileTree(dir: "libs", include: ["*.jar"])
