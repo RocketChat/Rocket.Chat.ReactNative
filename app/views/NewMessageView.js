@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, TextInput, Image
+	View, StyleSheet, FlatList, Text, TextInput, Image, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -125,12 +125,14 @@ export default class NewMessageView extends React.Component {
 			<View style={styles.headerContainer}>
 				<View style={styles.headerContainer2}>
 					<View style={styles.backButtonContainer}>
-						<Image
-							source={require('../../icons/ios-filled-back.png')}
-							resizeMode='contain'
-							style={styles.backButtonImage}
-						/>
-						<Text style={styles.backButtonText}>Messages</Text>
+						<TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.pop()}>
+							<Image
+								source={require('../../icons/ios-filled-back.png')}
+								resizeMode='contain'
+								style={styles.backButtonImage}
+							/>
+							<Text style={styles.backButtonText}>Messages</Text>
+						</TouchableOpacity>
 					</View>
 					<View style={styles.headerTitleContainer}>
 						<Text style={styles.headerTitleText}>{I18n.t('New_Message')}</Text>
