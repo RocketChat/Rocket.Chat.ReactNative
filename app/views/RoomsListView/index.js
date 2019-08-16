@@ -4,10 +4,12 @@ import {
 	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
-import { isEqual } from 'lodash';
+import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
+import withObservables from '@nozbe/with-observables';
 
+import watermelon from '../../lib/database';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -30,6 +32,7 @@ import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/Header
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { Q } from '@nozbe/watermelondb';
 
 const SCROLL_OFFSET = 56;
 
@@ -146,31 +149,31 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// eslint-disable-next-line react/destructuring-assignment
-		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-		if (propsUpdated) {
-			return true;
-		}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+	// 	if (propsUpdated) {
+	// 		return true;
+	// 	}
 
-		const { loading, searching, width } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.searching !== searching) {
-			return true;
-		}
+	// 	const { loading, searching, width } = this.state;
+	// 	if (nextState.loading !== loading) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.searching !== searching) {
+	// 		return true;
+	// 	}
 
-		if (nextState.width !== width) {
-			return true;
-		}
+	// 	if (nextState.width !== width) {
+	// 		return true;
+	// 	}
 
-		const { search } = this.state;
-		if (!isEqual(nextState.search, search)) {
-			return true;
-		}
-		return false;
-	}
+	// 	const { search } = this.state;
+	// 	if (!isEqual(nextState.search, search)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const {
@@ -261,27 +264,28 @@ class RoomsListView extends React.Component {
 			} else {
 				this.chats = this.data;
 			}
-			safeAddListener(this.data, this.updateState);
+			// safeAddListener(this.data, this.updateState);
+			this.setState({ loading: false })
 		}
 	}, 300);
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-			this.internalSetState({
-				chats: this.chats ? this.chats.slice() : [],
-				unread: this.unread ? this.unread.slice() : [],
-				favorites: this.favorites ? this.favorites.slice() : [],
-				discussions: this.discussions ? this.discussions.slice() : [],
-				channels: this.channels ? this.channels.slice() : [],
-				privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
-				direct: this.direct ? this.direct.slice() : [],
-				livechat: this.livechat ? this.livechat.slice() : [],
-				loading: false
-			});
-			this.forceUpdate();
-		});
-	}, 300);
+	// updateState = debounce(() => {
+	// 	this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
+	// 		this.internalSetState({
+	// 			chats: this.chats ? this.chats.slice() : [],
+	// 			unread: this.unread ? this.unread.slice() : [],
+	// 			favorites: this.favorites ? this.favorites.slice() : [],
+	// 			discussions: this.discussions ? this.discussions.slice() : [],
+	// 			channels: this.channels ? this.channels.slice() : [],
+	// 			privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
+	// 			direct: this.direct ? this.direct.slice() : [],
+	// 			livechat: this.livechat ? this.livechat.slice() : [],
+	// 			loading: false
+	// 		});
+	// 		this.forceUpdate();
+	// 	});
+	// }, 300);
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
@@ -451,37 +455,38 @@ class RoomsListView extends React.Component {
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
-		if (item.search || (item.isValid && item.isValid())) {
-			return (
-				<RoomItem
-					alert={item.alert}
-					unread={item.unread}
-					userMentions={item.userMentions}
-					isRead={this.getIsRead(item)}
-					favorite={item.f}
-					lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
-					name={this.getRoomTitle(item)}
-					_updatedAt={item.roomUpdatedAt}
-					key={item._id}
-					id={id}
-					userId={userId}
-					username={username}
-					token={token}
-					rid={item.rid}
-					type={item.t}
-					baseUrl={baseUrl}
-					prid={item.prid}
-					showLastMessage={StoreLastMessage}
-					onPress={() => this._onPressItem(item)}
-					testID={`rooms-list-view-item-${ item.name }`}
-					width={width}
-					toggleFav={this.toggleFav}
-					toggleRead={this.toggleRead}
-					hideChannel={this.hideChannel}
-				/>
-			);
-		}
-		return null;
+		// if (item.search || (item.isValid && item.isValid())) {
+		return (
+			<RoomItem
+				item={item}
+				alert={item.alert}
+				unread={item.unread}
+				userMentions={item.userMentions}
+				isRead={this.getIsRead(item)}
+				favorite={item.f}
+				lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+				name={this.getRoomTitle(item)}
+				// _updatedAt={item.roomUpdatedAt}
+				key={item._id}
+				id={id}
+				userId={userId}
+				username={username}
+				token={token}
+				rid={item.rid}
+				type={item.t}
+				baseUrl={baseUrl}
+				prid={item.prid}
+				showLastMessage={StoreLastMessage}
+				onPress={() => this._onPressItem(item)}
+				testID={`rooms-list-view-item-${ item.name }`}
+				width={width}
+				toggleFav={this.toggleFav}
+				toggleRead={this.toggleRead}
+				hideChannel={this.hideChannel}
+			/>
+		);
+		// }
+		// return null;
 	}
 
 	renderSectionHeader = header => (
@@ -566,13 +571,16 @@ class RoomsListView extends React.Component {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
-		const { showUnread, showFavorites, groupByType } = this.props;
+		const { showUnread, showFavorites, groupByType, subscriptions } = this.props;
 		if (!(showUnread || showFavorites || groupByType)) {
-			const { chats, search } = this.state;
+			// const { chats, search } = this.state;
+			const sortedSubscriptions = orderBy(subscriptions, ['roomUpdatedAt'], ['desc']);
 			return (
 				<FlatList
 					ref={this.getScrollRef}
-					data={search.length ? search : chats}
+					data={sortedSubscriptions}
+					extraData={sortedSubscriptions}
+					// data={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
@@ -657,4 +665,15 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
+const enhance = withObservables(['db'], ({ db }) => ({
+	subscriptions: db.collections
+		.get('subscriptions')
+		.query()
+		.observeWithColumns(['room_updated_at'])
+}));
+
+const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProps)(RoomsListView));
+
+const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
+
+export default Root;

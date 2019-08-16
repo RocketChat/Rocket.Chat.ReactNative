@@ -13,12 +13,13 @@ import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
 import { LeftActions, RightActions } from './Actions';
+import withObservables from '@nozbe/with-observables';
 
 export { ROW_HEIGHT };
 
 const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width', 'isRead', 'favorite'];
 
-export default class RoomItem extends React.Component {
+class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
@@ -69,20 +70,20 @@ export default class RoomItem extends React.Component {
 		this._value = 0;
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt } = this.props;
-		const oldlastMessage = lastMessage;
-		const newLastmessage = nextProps.lastMessage;
+	// shouldComponentUpdate(nextProps) {
+	// 	const { lastMessage, _updatedAt } = this.props;
+	// 	const oldlastMessage = lastMessage;
+	// 	const newLastmessage = nextProps.lastMessage;
 
-		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-			return true;
-		}
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
-			return true;
-		}
-		// eslint-disable-next-line react/destructuring-assignment
-		return attrs.some(key => nextProps[key] !== this.props[key]);
-	}
+	// 	if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+	// 		return true;
+	// 	}
+	// 	if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
+	// 		return true;
+	// 	}
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	return attrs.some(key => nextProps[key] !== this.props[key]);
+	// }
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
@@ -205,8 +206,9 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			item, unread, userMentions, name, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
+		const { roomUpdatedAt: _updatedAt } = item;
 
 		const date = formatDate(_updatedAt);
 
@@ -283,3 +285,9 @@ export default class RoomItem extends React.Component {
 		);
 	}
 }
+
+const Item = withObservables(['item'], ({ item }) => ({
+	item: item.observe()
+}))(RoomItem);
+
+export default Item;

@@ -39,6 +39,16 @@ export default appSchema({
 				{ name: 'auto_translate', type: 'boolean' },
 				{ name: 'auto_translate_language', type: 'string' }
 			]
+		}),
+		tableSchema({
+			name: 'messages',
+			columns: [
+				{ name: 'msg', type: 'string' },
+				{ name: 't', type: 'string' },
+				{ name: 'rid', type: 'string' },
+				{ name: 'ts', type: 'number' },
+				{ name: 'subscription_id', type: 'string' },
+			]
 		})
 	]
 });

@@ -4,9 +4,9 @@ import { field, relation, date } from '@nozbe/watermelondb/decorators';
 export default class Comment extends Model {
 	static table = 'subscriptions';
 
-	// static associations = {
-	// 	posts: { type: 'belongs_to', key: 'post_id' }
-	// };
+	static associations = {
+		messages: { type: 'has_many', foreignKey: 'subscription_id' },
+	}
 
 	@field('f') f;
 

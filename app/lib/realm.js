@@ -4,7 +4,7 @@ import RNRealmPath from 'react-native-realm-path';
 // import { AsyncStorage } from 'react-native';
 // Realm.clearTestState();
 // AsyncStorage.clear();
-import watermelon from './database';
+// import watermelon from './database';
 
 const userSchema = {
 	name: 'user',

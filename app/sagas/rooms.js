@@ -93,9 +93,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			const subsToCreate = subscriptions.filter(
 				i1 => !existingSubs.find(i2 => i1._id === i2.id)
 			);
-			// console.log('TCL: handleRoomsRequest -> existingSubs', existingSubs);
-			// console.log('TCL: handleRoomsRequest -> subsToUpdate', subsToUpdate);
-			// console.log('TCL: handleRoomsRequest -> subsToCreate', subsToCreate);
+			// TODO: subsToDelete?
 
 			const allRecords = [
 				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
@@ -116,7 +114,6 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 					});
 				})
 			];
-			console.log(allRecords);
 			try {
 				await watermelon.batch(...allRecords);
 			} catch (e) {

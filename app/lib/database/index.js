@@ -3,6 +3,7 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './model/schema';
 import Subscription from './model/Subscription' // ⬅️ You'll import your Models here
+import Message from './model/Message' // ⬅️ You'll import your Models here
 
 const adapter = new SQLiteAdapter({
 	dbName: 'WatermelonDemo',
@@ -11,7 +12,7 @@ const adapter = new SQLiteAdapter({
 
 const database = new Database({
 	adapter,
-	modelClasses: [Subscription],
+	modelClasses: [Subscription, Message],
 	actionsEnabled: true,
 })
 
