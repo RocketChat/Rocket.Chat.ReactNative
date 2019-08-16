@@ -476,7 +476,8 @@ class RoomsListView extends React.Component {
 				type={item.t}
 				baseUrl={baseUrl}
 				prid={item.prid}
-				showLastMessage={StoreLastMessage}
+				// showLastMessage={StoreLastMessage}
+				showLastMessage={false}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={width}

@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 3,
+	version: 4,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -21,7 +21,7 @@ export default appSchema({
 				{ name: 'room_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number' },
-				// { name: 'last_message', type: 'string' },
+				{ name: 'last_message_id', type: 'string' },
 				{ name: 'description', type: 'string' },
 				{ name: 'announcement', type: 'string' },
 				{ name: 'topic', type: 'string' },

@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation, date } from '@nozbe/watermelondb/decorators';
+import { field, relation, date, action } from '@nozbe/watermelondb/decorators';
 
 export default class Comment extends Model {
 	static table = 'subscriptions';
@@ -40,7 +40,7 @@ export default class Comment extends Model {
 
 	@date('last_open') lastOpen;
 
-	// @field('last_message') lastMessage;
+	// @field('last_message_id') lastMessageId;
 
 	@field('description') description;
 
@@ -72,4 +72,18 @@ export default class Comment extends Model {
 	@field('auto_translate') autoTranslate;
 
 	@field('auto_translate_language') autoTranslateLanguage;
+
+	@relation('messages', 'last_message_id') lastMessage
+
+	// @action async addMessage() {
+	// 	await this.batch(
+	// 		// this.prepareUpdate((post) => {
+	// 		// 	post.title = `7 ways to lose weight`
+	// 		// }),
+	// 		this.collections.get('message').prepareCreate((message) => {
+	// 			message.post.set(this)
+	// 			message.msg = "Don't forget to comment, like, and subscribe!"
+	// 		})
+	// 	);
+	// }
 }
