@@ -221,25 +221,13 @@ class NewServerView extends React.Component {
 		this.setState({ certificate: null });
 	}
 
-	handleActionPress = (actionIndex) => {
-		if (actionIndex) {
-			switch (actionIndex) {
-				case this.DELETE_INDEX:
-					this.handleDelete();
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
 			destructiveButtonIndex: this.DELETE_INDEX
 		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
+			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
 		});
 	}
 
@@ -265,8 +253,13 @@ class NewServerView extends React.Component {
 		);
 	}
 
+	onChangePassword = (value) => {
+		const { certificate } = this.state;
+		this.setState({ certificate: { ...certificate, password: value } });
+	}
+
 	renderCertificatePassword = () => {
-		const { showPasswordAlert, certificate } = this.state;
+		const { showPasswordAlert } = this.state;
 		return (
 			<Dialog.Container visible={showPasswordAlert}>
 				<Dialog.Title>
@@ -276,7 +269,7 @@ class NewServerView extends React.Component {
 					{I18n.t('Whats_the_password_for_your_certificate')}
 				</Dialog.Description>
 				<Dialog.Input
-					onChangeText={value => this.setState({ certificate: { ...certificate, password: value } })}
+					onChangeText={this.onChangePassword}
 					secureTextEntry
 					testID='certificate-password-input'
 					style={styles.dialogInput}
