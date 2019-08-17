@@ -165,7 +165,12 @@ class SelectedUsersView extends React.Component {
 
 	renderHeader = () => (
 		<View style={styles.header}>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
+			<SearchBox
+				onChangeText={text => this.onSearchChangeText(text)}
+				hasCancel={isIOS}
+				onCancelPress={() => this.search('')}
+				testID='select-users-view-search'
+			/>
 			{this.renderSelected()}
 		</View>
 	)

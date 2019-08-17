@@ -19,6 +19,7 @@ import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
 import styles from './styles';
+import { isIOS } from '../../utils/deviceInfo';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = () => ({
@@ -139,6 +140,11 @@ class DirectoryView extends React.Component {
 		}
 	}
 
+	onCancelPress = () => {
+		this.setState({ text: '' });
+		this.load({ newSearch: true });
+	}
+
 	renderHeader = () => {
 		const { type } = this.state;
 		return (
@@ -146,6 +152,8 @@ class DirectoryView extends React.Component {
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
+					hasCancel={isIOS}
+					onCancelPress={() => this.onCancelPress()}
 					testID='federation-view-search'
 				/>
 				<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>

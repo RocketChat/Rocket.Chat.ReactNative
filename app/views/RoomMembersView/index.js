@@ -20,6 +20,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { isIOS } from '../../utils/deviceInfo';
 
 const PAGE_SIZE = 25;
 
@@ -242,8 +243,17 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	onCancelPress = () => {
+		this.setState({ filtering: false, membersFiltered: [] });
+	}
+
 	renderSearchBar = () => (
-		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
+		<SearchBox
+			onChangeText={text => this.onSearchChangeText(text)}
+			hasCancel={isIOS}
+			onCancelPress={() => this.onCancelPress()}
+			testID='room-members-view-search'
+		/>
 	)
 
 	renderSeparator = () => <View style={styles.separator} />;

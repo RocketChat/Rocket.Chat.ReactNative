@@ -121,7 +121,12 @@ class NewMessageView extends React.Component {
 
 	renderHeader = () => (
 		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
+			<SearchBox
+				onChangeText={text => this.onSearchChangeText(text)}
+				hasCancel={isIOS}
+				onCancelPress={() => this.search('')}
+				testID='new-message-view-search'
+			/>
 			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
 				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
 					<CustomIcon style={styles.createChannelIcon} size={24} name='plus' />
