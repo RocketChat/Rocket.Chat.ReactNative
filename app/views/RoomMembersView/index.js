@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import {
+	FlatList, View, ActivityIndicator, Keyboard
+} from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -20,6 +22,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { isIOS } from '../../utils/deviceInfo';
 
 const PAGE_SIZE = 25;
 
@@ -242,8 +245,18 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	onCancelPress = () => {
+		this.setState({ filtering: false, membersFiltered: [] });
+		Keyboard.dismiss();
+	}
+
 	renderSearchBar = () => (
-		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
+		<SearchBox
+			onChangeText={text => this.onSearchChangeText(text)}
+			hasCancel={isIOS}
+			onCancelPress={() => this.onCancelPress()}
+			testID='room-members-view-search'
+		/>
 	)
 
 	renderSeparator = () => <View style={styles.separator} />;

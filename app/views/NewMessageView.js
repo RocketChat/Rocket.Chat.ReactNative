@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	View, StyleSheet, FlatList, Text, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -119,9 +119,19 @@ class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
+	onCancelPress = () => {
+		this.search('');
+		Keyboard.dismiss();
+	}
+
 	renderHeader = () => (
 		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
+			<SearchBox
+				onChangeText={text => this.onSearchChangeText(text)}
+				hasCancel={isIOS}
+				onCancelPress={() => this.onCancelPress()}
+				testID='new-message-view-search'
+			/>
 			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
 				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
 					<CustomIcon style={styles.createChannelIcon} size={24} name='plus' />

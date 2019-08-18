@@ -40,7 +40,7 @@ const keyExtractor = item => item.rid;
 class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
+		const cancelSearching = navigation.getParam('cancelSearching');
 		const onPressItem = navigation.getParam('onPressItem', () => {});
 		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
 
@@ -49,7 +49,7 @@ class RoomsListView extends React.Component {
 				searching
 					? (
 						<CustomHeaderButtons left>
-							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
+							<Item title='cancel' iconName='cross' onPress={cancelSearching} />
 						</CustomHeaderButtons>
 					)
 					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
@@ -126,7 +126,7 @@ class RoomsListView extends React.Component {
 		navigation.setParams({
 			onPressItem: this._onPressItem,
 			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			cancelSearching: this.cancelSearching
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -290,15 +290,16 @@ class RoomsListView extends React.Component {
 		openSearchHeader();
 	}
 
-	cancelSearchingAndroid = () => {
+	cancelSearching = () => {
 		if (isAndroid) {
 			const { closeSearchHeader, navigation } = this.props;
 			this.setState({ searching: false });
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
-			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
 		}
+
+		this.internalSetState({ search: [] });
+		Keyboard.dismiss();
 	}
 
 	// this is necessary during development (enables Cmd + r)
@@ -308,7 +309,7 @@ class RoomsListView extends React.Component {
 		const { searching } = this.state;
 		const { appStart } = this.props;
 		if (searching) {
-			this.cancelSearchingAndroid();
+			this.cancelSearching();
 			return true;
 		}
 		appStart('background');
@@ -330,7 +331,7 @@ class RoomsListView extends React.Component {
 	}
 
 	goRoom = (item) => {
-		this.cancelSearchingAndroid();
+		this.cancelSearching();
 		const { navigation } = this.props;
 		navigation.navigate('RoomView', {
 			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
@@ -434,6 +435,8 @@ class RoomsListView extends React.Component {
 				onChangeSearchText={this.search}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				onCancelPress={this.cancelSearching}
+				hasCancel={isIOS}
 			/>
 		);
 	}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, LayoutAnimation
+	View, StyleSheet, FlatList, LayoutAnimation, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -163,9 +163,19 @@ class SelectedUsersView extends React.Component {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
+	onCancelPress = () => {
+		this.search('');
+		Keyboard.dismiss();
+	}
+
 	renderHeader = () => (
 		<View style={styles.header}>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
+			<SearchBox
+				onChangeText={text => this.onSearchChangeText(text)}
+				hasCancel={isIOS}
+				onCancelPress={() => this.onCancelPress()}
+				testID='select-users-view-search'
+			/>
 			{this.renderSelected()}
 		</View>
 	)
