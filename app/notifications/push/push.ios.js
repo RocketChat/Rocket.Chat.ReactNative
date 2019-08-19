@@ -1,5 +1,7 @@
 import NotificationsIOS from 'react-native-notifications';
 
+import reduxStore from '../../lib/createStore';
+
 class PushNotification {
 	constructor() {
 		this.onRegister = null;
@@ -10,8 +12,12 @@ class PushNotification {
 			this.deviceToken = deviceToken;
 		});
 
-		NotificationsIOS.addEventListener('notificationOpened', (notification) => {
-			this.onNotification(notification);
+		NotificationsIOS.addEventListener('notificationOpened', (notification, completion) => {
+			const { background } = reduxStore.getState().app;
+			if (background) {
+				this.onNotification(notification);
+			}
+			completion();
 		});
 
 		NotificationsIOS.requestPermissions();
@@ -30,7 +36,7 @@ class PushNotification {
 		this.onNotification = params.onNotification;
 
 		const initial = await NotificationsIOS.getInitialNotification();
-		NotificationsIOS.consumeBackgroundQueue();
+		// NotificationsIOS.consumeBackgroundQueue();
 		return Promise.resolve(initial);
 	}
 }

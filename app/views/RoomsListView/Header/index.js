@@ -7,20 +7,7 @@ import {
 } from '../../../actions/rooms';
 import Header from './Header';
 
-@connect(state => ({
-	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
-	showSearchHeader: state.rooms.showSearchHeader,
-	connecting: state.meteor.connecting || state.server.loading,
-	isFetching: state.rooms.isFetching,
-	serverName: state.settings.Site_Name
-}), dispatch => ({
-	close: () => dispatch(closeServerDropdown()),
-	open: () => dispatch(toggleServerDropdown()),
-	closeSort: () => dispatch(closeSortDropdown()),
-	setSearch: searchText => dispatch(setSearchAction(searchText))
-}))
-export default class RoomsListHeaderView extends PureComponent {
+class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -32,15 +19,6 @@ export default class RoomsListHeaderView extends PureComponent {
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
-	}
-
-	componentDidUpdate(prevProps) {
-		const { showSearchHeader } = this.props;
-		if (showSearchHeader && prevProps.showSearchHeader !== showSearchHeader) {
-			setTimeout(() => {
-				this.searchInputRef.focus();
-			}, 300);
-		}
 	}
 
 	onSearchChangeText = (text) => {
@@ -64,10 +42,6 @@ export default class RoomsListHeaderView extends PureComponent {
 		}
 	}
 
-	setSearchInputRef = (ref) => {
-		this.searchInputRef = ref;
-	}
-
 	render() {
 		const {
 			serverName, showServerDropdown, showSearchHeader, connecting, isFetching
@@ -80,10 +54,27 @@ export default class RoomsListHeaderView extends PureComponent {
 				showSearchHeader={showSearchHeader}
 				connecting={connecting}
 				isFetching={isFetching}
-				setSearchInputRef={this.setSearchInputRef}
 				onPress={this.onPress}
 				onSearchChangeText={text => this.onSearchChangeText(text)}
 			/>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	showServerDropdown: state.rooms.showServerDropdown,
+	showSortDropdown: state.rooms.showSortDropdown,
+	showSearchHeader: state.rooms.showSearchHeader,
+	connecting: state.meteor.connecting || state.server.loading,
+	isFetching: state.rooms.isFetching,
+	serverName: state.settings.Site_Name
+});
+
+const mapDispatchtoProps = dispatch => ({
+	close: () => dispatch(closeServerDropdown()),
+	open: () => dispatch(toggleServerDropdown()),
+	closeSort: () => dispatch(closeSortDropdown()),
+	setSearch: searchText => dispatch(setSearchAction(searchText))
+});
+
+export default connect(mapStateToProps, mapDispatchtoProps)(RoomsListHeaderView);
