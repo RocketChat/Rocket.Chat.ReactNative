@@ -1,7 +1,7 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation, date, action } from '@nozbe/watermelondb/decorators';
+import { field, relation, date, action, json } from '@nozbe/watermelondb/decorators';
 
-export default class Comment extends Model {
+export default class Subscription extends Model {
 	static table = 'subscriptions';
 
 	static associations = {
@@ -73,7 +73,9 @@ export default class Comment extends Model {
 
 	@field('auto_translate_language') autoTranslateLanguage;
 
-	@relation('messages', 'last_message_id') lastMessage
+	@json('last_message', r => r) lastMessage;
+
+	// @relation('messages', 'last_message_id') lastMessage
 
 	// @action async addMessage() {
 	// 	await this.batch(

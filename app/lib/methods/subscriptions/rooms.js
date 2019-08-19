@@ -22,6 +22,7 @@ export default function subscribeRooms() {
 	};
 
 	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
+        // console.log('TCL: handleStreamMessageReceived -> ddpMessage', ddpMessage);
 		// check if the server from variable is the same as the js sdk client
 		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
 			return;
@@ -33,7 +34,7 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
-				console.log('SUBSCRIPTIONS REMOVE', data)
+				// console.log('SUBSCRIPTIONS REMOVE', data)
 				let messages = [];
 				const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
 
@@ -61,13 +62,15 @@ export default function subscribeRooms() {
 				console.log('SUBSCRIPTIONS UPDATE', data)
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
 				const tpm = merge(data, rooms[0]);
+                // console.log('TCL: handleStreamMessageReceived -> tpm', tpm);
 				try {
 					await watermelon.action(async() => {
 						const subCollection = watermelon.collections.get('subscriptions');
 						const sub = await subCollection.find(tpm._id);
-						console.log('TCL: handleStreamMessageReceived -> sub', sub);
-						await sub.update(post => {
-							post.roomUpdatedAt = new Date();
+						// console.log('TCL: handleStreamMessageReceived -> sub', sub);
+						await sub.update(s => {
+							s.roomUpdatedAt = new Date();
+							s.lastMessage = tpm.lastMessage;
 						});
 					});
 
@@ -80,57 +83,57 @@ export default function subscribeRooms() {
 				}
 			}
 		}
-		// if (/rooms/.test(ev)) {
-		// 	console.log('ROOMS UPDATE', data)
-		// 	if (type === 'updated') {
-		// 		const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-		// 		try {
-		// 			database.write(() => {
-		// 				const tmp = merge(sub, data);
-		// 				database.create('subscriptions', tmp, true);
-		// 			});
-		// 		} catch (e) {
-		// 			log('err_stream_msg_received_room_updated', e);
-		// 		}
-		// 	} else if (type === 'inserted') {
-		// 		try {
-		// 			database.write(() => {
-		// 				database.create('rooms', data, true);
-		// 			});
-		// 		} catch (e) {
-		// 			log('err_stream_msg_received_room_inserted', e);
-		// 		}
-		// 	}
-		// }
-		// if (/message/.test(ev)) {
-		// 	const [args] = ddpMessage.fields.args;
-		// 	const _id = random(17);
-		// 	const message = {
-		// 		_id,
-		// 		rid: args.rid,
-		// 		msg: args.msg,
-		// 		ts: new Date(),
-		// 		_updatedAt: new Date(),
-		// 		status: messagesStatus.SENT,
-		// 		u: {
-		// 			_id,
-		// 			username: 'rocket.cat'
-		// 		}
-		// 	};
-		// 	requestAnimationFrame(() => {
-		// 		try {
-		// 			database.write(() => {
-		// 				database.create('messages', message, true);
-		// 			});
-		// 		} catch (e) {
-		// 			log('err_stream_msg_received_message', e);
-		// 		}
-		// 	});
-		// }
-		// if (/notification/.test(ev)) {
-		// 	const [notification] = ddpMessage.fields.args;
-		// 	store.dispatch(notificationReceived(notification));
-		// }
+		if (/rooms/.test(ev)) {
+			console.log('ROOMS UPDATE', data)
+			if (type === 'updated') {
+				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
+				try {
+					database.write(() => {
+						const tmp = merge(sub, data);
+						database.create('subscriptions', tmp, true);
+					});
+				} catch (e) {
+					log('err_stream_msg_received_room_updated', e);
+				}
+			} else if (type === 'inserted') {
+				try {
+					database.write(() => {
+						database.create('rooms', data, true);
+					});
+				} catch (e) {
+					log('err_stream_msg_received_room_inserted', e);
+				}
+			}
+		}
+		if (/message/.test(ev)) {
+			const [args] = ddpMessage.fields.args;
+			const _id = random(17);
+			const message = {
+				_id,
+				rid: args.rid,
+				msg: args.msg,
+				ts: new Date(),
+				_updatedAt: new Date(),
+				status: messagesStatus.SENT,
+				u: {
+					_id,
+					username: 'rocket.cat'
+				}
+			};
+			requestAnimationFrame(() => {
+				try {
+					database.write(() => {
+						database.create('messages', message, true);
+					});
+				} catch (e) {
+					log('err_stream_msg_received_message', e);
+				}
+			});
+		}
+		if (/notification/.test(ev)) {
+			const [notification] = ddpMessage.fields.args;
+			store.dispatch(notificationReceived(notification));
+		}
 	});
 
 	const stop = () => {

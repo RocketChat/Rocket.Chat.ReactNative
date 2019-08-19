@@ -57,8 +57,9 @@ const assignSub = (sub, newSub) => {
 	sub.autoTranslate = newSub.autoTranslate;
 	sub.autoTranslateLanguage = newSub.autoTranslateLanguage;
 	if (newSub.lastMessage) {
-        console.log('TCL: assignSub -> newSub.lastMessage', newSub.lastMessage);
-		sub.lastMessage.id = newSub.lastMessage._id;
+        // console.log('TCL: assignSub -> newSub.lastMessage', newSub.lastMessage);
+		sub.lastMessage = newSub.lastMessage;
+		// sub.tempLastMessage = newSub.lastMessage;
 	}
 };
 
@@ -90,7 +91,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			});
 		});
 		yield watermelon.action(async(action) => {
-			await action.subAction(() => watermelon.unsafeResetDatabase());
+			// await action.subAction(() => watermelon.unsafeResetDatabase());
 			const subCollection = watermelon.collections.get('subscriptions');
 			const messageCollection = watermelon.collections.get('messages');
 			const existingSubs = await subCollection.query().fetch();
@@ -120,31 +121,32 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				}),
 			];
 
-			const allMessages = [];
-			allRecords.forEach(sub => {
-            	// console.log('TCL: handleRoomsRequest -> sub', sub.lastMessage);
-				if (sub.lastMessage.id) {
-                    console.log('TCL: handleRoomsRequest -> sub.lastMessage', sub.lastMessage);
-					allMessages.push(
-						messageCollection.prepareCreate((message) => {
-							message._raw = sanitizedRaw(
-								{
-									id: sub.lastMessage.id
-								},
-								messageCollection.schema
-							);
-							message.subscription.set(sub)
-							message.msg = "Don't forget to comment, like, and subscribe!"
-						})
-					);
-				}
-			})
-            console.log('TCL: handleRoomsRequest -> allMessages', allMessages);
+			// const allMessages = [];
+			// allRecords.forEach(sub => {
+            // 	// console.log('TCL: handleRoomsRequest -> sub', sub.lastMessage);
+			// 	if (sub.lastMessage.id) {
+            //         // console.log('TCL: handleRoomsRequest -> sub.lastMessage', sub.tempLastMessage);
+			// 		allMessages.push(
+			// 			messageCollection.prepareCreate((message) => {
+			// 				message._raw = sanitizedRaw(
+			// 					{
+			// 						id: sub.lastMessage.id
+			// 					},
+			// 					messageCollection.schema
+			// 				);
+			// 				message.subscription.set(sub)
+			// 				message.msg = sub.tempLastMessage.msg;
+			// 				message.u = sub.tempLastMessage.u;
+			// 			})
+			// 		);
+			// 	}
+			// })
+            // console.log('TCL: handleRoomsRequest -> allMessages', allMessages);
 
 			try {
 				await watermelon.batch(
 					...allRecords,
-					...allMessages
+					// ...allMessages
 				);
 			} catch (e) {
 				console.log('TCL: batch watermelon -> e', e);
@@ -152,13 +154,13 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			return allRecords.length;
 		});
 
-		// database.databases.serversDB.write(() => {
-		// 	try {
-		// 		database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
-		// 	} catch (e) {
-		// 		log('err_rooms_request_update', e);
-		// 	}
-		// });
+		database.databases.serversDB.write(() => {
+			try {
+				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
+			} catch (e) {
+				log('err_rooms_request_update', e);
+			}
+		});
 
 		yield put(roomsSuccess());
 	} catch (e) {

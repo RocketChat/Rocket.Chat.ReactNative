@@ -206,9 +206,10 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			item, unread, userMentions, name, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			item, unread, userMentions, name, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, isRead, width, favorite
 		} = this.props;
-		const { roomUpdatedAt: _updatedAt } = item;
+		// console.log('TCL: render -> lastMessage', lastMessage);
+		const { roomUpdatedAt: _updatedAt, lastMessage } = item;
 
 		const date = formatDate(_updatedAt);
 
@@ -287,7 +288,8 @@ class RoomItem extends React.Component {
 }
 
 const Item = withObservables(['item'], ({ item }) => ({
-	item: item.observe()
+	item: item.observe(),
+	// lastMessage: item.lastMessage.fetch()
 }))(RoomItem);
 
 export default Item;

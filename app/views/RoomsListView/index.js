@@ -449,6 +449,7 @@ class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
+        // console.log('TCL: renderItem -> item', item);
 		const { width } = this.state;
 		const {
 			userId, username, token, baseUrl, StoreLastMessage
@@ -464,7 +465,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
-				lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
+				// lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 				name={this.getRoomTitle(item)}
 				// _updatedAt={item.roomUpdatedAt}
 				key={item._id}
@@ -476,8 +477,8 @@ class RoomsListView extends React.Component {
 				type={item.t}
 				baseUrl={baseUrl}
 				prid={item.prid}
-				// showLastMessage={StoreLastMessage}
-				showLastMessage={false}
+				showLastMessage={StoreLastMessage}
+				// showLastMessage={false}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={width}
@@ -678,3 +679,13 @@ const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProp
 const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
 
 export default Root;
+
+// // eslint-disable-next-line
+// return (
+// 	// eslint-disable-next-line
+// 	<RoomsListView>
+// 		<List database>
+
+// 		</List>
+// 	</RoomsListView>
+// )

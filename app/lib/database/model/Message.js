@@ -1,5 +1,7 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation, date } from '@nozbe/watermelondb/decorators';
+import { field, relation, date, json } from '@nozbe/watermelondb/decorators';
+
+const sanitizeUser = r => r;
 
 export default class Comment extends Model {
 	static table = 'messages';
@@ -17,6 +19,8 @@ export default class Comment extends Model {
 	@field('t') t;
 
 	@date('ts') ts;
+
+	@json('u', sanitizeUser) u;
 
 	@relation('subscriptions', 'subscription_id') subscription
 }
