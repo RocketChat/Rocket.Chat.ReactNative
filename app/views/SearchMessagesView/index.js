@@ -68,9 +68,9 @@ class SearchMessagesView extends React.Component {
 					loading: false
 				});
 			}
-		} catch (error) {
+		} catch (e) {
 			this.setState({ loading: false });
-			log(error);
+			log(e);
 		}
 	}, 1000)
 

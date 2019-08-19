@@ -127,8 +127,8 @@ class ShareView extends React.Component {
 		if (value !== '' && rid !== '') {
 			try {
 				await RocketChat.sendMessage(rid, value, undefined, user);
-			} catch (error) {
-				log(error);
+			} catch (e) {
+				log(e);
 			}
 		}
 	};

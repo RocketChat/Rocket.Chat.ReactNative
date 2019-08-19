@@ -13,8 +13,8 @@ async function load({ rid: roomId, latest, t }) {
 				return [];
 			}
 			return data.messages;
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 			return [];
 		}
 	}

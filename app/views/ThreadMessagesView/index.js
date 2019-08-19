@@ -122,8 +122,8 @@ class ThreadMessagesView extends React.Component {
 					});
 				});
 			}
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 			this.setState({ loading: false, end: true });
 		}
 	}, 300)
@@ -169,8 +169,8 @@ class ThreadMessagesView extends React.Component {
 					});
 				});
 			}
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 			this.setState({ loading: false });
 		}
 	}

@@ -965,8 +965,8 @@ const RocketChat = {
 			const autoTranslatePermission = database.objectForPrimaryKey('permissions', 'auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 			return false;
 		}
 	},

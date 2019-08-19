@@ -438,8 +438,8 @@ class RoomView extends React.Component {
 			database.write(() => {
 				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 		}
 	}
 

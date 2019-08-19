@@ -38,8 +38,8 @@ export default function subscribeRoom({ rid }) {
 				clearTimeout(typingTimeouts[username]);
 				typingTimeouts[username] = null;
 			}
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 		}
 	};
 
@@ -60,8 +60,8 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[username] = setTimeout(() => {
 					removeUserTyping(username);
 				}, 10000);
-			} catch (error) {
-				log(error);
+			} catch (e) {
+				log(e);
 			}
 		}
 	};

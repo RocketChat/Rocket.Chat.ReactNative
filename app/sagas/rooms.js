@@ -33,8 +33,8 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			subscriptions.forEach((subscription) => {
 				try {
 					database.create('subscriptions', subscription, true);
-				} catch (error) {
-					log(error);
+				} catch (e) {
+					log(e);
 				}
 			});
 		});

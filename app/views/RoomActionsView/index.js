@@ -64,8 +64,8 @@ class RoomActionsView extends React.Component {
 				if (result.success) {
 					this.setState({ room: { ...result.channel, rid: result.channel._id } });
 				}
-			} catch (error) {
-				log(error);
+			} catch (e) {
+				log(e);
 			}
 		}
 
@@ -75,8 +75,8 @@ class RoomActionsView extends React.Component {
 				if (counters.success) {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
-			} catch (error) {
-				log(error);
+			} catch (e) {
+				log(e);
 			}
 		} else if (room.t === 'd') {
 			this.updateRoomMember();

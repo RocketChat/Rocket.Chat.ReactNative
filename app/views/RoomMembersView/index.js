@@ -203,8 +203,8 @@ class RoomMembersView extends React.Component {
 				end: newMembers.length < PAGE_SIZE
 			});
 			navigation.setParams({ allUsers });
-		} catch (error) {
-			log(error);
+		} catch (e) {
+			log(e);
 			this.setState({ isLoading: false });
 		}
 	}
