@@ -60,13 +60,10 @@ Readme will guide you on how to config.
 1) Jitsi integration
 2) Notification Preferences
 3) Two-way authentication
-4) Authentication via SAML
-5) Authentication via Custom OAuth
-6) Authentication via CAS
-7) Bugsnag
-8) Optional Analytics
-9) Typescript
-10) Prettier
+4) Bugsnag
+5) Optional Analytics
+6) Typescript
+7) Prettier
 
 ## Features
 | Feature                                                   	    | Status 	|
@@ -89,8 +86,8 @@ Readme will guide you on how to config.
 | Tablet Support                                                	| ❌    	|
 | Read receipt                                                  	| ✅    	|
 | Broadbast Channel                                             	| ✅    	|
-| Authentication via SAML                                       	| ❌    	|
-| Authentication via CAS                                        	| ❌    	|
+| Authentication via SAML                                       	| ✅    	|
+| Authentication via CAS                                        	| ✅    	|
 | Custom Fields on Signup                                       	| ✅    	|
 | Report message                                                	| ✅    	|
 | Theming                                                       	| ❌    	|
@@ -110,7 +107,7 @@ Readme will guide you on how to config.
 | Accessibility (Advanced)                                      	| ❌    	|
 | Authentication via Meteor                                     	| ❌    	|
 | Authentication via Wordpress                                  	| ❌    	|
-| Authentication via Custom OAuth                               	| ❌    	|
+| Authentication via Custom OAuth                               	| ✅    	|
 | Add user to the room                                          	| ✅    	|
 | Send message                                                  	| ✅    	|
 | Authentication via Email                                      	| ✅    	|
