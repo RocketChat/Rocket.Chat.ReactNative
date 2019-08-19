@@ -60,10 +60,10 @@ Readme will guide you on how to config.
 1) Jitsi integration
 2) Notification Preferences
 3) Two-way authentication
-7) Bugsnag
-8) Optional Analytics
-9) Typescript
-10) Prettier
+4) Bugsnag
+5) Optional Analytics
+6) Typescript
+7) Prettier
 
 ## Features
 | Feature                                                   	    | Status 	|
