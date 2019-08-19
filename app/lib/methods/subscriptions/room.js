@@ -11,38 +11,14 @@ const removeListener = listener => listener.stop();
 
 export default function subscribeRoom({ rid }) {
 	let promises;
-	let timer = null;
 	let connectedListener;
 	let disconnectedListener;
 	let notifyRoomListener;
 	let messageReceivedListener;
 	const typingTimeouts = {};
-	const loop = () => {
-		if (timer) {
-			return;
-		}
-		timer = setTimeout(() => {
-			try {
-				clearTimeout(timer);
-				timer = false;
-				this.loadMissedMessages({ rid });
-				loop();
-			} catch (e) {
-				loop();
-			}
-		}, 5000);
-	};
 
-	const handleConnected = () => {
+	const handleConnection = () => {
 		this.loadMissedMessages({ rid });
-		clearTimeout(timer);
-		timer = false;
-	};
-
-	const handleDisconnected = () => {
-		if (this.sdk.userId) {
-			loop();
-		}
 	};
 
 	const getUserTyping = username => (
@@ -176,8 +152,6 @@ export default function subscribeRoom({ rid }) {
 			messageReceivedListener.then(removeListener);
 			messageReceivedListener = false;
 		}
-		clearTimeout(timer);
-		timer = false;
 		Object.keys(typingTimeouts).forEach((key) => {
 			if (typingTimeouts[key]) {
 				clearTimeout(typingTimeouts[key]);
@@ -190,8 +164,8 @@ export default function subscribeRoom({ rid }) {
 		});
 	};
 
-	connectedListener = this.sdk.onStreamData('connected', handleConnected);
-	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
+	connectedListener = this.sdk.onStreamData('connected', handleConnection);
+	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
 	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
 	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
 

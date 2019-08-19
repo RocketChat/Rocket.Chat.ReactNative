@@ -16,29 +16,8 @@ let streamListener;
 let subServer;
 
 export default function subscribeRooms() {
-	let timer = null;
-	const loop = () => {
-		if (timer) {
-			return;
-		}
-		timer = setTimeout(() => {
-			clearTimeout(timer);
-			timer = false;
-			store.dispatch(roomsRequest());
-			loop();
-		}, 5000);
-	};
-
-	const handleConnected = () => {
+	const handleConnection = () => {
 		store.dispatch(roomsRequest());
-		clearTimeout(timer);
-		timer = false;
-	};
-
-	const handleDisconnected = () => {
-		if (this.sdk.userId) {
-			loop();
-		}
 	};
 
 	const handleStreamMessageReceived = protectedFunction((ddpMessage) => {
@@ -145,12 +124,10 @@ export default function subscribeRooms() {
 			streamListener.then(removeListener);
 			streamListener = false;
 		}
-		clearTimeout(timer);
-		timer = false;
 	};
 
-	connectedListener = this.sdk.onStreamData('connected', handleConnected);
-	disconnectedListener = this.sdk.onStreamData('close', handleDisconnected);
+	connectedListener = this.sdk.onStreamData('connected', handleConnection);
+	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
 	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
