@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Platform
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import Dialog from 'react-native-dialog';
 import ActionSheet from 'react-native-action-sheet';
 import isEqual from 'deep-equal';
 
@@ -63,16 +62,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textColorHeaderBack
-	},
-	dialogInput: Platform.select({
-		ios: {},
-		android: {
-			borderRadius: 4,
-			borderColor: 'rgba(0,0,0,.15)',
-			borderWidth: 2,
-			paddingHorizontal: 10
-		}
-	})
+	}
 });
 
 const defaultServer = 'https://open.rocket.chat';
@@ -104,7 +94,6 @@ class NewServerView extends React.Component {
 		this.state = {
 			text: server || '',
 			autoFocus: !server,
-			showPasswordAlert: false,
 			certificate: null
 		};
 	}
@@ -118,15 +107,12 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text, showPasswordAlert, certificate } = this.state;
+		const { text, certificate } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
 			return true;
 		}
-		if (nextState.showPasswordAlert !== showPasswordAlert) {
-			return true;
-		}
-		if (isEqual(nextState.certificate, certificate)) {
+		if (!isEqual(nextState.certificate, certificate)) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -169,13 +155,17 @@ class NewServerView extends React.Component {
 				type: ['com.rsa.pkcs-12']
 			});
 			const { uri: path, name } = res;
-			this.setState({
-				certificate: {
-					path,
-					name
-				},
-				showPasswordAlert: true
-			});
+			Alert.prompt(
+				I18n.t('Certificate_password'),
+				I18n.t('Whats_the_password_for_your_certificate'),
+				[
+					{
+						text: 'OK',
+						onPress: password => this.saveCertificate({ path, name, password })
+					}
+				],
+				'secure-text',
+			);
 		} catch (error) {
 			if (!DocumentPicker.isCancel(error)) {
 				log('err_choose_certificate', error);
@@ -204,22 +194,12 @@ class NewServerView extends React.Component {
 
 	uriToPath = uri => uri.replace('file://', '');
 
-	saveCertificate = () => {
-		const { certificate } = this.state;
-		const { path } = certificate;
-		this.setState({ showPasswordAlert: false, certificate: { path, ...certificate } });
+	saveCertificate = (certificate) => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState({ certificate });
 	}
 
-	handleDelete = async() => {
-		const { certificate } = this.state;
-		const { path } = certificate;
-		try {
-			await FileSystem.deleteAsync(path);
-		} catch (error) {
-			log('err_remove_certificate', error);
-		}
-		this.setState({ certificate: null });
-	}
+	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
 
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
@@ -250,32 +230,6 @@ class NewServerView extends React.Component {
 					color={COLOR_PRIMARY}
 				/>
 			</TouchableOpacity>
-		);
-	}
-
-	onChangePassword = (value) => {
-		const { certificate } = this.state;
-		this.setState({ certificate: { ...certificate, password: value } });
-	}
-
-	renderCertificatePassword = () => {
-		const { showPasswordAlert } = this.state;
-		return (
-			<Dialog.Container visible={showPasswordAlert}>
-				<Dialog.Title>
-					{I18n.t('Certificate_password')}
-				</Dialog.Title>
-				<Dialog.Description>
-					{I18n.t('Whats_the_password_for_your_certificate')}
-				</Dialog.Description>
-				<Dialog.Input
-					onChangeText={this.onChangePassword}
-					secureTextEntry
-					testID='certificate-password-input'
-					style={styles.dialogInput}
-				/>
-				<Dialog.Button label='OK' onPress={this.saveCertificate} />
-			</Dialog.Container>
 		);
 	}
 
@@ -324,16 +278,7 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
-						{
-							isIOS
-								? (
-									<>
-										{this.renderCertificatePicker()}
-										{this.renderCertificatePassword()}
-									</>
-								)
-								: null
-						}
+						{ isIOS ? this.renderCertificatePicker() : null }
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
