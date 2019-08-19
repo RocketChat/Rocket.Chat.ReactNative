@@ -1,4 +1,4 @@
-import analytics from './analytics';
+import { analytics } from './log';
 
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
 

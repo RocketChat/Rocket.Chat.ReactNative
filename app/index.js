@@ -16,8 +16,7 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
-import { loggerConfig } from './utils/log';
-import analytics from './utils/analytics';
+import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 

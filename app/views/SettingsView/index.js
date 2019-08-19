@@ -21,8 +21,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import { loggerConfig } from '../../utils/log';
-import analytics from '../../utils/analytics';
+import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
