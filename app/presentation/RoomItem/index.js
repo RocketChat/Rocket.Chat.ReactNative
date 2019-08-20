@@ -70,25 +70,39 @@ class RoomItem extends React.Component {
 		this._value = 0;
 	}
 
-	// shouldComponentUpdate(nextProps) {
-	// 	// const { item: { roomUpdatedAt, lastMessage } } = this.props;
-	// 	// const oldlastMessage = lastMessage;
-	// 	// const newLastmessage = nextProps.item.lastMessage;
-
-	// 	// console.log(oldlastMessage.ts, newLastmessage.ts)
-	// 	// if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-	// 	// 	return true;
-	// 	// }
-	// 	// if (roomUpdatedAt && nextProps.item.roomUpdatedAt && nextProps.item.roomUpdatedAt.toISOString() !== roomUpdatedAt.toISOString()) {
-	// 	// 	return true;
-	// 	// }
-	// 	// // eslint-disable-next-line react/destructuring-assignment
-	// 	// return attrs.some(key => nextProps.item[key] !== this.props.item[key]);
-	// 	// return nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()
-
-	// 	console.log(this.props.item, nextProps.item)
-	// 	return true;
+	// componentWillReceiveProps(nextProps) {
+	// 	// this.forceUpdate();
+	// 	if (nextProps.name === 'diego.mello2') {
+	// 		console.log('TCL: RoomItem -> componentWillReceiveProps -> nextProps', nextProps, this.props);
+	// 		if (nextProps._updatedAt !== this.props._updatedAt) {
+	// 			console.log('UPDATEEEEEEEERERERE')
+	// 		}
+	// 		if (nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()) {
+	// 			console.log('UPDATEEEEEEEERERERE')
+	// 		}
+	// 	}
 	// }
+
+	shouldComponentUpdate(nextProps) {
+		// const { item: { roomUpdatedAt, lastMessage } } = this.props;
+		// const oldlastMessage = lastMessage;
+		// const newLastmessage = nextProps.item.lastMessage;
+
+		// console.log(oldlastMessage.ts, newLastmessage.ts)
+		// if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+		// 	return true;
+		// }
+		// if (roomUpdatedAt && nextProps.item.roomUpdatedAt && nextProps.item.roomUpdatedAt.toISOString() !== roomUpdatedAt.toISOString()) {
+		// 	return true;
+		// }
+		// // eslint-disable-next-line react/destructuring-assignment
+		// return attrs.some(key => nextProps.item[key] !== this.props.item[key]);
+		// return nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()
+
+		// console.log(this.props.item, nextProps.item)
+		// return true;
+		return false;
+	}
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
@@ -220,7 +234,7 @@ class RoomItem extends React.Component {
 
 		const date = formatDate(roomUpdatedAt);
 
-		// FIXME: it's updating rows while scrolling
+		// // FIXME: it's updating rows while scrolling
 		// if (name === 'diego.mello2') {
 		// 	console.log('RENRENRENRNERENRENRENRENRERN')
 		// }

@@ -33,6 +33,7 @@ import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { Q } from '@nozbe/watermelondb';
+import List from './List';
 
 const SCROLL_OFFSET = 56;
 
@@ -149,31 +150,31 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-	// 	if (propsUpdated) {
-	// 		return true;
-	// 	}
+	shouldComponentUpdate(nextProps, nextState) {
+		// eslint-disable-next-line react/destructuring-assignment
+		// const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+		// if (propsUpdated) {
+		// 	return true;
+		// }
 
-	// 	const { loading, searching, width } = this.state;
-	// 	if (nextState.loading !== loading) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.searching !== searching) {
-	// 		return true;
-	// 	}
+		const { loading, searching, width } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		// if (nextState.searching !== searching) {
+		// 	return true;
+		// }
 
-	// 	if (nextState.width !== width) {
-	// 		return true;
-	// 	}
+		// if (nextState.width !== width) {
+		// 	return true;
+		// }
 
-	// 	const { search } = this.state;
-	// 	if (!isEqual(nextState.search, search)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+		// const { search } = this.state;
+		// if (!isEqual(nextState.search, search)) {
+		// 	return true;
+		// }
+		return false;
+	}
 
 	componentDidUpdate(prevProps) {
 		const {
@@ -451,7 +452,6 @@ class RoomsListView extends React.Component {
 		const {
 			userId, username, token, baseUrl, StoreLastMessage
 		} = this.props;
-		const id = item.rid.replace(userId, '').trim();
 
 		return (
 			<RoomItem
@@ -594,6 +594,7 @@ class RoomsListView extends React.Component {
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
+		const { loading } = this.state;
 		const {
 			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
 		} = this.props;
@@ -601,7 +602,7 @@ class RoomsListView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				{this.renderScroll()}
+				{/* {this.renderScroll()}
 				{showSortDropdown
 					? (
 						<SortDropdown
@@ -614,7 +615,8 @@ class RoomsListView extends React.Component {
 					)
 					: null
 				}
-				{showServerDropdown ? <ServerDropdown /> : null}
+				{showServerDropdown ? <ServerDropdown /> : null} */}
+				<List database={watermelon} loading={loading} {...this.props} />
 			</SafeAreaView>
 		);
 	}
@@ -649,18 +651,19 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
-const enhance = withObservables(['db'], ({ db }) => ({
-	subscriptions: db.collections
-		.get('subscriptions')
-		.query()
-		.observeWithColumns(['room_updated_at'])
-}));
+// const enhance = withObservables(['db'], ({ db }) => ({
+// 	subscriptions: db.collections
+// 		.get('subscriptions')
+// 		.query()
+// 		.observeWithColumns(['room_updated_at'])
+// }));
 
-const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProps)(RoomsListView));
+// const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProps)(RoomsListView));
 
-const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
+// const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
 
-export default Root;
+// export default Root;
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
 
 // // eslint-disable-next-line
 // return (
