@@ -802,9 +802,11 @@ const RocketChat = {
 		}
 	},
 	_determineAuthType(services) {
-		const { name, custom, service } = services;
+		const {
+			name, custom, showButton = true, service
+		} = services;
 
-		if (custom) {
+		if (custom && showButton) {
 			return 'oauth_custom';
 		}
 
