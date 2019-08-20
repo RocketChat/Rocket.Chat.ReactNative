@@ -1,6 +1,6 @@
 {
   "name": "RNImageCropPicker",
-  "version": "0.24.1",
+  "version": "0.25.0",
   "summary": "Select single or multiple images, with cropping option",
   "requires_arc": true,
   "license": "MIT",
@@ -23,7 +23,10 @@
     "QBImagePickerController": [
 
     ],
-    "React/Core": [
+    "React-Core": [
+
+    ],
+    "React-RCTImage": [
 
     ]
   }

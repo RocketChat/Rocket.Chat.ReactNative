@@ -1,6 +1,6 @@
 {
   "name": "react-native-document-picker",
-  "version": "3.2.2",
+  "version": "3.2.4",
   "summary": "A react native interface to access Documents from dropbox google drive, iCloud",
   "license": "MIT",
   "homepage": "https://github.com/Elyx0/react-native-document-picker#readme",
