@@ -18,6 +18,7 @@ class RoomHeaderView extends Component {
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
+		widthOffset: PropTypes.number,
 		isLoggedUser: PropTypes.bool,
 		userId: PropTypes.string
 	};
@@ -89,7 +90,7 @@ class RoomHeaderView extends Component {
 	render() {
 		const { usersTyping, user } = this.state;
 		const {
-			window, title, type, prid, tmid, isLoggedUser, status: userStatus, connecting
+			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting
 		} = this.props;
 		let status = 'offline';
 
@@ -111,6 +112,7 @@ class RoomHeaderView extends Component {
 				width={window.width}
 				height={window.height}
 				usersTyping={usersTyping}
+				widthOffset={widthOffset}
 				connecting={connecting}
 			/>
 		);

@@ -61,6 +61,7 @@ class RoomView extends React.Component {
 					tmid={tmid}
 					title={title}
 					type={t}
+					widthOffset={tmid ? 95 : 130}
 				/>
 			),
 			headerRight: (
@@ -76,7 +77,7 @@ class RoomView extends React.Component {
 				<HeaderBackButton
 					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 					backTitleVisible
-					onPress={() => navigation.goBack()} // on Android onPress={navigation.goBack} doesn't work
+					onPress={() => navigation.goBack()}
 					tintColor={HEADER_BACK}
 				/>
 			)
