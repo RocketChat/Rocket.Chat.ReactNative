@@ -76,22 +76,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-@connect(state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	error: state.createChannel.error,
-	failure: state.createChannel.failure,
-	isFetching: state.createChannel.isFetching,
-	result: state.createChannel.result,
-	users: state.selectedUsers.users,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
-}), dispatch => ({
-	create: data => dispatch(createChannelRequestAction(data)),
-	removeUser: user => dispatch(removeUserAction(user))
-}))
-export default class CreateChannelView extends React.Component {
+class CreateChannelView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const submit = navigation.getParam('submit', () => {});
 		const showSubmit = navigation.getParam('showSubmit');
@@ -135,9 +120,6 @@ export default class CreateChannelView extends React.Component {
 	componentDidMount() {
 		const { navigation } = this.props;
 		navigation.setParams({ submit: this.submit });
-		this.timeout = setTimeout(() => {
-			this.channelNameRef.focus();
-		}, 600);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -193,12 +175,6 @@ export default class CreateChannelView extends React.Component {
 					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
 				}
 			}, 300);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
 		}
 	}
 
@@ -333,11 +309,11 @@ export default class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ bottom: 'never' }}>
+				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput
-								ref={ref => this.channelNameRef = ref}
+								autoFocus
 								style={styles.input}
 								label={I18n.t('Channel_Name')}
 								value={channelName}
@@ -369,3 +345,23 @@ export default class CreateChannelView extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	error: state.createChannel.error,
+	failure: state.createChannel.failure,
+	isFetching: state.createChannel.isFetching,
+	result: state.createChannel.result,
+	users: state.selectedUsers.users,
+	user: {
+		id: state.login.user && state.login.user.id,
+		token: state.login.user && state.login.user.token
+	}
+});
+
+const mapDispatchToProps = dispatch => ({
+	create: data => dispatch(createChannelRequestAction(data)),
+	removeUser: user => dispatch(removeUserAction(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateChannelView);

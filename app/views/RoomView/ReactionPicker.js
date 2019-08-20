@@ -13,14 +13,7 @@ import { isAndroid } from '../../utils/deviceInfo';
 const margin = isAndroid ? 40 : 20;
 const tabEmojiStyle = { fontSize: 15 };
 
-@connect(state => ({
-	showReactionPicker: state.messages.showReactionPicker,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
-}), dispatch => ({
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-}))
-@responsive
-export default class ReactionPicker extends React.Component {
+class ReactionPicker extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,
@@ -74,3 +67,14 @@ export default class ReactionPicker extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	showReactionPicker: state.messages.showReactionPicker,
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+});
+
+const mapDispatchToProps = dispatch => ({
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
+});
+
+export default responsive(connect(mapStateToProps, mapDispatchToProps)(ReactionPicker));
