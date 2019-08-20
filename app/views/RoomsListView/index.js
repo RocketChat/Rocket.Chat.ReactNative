@@ -319,8 +319,6 @@ class RoomsListView extends React.Component {
 		return false;
 	}
 
-	_isUnread = item => item.unread > 0 || item.alert
-
 	search = async(text) => {
 		const result = await RocketChat.search({ text });
 		this.internalSetState({
@@ -449,36 +447,22 @@ class RoomsListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-        // console.log('TCL: renderItem -> item', item);
 		const { width } = this.state;
 		const {
 			userId, username, token, baseUrl, StoreLastMessage
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
-		// if (item.search || (item.isValid && item.isValid())) {
 		return (
 			<RoomItem
 				item={item}
-				alert={item.alert}
-				unread={item.unread}
-				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
-				favorite={item.f}
-				// lastMessage={item.lastMessage ? JSON.parse(JSON.stringify(item.lastMessage)) : null}
 				name={this.getRoomTitle(item)}
-				// _updatedAt={item.roomUpdatedAt}
-				key={item._id}
-				id={id}
 				userId={userId}
 				username={username}
 				token={token}
-				rid={item.rid}
-				type={item.t}
 				baseUrl={baseUrl}
-				prid={item.prid}
 				showLastMessage={StoreLastMessage}
-				// showLastMessage={false}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={width}
@@ -487,8 +471,6 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 			/>
 		);
-		// }
-		// return null;
 	}
 
 	renderSectionHeader = header => (

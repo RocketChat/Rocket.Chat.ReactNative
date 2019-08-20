@@ -71,18 +71,23 @@ class RoomItem extends React.Component {
 	}
 
 	// shouldComponentUpdate(nextProps) {
-	// 	const { lastMessage, _updatedAt } = this.props;
-	// 	const oldlastMessage = lastMessage;
-	// 	const newLastmessage = nextProps.lastMessage;
+	// 	// const { item: { roomUpdatedAt, lastMessage } } = this.props;
+	// 	// const oldlastMessage = lastMessage;
+	// 	// const newLastmessage = nextProps.item.lastMessage;
 
-	// 	if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-	// 		return true;
-	// 	}
-	// 	if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
-	// 		return true;
-	// 	}
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	return attrs.some(key => nextProps[key] !== this.props[key]);
+	// 	// console.log(oldlastMessage.ts, newLastmessage.ts)
+	// 	// if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
+	// 	// 	return true;
+	// 	// }
+	// 	// if (roomUpdatedAt && nextProps.item.roomUpdatedAt && nextProps.item.roomUpdatedAt.toISOString() !== roomUpdatedAt.toISOString()) {
+	// 	// 	return true;
+	// 	// }
+	// 	// // eslint-disable-next-line react/destructuring-assignment
+	// 	// return attrs.some(key => nextProps.item[key] !== this.props.item[key]);
+	// 	// return nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()
+
+	// 	console.log(this.props.item, nextProps.item)
+	// 	return true;
 	// }
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
@@ -206,12 +211,19 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			item, unread, userMentions, name, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, isRead, width, favorite
+			item, testID, name, avatarSize, baseUrl, userId, username, token, showLastMessage, width
 		} = this.props;
-		// console.log('TCL: render -> lastMessage', lastMessage);
-		const { roomUpdatedAt: _updatedAt, lastMessage } = item;
+		const {
+			roomUpdatedAt, lastMessage, unread, alert, userMentions, t, prid, isRead, favorite
+		} = item;
+		const id = item.rid.replace(userId, '').trim();
 
-		const date = formatDate(_updatedAt);
+		const date = formatDate(roomUpdatedAt);
+
+		// FIXME: it's updating rows while scrolling
+		// if (name === 'diego.mello2') {
+		// 	console.log('RENRENRENRNERENRENRENRENRERN')
+		// }
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -266,16 +278,16 @@ class RoomItem extends React.Component {
 								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
-								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+								<Avatar text={name} size={avatarSize} type={t} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 								<View style={styles.centerContainer}>
 									<View style={styles.titleContainer}>
-										<TypeIcon type={type} id={id} prid={prid} />
+										<TypeIcon type={t} id={id} prid={prid} />
 										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ capitalize(date) }</Text> : null}
+										{roomUpdatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ capitalize(date) }</Text> : null}
 									</View>
 									<View style={styles.row}>
-										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
-										<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
+										<LastMessage lastMessage={lastMessage} type={t} showLastMessage={showLastMessage} username={username} alert={alert} />
+										<UnreadBadge unread={unread} userMentions={userMentions} type={t} />
 									</View>
 								</View>
 							</View>
@@ -288,8 +300,7 @@ class RoomItem extends React.Component {
 }
 
 const Item = withObservables(['item'], ({ item }) => ({
-	item: item.observe(),
-	// lastMessage: item.lastMessage.fetch()
+	item: item.observe()
 }))(RoomItem);
 
 export default Item;

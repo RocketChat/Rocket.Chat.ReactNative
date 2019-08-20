@@ -28,39 +28,40 @@ const removeSub = function removeSub() {
 };
 
 const assignSub = (sub, newSub) => {
-	sub.t = newSub.t;
-	sub.ts = newSub.ts;
-	sub.ls = newSub.ls;
-	sub.name = newSub.name;
-	sub.fname = newSub.fname;
-	sub.rid = newSub.rid;
-	sub.open = newSub.open;
-	sub.alert = newSub.alert;
-	sub.unread = newSub.unread;
-	sub.userMentions = newSub.userMentions;
-	sub.roomUpdatedAt = newSub.roomUpdatedAt;
-	sub.ro = newSub.ro;
-	sub.lastOpen = newSub.lastOpen;
-	sub.description = newSub.description;
-	sub.announcement = newSub.announcement;
-	sub.topic = newSub.topic;
-	sub.blocked = newSub.blocked;
-	sub.blocker = newSub.blocker;
-	sub.reactWhenReadOnly = newSub.reactWhenReadOnly;
-	sub.archived = newSub.archived;
-	sub.joinCodeRequired = newSub.joinCodeRequired;
-	sub.notifications = newSub.notifications;
-	sub.broadcast = newSub.broadcast;
-	sub.prid = newSub.prid;
-	sub.draftMessage = newSub.draftMessage;
-	sub.lastThreadSync = newSub.lastThreadSync;
-	sub.autoTranslate = newSub.autoTranslate;
-	sub.autoTranslateLanguage = newSub.autoTranslateLanguage;
-	if (newSub.lastMessage) {
-        // console.log('TCL: assignSub -> newSub.lastMessage', newSub.lastMessage);
-		sub.lastMessage = newSub.lastMessage;
-		// sub.tempLastMessage = newSub.lastMessage;
-	}
+	// sub.t = newSub.t;
+	// sub.ts = newSub.ts;
+	// sub.ls = newSub.ls;
+	// sub.name = newSub.name;
+	// sub.fname = newSub.fname;
+	// sub.rid = newSub.rid;
+	// sub.open = newSub.open;
+	// sub.alert = newSub.alert;
+	// sub.unread = newSub.unread;
+	// sub.userMentions = newSub.userMentions;
+	// sub.roomUpdatedAt = newSub.roomUpdatedAt;
+	// sub.ro = newSub.ro;
+	// sub.lastOpen = newSub.lastOpen;
+	// sub.description = newSub.description;
+	// sub.announcement = newSub.announcement;
+	// sub.topic = newSub.topic;
+	// sub.blocked = newSub.blocked;
+	// sub.blocker = newSub.blocker;
+	// sub.reactWhenReadOnly = newSub.reactWhenReadOnly;
+	// sub.archived = newSub.archived;
+	// sub.joinCodeRequired = newSub.joinCodeRequired;
+	// sub.notifications = newSub.notifications;
+	// sub.broadcast = newSub.broadcast;
+	// sub.prid = newSub.prid;
+	// sub.draftMessage = newSub.draftMessage;
+	// sub.lastThreadSync = newSub.lastThreadSync;
+	// sub.autoTranslate = newSub.autoTranslate;
+	// sub.autoTranslateLanguage = newSub.autoTranslateLanguage;
+	// if (newSub.lastMessage) {
+    //     // console.log('TCL: assignSub -> newSub.lastMessage', newSub.lastMessage);
+	// 	sub.lastMessage = newSub.lastMessage;
+	// 	// sub.tempLastMessage = newSub.lastMessage;
+	// }
+	Object.assign(sub, newSub);
 };
 
 const handleRoomsRequest = function* handleRoomsRequest() {

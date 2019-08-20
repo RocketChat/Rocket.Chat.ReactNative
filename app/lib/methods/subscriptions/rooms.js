@@ -16,13 +16,16 @@ let disconnectedListener;
 let streamListener;
 let subServer;
 
+const assignSub = (sub, newSub) => {
+	Object.assign(sub, newSub);
+};
+
 export default function subscribeRooms() {
 	const handleConnection = () => {
 		store.dispatch(roomsRequest());
 	};
 
 	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
-        // console.log('TCL: handleStreamMessageReceived -> ddpMessage', ddpMessage);
 		// check if the server from variable is the same as the js sdk client
 		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
 			return;
@@ -34,7 +37,6 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
-				// console.log('SUBSCRIPTIONS REMOVE', data)
 				let messages = [];
 				const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
 
@@ -46,36 +48,28 @@ export default function subscribeRooms() {
 					// 	database.delete(messages);
 					// 	database.delete(subscription);
 					// });
-					try {
-						await watermelon.action(async() => {
-							const subCollection = watermelon.collections.get('subscriptions');
-							const sub = await subCollection.find(subscription._id);
-							await sub.destroyPermanently();
-						});
-					} catch (error) {
-						alert(error)
-					}
+					await watermelon.action(async() => {
+						const subCollection = watermelon.collections.get('subscriptions');
+						const sub = await subCollection.find(subscription._id);
+						await sub.destroyPermanently();
+					});
 				} catch (e) {
 					log('err_stream_msg_received_sub_removed', e);
 				}
 			} else {
-				console.log('SUBSCRIPTIONS UPDATE', data)
 				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
-				const tpm = merge(data, rooms[0]);
-                // console.log('TCL: handleStreamMessageReceived -> tpm', tpm);
+				const tmp = merge(data, rooms[0]);
 				try {
 					await watermelon.action(async() => {
 						const subCollection = watermelon.collections.get('subscriptions');
-						const sub = await subCollection.find(tpm._id);
-						// console.log('TCL: handleStreamMessageReceived -> sub', sub);
-						await sub.update(s => {
-							s.roomUpdatedAt = new Date();
-							s.lastMessage = tpm.lastMessage;
+						const sub = await subCollection.find(tmp._id);
+						await sub.update((s) => {
+							assignSub(s, tmp);
 						});
 					});
 
 					database.write(() => {
-						database.create('subscriptions', tpm, true);
+						database.create('subscriptions', tmp, true);
 						database.delete(rooms);
 					});
 				} catch (e) {
@@ -84,13 +78,19 @@ export default function subscribeRooms() {
 			}
 		}
 		if (/rooms/.test(ev)) {
-			console.log('ROOMS UPDATE', data)
 			if (type === 'updated') {
 				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
+				const tmp = merge(sub, data);
 				try {
 					database.write(() => {
-						const tmp = merge(sub, data);
 						database.create('subscriptions', tmp, true);
+					});
+					await watermelon.action(async() => {
+						const subCollection = watermelon.collections.get('subscriptions');
+						const subW = await subCollection.find(tmp._id);
+						await subW.update((s) => {
+							assignSub(s, tmp);
+						});
 					});
 				} catch (e) {
 					log('err_stream_msg_received_room_updated', e);
