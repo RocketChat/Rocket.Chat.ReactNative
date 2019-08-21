@@ -182,39 +182,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -389,39 +370,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </Text>
               </View>
             </View>
           </View>
@@ -596,39 +558,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        …
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  ...
+                </Text>
               </View>
             </View>
           </View>
@@ -785,39 +728,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Different user
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Different user
+                </Text>
               </View>
             </View>
           </View>
@@ -874,39 +798,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        This is the third message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  This is the third message
+                </Text>
               </View>
             </View>
           </View>
@@ -963,39 +868,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        This is the second message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  This is the second message
+                </Text>
               </View>
             </View>
           </View>
@@ -1152,39 +1038,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        This is the first message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  This is the first message
+                </Text>
               </View>
             </View>
           </View>
@@ -1259,39 +1126,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -1480,39 +1328,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -1683,39 +1512,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -1890,39 +1700,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -2097,39 +1888,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -2304,39 +2076,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -2511,123 +2264,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#E8F2FF",
-                            "color": "#0072FE",
-                            "fontFamily": "System",
-                            "fontWeight": "500",
-                            "padding": 5,
-                          }
-                        }
-                      >
-                         
-                        rocket.cat
-                         
-                      </Text>
-                      <Text>
-                         
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#1d74f5",
-                            "color": "#fff",
-                            "fontFamily": "System",
-                            "fontWeight": "500",
-                            "padding": 5,
-                          }
-                        }
-                      >
-                         
-                        diego.mello
-                         
-                      </Text>
-                      <Text>
-                         
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#FF5B5A",
-                            "color": "#fff",
-                            "fontFamily": "System",
-                            "fontWeight": "500",
-                            "padding": 5,
-                          }
-                        }
-                      >
-                         
-                        all
-                         
-                      </Text>
-                      <Text>
-                         
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#FF5B5A",
-                            "color": "#fff",
-                            "fontFamily": "System",
-                            "fontWeight": "500",
-                            "padding": 5,
-                          }
-                        }
-                      >
-                         
-                        here
-                         
-                      </Text>
-                      <Text>
-                         
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#E8F2FF",
-                            "color": "#0072FE",
-                            "fontFamily": "System",
-                            "fontWeight": "500",
-                            "padding": 5,
-                          }
-                        }
-                      >
-                         #
-                        general
-                         
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  @rocket.cat @diego.mello @all @here #general
+                </Text>
               </View>
             </View>
           </View>
@@ -2802,39 +2452,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 30,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        👊🤙👏
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  👊🤙👏
+                </Text>
               </View>
             </View>
           </View>
@@ -3009,39 +2640,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 30,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        👏
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  👏
+                </Text>
               </View>
             </View>
           </View>
@@ -3216,81 +2828,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 30,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 30,
-                            "width": 30,
-                          }
-                        }
-                      />
-                      <Text>
-                         
-                      </Text>
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 30,
-                            "width": 30,
-                          }
-                        }
-                      />
-                      <Text>
-                         
-                      </Text>
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 30,
-                            "width": 30,
-                          }
-                        }
-                      />
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  :react_rocket: :nyan_rocket: :marioparty:
+                </Text>
               </View>
             </View>
           </View>
@@ -3465,49 +3016,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 30,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 30,
-                            "width": 30,
-                          }
-                        }
-                      />
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  :react_rocket:
+                </Text>
               </View>
             </View>
           </View>
@@ -3682,52 +3204,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 30,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        🤙
-                      </Text>
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 30,
-                            "width": 30,
-                          }
-                        }
-                      />
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  🤙:react_rocket:
+                </Text>
               </View>
             </View>
           </View>
@@ -3902,55 +3392,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        🤙
-                      </Text>
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 20,
-                            "width": 20,
-                          }
-                        }
-                      />
-                      <Text>
-                        🤙🤙
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  🤙:react_rocket:🤙🤙
+                </Text>
               </View>
             </View>
           </View>
@@ -4125,39 +3580,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Testing
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Testing
+                </Text>
               </View>
             </View>
           </View>
@@ -4332,39 +3768,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Reactions
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Reactions
+                </Text>
               </View>
               <View
                 style={
@@ -4839,39 +4256,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Multiple Reactions
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Multiple Reactions
+                </Text>
               </View>
               <View
                 style={
@@ -5719,39 +5117,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Fourth message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Fourth message
+                </Text>
               </View>
             </View>
           </View>
@@ -5908,39 +5287,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Third message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Third message
+                </Text>
               </View>
             </View>
           </View>
@@ -6097,39 +5457,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Second message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Second message
+                </Text>
               </View>
             </View>
           </View>
@@ -6286,39 +5627,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        First message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  First message
+                </Text>
               </View>
             </View>
           </View>
@@ -6493,39 +5815,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Fourth message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Fourth message
+                </Text>
               </View>
             </View>
           </View>
@@ -6747,39 +6050,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Third message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Third message
+                </Text>
               </View>
             </View>
           </View>
@@ -6883,39 +6167,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Second message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Second message
+                </Text>
               </View>
             </View>
           </View>
@@ -7072,39 +6337,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Second message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Second message
+                </Text>
               </View>
             </View>
           </View>
@@ -7300,39 +6546,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        First message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  First message
+                </Text>
               </View>
             </View>
           </View>
@@ -7506,7 +6733,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -7750,7 +6990,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -8025,7 +7278,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -8272,7 +7538,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -8492,7 +7771,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 style={
                   Object {
@@ -8789,39 +8081,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        First message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  First message
+                </Text>
               </View>
             </View>
           </View>
@@ -8877,7 +8150,20 @@ exports[`Storyshots Message list 1`] = `
                 ]
               }
             >
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 style={
                   Object {
@@ -9160,7 +8446,20 @@ exports[`Storyshots Message list 1`] = `
                 ]
               }
             >
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 style={
                   Object {
@@ -9411,7 +8710,20 @@ exports[`Storyshots Message list 1`] = `
                 ]
               }
             >
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 style={
                   Object {
@@ -9781,39 +9093,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
               <View
                 accessible={true}
@@ -10078,39 +9371,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
               <View
                 accessible={true}
@@ -10406,39 +9680,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -10495,39 +9750,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -10684,39 +9920,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
             <Text
@@ -10795,39 +10012,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
             <Text
@@ -11024,39 +10222,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        How are you?
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  How are you?
+                </Text>
               </View>
               <View
                 style={
@@ -11294,39 +10473,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        How are you?
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  How are you?
+                </Text>
               </View>
               <View
                 style={
@@ -11594,39 +10754,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -11813,39 +10954,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -12032,39 +11154,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -12251,39 +11354,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -12470,39 +11554,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </Text>
               </View>
             </View>
           </View>
@@ -12689,39 +11754,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </Text>
               </View>
             </View>
           </View>
@@ -13095,39 +12141,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        How are you?
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  How are you?
+                </Text>
               </View>
               <View
                 style={
@@ -13320,39 +12347,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -13464,39 +12472,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </Text>
               </View>
             </View>
           </View>
@@ -13825,39 +12814,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        I’m fine!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  I'm fine!
+                </Text>
               </View>
             </View>
           </View>
@@ -13969,39 +12939,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Cool!
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Cool!
+                </Text>
               </View>
             </View>
           </View>
@@ -14113,39 +13064,20 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </Text>
               </View>
             </View>
           </View>
@@ -15563,7 +14495,20 @@ exports[`Storyshots Message list 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -15882,52 +14827,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message 
-                      </Text>
-                      <Image
-                        source={
-                          Object {
-                            "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
-                          }
-                        }
-                        style={
-                          Object {
-                            "height": 20,
-                            "width": 20,
-                          }
-                        }
-                      />
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message :nyan_rocket:
+                </Text>
               </View>
               <View
                 accessible={true}
@@ -16048,7 +14961,20 @@ exports[`Storyshots Message list 1`] = `
                 ]
               }
             >
-              <View />
+              <View>
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                />
+              </View>
               <View
                 accessible={true}
                 clickable={true}
@@ -16287,39 +15213,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
               <View
                 accessible={true}
@@ -16812,39 +15719,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
               <View
                 accessible={true}
@@ -17415,39 +16303,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Broadcasted message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Broadcasted message
+                </Text>
               </View>
               <View
                 style={
@@ -17701,39 +16570,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        This message is inside an archived room
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  This message is inside an archived room
+                </Text>
               </View>
             </View>
           </View>
@@ -17939,39 +16789,20 @@ exports[`Storyshots Message list 1`] = `
               </View>
             </View>
             <View>
-              <View
-                style={Object {}}
-              >
-                <Text
-                  numberOfLines={0}
-                  style={
-                    Object {
-                      "alignItems": "flex-start",
-                      "flexDirection": "row",
-                      "flexWrap": "wrap",
-                      "justifyContent": "flex-start",
-                      "marginBottom": 0,
-                      "marginTop": 0,
-                    }
+              <Text
+                numberOfLines={0}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
                   }
-                >
-                  <Text
-                    style={
-                      Object {
-                        "backgroundColor": "transparent",
-                        "color": "#2F343D",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                      }
-                    }
-                  >
-                    <Text>
-                      This message has error
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
+                }
+              >
+                This message has error
+              </Text>
             </View>
           </View>
         </View>
@@ -18108,39 +16939,20 @@ exports[`Storyshots Message list 1`] = `
               </View>
             </View>
             <View>
-              <View
-                style={Object {}}
-              >
-                <Text
-                  numberOfLines={0}
-                  style={
-                    Object {
-                      "alignItems": "flex-start",
-                      "flexDirection": "row",
-                      "flexWrap": "wrap",
-                      "justifyContent": "flex-start",
-                      "marginBottom": 0,
-                      "marginTop": 0,
-                    }
+              <Text
+                numberOfLines={0}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
                   }
-                >
-                  <Text
-                    style={
-                      Object {
-                        "backgroundColor": "transparent",
-                        "color": "#2F343D",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                      }
-                    }
-                  >
-                    <Text>
-                      This message has error too
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
+                }
+              >
+                This message has error too
+              </Text>
             </View>
           </View>
         </View>
@@ -18320,39 +17132,20 @@ exports[`Storyshots Message list 1`] = `
                   }
                 }
               >
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Temp message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Temp message
+                </Text>
               </View>
             </View>
           </View>
@@ -18527,39 +17320,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message being edited
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message being edited
+                </Text>
               </View>
             </View>
           </View>
@@ -20854,39 +19628,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Message
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Message
+                </Text>
               </View>
             </View>
           </View>
@@ -21061,106 +19816,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Italic with 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "fontStyle": "italic",
-                          }
-                        }
-                      >
-                        <Text>
-                          asterisks
-                        </Text>
-                      </Text>
-                      <Text>
-                         or 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "fontStyle": "italic",
-                          }
-                        }
-                      >
-                        <Text>
-                          underscores
-                        </Text>
-                      </Text>
-                      <Text>
-                        . Bold with 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "fontWeight": "bold",
-                          }
-                        }
-                      >
-                        <Text>
-                          asterisks
-                        </Text>
-                      </Text>
-                      <Text>
-                         or 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "fontWeight": "bold",
-                          }
-                        }
-                      >
-                        <Text>
-                          underscores
-                        </Text>
-                      </Text>
-                      <Text>
-                        . 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "textDecorationLine": "line-through",
-                          }
-                        }
-                      >
-                        <Text>
-                          Strikethrough
-                        </Text>
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~
+                </Text>
               </View>
             </View>
           </View>
@@ -21335,184 +20004,25 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
                 >
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 32,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H1
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 24,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H2
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 18,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H3
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 16,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H4
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 13,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H5
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "flexDirection": "row",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          },
-                          Object {},
-                          Object {
-                            "fontSize": 11,
-                          },
-                        ]
-                      }
-                    >
-                      <Text>
-                        H6
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
+                  # H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
+                </Text>
               </View>
             </View>
           </View>
@@ -21687,75 +20197,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Support 
-                      </Text>
-                      <Text
-                        onPress={[Function]}
-                        style={
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#1d74f5",
-                            "fontFamily": "System",
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        <Text>
-                          Google
-                        </Text>
-                      </Text>
-                      <Text>
-                         
-                      </Text>
-                      <Text
-                        onPress={[Function]}
-                        style={
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#1d74f5",
-                            "fontFamily": "System",
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        <Text>
-                          I\`m an inline-style link
-                        </Text>
-                      </Text>
-                      <Text>
-                         https://google.com
-                      </Text>
-                    </Text>
-                  </Text>
-                </View>
+                  }
+                >
+                  Support &lt;http://google.com|Google&gt; [I\`m an inline-style link](https://www.google.com) https://google.com
+                </Text>
               </View>
             </View>
           </View>
@@ -21930,38 +20385,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Image
-                      source={
-                        Object {
-                          "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
-                        }
-                      }
-                      style={
-                        Object {
-                          "height": 300,
-                          "resizeMode": "contain",
-                          "width": 300,
-                        }
-                      }
-                    />
-                  </Text>
-                </View>
+                  }
+                >
+                  ![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)
+                </Text>
               </View>
             </View>
           </View>
@@ -22136,87 +20573,23 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
                 >
-                  <Text
-                    numberOfLines={0}
-                    style={
-                      Object {
-                        "alignItems": "flex-start",
-                        "flexDirection": "row",
-                        "flexWrap": "wrap",
-                        "justifyContent": "flex-start",
-                        "marginBottom": 0,
-                        "marginTop": 0,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#2F343D",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        }
-                      }
-                    >
-                      <Text>
-                        Inline 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#f3f4f5",
-                            "borderRadius": 4,
-                            "borderWidth": 1,
-                            "fontFamily": "Courier New",
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        code
-                      </Text>
-                      <Text>
-                         has 
-                      </Text>
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "#f3f4f5",
-                            "borderRadius": 4,
-                            "borderWidth": 1,
-                            "fontFamily": "Courier New",
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        back-ticks around
-                      </Text>
-                      <Text>
-                         it.
-                      </Text>
-                    </Text>
-                  </Text>
-                  <Text
-                    style={
-                      Object {
-                        "backgroundColor": "#f3f4f5",
-                        "borderColor": "#e1e5e8",
-                        "borderRadius": 4,
-                        "borderWidth": 1,
-                        "fontFamily": "Courier New",
-                        "fontWeight": "400",
-                        "padding": 4,
-                      }
-                    }
-                  >
-                    Code block
-
-                  </Text>
-                </View>
+                  Inline \`code\` has \`back-ticks around\` it.
+\`\`\`
+Code block
+\`\`\`
+                </Text>
               </View>
             </View>
           </View>
@@ -22391,50 +20764,20 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <View
-                    style={
-                      Object {
-                        "backgroundColor": "#CCCCCC",
-                        "margin": 20,
-                        "paddingHorizontal": 20,
-                        "paddingVertical": 10,
-                      }
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <Text
-                      numberOfLines={0}
-                      style={
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        }
-                      }
-                    >
-                      <Text
-                        style={
-                          Object {
-                            "backgroundColor": "transparent",
-                            "color": "#2F343D",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        <Text>
-                          Quote
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
+                  }
+                >
+                  &gt; Quote
+                </Text>
               </View>
             </View>
           </View>
@@ -22609,224 +20952,23 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <View
-                  style={Object {}}
-                >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "borderColor": "#000000",
-                          "borderRadius": 3,
-                          "borderWidth": 1,
-                        },
-                      ]
+                <Text
+                  numberOfLines={0}
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
                     }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {},
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "borderBottomWidth": 1,
-                              "borderColor": "#000000",
-                              "flexDirection": "row",
-                            },
-                          ]
-                        }
-                      >
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              First Header
-                            </Text>
-                          </Text>
-                        </View>
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              Second Header
-                            </Text>
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View>
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "borderBottomWidth": 1,
-                              "borderColor": "#000000",
-                              "flexDirection": "row",
-                            },
-                          ]
-                        }
-                      >
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              Content from cell 1
-                            </Text>
-                          </Text>
-                        </View>
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              Content from cell 2
-                            </Text>
-                          </Text>
-                        </View>
-                      </View>
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "borderBottomWidth": 1,
-                              "borderColor": "#000000",
-                              "flexDirection": "row",
-                            },
-                          ]
-                        }
-                      >
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              Content in the first column
-                            </Text>
-                          </Text>
-                        </View>
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flex": 1,
-                                "padding": 5,
-                              },
-                            ]
-                          }
-                        >
-                          <Text
-                            style={
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              }
-                            }
-                          >
-                            <Text>
-                              Content in the second column
-                            </Text>
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
+                  }
+                >
+                  First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+                </Text>
               </View>
             </View>
           </View>
