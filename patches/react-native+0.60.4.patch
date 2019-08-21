@@ -1,3 +1,15 @@
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+index 6f1e5e8..b835657 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+@@ -595,6 +595,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
+       }
+     }
+ 
++    [self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:YES];
+     [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
+   });
+ }
 diff --git a/node_modules/react-native/React/Modules/RCTRedBox.m b/node_modules/react-native/React/Modules/RCTRedBox.m
 index 7ed4900..bb85402 100644
 --- a/node_modules/react-native/React/Modules/RCTRedBox.m
