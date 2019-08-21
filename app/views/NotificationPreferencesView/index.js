@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-	View, ScrollView, SafeAreaView, Switch, Text
+	View, ScrollView, Switch, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
+import { SafeAreaView } from 'react-navigation';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
@@ -35,7 +36,7 @@ const OPTIONS = {
 	desktopNotifications: [{
 		label: I18n.t('Default'), value: 'default'
 	}, {
-		label: I18n.t('All Messages'), value: 'all'
+		label: I18n.t('All_Messages'), value: 'all'
 	}, {
 		label: I18n.t('Mentions'), value: 'mentions'
 	}, {
@@ -44,7 +45,7 @@ const OPTIONS = {
 	audioNotifications: [{
 		label: I18n.t('Default'), value: 'default'
 	}, {
-		label: I18n.t('All Messages'), value: 'all'
+		label: I18n.t('All_Messages'), value: 'all'
 	}, {
 		label: I18n.t('Mentions'), value: 'mentions'
 	}, {
@@ -53,7 +54,7 @@ const OPTIONS = {
 	mobilePushNotifications: [{
 		label: I18n.t('Default'), value: 'default'
 	}, {
-		label: I18n.t('All Messages'), value: 'all'
+		label: I18n.t('All_Messages'), value: 'all'
 	}, {
 		label: I18n.t('Mentions'), value: 'mentions'
 	}, {
@@ -62,7 +63,7 @@ const OPTIONS = {
 	emailNotifications: [{
 		label: I18n.t('Default'), value: 'default'
 	}, {
-		label: I18n.t('All Messages'), value: 'all'
+		label: I18n.t('All_Messages'), value: 'all'
 	}, {
 		label: I18n.t('Mentions'), value: 'mentions'
 	}, {
@@ -205,6 +206,7 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator />
 					<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} />
+					<Separator />
 
 					<ListItem
 						title={I18n.t('Alert')}
@@ -216,6 +218,7 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator />
 					<SectionTitle title={I18n.t('Push_Notifications')} />
+					<Separator />
 
 					<ListItem
 						title={I18n.t('Alert')}
@@ -227,6 +230,7 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator />
 					<SectionTitle title={I18n.t('Desktop_Options')} />
+					<Separator />
 
 					<ListItem
 						title={I18n.t('Audio')}
@@ -249,6 +253,7 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator />
 					<SectionTitle title={I18n.t('Email')} />
+					<Separator />
 
 					<ListItem
 						title={I18n.t('Alert')}
@@ -256,6 +261,7 @@ export default class NotificationPreferencesView extends React.Component {
 						right={() => this.renderPicker('emailNotifications')}
 					/>
 					<Separator />
+					<SectionSeparator />
 				</ScrollView>
 			</SafeAreaView>
 		);
