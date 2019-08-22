@@ -80,7 +80,7 @@ export default class Markdown extends PureComponent {
 			hashtag: this.renderHashtag,
 
 			paragraph: this.renderParagraph,
-			heading: () => null,
+			heading: this.renderHeading,
 			codeBlock: this.renderCodeBlock,
 			blockQuote: () => null,
 
@@ -164,6 +164,15 @@ export default class Markdown extends PureComponent {
 	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
 
 	renderEditedIndicator = () => <Text style={styles.edited}> ({I18n.t('edited')})</Text>;
+
+	renderHeading = ({ children, level }) => {
+		const textStyle = styles[`heading${ level }Text`];
+		return (
+			<Text style={textStyle}>
+				{children}
+			</Text>
+		);
+	};
 
 	renderList = ({
 		children, start, tight, type

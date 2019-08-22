@@ -12,7 +12,6 @@ const codeFontFamily = Platform.select({
 
 export default StyleSheet.create({
 	text: {
-		fontSize: 16,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
@@ -87,5 +86,29 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
+	},
+	heading1Text: {
+		...sharedStyles.textBold,
+		fontSize: 24
+	},
+	heading2Text: {
+		...sharedStyles.textBold,
+		fontSize: 22
+	},
+	heading3Text: {
+		...sharedStyles.textSemibold,
+		fontSize: 20
+	},
+	heading4Text: {
+		...sharedStyles.textSemibold,
+		fontSize: 18
+	},
+	heading5Text: {
+		...sharedStyles.textMedium,
+		fontSize: 16
+	},
+	heading6Text: {
+		...sharedStyles.textMedium,
+		fontSize: 14
 	}
 });
