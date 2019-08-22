@@ -1,4 +1,4 @@
-import { analytics } from './log';
+import { analytics, leaveBreadcrumb } from './log';
 
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
 
@@ -32,5 +32,6 @@ export const onNavigationStateChange = (prevState, currentState) => {
 
 	if (prevScreen !== currentScreen) {
 		analytics().setCurrentScreen(currentScreen);
+		leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };

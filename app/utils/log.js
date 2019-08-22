@@ -6,5 +6,6 @@ const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
 export const { analytics } = firebase;
 export const loggerConfig = bugsnag.config;
+export const { leaveBreadcrumb } = bugsnag;
 
 export default bugsnag.notify;
