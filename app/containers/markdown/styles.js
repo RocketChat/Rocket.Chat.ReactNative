@@ -11,6 +11,13 @@ const codeFontFamily = Platform.select({
 });
 
 export default StyleSheet.create({
+	container: {
+		alignItems: 'flex-start',
+		flexDirection: 'row'
+	},
+	childContainer: {
+		flex: 1
+	},
 	emph: {
 		fontStyle: 'italic'
 	},
@@ -119,5 +126,8 @@ export default StyleSheet.create({
 	heading6Text: {
 		...sharedStyles.textMedium,
 		fontSize: 14
+	},
+	icon: {
+		width: 23
 	}
 });

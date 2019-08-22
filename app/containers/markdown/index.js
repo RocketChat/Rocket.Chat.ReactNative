@@ -13,6 +13,7 @@ import MarkdownList from './List';
 import MarkdownListItem from './ListItem';
 import MarkdownAtMention from './AtMention';
 import MarkdownHashtag from './Hashtag';
+import MarkdownBlockQuote from './BlockQuote';
 
 import styles from './styles';
 
@@ -82,14 +83,14 @@ export default class Markdown extends PureComponent {
 			paragraph: this.renderParagraph,
 			heading: this.renderHeading,
 			codeBlock: this.renderCodeBlock,
-			blockQuote: () => null,
+			blockQuote: this.renderBlockQuote,
 
 			list: this.renderList,
 			item: this.renderListItem,
 
-			hardBreak: () => null,
-			thematicBreak: () => null,
-			softBreak: () => null,
+			hardBreak: this.renderBreak,
+			thematicBreak: this.renderBreak,
+			softBreak: this.renderBreak,
 
 			htmlBlock: () => null,
 			htmlInline: () => null,
@@ -108,6 +109,8 @@ export default class Markdown extends PureComponent {
 	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
 
 	renderCodeBlock = ({ literal }) => <Text style={styles.codeBlock}>{literal}</Text>;
+
+	renderBreak = () => <Text>{'\n'}</Text>;
 
 	renderParagraph = ({ children }) => {
 		if (!children || children.length === 0) {
@@ -200,6 +203,12 @@ export default class Markdown extends PureComponent {
 			</MarkdownListItem>
 		);
 	};
+
+	renderBlockQuote = ({ children, ...otherProps }) => (
+		<MarkdownBlockQuote {...otherProps}>
+			{children}
+		</MarkdownBlockQuote>
+	)
 
 	render() {
 		const {
