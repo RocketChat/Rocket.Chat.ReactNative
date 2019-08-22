@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
 	StyleSheet,
@@ -20,42 +20,41 @@ const style = StyleSheet.create({
 	}
 });
 
-export default class ListItem extends PureComponent {
-	static propTypes = {
-		children: PropTypes.node,
-		bulletWidth: PropTypes.number,
-		level: PropTypes.number,
-		ordered: PropTypes.bool,
-		_continue: PropTypes.bool,
-		index: PropTypes.number
-	};
-
-	render() {
-		const {
-			children, level, bulletWidth, _continue, ordered, index
-		} = this.props;
-		let bullet;
-		if (_continue) {
-			bullet = '';
-		} else if (ordered) {
-			bullet = `${ index + 1 }.`;
-		} else if (level % 2 === 0) {
-			bullet = '◦';
-		} else {
-			bullet = '•';
-		}
-
-		return (
-			<View style={style.container}>
-				<View style={[{ width: bulletWidth }, style.bullet]}>
-					<Text>
-						{bullet}
-					</Text>
-				</View>
-				<View style={style.contents}>
-					{children}
-				</View>
-			</View>
-		);
+const ListItem = React.memo(({
+	children, level, bulletWidth, _continue, ordered, index
+}) => {
+	let bullet;
+	if (_continue) {
+		bullet = '';
+	} else if (ordered) {
+		bullet = `${ index + 1 }.`;
+	} else if (level % 2 === 0) {
+		bullet = '◦';
+	} else {
+		bullet = '•';
 	}
-}
+
+	return (
+		<View style={style.container}>
+			<View style={[{ width: bulletWidth }, style.bullet]}>
+				<Text>
+					{bullet}
+				</Text>
+			</View>
+			<View style={style.contents}>
+				{children}
+			</View>
+		</View>
+	);
+});
+
+ListItem.propTypes = {
+	children: PropTypes.node,
+	bulletWidth: PropTypes.number,
+	level: PropTypes.number,
+	ordered: PropTypes.bool,
+	_continue: PropTypes.bool,
+	index: PropTypes.number
+};
+
+export default ListItem;

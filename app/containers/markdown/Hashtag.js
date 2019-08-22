@@ -4,37 +4,32 @@ import { Text } from 'react-native';
 
 import styles from './styles';
 
-export default class Hashtag extends React.PureComponent {
-	static propTypes = {
-		hashtag: PropTypes.string,
-		onPress: PropTypes.func,
-		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-	};
-
-	handlePress = () => {
-		const {
-			onPress,
-			hashtag
-		} = this.props;
-
+const Hashtag = React.memo(({
+	hashtag, channels, onPress
+}) => {
+	const handlePress = () => {
 		if (onPress) {
 			onPress(hashtag);
 		}
 	};
 
-	render() {
-		const { hashtag, channels } = this.props;
-
-		if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
-			return (
-				<Text
-					style={styles.mention}
-					onPress={this.handlePress}
-				>
-					{`#${ hashtag }`}
-				</Text>
-			);
-		}
-		return `#${ hashtag }`;
+	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
+		return (
+			<Text
+				style={styles.mention}
+				onPress={handlePress}
+			>
+				{`#${ hashtag }`}
+			</Text>
+		);
 	}
-}
+	return `#${ hashtag }`;
+});
+
+Hashtag.propTypes = {
+	hashtag: PropTypes.string,
+	onPress: PropTypes.func,
+	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+};
+
+export default Hashtag;

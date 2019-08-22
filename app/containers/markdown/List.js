@@ -1,36 +1,35 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-export default class List extends PureComponent {
-	static propTypes = {
-		children: PropTypes.node,
-		ordered: PropTypes.bool,
-		start: PropTypes.number,
-		tight: PropTypes.bool
-	};
+const List = React.memo(({
+	children, ordered, start, tight
+}) => {
+	let bulletWidth = 15;
 
-	render() {
-		const {
-			children, ordered, start, tight
-		} = this.props;
-		let bulletWidth = 15;
-
-		if (ordered) {
-			const lastNumber = (start + children.length) - 1;
-			bulletWidth = (9 * lastNumber.toString().length) + 7;
-		}
-
-		const _children = React.Children.map(children, (child, index) => React.cloneElement(child, {
-			bulletWidth,
-			ordered,
-			tight,
-			index
-		}));
-
-		return (
-			<React.Fragment>
-				{_children}
-			</React.Fragment>
-		);
+	if (ordered) {
+		const lastNumber = (start + children.length) - 1;
+		bulletWidth = (9 * lastNumber.toString().length) + 7;
 	}
-}
+
+	const _children = React.Children.map(children, (child, index) => React.cloneElement(child, {
+		bulletWidth,
+		ordered,
+		tight,
+		index
+	}));
+
+	return (
+		<>
+			{_children}
+		</>
+	);
+});
+
+List.propTypes = {
+	children: PropTypes.node,
+	ordered: PropTypes.bool,
+	start: PropTypes.number,
+	tight: PropTypes.bool
+};
+
+export default List;

@@ -11,6 +11,15 @@ const codeFontFamily = Platform.select({
 });
 
 export default StyleSheet.create({
+	emph: {
+		fontStyle: 'italic'
+	},
+	strong: {
+		fontWeight: 'bold'
+	},
+	del: {
+		textDecorationLine: 'line-through'
+	},
 	text: {
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular

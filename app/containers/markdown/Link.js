@@ -1,49 +1,32 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
-import urlParse from 'url-parse';
 
 import styles from './styles';
 import openLink from '../../utils/openLink';
 
-export default class Link extends PureComponent {
-	static propTypes = {
-		link: PropTypes.string
-	};
-
-	handlePress = () => {
-		const { link } = this.props;
-
+const Link = React.memo(({
+	link
+}) => {
+	const handlePress = () => {
 		if (!link) {
 			return;
 		}
-
 		openLink(link);
 	};
 
-	parseLinkLiteral = (literal) => {
-		let nextLiteral = literal;
+	return (
+		<Text
+			onPress={handlePress}
+			style={styles.link}
+		>
+			{link}
+		</Text>
+	);
+});
 
-		const WWW_REGEX = /\b^(?:www.)/i;
-		if (nextLiteral.match(WWW_REGEX)) {
-			nextLiteral = literal.replace(WWW_REGEX, 'www.');
-		}
+Link.propTypes = {
+	link: PropTypes.string
+};
 
-		const parsed = urlParse(nextLiteral, {});
-
-		return parsed.href;
-	};
-
-	render() {
-		const { link } = this.props;
-
-		return (
-			<Text
-				onPress={this.handlePress}
-				style={styles.link}
-			>
-				{link}
-			</Text>
-		);
-	}
-}
+export default Link;

@@ -103,7 +103,7 @@ export default class Markdown extends PureComponent {
 		renderParagraphsInLists: true
 	});
 
-	renderText = ({ literal }) => <Text style={styles.text}>{literal}</Text>;
+	renderText = ({ context, literal }) => <Text style={[styles.text, ...context.map(type => styles[type])]}>{literal}</Text>;
 
 	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
 
