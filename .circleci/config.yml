@@ -183,7 +183,7 @@ jobs:
               -F platform=android \
               -F sourceMap=@android-release.bundle.map \
               -F bundle=@android-release.bundle
-              # -F projectRoot=app.bugsnag.com/rocketchat-1
+              -F projectRoot=`pwd`
 
       - run:
           name: Config variables
@@ -276,7 +276,7 @@ jobs:
               -F platform=ios \
               -F sourceMap=@ios-release.bundle.map \
               -F bundle=@ios-release.bundle
-              # -F projectRoot=app.bugsnag.com/rocketchat-1
+              -F projectRoot=`pwd`
 
       - run:
           name: Fastlane Build
