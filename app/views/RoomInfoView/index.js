@@ -9,7 +9,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -20,8 +20,8 @@ import log from '../../utils/log';
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = room => (room.t === 'd'
-	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
+const getRoomTitle = (room, type, name) => (type === 'd'
+	? <Text testID='room-info-view-name' style={styles.roomTitle}>{name}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
@@ -59,28 +59,18 @@ class RoomInfoView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rid = props.navigation.getParam('rid');
-		const room = props.navigation.getParam('room');
 		this.t = props.navigation.getParam('t');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.roles = database.objects('roles');
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room: this.rooms[0] || room || {},
+			room: {},
 			roomUser: {}
 		};
 	}
 
 	async componentDidMount() {
-		safeAddListener(this.rooms, this.updateRoom);
-		const { room } = this.state;
-		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			const { navigation } = this.props;
-			navigation.setParams({ showEdit: true });
-		}
-
 		if (this.t === 'd') {
 			const { user } = this.props;
 			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
@@ -92,11 +82,30 @@ class RoomInfoView extends React.Component {
 			} catch (error) {
 				log('err_get_user_info', error);
 			}
+			return;
 		}
-	}
-
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
+		const rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		let room = {};
+		if (rooms.length > 0) {
+			this.setState({ room: rooms[0] });
+			[room] = rooms;
+		} else {
+			try {
+				const result = await RocketChat.getRoomInfo(this.rid);
+				if (result.success) {
+					// eslint-disable-next-line prefer-destructuring
+					room = result.room;
+					this.setState({ room });
+				}
+			} catch (error) {
+				log('err_get_room_info', error);
+			}
+		}
+		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
+			const { navigation } = this.props;
+			navigation.setParams({ showEdit: true });
+		}
 	}
 
 	getRoleDescription = (id) => {
@@ -107,10 +116,7 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
-	isDirect = () => {
-		const { room: { t } } = this.state;
-		return t === 'd';
-	}
+	isDirect = () => this.t === 'd'
 
 	updateRoom = () => {
 		if (this.rooms.length > 0) {
@@ -181,15 +187,15 @@ class RoomInfoView extends React.Component {
 
 		return (
 			<Avatar
-				text={room.name}
+				text={room.name || roomUser.username}
 				size={100}
 				style={styles.avatar}
-				type={room.t}
+				type={this.t}
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
 			>
-				{room.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}
@@ -231,6 +237,29 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
+	renderChannel = () => {
+		const { room } = this.state;
+		return (
+			<React.Fragment>
+				{this.renderItem('description', room)}
+				{this.renderItem('topic', room)}
+				{this.renderItem('announcement', room)}
+				{room.broadcast ? this.renderBroadcast() : null}
+			</React.Fragment>
+		);
+	}
+
+	renderDirect = () => {
+		const { roomUser } = this.state;
+		return (
+			<React.Fragment>
+				{this.renderRoles()}
+				{this.renderTimezone()}
+				{this.renderCustomFields(roomUser._id)}
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		const { room, roomUser } = this.state;
 		if (!room) {
@@ -242,15 +271,9 @@ class RoomInfoView extends React.Component {
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name) }</View>
 					</View>
-					{!this.isDirect() ? this.renderItem('description', room) : null}
-					{!this.isDirect() ? this.renderItem('topic', room) : null}
-					{!this.isDirect() ? this.renderItem('announcement', room) : null}
-					{this.isDirect() ? this.renderRoles() : null}
-					{this.isDirect() ? this.renderTimezone() : null}
-					{this.isDirect() ? this.renderCustomFields(roomUser._id) : null}
-					{room.broadcast ? this.renderBroadcast() : null}
+					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
 			</ScrollView>
 		);

@@ -48,7 +48,7 @@ const emojiCount = (str) => {
 };
 
 const Markdown = React.memo(({
-	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true
+	msg, style, rules, baseUrl, username, isEdited, numberOfLines, mentions, channels, getCustomEmoji, useMarkdown = true, navToRoomInfo
 }) => {
 	if (!msg) {
 		return null;
@@ -92,8 +92,17 @@ const Markdown = React.memo(({
 						};
 					}
 					if (mentions && mentions.length && mentions.findIndex(mention => mention.username === content) !== -1) {
+						const index = mentions.findIndex(mention => mention.username === content);
+						const navParam = {
+							t: 'd',
+							rid: mentions[index]._id
+						};
 						return (
-							<Text style={mentionStyle} key={key}>
+							<Text
+								style={mentionStyle}
+								key={key}
+								onPress={() => navToRoomInfo(navParam)}
+							>
 								&nbsp;{content}&nbsp;
 							</Text>
 						);
@@ -103,8 +112,17 @@ const Markdown = React.memo(({
 				hashtag: (node) => {
 					const { content, key } = node;
 					if (channels && channels.length && channels.findIndex(channel => channel.name === content) !== -1) {
+						const index = channels.findIndex(channel => channel.name === content);
+						const navParam = {
+							t: 'c',
+							rid: channels[index]._id
+						};
 						return (
-							<Text key={key} style={styles.mention}>
+							<Text
+								key={key}
+								style={styles.mention}
+								onPress={() => navToRoomInfo(navParam)}
+							>
 								&nbsp;#{content}&nbsp;
 							</Text>
 						);
@@ -161,7 +179,8 @@ Markdown.propTypes = {
 	useMarkdown: PropTypes.bool,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	navToRoomInfo: PropTypes.func
 };
 Markdown.displayName = 'MessageMarkdown';
 
