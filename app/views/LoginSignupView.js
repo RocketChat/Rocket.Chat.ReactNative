@@ -102,7 +102,9 @@ class LoginSignupView extends React.Component {
 		server: PropTypes.string,
 		services: PropTypes.object,
 		Site_Name: PropTypes.string,
-		Gitlab_URL: PropTypes.string
+		Gitlab_URL: PropTypes.string,
+		CAS_enabled: PropTypes.bool,
+		CAS_login_url: PropTypes.string
 	}
 
 	constructor(props) {
@@ -156,7 +158,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressGithub = () => {
@@ -167,7 +169,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'user:email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
-		this.openOAuth(`${ endpoint }${ encodeURIComponent(params) }`);
+		this.openOAuth({ url: `${ endpoint }${ encodeURIComponent(params) }` });
 	}
 
 	onPressGitlab = () => {
@@ -179,7 +181,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'read_user';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressGoogle = () => {
@@ -190,7 +192,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'email';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressLinkedin = () => {
@@ -201,7 +203,7 @@ class LoginSignupView extends React.Component {
 		const scope = 'r_emailaddress';
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressMeteor = () => {
@@ -211,14 +213,14 @@ class LoginSignupView extends React.Component {
 		const redirect_uri = `${ server }/_oauth/meteor-developer`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
-		this.openOAuth(`${ endpoint }${ params }`);
+		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
 	onPressTwitter = () => {
 		const { server } = this.props;
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
-		this.openOAuth(url);
+		this.openOAuth({ url });
 	}
 
 	onPressCustomOAuth = (loginService) => {
@@ -230,7 +232,23 @@ class LoginSignupView extends React.Component {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirectUri }&response_type=code&state=${ state }&scope=${ scope }`;
 		const url = `${ serverURL }${ authorizePath }${ params }`;
-		this.openOAuth(url);
+		this.openOAuth({ url });
+	}
+
+	onPressSaml = (loginService) => {
+		const { server } = this.props;
+		const {	clientConfig } = loginService;
+		const {	provider } = clientConfig;
+		const ssoToken = random(17);
+		const url = `${ server }/_saml/authorize/${ provider }/${ ssoToken }`;
+		this.openOAuth({ url, ssoToken, authType: 'saml' });
+	}
+
+	onPressCas = () => {
+		const { server, CAS_login_url } = this.props;
+		const ssoToken = random(17);
+		const url = `${ CAS_login_url }/?service=${ server }/_cas/${ ssoToken }`;
+		this.openOAuth({ url, ssoToken, authType: 'cas' });
 	}
 
 	getOAuthState = () => {
@@ -238,9 +256,9 @@ class LoginSignupView extends React.Component {
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
 	}
 
-	openOAuth = (oAuthUrl) => {
+	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {
 		const { navigation } = this.props;
-		navigation.navigate('OAuthView', { oAuthUrl });
+		navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 	}
 
 	login = () => {
@@ -317,7 +335,6 @@ class LoginSignupView extends React.Component {
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
-		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let onPress = () => {};
 
 		switch (service.authType) {
@@ -329,16 +346,34 @@ class LoginSignupView extends React.Component {
 				onPress = () => this.onPressCustomOAuth(service);
 				break;
 			}
+			case 'saml': {
+				onPress = () => this.onPressSaml(service);
+				break;
+			}
+			case 'cas': {
+				onPress = () => this.onPressCas();
+				break;
+			}
 			default:
 				break;
+		}
+		name = name.charAt(0).toUpperCase() + name.slice(1);
+		const { CAS_enabled } = this.props;
+		let buttonText;
+		if (service.service === 'saml' || (service.service === 'cas' && CAS_enabled)) {
+			buttonText = <Text style={styles.serviceName}>{name}</Text>;
+		} else {
+			buttonText = (
+				<>
+					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
+				</>
+			);
 		}
 		return (
 			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
 				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
-					<Text style={styles.serviceText}>
-						{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
-					</Text>
+					<Text style={styles.serviceText}>{buttonText}</Text>
 				</View>
 			</RectButton>
 		);
@@ -397,6 +432,8 @@ const mapStateToProps = state => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
+	CAS_enabled: state.settings.CAS_enabled,
+	CAS_login_url: state.settings.CAS_login_url,
 	services: state.login.services
 });
 

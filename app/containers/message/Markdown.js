@@ -166,7 +166,7 @@ const Markdown = React.memo(({
 		>{m}
 		</MarkdownRenderer>
 	);
-}, (prevProps, nextProps) => prevProps.msg === nextProps.msg);
+});
 
 Markdown.propTypes = {
 	msg: PropTypes.string,

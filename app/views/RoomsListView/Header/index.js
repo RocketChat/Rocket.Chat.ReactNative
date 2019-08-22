@@ -21,15 +21,6 @@ class RoomsListHeaderView extends PureComponent {
 		setSearch: PropTypes.func
 	}
 
-	componentDidUpdate(prevProps) {
-		const { showSearchHeader } = this.props;
-		if (showSearchHeader && prevProps.showSearchHeader !== showSearchHeader) {
-			setTimeout(() => {
-				this.searchInputRef.focus();
-			}, 300);
-		}
-	}
-
 	onSearchChangeText = (text) => {
 		const { setSearch } = this.props;
 		setSearch(text.trim());
@@ -51,10 +42,6 @@ class RoomsListHeaderView extends PureComponent {
 		}
 	}
 
-	setSearchInputRef = (ref) => {
-		this.searchInputRef = ref;
-	}
-
 	render() {
 		const {
 			serverName, showServerDropdown, showSearchHeader, connecting, isFetching
@@ -67,7 +54,6 @@ class RoomsListHeaderView extends PureComponent {
 				showSearchHeader={showSearchHeader}
 				connecting={connecting}
 				isFetching={isFetching}
-				setSearchInputRef={this.setSearchInputRef}
 				onPress={this.onPress}
 				onSearchChangeText={text => this.onSearchChangeText(text)}
 			/>

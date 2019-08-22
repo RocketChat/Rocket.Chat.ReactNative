@@ -11,6 +11,9 @@ export default {
 	Accounts_PasswordPlaceholder: {
 		type: 'valueAsString'
 	},
+	Accounts_PasswordReset: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -79,5 +82,11 @@ export default {
 	},
 	AutoTranslate_Enabled: {
 		type: 'valueAsBoolean'
+	},
+	CAS_enabled: {
+		type: 'valueAsBoolean'
+	},
+	CAS_login_url: {
+		type: 'valueAsString'
 	}
 };
