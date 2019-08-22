@@ -1,8 +1,10 @@
-import React from 'react';
-import { isEqual, orderBy } from 'lodash';
+import React, { useCallback } from 'react';
+import { isEqual, orderBy, throttle } from 'lodash';
 import { FlatList, ActivityIndicator } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import memoizeOne from 'memoize-one';
+// import { debounce } from 'rxjs/operators';
+import { fromEvent, interval, timer } from 'rxjs';
 
 import styles from './styles';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -23,10 +25,39 @@ const getRoomTitle = (item, useRealName) => {
 
 const order = memoizeOne((subscriptions) => orderBy(subscriptions, ['roomUpdatedAt'], ['desc']))
 
-const List = ({ loading, subscriptions, ...props }) => {
-	// if (loading) {
-	// 	return <ActivityIndicator style={styles.loading} />;
-	// }
+const List = React.memo(({ loading, subscriptions, ...props }) => {
+	if (loading) {
+		return <ActivityIndicator style={styles.loading} />;
+	}
+
+	console.log('RERENDER LIST')
+
+	const renderItem = ({ item }) => {
+		if (getRoomTitle(item, props.useRealName) === 'general') {
+			console.log('RENDERITEM GENERAL')
+		}
+	
+		return (
+			<RoomItem
+				item={item}
+				// isRead={getIsRead(item)}
+				isRead
+				// name={getRoomTitle(item, props.useRealName)}
+				name={item.name}
+				userId={props.userId}
+				username={props.username}
+				token={props.token}
+				baseUrl={props.baseUrl}
+				showLastMessage={props.StoreLastMessage}
+				// onPress={() => this._onPressItem(item)}
+				// testID={`rooms-list-view-item-${ item.name }`}
+				width={375}
+				// toggleFav={this.toggleFav}
+				// toggleRead={this.toggleRead}
+				// hideChannel={this.hideChannel}
+			/>
+		);
+	}
 
 	const sortedSubscriptions = order(subscriptions);
     // console.log('TCL: List -> sortedSubscriptions', sortedSubscriptions);
@@ -37,43 +68,18 @@ const List = ({ loading, subscriptions, ...props }) => {
 			extraData={sortedSubscriptions}
 			// data={search.length ? search : chats}
 			// contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-			keyExtractor={keyExtractor}
+			// keyExtractor={keyExtractor}
 			style={styles.list}
-			renderItem={({ item }) => {
-				// const { width } = this.state;
-				// const {
-				// 	userId, username, token, baseUrl, StoreLastMessage
-				// } = this.props;
-				// const id = item.rid.replace(userId, '').trim();
-
-				return (
-					<RoomItem
-						item={item}
-						isRead={getIsRead(item)}
-						name={getRoomTitle(item, props.useRealName)}
-						userId={props.userId}
-						username={props.username}
-						token={props.token}
-						baseUrl={props.baseUrl}
-						showLastMessage={props.StoreLastMessage}
-						// onPress={() => this._onPressItem(item)}
-						// testID={`rooms-list-view-item-${ item.name }`}
-						width={375}
-						// toggleFav={this.toggleFav}
-						// toggleRead={this.toggleRead}
-						// hideChannel={this.hideChannel}
-					/>
-				);
-			}}
+			renderItem={renderItem}
 			// ListHeaderComponent={this.renderListHeader}
 			getItemLayout={getItemLayout}
 			// removeClippedSubviews
 			keyboardShouldPersistTaps='always'
-			initialNumToRender={9}
-			windowSize={9}
+			initialNumToRender={10}
+			windowSize={10}
 		/>
 	);
-}
+})
 
 // const Item = withObservables(['subscriptions'], ({ subscriptions }) => ({
 // 	subscriptions: subscriptions.observe()
@@ -84,6 +90,7 @@ const EnhancedList = withObservables(['database'], ({ database }) => ({
 		.get('subscriptions')
 		.query()
 		.observeWithColumns(['room_updated_at'])
+		// .pipe(debounce(() => timer(1000)))
 }))(List);
 
 export default EnhancedList;
