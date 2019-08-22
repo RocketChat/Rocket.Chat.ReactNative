@@ -3,9 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
 
-import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import I18n from '../../i18n';
 
 import MarkdownLink from './Link';
@@ -14,6 +12,7 @@ import MarkdownListItem from './ListItem';
 import MarkdownAtMention from './AtMention';
 import MarkdownHashtag from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
+import MarkdownEmoji from './Emoji';
 
 import styles from './styles';
 
@@ -149,19 +148,16 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderEmoji = ({ emojiName, literal }) => {
-		const emojiUnicode = emojify(literal, { output: 'unicode' });
 		const { getCustomEmoji, baseUrl } = this.props;
-		const emoji = getCustomEmoji && getCustomEmoji(emojiName);
-		if (emoji) {
-			return (
-				<CustomEmoji
-					baseUrl={baseUrl}
-					style={this.isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji}
-					emoji={emoji}
-				/>
-			);
-		}
-		return <Text style={this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text}>{emojiUnicode}</Text>;
+		return (
+			<MarkdownEmoji
+				emojiName={emojiName}
+				literal={literal}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
+				getCustomEmoji={getCustomEmoji}
+				baseUrl={baseUrl}
+			/>
+		);
 	}
 
 	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
