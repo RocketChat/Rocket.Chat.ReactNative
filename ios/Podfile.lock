@@ -160,7 +160,7 @@ PODS:
     - React
   - react-native-keyboard-tracking-view (5.5.0):
     - React
-  - react-native-notifications (2.0.3):
+  - react-native-notifications (2.0.6):
     - React
   - react-native-orientation-locker (1.1.6):
     - React
@@ -519,7 +519,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
-  react-native-notifications: 3385ff44e246c62e0eabe7ee414fc5e2e6a61fec
+  react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -566,4 +566,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 44d04dbfbc6cf6468fe34667ef014d00328c95ff
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.6.2
