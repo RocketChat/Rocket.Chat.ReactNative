@@ -18,6 +18,11 @@ export default StyleSheet.create({
 	childContainer: {
 		flex: 1
 	},
+	block: {
+		alignItems: 'flex-start',
+		flexDirection: 'row',
+		flexWrap: 'wrap'
+	},
 	emph: {
 		fontStyle: 'italic'
 	},

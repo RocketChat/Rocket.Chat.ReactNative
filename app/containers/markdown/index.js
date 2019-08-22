@@ -75,7 +75,6 @@ export default class Markdown extends PureComponent {
 			link: this.renderLink,
 			image: this.renderImage,
 			atMention: this.renderAtMention,
-			channelLink: () => null,
 			emoji: this.renderEmoji,
 			hashtag: this.renderHashtag,
 
@@ -91,8 +90,8 @@ export default class Markdown extends PureComponent {
 			thematicBreak: this.renderBreak,
 			softBreak: this.renderBreak,
 
-			htmlBlock: () => null,
-			htmlInline: () => null,
+			htmlBlock: this.renderText,
+			htmlInline: this.renderText,
 
 			table: () => null,
 			table_row: () => null,
