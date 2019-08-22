@@ -1,3 +1,3 @@
 export default {
-	BUGSNAG_API_KEY: '72a0364cb361fc8f0fdc6cbf605f9963'
+	BUGSNAG_API_KEY: ''
 };
