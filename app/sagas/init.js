@@ -14,16 +14,13 @@ import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
-} from '../constants/userDefaults';
+} from '../constants/native';
 import { isIOS } from '../utils/deviceInfo';
 
 const restore = function* restore() {
 	try {
-		let hasMigration;
-		if (isIOS) {
-			yield RNUserDefaults.setName('group.ios.chat.rocket');
-			hasMigration = yield AsyncStorage.getItem('hasMigration');
-		}
+		yield RNUserDefaults.setName(isIOS ? 'group.ios.chat.rocket' : 'chat.rocket.android');
+		const hasMigration = yield AsyncStorage.getItem('hasMigration');
 
 		let { token, server } = yield all({
 			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
@@ -31,7 +28,7 @@ const restore = function* restore() {
 		});
 
 		// get native credentials
-		if (isIOS && !hasMigration) {
+		if (!hasMigration) {
 			const { serversDB } = database.databases;
 			const servers = yield RNUserDefaults.objectForKey(SERVERS);
 			if (servers) {

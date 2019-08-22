@@ -15,7 +15,7 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
 import I18n from '../i18n';
-import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
+import { SERVERS, TOKEN, SERVER_URL } from '../constants/native';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
