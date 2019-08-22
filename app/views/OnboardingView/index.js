@@ -97,7 +97,8 @@ class OnboardingView extends React.Component {
 	}
 
 	createWorkspace = () => {
-		console.log(a.b.c)
+		// eslint-disable-next-line
+		console.log(a.b.c);
 		openLink('https://cloud.rocket.chat/trial');
 	}
 
