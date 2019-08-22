@@ -14,7 +14,7 @@ import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
-} from '../constants/native';
+} from '../constants/credentials';
 import { isIOS } from '../utils/deviceInfo';
 
 const restore = function* restore() {

@@ -40,7 +40,7 @@ import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage'
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import { getDeviceToken } from '../notifications/push';
-import { SERVERS, SERVER_URL } from '../constants/native';
+import { SERVERS, SERVER_URL } from '../constants/credentials';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
