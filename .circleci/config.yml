@@ -175,14 +175,16 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            yarn generate-source-maps-android
-            curl https://upload.bugsnag.com/react-native-source-map \
-              -F apiKey=$BUGSNAG_KEY \
-              -F appVersionCode=$CIRCLE_BUILD_NUM \
-              -F dev=false \
-              -F platform=android \
-              -F sourceMap=@android-release.bundle.map \
-              -F bundle=@android-release.bundle
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-android
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY \
+                -F appVersionCode=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=android \
+                -F sourceMap=@android-release.bundle.map \
+                -F bundle=@android-release.bundle
+            fi
 
       - run:
           name: Config variables
@@ -267,14 +269,16 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            yarn generate-source-maps-ios
-            curl https://upload.bugsnag.com/react-native-source-map \
-              -F apiKey=$BUGSNAG_KEY \
-              -F appBundleVersion=$CIRCLE_BUILD_NUM \
-              -F dev=false \
-              -F platform=ios \
-              -F sourceMap=@ios-release.bundle.map \
-              -F bundle=@ios-release.bundle
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-ios
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY \
+                -F appBundleVersion=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=ios \
+                -F sourceMap=@ios-release.bundle.map \
+                -F bundle=@ios-release.bundle
+            fi
 
       - run:
           name: Fastlane Build
@@ -336,7 +340,7 @@ jobs:
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            bundle exec fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+            bundle exec fastlane ios beta
           working_directory: ios
 
       - save_cache:

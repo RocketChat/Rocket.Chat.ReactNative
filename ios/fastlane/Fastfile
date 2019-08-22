@@ -34,17 +34,11 @@ platform :ios do
   end
 
   desc "Submit a new Beta Build to Apple TestFlight"
-  desc "This will also make sure the profile is up to date"
   lane :beta do
-    match(
-      type: "appstore"
-    ) # more information: https://codesigning.guide
-    pem()
-    gym(scheme: "RocketChatRN") # Build your app - more options available
-    pilot
-
-    # sh "your_script.sh"
-    # You can also use other beta testing services here (run `fastlane actions`)
+    pilot(ipa: 'ios/RocketChatRN.ipa')
+    download_dsyms(version: "latest", build_number: ENV["CIRCLE_BUILD_NUM"])
+    upload_symbols_to_bugsnag
+    clean_build_artifacts
   end
 
   desc "Build App for release"
@@ -58,8 +52,6 @@ platform :ios do
     pem()
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
     # frameit
-    upload_symbols_to_bugsnag
-    send_build_to_bugsnag
   end
 
   desc "Build App for development"
