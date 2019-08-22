@@ -184,7 +184,7 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
-				params: { rid, t, room: joined ? null : room },
+				params: { rid, t },
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
