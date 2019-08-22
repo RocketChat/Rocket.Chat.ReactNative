@@ -15,7 +15,10 @@ import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../cons
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
-		height: '100%'
+		flex: 1,
+		height: '100%',
+		marginRight: isAndroid ? 15 : 5,
+		marginLeft: isAndroid ? 10 : 0
 	},
 	titleContainer: {
 		flex: 6,

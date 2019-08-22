@@ -640,6 +640,10 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
 	},
+	getRoomInfo(roomId) {
+		// RC 0.72.0
+		return this.sdk.get('rooms.info', { roomId });
+	},
 	getRoomMemberId(rid, currentUserId) {
 		if (rid === `${ currentUserId }${ currentUserId }`) {
 			return currentUserId;
