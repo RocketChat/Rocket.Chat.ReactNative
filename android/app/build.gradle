@@ -204,7 +204,6 @@ dependencies {
     addUnimodulesDependencies()
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
-    implementation project(':rn-user-defaults')
     
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules

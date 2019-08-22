@@ -14,7 +14,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import chat.rocket.reactnative.generated.BasePackageList;
-import chat.rocket.userdefaults;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
@@ -55,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
-      packages.add(new RNUserDefaultsPackage());
       return packages;
     }
 
