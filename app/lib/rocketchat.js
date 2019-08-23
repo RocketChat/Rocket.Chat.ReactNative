@@ -45,6 +45,7 @@ import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
+export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -85,7 +86,7 @@ const RocketChat = {
 				return result;
 			}
 		} catch (e) {
-			log('err_get_server_info', e);
+			log(e);
 		}
 		return {
 			success: false,
@@ -433,7 +434,7 @@ const RocketChat = {
 					database.create('messages', message, true);
 				});
 			} catch (e) {
-				log('err_resend_message', e);
+				log(e);
 			}
 		}
 	},
@@ -564,7 +565,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			log('err_get_permalink', e);
+			log(e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;
@@ -765,6 +766,13 @@ const RocketChat = {
 		}
 		return JSON.parse(useMarkdown);
 	},
+	async getAllowCrashReport() {
+		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
+		if (allowCrashReport === null) {
+			return true;
+		}
+		return JSON.parse(allowCrashReport);
+	},
 	async getSortPreferences() {
 		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
 		return prefs;
@@ -963,8 +971,8 @@ const RocketChat = {
 			const autoTranslatePermission = database.objectForPrimaryKey('permissions', 'auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
-		} catch (error) {
-			log('err_can_auto_translate', error);
+		} catch (e) {
+			log(e);
 			return false;
 		}
 	},

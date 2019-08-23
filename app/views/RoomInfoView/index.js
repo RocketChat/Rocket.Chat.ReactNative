@@ -79,8 +79,8 @@ class RoomInfoView extends React.Component {
 				if (result.success) {
 					this.setState({ roomUser: result.user });
 				}
-			} catch (error) {
-				log('err_get_user_info', error);
+			} catch (e) {
+				log(e);
 			}
 			return;
 		}

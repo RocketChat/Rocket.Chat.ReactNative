@@ -14,7 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1E09444322F25A69005F2464 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 607D61161F325B7E00F639C4 /* libRealmReact.a */; };
 		1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
-		1E25743C22CBA313005A877F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		1E25743C22CBA313005A877F /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		1E25744F22CBA391005A877F /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 607D61161F325B7E00F639C4 /* libRealmReact.a */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
 		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -118,7 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E25744F22CBA391005A877F /* libRealmReact.a in Frameworks */,
-				1E25743C22CBA313005A877F /* BuildFile in Frameworks */,
+				1E25743C22CBA313005A877F /* (null) in Frameworks */,
 				1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */,
 				0BFA93B8E2ED67D4832E0C76 /* libPods-ShareRocketChatRN.a in Frameworks */,
 			);
@@ -248,7 +248,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				7A6EDBE020ED6E020086E097 /* Embed Frameworks */,
 				FD0EBB93B02BAD0637E4F286 /* [CP] Copy Pods Resources */,
-				7A006EDA229C7F0A00803143 /* Run Script */,
 				1EC6ACF422CB9FC300A41C61 /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -466,24 +465,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		7A006EDA229C7F0A00803143 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
-		};
 		A68B7A0986AFB750F727793A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -639,13 +620,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
-					"$(SRCROOT)/../node_modules/react-native-autogrow-textinput/ios",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj/**",
-					"$(SRCROOT)/../node_modules/react-native-video/ios",
-					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../../../react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -682,13 +657,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
-					"$(SRCROOT)/../node_modules/react-native-autogrow-textinput/ios",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj/**",
-					"$(SRCROOT)/../node_modules/react-native-video/ios",
-					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../../../react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -738,7 +707,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -786,7 +755,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
