@@ -178,17 +178,18 @@ export default class NotificationPreferencesView extends React.Component {
 	render() {
 		const { room } = this.state;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='notificationPreference-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={sharedStyles.listSafeArea} testID='notification-preference-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={sharedStyles.listContentContainer}
+					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
-					testID='notificationPreference-view-list'
+					testID='notification-preference-view-list'
 				>
+					<Separator />
 					<ListItem
 						title={I18n.t('Receive_Notification')}
-						testID='notificationPreference-view-receive-notification'
+						testID='notification-preference-view-receive-notification'
 						right={() => this.renderSwitch('disableNotifications')}
 					/>
 					<Separator />
@@ -197,8 +198,18 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<Separator />
 					<ListItem
+						title={I18n.t('Receive_Group_Mentions')}
+						testID='notification-preference-view-group-mentions'
+						right={() => this.renderSwitch('muteGroupMentions')}
+					/>
+					<Separator />
+					<Info info={I18n.t('Receive_Group_Mentions_Info')} />
+
+					<SectionSeparator />
+					<Separator />
+					<ListItem
 						title={I18n.t('Show_Unread_Counter')}
-						testID='notificationPreference-view-unread_count'
+						testID='notification-preference-view-unread-count'
 						right={() => this.renderSwitch('hideUnreadStatus')}
 					/>
 					<Separator />
@@ -210,58 +221,59 @@ export default class NotificationPreferencesView extends React.Component {
 
 					<ListItem
 						title={I18n.t('Alert')}
-						testID='notificationPreference-view-alert'
+						testID='notification-preference-view-alert'
 						right={() => this.renderPicker('desktopNotifications')}
 					/>
 					<Separator />
 					<Info info={I18n.t('In_App_and_Desktop_Alert_info')} />
 
 					<SectionSeparator />
-					<SectionTitle title={I18n.t('Push_Notifications')} />
+					<SectionTitle title={I18n.t('PUSH_NOTIFICATIONS')} />
 					<Separator />
 
 					<ListItem
 						title={I18n.t('Alert')}
-						testID='notificationPreference-view-push-notification'
+						testID='notification-preference-view-push-notification'
 						right={() => this.renderPicker('mobilePushNotifications')}
 					/>
 					<Separator />
 					<Info info={I18n.t('Push_Notifications_Alert_Info')} />
 
 					<SectionSeparator />
-					<SectionTitle title={I18n.t('Desktop_Options')} />
+					<SectionTitle title={I18n.t('DESKTOP_OPTIONS')} />
 					<Separator />
 
 					<ListItem
 						title={I18n.t('Audio')}
-						testID='notificationPreference-view-audio'
+						testID='notification-preference-view-audio'
 						right={() => this.renderPicker('audioNotifications')}
 					/>
 					<Separator />
 					<ListItem
 						title={I18n.t('Sound')}
-						testID='notificationPreference-view-sound'
+						testID='notification-preference-view-sound'
 						right={() => this.renderPicker('audioNotificationValue')}
 					/>
 					<Separator />
 					<ListItem
 						title={I18n.t('Notification_Duration')}
-						testID='notificationPreference-view-notification-duration'
+						testID='notification-preference-view-notification-duration'
 						right={() => this.renderPicker('desktopNotificationDuration')}
 					/>
 					<Separator />
 
 					<SectionSeparator />
-					<SectionTitle title={I18n.t('Email')} />
+					<SectionTitle title={I18n.t('EMAIL')} />
 					<Separator />
 
 					<ListItem
 						title={I18n.t('Alert')}
-						testID='notificationPreference-view-email_alert'
+						testID='notification-preference-view-email-alert'
 						right={() => this.renderPicker('emailNotifications')}
 					/>
 					<Separator />
-					<SectionSeparator />
+
+					<View style={styles.marginBottom} />
 				</ScrollView>
 			</SafeAreaView>
 		);

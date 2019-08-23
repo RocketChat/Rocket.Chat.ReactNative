@@ -105,7 +105,7 @@ const subscriptionSchema = {
 		// Notifications
 		emailNotifications: { type: 'string', default: 'default' },
 		disableNotifications: { type: 'bool', default: false },
-		muteGroupMentions: { type: 'bool', default: true },
+		muteGroupMentions: { type: 'bool', default: false },
 		hideUnreadStatus: { type: 'bool', default: false },
 		audioNotifications: { type: 'string', default: 'default' },
 		desktopNotifications: { type: 'string', default: 'default' },

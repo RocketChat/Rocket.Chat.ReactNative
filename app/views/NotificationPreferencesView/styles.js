@@ -1,12 +1,20 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_BACKGROUND_CONTAINER, COLOR_PRIMARY } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	sectionSeparatorBorder: {
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 10
+	},
+	marginBottom: {
+		height: 30,
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
+	},
+	contentContainer: {
+		backgroundColor: COLOR_WHITE,
+		marginVertical: 10
 	},
 	infoText: {
 		...sharedStyles.textRegular,

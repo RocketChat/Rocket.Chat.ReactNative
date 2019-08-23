@@ -24,16 +24,6 @@ export const merge = (subscription, room) => {
 		subscription.archived = room.archived;
 		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
-		// Notifications
-		subscription.emailNotifications = room.emailNotifications;
-		subscription.disableNotifications = room.disableNotifications;
-		subscription.muteGroupMentions = room.muteGroupMentions;
-		subscription.hideUnreadStatus = room.hideUnreadStatus;
-		subscription.audioNotifications = room.audioNotifications;
-		subscription.desktopNotifications = room.desktopNotifications;
-		subscription.audioNotificationValue = room.audioNotificationValue;
-		subscription.desktopNotificationDuration = room.desktopNotificationDuration;
-		subscription.mobilePushNotifications = room.mobilePushNotifications;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}

@@ -260,45 +260,45 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-notifications'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'down');
 				await expect(element(by.id('room-actions-notifications'))).toBeVisible();
 				await element(by.id('room-actions-notifications')).tap();
-				await waitFor(element(by.text('notificationPreference-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('notificationPreference-view'))).toBeVisible();
+				await waitFor(element(by.text('notification-preference-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('notification-preference-view'))).toBeVisible();
 			});
 
 			it('should have receive notification option', async() => {
-				await expect(element(by.id('notificationPreference-view-receive-notification'))).toBeVisible();
+				await expect(element(by.id('notification-preference-view-receive-notification'))).toBeVisible();
 			});
 
 			it('should have show unread count option', async() => {
-				await expect(element(by.id('notificationPreference-view-unread_count'))).toBeVisible();
+				await expect(element(by.id('notification-preference-view-unread-count'))).toBeVisible();
 			});
 
 			it('should have notification alert option', async() => {
-				await expect(element(by.id('notificationPreference-view-alert'))).toBeVisible();
+				await expect(element(by.id('notification-preference-view-alert'))).toBeVisible();
 			});
 
 			it('should have push notification option', async() => {
-				await waitFor(element(by.id('notificationPreference-view-push-notification'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('notificationPreference-view-push-notification'))).toBeVisible();
+				await waitFor(element(by.id('notification-preference-view-push-notification'))).toBeVisible().whileElement(by.id('notification-preference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notification-preference-view-push-notification'))).toBeVisible();
 			});
 
 			it('should have notification audio option', async() => {
-				await waitFor(element(by.id('notificationPreference-view-audio'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('notificationPreference-view-audio'))).toBeVisible();
+				await waitFor(element(by.id('notification-preference-view-audio'))).toBeVisible().whileElement(by.id('notification-preference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notification-preference-view-audio'))).toBeVisible();
 			});
 
 			it('should have notification sound option', async() => {
-				await waitFor(element(by.id('notificationPreference-view-sound'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('notificationPreference-view-sound'))).toBeVisible();
+				await waitFor(element(by.id('notification-preference-view-sound'))).toBeVisible().whileElement(by.id('notification-preference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notification-preference-view-sound'))).toBeVisible();
 			});
 
 			it('should have notification duration option', async() => {
-				await waitFor(element(by.id('notificationPreference-view-notification-duration'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('notificationPreference-view-notification-duration'))).toBeVisible();
+				await waitFor(element(by.id('notification-preference-view-notification-duration'))).toBeVisible().whileElement(by.id('notification-preference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notification-preference-view-notification-duration'))).toBeVisible();
 			});
 
 			it('should have email alert option', async() => {
-				await waitFor(element(by.id('notificationPreference-view-email_alert'))).toBeVisible().whileElement(by.id('notificationPreference-view-list')).scroll(scrollDown, 'down');
-				await expect(element(by.id('notificationPreference-view-email_alert'))).toBeVisible();
+				await waitFor(element(by.id('notification-preference-view-email-alert'))).toBeVisible().whileElement(by.id('notification-preference-view-list')).scroll(scrollDown, 'down');
+				await expect(element(by.id('notification-preference-view-email-alert'))).toBeVisible();
 			});
 
 			afterEach(async() => {
