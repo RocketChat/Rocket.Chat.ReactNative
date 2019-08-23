@@ -127,7 +127,11 @@ export default class Markdown extends PureComponent {
 		);
 	};
 
-	renderLink = ({ href }) => <MarkdownLink link={href} />;
+	renderLink = ({ children, href }) => (
+		<MarkdownLink link={href}>
+			{children}
+		</MarkdownLink>
+	);
 
 	renderHashtag = ({ hashtag }) => {
 		const { channels } = this.props;
@@ -223,12 +227,16 @@ export default class Markdown extends PureComponent {
 			msg, isEdited, useMarkdown, numberOfLines
 		} = this.props;
 
+		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
+		// Return: 'Test'
+		const m = msg.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+
 		if (!useMarkdown) {
-			return <Text style={styles.text} numberOfLines={numberOfLines}>{msg}</Text>;
+			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
-		const ast = this.parser.parse(msg);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(msg) && emojiCount(msg) <= 3;
+		const ast = this.parser.parse(m);
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
 		if (isEdited) {
 			const editIndicatorNode = new Node('edited_indicator');

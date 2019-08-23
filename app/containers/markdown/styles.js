@@ -101,6 +101,7 @@ export default StyleSheet.create({
 		padding: 4
 	},
 	link: {
+		fontSize: 16,
 		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},

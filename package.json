@@ -23,7 +23,7 @@
   "dependencies": {
     "@rocket.chat/sdk": "1.0.0-alpha.30",
     "commonmark": "git+https://github.com/djorkaeffalexandre/commonmark.js.git",
-    "commonmark-react-renderer": "git+https://github.com/djorkaeffalexandre/commonmark-react-renderer",
+    "commonmark-react-renderer": "git+https://github.com/djorkaeffalexandre/commonmark-react-renderer.git",
     "deep-equal": "^1.0.1",
     "ejson": "2.2.0",
     "expo-haptics": "^6.0.0",
