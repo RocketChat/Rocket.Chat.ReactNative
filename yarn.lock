@@ -3171,19 +3171,18 @@ commondir@^1.0.1:
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-"commonmark-react-renderer@github:mattermost/commonmark-react-renderer#3a2ac19cab725ad28b170fdc1d397dddedcf87eb":
-  version "4.3.3"
-  resolved "https://codeload.github.com/mattermost/commonmark-react-renderer/tar.gz/3a2ac19cab725ad28b170fdc1d397dddedcf87eb"
+"commonmark-react-renderer@git+https://github.com/djorkaeffalexandre/commonmark-react-renderer":
+  version "4.3.4"
+  resolved "git+https://github.com/djorkaeffalexandre/commonmark-react-renderer#761dc23f2352ff391cf7b9cd7c2077f85c4c6ccd"
   dependencies:
-    in-publish "^2.0.0"
     lodash.assign "^4.2.0"
     lodash.isplainobject "^4.0.6"
     pascalcase "^0.1.1"
     xss-filters "^1.2.6"
 
-"commonmark@github:mattermost/commonmark.js#52053271715afbb515d96c74e0d8a4292f4d9e4a":
-  version "0.28.1"
-  resolved "https://codeload.github.com/mattermost/commonmark.js/tar.gz/52053271715afbb515d96c74e0d8a4292f4d9e4a"
+"commonmark@git+https://github.com/djorkaeffalexandre/commonmark.js.git":
+  version "0.29.0"
+  resolved "git+https://github.com/djorkaeffalexandre/commonmark.js.git#29aeade2ef0526232a45e47e41f2e459f2d3f424"
   dependencies:
     entities "~ 1.1.1"
     mdurl "~ 1.0.1"
@@ -5591,11 +5590,6 @@ imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
-
-in-publish@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/in-publish/-/in-publish-2.0.0.tgz#e20ff5e3a2afc2690320b6dc552682a9c7fadf51"
-  integrity sha1-4g/146KvwmkDILbcVSaCqcf631E=
 
 inflight@^1.0.4:
   version "1.0.6"

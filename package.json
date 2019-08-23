@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@rocket.chat/sdk": "1.0.0-alpha.30",
-    "commonmark": "github:mattermost/commonmark.js#52053271715afbb515d96c74e0d8a4292f4d9e4a",
-    "commonmark-react-renderer": "github:mattermost/commonmark-react-renderer#3a2ac19cab725ad28b170fdc1d397dddedcf87eb",
+    "commonmark": "git+https://github.com/djorkaeffalexandre/commonmark.js.git",
+    "commonmark-react-renderer": "git+https://github.com/djorkaeffalexandre/commonmark-react-renderer",
     "deep-equal": "^1.0.1",
     "ejson": "2.2.0",
     "expo-haptics": "^6.0.0",
