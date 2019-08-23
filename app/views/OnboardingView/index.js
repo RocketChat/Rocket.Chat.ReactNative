@@ -18,7 +18,6 @@ import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
-import { error } from '../../utils/log';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -98,7 +97,6 @@ class OnboardingView extends React.Component {
 	}
 
 	createWorkspace = () => {
-		error(new Error('Test error'));
 		openLink('https://cloud.rocket.chat/trial');
 	}
 
