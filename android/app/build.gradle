@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
+apply plugin: 'com.bugsnag.android.gradle'
 
 import com.android.build.OutputFile
 
@@ -137,6 +138,7 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "1.19.0"
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
     }
 
     signingConfigs {

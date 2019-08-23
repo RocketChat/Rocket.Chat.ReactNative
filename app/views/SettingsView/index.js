@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Share
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
+import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -13,16 +14,25 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import { MARKDOWN_KEY } from '../../lib/rocketchat';
+import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
+import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
+const ItemInfo = React.memo(({ info }) => (
+	<View style={styles.infoContainer}>
+		<Text style={styles.infoText}>{info}</Text>
+	</View>
+));
+ItemInfo.propTypes = {
+	info: PropTypes.string
+};
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -34,13 +44,29 @@ class SettingsView extends React.Component {
 		navigation: PropTypes.object,
 		server:	PropTypes.object,
 		useMarkdown: PropTypes.bool,
-		toggleMarkdown: PropTypes.func
+		allowCrashReport: PropTypes.bool,
+		toggleMarkdown: PropTypes.func,
+		toggleCrashReport: PropTypes.func
 	}
 
 	toggleMarkdown = (value) => {
 		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
 		const { toggleMarkdown } = this.props;
 		toggleMarkdown(value);
+	}
+
+	toggleCrashReport = (value) => {
+		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
+		const { toggleCrashReport } = this.props;
+		toggleCrashReport(value);
+		loggerConfig.autoNotify = value;
+		analytics().setAnalyticsCollectionEnabled(value);
+
+		if (value) {
+			loggerConfig.clearBeforeSendCallbacks();
+		} else {
+			loggerConfig.registerBeforeSendCallback(() => false);
+		}
 	}
 
 	navigateToRoom = (room) => {
@@ -81,6 +107,17 @@ class SettingsView extends React.Component {
 		);
 	}
 
+	renderCrashReportSwitch = () => {
+		const { allowCrashReport } = this.props;
+		return (
+			<Switch
+				value={allowCrashReport}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleCrashReport}
+			/>
+		);
+	}
+
 	render() {
 		const { server } = this.props;
 		return (
@@ -88,7 +125,7 @@ class SettingsView extends React.Component {
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={sharedStyles.listContentContainer}
+					contentContainerStyle={[sharedStyles.listContentContainer, styles.listWithoutBorderBottom]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
@@ -109,17 +146,17 @@ class SettingsView extends React.Component {
 					/>
 					<Separator />
 					<ListItem
-						title={I18n.t('Share_this_app')}
-						onPress={this.shareApp}
-						showActionIndicator
-						testID='settings-view-share-app'
-					/>
-					<Separator />
-					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
+					/>
+					<Separator />
+					<ListItem
+						title={I18n.t('Share_this_app')}
+						showActionIndicator
+						disabled
+						testID='settings-view-share-app'
 					/>
 					<Separator />
 
@@ -148,6 +185,18 @@ class SettingsView extends React.Component {
 						testID='settings-view-markdown'
 						right={() => this.renderMarkdownSwitch()}
 					/>
+
+					<SectionSeparator />
+
+					<ListItem
+						title={I18n.t('Send_crash_report')}
+						testID='settings-view-crash-report'
+						right={() => this.renderCrashReportSwitch()}
+					/>
+					<Separator />
+					<ItemInfo
+						info={I18n.t('Crash_report_disclaimer')}
+					/>
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -156,11 +205,13 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	useMarkdown: state.markdown.useMarkdown
+	useMarkdown: state.markdown.useMarkdown,
+	allowCrashReport: state.crashReport.allowCrashReport
 });
 
 const mapDispatchToProps = dispatch => ({
-	toggleMarkdown: params => dispatch(toggleMarkdownAction(params))
+	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
+	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

@@ -16,7 +16,9 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
+import RocketChat from './lib/rocketchat';
 
 useScreens();
 
@@ -256,6 +258,7 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
+		this.initCrashReport();
 	}
 
 	componentDidMount() {
@@ -283,6 +286,17 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	initCrashReport = () => {
+		RocketChat.getAllowCrashReport()
+			.then((allowCrashReport) => {
+				if (!allowCrashReport) {
+					loggerConfig.autoNotify = false;
+					loggerConfig.registerBeforeSendCallback(() => false);
+					analytics().setAnalyticsCollectionEnabled(false);
+				}
+			});
 	}
 
 	render() {
