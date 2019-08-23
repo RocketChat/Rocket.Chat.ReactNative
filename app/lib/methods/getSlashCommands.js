@@ -29,7 +29,7 @@ export default function() {
 				});
 			}
 		} catch (e) {
-			log('err_get_slash_command', e);
+			log(e);
 			return resolve();
 		}
 	});

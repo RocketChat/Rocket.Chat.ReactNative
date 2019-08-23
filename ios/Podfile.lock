@@ -1,5 +1,10 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BugsnagReactNative (2.22.4):
+    - BugsnagReactNative/Core (= 2.22.4)
+    - React
+  - BugsnagReactNative/Core (2.22.4):
+    - React
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
@@ -155,7 +160,7 @@ PODS:
     - React
   - react-native-keyboard-tracking-view (5.5.0):
     - React
-  - react-native-notifications (2.0.3):
+  - react-native-notifications (2.0.6):
     - React
   - react-native-orientation-locker (1.1.6):
     - React
@@ -255,6 +260,7 @@ PODS:
   - yoga (0.60.4.React)
 
 DEPENDENCIES:
+  - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -336,6 +342,8 @@ SPEC REPOS:
     - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
+  BugsnagReactNative:
+    :path: "../node_modules/bugsnag-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAppLoaderProvider:
@@ -479,6 +487,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BugsnagReactNative: 2114356c3acac0a71fb4b8962d3d1afdeb35f4d9
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXAppLoaderProvider: 7a8185228d8ba9e689a0e2d6d957fe9bdd49c8a0
@@ -510,7 +519,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
-  react-native-notifications: 3385ff44e246c62e0eabe7ee414fc5e2e6a61fec
+  react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-realm-path: 868473ea0bc4629850f1ec51a70d81055c06d091
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -555,6 +564,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: c9c0e4d6e34886493451eb2fdba48bc7e89d4551
+PODFILE CHECKSUM: 44d04dbfbc6cf6468fe34667ef014d00328c95ff
 
 COCOAPODS: 1.6.2

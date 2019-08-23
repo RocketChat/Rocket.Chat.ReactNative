@@ -64,8 +64,8 @@ class RoomActionsView extends React.Component {
 				if (result.success) {
 					this.setState({ room: { ...result.channel, rid: result.channel._id } });
 				}
-			} catch (error) {
-				log('err_get_channel_info', error);
+			} catch (e) {
+				log(e);
 			}
 		}
 
@@ -75,8 +75,8 @@ class RoomActionsView extends React.Component {
 				if (counters.success) {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
-			} catch (error) {
-				log('err_get_room_counters', error);
+			} catch (e) {
+				log(e);
 			}
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
@@ -185,7 +185,7 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
-				params: { rid, t, room: joined ? null : room },
+				params: { rid, t },
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
@@ -342,7 +342,7 @@ class RoomActionsView extends React.Component {
 				this.setState({ member: result.user });
 			}
 		} catch (e) {
-			log('err_update_room_member', e);
+			log(e);
 			this.setState({ member: {} });
 		}
 	}
@@ -354,7 +354,7 @@ class RoomActionsView extends React.Component {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
-			log('err_toggle_block_user', e);
+			log(e);
 		}
 	}
 

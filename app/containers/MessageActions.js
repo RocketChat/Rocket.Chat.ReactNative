@@ -311,7 +311,7 @@ class MessageActions extends React.Component {
 			await RocketChat.reportMessage(actionMessage._id);
 			Alert.alert(I18n.t('Message_Reported'));
 		} catch (err) {
-			log('err_report_message', err);
+			log(err);
 		}
 	}
 
@@ -328,7 +328,7 @@ class MessageActions extends React.Component {
 				await RocketChat.translateMessage(actionMessage, room.autoTranslateLanguage);
 			}
 		} catch (err) {
-			log('err_toggle_translation', err);
+			log(err);
 		}
 	}
 

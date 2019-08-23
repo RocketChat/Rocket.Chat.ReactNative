@@ -13,6 +13,8 @@
     "android": "react-native run-android",
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
+    "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
+    "generate-source-maps-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-release.bundle --sourcemap-output android-release.bundle.map",
     "postinstall": "patch-package && jetify"
   },
   "husky": {
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "@rocket.chat/sdk": "1.0.0-alpha.30",
+    "bugsnag-react-native": "^2.22.3",
     "deep-equal": "^1.0.1",
     "ejson": "2.2.0",
     "expo-haptics": "^6.0.0",
