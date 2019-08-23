@@ -227,9 +227,13 @@ export default class Markdown extends PureComponent {
 			msg, isEdited, useMarkdown, numberOfLines
 		} = this.props;
 
+		if (!msg) {
+			return null;
+		}
+
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
-		const m = msg.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		const m = msg && msg.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (!useMarkdown) {
 			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
