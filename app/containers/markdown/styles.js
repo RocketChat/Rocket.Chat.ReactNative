@@ -58,9 +58,10 @@ export default StyleSheet.create({
 	},
 	temp: { opacity: 0.3 },
 	mention: {
-		...sharedStyles.textMedium,
+		fontSize: 16,
 		color: '#0072FE',
 		padding: 5,
+		...sharedStyles.textMedium,
 		backgroundColor: '#E8F2FF'
 	},
 	mentionLoggedUser: {
