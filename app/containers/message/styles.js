@@ -135,6 +135,12 @@ export default StyleSheet.create({
 		height: 300,
 		resizeMode: 'contain'
 	},
+	textInfo: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
 	startedDiscussion: {
 		fontStyle: 'italic',
 		fontSize: 16,

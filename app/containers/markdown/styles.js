@@ -42,12 +42,6 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
-	textInfo: {
-		fontStyle: 'italic',
-		fontSize: 16,
-		...sharedStyles.textColorDescription,
-		...sharedStyles.textRegular
-	},
 	customEmoji: {
 		width: 20,
 		height: 20
@@ -111,27 +105,27 @@ export default StyleSheet.create({
 		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
-	heading1Text: {
+	heading1: {
 		...sharedStyles.textBold,
 		fontSize: 24
 	},
-	heading2Text: {
+	heading2: {
 		...sharedStyles.textBold,
 		fontSize: 22
 	},
-	heading3Text: {
+	heading3: {
 		...sharedStyles.textSemibold,
 		fontSize: 20
 	},
-	heading4Text: {
+	heading4: {
 		...sharedStyles.textSemibold,
 		fontSize: 18
 	},
-	heading5Text: {
+	heading5: {
 		...sharedStyles.textMedium,
 		fontSize: 16
 	},
-	heading6Text: {
+	heading6: {
 		...sharedStyles.textMedium,
 		fontSize: 14
 	},
