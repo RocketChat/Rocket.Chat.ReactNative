@@ -36,9 +36,6 @@ platform :ios do
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do
     pilot(ipa: 'ios/RocketChatRN.ipa')
-    download_dsyms(version: "latest", build_number: ENV["CIRCLE_BUILD_NUM"])
-    upload_symbols_to_bugsnag
-    clean_build_artifacts
   end
 
   desc "Build App for release"
