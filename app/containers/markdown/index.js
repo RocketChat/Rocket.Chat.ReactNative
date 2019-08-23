@@ -13,6 +13,9 @@ import MarkdownAtMention from './AtMention';
 import MarkdownHashtag from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
 import MarkdownEmoji from './Emoji';
+import MarkdownTable from './Table';
+import MarkdownTableRow from './TableRow';
+import MarkdownTableCell from './TableCell';
 
 import styles from './styles';
 
@@ -93,9 +96,9 @@ export default class Markdown extends PureComponent {
 			htmlBlock: this.renderText,
 			htmlInline: this.renderText,
 
-			table: () => null,
-			table_row: () => null,
-			table_cell: () => null,
+			table: this.renderTable,
+			table_row: this.renderTableRow,
+			table_cell: this.renderTableCell,
 
 			editedIndicator: this.renderEditedIndicator
 		},
@@ -203,7 +206,17 @@ export default class Markdown extends PureComponent {
 		<MarkdownBlockQuote>
 			{children}
 		</MarkdownBlockQuote>
-	)
+	);
+
+	renderTable = ({ children, numColumns }) => (
+		<MarkdownTable numColumns={numColumns}>
+			{children}
+		</MarkdownTable>
+	);
+
+	renderTableRow = args => <MarkdownTableRow {...args} />;
+
+	renderTableCell = args => <MarkdownTableCell {...args} />;
 
 	render() {
 		const {

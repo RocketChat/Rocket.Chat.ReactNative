@@ -138,5 +138,41 @@ export default StyleSheet.create({
 		width: 2,
 		backgroundColor: COLOR_BORDER,
 		marginRight: 5
+	},
+	containerTable: {
+		borderBottomWidth: 1,
+		borderColor: COLOR_BORDER,
+		borderRightWidth: 1
+	},
+	table: {
+		borderColor: COLOR_BORDER,
+		borderLeftWidth: 1,
+		borderTopWidth: 1
+	},
+	tableExtraBorders: {
+		borderBottomWidth: 1,
+		borderRightWidth: 1
+	},
+	row: {
+		flexDirection: 'row'
+	},
+	rowBottomBorder: {
+		borderColor: COLOR_BORDER,
+		borderBottomWidth: 1
+	},
+	cell: {
+		borderColor: COLOR_BORDER,
+		justifyContent: 'flex-start',
+		paddingHorizontal: 13,
+		paddingVertical: 6
+	},
+	cellRightBorder: {
+		borderRightWidth: 1
+	},
+	alignCenter: {
+		textAlign: 'center'
+	},
+	alignRight: {
+		textAlign: 'right'
 	}
 });
