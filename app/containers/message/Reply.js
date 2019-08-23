@@ -5,7 +5,7 @@ import moment from 'moment';
 import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
-import Markdown from './Markdown';
+import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';

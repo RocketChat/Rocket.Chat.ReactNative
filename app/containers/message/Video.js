@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
-import Markdown from './Markdown';
+import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';

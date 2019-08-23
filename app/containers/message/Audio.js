@@ -9,7 +9,7 @@ import moment from 'moment';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 
-import Markdown from './Markdown';
+import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
