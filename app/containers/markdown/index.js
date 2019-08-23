@@ -199,8 +199,8 @@ export default class Markdown extends PureComponent {
 		);
 	};
 
-	renderBlockQuote = ({ children, ...otherProps }) => (
-		<MarkdownBlockQuote {...otherProps}>
+	renderBlockQuote = ({ children }) => (
+		<MarkdownBlockQuote>
 			{children}
 		</MarkdownBlockQuote>
 	)

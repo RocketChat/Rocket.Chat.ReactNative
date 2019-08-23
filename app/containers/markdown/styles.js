@@ -33,6 +33,7 @@ export default StyleSheet.create({
 		textDecorationLine: 'line-through'
 	},
 	text: {
+		fontSize: 16,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
@@ -132,7 +133,10 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium,
 		fontSize: 14
 	},
-	icon: {
-		width: 23
+	quote: {
+		height: '100%',
+		width: 2,
+		backgroundColor: COLOR_BORDER,
+		marginRight: 5
 	}
 });
