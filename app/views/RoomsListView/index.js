@@ -1,7 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, BackHandler, ActivityIndicator, Text, ScrollView, Keyboard, LayoutAnimation, InteractionManager, Dimensions
+	View,
+	FlatList,
+	BackHandler,
+	ActivityIndicator,
+	Text,
+	ScrollView,
+	Keyboard,
+	LayoutAnimation,
+	InteractionManager,
+	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
@@ -9,6 +18,7 @@ import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import withObservables from '@nozbe/with-observables';
 
+import { Q } from '@nozbe/watermelondb';
 import watermelon from '../../lib/database';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
@@ -28,49 +38,88 @@ import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
-import { DrawerButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import {
+	DrawerButton,
+	CustomHeaderButtons,
+	Item
+} from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { Q } from '@nozbe/watermelondb';
 import List from './List';
 
 const SCROLL_OFFSET = 56;
 
-const shouldUpdateProps = ['searchText', 'loadingServer', 'showServerDropdown', 'showSortDropdown', 'sortBy', 'groupByType', 'showFavorites', 'showUnread', 'useRealName', 'StoreLastMessage', 'appState'];
-const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const shouldUpdateProps = [
+	'searchText',
+	'loadingServer',
+	'showServerDropdown',
+	'showSortDropdown',
+	'sortBy',
+	'groupByType',
+	'showFavorites',
+	'showUnread',
+	'useRealName',
+	'StoreLastMessage',
+	'appState'
+];
+const getItemLayout = (data, index) => ({
+	length: ROW_HEIGHT,
+	offset: ROW_HEIGHT * index,
+	index
+});
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam('cancelSearchingAndroid');
+		const cancelSearchingAndroid = navigation.getParam(
+			'cancelSearchingAndroid'
+		);
 		const onPressItem = navigation.getParam('onPressItem', () => {});
-		const initSearchingAndroid = navigation.getParam('initSearchingAndroid', () => {});
+		const initSearchingAndroid = navigation.getParam(
+			'initSearchingAndroid',
+			() => {}
+		);
 
 		return {
-			headerLeft: (
-				searching
-					? (
-						<CustomHeaderButtons left>
-							<Item title='cancel' iconName='cross' onPress={cancelSearchingAndroid} />
-						</CustomHeaderButtons>
-					)
-					: <DrawerButton navigation={navigation} testID='rooms-list-view-sidebar' />
+			headerLeft: searching ? (
+				<CustomHeaderButtons left>
+					<Item
+						title='cancel'
+						iconName='cross'
+						onPress={cancelSearchingAndroid}
+					/>
+				</CustomHeaderButtons>
+			) : (
+				<DrawerButton
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+				/>
 			),
 			headerTitle: <RoomsListHeaderView />,
-			headerRight: (
-				searching
-					? null
-					: (
-						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearchingAndroid} /> : null}
-							<Item title='new' iconName='edit-rounded' onPress={() => navigation.navigate('NewMessageView', { onPressItem })} testID='rooms-list-view-create-channel' />
-						</CustomHeaderButtons>
-					)
+			headerRight: searching ? null : (
+				<CustomHeaderButtons>
+					{isAndroid ? (
+						<Item
+							title='search'
+							iconName='magnifier'
+							onPress={initSearchingAndroid}
+						/>
+					) : null}
+					<Item
+						title='new'
+						iconName='edit-rounded'
+						onPress={() => navigation.navigate('NewMessageView', {
+							onPressItem
+						})
+						}
+						testID='rooms-list-view-create-channel'
+					/>
+				</CustomHeaderButtons>
 			)
 		};
-	}
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -96,7 +145,7 @@ class RoomsListView extends React.Component {
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
 		isAuthenticated: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -116,16 +165,21 @@ class RoomsListView extends React.Component {
 			channels: [],
 			privateGroup: [],
 			direct: [],
-			livechat: [],
 			width
 		};
 		Orientation.unlockAllOrientations();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener(
+			'hardwareBackPress',
+			this.handleBackPress
+		));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
+			'hardwareBackPress',
+			this.handleBackPress
+		));
 	}
 
 	componentDidMount() {
-		this.getSubscriptions();
+		// this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
@@ -150,45 +204,57 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// eslint-disable-next-line react/destructuring-assignment
-		// const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-		// if (propsUpdated) {
-		// 	return true;
-		// }
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	// const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+	// 	// if (propsUpdated) {
+	// 	// 	return true;
+	// 	// }
 
-		const { loading, searching, width } = this.state;
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		// if (nextState.searching !== searching) {
-		// 	return true;
-		// }
+	// 	const { loading, searching, width } = this.state;
+	// 	if (nextState.loading !== loading) {
+	// 		return true;
+	// 	}
+	// 	// if (nextState.searching !== searching) {
+	// 	// 	return true;
+	// 	// }
 
-		// if (nextState.width !== width) {
-		// 	return true;
-		// }
+	// 	// if (nextState.width !== width) {
+	// 	// 	return true;
+	// 	// }
 
-		// const { search } = this.state;
-		// if (!isEqual(nextState.search, search)) {
-		// 	return true;
-		// }
-		return false;
-	}
+	// 	// const { search } = this.state;
+	// 	// if (!isEqual(nextState.search, search)) {
+	// 	// 	return true;
+	// 	// }
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const {
-			sortBy, groupByType, showFavorites, showUnread, appState, roomsRequest, isAuthenticated
+			sortBy,
+			groupByType,
+			showFavorites,
+			showUnread,
+			appState,
+			roomsRequest,
+			isAuthenticated
 		} = this.props;
 
-		if (!(
-			(prevProps.sortBy === sortBy)
-			&& (prevProps.groupByType === groupByType)
-			&& (prevProps.showFavorites === showFavorites)
-			&& (prevProps.showUnread === showUnread)
-		)) {
+		if (
+			!(
+				prevProps.sortBy === sortBy
+				&& prevProps.groupByType === groupByType
+				&& prevProps.showFavorites === showFavorites
+				&& prevProps.showUnread === showUnread
+			)
+		) {
 			this.getSubscriptions();
-		} else if (appState === 'foreground' && appState !== prevProps.appState && isAuthenticated) {
+		} else if (
+			appState === 'foreground'
+			&& appState !== prevProps.appState
+			&& isAuthenticated
+		) {
 			roomsRequest();
 		}
 	}
@@ -213,7 +279,7 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	onDimensionsChange = ({ window: { width } }) => this.setState({ width })
+	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
@@ -222,78 +288,92 @@ class RoomsListView extends React.Component {
 			LayoutAnimation.easeInEaseOut();
 		}
 		this.setState(...args);
-	}
+	};
 
-	getSubscriptions = debounce(() => {
-		if (this.data && this.data.removeAllListeners) {
-			this.data.removeAllListeners();
+	getSubscriptions = async() => {
+		console.log('getSubscriptions');
+		// if (this.data && this.data.removeAllListeners) {
+		// 	this.data.removeAllListeners();
+		// }
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
 		}
 
 		const {
-			server, sortBy, showUnread, showFavorites, groupByType
+			server,
+			sortBy,
+			showUnread,
+			showFavorites,
+			groupByType
 		} = this.props;
 
-		if (server && this.hasActiveDB()) {
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true && t != $0', 'l');
+		// if (server && this.hasActiveDB()) {
+		const observable = await watermelon.collections
+			.get('subscriptions')
+			.query(
+				Q.where('archived', false),
+				Q.where('open', true),
+				Q.where('t', Q.notEq('l'))
+			)
+			.observeWithColumns(['room_updated_at', 'unread', 'f', 't']);
+
+		this.querySubscription = observable.subscribe((data) => {
+			let chats = [];
+			let unread = [];
+			let favorites = [];
+			let discussions = [];
+			let channels = [];
+			let privateGroup = [];
+			let direct = [];
 			if (sortBy === 'alphabetical') {
-				this.data = this.data.sorted('name', false);
+				chats = orderBy(data, ['name'], ['asc']);
 			} else {
-				this.data = this.data.sorted('roomUpdatedAt', true);
+				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 			}
 
 			// unread
 			if (showUnread) {
-				this.unread = this.data.filtered('(unread > 0 || alert == true)');
+				unread = chats.filter(s => s.unread > 0 || s.alert);
 			} else {
-				this.unread = [];
+				unread = [];
 			}
+
 			// favorites
 			if (showFavorites) {
-				this.favorites = this.data.filtered('f == true');
+				favorites = chats.filter(s => s.f);
 			} else {
-				this.favorites = [];
+				favorites = [];
 			}
+
 			// type
 			if (groupByType) {
-				this.discussions = this.data.filtered('prid != null');
-				this.channels = this.data.filtered('t == $0 AND prid == null', 'c');
-				this.privateGroup = this.data.filtered('t == $0 AND prid == null', 'p');
-				this.direct = this.data.filtered('t == $0 AND prid == null', 'd');
-				this.livechat = this.data.filtered('t == $0 AND prid == null', 'l');
+				discussions = chats.filter(s => s.prid);
+				channels = chats.filter(s => s.t === 'c' && !s.prid);
+				privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
+				direct = chats.filter(s => s.t === 'd' && !s.prid);
 			} else if (showUnread) {
-				this.chats = this.data.filtered('(unread == 0 && alert == false)');
-			} else {
-				this.chats = this.data;
+				chats = chats.filter(s => !s.unread && !s.alert);
 			}
-			// safeAddListener(this.data, this.updateState);
-			this.setState({ loading: false })
-		}
-	}, 300);
 
-	// eslint-disable-next-line react/sort-comp
-	// updateState = debounce(() => {
-	// 	this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-	// 		this.internalSetState({
-	// 			chats: this.chats ? this.chats.slice() : [],
-	// 			unread: this.unread ? this.unread.slice() : [],
-	// 			favorites: this.favorites ? this.favorites.slice() : [],
-	// 			discussions: this.discussions ? this.discussions.slice() : [],
-	// 			channels: this.channels ? this.channels.slice() : [],
-	// 			privateGroup: this.privateGroup ? this.privateGroup.slice() : [],
-	// 			direct: this.direct ? this.direct.slice() : [],
-	// 			livechat: this.livechat ? this.livechat.slice() : [],
-	// 			loading: false
-	// 		});
-	// 		this.forceUpdate();
-	// 	});
-	// }, 300);
+			this.setState({
+				chats,
+				unread,
+				favorites,
+				discussions,
+				channels,
+				privateGroup,
+				direct,
+				loading: false
+			});
+		});
+	};
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
 		this.setState({ searching: true });
 		navigation.setParams({ searching: true });
 		openSearchHeader();
-	}
+	};
 
 	cancelSearchingAndroid = () => {
 		if (isAndroid) {
@@ -304,7 +384,7 @@ class RoomsListView extends React.Component {
 			this.internalSetState({ search: [] });
 			Keyboard.dismiss();
 		}
-	}
+	};
 
 	// this is necessary during development (enables Cmd + r)
 	hasActiveDB = () => database && database.databases && database.databases.activeDB;
@@ -318,27 +398,30 @@ class RoomsListView extends React.Component {
 		}
 		appStart('background');
 		return false;
-	}
+	};
 
 	search = async(text) => {
 		const result = await RocketChat.search({ text });
 		this.internalSetState({
 			search: result
 		});
-	}
+	};
 
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
 		return ((item.prid || useRealName) && item.fname) || item.name;
-	}
+	};
 
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
 		navigation.navigate('RoomView', {
-			rid: item.rid, name: this.getRoomTitle(item), t: item.t, prid: item.prid
+			rid: item.rid,
+			name: this.getRoomTitle(item),
+			t: item.t,
+			prid: item.prid
 		});
-	}
+	};
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
@@ -350,7 +433,11 @@ class RoomsListView extends React.Component {
 				const { username } = item;
 				const result = await RocketChat.createDirectMessage(username);
 				if (result.success) {
-					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
+					return this.goRoom({
+						rid: result.room._id,
+						name: username,
+						t: 'd'
+					});
 				}
 			} catch (e) {
 				log('err_on_press_item', e);
@@ -358,7 +445,7 @@ class RoomsListView extends React.Component {
 		} else {
 			return this.goRoom(item);
 		}
-	}
+	};
 
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
@@ -372,14 +459,16 @@ class RoomsListView extends React.Component {
 		setTimeout(() => {
 			toggleSortDropdown();
 		}, 100);
-	}
+	};
 
 	toggleFav = async(rid, favorite) => {
 		try {
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				database.write(() => {
-					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					const sub = database
+						.objects('subscriptions')
+						.filtered('rid == $0', rid)[0];
 					if (sub) {
 						sub.f = !favorite;
 					}
@@ -388,14 +477,16 @@ class RoomsListView extends React.Component {
 		} catch (e) {
 			log('error_toggle_favorite', e);
 		}
-	}
+	};
 
 	toggleRead = async(rid, isRead) => {
 		try {
 			const result = await RocketChat.toggleRead(isRead, rid);
 			if (result.success) {
 				database.write(() => {
-					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					const sub = database
+						.objects('subscriptions')
+						.filtered('rid == $0', rid)[0];
 					if (sub) {
 						sub.alert = isRead;
 					}
@@ -404,28 +495,30 @@ class RoomsListView extends React.Component {
 		} catch (e) {
 			log('error_toggle_read', e);
 		}
-	}
+	};
 
 	hideChannel = async(rid, type) => {
 		try {
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
 				database.write(() => {
-					const sub = database.objects('subscriptions').filtered('rid == $0', rid)[0];
+					const sub = database
+						.objects('subscriptions')
+						.filtered('rid == $0', rid)[0];
 					database.delete(sub);
 				});
 			}
 		} catch (e) {
 			log('error_hide_channel', e);
 		}
-	}
+	};
 
 	goDirectory = () => {
 		const { navigation } = this.props;
 		navigation.navigate('DirectoryView');
-	}
+	};
 
-	getScrollRef = ref => this.scroll = ref
+	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { search } = this.state;
@@ -439,18 +532,22 @@ class RoomsListView extends React.Component {
 				goDirectory={this.goDirectory}
 			/>
 		);
-	}
+	};
 
 	getIsRead = (item) => {
-		let isUnread = (item.archived !== true && item.open === true); // item is not archived and not opened
+		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
 		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
 		return !isUnread;
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { width } = this.state;
 		const {
-			userId, username, token, baseUrl, StoreLastMessage
+			userId,
+			username,
+			token,
+			baseUrl,
+			StoreLastMessage
 		} = this.props;
 
 		return (
@@ -471,13 +568,13 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 			/>
 		);
-	}
+	};
 
 	renderSectionHeader = header => (
 		<View style={styles.groupTitleContainer}>
 			<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
 		</View>
-	)
+	);
 
 	renderSection = (data, header) => {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -486,7 +583,15 @@ class RoomsListView extends React.Component {
 			return null;
 		} else if (header === 'Favorites' && !showFavorites) {
 			return null;
-		} else if (['Discussions', 'Channels', 'Direct_Messages', 'Private_Groups', 'Livechat'].includes(header) && !groupByType) {
+		} else if (
+			[
+				'Discussions',
+				'Channels',
+				'Direct_Messages',
+				'Private_Groups'
+			].includes(header)
+			&& !groupByType
+		) {
 			return null;
 		} else if (header === 'Chats' && groupByType) {
 			return null;
@@ -495,6 +600,7 @@ class RoomsListView extends React.Component {
 			return (
 				<FlatList
 					data={data}
+					extraData={data}
 					keyExtractor={keyExtractor}
 					style={styles.list}
 					renderItem={this.renderItem}
@@ -509,11 +615,18 @@ class RoomsListView extends React.Component {
 			);
 		}
 		return null;
-	}
+	};
 
 	renderList = () => {
 		const {
-			search, chats, unread, favorites, discussions, channels, direct, privateGroup, livechat
+			search,
+			chats,
+			unread,
+			favorites,
+			discussions,
+			channels,
+			direct,
+			privateGroup
 		} = this.state;
 
 		if (search.length > 0) {
@@ -542,11 +655,10 @@ class RoomsListView extends React.Component {
 				{this.renderSection(channels, 'Channels')}
 				{this.renderSection(direct, 'Direct_Messages')}
 				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(livechat, 'Livechat')}
 				{this.renderSection(chats, 'Chats')}
 			</View>
 		);
-	}
+	};
 
 	renderScroll = () => {
 		const { loading } = this.state;
@@ -555,15 +667,14 @@ class RoomsListView extends React.Component {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
-		const { showUnread, showFavorites, groupByType, subscriptions } = this.props;
+		const { showUnread, showFavorites, groupByType } = this.props;
 		if (!(showUnread || showFavorites || groupByType)) {
-			// const { chats, search } = this.state;
-			const sortedSubscriptions = orderBy(subscriptions, ['roomUpdatedAt'], ['desc']);
+			const { chats, search } = this.state;
 			return (
 				<FlatList
 					ref={this.getScrollRef}
-					data={sortedSubscriptions}
-					extraData={sortedSubscriptions}
+					data={chats}
+					extraData={chats}
 					// data={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
@@ -590,36 +701,41 @@ class RoomsListView extends React.Component {
 				{this.renderList()}
 			</ScrollView>
 		);
-	}
+	};
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { loading } = this.state;
 		const {
-			sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown
+			sortBy,
+			groupByType,
+			showFavorites,
+			showUnread,
+			showServerDropdown,
+			showSortDropdown
 		} = this.props;
 
 		return (
-			<SafeAreaView style={styles.container} testID='rooms-list-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={styles.container}
+				testID='rooms-list-view'
+				forceInset={{ vertical: 'never' }}
+			>
 				<StatusBar />
-				{/* {this.renderScroll()}
-				{showSortDropdown
-					? (
-						<SortDropdown
-							close={this.toggleSort}
-							sortBy={sortBy}
-							groupByType={groupByType}
-							showFavorites={showFavorites}
-							showUnread={showUnread}
-						/>
-					)
-					: null
-				}
-				{showServerDropdown ? <ServerDropdown /> : null} */}
-				<List database={watermelon} loading={loading} {...this.props} />
+				{this.renderScroll()}
+				{showSortDropdown ? (
+					<SortDropdown
+						close={this.toggleSort}
+						sortBy={sortBy}
+						groupByType={groupByType}
+						showFavorites={showFavorites}
+						showUnread={showUnread}
+					/>
+				) : null}
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
-	}
+	};
 }
 
 const mapStateToProps = state => ({
@@ -638,7 +754,8 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	appState:
+		state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message
 });
 
@@ -663,7 +780,10 @@ const mapDispatchToProps = dispatch => ({
 // const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
 
 // export default Root;
-export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(RoomsListView);
 
 // // eslint-disable-next-line
 // return (
