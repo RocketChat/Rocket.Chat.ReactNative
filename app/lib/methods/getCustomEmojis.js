@@ -68,7 +68,7 @@ export default function() {
 										database.delete(emojiRecord);
 									}
 								} catch (e) {
-									log('err_get_emojis_delete', e);
+									log(e);
 								}
 							});
 						}
@@ -77,7 +77,7 @@ export default function() {
 				);
 			}
 		} catch (e) {
-			log('err_get_custom_emojis', e);
+			log(e);
 			return resolve();
 		}
 	});

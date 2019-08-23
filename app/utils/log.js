@@ -1,11 +1,11 @@
+import { Client } from 'bugsnag-react-native';
 import firebase from 'react-native-firebase';
+import config from '../../config';
 
-export default (event, error) => {
-	if (typeof error !== 'object') {
-		error = { error };
-	}
-	firebase.analytics().logEvent(event);
-	if (__DEV__) {
-		console.warn(event, error);
-	}
-};
+const bugsnag = new Client(config.BUGSNAG_API_KEY);
+
+export const { analytics } = firebase;
+export const loggerConfig = bugsnag.config;
+export const { leaveBreadcrumb } = bugsnag;
+
+export default bugsnag.notify;

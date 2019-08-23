@@ -1,4 +1,4 @@
-import firebase from 'react-native-firebase';
+import { analytics, leaveBreadcrumb } from './log';
 
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
 
@@ -31,6 +31,7 @@ export const onNavigationStateChange = (prevState, currentState) => {
 	const prevScreen = getActiveRouteName(prevState);
 
 	if (prevScreen !== currentScreen) {
-		firebase.analytics().setCurrentScreen(currentScreen);
+		analytics().setCurrentScreen(currentScreen);
+		leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };
