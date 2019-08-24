@@ -15,7 +15,7 @@ const List = React.memo(({
 		bulletWidth,
 		ordered,
 		tight,
-		index
+		index: start + index
 	}));
 
 	return (
@@ -30,6 +30,10 @@ List.propTypes = {
 	ordered: PropTypes.bool,
 	start: PropTypes.number,
 	tight: PropTypes.bool
+};
+
+List.defaultProps = {
+	start: 1
 };
 
 export default List;

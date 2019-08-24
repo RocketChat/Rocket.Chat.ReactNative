@@ -21,13 +21,13 @@ const style = StyleSheet.create({
 });
 
 const ListItem = React.memo(({
-	children, level, bulletWidth, _continue, ordered, index
+	children, level, bulletWidth, continue: _continue, ordered, index
 }) => {
 	let bullet;
 	if (_continue) {
 		bullet = '';
 	} else if (ordered) {
-		bullet = `${ index + 1 }.`;
+		bullet = `${ index }.`;
 	} else if (level % 2 === 0) {
 		bullet = '◦';
 	} else {
@@ -53,7 +53,7 @@ ListItem.propTypes = {
 	bulletWidth: PropTypes.number,
 	level: PropTypes.number,
 	ordered: PropTypes.bool,
-	_continue: PropTypes.bool,
+	continue: PropTypes.bool,
 	index: PropTypes.number
 };
 
