@@ -1,22 +1,16 @@
 import React from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView, NativeModules, Alert, Dimensions
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Video } from 'expo-av';
-import { isNotch, isIOS } from '../utils/deviceInfo';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
-
-const { StatusBarManager } = NativeModules;
-
-const IOSStatusBarHeight = (isNotch ? 45 : 20);
-const STATUSBAR_HEIGHT = isIOS ? IOSStatusBarHeight : StatusBarManager.HEIGHT;
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -46,12 +40,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	video: {
-		width: Dimensions.get('window').width,
-		height: Dimensions.get('window').height - STATUSBAR_HEIGHT
-	},
-	poster: {
-		backgroundColor: 'black'
-		// opacity: 0.1
+		flex: 1
 	},
 	loading: {
 		position: 'absolute',
@@ -97,7 +86,7 @@ const ModalContent = React.memo(({
 	if (attachment && attachment.video_url) {
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
-			<SafeAreaView style={styles.safeArea}>
+			<View style={styles.safeArea}>
 				<Video
 					source={{ uri }}
 					rate={1.0}
@@ -107,15 +96,12 @@ const ModalContent = React.memo(({
 					shouldPlay
 					isLooping={false}
 					style={styles.video}
-					posterStyle={styles.poster}
-					usePoster
 					useNativeControls
 					onReadyForDisplay={() => setLoading(false)}
 					onLoadStart={() => setLoading(true)}
-					onError={Alert.alert}
 				/>
 				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
-			</SafeAreaView>
+			</View>
 		);
 	}
 	return null;
@@ -130,7 +116,7 @@ const FileModal = React.memo(({
 		onBackdropPress={onClose}
 		onBackButtonPress={onClose}
 		onSwipeComplete={onClose}
-		swipeDirection={['up', 'left', 'right', 'down']}
+		swipeDirection={['up', 'down']}
 	>
 		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} loading={loading} setLoading={setLoading} />
 	</Modal>

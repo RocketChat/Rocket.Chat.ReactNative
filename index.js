@@ -9,5 +9,3 @@ AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 
 // For storybook, comment everything above and uncomment below
 // import './storybook';
-
-console.disableYellowBox = true;
