@@ -119,6 +119,9 @@ const ChatsStack = createStackNavigator({
 	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
+	},
+	TableView: {
+		getScreen: () => require('./views/TableView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader

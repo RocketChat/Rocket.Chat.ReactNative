@@ -326,6 +326,7 @@ export default {
 	Start_of_conversation: 'Início da conversa',
 	Started_discussion: 'Iniciou uma discussão:',
 	Submit: 'Enviar',
+	Table: 'Tabela',
 	Take_a_photo: 'Tirar uma foto',
 	Take_a_video: 'Gravar um vídeo',
 	Terms_of_Service: ' Termos de Serviço ',

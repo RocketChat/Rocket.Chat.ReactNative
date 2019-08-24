@@ -339,6 +339,7 @@ export default {
 	Start_of_conversation: 'Start of conversation',
 	Started_discussion: 'Started a discussion:',
 	Submit: 'Submit',
+	Table: 'Table',
 	Take_a_photo: 'Take a photo',
 	Take_a_video: 'Take a video',
 	tap_to_change_status: 'tap to change status',

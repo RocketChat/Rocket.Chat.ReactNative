@@ -8,6 +8,7 @@ import {
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
+import Navigation from '../../lib/Navigation';
 
 const MAX_HEIGHT = 300;
 
@@ -34,8 +35,10 @@ const Table = React.memo(({
 		);
 	};
 
+	const onPress = () => Navigation.navigate('TableView', { renderRows, tableWidth: getTableWidth() });
+
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity onPress={onPress}>
 			<ScrollView
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}
