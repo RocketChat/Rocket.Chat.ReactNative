@@ -1347,10 +1347,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.0.2.tgz#1d94f02800b094753f9271c206a26c2a06ca14ee"
   integrity sha512-8/qcMh15507AnXJ3lBeuhsdFwnWQqnp68EpUuHlYPixJ5vjVmls7/Jq48cnUlrZI8Jd9U1jkhfCl0gaT5KMgVw==
 
-"@rocket.chat/sdk@1.0.0-alpha.28":
-  version "1.0.0-alpha.28"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.28.tgz#569f3c578c5c12ed54a9317d36fa8413208ce021"
-  integrity sha512-tQ+tIIX5R931cxIlTTn2ftCfiIo372vCG3omzDwzSfw6Kq24f7giUxVEpWfsI4GtuTU4caoren7wuGYwnST/+A==
+"@rocket.chat/sdk@1.0.0-alpha.30":
+  version "1.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.30.tgz#fabfab601892bde9c9277a8aae92e88da770d64e"
+  integrity sha512-beKIoCw0XLjN8dcusqwBiS1hCVKE+y1IzpRYHUtNciS5LhOPujLUwrzF+pys2xkia5TohbRlsbNYlXPehvSHLQ==
   dependencies:
     "@types/event-emitter" "^0.3.2"
     "@types/eventemitter3" "^2.0.2"
@@ -2754,6 +2754,15 @@ buffer@^5.2.1:
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
+
+bugsnag-react-native@^2.22.3:
+  version "2.22.4"
+  resolved "https://registry.yarnpkg.com/bugsnag-react-native/-/bugsnag-react-native-2.22.4.tgz#9fd56a2cfcd17b474705255744b5f6d2737722f2"
+  integrity sha512-DK7U1LWQPOzwDOxhrGMS5pHIknifUbMKDY1ZRqMtpDkMEa/A4ncengrpFLkPww4blGhoRgDk15tFXw2midoc8w==
+  dependencies:
+    iserror "^0.0.2"
+    promise "^7"
+    prop-types "^15.6.0"
 
 builtin-modules@^1.0.0:
   version "1.1.1"
@@ -6080,6 +6089,11 @@ isemail@2.x.x:
   resolved "https://registry.yarnpkg.com/isemail/-/isemail-2.2.1.tgz#0353d3d9a62951080c262c2aa0a42b8ea8e9e2a6"
   integrity sha1-A1PT2aYpUQgMJiwqoKQrjqjp4qY=
 
+iserror@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/iserror/-/iserror-0.0.2.tgz#bd53451fe2f668b9f2402c1966787aaa2c7c0bf5"
+  integrity sha1-vVNFH+L2aLnyQCwZZnh6qix8C/U=
+
 isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
@@ -8764,7 +8778,7 @@ pad-component@0.0.1:
 
 paho-mqtt@eclipse/paho.mqtt.javascript#master:
   version "1.1.0"
-  resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/9b761defeeb4a627db31d92ae1b0ca91b44b226e"
+  resolved "https://codeload.github.com/eclipse/paho.mqtt.javascript/tar.gz/f5859463aba9a9b7c19f99ab7c4849a723f8d832"
 
 pako@~1.0.2:
   version "1.0.8"
@@ -9178,7 +9192,7 @@ promise-polyfill@^6.0.1:
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
   integrity sha1-36lpQ+qcEh/KTem1hoyznTRy4Fc=
 
-"promise@>=3.2 <8", promise@^7.1.1:
+"promise@>=3.2 <8", promise@^7, promise@^7.1.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
   integrity sha512-nolQXZ/4L+bP/UGlkfaIujX9BKxGwmQ9OT4mOt5yvy8iK1h3wqTEJCijzGANTCCl9nWjY41juyAn2K3Q1hLLTg==
@@ -9680,10 +9694,10 @@ react-native-modal@^9.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
 
-react-native-notifications@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.0.3.tgz#139f693c79e4e37b3e4aa78e7373f5abca53f8e4"
-  integrity sha512-kMrfhnwFaogErVsJORnUD3L3XFhzG3UkQpI8xPFG+cOo80u03U27J4hPXiEqOAp03ReiuxMgP4EvMXB8NRsLAg==
+react-native-notifications@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.0.6.tgz#5355fad1ea53327fb00fd5e8a6570279fe32f2a9"
+  integrity sha512-NFx5ADlqfQYTFkKWvd/GxM8rxKf1lSWJZJY0jbydAOZAuhnKFR/CsH7Mpx6T+9pY5Z3rvu7UzBtVn9LTBx0jYg==
   dependencies:
     core-js "^1.0.0"
     uuid "^2.0.3"

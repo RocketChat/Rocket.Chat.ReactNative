@@ -350,7 +350,7 @@ class RoomsListView extends React.Component {
 					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 				}
 			} catch (e) {
-				log('err_on_press_item', e);
+				log(e);
 			}
 		} else {
 			return this.goRoom(item);
@@ -383,7 +383,7 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log('error_toggle_favorite', e);
+			log(e);
 		}
 	}
 
@@ -399,7 +399,7 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log('error_toggle_read', e);
+			log(e);
 		}
 	}
 
@@ -413,7 +413,7 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log('error_hide_channel', e);
+			log(e);
 		}
 	}
 

@@ -63,7 +63,7 @@ class ProfileView extends React.Component {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
-			log('err_get_avatar_suggestion', e);
+			log(e);
 		}
 	}
 

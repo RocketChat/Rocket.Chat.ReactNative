@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import {
 	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
 } from '../../constants/colors';
-import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -65,9 +64,5 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
-	},
-	headerTitleContainerStyle: {
-		justifyContent: 'flex-start',
-		left: isIOS ? 40 : 50
 	}
 });

@@ -11,6 +11,7 @@ import { Video } from 'expo-av';
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -99,6 +100,7 @@ const ModalContent = React.memo(({
 					useNativeControls
 					onReadyForDisplay={() => setLoading(false)}
 					onLoadStart={() => setLoading(true)}
+					onError={log}
 				/>
 				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
 			</View>

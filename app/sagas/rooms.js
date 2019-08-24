@@ -33,8 +33,8 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			subscriptions.forEach((subscription) => {
 				try {
 					database.create('subscriptions', subscription, true);
-				} catch (error) {
-					log('err_rooms_request_create_sub', error);
+				} catch (e) {
+					log(e);
 				}
 			});
 		});
@@ -42,14 +42,14 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			try {
 				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
 			} catch (e) {
-				log('err_rooms_request_update', e);
+				log(e);
 			}
 		});
 
 		yield put(roomsSuccess());
 	} catch (e) {
 		yield put(roomsFailure(e));
-		log('err_rooms_request', e);
+		log(e);
 	}
 };
 

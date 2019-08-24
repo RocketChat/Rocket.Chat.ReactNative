@@ -15,7 +15,7 @@ export function cancelUpload(path) {
 			try {
 				database.delete(upload);
 			} catch (e) {
-				log('err_send_file_message_delete_upload', e);
+				log(e);
 			}
 		});
 		delete uploadQueue[path];
@@ -45,7 +45,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				try {
 					database.create('uploads', fileInfo, true);
 				} catch (e) {
-					return log('err_send_file_message_create_upload_1', e);
+					return log(e);
 				}
 			});
 
@@ -75,7 +75,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					try {
 						database.create('uploads', fileInfo, true);
 					} catch (e) {
-						return log('err_send_file_message_create_upload_2', e);
+						return log(e);
 					}
 				});
 			};
@@ -90,7 +90,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 							resolve(response);
 						} catch (e) {
 							reject(e);
-							log('err_send_file_message_delete_upload', e);
+							log(e);
 						}
 					});
 				} else {
@@ -102,7 +102,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 							reject(response);
 						} catch (err) {
 							reject(err);
-							log('err_send_file_message_create_upload_3', err);
+							log(err);
 						}
 					});
 				}
@@ -116,14 +116,14 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						reject(e);
 					} catch (err) {
 						reject(err);
-						log('err_send_file_message_create_upload_3', err);
+						log(err);
 					}
 				});
 			};
 
 			xhr.send(formData);
 		} catch (err) {
-			log('err_send_file_message_create_upload_4', err);
+			log(err);
 		}
 	});
 }

@@ -18,4 +18,5 @@ if (__DEV__) {
     Reactotron.clear();
     console.warn = Reactotron.log;
     console.log = Reactotron.log;
+    console.disableYellowBox = true;
 }
