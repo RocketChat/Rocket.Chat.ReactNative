@@ -88,7 +88,7 @@ const ModalContent = React.memo(({
 		const [loading, setLoading] = useState(0);
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
-			<View style={styles.safeArea}>
+			<>
 				<Video
 					source={{ uri }}
 					rate={1.0}
@@ -104,7 +104,7 @@ const ModalContent = React.memo(({
 					onError={log}
 				/>
 				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
-			</View>
+			</>
 		);
 	}
 	return null;
