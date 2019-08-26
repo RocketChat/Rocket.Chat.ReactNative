@@ -179,7 +179,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.getSubscriptions();
+		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
@@ -290,7 +290,7 @@ class RoomsListView extends React.Component {
 		this.setState(...args);
 	};
 
-	getSubscriptions = async() => {
+	getSubscriptions = debounce(async() => {
 		console.log('getSubscriptions');
 		// if (this.data && this.data.removeAllListeners) {
 		// 	this.data.removeAllListeners();
@@ -366,7 +366,7 @@ class RoomsListView extends React.Component {
 				loading: false
 			});
 		});
-	};
+	}, 300, true);
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
