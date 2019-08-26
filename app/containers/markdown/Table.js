@@ -40,7 +40,7 @@ const Table = React.memo(({
 	const onPress = () => Navigation.navigate('TableView', { renderRows, tableWidth: getTableWidth() });
 
 	return (
-		<TouchableOpacity onPress={onPress} style={styles.touchableTable}>
+		<TouchableOpacity onPress={onPress}>
 			<ScrollView
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}
@@ -49,7 +49,7 @@ const Table = React.memo(({
 			>
 				{renderRows(false)}
 			</ScrollView>
-			<Text style={[styles.infoTable, styles.textInfo]}>{I18n.t('Full_table')}</Text>
+			<Text style={styles.textInfo}>{I18n.t('Full_table')}</Text>
 		</TouchableOpacity>
 	);
 });

@@ -154,10 +154,6 @@ export default StyleSheet.create({
 		borderLeftWidth: 1,
 		borderTopWidth: 1
 	},
-	infoTable: {
-		position: 'absolute',
-		alignSelf: 'center'
-	},
 	tableExtraBorders: {
 		borderBottomWidth: 1,
 		borderRightWidth: 1

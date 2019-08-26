@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
+import { isIOS } from '../utils/deviceInfo';
 
 export default class TableView extends React.Component {
 	static navigationOptions = () => ({
@@ -18,9 +19,19 @@ export default class TableView extends React.Component {
 		const renderRows = navigation.getParam('renderRows');
 		const tableWidth = navigation.getParam('tableWidth');
 
+		if (isIOS) {
+			return (
+				<ScrollView contentContainerStyle={{ width: tableWidth }}>
+					{renderRows()}
+				</ScrollView>
+			);
+		}
+
 		return (
-			<ScrollView contentContainerStyle={{ width: tableWidth }}>
-				{renderRows()}
+			<ScrollView>
+				<ScrollView horizontal>
+					{renderRows()}
+				</ScrollView>
 			</ScrollView>
 		);
 	}

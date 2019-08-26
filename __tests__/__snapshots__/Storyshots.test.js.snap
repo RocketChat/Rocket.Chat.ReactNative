@@ -25347,7 +25347,6 @@ exports[`Storyshots Message list 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "justifyContent": "center",
                       "opacity": 1,
                     }
                   }
@@ -25690,20 +25689,14 @@ exports[`Storyshots Message list 1`] = `
                   </RCTScrollView>
                   <Text
                     style={
-                      Array [
-                        Object {
-                          "alignSelf": "center",
-                          "position": "absolute",
-                        },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "color": "#9ca2a8",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontStyle": "italic",
-                          "fontWeight": "400",
-                        },
-                      ]
+                      Object {
+                        "backgroundColor": "transparent",
+                        "color": "#9ca2a8",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontStyle": "italic",
+                        "fontWeight": "400",
+                      }
                     }
                   >
                     Click to see full table
