@@ -400,12 +400,13 @@ class RoomsListView extends React.Component {
 		return false;
 	};
 
-	search = async(text) => {
+	// eslint-disable-next-line react/sort-comp
+	search = debounce(async(text) => {
 		const result = await RocketChat.search({ text });
 		this.internalSetState({
 			search: result
 		});
-	};
+	}, 300);
 
 	getRoomTitle = (item) => {
 		const { useRealName } = this.props;
@@ -673,9 +674,8 @@ class RoomsListView extends React.Component {
 			return (
 				<FlatList
 					ref={this.getScrollRef}
-					data={chats}
-					extraData={chats}
-					// data={search.length ? search : chats}
+					data={search.length ? search : chats}
+					extraData={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}

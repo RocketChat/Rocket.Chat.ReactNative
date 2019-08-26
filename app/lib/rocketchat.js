@@ -7,6 +7,7 @@ import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
+import watermelon from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 
@@ -41,6 +42,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
+import { Q } from '@nozbe/watermelondb';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -450,12 +452,14 @@ const RocketChat = {
 			return [];
 		}
 
-		let data = database.objects('subscriptions').filtered('name CONTAINS[c] $0', searchText);
+		let data = await watermelon.collections.get('subscriptions').query(
+			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+		).fetch();
 
 		if (filterUsers && !filterRooms) {
-			data = data.filtered('t = $0', 'd');
+			data = data.filter(item => item.t === 'd');
 		} else if (!filterUsers && filterRooms) {
-			data = data.filtered('t != $0', 'd');
+			data = data.filter(item => item.t !== 'd');
 		}
 		data = data.slice(0, 7);
 

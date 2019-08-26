@@ -86,16 +86,14 @@ class RoomItem extends React.Component {
 
 	componentDidMount() {
 		const { item } = this.props;
-		const observable = item.observe();
-		const sub = observable.subscribe((changes) => {
-			// console.log(
-			// 	'TCL: RoomItem -> componentDidMount -> changes',
-			// 	changes
-			// );
-			// TODO: compare changes?
-			this.forceUpdate();
-			// this.setState({ subscriptions: changes });
-		});
+		if (!item.search) {
+			const observable = item.observe();
+			const sub = observable.subscribe((changes) => {
+				// TODO: compare changes?
+				this.forceUpdate();
+				// this.setState({ subscriptions: changes });
+			});
+		}
 	}
 
 	// componentWillUnmount() {
