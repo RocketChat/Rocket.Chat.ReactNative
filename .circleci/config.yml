@@ -116,9 +116,25 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+            echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
+            source ~/.bash_profile
+
       - restore_cache:
           name: Restore NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install React Native CLI
+          command: |
+            npm i -g react-native-cli
 
       - run:
           name: Install NPM modules
@@ -148,12 +164,32 @@ jobs:
             fi
 
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
 
       - run:
           name: Set Google Services
           command: |
-            cd android/app
             cp google-services.prod.json google-services.json
+          working_directory: android/app
+
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-android
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY \
+                -F appVersionCode=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=android \
+                -F sourceMap=@android-release.bundle.map \
+                -F bundle=@android-release.bundle
+            fi
+
+      - run:
+          name: Config variables
+          command: |
+            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
           name: Build Android App
@@ -215,6 +251,7 @@ jobs:
       - run:
           name: Install NPM modules
           command: |
+            yarn global add react-native react-native-cli
             yarn
 
       - run:
@@ -230,10 +267,25 @@ jobs:
           working_directory: ios
 
       - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-ios
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY \
+                -F appBundleVersion=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=ios \
+                -F sourceMap=@ios-release.bundle.map \
+                -F bundle=@ios-release.bundle
+            fi
+
+      - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
+            /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
 
             if [[ $MATCH_KEYCHAIN_NAME ]]; then
               bundle exec fastlane ios release
@@ -288,7 +340,7 @@ jobs:
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            bundle exec fastlane pilot upload --ipa ios/RocketChatRN.ipa --changelog "$(sh ../.circleci/changelog.sh)"
+            bundle exec fastlane ios beta
           working_directory: ios
 
       - save_cache:

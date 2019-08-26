@@ -21,14 +21,14 @@ export default function() {
 						try {
 							database.create('roles', role, true);
 						} catch (e) {
-							log('err_get_roles_create', e);
+							log(e);
 						}
 					}));
 					return resolve();
 				});
 			}
 		} catch (e) {
-			log('err_get_roles', e);
+			log(e);
 			return resolve();
 		}
 	});

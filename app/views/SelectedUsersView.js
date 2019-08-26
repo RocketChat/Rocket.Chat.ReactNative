@@ -118,7 +118,7 @@ class SelectedUsersView extends React.Component {
 				await RocketChat.addUsersToRoom(rid);
 				navigation.pop();
 			} catch (e) {
-				log('err_add_user', e);
+				log(e);
 			} finally {
 				setLoadingInvite(false);
 			}

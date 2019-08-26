@@ -95,14 +95,23 @@ const subscriptionSchema = {
 		reactWhenReadOnly: { type: 'bool', optional: true },
 		archived: { type: 'bool', optional: true },
 		joinCodeRequired: { type: 'bool', optional: true },
-		notifications: { type: 'bool', optional: true },
 		muted: 'string[]',
 		broadcast: { type: 'bool', optional: true },
 		prid: { type: 'string', optional: true },
 		draftMessage: { type: 'string', optional: true },
 		lastThreadSync: 'date?',
 		autoTranslate: 'bool?',
-		autoTranslateLanguage: 'string?'
+		autoTranslateLanguage: 'string?',
+		// Notifications
+		emailNotifications: { type: 'string', default: 'default' },
+		disableNotifications: { type: 'bool', default: false },
+		muteGroupMentions: { type: 'bool', default: false },
+		hideUnreadStatus: { type: 'bool', default: false },
+		audioNotifications: { type: 'string', default: 'default' },
+		desktopNotifications: { type: 'string', default: 'default' },
+		audioNotificationValue: { type: 'string', default: '0 Default' },
+		desktopNotificationDuration: { type: 'int', default: 0 },
+		mobilePushNotifications: { type: 'string', default: 'default' }
 	}
 };
 
@@ -474,7 +483,7 @@ class DB {
 		return this.databases.activeDB = new Realm({
 			path: `${ RNRealmPath.realmPath }${ path }.realm`,
 			schema,
-			schemaVersion: 13,
+			schemaVersion: 14,
 			migration: (oldRealm, newRealm) => {
 				if (oldRealm.schemaVersion >= 3 && newRealm.schemaVersion <= 13) {
 					const newSubs = newRealm.objects('subscriptions');

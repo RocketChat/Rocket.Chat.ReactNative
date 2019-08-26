@@ -5,12 +5,15 @@ import { Text } from 'react-native';
 import styles from './styles';
 
 const Hashtag = React.memo(({
-	hashtag, channels, onPress
+	hashtag, channels, navToRoomInfo
 }) => {
 	const handlePress = () => {
-		if (onPress) {
-			onPress(hashtag);
-		}
+		const index = channels.findIndex(channel => channel.name === hashtag);
+		const navParam = {
+			t: 'c',
+			rid: channels[index]._id
+		};
+		navToRoomInfo(navParam);
 	};
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
@@ -19,16 +22,16 @@ const Hashtag = React.memo(({
 				style={styles.mention}
 				onPress={handlePress}
 			>
-				{`#${ hashtag }`}
+				{` #${ hashtag } `}
 			</Text>
 		);
 	}
-	return `#${ hashtag }`;
+	return ` #${ hashtag } `;
 });
 
 Hashtag.propTypes = {
 	hashtag: PropTypes.string,
-	onPress: PropTypes.func,
+	navToRoomInfo: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 

@@ -78,7 +78,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		yield delay(500);
 		yield put(replyInit(message, false));
 	} catch (e) {
-		log('err_reply_broadcast', e);
+		log(e);
 	}
 };
 

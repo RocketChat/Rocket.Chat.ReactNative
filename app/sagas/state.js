@@ -18,7 +18,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
-		log('err_app_has_come_back_to_foreground', e);
+		log(e);
 	}
 };
 
@@ -34,7 +34,7 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	try {
 		return yield RocketChat.setUserPresenceAway();
 	} catch (e) {
-		log('err_app_has_come_back_to_background', e);
+		log(e);
 	}
 };
 

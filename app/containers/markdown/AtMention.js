@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import styles from './styles';
 
 const AtMention = React.memo(({
-	mention, onPress, username
+	mention, mentions, username, navToRoomInfo
 }) => {
 	let mentionStyle = styles.mention;
 	if (mention === 'all' || mention === 'here') {
@@ -20,10 +20,21 @@ const AtMention = React.memo(({
 		};
 	}
 
+	const handlePress = () => {
+		if (mentions && mentions.length && mentions.findIndex(m => m.username === mention) !== -1) {
+			const index = mentions.findIndex(m => m.username === mention);
+			const navParam = {
+				t: 'd',
+				rid: mentions[index]._id
+			};
+			navToRoomInfo(navParam);
+		}
+	};
+
 	return (
 		<Text
 			style={mentionStyle}
-			onPress={onPress}
+			onPress={handlePress}
 		>
 			{` @${ mention } `}
 		</Text>
@@ -33,7 +44,8 @@ const AtMention = React.memo(({
 AtMention.propTypes = {
 	mention: PropTypes.string,
 	username: PropTypes.string,
-	onPress: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default AtMention;

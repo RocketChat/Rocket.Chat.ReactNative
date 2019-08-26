@@ -28,6 +28,7 @@ const Content = React.memo((props) => {
 				channels={props.channels}
 				mentions={props.mentions}
 				useMarkdown={props.useMarkdown}
+				navToRoomInfo={props.navToRoomInfo}
 			/>
 		);
 	}
@@ -50,7 +51,8 @@ Content.propTypes = {
 	user: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	navToRoomInfo: PropTypes.func
 };
 Content.displayName = 'MessageContent';
 

@@ -61,7 +61,9 @@ export default class Markdown extends PureComponent {
 		isEdited: PropTypes.bool,
 		numberOfLines: PropTypes.number,
 		useMarkdown: PropTypes.bool,
-		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+		navToRoomInfo: PropTypes.func
 	};
 
 	constructor(props) {
@@ -149,21 +151,24 @@ export default class Markdown extends PureComponent {
 	);
 
 	renderHashtag = ({ hashtag }) => {
-		const { channels } = this.props;
+		const { channels, navToRoomInfo } = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
+				navToRoomInfo={navToRoomInfo}
 			/>
 		);
 	}
 
 	renderAtMention = ({ mentionName }) => {
-		const { username } = this.props;
+		const { username, mentions, navToRoomInfo } = this.props;
 		return (
 			<MarkdownAtMention
+				mentions={mentions}
 				mention={mentionName}
 				username={username}
+				navToRoomInfo={navToRoomInfo}
 			/>
 		);
 	}
