@@ -355,7 +355,7 @@ class RoomsListView extends React.Component {
 				chats = chats.filter(s => !s.unread && !s.alert);
 			}
 
-			this.setState({
+			this.internalSetState({
 				chats,
 				unread,
 				favorites,
