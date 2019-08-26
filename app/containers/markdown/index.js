@@ -114,16 +114,20 @@ export default class Markdown extends PureComponent {
 		renderParagraphsInLists: true
 	});
 
-	renderText = ({ context, literal }) => (
-		<Text
-			style={[
-				this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-				...context.map(type => styles[type])
-			]}
-		>
-			{literal}
-		</Text>
-	);
+	renderText = ({ context, literal }) => {
+		const { numberOfLines } = this.props;
+		return (
+			<Text
+				style={[
+					this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
+					...context.map(type => styles[type])
+				]}
+				numberOfLines={numberOfLines}
+			>
+				{literal}
+			</Text>
+		);
+	}
 
 	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
 
@@ -135,13 +139,14 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
+		const { numberOfLines } = this.props;
+
 		if (!children || children.length === 0) {
 			return null;
 		}
-
 		return (
 			<View style={styles.block}>
-				<Text>
+				<Text numberOfLines={numberOfLines}>
 					{children}
 				</Text>
 			</View>
