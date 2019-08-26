@@ -224,7 +224,7 @@ export default class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, isEdited, useMarkdown, numberOfLines
+			msg, isEdited, useMarkdown = true, numberOfLines
 		} = this.props;
 
 		if (!msg) {

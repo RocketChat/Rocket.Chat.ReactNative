@@ -91,6 +91,19 @@ export default (
 		<Separator title='Edited' />
 		<Message msg='Message' edited />
 
+		<Separator title='Block Quote' />
+		<Message msg='> Testing block quote' />
+
+		<Separator title='Lists' />
+		<Message msg={'* Dogs\n  * cats\n  - cats'} />
+
+		<Separator title='Numerated lists' />
+		<Message msg={'1. Dogs \n 2. Cats'} />
+
+		<Separator title='Numerated lists in separated messages' />
+		<Message msg='1. Dogs' />
+		<Message msg='2. Cats' isHeader={false} />
+
 		<Separator title='Static avatar' />
 		<Message
 			msg='Message'
