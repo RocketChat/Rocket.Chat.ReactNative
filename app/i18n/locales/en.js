@@ -176,6 +176,7 @@ export default {
 	Forgot_password_If_this_email_is_registered: 'If this email is registered, we\'ll send instructions on how to reset your password. If you do not receive an email shortly, please come back and try again.',
 	Forgot_password: 'Forgot password',
 	Forgot_Password: 'Forgot Password',
+	Full_table: 'Click to see full table',
 	Group_by_favorites: 'Group favorites',
 	Group_by_type: 'Group by type',
 	Hide: 'Hide',

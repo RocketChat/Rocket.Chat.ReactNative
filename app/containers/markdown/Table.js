@@ -3,12 +3,14 @@ import React from 'react';
 import {
 	ScrollView,
 	TouchableOpacity,
-	View
+	View,
+	Text
 } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
 import Navigation from '../../lib/Navigation';
+import I18n from '../../i18n';
 
 const MAX_HEIGHT = 300;
 
@@ -38,7 +40,7 @@ const Table = React.memo(({
 	const onPress = () => Navigation.navigate('TableView', { renderRows, tableWidth: getTableWidth() });
 
 	return (
-		<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity onPress={onPress} style={styles.touchableTable}>
 			<ScrollView
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}
@@ -47,6 +49,7 @@ const Table = React.memo(({
 			>
 				{renderRows(false)}
 			</ScrollView>
+			<Text style={[styles.infoTable, styles.textInfo]}>{I18n.t('Full_table')}</Text>
 		</TouchableOpacity>
 	);
 });

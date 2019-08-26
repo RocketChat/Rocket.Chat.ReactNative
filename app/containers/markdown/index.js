@@ -19,6 +19,12 @@ import MarkdownTableCell from './TableCell';
 
 import styles from './styles';
 
+// Support <http://link|Text>
+const formatText = text => text.replace(
+	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+	(match, url, title) => `[${ title }](${ url })`
+);
+
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
 	':.{1,40}:', // custom emoji
@@ -231,9 +237,11 @@ export default class Markdown extends PureComponent {
 			return null;
 		}
 
+		let m = formatText(msg);
+
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
-		const m = msg && msg.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (!useMarkdown) {
 			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;

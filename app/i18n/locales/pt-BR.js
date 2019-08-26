@@ -178,6 +178,7 @@ export default {
 	Forgot_password_If_this_email_is_registered: 'Se este e-mail estiver cadastrado, enviaremos instruções sobre como redefinir sua senha. Se você não receber um e-mail em breve, volte e tente novamente.',
 	Forgot_password: 'Esqueci minha senha',
 	Forgot_Password: 'Esqueci minha senha',
+	Full_table: 'Clique para ver a tabela completa',
 	Group_by_favorites: 'Agrupar favoritos',
 	Group_by_type: 'Agrupar por tipo',
 	Has_joined_the_channel: 'Entrou no canal',

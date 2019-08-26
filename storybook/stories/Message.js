@@ -93,6 +93,7 @@ export default (
 
 		<Separator title='Block Quote' />
 		<Message msg='> Testing block quote' />
+		<Message msg={'> Testing block quote\nTesting block quote'} />
 
 		<Separator title='Lists' />
 		<Message msg={'* Dogs\n  * cats\n  - cats'} />

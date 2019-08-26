@@ -37,6 +37,12 @@ export default StyleSheet.create({
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
+	textInfo: {
+		fontStyle: 'italic',
+		fontSize: 16,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textRegular
+	},
 	textBig: {
 		fontSize: 30,
 		...sharedStyles.textColorNormal,
@@ -135,6 +141,9 @@ export default StyleSheet.create({
 		backgroundColor: COLOR_BORDER,
 		marginRight: 5
 	},
+	touchableTable: {
+		justifyContent: 'center'
+	},
 	containerTable: {
 		borderBottomWidth: 1,
 		borderColor: COLOR_BORDER,
@@ -144,6 +153,10 @@ export default StyleSheet.create({
 		borderColor: COLOR_BORDER,
 		borderLeftWidth: 1,
 		borderTopWidth: 1
+	},
+	infoTable: {
+		position: 'absolute',
+		alignSelf: 'center'
 	},
 	tableExtraBorders: {
 		borderBottomWidth: 1,
