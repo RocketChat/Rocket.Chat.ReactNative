@@ -9,6 +9,9 @@ PODS:
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
   - EXAppLoaderProvider (6.0.0)
+  - EXAV (6.0.0):
+    - UMCore
+    - UMPermissionsInterface
   - EXConstants (6.0.0):
     - UMConstantsInterface
     - UMCore
@@ -263,6 +266,7 @@ DEPENDENCIES:
   - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
+  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
@@ -349,6 +353,9 @@ EXTERNAL SOURCES:
   EXAppLoaderProvider:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-app-loader-provider/ios"
+  EXAV:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-constants/ios"
@@ -491,6 +498,7 @@ SPEC CHECKSUMS:
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXAppLoaderProvider: 7a8185228d8ba9e689a0e2d6d957fe9bdd49c8a0
+  EXAV: 7228890721d1d74779bc3154fb678a44249b1c71
   EXConstants: 5d81e84ca71b9a552529889cc798b4a04e9e22b3
   EXFileSystem: 091907902fcec9f9182b656fdead41a82f30986a
   EXHaptics: f84c93d605e0905c47654e4a6e5dfbff78ed6906
@@ -566,4 +574,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 44d04dbfbc6cf6468fe34667ef014d00328c95ff
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.6.1
