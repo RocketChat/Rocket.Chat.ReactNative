@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
 } from 'react-native';
@@ -59,7 +59,7 @@ const Indicator = React.memo(() => (
 ));
 
 const ModalContent = React.memo(({
-	attachment, onClose, user, baseUrl, loading, setLoading
+	attachment, onClose, user, baseUrl
 }) => {
 	if (attachment && attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
@@ -85,6 +85,7 @@ const ModalContent = React.memo(({
 		);
 	}
 	if (attachment && attachment.video_url) {
+		const [loading, setLoading] = useState(0);
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
 			<View style={styles.safeArea}>
@@ -110,7 +111,7 @@ const ModalContent = React.memo(({
 });
 
 const FileModal = React.memo(({
-	isVisible, onClose, attachment, user, baseUrl, setLoading, loading
+	isVisible, onClose, attachment, user, baseUrl
 }) => (
 	<Modal
 		style={styles.modal}
@@ -120,7 +121,7 @@ const FileModal = React.memo(({
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'down']}
 	>
-		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} loading={loading} setLoading={setLoading} />
+		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
 	</Modal>
 ), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading);
 
@@ -129,9 +130,7 @@ FileModal.propTypes = {
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	onClose: PropTypes.func,
-	loading: PropTypes.bool,
-	setLoading: PropTypes.func
+	onClose: PropTypes.func
 };
 FileModal.displayName = 'FileModal';
 
@@ -139,9 +138,7 @@ ModalContent.propTypes = {
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	onClose: PropTypes.func,
-	loading: PropTypes.bool,
-	setLoading: PropTypes.func
+	onClose: PropTypes.func
 };
 ModalContent.displayName = 'FileModalContent';
 

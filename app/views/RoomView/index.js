@@ -130,8 +130,7 @@ class RoomView extends React.Component {
 			reactionsModalVisible: false,
 			selectedAttachment: {},
 			selectedMessage: {},
-			canAutoTranslate,
-			fileLoading: true
+			canAutoTranslate
 		};
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -167,7 +166,7 @@ class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate, fileLoading
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
 		} = this.state;
 		const { showActions, showErrorActions, appState } = this.props;
 
@@ -198,8 +197,6 @@ class RoomView extends React.Component {
 		} else if (appState !== nextProps.appState) {
 			return true;
 		} else if (!equal(room.muted, nextState.room.muted)) {
-			return true;
-		} else if (fileLoading !== nextState.fileLoading) {
 			return true;
 		}
 		return false;
@@ -485,10 +482,6 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
-	setFileLoading = (fileLoading) => {
-		this.setState({ fileLoading });
-	}
-
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -623,7 +616,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, fileLoading
+			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage
 		} = this.state;
 		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
@@ -642,8 +635,6 @@ class RoomView extends React.Component {
 					onClose={this.onCloseFileModal}
 					user={user}
 					baseUrl={baseUrl}
-					loading={fileLoading}
-					setLoading={this.setFileLoading}
 				/>
 				<ReactionsModal
 					message={selectedMessage}
