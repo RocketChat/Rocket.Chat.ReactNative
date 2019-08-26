@@ -58,6 +58,7 @@ export default class Markdown extends PureComponent {
 		getCustomEmoji: PropTypes.func,
 		baseUrl: PropTypes.string,
 		username: PropTypes.string,
+		tmid: PropTypes.string,
 		isEdited: PropTypes.bool,
 		numberOfLines: PropTypes.number,
 		useMarkdown: PropTypes.bool,
@@ -128,7 +129,10 @@ export default class Markdown extends PureComponent {
 
 	renderCodeBlock = ({ literal }) => <Text style={styles.codeBlock}>{literal}</Text>;
 
-	renderBreak = () => <Text>{'\n'}</Text>;
+	renderBreak = () => {
+		const { tmid } = this.props;
+		return <Text>{tmid ? ' ' : '\n'}</Text>;
+	}
 
 	renderParagraph = ({ children }) => {
 		if (!children || children.length === 0) {

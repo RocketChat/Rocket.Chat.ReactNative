@@ -29,6 +29,7 @@ const Content = React.memo((props) => {
 				mentions={props.mentions}
 				useMarkdown={props.useMarkdown}
 				navToRoomInfo={props.navToRoomInfo}
+				tmid={props.tmid}
 			/>
 		);
 	}
