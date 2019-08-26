@@ -87,10 +87,6 @@ class NewMessageView extends React.Component {
 		this.data.removeAllListeners();
 	}
 
-	onSearchChangeText(text) {
-		this.search(text);
-	}
-
 	onPressItem = (item) => {
 		const { navigation } = this.props;
 		const onPressItem = navigation.getParam('onPressItem', () => {});
@@ -120,14 +116,14 @@ class NewMessageView extends React.Component {
 	}
 
 	onCancelPress = () => {
-		this.onSearchChangeText('');
+		this.search('');
 		Keyboard.dismiss();
 	}
 
 	renderHeader = () => (
 		<View>
 			<SearchBox
-				onChangeText={text => this.onSearchChangeText(text)}
+				onChangeText={this.search}
 				hasCancel={isIOS}
 				onCancelPress={this.onCancelPress}
 				testID='new-message-view-search'

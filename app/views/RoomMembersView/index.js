@@ -252,7 +252,7 @@ class RoomMembersView extends React.Component {
 
 	renderSearchBar = () => (
 		<SearchBox
-			onChangeText={text => this.onSearchChangeText(text)}
+			onChangeText={this.onSearchChangeText}
 			hasCancel={isIOS}
 			onCancelPress={this.onCancelPress}
 			testID='room-members-view-search'

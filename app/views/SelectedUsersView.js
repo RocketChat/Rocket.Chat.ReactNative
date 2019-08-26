@@ -102,10 +102,6 @@ class SelectedUsersView extends React.Component {
 		reset();
 	}
 
-	onSearchChangeText(text) {
-		this.search(text);
-	}
-
 	nextAction = async() => {
 		const { navigation, setLoadingInvite } = this.props;
 		const nextActionID = navigation.getParam('nextActionID');
@@ -164,14 +160,14 @@ class SelectedUsersView extends React.Component {
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	onCancelPress = () => {
-		this.onSearchChangeText('');
+		this.search('');
 		Keyboard.dismiss();
 	}
 
 	renderHeader = () => (
 		<View style={styles.header}>
 			<SearchBox
-				onChangeText={text => this.onSearchChangeText(text)}
+				onChangeText={this.search}
 				hasCancel={isIOS}
 				onCancelPress={this.onCancelPress}
 				testID='select-users-view-search'
