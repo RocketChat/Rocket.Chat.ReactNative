@@ -114,6 +114,21 @@ export default class Markdown extends PureComponent {
 		renderParagraphsInLists: true
 	});
 
+	editedMessage = (ast) => {
+		const { isEdited } = this.props;
+		if (isEdited) {
+			const editIndicatorNode = new Node('edited_indicator');
+			if (ast.lastChild && ['heading', 'paragraph'].includes(ast.lastChild.type)) {
+				ast.lastChild.appendChild(editIndicatorNode);
+			} else {
+				const node = new Node('paragraph');
+				node.appendChild(editIndicatorNode);
+
+				ast.appendChild(node);
+			}
+		}
+	};
+
 	renderText = ({ context, literal }) => {
 		const { numberOfLines } = this.props;
 		return (
@@ -253,7 +268,7 @@ export default class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, isEdited, useMarkdown = true, numberOfLines
+			msg, useMarkdown = true, numberOfLines
 		} = this.props;
 
 		if (!msg) {
@@ -273,17 +288,7 @@ export default class Markdown extends PureComponent {
 		const ast = this.parser.parse(m);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
-		if (isEdited) {
-			const editIndicatorNode = new Node('edited_indicator');
-			if (ast.lastChild && ['heading', 'paragraph'].includes(ast.lastChild.type)) {
-				ast.lastChild.appendChild(editIndicatorNode);
-			} else {
-				const node = new Node('paragraph');
-				node.appendChild(editIndicatorNode);
-
-				ast.appendChild(node);
-			}
-		}
+		this.editedMessage(ast);
 
 		return this.renderer.render(ast);
 	}

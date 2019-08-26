@@ -2616,38 +2616,47 @@ exports[`Storyshots Message list 1`] = `
                         >
                           Testing block quote
                         </Text>
-                        <Text>
-                          
-
-                        </Text>
-                        <Text
-                          numberOfLines={0}
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "transparent",
-                                "color": "#2F343D",
-                                "fontFamily": "System",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                              },
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
-                            ]
-                          }
-                        >
-                          Testing block quote
-                        </Text>
                       </Text>
                     </View>
                   </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={0}
+                  >
+                    <Text
+                      numberOfLines={0}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "color": "#2F343D",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                          },
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ]
+                      }
+                    >
+                      Testing block quote
+                    </Text>
+                  </Text>
                 </View>
               </View>
             </View>
