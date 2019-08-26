@@ -727,7 +727,7 @@ export default (
 		<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 
 		<Separator title='Markdown emphasis' />
-		<Message msg='Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~' />
+		<Message msg='Italic with single _underscore_ or double __underscores__. Bold with single *asterisk* or double **asterisks**. Strikethrough with single ~Strikethrough~ or double ~~Strikethrough~~' />
 
 		<Separator title='Markdown headers' />
 		<Message
