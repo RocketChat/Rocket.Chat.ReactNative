@@ -22,11 +22,11 @@ const Hashtag = React.memo(({
 				style={styles.mention}
 				onPress={handlePress}
 			>
-				{` #${ hashtag } `}
+				{`#${ hashtag }`}
 			</Text>
 		);
 	}
-	return ` #${ hashtag } `;
+	return `#${ hashtag }`;
 });
 
 Hashtag.propTypes = {

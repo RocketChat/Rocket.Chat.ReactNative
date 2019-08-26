@@ -4480,7 +4480,7 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       @rocket.cat 
+                      @rocket.cat
                     </Text>
                     <Text
                       numberOfLines={0}
@@ -4519,7 +4519,7 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       @diego.mello 
+                      @diego.mello
                     </Text>
                     <Text
                       numberOfLines={0}
@@ -4558,7 +4558,7 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       @all 
+                      @all
                     </Text>
                     <Text
                       numberOfLines={0}
@@ -4597,7 +4597,7 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       @here 
+                      @here
                     </Text>
                     <Text
                       numberOfLines={0}
@@ -4636,7 +4636,7 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                       #general 
+                      #general
                     </Text>
                   </Text>
                 </View>
@@ -16237,7 +16237,17 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
                   Sent an attachment
                 </Text>
               </View>
@@ -17062,7 +17072,17 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
                   Sent an attachment
                 </Text>
               </View>
@@ -17860,7 +17880,17 @@ exports[`Storyshots Message list 1`] = `
               }
             >
               <View>
-                <Text>
+                <Text
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                      "color": "#2F343D",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                    }
+                  }
+                >
                   Sent an attachment
                 </Text>
               </View>
@@ -18069,7 +18099,17 @@ exports[`Storyshots Message list 1`] = `
               >
                 Started a discussion:
               </Text>
-              <Text>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  }
+                }
+              >
                 This is a discussion
               </Text>
               <View
@@ -18351,7 +18391,17 @@ exports[`Storyshots Message list 1`] = `
               >
                 Started a discussion:
               </Text>
-              <Text>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  }
+                }
+              >
                 This is a discussion
               </Text>
               <View
@@ -18635,7 +18685,17 @@ exports[`Storyshots Message list 1`] = `
               >
                 Started a discussion:
               </Text>
-              <Text>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  }
+                }
+              >
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Text>
               <View
@@ -18919,7 +18979,17 @@ exports[`Storyshots Message list 1`] = `
               >
                 Started a discussion:
               </Text>
-              <Text>
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  }
+                }
+              >
                 This is a discussion
               </Text>
               <View

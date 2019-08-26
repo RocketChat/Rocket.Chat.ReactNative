@@ -36,7 +36,7 @@ const AtMention = React.memo(({
 			style={mentionStyle}
 			onPress={handlePress}
 		>
-			{` @${ mention } `}
+			{`@${ mention }`}
 		</Text>
 	);
 });
