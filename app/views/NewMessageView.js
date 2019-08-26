@@ -120,7 +120,7 @@ class NewMessageView extends React.Component {
 	}
 
 	onCancelPress = () => {
-		this.search('');
+		this.onSearchChangeText('');
 		Keyboard.dismiss();
 	}
 
@@ -129,7 +129,7 @@ class NewMessageView extends React.Component {
 			<SearchBox
 				onChangeText={text => this.onSearchChangeText(text)}
 				hasCancel={isIOS}
-				onCancelPress={() => this.onCancelPress()}
+				onCancelPress={this.onCancelPress}
 				testID='new-message-view-search'
 			/>
 			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>

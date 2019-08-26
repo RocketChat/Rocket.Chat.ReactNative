@@ -154,7 +154,7 @@ class DirectoryView extends React.Component {
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
 					hasCancel={isIOS}
-					onCancelPress={() => this.onCancelPress()}
+					onCancelPress={this.onCancelPress}
 					testID='federation-view-search'
 				/>
 				<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>

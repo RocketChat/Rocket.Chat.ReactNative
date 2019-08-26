@@ -164,7 +164,7 @@ class SelectedUsersView extends React.Component {
 	_onPressSelectedItem = item => this.toggleUser(item);
 
 	onCancelPress = () => {
-		this.search('');
+		this.onSearchChangeText('');
 		Keyboard.dismiss();
 	}
 
@@ -173,7 +173,7 @@ class SelectedUsersView extends React.Component {
 			<SearchBox
 				onChangeText={text => this.onSearchChangeText(text)}
 				hasCancel={isIOS}
-				onCancelPress={() => this.onCancelPress()}
+				onCancelPress={this.onCancelPress}
 				testID='select-users-view-search'
 			/>
 			{this.renderSelected()}

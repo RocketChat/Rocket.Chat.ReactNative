@@ -246,7 +246,7 @@ class RoomMembersView extends React.Component {
 	}
 
 	onCancelPress = () => {
-		this.setState({ filtering: false, membersFiltered: [] });
+		this.onSearchChangeText('');
 		Keyboard.dismiss();
 	}
 
@@ -254,7 +254,7 @@ class RoomMembersView extends React.Component {
 		<SearchBox
 			onChangeText={text => this.onSearchChangeText(text)}
 			hasCancel={isIOS}
-			onCancelPress={() => this.onCancelPress()}
+			onCancelPress={this.onCancelPress}
 			testID='room-members-view-search'
 		/>
 	)
