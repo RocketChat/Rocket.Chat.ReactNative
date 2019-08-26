@@ -4466,7 +4466,7 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 16,
+                            "fontSize": 30,
                             "fontWeight": "400",
                           },
                           Object {
@@ -4675,7 +4675,7 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 16,
+                            "fontSize": 30,
                             "fontWeight": "400",
                           },
                           Object {
@@ -4897,7 +4897,7 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 16,
+                            "fontSize": 30,
                             "fontWeight": "400",
                           },
                           Object {
@@ -4933,7 +4933,7 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 16,
+                            "fontSize": 30,
                             "fontWeight": "400",
                           },
                           Object {
@@ -5354,7 +5354,7 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 16,
+                            "fontSize": 30,
                             "fontWeight": "400",
                           },
                           Object {

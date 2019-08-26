@@ -111,7 +111,16 @@ export default class Markdown extends PureComponent {
 		renderParagraphsInLists: true
 	});
 
-	renderText = ({ context, literal }) => <Text style={[styles.text, ...context.map(type => styles[type])]}>{literal}</Text>;
+	renderText = ({ context, literal }) => (
+		<Text
+			style={[
+				this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
+				...context.map(type => styles[type])
+			]}
+		>
+			{literal}
+		</Text>
+	);
 
 	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
 
