@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Contacts from 'react-native-contacts';
 import {
 	View, StyleSheet, FlatList, Text, TextInput, Image, TouchableOpacity
 } from 'react-native';
@@ -160,9 +161,16 @@ export default class NewMessageView extends React.Component {
 		super(props);
 		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
 		this.state = {
-			search: []
+			search: [],
+			syncedContacts: [],
+			unsyncedContacts: []
 		};
 		safeAddListener(this.data, this.updateState);
+	}
+
+	async componentDidMount() {
+		const result = await this.syncContacts();
+		this.setState({ syncedContacts: result[0], unsyncedContacts: result[1] });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -181,6 +189,69 @@ export default class NewMessageView extends React.Component {
 	onSearchChangeText(text) {
 		this.search(text);
 	}
+
+	syncContacts = async() => {
+		const CryptoJS = require('crypto-js');
+
+		let deviceContacts;
+		const weakHashes = [];
+		const hashedContacts = [];
+		let serverResponse;
+		const syncedContacts = [];
+		const unsyncedContacts = [];
+
+		try {
+			deviceContacts = await this.fetchDeviceContacts();
+		} catch (error) {
+			console.log('error_fetchDeviceContacts', error);
+		}
+
+		deviceContacts.forEach((contact) => {
+			contact.emailAddresses.forEach((emailAddress) => {
+				const _email = emailAddress.email;
+				const strongHash = CryptoJS.SHA1(_email).toString(CryptoJS.enc.Hex);
+				const weakHash = strongHash.substr(3, 6);
+				weakHashes.push(weakHash);
+				contact.hash = strongHash;
+				hashedContacts.push(contact);
+			});
+			contact.phoneNumbers.forEach((phoneNumber) => {
+				const _number = phoneNumber.number;
+				const strongHash = CryptoJS.SHA1(_number).toString(CryptoJS.enc.Hex);
+				const weakHash = strongHash.substr(3, 6);
+				weakHashes.push(weakHash);
+				contact.hash = strongHash;
+				hashedContacts.push(contact);
+			});
+		});
+
+		try {
+			serverResponse = await RocketChat.queryContacts(weakHashes);
+		} catch (error) {
+			console.log('error_queryContacts', error);
+		}
+
+		hashedContacts.forEach((contact) => {
+			const foundResponse = serverResponse.find(response => response.h === contact.hash);
+			if (foundResponse) {
+				contact.username = foundResponse.u;
+				syncedContacts.push(contact);
+			} else {
+				unsyncedContacts.push(contact);
+			}
+		});
+
+		return [syncedContacts, unsyncedContacts];
+	}
+
+	fetchDeviceContacts = () => new Promise((resolve, reject) => Contacts.getAll((err, contacts) => {
+		if (err) {
+			reject(err);
+		} else {
+			this.setState(contacts);
+			resolve(contacts);
+		}
+	}))
 
 	onPressItem = (item) => {
 		const { navigation } = this.props;

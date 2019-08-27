@@ -648,6 +648,10 @@ const RocketChat = {
 		// RC 0.57.0
 		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
+	async queryContacts(weakHashes) {
+		const result = await this.sdk.methodCall('queryContacts', weakHashes);
+		return result;
+	},
 	hasPermission(permissions, rid) {
 		let roomRoles = [];
 		try {
