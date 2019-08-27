@@ -213,7 +213,7 @@ export default class NewMessageView extends React.Component {
 				const weakHash = strongHash.substr(3, 6);
 				weakHashes.push(weakHash);
 				contact.hash = strongHash;
-				hashedContacts.push(contact);
+				hashedContacts.push(Object.assign({}, contact));
 			});
 			contact.phoneNumbers.forEach((phoneNumber) => {
 				const _number = phoneNumber.number;
@@ -221,7 +221,7 @@ export default class NewMessageView extends React.Component {
 				const weakHash = strongHash.substr(3, 6);
 				weakHashes.push(weakHash);
 				contact.hash = strongHash;
-				hashedContacts.push(contact);
+				hashedContacts.push(Object.assign({}, contact));
 			});
 		});
 
