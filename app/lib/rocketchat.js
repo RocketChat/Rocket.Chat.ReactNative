@@ -53,7 +53,12 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
-	subscribeRooms,
+	async subscribeRooms() {
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+		}
+		this.roomsSub = await subscribeRooms.call(this);
+	},
 	subscribeRoom,
 	canOpenRoom,
 	createChannel({
