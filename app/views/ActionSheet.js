@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 		margin: 20,
 		padding: 12,
 		textAlign: 'center',
+		alignItems: 'center',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	}
 });
@@ -134,12 +135,9 @@ export default class ActionSheet extends React.Component {
 			);
 		}
 		return (
-
-			<View style={styles.androidButtonView}>
-				<RectButton onPress={this.hideActionSheet} style={styles.cancelButton}>
-					<Text>Cancel</Text>
-				</RectButton>
-			</View>
+			<RectButton onPress={this.hideActionSheet} style={styles.cancelButton}>
+				<Text>Cancel</Text>
+			</RectButton>
 		);
 	}
 
