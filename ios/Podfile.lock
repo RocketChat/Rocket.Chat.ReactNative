@@ -1,9 +1,17 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BugsnagReactNative (2.22.4):
+    - BugsnagReactNative/Core (= 2.22.4)
+    - React
+  - BugsnagReactNative/Core (2.22.4):
+    - React
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
   - EXAppLoaderProvider (6.0.0)
+  - EXAV (6.0.0):
+    - UMCore
+    - UMPermissionsInterface
   - EXConstants (6.0.0):
     - UMConstantsInterface
     - UMCore
@@ -257,8 +265,10 @@ PODS:
   - yoga (0.60.4.React)
 
 DEPENDENCIES:
+  - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
+  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
@@ -339,11 +349,16 @@ SPEC REPOS:
     - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
+  BugsnagReactNative:
+    :path: "../node_modules/bugsnag-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAppLoaderProvider:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-app-loader-provider/ios"
+  EXAV:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-constants/ios"
@@ -484,9 +499,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BugsnagReactNative: 2114356c3acac0a71fb4b8962d3d1afdeb35f4d9
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXAppLoaderProvider: 7a8185228d8ba9e689a0e2d6d957fe9bdd49c8a0
+  EXAV: 7228890721d1d74779bc3154fb678a44249b1c71
   EXConstants: 5d81e84ca71b9a552529889cc798b4a04e9e22b3
   EXFileSystem: 091907902fcec9f9182b656fdead41a82f30986a
   EXHaptics: f84c93d605e0905c47654e4a6e5dfbff78ed6906
@@ -561,6 +578,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: c9c0e4d6e34886493451eb2fdba48bc7e89d4551
+PODFILE CHECKSUM: 44d04dbfbc6cf6468fe34667ef014d00328c95ff
 
 COCOAPODS: 1.7.2

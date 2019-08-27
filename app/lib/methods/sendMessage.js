@@ -66,6 +66,6 @@ export default async function(rid, msg, tmid, user) {
 			});
 		}
 	} catch (e) {
-		log('err_send_message', e);
+		log(e);
 	}
 }

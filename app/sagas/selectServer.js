@@ -34,7 +34,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 		return serverInfo;
 	} catch (e) {
-		log('err_get_server_info', e);
+		log(e);
 	}
 };
 
@@ -73,7 +73,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
 	} catch (e) {
 		yield put(selectServerFailure());
-		log('err_select_server', e);
+		log(e);
 	}
 };
 
@@ -91,7 +91,7 @@ const handleServerRequest = function* handleServerRequest({ server }) {
 		yield put(selectServerRequest(server, serverInfo.version, false));
 	} catch (e) {
 		yield put(serverFailure());
-		log('err_server_request', e);
+		log(e);
 	}
 };
 

@@ -23,7 +23,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 			yield RocketChat.emitTyping(rid, false);
 		}
 	} catch (e) {
-		log('err_watch_user_typing', e);
+		log(e);
 	}
 };
 

@@ -99,8 +99,8 @@ class DirectoryView extends React.Component {
 			} else {
 				this.setState({ loading: false });
 			}
-		} catch (error) {
-			log('err_load_directory', error);
+		} catch (e) {
+			log(e);
 			this.setState({ loading: false });
 		}
 	}, 200)

@@ -1,0 +1,12 @@
+diff --git a/node_modules/expo-av/android/build.gradle b/node_modules/expo-av/android/build.gradle
+index 2d3568e..b093959 100644
+--- a/node_modules/expo-av/android/build.gradle
++++ b/node_modules/expo-av/android/build.gradle
+@@ -71,6 +71,7 @@ dependencies {
+   unimodule "unimodules-permissions-interface"
+   // Newer version introduces dependency versions conflict
+   // on 'com.android.support:support-annotations'
++  implementation 'androidx.annotation:annotation:1.1.0'
+   api 'com.google.android.exoplayer:exoplayer:2.9.2'
+ 
+   api 'com.google.android.exoplayer:extension-okhttp:2.9.2'

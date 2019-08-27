@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, HeaderBackButton } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import EJSON from 'ejson';
@@ -38,7 +38,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE, COLOR_TEXT } from '../../constants/colors';
+import { COLOR_WHITE, COLOR_TEXT, HEADER_BACK } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
@@ -57,8 +57,8 @@ class RoomView extends React.Component {
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
+		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
-			headerTitleContainerStyle: styles.headerTitleContainerStyle,
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}
@@ -76,6 +76,14 @@ class RoomView extends React.Component {
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={toggleFollowThread}
+				/>
+			),
+			headerLeft: (
+				<HeaderBackButton
+					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+					backTitleVisible
+					onPress={() => navigation.goBack()}
+					tintColor={HEADER_BACK}
 				/>
 			)
 		};
@@ -126,6 +134,7 @@ class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
 		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			joined: this.rooms.length > 0,
@@ -163,6 +172,7 @@ class RoomView extends React.Component {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
 			safeAddListener(this.rooms, this.updateRoom);
+			safeAddListener(this.chats, this.updateUnreadCount);
 			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -234,6 +244,7 @@ class RoomView extends React.Component {
 			}
 		}
 		this.rooms.removeAllListeners();
+		this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
@@ -295,7 +306,7 @@ class RoomView extends React.Component {
 				this.setState({ canAutoTranslate });
 			});
 		} catch (e) {
-			log('err_room_init', e);
+			log(e);
 		}
 	}
 
@@ -412,7 +423,7 @@ class RoomView extends React.Component {
 			}
 			RocketChat.setReaction(shortname, messageId);
 		} catch (e) {
-			log('err_room_on_reaction_press', e);
+			log(e);
 		}
 	};
 
@@ -431,6 +442,17 @@ class RoomView extends React.Component {
 			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
 		});
 	}, 1000, true)
+
+	// eslint-disable-next-line react/sort-comp
+	updateUnreadCount = debounce(() => {
+		const { navigation } = this.props;
+		const unreadsCount = this.chats.filtered('archived != true && open == true && unread > 0').reduce((a, b) => a + (b.unread || 0), 0);
+		if (unreadsCount !== navigation.getParam('unreadsCount')) {
+			navigation.setParams({
+				unreadsCount
+			});
+		}
+	}, 300, false)
 
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
@@ -513,7 +535,7 @@ class RoomView extends React.Component {
 			}
 			return Promise.resolve();
 		} catch (e) {
-			log('err_get_messages', e);
+			log(e);
 		}
 	}
 
@@ -521,7 +543,7 @@ class RoomView extends React.Component {
 		try {
 			return RocketChat.loadThreadMessages({ tmid: this.tmid });
 		} catch (e) {
-			log('err_get_thread_messages', e);
+			log(e);
 		}
 	}
 
@@ -534,7 +556,7 @@ class RoomView extends React.Component {
 				joined: true
 			});
 		} catch (e) {
-			log('err_join_room', e);
+			log(e);
 		}
 	};
 
@@ -546,8 +568,8 @@ class RoomView extends React.Component {
 			database.write(() => {
 				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
 			});
-		} catch (error) {
-			log('err_fetch_thread_name', error);
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -556,8 +578,16 @@ class RoomView extends React.Component {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
-			log('err_toggle_follow_thread', e);
+			log(e);
 		}
+	}
+
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
 	}
 
 	parseMessage = item => JSON.parse(JSON.stringify(item));
@@ -806,6 +836,7 @@ class RoomView extends React.Component {
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				room={room}
+				navToRoomInfo={this.navToRoomInfo}
 			/>
 		);
 
