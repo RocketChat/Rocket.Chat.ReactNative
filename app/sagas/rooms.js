@@ -1,5 +1,5 @@
 import {
-	put, select, race, take, fork, cancel, takeLatest, delay
+	put, select, race, take, fork, cancel, delay
 } from 'redux-saga/effects';
 import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 
@@ -10,18 +10,9 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 
-let roomsSub;
-
-const removeSub = function removeSub() {
-	if (roomsSub && roomsSub.stop) {
-		roomsSub.stop();
-	}
-};
-
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
-		removeSub();
-		roomsSub = yield RocketChat.subscribeRooms();
+		yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
 		const [serverRecord] = database.databases.serversDB.objects('servers').filtered('id = $0', server);
@@ -53,12 +44,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 	}
 };
 
-const handleLogout = function handleLogout() {
-	removeSub();
-};
-
 const root = function* root() {
-	yield takeLatest(types.LOGOUT, handleLogout);
 	while (true) {
 		const params = yield take(types.ROOMS.REQUEST);
 		const isAuthenticated = yield select(state => state.login.isAuthenticated);
