@@ -91,6 +91,20 @@ export default (
 		<Separator title='Edited' />
 		<Message msg='Message' edited />
 
+		<Separator title='Block Quote' />
+		<Message msg='> Testing block quote' />
+		<Message msg={'> Testing block quote\nTesting block quote'} />
+
+		<Separator title='Lists' />
+		<Message msg={'* Dogs\n  * cats\n  - cats'} />
+
+		<Separator title='Numerated lists' />
+		<Message msg={'1. Dogs \n 2. Cats'} />
+
+		<Separator title='Numerated lists in separated messages' />
+		<Message msg='1. Dogs' />
+		<Message msg='2. Cats' isHeader={false} />
+
 		<Separator title='Static avatar' />
 		<Message
 			msg='Message'
@@ -714,7 +728,7 @@ export default (
 		<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 
 		<Separator title='Markdown emphasis' />
-		<Message msg='Italic with *asterisks* or _underscores_. Bold with **asterisks** or __underscores__. ~~Strikethrough~~' />
+		<Message msg='Italic with single _underscore_ or double __underscores__. Bold with single *asterisk* or double **asterisks**. Strikethrough with single ~Strikethrough~ or double ~~Strikethrough~~' />
 
 		<Separator title='Markdown headers' />
 		<Message

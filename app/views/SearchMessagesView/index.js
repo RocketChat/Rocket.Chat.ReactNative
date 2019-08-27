@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
-import Markdown from '../../containers/message/Markdown';
+import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message/Message';

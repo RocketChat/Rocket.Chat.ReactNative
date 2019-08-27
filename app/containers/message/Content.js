@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
 import styles from './styles';
-import Markdown from './Markdown';
+import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
 
 const Content = React.memo((props) => {
@@ -21,14 +21,15 @@ const Content = React.memo((props) => {
 			<Markdown
 				msg={props.msg}
 				baseUrl={props.baseUrl}
+				getCustomEmoji={props.getCustomEmoji}
 				username={props.user.username}
 				isEdited={props.isEdited}
-				mentions={props.mentions}
-				channels={props.channels}
 				numberOfLines={props.tmid ? 1 : 0}
-				getCustomEmoji={props.getCustomEmoji}
+				channels={props.channels}
+				mentions={props.mentions}
 				useMarkdown={props.useMarkdown}
 				navToRoomInfo={props.navToRoomInfo}
+				tmid={props.tmid}
 			/>
 		);
 	}
@@ -43,16 +44,16 @@ const Content = React.memo((props) => {
 Content.propTypes = {
 	isTemp: PropTypes.bool,
 	isInfo: PropTypes.bool,
-	isEdited: PropTypes.bool,
-	useMarkdown: PropTypes.bool,
 	tmid: PropTypes.string,
 	msg: PropTypes.string,
+	isEdited: PropTypes.bool,
+	useMarkdown: PropTypes.bool,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	navToRoomInfo: PropTypes.func
 };
 Content.displayName = 'MessageContent';
 
