@@ -7,6 +7,7 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
@@ -293,6 +294,38 @@ export default class NewMessageView extends React.Component {
 		</View>
 	)
 
+	renderGroupChannelButtons = (buttonName, iconName) => {
+		let icon;
+		if (iconName === 'Lock.png') {
+			icon = require('../../icons/Lock.png');
+		} else {
+			icon = require('../../icons/Hashtag.png');
+		}
+		return (
+			<TouchableHighlight style={{ height: 56, backgroundColor: COLOR_WHITE }}>
+				<View style={{ flexDirection: 'row', height: 56, backgroundColor: COLOR_WHITE }}>
+					<View style={{ justifyContent: 'center' }}>
+						<Image
+							source={icon}
+							resizeMode='contain'
+							style={{ height: 23, width: 23, marginHorizontal: 10 }}
+						/>
+					</View>
+					<View style={styles.textContainer}>
+						<Text style={{ fontSize: 17, color: '#007AFF' }}>{buttonName}</Text>
+					</View>
+					<View style={{ justifyContent: 'center' }}>
+						<Image
+							source={require('../../icons/Next.png')}
+							resizeMode='contain'
+							style={{ height: 23, width: 23, marginRight: 10 }}
+						/>
+					</View>
+				</View>
+			</TouchableHighlight>
+		);
+	}
+
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item, index }) => {
@@ -338,6 +371,9 @@ export default class NewMessageView extends React.Component {
 		const { syncedContacts } = this.state;
 		return (
 			<ScrollView>
+				{this.renderGroupChannelButtons('New Group', 'Lock.png')}
+				{this.renderSeparator()}
+				{this.renderGroupChannelButtons('New Channel', 'Hashtag.png')}
 				{this.renderSyncedContacts(search, syncedContacts)}
 			</ScrollView>
 		);
