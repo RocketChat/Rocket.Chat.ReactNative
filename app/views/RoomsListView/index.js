@@ -308,7 +308,7 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		// if (server && this.hasActiveDB()) {
-		const observable = await watermelon.collections
+		const observable = await watermelon.database.collections
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),

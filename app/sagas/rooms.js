@@ -14,7 +14,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import database from '../lib/realm';
-import watermelon from '../lib/database';
+import watermelondb from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
@@ -91,6 +91,8 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				}
 			});
 		});
+		const watermelon = watermelondb.database;
+		console.log('ACTION ACTION ACTION ACTION ACTION ACTION ')
 		yield watermelon.action(async(action) => {
 			// await action.subAction(() => watermelon.unsafeResetDatabase());
 			const subCollection = watermelon.collections.get('subscriptions');

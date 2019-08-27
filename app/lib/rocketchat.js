@@ -149,6 +149,7 @@ const RocketChat = {
 	connect({ server, user }) {
 		return new Promise((resolve) => {
 			database.setActiveDB(server);
+			watermelon.setActiveDB();
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
@@ -224,6 +225,7 @@ const RocketChat = {
 
 	async shareExtensionInit(server) {
 		database.setActiveDB(server);
+		watermelon.setActiveDB();
 
 		if (this.sdk) {
 			this.sdk.disconnect();

@@ -10,10 +10,40 @@ const adapter = new SQLiteAdapter({
 	schema,
 })
 
-const database = new Database({
+const databaseWatermelon = new Database({
 	adapter,
 	modelClasses: [Subscription, Message],
 	actionsEnabled: true,
 })
 
-export default database;
+// export default databaseWatermelon;
+
+class DB {
+	databases = {
+		// activeDB: databaseWatermelon
+	}
+
+	get database() {
+		return this.databases.activeDB;
+	}
+
+	collections(...args) {
+		return this.database.collections(...args);
+	}
+
+	setActiveDB(database = '') {
+		console.log('setActiveDB')
+		// const path = database.replace(/(^\w+:|^)\/\//, '');
+		this.databases.activeDB = new Database({
+			adapter,
+			modelClasses: [Subscription, Message],
+			actionsEnabled: true,
+		});
+	}
+}
+
+const db = new DB();
+export default db;
+
+// const { database } = db;
+// export { database };
