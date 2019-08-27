@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import firebase from 'react-native-firebase';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
@@ -54,9 +55,13 @@ class RoomActionsView extends React.Component {
 			canViewMembers: false,
 			canAutoTranslate: false
 		};
+		this.trace = null;
 	}
 
 	async componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_room_actions_view');
+		this.trace.start();
+
 		const { room } = this.state;
 		if (!room._id) {
 			try {
@@ -86,6 +91,7 @@ class RoomActionsView extends React.Component {
 		this.setState({ canAutoTranslate });
 
 		safeAddListener(this.rooms, this.updateRoom);
+		this.trace.stop();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -112,6 +118,7 @@ class RoomActionsView extends React.Component {
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
+		this.trace.stop();
 	}
 
 	onPressTouchable = (item) => {

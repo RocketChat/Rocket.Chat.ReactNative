@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
 
+import firebase from 'react-native-firebase';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -71,6 +72,8 @@ class RoomInfoView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_room_info_view');
+		this.trace.start();
 		if (this.t === 'd') {
 			const { user } = this.props;
 			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
@@ -107,6 +110,11 @@ class RoomInfoView extends React.Component {
 			const { navigation } = this.props;
 			navigation.setParams({ showEdit: true });
 		}
+		this.trace.stop();
+	}
+
+	componentWillUnmount() {
+		this.trace.stop();
 	}
 
 	getRoleDescription = (id) => {

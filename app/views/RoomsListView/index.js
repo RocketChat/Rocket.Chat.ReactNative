@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
+import firebase from 'react-native-firebase';
 import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -118,9 +119,12 @@ class RoomsListView extends React.Component {
 		Orientation.unlockAllOrientations();
 		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.trace = null;
 	}
 
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_rooms');
+		this.trace.start();
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
@@ -130,6 +134,7 @@ class RoomsListView extends React.Component {
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
+		this.trace.stop();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -207,6 +212,7 @@ class RoomsListView extends React.Component {
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
+		this.trace.stop();
 	}
 
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width })

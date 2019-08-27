@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 
+import firebase from 'react-native-firebase';
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
@@ -46,13 +47,17 @@ class ThreadMessagesView extends React.Component {
 			messages: this.messages
 		};
 		this.mounted = false;
+		this.trace = null;
 	}
 
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_thread_messages_view');
+		this.trace.start();
 		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
 			this.init();
 			this.mounted = true;
 		});
+		this.trace.stop();
 	}
 
 	componentWillUnmount() {
@@ -66,6 +71,7 @@ class ThreadMessagesView extends React.Component {
 		if (this.syncInteraction && this.syncInteraction.cancel) {
 			this.syncInteraction.cancel();
 		}
+		this.trace.stop();
 	}
 
 	// eslint-disable-next-line react/sort-comp

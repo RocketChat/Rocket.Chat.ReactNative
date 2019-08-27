@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import firebase from 'react-native-firebase';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -68,15 +69,19 @@ class RoomInfoEditView extends React.Component {
 			ro: false,
 			reactWhenReadOnly: false
 		};
+		this.trace = null;
 	}
 
-
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_room_info_edit_view');
+		this.trace.start();
+
 		this.updateRoom();
 		this.init();
 		safeAddListener(this.rooms, this.updateRoom);
 		const { room } = this.state;
 		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
+		this.trace.stop();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -95,6 +100,7 @@ class RoomInfoEditView extends React.Component {
 
 	componentWillUnmount() {
 		this.rooms.removeAllListeners();
+		this.trace.stop();
 	}
 
 	updateRoom = () => {

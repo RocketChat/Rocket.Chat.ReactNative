@@ -11,6 +11,7 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 
+import firebase from 'react-native-firebase';
 import { userTyping as userTypingAction } from '../../actions/room';
 import {
 	editRequest as editRequestAction,
@@ -133,9 +134,12 @@ class MessageBox extends Component {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+		this.trace = null;
 	}
 
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_message_box');
+		this.trace.start();
 		const { rid, tmid } = this.props;
 		let msg;
 		if (tmid) {
@@ -157,6 +161,7 @@ class MessageBox extends Component {
 		if (isAndroid) {
 			require('./EmojiKeyboard');
 		}
+		this.trace.stop();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -215,6 +220,10 @@ class MessageBox extends Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		this.trace.stop();
 	}
 
 	onChangeText = debounce((text) => {

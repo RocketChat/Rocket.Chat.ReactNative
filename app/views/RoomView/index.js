@@ -11,6 +11,7 @@ import moment from 'moment';
 import EJSON from 'ejson';
 import * as Haptics from 'expo-haptics';
 
+import firebase from 'react-native-firebase';
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
 	actionsShow as actionsShowAction,
@@ -138,9 +139,13 @@ class RoomView extends React.Component {
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
+		this.trace = null;
 	}
 
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_room');
+		this.trace.start();
+
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
 			const { navigation, isAuthenticated } = this.props;
@@ -162,6 +167,7 @@ class RoomView extends React.Component {
 			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
+		this.trace.stop();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -264,6 +270,7 @@ class RoomView extends React.Component {
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
+		this.trace.stop();
 	}
 
 	// eslint-disable-next-line react/sort-comp

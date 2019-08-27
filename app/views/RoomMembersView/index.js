@@ -71,6 +71,7 @@ class RoomMembersView extends React.Component {
 			options: [],
 			end: false
 		};
+		this.trace = null;
 	}
 
 	componentDidMount() {

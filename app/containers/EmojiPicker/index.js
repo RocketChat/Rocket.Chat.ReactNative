@@ -6,6 +6,7 @@ import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
 
+import firebase from 'react-native-firebase';
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
@@ -39,14 +40,18 @@ export default class EmojiPicker extends Component {
 		};
 		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
 		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
+		this.trace = null;
 	}
 
 	componentDidMount() {
+		this.trace = firebase.perf().newTrace('load_emoji_picker');
+		this.trace.start();
 		this.updateFrequentlyUsed();
 		this.updateCustomEmojis();
 		requestAnimationFrame(() => this.setState({ show: true }));
 		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
 		safeAddListener(this.customEmojis, this.updateCustomEmojis);
+		this.trace.stop();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -70,6 +75,7 @@ export default class EmojiPicker extends Component {
 	componentWillUnmount() {
 		this.frequentlyUsed.removeAllListeners();
 		this.customEmojis.removeAllListeners();
+		this.trace.stop();
 	}
 
 	onEmojiSelected(emoji) {
