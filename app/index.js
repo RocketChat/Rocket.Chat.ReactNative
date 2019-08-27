@@ -4,7 +4,9 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking } from 'react-native';
+import {
+	View, Linking
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
@@ -246,10 +248,32 @@ class CustomInsideStack extends React.Component {
 	}
 }
 
+class CustomSplitStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return (
+			<View style={{ flex: 1, flexDirection: 'row' }}>
+				<View style={{ flex: 4 }}>
+					<CustomInsideStack navigation={navigation} />
+				</View>
+				<View style={{ flex: 8 }}>
+					<CustomInsideStack navigation={navigation} />
+				</View>
+			</View>
+		);
+	}
+}
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
-		InsideStack: CustomInsideStack,
+		InsideStack: CustomSplitStack,
 		AuthLoading: {
 			getScreen: () => require('./views/AuthLoadingView').default
 		},
