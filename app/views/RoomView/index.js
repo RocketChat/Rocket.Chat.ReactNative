@@ -10,6 +10,7 @@ import equal from 'deep-equal';
 import moment from 'moment';
 import EJSON from 'ejson';
 import * as Haptics from 'expo-haptics';
+import Touchable from 'react-native-platform-touchable';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -37,7 +38,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE, COLOR_TEXT } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
@@ -46,6 +47,7 @@ import { getMessageTranslation } from '../../containers/message/utils';
 import { LISTENER as ACTION_SHEET_LISTENER } from '../ActionSheet';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { LISTENER } from '../../containers/Toast';
+import { CustomIcon } from '../../lib/Icons';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -297,6 +299,41 @@ class RoomView extends React.Component {
 		}
 	}
 
+	headerActionSheetItem = (item, isItemText, onPress) => {
+		if (isIOS) {
+			return	 (
+				<Touchable onPress={onPress}>
+					<View style={styles.headerItem}>
+						{ isItemText ? (<Text style={styles.headerItemText}>{item}</Text>) : item()}
+					</View>
+				</Touchable>
+			);
+		} return (
+			<RectButton onPress={onPress} style={styles.headerItem}>
+				{ isItemText ? (<Text style={styles.headerItemText}>{item}</Text>) : item()}
+			</RectButton>
+		);
+	}
+
+	headerActionSheet = item => (onPress) => {
+		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
+			return (
+				<View style={styles.headerActionSheet}>
+					{this.headerActionSheetItem('😊', true, () => { this.onReactionPress(':blush:', item._id); onPress(); })}
+					{this.headerActionSheetItem('👏🏻', true, () => { this.onReactionPress(':clap:', item._id); onPress(); })}
+					{this.headerActionSheetItem('👍', true, () => { this.onReactionPress(':thumbsup:', item._id); onPress(); })}
+					{this.headerActionSheetItem('😱', true, () => { this.onReactionPress(':scream:', item._id); onPress(); })}
+					{this.headerActionSheetItem('😒', true, () => { this.onReactionPress(':unamused:', item._id); onPress(); })}
+					{this.headerActionSheetItem(() => (
+						<CustomIcon name='emoji' size={22} color={COLOR_TEXT} />),
+					false,
+					() => { this.handleReaction(item); onPress(); })}
+				</View>
+			);
+		}
+		return null;
+	}
+
 	onMessageLongPress = (item) => {
 		const {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user
@@ -334,10 +371,6 @@ class RoomView extends React.Component {
 			options.push({ label: I18n.t(item && item.pinned ? 'Unpin' : 'Pin'), handler: () => this.handlePin(item), icon: 'pin' });
 		}
 
-		// Reaction
-		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
-			options.push({ label: I18n.t('Add_Reaction'), handler: () => this.handleReaction(item), icon: 'emoji' });
-		}
 		// Delete
 		if (this.allowDelete(item)) {
 			options.push({
@@ -359,7 +392,7 @@ class RoomView extends React.Component {
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({ label: I18n.t('Read_Receipt'), handler: () => this.handleReadReceipt(item), icon: 'flag' });
 		}
-		EventEmitter.emit(ACTION_SHEET_LISTENER, { options });
+		EventEmitter.emit(ACTION_SHEET_LISTENER, { options, headerComponent: this.headerActionSheet(item) });
 	}
 
 	onOpenFileModal = (attachment) => {

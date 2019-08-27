@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import {
-	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION, COLOR_BACKGROUND_CONTAINER
 } from '../../constants/colors';
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
@@ -69,5 +69,19 @@ export default StyleSheet.create({
 	headerTitleContainerStyle: {
 		justifyContent: 'flex-start',
 		left: isIOS ? 40 : 50
+	},
+	headerActionSheet: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		margin: 20
+	},
+	headerItem: {
+		backgroundColor: COLOR_BACKGROUND_CONTAINER,
+		padding: 8,
+		borderRadius: 50
+	},
+	headerItemText: {
+		fontSize: 16
 	}
 });

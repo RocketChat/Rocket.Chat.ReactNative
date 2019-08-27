@@ -35,20 +35,6 @@ const styles = StyleSheet.create({
 	panelButtonIcon: {
 		paddingHorizontal: 16
 	},
-	header: {
-		paddingTop: 15,
-		paddingBottom: 5,
-		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20,
-		alignItems: 'center',
-		...sharedStyles.separatorBottom
-	},
-	headerText: {
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorTitle,
-		fontSize: 20,
-		paddingVertical: 4
-	},
 	androidButtonView: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: COLOR_SEPARATOR
@@ -79,7 +65,8 @@ export default class ActionSheet extends React.Component {
 		this.value_fall = new Animated.Value(1);
 		this.state = {
 			options: [],
-			showCancelFooter: false
+			showCancelFooter: false,
+			headerComponent: null
 		};
 		this.modalRef = React.createRef();
 	}
@@ -92,27 +79,15 @@ export default class ActionSheet extends React.Component {
 		EventEmitter.removeListener(LISTENER);
 	}
 
-	handleDisplay = ({ options, header, showCancelFooter }) => {
+	handleDisplay = ({ options, headerComponent, showCancelFooter }) => {
 		Keyboard.dismiss();
-		this.setState({ options, header, showCancelFooter });
+		this.setState({ options, headerComponent, showCancelFooter });
 		this.modalRef.current.open();
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
 
 	hideActionSheet = () => {
 		this.modalRef.current.close();
-	}
-
-	renderHeader = () => {
-		const { header } = this.state;
-		if (!header) {
-			return null;
-		}
-		return (
-			<View style={styles.header}>
-				<Text style={styles.headerText}>{header}</Text>
-			</View>
-		);
 	}
 
 	buttonIcon = (icon, isDanger) => {
@@ -169,9 +144,10 @@ export default class ActionSheet extends React.Component {
 	}
 
 	renderInner = () => {
-		const { options } = this.state;
+		const { options, headerComponent } = this.state;
 		return (
 			<SafeAreaView style={styles.panel} forceInset={{ vertical: 'never' }}>
+				{headerComponent ? headerComponent(this.hideActionSheet) : null}
 				{options.map(option => (
 					isIOS
 						? (
