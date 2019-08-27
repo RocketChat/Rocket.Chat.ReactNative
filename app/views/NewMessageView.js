@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Contacts from 'react-native-contacts';
 import {
-	View, StyleSheet, FlatList, Text, TextInput, Image, TouchableOpacity
+	View, StyleSheet, FlatList, Text, TextInput, Image, TouchableOpacity, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
 	},
 	separator: {
-		marginLeft: 60
+		marginLeft: 80
 	},
 	createChannelButton: {
 		marginVertical: 25
@@ -311,36 +311,42 @@ export default class NewMessageView extends React.Component {
 		}
 		return (
 			<UserItem
-				name={item.search ? item.name : item.fname}
-				username={item.search ? item.username : item.name}
+				name={item.search ? item.name : item.givenName.concat(' ', item.familyName)}
+				username={item.search ? item.username : item.username}
 				onPress={() => this.onPressItem(item)}
 				baseUrl={baseUrl}
-				testID={`new-message-view-item-${ item.name }`}
+				testID={`new-message-view-item-${ item.username }`}
 				style={style}
 				user={user}
 			/>
 		);
 	}
 
-	renderList = () => {
+	renderSyncedContacts = (search, syncedContacts) => (
+		<FlatList
+			data={search.length > 0 ? search : syncedContacts}
+			extraData={this.state}
+			keyExtractor={item => item._id}
+			renderItem={this.renderItem}
+			ItemSeparatorComponent={this.renderSeparator}
+			keyboardShouldPersistTaps='always'
+		/>
+	);
+
+	renderParentList = () => {
 		const { search } = this.state;
+		const { syncedContacts } = this.state;
 		return (
-			<FlatList
-				data={search.length > 0 ? search : this.data}
-				extraData={this.state}
-				keyExtractor={item => item._id}
-				ListHeaderComponent={this.renderHeader}
-				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
-				keyboardShouldPersistTaps='always'
-			/>
+			<ScrollView>
+				{this.renderSyncedContacts(search, syncedContacts)}
+			</ScrollView>
 		);
 	}
 
 	render = () => (
 		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ bottom: 'never' }}>
 			<StatusBar />
-			{this.renderList()}
+			{this.renderParentList()}
 		</SafeAreaView>
 	);
 }

@@ -10,15 +10,15 @@ import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
-		height: 54,
+		height: 70,
 		backgroundColor: COLOR_WHITE
 	},
 	container: {
 		flexDirection: 'row'
 	},
 	avatar: {
-		marginHorizontal: 15,
-		marginVertical: 12
+		marginHorizontal: 17,
+		marginVertical: 11
 	},
 	textContainer: {
 		flex: 1,
@@ -27,11 +27,15 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		fontSize: 17,
+		marginHorizontal: 13,
+		marginVertical: 1,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
 	},
 	username: {
 		fontSize: 14,
+		marginHorizontal: 13,
+		marginVertical: 1,
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorDescription
 	},
@@ -47,7 +51,7 @@ const UserItem = ({
 }) => (
 	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
 		<View style={[styles.container, style]}>
-			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
+			<Avatar text={username} size={48} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{name}</Text>
 				<Text style={styles.username}>@{username}</Text>
