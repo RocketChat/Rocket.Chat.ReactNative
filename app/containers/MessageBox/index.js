@@ -553,7 +553,7 @@ class MessageBox extends Component {
 	}
 
 	showFileActions = () => {
-		EventEmitter.emit(LISTENER, { options: this.options });
+		EventEmitter.emit(LISTENER, { options: this.options, showCancelFooter: true });
 	}
 
 	editCancel = () => {

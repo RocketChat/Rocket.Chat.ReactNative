@@ -12,7 +12,7 @@ import Modalize from 'react-native-modalize';
 import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
 import EventEmitter from '../utils/events';
-import { COLOR_SEPARATOR, COLOR_DANGER } from '../constants/colors';
+import { COLOR_SEPARATOR, COLOR_DANGER, COLOR_BACKGROUND_CONTAINER } from '../constants/colors';
 import { isIOS } from '../utils/deviceInfo';
 
 export const LISTENER = 'ActionSheet';
@@ -63,6 +63,13 @@ const styles = StyleSheet.create({
 	},
 	handle: {
 		marginBottom: 10
+	},
+	cancelButton: {
+		flex: 1,
+		margin: 20,
+		padding: 12,
+		textAlign: 'center',
+		backgroundColor: COLOR_BACKGROUND_CONTAINER
 	}
 });
 
@@ -71,7 +78,8 @@ export default class ActionSheet extends React.Component {
 		super(props);
 		this.value_fall = new Animated.Value(1);
 		this.state = {
-			options: []
+			options: [],
+			showCancelFooter: false
 		};
 		this.modalRef = React.createRef();
 	}
@@ -84,9 +92,9 @@ export default class ActionSheet extends React.Component {
 		EventEmitter.removeListener(LISTENER);
 	}
 
-	handleDisplay = ({ options, header }) => {
+	handleDisplay = ({ options, header, showCancelFooter }) => {
 		Keyboard.dismiss();
-		this.setState({ options, header });
+		this.setState({ options, header, showCancelFooter });
 		this.modalRef.current.open();
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
@@ -135,10 +143,35 @@ export default class ActionSheet extends React.Component {
 		this.hideActionSheet();
 	}
 
+	renderFooter = () => {
+		const { showCancelFooter } = this.state;
+		if (!showCancelFooter) {
+			return null;
+		}
+
+		if (isIOS) {
+			return (
+				<Touchable onPress={this.hideActionSheet}>
+					<Text style={styles.cancelButton}>
+						Cancel
+					</Text>
+				</Touchable>
+			);
+		}
+		return (
+
+			<View style={styles.androidButtonView}>
+				<RectButton onPress={this.hideActionSheet} style={styles.cancelButton}>
+					<Text>Cancel</Text>
+				</RectButton>
+			</View>
+		);
+	}
+
 	renderInner = () => {
 		const { options } = this.state;
 		return (
-			<SafeAreaView style={styles.panel}>
+			<SafeAreaView style={styles.panel} forceInset={{ vertical: 'never' }}>
 				{options.map(option => (
 					isIOS
 						? (
@@ -157,6 +190,7 @@ export default class ActionSheet extends React.Component {
 							</View>
 						)
 				))}
+				{this.renderFooter()}
 			</SafeAreaView>
 		);
 	}
@@ -171,6 +205,7 @@ export default class ActionSheet extends React.Component {
 			>
 				{this.renderInner()}
 			</Modalize>
+
 		);
 	}
 }
