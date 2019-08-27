@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
+apply plugin: 'com.bugsnag.android.gradle'
 
 import com.android.build.OutputFile
 
@@ -136,8 +137,9 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.18.0"
+        versionName "1.19.0"
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
     }
 
     signingConfigs {

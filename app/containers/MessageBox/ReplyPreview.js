@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import Markdown from '../message/Markdown';
+import Markdown from '../markdown';
 import { getCustomEmoji } from '../message/utils';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 
 class ReplyPreview extends Component {
 	static propTypes = {
+		useMarkdown: PropTypes.bool,
 		message: PropTypes.object.isRequired,
 		Message_TimeFormat: PropTypes.string.isRequired,
 		close: PropTypes.func.isRequired,
@@ -68,7 +69,7 @@ class ReplyPreview extends Component {
 
 	render() {
 		const {
-			message, Message_TimeFormat, baseUrl, username
+			message, Message_TimeFormat, baseUrl, username, useMarkdown
 		} = this.props;
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
@@ -78,7 +79,7 @@ class ReplyPreview extends Component {
 						<Text style={styles.username}>{message.u.username}</Text>
 						<Text style={styles.time}>{time}</Text>
 					</View>
-					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} />
+					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} />
 				</View>
 				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
 			</View>
@@ -87,6 +88,7 @@ class ReplyPreview extends Component {
 }
 
 const mapStateToProps = state => ({
+	useMarkdown: state.markdown.useMarkdown,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });

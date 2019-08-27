@@ -47,6 +47,7 @@ import { Q } from '@nozbe/watermelondb';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
+export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -54,7 +55,12 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
-	subscribeRooms,
+	async subscribeRooms() {
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+		}
+		this.roomsSub = await subscribeRooms.call(this);
+	},
 	subscribeRoom,
 	canOpenRoom,
 	createChannel({
@@ -87,7 +93,7 @@ const RocketChat = {
 				return result;
 			}
 		} catch (e) {
-			log('err_get_server_info', e);
+			log(e);
 		}
 		return {
 			success: false,
@@ -438,7 +444,7 @@ const RocketChat = {
 					database.create('messages', message, true);
 				});
 			} catch (e) {
-				log('err_resend_message', e);
+				log(e);
 			}
 		}
 	},
@@ -571,7 +577,7 @@ const RocketChat = {
 		try {
 			room = await RocketChat.getRoom(message.rid);
 		} catch (e) {
-			log('err_get_permalink', e);
+			log(e);
 			return null;
 		}
 		const { server } = reduxStore.getState().server;
@@ -646,6 +652,10 @@ const RocketChat = {
 	getUserInfo(userId) {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
+	},
+	getRoomInfo(roomId) {
+		// RC 0.72.0
+		return this.sdk.get('rooms.info', { roomId });
 	},
 	getRoomMemberId(rid, currentUserId) {
 		if (rid === `${ currentUserId }${ currentUserId }`) {
@@ -768,6 +778,13 @@ const RocketChat = {
 		}
 		return JSON.parse(useMarkdown);
 	},
+	async getAllowCrashReport() {
+		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
+		if (allowCrashReport === null) {
+			return true;
+		}
+		return JSON.parse(allowCrashReport);
+	},
 	async getSortPreferences() {
 		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
 		return prefs;
@@ -809,9 +826,11 @@ const RocketChat = {
 		}
 	},
 	_determineAuthType(services) {
-		const { name, custom, service } = services;
+		const {
+			name, custom, showButton = true, service
+		} = services;
 
-		if (custom) {
+		if (custom && showButton) {
 			return 'oauth_custom';
 		}
 
@@ -964,8 +983,8 @@ const RocketChat = {
 			const autoTranslatePermission = database.objectForPrimaryKey('permissions', 'auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
-		} catch (error) {
-			log('err_can_auto_translate', error);
+		} catch (e) {
+			log(e);
 			return false;
 		}
 	},

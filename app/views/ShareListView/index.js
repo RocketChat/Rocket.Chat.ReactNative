@@ -132,7 +132,7 @@ class ShareListView extends React.Component {
 				value, fileInfo, isMedia, mediaLoading: false
 			});
 		} catch (e) {
-			log('err_process_media_share_extension', e);
+			log(e);
 			this.setState({ mediaLoading: false });
 		}
 

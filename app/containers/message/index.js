@@ -39,7 +39,8 @@ export default class MessageContainer extends React.Component {
 		toggleReactionPicker: PropTypes.func,
 		fetchThreadName: PropTypes.func,
 		onOpenFileModal: PropTypes.func,
-		onReactionLongPress: PropTypes.func
+		onReactionLongPress: PropTypes.func,
+		navToRoomInfo: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -199,7 +200,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo
 		} = this.props;
 		const {
 			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -263,6 +264,7 @@ export default class MessageContainer extends React.Component {
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={onOpenFileModal}
 				getCustomEmoji={getCustomEmoji}
+				navToRoomInfo={navToRoomInfo}
 			/>
 		);
 	}

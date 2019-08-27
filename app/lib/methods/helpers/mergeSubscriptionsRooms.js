@@ -34,12 +34,6 @@ export const merge = (subscription, room) => {
 		}
 	}
 
-	if (subscription.mobilePushNotifications === 'nothing') {
-		subscription.notifications = true;
-	} else {
-		subscription.notifications = false;
-	}
-
 	if (!subscription.name) {
 		subscription.name = subscription.fname;
 	}
