@@ -1,22 +1,10 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import RNRealmPath from 'react-native-realm-path';
 
 import schema from './model/schema';
-import Subscription from './model/Subscription' // ⬅️ You'll import your Models here
-import Message from './model/Message' // ⬅️ You'll import your Models here
-
-const adapter = new SQLiteAdapter({
-	dbName: 'WatermelonDemo',
-	schema,
-})
-
-const databaseWatermelon = new Database({
-	adapter,
-	modelClasses: [Subscription, Message],
-	actionsEnabled: true,
-})
-
-// export default databaseWatermelon;
+import Subscription from './model/Subscription';
+import Message from './model/Message';
 
 class DB {
 	databases = {
@@ -27,23 +15,26 @@ class DB {
 		return this.databases.activeDB;
 	}
 
-	collections(...args) {
-		return this.database.collections(...args);
+	action(...args) {
+		return this.database.action(...args);
 	}
 
 	setActiveDB(database = '') {
-		console.log('setActiveDB')
-		// const path = database.replace(/(^\w+:|^)\/\//, '');
+		const path = database.replace(/(^\w+:|^)\/\//, '');
+		const dbName = `${ RNRealmPath.realmPath }${ path }.db`;
+
+		const adapter = new SQLiteAdapter({
+			dbName,
+			schema
+		});
+
 		this.databases.activeDB = new Database({
 			adapter,
 			modelClasses: [Subscription, Message],
-			actionsEnabled: true,
+			actionsEnabled: true
 		});
 	}
 }
 
 const db = new DB();
 export default db;
-
-// const { database } = db;
-// export { database };
