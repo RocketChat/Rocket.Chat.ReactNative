@@ -45,6 +45,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		});
 		const watermelon = watermelondb.database;
 		yield watermelon.action(async(action) => {
+			// await watermelon.unsafeResetDatabase();
 			const subCollection = watermelon.collections.get('subscriptions');
 			const existingSubs = await subCollection.query().fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1.id === i2._id));

@@ -1,11 +1,11 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation, date, action, json } from '@nozbe/watermelondb/decorators';
+import { field, relation, date, action, json, children } from '@nozbe/watermelondb/decorators';
 
 export default class Subscription extends Model {
 	static table = 'subscriptions';
 
 	static associations = {
-		messages: { type: 'has_many', foreignKey: 'subscription_id' },
+		messages: { type: 'has_many', foreignKey: 'rid' },
 	}
 
 	@field('f') f;
@@ -75,7 +75,7 @@ export default class Subscription extends Model {
 
 	@json('last_message', r => r) lastMessage;
 
-	// @relation('messages', 'last_message_id') lastMessage
+	@children('messages') messages;
 
 	// @action async addMessage() {
 	// 	await this.batch(

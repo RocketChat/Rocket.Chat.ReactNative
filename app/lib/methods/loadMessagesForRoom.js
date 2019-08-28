@@ -1,8 +1,16 @@
 import { InteractionManager } from 'react-native';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
+import watermelondb from '../database';
+import { Q } from '@nozbe/watermelondb';
+
+// TODO: move to utils
+const assignSub = (sub, newSub) => {
+	Object.assign(sub, newSub);
+};
 
 async function load({ rid: roomId, latest, t }) {
 	if (t === 'l') {
@@ -31,13 +39,13 @@ async function load({ rid: roomId, latest, t }) {
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(...args) {
+export default function loadMessagesForRoom(args) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = await load.call(this, ...args);
+			const data = await load.call(this, { ...args });
 
 			if (data && data.length) {
-				InteractionManager.runAfterInteractions(() => {
+				InteractionManager.runAfterInteractions(async() => {
 					database.write(() => data.forEach((message) => {
 						message = buildMessage(message);
 						try {
@@ -55,6 +63,53 @@ export default function loadMessagesForRoom(...args) {
 							log(e);
 						}
 					}));
+
+					const watermelon = watermelondb.database;
+					await watermelon.action(async() => {
+						const subCollection = watermelon.collections.get('subscriptions');
+						const subQuery = await subCollection.query(Q.where('rid', args.rid)).fetch();
+						if (!subQuery) {
+							return;
+						}
+						const sub = subQuery[0];
+						const msgCollection = watermelon.collections.get('messages');
+
+						const allMessages = await sub.messages.fetch();
+						const msgsToUpdate = allMessages.filter(i1 => data.find(i2 => i1.id === i2._id));
+						const msgsToCreate = data.filter(
+							i1 => !allMessages.find(i2 => i1._id === i2.id)
+						);
+
+						const allRecords = [
+							...msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
+								m._raw = sanitizedRaw(
+									{
+										id: message._id
+									},
+									msgCollection.schema
+								);
+								m.subscription.set(sub);
+								assignSub(m, message);
+							})),
+							...msgsToUpdate.map((message) => {
+								const newSub = data.find(
+									m => m._id === message.id
+								);
+								return message.prepareUpdate(() => {
+									message.subscription.set(sub);
+									assignSub(message, newSub);
+								});
+							})
+						];
+
+						try {
+							await watermelon.batch(...allRecords);
+						} catch (e) {
+							console.log('TCL: batch watermelon -> e', e);
+						}
+						return allRecords.length;
+					});
+
 					return resolve(data);
 				});
 			} else {

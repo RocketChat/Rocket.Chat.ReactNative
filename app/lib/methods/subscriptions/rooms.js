@@ -1,5 +1,5 @@
 import database from '../../realm';
-import watermelon from '../../database';
+import watermelondb from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
@@ -26,6 +26,8 @@ export default function subscribeRooms() {
 	};
 
 	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
+		const watermelon = watermelondb.database;
+
 		// check if the server from variable is the same as the js sdk client
 		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
 			return;
