@@ -13,7 +13,7 @@ const formatMsg = ({
 	if (!showLastMessage) {
 		return '';
 	}
-	if (!lastMessage) {
+	if (!lastMessage || lastMessage.pinned) {
 		return I18n.t('No_Message');
 	}
 
