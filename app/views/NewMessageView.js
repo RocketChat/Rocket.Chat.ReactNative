@@ -15,13 +15,9 @@ import UserItem from '../presentation/UserItem';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
-import SearchBox from '../containers/SearchBox';
-import { CustomIcon } from '../lib/Icons';
-import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import { COLOR_WHITE } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -30,25 +26,6 @@ const styles = StyleSheet.create({
 	},
 	separator: {
 		marginLeft: 80
-	},
-	createChannelButton: {
-		marginVertical: 25
-	},
-	createChannelContainer: {
-		height: 47,
-		backgroundColor: COLOR_WHITE,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	createChannelIcon: {
-		color: COLOR_PRIMARY,
-		marginLeft: 18,
-		marginRight: 15
-	},
-	createChannelText: {
-		color: COLOR_PRIMARY,
-		fontSize: 17,
-		...sharedStyles.textRegular
 	},
 	headerContainer: {
 		flexDirection: 'column',
@@ -281,18 +258,6 @@ export default class NewMessageView extends React.Component {
 		const { navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
-
-	renderHeader = () => (
-		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
-				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
-					<CustomIcon style={styles.createChannelIcon} size={24} name='plus' />
-					<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
-				</View>
-			</Touch>
-		</View>
-	)
 
 	renderGroupChannelButtons = (buttonName, iconName) => {
 		let icon;
