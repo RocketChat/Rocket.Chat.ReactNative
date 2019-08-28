@@ -265,7 +265,7 @@ export default class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
-	renderGroupChannelButtons = (buttonName, iconName) => {
+	renderGroupChannelButtons = (buttonName, iconName, _onPress) => {
 		let icon;
 		if (iconName === 'Lock.png') {
 			icon = require('../../icons/Lock.png');
@@ -273,7 +273,7 @@ export default class NewMessageView extends React.Component {
 			icon = require('../../icons/Hashtag.png');
 		}
 		return (
-			<TouchableHighlight style={{ height: 56, backgroundColor: COLOR_WHITE }}>
+			<TouchableHighlight style={{ height: 56 }} onPress={_onPress}>
 				<View style={{ flexDirection: 'row', height: 56, backgroundColor: COLOR_WHITE }}>
 					<View style={{ justifyContent: 'center' }}>
 						<Image
@@ -344,7 +344,7 @@ export default class NewMessageView extends React.Component {
 			<ScrollView>
 				{this.renderGroupChannelButtons('New Group', 'Lock.png')}
 				{this.renderSeparator()}
-				{this.renderGroupChannelButtons('New Channel', 'Hashtag.png')}
+				{this.renderGroupChannelButtons('New Channel', 'Hashtag.png', this.createChannel)}
 				{this.renderSyncedContacts(search, syncedContacts)}
 			</ScrollView>
 		);
