@@ -1,0 +1,10 @@
+CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/FirebaseABTesting
+GCC_C_LANGUAGE_STANDARD = c99
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS=1 FIRABTesting_VERSION=3.1.0
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/FirebaseABTesting" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FirebaseABTesting" "${PODS_ROOT}/Headers/Public/FirebaseAnalyticsInterop" "${PODS_ROOT}/Headers/Public/FirebaseCore" "${PODS_ROOT}/Headers/Public/FirebaseCoreDiagnostics" "${PODS_ROOT}/Headers/Public/FirebaseCoreDiagnosticsInterop" "${PODS_ROOT}/Headers/Public/GoogleDataTransport" "${PODS_ROOT}/Headers/Public/GoogleDataTransportCCTSupport" "${PODS_ROOT}/Headers/Public/GoogleUtilities" "${PODS_ROOT}/Headers/Public/Protobuf" "${PODS_ROOT}/Headers/Public/nanopb" "${PODS_TARGET_SRCROOT}"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}
+PODS_TARGET_SRCROOT = ${PODS_ROOT}/FirebaseABTesting
+PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
+SKIP_INSTALL = YES

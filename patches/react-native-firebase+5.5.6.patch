@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-firebase/ios/RNFirebase.podspec b/node_modules/react-native-firebase/ios/RNFirebase.podspec
+index 00bafb5..9eb74a0 100644
+--- a/node_modules/react-native-firebase/ios/RNFirebase.podspec
++++ b/node_modules/react-native-firebase/ios/RNFirebase.podspec
+@@ -21,6 +21,9 @@ Pod::Spec.new do |s|
+     cs.dependency 'Fabric'
+     cs.dependency 'Crashlytics'
+   end
++  s.subspec 'Performance' do |cs|
++    cs.dependency 'Firebase/Performance'
++  end
+   # allow this package to be used with use_frameworks!
+   s.static_framework = true
+ end

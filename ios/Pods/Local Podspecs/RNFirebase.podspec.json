@@ -35,6 +35,14 @@
 
         ]
       }
+    },
+    {
+      "name": "Performance",
+      "dependencies": {
+        "Firebase/Performance": [
+
+        ]
+      }
     }
   ]
 }
