@@ -21,18 +21,26 @@ export default function updateMessages(rid, messages) {
 			return;
 		}
 		const sub = subQuery[0];
-		const allMessagesRecords = await sub.messages.fetch();
-		const allThreadsRecords = await sub.threads.fetch();
-		// const allThreadMessages = await sub.threads.fetch();
 		const msgCollection = watermelon.collections.get('messages');
 		const threadCollection = watermelon.collections.get('threads');
-		// const msgCollection = watermelon.collections.get('messages');
+		const threadMessagesCollection = watermelon.collections.get('thread_messages');
+		const allMessagesRecords = await sub.messages.fetch();
+		const allThreadsRecords = await sub.threads.fetch();
+		const allThreadMessagesRecords = await sub.threadMessages.fetch();
 
+		// filter messages
 		let msgsToCreate = messages.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
 		let msgsToUpdate = allMessagesRecords.filter(i1 => messages.find(i2 => i1.id === i2._id));
+
+		// filter threads
 		const allThreads = messages.filter(m => m.tlm);
 		let threadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
 		let threadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
+
+		// filter thread messages
+		const allThreadMessages = messages.filter(m => m.tmid);
+		let threadMessagesToCreate = allThreadMessages.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
+		let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
 
 		// Create
 		msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
@@ -44,6 +52,12 @@ export default function updateMessages(rid, messages) {
 			t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 			t.subscription.set(sub);
 			assignSub(t, thread);
+		}));
+		threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate((tm) => {
+			tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
+			tm.subscription.set(sub);
+			assignSub(tm, threadMessage);
+			tm.rid = threadMessage.tmid;
 		}));
 
 		// Update
@@ -61,12 +75,21 @@ export default function updateMessages(rid, messages) {
 				assignSub(thread, newThread);
 			});
 		});
+		threadMessagesToUpdate = threadMessagesToUpdate.map((threadMessage) => {
+			const newThreadMessage = messages.find(t => t._id === threadMessage.id);
+			return threadMessage.prepareUpdate(() => {
+				threadMessage.subscription.set(sub);
+				assignSub(threadMessage, newThreadMessage);
+			});
+		});
 
 		const allRecords = [
 			...msgsToCreate,
-			...threadsToCreate,
 			...msgsToUpdate,
-			...threadsToUpdate
+			...threadsToCreate,
+			...threadsToUpdate,
+			...threadMessagesToCreate,
+			...threadMessagesToUpdate
 		];
 
 		try {

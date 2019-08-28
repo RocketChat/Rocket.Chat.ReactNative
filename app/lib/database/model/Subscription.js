@@ -7,7 +7,7 @@ export default class Subscription extends Model {
 	static associations = {
 		messages: { type: 'has_many', foreignKey: 'rid' },
 		threads: { type: 'has_many', foreignKey: 'rid' },
-		thread_messages: { type: 'has_many', foreignKey: 'rid' },
+		thread_messages: { type: 'has_many', foreignKey: 'subscription_id' },
 	}
 
 	@field('f') f;
@@ -41,8 +41,6 @@ export default class Subscription extends Model {
 	@field('ro') ro;
 
 	@date('last_open') lastOpen;
-
-	// @field('last_message_id') lastMessageId;
 
 	@field('description') description;
 
@@ -82,16 +80,4 @@ export default class Subscription extends Model {
 	@children('threads') threads;
 
 	@children('thread_messages') threadMessages;
-
-	// @action async addMessage() {
-	// 	await this.batch(
-	// 		// this.prepareUpdate((post) => {
-	// 		// 	post.title = `7 ways to lose weight`
-	// 		// }),
-	// 		this.collections.get('message').prepareCreate((message) => {
-	// 			message.post.set(this)
-	// 			message.msg = "Don't forget to comment, like, and subscribe!"
-	// 		})
-	// 	);
-	// }
 }
