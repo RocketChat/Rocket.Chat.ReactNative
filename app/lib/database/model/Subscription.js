@@ -6,6 +6,8 @@ export default class Subscription extends Model {
 
 	static associations = {
 		messages: { type: 'has_many', foreignKey: 'rid' },
+		threads: { type: 'has_many', foreignKey: 'rid' },
+		thread_messages: { type: 'has_many', foreignKey: 'rid' },
 	}
 
 	@field('f') f;
@@ -76,6 +78,10 @@ export default class Subscription extends Model {
 	@json('last_message', r => r) lastMessage;
 
 	@children('messages') messages;
+
+	@children('threads') threads;
+
+	@children('thread_messages') threadMessages;
 
 	// @action async addMessage() {
 	// 	await this.batch(

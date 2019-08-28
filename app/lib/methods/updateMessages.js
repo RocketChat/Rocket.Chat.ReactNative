@@ -21,34 +21,52 @@ export default function updateMessages(rid, messages) {
 			return;
 		}
 		const sub = subQuery[0];
-		const allMessages = await sub.messages.fetch();
+		const allMessagesRecords = await sub.messages.fetch();
+		const allThreadsRecords = await sub.threads.fetch();
+		// const allThreadMessages = await sub.threads.fetch();
 		const msgCollection = watermelon.collections.get('messages');
+		const threadCollection = watermelon.collections.get('threads');
+		// const msgCollection = watermelon.collections.get('messages');
 
-		const msgsToUpdate = allMessages.filter(i1 => messages.find(i2 => i1.id === i2._id));
-		const msgsToCreate = messages.filter(
-			i1 => !allMessages.find(i2 => i1._id === i2.id)
-		);
+		let msgsToCreate = messages.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
+		let msgsToUpdate = allMessagesRecords.filter(i1 => messages.find(i2 => i1.id === i2._id));
+		const allThreads = messages.filter(m => m.tlm);
+		let threadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
+		let threadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
+
+		// Create
+		msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
+			m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+			m.subscription.set(sub);
+			assignSub(m, message);
+		}));
+		threadsToCreate = threadsToCreate.map(thread => threadCollection.prepareCreate((t) => {
+			t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
+			t.subscription.set(sub);
+			assignSub(t, thread);
+		}));
+
+		// Update
+		msgsToUpdate = msgsToUpdate.map((message) => {
+			const newMessage = messages.find(m => m._id === message.id);
+			return message.prepareUpdate(() => {
+				message.subscription.set(sub);
+				assignSub(message, newMessage);
+			});
+		});
+		threadsToUpdate = threadsToUpdate.map((thread) => {
+			const newThread = messages.find(t => t._id === thread.id);
+			return thread.prepareUpdate(() => {
+				thread.subscription.set(sub);
+				assignSub(thread, newThread);
+			});
+		});
 
 		const allRecords = [
-			...msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
-				m._raw = sanitizedRaw(
-					{
-						id: message._id
-					},
-					msgCollection.schema
-				);
-				m.subscription.set(sub);
-				return assignSub(m, message);
-			})),
-			...msgsToUpdate.map((message) => {
-				const newSub = messages.find(
-					m => m._id === message.id
-				);
-				return message.prepareUpdate(() => {
-					message.subscription.set(sub);
-					assignSub(message, newSub);
-				});
-			})
+			...msgsToCreate,
+			...threadsToCreate,
+			...msgsToUpdate,
+			...threadsToUpdate
 		];
 
 		try {

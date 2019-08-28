@@ -5,6 +5,8 @@ import RNRealmPath from 'react-native-realm-path';
 import schema from './model/schema';
 import Subscription from './model/Subscription';
 import Message from './model/Message';
+import Thread from './model/Thread';
+import ThreadMessage from './model/ThreadMessage';
 
 class DB {
 	databases = {
@@ -30,7 +32,7 @@ class DB {
 
 		this.databases.activeDB = new Database({
 			adapter,
-			modelClasses: [Subscription, Message],
+			modelClasses: [Subscription, Message, Thread, ThreadMessage],
 			actionsEnabled: true
 		});
 	}
