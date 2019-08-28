@@ -6,6 +6,7 @@ import log from '../../utils/log';
 import watermelondb from '../database';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import updateMessages from './updateMessages';
 
 const getLastUpdate = (rid) => {
 	const sub = database
@@ -57,51 +58,7 @@ export default function loadMissedMessages(args) {
 							}
 						}));
 
-						const watermelon = watermelondb.database;
-						await watermelon.action(async() => {
-							const subCollection = watermelon.collections.get('subscriptions');
-							const subQuery = await subCollection.query(Q.where('rid', args.rid)).fetch();
-							if (!subQuery) {
-								return;
-							}
-							const sub = subQuery[0];
-							const allMessages = await sub.messages.fetch();
-							const msgCollection = watermelon.collections.get('messages');
-
-							const msgsToUpdate = allMessages.filter(i1 => updated.find(i2 => i1.id === i2._id));
-							const msgsToCreate = updated.filter(
-								i1 => !allMessages.find(i2 => i1._id === i2.id)
-							);
-
-							const allRecords = [
-								...msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
-									m._raw = sanitizedRaw(
-										{
-											id: message._id
-										},
-										msgCollection.schema
-									);
-									m.subscription.set(sub);
-									return assignSub(m, message);
-								})),
-								...msgsToUpdate.map((message) => {
-									const newSub = data.find(
-										m => m._id === message.id
-									);
-									return message.prepareUpdate(() => {
-										message.subscription.set(sub);
-										assignSub(message, newSub);
-									});
-								})
-							];
-
-							try {
-								await watermelon.batch(...allRecords);
-							} catch (e) {
-								console.log('TCL: batch watermelon -> e', e);
-							}
-							return allRecords.length;
-						});
+						await updateMessages(args.rid, updated);
 					});
 				}
 				if (data.deleted && data.deleted.length) {
