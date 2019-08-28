@@ -348,22 +348,14 @@ export default class RoomsListView extends React.Component {
 	}
 
 	_onPressItem = async(item = {}) => {
-		if (!item.search) {
-			return this.goRoom(item);
-		}
-		if (item.t === 'd') {
-			// if user is using the search we need first to join/create room
-			try {
-				const { username } = item;
-				const result = await RocketChat.createDirectMessage(username);
-				if (result.success) {
-					return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
-				}
-			} catch (e) {
-				log('err_on_press_item', e);
+		try {
+			const { username } = item;
+			const result = await RocketChat.createDirectMessage(username);
+			if (result.success) {
+				return this.goRoom({ rid: result.room._id, name: username, t: 'd' });
 			}
-		} else {
-			return this.goRoom(item);
+		} catch (e) {
+			log('err_on_press_item', e);
 		}
 	}
 
