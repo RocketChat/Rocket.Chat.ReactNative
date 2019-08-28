@@ -99,32 +99,35 @@ const styles = StyleSheet.create({
 	}
 }))
 export default class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		header: (
-			<View style={styles.headerContainer}>
-				<View style={styles.headerContainer2}>
-					<View style={styles.backButtonContainer}>
-						<TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.pop()}>
-							<Image
-								source={require('../../icons/ios-filled-back.png')}
-								resizeMode='contain'
-								style={styles.backButtonImage}
-							/>
-							<Text style={styles.backButtonText}>Messages</Text>
-						</TouchableOpacity>
+	static navigationOptions = ({ navigation }) => {
+		const onSearch = navigation.getParam('search');
+		return ({
+			header: (
+				<View style={styles.headerContainer}>
+					<View style={styles.headerContainer2}>
+						<View style={styles.backButtonContainer}>
+							<TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.pop()}>
+								<Image
+									source={require('../../icons/ios-filled-back.png')}
+									resizeMode='contain'
+									style={styles.backButtonImage}
+								/>
+								<Text style={styles.backButtonText}>Messages</Text>
+							</TouchableOpacity>
+						</View>
+						<View style={styles.headerTitleContainer}>
+							<Text style={styles.headerTitleText}>{I18n.t('New_Message')}</Text>
+						</View>
+						<View style={{ flex: 1 }} />
 					</View>
-					<View style={styles.headerTitleContainer}>
-						<Text style={styles.headerTitleText}>{I18n.t('New_Message')}</Text>
+					<View style={styles.searchContainer}>
+						<Image source={require('../../icons/Search.png')} style={styles.searchBarImage} />
+						<TextInput style={styles.searchBar} placeholder='Search' placeholderTextColor='#8e8e93' onChangeText={onSearch} />
 					</View>
-					<View style={{ flex: 1 }} />
 				</View>
-				<View style={styles.searchContainer}>
-					<Image source={require('../../icons/Search.png')} style={styles.searchBarImage} />
-					<TextInput style={styles.searchBar} placeholder='Search' placeholderTextColor='#8e8e93' />
-				</View>
-			</View>
-		)
-	})
+			)
+		});
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -147,6 +150,8 @@ export default class NewMessageView extends React.Component {
 	}
 
 	async componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ search: this.onSearch });
 		const [syncedContacts, unsyncedContacts] = await this.syncContacts();
 		this.setState({ syncedContacts, unsyncedContacts });
 	}
@@ -162,10 +167,6 @@ export default class NewMessageView extends React.Component {
 	componentWillUnmount() {
 		this.updateState.stop();
 		this.data.removeAllListeners();
-	}
-
-	onSearchChangeText(text) {
-		this.search(text);
 	}
 
 	syncContacts = async() => {
@@ -247,8 +248,13 @@ export default class NewMessageView extends React.Component {
 		this.forceUpdate();
 	}, 1000);
 
-	search = async(text) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+	onSearch = (text) => {
+		const { syncedContacts } = this.state;
+		const result = syncedContacts.filter((contact) => {
+			text = text.toLowerCase();
+			const contactName = contact.givenName.concat(' ', contact.familyName);
+			return contactName.toLowerCase().includes(text) || contact.username.toLowerCase().includes(text);
+		});
 		this.setState({
 			search: result
 		});
@@ -309,8 +315,8 @@ export default class NewMessageView extends React.Component {
 		}
 		return (
 			<UserItem
-				name={item.search ? item.name : item.givenName.concat(' ', item.familyName)}
-				username={item.search ? item.username : item.username}
+				name={item.givenName.concat(' ', item.familyName)}
+				username={item.username}
 				onPress={() => this.onPressItem(item)}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.username }`}
