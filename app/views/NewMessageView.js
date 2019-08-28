@@ -147,8 +147,8 @@ export default class NewMessageView extends React.Component {
 	}
 
 	async componentDidMount() {
-		const result = await this.syncContacts();
-		this.setState({ syncedContacts: result[0], unsyncedContacts: result[1] });
+		const [syncedContacts, unsyncedContacts] = await this.syncContacts();
+		this.setState({ syncedContacts, unsyncedContacts });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
