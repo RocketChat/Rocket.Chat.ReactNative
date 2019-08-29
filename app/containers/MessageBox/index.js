@@ -4,7 +4,7 @@ import {
 	View, TextInput, FlatList, Text, TouchableOpacity, Alert, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shortnameToUnicode } from 'emoji-toolkit';
+import { toUnicode } from 'emoji-toolkit';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
@@ -761,7 +761,7 @@ class MessageBox extends Component {
 				key='mention-item-avatar'
 				style={styles.mentionItemEmoji}
 			>
-				{shortnameToUnicode(`:${ item }:`)}
+				{toUnicode(`:${ item }:`)}
 			</Text>
 		);
 	}

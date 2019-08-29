@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
+import { toUnicode } from 'emoji-toolkit';
 
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
@@ -10,7 +10,7 @@ import styles from './styles';
 const Emoji = React.memo(({
 	emojiName, literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl
 }) => {
-	const emojiUnicode = shortnameToUnicode(literal);
+	const emojiUnicode = toUnicode(literal);
 	const emoji = getCustomEmoji && getCustomEmoji(emojiName);
 	if (emoji) {
 		return (

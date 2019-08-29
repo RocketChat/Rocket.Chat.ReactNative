@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
+import { toUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -33,7 +33,7 @@ const formatMsg = ({
 
 	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
 	if (msg) {
-		msg = shortnameToUnicode(msg);
+		msg = toUnicode(msg);
 	}
 	return msg;
 };
