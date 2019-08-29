@@ -5,6 +5,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
 import debounce from '../../../utils/debounce';
+import updateMessages from '../updateMessages';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -111,7 +112,7 @@ export default function subscribeRoom({ rid }) {
 		if (rid !== message.rid) {
 			return;
 		}
-		requestAnimationFrame(() => {
+		requestAnimationFrame(async() => {
 			try {
 				database.write(() => {
 					database.create('messages', message, true);
@@ -123,6 +124,8 @@ export default function subscribeRoom({ rid }) {
 						database.create('threadMessages', message, true);
 					}
 				});
+
+				await updateMessages(rid, [message]);
 
 				read();
 			} catch (e) {

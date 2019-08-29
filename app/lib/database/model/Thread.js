@@ -9,7 +9,7 @@ export default class Thread extends Model {
 	static table = 'threads';
 
 	static associations = {
-		subscriptions: { type: 'belongs_to', key: 'rid' }
+		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
 	}
 
 	@field('msg') msg;
@@ -20,7 +20,9 @@ export default class Thread extends Model {
 
 	@json('u', sanitizer) u;
 
-	@relation('subscriptions', 'rid') subscription
+	@relation('subscriptions', 'subscription_id') subscription;
+
+	@field('rid') rid;
 
 	@field('alias') alias;
 

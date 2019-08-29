@@ -389,9 +389,9 @@ class RoomView extends React.Component {
 		if (!this.mounted) {
 			return;
 		}
-		if (isIOS && this.beginAnimating) {
-			LayoutAnimation.easeInEaseOut();
-		}
+		// if (isIOS && this.beginAnimating) {
+		// 	LayoutAnimation.easeInEaseOut();
+		// }
 		this.setState(...args);
 	}
 
@@ -406,7 +406,7 @@ class RoomView extends React.Component {
 
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
-		LayoutAnimation.easeInEaseOut();
+		// LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});

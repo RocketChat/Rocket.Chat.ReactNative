@@ -1,5 +1,6 @@
 import Realm from 'realm';
 import RNRealmPath from 'react-native-realm-path';
+console.log(RNRealmPath.realmPath)
 
 // import { AsyncStorage } from 'react-native';
 // Realm.clearTestState();

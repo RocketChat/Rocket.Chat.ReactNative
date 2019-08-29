@@ -51,24 +51,25 @@ export default class MessageContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const {
-			status, item, _updatedAt, autoTranslateRoom
-		} = this.props;
+		// const {
+		// 	status, item, _updatedAt, autoTranslateRoom
+		// } = this.props;
 
-		if (status !== nextProps.status) {
-			return true;
-		}
-		if (autoTranslateRoom !== nextProps.autoTranslateRoom) {
-			return true;
-		}
-		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
-		if (item.unread !== nextProps.item.unread) {
-			return true;
-		}
+		// if (status !== nextProps.status) {
+		// 	return true;
+		// }
+		// if (autoTranslateRoom !== nextProps.autoTranslateRoom) {
+		// 	return true;
+		// }
+		// if (item.tmsg !== nextProps.item.tmsg) {
+		// 	return true;
+		// }
+		// if (item.unread !== nextProps.item.unread) {
+		// 	return true;
+		// }
 
-		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+		// return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+		return false;
 	}
 
 	onPress = debounce(() => {

@@ -2,15 +2,19 @@ import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import orderBy from 'lodash/orderBy';
+import equal from 'deep-equal';
 
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
+import watermelon from '../../lib/database';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
+import { Q } from '@nozbe/watermelondb';
 
-export class List extends React.PureComponent {
+export class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -22,66 +26,90 @@ export class List extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-		console.time(`${ this.constructor.name } init`);
-		console.time(`${ this.constructor.name } mount`);
-		if (props.tmid) {
-			this.data = database
-				.objects('threadMessages')
-				.filtered('rid = $0', props.tmid)
-				.sorted('ts', true);
-			this.threads = database.objects('threads').filtered('_id = $0', props.tmid);
-		} else {
-			this.data = database
-				.objects('messages')
-				.filtered('rid = $0', props.rid)
-				.sorted('ts', true);
-			this.threads = database.objects('threads').filtered('rid = $0', props.rid);
-		}
+		// console.time(`${ this.constructor.name } init`);
+		// console.time(`${ this.constructor.name } mount`);
+		// if (props.tmid) {
+		// 	this.data = database
+		// 		.objects('threadMessages')
+		// 		.filtered('rid = $0', props.tmid)
+		// 		.sorted('ts', true);
+		// 	this.threads = database.objects('threads').filtered('_id = $0', props.tmid);
+		// } else {
+		// 	this.data = database
+		// 		.objects('messages')
+		// 		.filtered('rid = $0', props.rid)
+		// 		.sorted('ts', true);
+		// 	this.threads = database.objects('threads').filtered('rid = $0', props.rid);
+		// }
 
 		this.state = {
 			loading: true,
 			end: false,
-			messages: this.data.slice(),
-			threads: this.threads.slice()
+			// messages: this.data.slice(),
+			// threads: this.threads.slice()
+			messages: [],
+			threads: []
 		};
 
-		safeAddListener(this.data, this.updateState);
+		// safeAddListener(this.data, this.updateState);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		console.timeEnd(`${ this.constructor.name } mount`);
+		const { rid } = this.props;
+
+		// if !props.tmid
+		this.messagesObservable = await watermelon.database.collections
+			.get('messages')
+			.query(
+				Q.where('rid', rid)
+			)
+			.observeWithColumns(['updated_at']);
+		this.messagesSubscription = this.messagesObservable.subscribe((data) => {
+			console.log('WILL update messages', data);
+			const messages = orderBy(data, ['ts'], ['desc']);
+			this.setState({ loading: false, messages });
+		});
 	}
 
-	componentWillUnmount() {
-		this.data.removeAllListeners();
-		this.threads.removeAllListeners();
-		if (this.updateState && this.updateState.stop) {
-			this.updateState.stop();
+	shouldComponentUpdate(nextProps, nextState) {
+		const { messages } = this.state;
+		if (!equal(messages, nextState.messages)) {
+			return true;
 		}
-		if (this.interactionManagerState && this.interactionManagerState.cancel) {
-			this.interactionManagerState.cancel();
-		}
-		console.countReset(`${ this.constructor.name }.render calls`);
+		return false;
 	}
+
+	// componentWillUnmount() {
+	// 	this.data.removeAllListeners();
+	// 	this.threads.removeAllListeners();
+	// 	if (this.updateState && this.updateState.stop) {
+	// 		this.updateState.stop();
+	// 	}
+	// 	if (this.interactionManagerState && this.interactionManagerState.cancel) {
+	// 		this.interactionManagerState.cancel();
+	// 	}
+	// 	console.countReset(`${ this.constructor.name }.render calls`);
+	// }
 
 	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
-			const { tmid } = this.props;
-			let messages = this.data;
-			if (tmid && this.threads[0]) {
-				const thread = { ...this.threads[0] };
-				thread.tlm = null;
-				messages = [...messages, thread];
-			}
-			this.setState({
-				messages: messages.slice(),
-				threads: this.threads.slice(),
-				loading: false
-			});
-		});
-	}, 300, { leading: true });
+	// updateState = debounce(() => {
+	// 	this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
+	// 		const { tmid } = this.props;
+	// 		let messages = this.data;
+	// 		if (tmid && this.threads[0]) {
+	// 			const thread = { ...this.threads[0] };
+	// 			thread.tlm = null;
+	// 			messages = [...messages, thread];
+	// 		}
+	// 		this.setState({
+	// 			messages: messages.slice(),
+	// 			threads: this.threads.slice(),
+	// 			loading: false
+	// 		});
+	// 	});
+	// }, 300, { leading: true });
 
 	onEndReached = debounce(async() => {
 		const {
@@ -139,9 +167,9 @@ export class List extends React.PureComponent {
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
-					keyExtractor={item => item._id}
+					keyExtractor={item => item.id}
 					data={messages}
-					extraData={this.state}
+					extraData={messages}
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
