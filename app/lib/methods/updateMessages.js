@@ -28,6 +28,8 @@ export default function updateMessages(rid, messages) {
 		const allThreadsRecords = await sub.threads.fetch();
 		const allThreadMessagesRecords = await sub.threadMessages.fetch();
 
+		messages = messages.map(m => buildMessage(m));
+
 		// filter messages
 		let msgsToCreate = messages.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
 		let msgsToUpdate = allMessagesRecords.filter(i1 => messages.find(i2 => i1.id === i2._id));

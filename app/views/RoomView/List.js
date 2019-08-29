@@ -58,45 +58,74 @@ export class List extends React.Component {
 
 	async componentDidMount() {
 		console.timeEnd(`${ this.constructor.name } mount`);
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 
-		// if !props.tmid
-		this.messagesObservable = await watermelon.database.collections
-			.get('messages')
-			.query(
-				Q.where('rid', rid)
-			)
-			.observeWithColumns(['updated_at']);
-		this.messagesSubscription = this.messagesObservable
-			.pipe(debounceTime(300))
-			.subscribe((data) => {
-				console.log('WILL update messages', data);
-				const messages = orderBy(data, ['ts'], ['desc']);
-				this.setState({ loading: false, messages });
-			});
+		if (tmid) {
+			this.messagesObservable = await watermelon.database.collections
+				.get('thread_messages')
+				.query(
+					Q.where('rid', tmid)
+				)
+				.observeWithColumns(['updated_at']);
+			this.messagesSubscription = this.messagesObservable
+				.pipe(debounceTime(300))
+				.subscribe((data) => {
+					console.log('WILL update messages', data);
+					const messages = orderBy(data, ['ts'], ['desc']);
+					this.setState({ loading: false, messages });
+				});
 
-		this.threadsObservable = await watermelon.database.collections
-			.get('threads')
-			.query(
-				Q.where('rid', rid)
-			)
-			.observeWithColumns(['updated_at']);
-		this.threadsSubscription = this.threadsObservable
-			.pipe(debounceTime(300))
-			.subscribe((data) => {
-				console.log('WILL update threads', data);
-				const threads = orderBy(data, ['ts'], ['desc']);
-				this.setState({ loading: false, threads });
-			});
-	}
+			this.threadsObservable = await watermelon.database.collections
+				.get('threads')
+				.query(
+					Q.where('rid', tmid)
+				)
+				.observeWithColumns(['updated_at']);
+			this.threadsSubscription = this.threadsObservable
+				.pipe(debounceTime(300))
+				.subscribe((data) => {
+					console.log('WILL update threads', data);
+					const threads = orderBy(data, ['ts'], ['desc']);
+					this.setState({ loading: false, threads });
+				});
+		} else {
+			this.messagesObservable = await watermelon.database.collections
+				.get('messages')
+				.query(
+					Q.where('rid', rid)
+				)
+				.observeWithColumns(['updated_at']);
+			this.messagesSubscription = this.messagesObservable
+				.pipe(debounceTime(300))
+				.subscribe((data) => {
+					console.log('WILL update messages', data);
+					const messages = orderBy(data, ['ts'], ['desc']);
+					this.setState({ loading: false, messages });
+				});
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { messages } = this.state;
-		if (!equal(messages, nextState.messages)) {
-			return true;
+			this.threadsObservable = await watermelon.database.collections
+				.get('threads')
+				.query(
+					Q.where('rid', rid)
+				)
+				.observeWithColumns(['updated_at']);
+			this.threadsSubscription = this.threadsObservable
+				.pipe(debounceTime(300))
+				.subscribe((data) => {
+					console.log('WILL update threads', data);
+					const threads = orderBy(data, ['ts'], ['desc']);
+					this.setState({ loading: false, threads });
+				});
 		}
-		return false;
 	}
+
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { messages } = this.state;
+	// 	if (!equal(messages, nextState.messages)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	// componentWillUnmount() {
 	// 	this.data.removeAllListeners();

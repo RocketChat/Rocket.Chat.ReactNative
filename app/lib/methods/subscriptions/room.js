@@ -107,30 +107,30 @@ export default function subscribeRoom({ rid }) {
 		}
 	}, 300);
 
-	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+	const handleMessageReceived = protectedFunction(async(ddpMessage) => {
+		const message = EJSON.fromJSONValue(ddpMessage.fields.args[0]);
 		if (rid !== message.rid) {
 			return;
 		}
-		requestAnimationFrame(async() => {
-			try {
-				await updateMessages(rid, [message]);
-				database.write(() => {
-					database.create('messages', message, true);
-					// if it's a thread "header"
-					if (message.tlm) {
-						database.create('threads', message, true);
-					} else if (message.tmid) {
-						message.rid = message.tmid;
-						database.create('threadMessages', message, true);
-					}
-				});
+		await updateMessages(rid, [message]);
+		// requestAnimationFrame(async() => {
+		// 	try {
+		// 		database.write(() => {
+		// 			database.create('messages', message, true);
+		// 			// if it's a thread "header"
+		// 			if (message.tlm) {
+		// 				database.create('threads', message, true);
+		// 			} else if (message.tmid) {
+		// 				message.rid = message.tmid;
+		// 				database.create('threadMessages', message, true);
+		// 			}
+		// 		});
 
-				read();
-			} catch (e) {
-				console.warn('handleMessageReceived', e);
-			}
-		});
+		// 		read();
+		// 	} catch (e) {
+		// 		console.warn('handleMessageReceived', e);
+		// 	}
+		// });
 	});
 
 	const stop = () => {

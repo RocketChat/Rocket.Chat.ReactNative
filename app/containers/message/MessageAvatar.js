@@ -8,7 +8,8 @@ import styles from './styles';
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo
 }) => {
-	if (isHeader) {
+	// FIXME: do we need this author test?
+	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
 			rid: author._id
@@ -32,7 +33,9 @@ const MessageAvatar = React.memo(({
 		);
 	}
 	return null;
-}, (prevProps, nextProps) => prevProps.isHeader === nextProps.isHeader);
+})
+// FIXME: do we need this?
+// }, (prevProps, nextProps) => prevProps.isHeader === nextProps.isHeader);
 
 MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,

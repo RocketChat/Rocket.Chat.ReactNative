@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
 const User = React.memo(({
 	isHeader, useRealName, author, alias, ts, timeFormat, hasError, ...props
 }) => {
-	if (isHeader || hasError) {
+	// FIXME: do we need this author test?
+	if ((isHeader || hasError) && author) {
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);

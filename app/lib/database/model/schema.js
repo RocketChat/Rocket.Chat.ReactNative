@@ -56,7 +56,7 @@ export default appSchema({
 				{ name: 'avatar', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' },
+				{ name: '_updated_at', type: 'number' },
 				{ name: 'status', type: 'number', isOptional: true },
 				{ name: 'pinned', type: 'boolean', isOptional: true },
 				{ name: 'starred', type: 'boolean', isOptional: true },

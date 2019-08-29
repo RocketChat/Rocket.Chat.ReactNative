@@ -50,14 +50,14 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
-	componentDidMount() {
-		const { item } = this.props;
-		const observable = item.observe();
-		const sub = observable.subscribe((changes) => {
-			// TODO: compare changes?
-			this.forceUpdate();
-		});
-	}
+	// componentDidMount() {
+	// 	const { item } = this.props;
+	// 	const observable = item.observe();
+	// 	const sub = observable.subscribe((changes) => {
+	// 		// TODO: compare changes?
+	// 		this.forceUpdate();
+	// 	});
+	// }
 
 	shouldComponentUpdate(nextProps) {
 		// const {
@@ -142,16 +142,21 @@ export default class MessageContainer extends React.Component {
 		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
 			return true;
 		}
-		if (previousItem && (
-			(previousItem.ts.toDateString() === item.ts.toDateString())
-			&& (previousItem.u.username === item.u.username)
-			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
-			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
-			&& (previousItem.tmid === item.tmid)
-		)) {
-			return false;
+		try {
+			if (previousItem && (
+				(previousItem.ts.toDateString() === item.ts.toDateString())
+				&& (previousItem.u.username === item.u.username)
+				&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
+				&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+				&& (previousItem.tmid === item.tmid)
+			)) {
+				return false;
+			}
+			return true;
+		} catch (error) {
+			console.log(item, previousItem)
+			return true;
 		}
-		return true;
 	}
 
 	get isThreadReply() {

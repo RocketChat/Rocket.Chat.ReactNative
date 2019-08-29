@@ -36,7 +36,7 @@ export default class Message extends Model {
 
 	@json('urls', sanitizer) urls;
 
-	@date('updated_at') updatedAt;
+	@date('_updated_at') _updatedAt;
 
 	@field('status') status;
 
