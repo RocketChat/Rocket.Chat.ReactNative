@@ -114,6 +114,7 @@ export default function subscribeRoom({ rid }) {
 		}
 		requestAnimationFrame(async() => {
 			try {
+				await updateMessages(rid, [message]);
 				database.write(() => {
 					database.create('messages', message, true);
 					// if it's a thread "header"
@@ -124,8 +125,6 @@ export default function subscribeRoom({ rid }) {
 						database.create('threadMessages', message, true);
 					}
 				});
-
-				await updateMessages(rid, [message]);
 
 				read();
 			} catch (e) {

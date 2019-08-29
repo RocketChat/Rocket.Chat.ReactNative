@@ -47,6 +47,7 @@ export default function loadMessagesForRoom(args) {
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(async() => {
+					await updateMessages(args.rid, data);
 					database.write(() => data.forEach((message) => {
 						message = buildMessage(message);
 						try {
@@ -64,8 +65,6 @@ export default function loadMessagesForRoom(args) {
 							log(e);
 						}
 					}));
-
-					await updateMessages(args.rid, data);
 
 					return resolve(data);
 				});

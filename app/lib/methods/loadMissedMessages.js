@@ -41,6 +41,7 @@ export default function loadMissedMessages(args) {
 				if (data.updated && data.updated.length) {
 					const { updated } = data;
 					InteractionManager.runAfterInteractions(async() => {
+						await updateMessages(args.rid, updated);
 						database.write(() => updated.forEach((message) => {
 							try {
 								message = buildMessage(message);
@@ -57,8 +58,6 @@ export default function loadMissedMessages(args) {
 								log(e);
 							}
 						}));
-
-						await updateMessages(args.rid, updated);
 					});
 				}
 				if (data.deleted && data.deleted.length) {
