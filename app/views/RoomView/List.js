@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
 import equal from 'deep-equal';
+import { throttleTime, debounceTime } from 'rxjs/operators';
 
 import styles from './styles';
 import database, { safeAddListener } from '../../lib/realm';
@@ -66,11 +67,13 @@ export class List extends React.Component {
 				Q.where('rid', rid)
 			)
 			.observeWithColumns(['updated_at']);
-		this.messagesSubscription = this.messagesObservable.subscribe((data) => {
-			console.log('WILL update messages', data);
-			const messages = orderBy(data, ['ts'], ['desc']);
-			this.setState({ loading: false, messages });
-		});
+		this.messagesSubscription = this.messagesObservable
+			.pipe(debounceTime(300))
+			.subscribe((data) => {
+				console.log('WILL update messages', data);
+				const messages = orderBy(data, ['ts'], ['desc']);
+				this.setState({ loading: false, messages });
+			});
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

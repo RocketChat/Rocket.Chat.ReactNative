@@ -50,6 +50,15 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
+	componentDidMount() {
+		const { item } = this.props;
+		const observable = item.observe();
+		const sub = observable.subscribe((changes) => {
+			// TODO: compare changes?
+			this.forceUpdate();
+		});
+	}
+
 	shouldComponentUpdate(nextProps) {
 		// const {
 		// 	status, item, _updatedAt, autoTranslateRoom
