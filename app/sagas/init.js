@@ -14,13 +14,12 @@ import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import database from '../lib/realm';
 import {
-	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
+	IDENTIFIER, SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/credentials';
-import { isIOS } from '../utils/deviceInfo';
 
 const restore = function* restore() {
 	try {
-		yield RNUserDefaults.setName(isIOS ? 'group.ios.chat.rocket' : 'chat.rocket.android');
+		yield RNUserDefaults.setName(IDENTIFIER);
 		const hasMigration = yield AsyncStorage.getItem('hasMigration');
 
 		let { token, server } = yield all({

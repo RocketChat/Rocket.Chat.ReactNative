@@ -7,9 +7,11 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, isIOS } from './utils/deviceInfo';
+import { isNotch } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
+
+import { IDENTIFIER } from './constants/credentials';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -56,9 +58,7 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
-		}
+		await RNUserDefaults.setName(IDENTIFIER);
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
