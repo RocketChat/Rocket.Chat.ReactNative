@@ -46,7 +46,6 @@ import {
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import List from './List';
 
 const SCROLL_OFFSET = 56;
 
