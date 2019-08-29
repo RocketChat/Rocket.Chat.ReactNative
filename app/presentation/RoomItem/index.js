@@ -43,7 +43,8 @@ export default class RoomItem extends React.Component {
 		rid: PropTypes.string,
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
-		hideChannel: PropTypes.func
+		hideChannel: PropTypes.func,
+		avatar: PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -205,7 +206,7 @@ export default class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatar, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -263,7 +264,7 @@ export default class RoomItem extends React.Component {
 								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
-								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+								<Avatar text={avatar} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 								<View style={styles.centerContainer}>
 									<View style={styles.titleContainer}>
 										<TypeIcon type={type} id={id} prid={prid} />

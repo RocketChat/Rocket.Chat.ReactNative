@@ -463,6 +463,7 @@ class RoomsListView extends React.Component {
 					name={this.getRoomTitle(item)}
 					_updatedAt={item.roomUpdatedAt}
 					key={item._id}
+					avatar={item.name}
 					id={id}
 					userId={userId}
 					username={username}
