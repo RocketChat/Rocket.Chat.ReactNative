@@ -54,13 +54,13 @@ export default class ThreadMessage extends Model {
 
 	@field('dcount') dcount;
 
-	@field('dlm') dlm;
+	@date('dlm') dlm;
 
-	@field('timd') timd;
+	@field('tmid') tmid;
 
 	@field('tcount') tcount;
 
-	@field('tlm') tlm;
+	@date('tlm') tlm;
 
 	@json('replies', sanitizer) replies;
 
@@ -73,4 +73,6 @@ export default class ThreadMessage extends Model {
 	@field('auto_translate') autoTranslate;
 
 	@json('translations', sanitizer) translations;
+
+	@field('draft_message') draftMessage;
 }

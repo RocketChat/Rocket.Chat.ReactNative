@@ -54,13 +54,13 @@ export default class Message extends Model {
 
 	@field('dcount') dcount;
 
-	@field('dlm') dlm;
+	@date('dlm') dlm;
 
-	@field('timd') timd;
+	@field('tmid') tmid;
 
 	@field('tcount') tcount;
 
-	@field('tlm') tlm;
+	@date('tlm') tlm;
 
 	@json('replies', sanitizer) replies;
 

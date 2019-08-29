@@ -21,7 +21,7 @@ export const merge = (subscription, room) => {
 		subscription.topic = room.topic;
 		subscription.announcement = room.announcement;
 		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
-		subscription.archived = room.archived;
+		subscription.archived = room.archived || false;
 		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 		if (!subscription.roles || !subscription.roles.length) {

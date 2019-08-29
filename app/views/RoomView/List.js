@@ -74,6 +74,20 @@ export class List extends React.Component {
 				const messages = orderBy(data, ['ts'], ['desc']);
 				this.setState({ loading: false, messages });
 			});
+
+		this.threadsObservable = await watermelon.database.collections
+			.get('threads')
+			.query(
+				Q.where('rid', rid)
+			)
+			.observeWithColumns(['updated_at']);
+		this.threadsSubscription = this.threadsObservable
+			.pipe(debounceTime(300))
+			.subscribe((data) => {
+				console.log('WILL update threads', data);
+				const threads = orderBy(data, ['ts'], ['desc']);
+				this.setState({ loading: false, threads });
+			});
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
