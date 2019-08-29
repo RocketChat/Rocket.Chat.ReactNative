@@ -109,7 +109,7 @@ class LanguageView extends React.Component {
 			this.setState({ saving: false });
 			setTimeout(() => {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log('err_save_user_preferences', e);
+				log(e);
 			}, 300);
 		}
 	}

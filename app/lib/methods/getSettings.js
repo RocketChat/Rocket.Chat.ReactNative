@@ -11,7 +11,7 @@ function updateServer(param) {
 		try {
 			database.databases.serversDB.create('servers', { id: reduxStore.getState().server.server, ...param }, true);
 		} catch (e) {
-			log('err_get_settings_update_server', e);
+			log(e);
 		}
 	});
 }
@@ -34,7 +34,7 @@ export default async function() {
 					try {
 						database.create('settings', { ...setting, _updatedAt: new Date() }, true);
 					} catch (e) {
-						log('err_get_settings_create', e);
+						log(e);
 					}
 
 					if (setting._id === 'Site_Name') {
@@ -61,6 +61,6 @@ export default async function() {
 			updateServer.call(this, { iconURL });
 		}
 	} catch (e) {
-		log('err_get_settings', e);
+		log(e);
 	}
 }

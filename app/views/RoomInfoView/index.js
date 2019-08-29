@@ -9,7 +9,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database from '../../lib/realm';
+import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -79,16 +79,17 @@ class RoomInfoView extends React.Component {
 				if (result.success) {
 					this.setState({ roomUser: result.user });
 				}
-			} catch (error) {
-				log('err_get_user_info', error);
+			} catch (e) {
+				log(e);
 			}
 			return;
 		}
-		const rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		safeAddListener(this.rooms, this.updateRoom);
 		let room = {};
-		if (rooms.length > 0) {
-			this.setState({ room: rooms[0] });
-			[room] = rooms;
+		if (this.rooms.length > 0) {
+			this.setState({ room: this.rooms[0] });
+			[room] = this.rooms;
 		} else {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);

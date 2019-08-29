@@ -12,6 +12,7 @@ import sortPreferences from './sortPreferences';
 import notification from './notification';
 import markdown from './markdown';
 import share from './share';
+import crashReport from './crashReport';
 
 export default combineReducers({
 	settings,
@@ -26,5 +27,6 @@ export default combineReducers({
 	sortPreferences,
 	notification,
 	markdown,
-	share
+	share,
+	crashReport
 });

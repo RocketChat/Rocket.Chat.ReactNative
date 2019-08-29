@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import RCTextInput from '../../containers/TextInput';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
-import Markdown from '../../containers/message/Markdown';
+import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message/Message';
@@ -68,9 +68,9 @@ class SearchMessagesView extends React.Component {
 					loading: false
 				});
 			}
-		} catch (error) {
+		} catch (e) {
 			this.setState({ loading: false });
-			log('err_search_messages', error);
+			log(e);
 		}
 	}, 1000)
 
