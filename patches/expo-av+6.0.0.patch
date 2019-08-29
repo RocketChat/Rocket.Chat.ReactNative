@@ -10,3 +10,20 @@ index 2d3568e..b093959 100644
    api 'com.google.android.exoplayer:exoplayer:2.9.2'
  
    api 'com.google.android.exoplayer:extension-okhttp:2.9.2'
+diff --git a/node_modules/expo-av/android/src/main/java/expo/modules/av/AVManager.java b/node_modules/expo-av/android/src/main/java/expo/modules/av/AVManager.java
+index 048afaf..da26b55 100644
+--- a/node_modules/expo-av/android/src/main/java/expo/modules/av/AVManager.java
++++ b/node_modules/expo-av/android/src/main/java/expo/modules/av/AVManager.java
+@@ -181,7 +181,11 @@ public class AVManager implements LifecycleEventListener, AudioManager.OnAudioFo
+ 
+   @Override
+   public void onHostDestroy() {
+-    mContext.unregisterReceiver(mNoisyAudioStreamReceiver);
++    try {
++      mContext.unregisterReceiver(mNoisyAudioStreamReceiver);
++    } catch (final IllegalStateException e) {
++      // Do nothing
++    }
+     for (final Integer key : mSoundMap.keySet()) {
+       removeSoundForKey(key);
+     }
