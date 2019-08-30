@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React from 'react';
 import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
@@ -27,8 +28,9 @@ export class List extends React.Component {
 
 	constructor(props) {
 		super(props);
-		// console.time(`${ this.constructor.name } init`);
-		// console.time(`${ this.constructor.name } mount`);
+		this.init();
+		console.time(`${ this.constructor.name } init`);
+		console.time(`${ this.constructor.name } mount`);
 		// if (props.tmid) {
 		// 	this.data = database
 		// 		.objects('threadMessages')
@@ -56,8 +58,11 @@ export class List extends React.Component {
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		console.timeEnd(`${ this.constructor.name } mount`);
+	}
+
+	async init() {
 		const { rid, tmid } = this.props;
 
 		if (tmid) {
@@ -98,7 +103,7 @@ export class List extends React.Component {
 			this.messagesSubscription = this.messagesObservable
 				.pipe(debounceTime(300))
 				.subscribe((data) => {
-					console.log('WILL update messages', data);
+					// console.log('WILL update messages', data);
 					const messages = orderBy(data, ['ts'], ['desc']);
 					this.setState({ loading: false, messages });
 				});
@@ -112,7 +117,7 @@ export class List extends React.Component {
 			this.threadsSubscription = this.threadsObservable
 				.pipe(debounceTime(300))
 				.subscribe((data) => {
-					console.log('WILL update threads', data);
+					// console.log('WILL update threads', data);
 					const threads = orderBy(data, ['ts'], ['desc']);
 					this.setState({ loading: false, threads });
 				});
@@ -220,7 +225,7 @@ export class List extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
-					removeClippedSubviews
+					// removeClippedSubviews
 					initialNumToRender={7}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={5}

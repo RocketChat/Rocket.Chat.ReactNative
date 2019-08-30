@@ -50,14 +50,16 @@ export default class MessageContainer extends React.Component {
 		broadcast: false
 	}
 
-	// componentDidMount() {
-	// 	const { item } = this.props;
-	// 	const observable = item.observe();
-	// 	const sub = observable.subscribe((changes) => {
-	// 		// TODO: compare changes?
-	// 		this.forceUpdate();
-	// 	});
-	// }
+	componentDidMount() {
+		const { item } = this.props;
+		if (item && item.observe) {
+			const observable = item.observe();
+			this.subscription = observable.subscribe((changes) => {
+				// TODO: compare changes?
+				this.forceUpdate();
+			});
+		}
+	}
 
 	shouldComponentUpdate(nextProps) {
 		// const {
@@ -79,6 +81,12 @@ export default class MessageContainer extends React.Component {
 
 		// return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
 		return false;
+	}
+
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	onPress = debounce(() => {

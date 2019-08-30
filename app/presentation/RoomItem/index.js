@@ -86,34 +86,15 @@ class RoomItem extends React.Component {
 
 	componentDidMount() {
 		const { item } = this.props;
-		if (!item.search) {
+		if (item && item.observe) {
 			const observable = item.observe();
-			const sub = observable.subscribe((changes) => {
+			this.subscription = observable.subscribe((changes) => {
 				// TODO: compare changes?
 				this.forceUpdate();
 				// this.setState({ subscriptions: changes });
 			});
 		}
 	}
-
-	// componentWillUnmount() {
-	// 	if (this.props.name === 'general') {
-	// 		console.log('UNMOUNT GENERAL')
-	// 	}
-	// }
-
-	// componentWillReceiveProps(nextProps) {
-	// 	// this.forceUpdate();
-	// 	if (nextProps.name === 'diego.mello2') {
-	// 		console.log('TCL: RoomItem -> componentWillReceiveProps -> nextProps', nextProps, this.props);
-	// 		if (nextProps._updatedAt !== this.props._updatedAt) {
-	// 			console.log('UPDATEEEEEEEERERERE')
-	// 		}
-	// 		if (nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()) {
-	// 			console.log('UPDATEEEEEEEERERERE')
-	// 		}
-	// 	}
-	// }
 
 	shouldComponentUpdate(nextProps) {
 		// const { item: { roomUpdatedAt, lastMessage } } = this.props;
@@ -140,6 +121,25 @@ class RoomItem extends React.Component {
 		// return true;
 		return false;
 	}
+
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
+	// componentWillReceiveProps(nextProps) {
+	// 	// this.forceUpdate();
+	// 	if (nextProps.name === 'diego.mello2') {
+	// 		console.log('TCL: RoomItem -> componentWillReceiveProps -> nextProps', nextProps, this.props);
+	// 		if (nextProps._updatedAt !== this.props._updatedAt) {
+	// 			console.log('UPDATEEEEEEEERERERE')
+	// 		}
+	// 		if (nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()) {
+	// 			console.log('UPDATEEEEEEEERERERE')
+	// 		}
+	// 	}
+	// }
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
