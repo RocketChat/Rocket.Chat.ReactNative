@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView
 } from 'react-native';
-import { toUnicode } from 'emoji-toolkit';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
@@ -102,7 +102,7 @@ const Header = React.memo(({
 		}
 	}
 	if (title) {
-		title = toUnicode(title);
+		title = shortnameToUnicode(title);
 		if (tmid) {
 			title = removeMarkdown(title);
 		}

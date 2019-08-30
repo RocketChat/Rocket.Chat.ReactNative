@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity } from 'react-native';
-import { toUnicode } from 'emoji-toolkit';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import { responsive } from 'react-native-responsive-ui';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
@@ -18,7 +18,7 @@ const renderEmoji = (emoji, size, baseUrl) => {
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{toUnicode(`:${ emoji }:`)}
+			{shortnameToUnicode(`:${ emoji }:`)}
 		</Text>
 	);
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import removeMarkdown from 'remove-markdown';
-import { toUnicode } from 'emoji-toolkit';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
@@ -20,7 +20,7 @@ const RepliedThread = React.memo(({
 		return null;
 	}
 
-	let msg = toUnicode(tmsg);
+	let msg = shortnameToUnicode(tmsg);
 	msg = removeMarkdown(msg);
 
 	return (
