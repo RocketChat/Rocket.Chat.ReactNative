@@ -98,8 +98,8 @@ class RoomInfoView extends React.Component {
 					room = result.room;
 					this.setState({ room });
 				}
-			} catch (error) {
-				log('err_get_room_info', error);
+			} catch (e) {
+				log(e);
 			}
 		}
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
