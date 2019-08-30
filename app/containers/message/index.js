@@ -226,7 +226,7 @@ export default class MessageContainer extends React.Component {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
 		} = item;
 
 		let message = msg;
@@ -236,9 +236,11 @@ export default class MessageContainer extends React.Component {
 			message = getMessageTranslation(item, autoTranslateLanguage) || message;
 		}
 
+		// console.count(`${ id }.render calls`);
+
 		return (
 			<Message
-				id={_id}
+				id={id}
 				msg={message}
 				author={u}
 				ts={ts}
