@@ -27,7 +27,7 @@ const Content = React.memo((props) => {
 				numberOfLines={props.tmid ? 1 : 0}
 				channels={props.channels}
 				mentions={props.mentions}
-				useMarkdown={props.useMarkdown}
+				useMarkdown={props.useMarkdown && !props.tmid}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
 			/>
