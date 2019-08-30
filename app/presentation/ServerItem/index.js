@@ -24,7 +24,7 @@ const ServerItem = React.memo(({
 						}}
 						defaultSource={{ uri: 'logo' }}
 						style={styles.serverIcon}
-						onError={() => log('err_loading_server_icon')}
+						onError={() => console.log('err_loading_server_icon')}
 					/>
 				)
 				: (
