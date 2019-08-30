@@ -21,6 +21,7 @@ import {
 } from '../../actions/messages';
 import { List } from './List';
 import database, { safeAddListener } from '../../lib/realm';
+import watermelondb from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
@@ -43,6 +44,8 @@ import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { Q } from '@nozbe/watermelondb';
+import { debounceTime } from 'rxjs/operators';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -119,12 +122,15 @@ class RoomView extends React.Component {
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const room = props.navigation.getParam('room');
+		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
-			joined: this.rooms.length > 0,
-			room: this.rooms[0] || { rid: this.rid, t: this.t },
+			// joined: this.rooms.length > 0,
+			joined: true,
+			// room: this.rooms[0] || { rid: this.rid, t: this.t },
+			room,
 			lastOpen: null,
 			photoModalVisible: false,
 			reactionsModalVisible: false,
@@ -132,6 +138,18 @@ class RoomView extends React.Component {
 			selectedMessage: {},
 			canAutoTranslate
 		};
+		// this.observeRoom();
+
+		this.roomObservable = room.observe();
+		this.subscription = this.roomObservable
+			.pipe(debounceTime(1000))
+			.subscribe((changes) => {
+				console.log('TCL: constructor -> changes', changes);
+				// TODO: compare changes?
+				// this.forceUpdate();
+				// this.setState({ subscriptions: changes });
+			});
+
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
 		this.messagebox = React.createRef();
@@ -141,26 +159,27 @@ class RoomView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { room } = this.state;
-			const { navigation, isAuthenticated } = this.props;
+		this.mounted = true;
+		// this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
+		const { room } = this.state;
+		console.log('TCL: componentDidMount -> room', room);
+		const { navigation, isAuthenticated } = this.props;
 
-			if (room._id && !this.tmid) {
-				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-			}
-			if (this.tmid) {
-				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
-			}
+		if (room._id && !this.tmid) {
+			navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+		}
+		if (this.tmid) {
+			navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+		}
 
-			if (isAuthenticated) {
-				this.init();
-			} else {
-				EventEmitter.addEventListener('connected', this.handleConnected);
-			}
-			safeAddListener(this.rooms, this.updateRoom);
-			safeAddListener(this.chats, this.updateUnreadCount);
-			this.mounted = true;
-		});
+		if (isAuthenticated) {
+			this.init();
+		} else {
+			EventEmitter.addEventListener('connected', this.handleConnected);
+		}
+		// safeAddListener(this.rooms, this.updateRoom);
+		safeAddListener(this.chats, this.updateUnreadCount);
+		// });
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -223,7 +242,8 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				obj = database.objectForPrimaryKey('threads', this.tmid);
 			} else {
-				[obj] = this.rooms;
+				// [obj] = this.rooms;
+				// FIXME: grab from wm
 			}
 			if (obj) {
 				database.write(() => {
@@ -231,7 +251,7 @@ class RoomView extends React.Component {
 				});
 			}
 		}
-		this.rooms.removeAllListeners();
+		// this.rooms.removeAllListeners();
 		this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
@@ -267,7 +287,25 @@ class RoomView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
+	// observeRoom = async() => {
+	// 	this.watermelon = watermelondb.database;
+	// 	const subCollection = this.watermelon.collections.get('subscriptions');
+	// 	this.subObservable = await subCollection.findAndObserve(this.rid);
+	// 	this.subSubscription = this.subObservable
+	// 		.subscribe((room) => {
+	// 			if (this.mounted) {
+	// 				console.log('ROOMVIEW: SET MOUNTED')
+	// 				this.setState({ room });
+	// 			} else {
+	// 				console.log('ROOMVIEW: SET NOT MOUNTED')
+	// 				this.state.room = room;
+	// 			}
+	// 		});
+	// }
+
+	// eslint-disable-next-line react/sort-comp
 	init = () => {
+		console.log('init')
 		try {
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
@@ -397,14 +435,14 @@ class RoomView extends React.Component {
 		this.setState(...args);
 	}
 
-	updateRoom = () => {
-		this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-			if (this.rooms[0]) {
-				const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-				this.internalSetState({ room });
-			}
-		});
-	}
+	// updateRoom = () => {
+	// 	this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
+	// 		if (this.rooms[0]) {
+	// 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
+	// 			this.internalSetState({ room });
+	// 		}
+	// 	});
+	// }
 
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
@@ -631,7 +669,7 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
+				<List rid={rid} t={t} tmid={this.tmid} room={room} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />

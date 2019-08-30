@@ -11,6 +11,7 @@ const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscrib
 const removeListener = listener => listener.stop();
 
 export default function subscribeRoom({ rid }) {
+    console.log('TCL: subscribeRoom -> rid', rid);
 	let promises;
 	let connectedListener;
 	let disconnectedListener;

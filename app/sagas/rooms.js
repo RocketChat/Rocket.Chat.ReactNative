@@ -48,9 +48,9 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			// await watermelon.unsafeResetDatabase();
 			const subCollection = watermelon.collections.get('subscriptions');
 			const existingSubs = await subCollection.query().fetch();
-			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1.id === i2._id));
+			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(
-				i1 => !existingSubs.find(i2 => i1._id === i2.id)
+				i1 => !existingSubs.find(i2 => i1._id === i2._id)
 			);
 			// TODO: subsToDelete?
 
@@ -58,7 +58,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
 					s._raw = sanitizedRaw(
 						{
-							id: subscription._id
+							id: subscription.rid
 						},
 						subCollection.schema
 					);
@@ -66,7 +66,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				})),
 				...subsToUpdate.map((subscription) => {
 					const newSub = subscriptions.find(
-						s => s._id === subscription.id
+						s => s._id === subscription._id
 					);
 					return subscription.prepareUpdate(() => {
 						assignSub(subscription, newSub);

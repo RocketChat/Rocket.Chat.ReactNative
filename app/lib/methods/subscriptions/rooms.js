@@ -52,7 +52,7 @@ export default function subscribeRooms() {
 					// });
 					await watermelon.action(async() => {
 						const subCollection = watermelon.collections.get('subscriptions');
-						const sub = await subCollection.find(subscription._id);
+						const sub = await subCollection.find(subscription.id);
 						await sub.destroyPermanently();
 					});
 				} catch (e) {
@@ -64,7 +64,7 @@ export default function subscribeRooms() {
 				try {
 					await watermelon.action(async() => {
 						const subCollection = watermelon.collections.get('subscriptions');
-						const sub = await subCollection.find(tmp._id);
+						const sub = await subCollection.find(tmp.rid);
 						await sub.update((s) => {
 							assignSub(s, tmp);
 						});
@@ -89,7 +89,7 @@ export default function subscribeRooms() {
 					});
 					await watermelon.action(async() => {
 						const subCollection = watermelon.collections.get('subscriptions');
-						const subW = await subCollection.find(tmp._id);
+						const subW = await subCollection.find(tmp.rid);
 						await subW.update((s) => {
 							assignSub(s, tmp);
 						});

@@ -419,7 +419,8 @@ class RoomsListView extends React.Component {
 			rid: item.rid,
 			name: this.getRoomTitle(item),
 			t: item.t,
-			prid: item.prid
+			prid: item.prid,
+			room: item
 		});
 	};
 

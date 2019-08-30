@@ -5,10 +5,12 @@ export default class Subscription extends Model {
 	static table = 'subscriptions';
 
 	static associations = {
-		messages: { type: 'has_many', foreignKey: 'subscription_id' },
-		threads: { type: 'has_many', foreignKey: 'subscription_id' },
-		thread_messages: { type: 'has_many', foreignKey: 'subscription_id' },
+		messages: { type: 'has_many', foreignKey: 'rid' },
+		threads: { type: 'has_many', foreignKey: 'rid' },
+		thread_messages: { type: 'has_many', foreignKey: 'rid' }
 	}
+
+	@field('_id') _id;
 
 	@field('f') f;
 

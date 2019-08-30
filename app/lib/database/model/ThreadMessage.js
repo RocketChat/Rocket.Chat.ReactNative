@@ -20,9 +20,9 @@ export default class ThreadMessage extends Model {
 
 	@json('u', sanitizer) u;
 
-	@relation('subscriptions', 'subscription_id') subscription;
-
-	@field('rid') rid;
+	// @relation('subscriptions', 'subscription_id') subscription;
+	// @field('rid') rid;
+	@relation('subscriptions', 'rid') subscription;
 
 	@field('alias') alias;
 

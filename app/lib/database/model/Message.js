@@ -9,7 +9,8 @@ export default class Message extends Model {
 	static table = 'messages';
 
 	static associations = {
-		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
+		// subscriptions: { type: 'belongs_to', key: 'subscription_id' }
+		subscriptions: { type: 'belongs_to', key: 'rid' }
 	}
 
 	@field('msg') msg;
@@ -20,9 +21,9 @@ export default class Message extends Model {
 
 	@json('u', sanitizer) u;
 
-	@relation('subscriptions', 'subscription_id') subscription;
-
-	@field('rid') rid;
+	// @relation('subscriptions', 'subscription_id') subscription;
+	// @field('rid') rid;
+	@relation('subscriptions', 'rid') subscription;
 
 	@field('alias') alias;
 
