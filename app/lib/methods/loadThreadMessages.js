@@ -43,7 +43,7 @@ export default function loadThreadMessages({ tmid, offset = 0 }) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log(e);
+			// log(e);
 			reject(e);
 		}
 	});

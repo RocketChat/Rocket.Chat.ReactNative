@@ -30,32 +30,15 @@ export class List extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		// if (props.tmid) {
-		// 	this.data = database
-		// 		.objects('threadMessages')
-		// 		.filtered('rid = $0', props.tmid)
-		// 		.sorted('ts', true);
-		// 	this.threads = database.objects('threads').filtered('_id = $0', props.tmid);
-		// } else {
-		// 	this.data = database
-		// 		.objects('messages')
-		// 		.filtered('rid = $0', props.rid)
-		// 		.sorted('ts', true);
-		// 	this.threads = database.objects('threads').filtered('rid = $0', props.rid);
-		// }
 
 		this.mounted = false;
 		this.state = {
 			loading: true,
 			end: false,
-			// messages: this.data.slice(),
-			// threads: this.threads.slice()
 			messages: [],
 			threads: []
 		};
 		this.init();
-
-		// safeAddListener(this.data, this.updateState);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -109,8 +92,7 @@ export class List extends React.Component {
 
 		this.threadsSubscription = this.threadsObservable
 			// .pipe(debounceTime(300))
-			.subscribe((data) => {
-				const threads = orderBy(data, ['ts'], ['desc']);
+			.subscribe((threads) => {
 				if (this.mounted) {
 					this.setState({ loading: false, threads });
 				} else {
@@ -221,7 +203,7 @@ export class List extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
-					// removeClippedSubviews
+					removeClippedSubviews
 					initialNumToRender={7}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={5}
