@@ -45,7 +45,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { Q } from '@nozbe/watermelondb';
-import { debounceTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -142,12 +142,11 @@ class RoomView extends React.Component {
 
 		this.roomObservable = room.observe();
 		this.subscription = this.roomObservable
-			.pipe(debounceTime(1000))
+			.pipe(throttleTime(5000))
 			.subscribe((changes) => {
-				console.log('TCL: constructor -> changes', changes);
 				// TODO: compare changes?
 				// this.forceUpdate();
-				// this.setState({ subscriptions: changes });
+				this.setState({ room: changes });
 			});
 
 		this.beginAnimating = false;
