@@ -10,7 +10,7 @@ export default function() {
 			const result = await this.sdk.get('commands.list');
 
 			if (!result.success) {
-				log(result);
+				console.log(result);
 				return resolve();
 			}
 

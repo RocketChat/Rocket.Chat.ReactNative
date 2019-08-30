@@ -100,9 +100,9 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 							database.create('uploads', fileInfo, true);
 							const response = JSON.parse(xhr.response);
 							reject(response);
-						} catch (err) {
-							reject(err);
-							log(err);
+						} catch (e) {
+							reject(e);
+							log(e);
 						}
 					});
 				}
@@ -114,16 +114,16 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					try {
 						database.create('uploads', fileInfo, true);
 						reject(e);
-					} catch (err) {
-						reject(err);
-						log(err);
+					} catch (e) {
+						reject(e);
+						log(e);
 					}
 				});
 			};
 
 			xhr.send(formData);
-		} catch (err) {
-			log(err);
+		} catch (e) {
+			log(e);
 		}
 	});
 }
