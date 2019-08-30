@@ -546,9 +546,9 @@ class MessageBox extends Component {
 				mime: res.type,
 				path: res.uri
 			});
-		} catch (error) {
-			if (!DocumentPicker.isCancel(error)) {
-				log(error);
+		} catch (e) {
+			if (!DocumentPicker.isCancel(e)) {
+				log(e);
 			}
 		}
 	}

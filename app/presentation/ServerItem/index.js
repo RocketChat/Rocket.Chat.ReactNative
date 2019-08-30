@@ -4,7 +4,6 @@ import { View, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RectButton } from 'react-native-gesture-handler';
 
-import log from '../../utils/log';
 import Check from '../../containers/Check';
 import styles, { ROW_HEIGHT } from './styles';
 

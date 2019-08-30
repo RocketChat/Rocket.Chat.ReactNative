@@ -45,7 +45,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				try {
 					database.create('uploads', fileInfo, true);
 				} catch (e) {
-					log(e);
+					return log(e);
 				}
 			});
 
@@ -75,7 +75,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					try {
 						database.create('uploads', fileInfo, true);
 					} catch (e) {
-						log(e);
+						return log(e);
 					}
 				});
 			};
