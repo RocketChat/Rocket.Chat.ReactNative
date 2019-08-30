@@ -108,12 +108,12 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			};
 
-			xhr.onerror = (e) => {
+			xhr.onerror = (error) => {
 				database.write(() => {
 					fileInfo.error = true;
 					try {
 						database.create('uploads', fileInfo, true);
-						reject(e);
+						reject(error);
 					} catch (e) {
 						reject(e);
 						log(e);
