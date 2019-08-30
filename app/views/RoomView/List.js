@@ -178,10 +178,10 @@ export class List extends React.Component {
 		const { messages, threads } = this.state;
 		const { renderRow } = this.props;
 		if (item.tmid) {
-			const thread = threads.find(t => t._id === item.tmid);
+			const thread = threads.find(t => t.id === item.tmid);
 			if (thread) {
 				const tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-				item = { ...item, tmsg };
+				item._raw.tmsg = tmsg;
 			}
 		}
 		return renderRow(item, messages[index + 1]);
