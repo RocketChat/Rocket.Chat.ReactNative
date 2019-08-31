@@ -8,4 +8,10 @@ export const { analytics } = firebase;
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 
-export default bugsnag.notify;
+export default (e) => {
+	if (e instanceof Error) {
+		bugsnag.notify(e);
+	} else {
+		console.log(e);
+	}
+};
