@@ -74,4 +74,6 @@ export default class Message extends Model {
 	@field('auto_translate') autoTranslate;
 
 	@json('translations', sanitizer) translations;
+
+	@field('tmsg') tmsg;
 }

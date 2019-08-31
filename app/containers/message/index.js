@@ -52,6 +52,9 @@ export default class MessageContainer extends React.Component {
 
 	componentDidMount() {
 		const { item } = this.props;
+        if (item.msg === '123123123') {
+			console.log('TCL: MessageContainer -> componentDidMount -> item', item);
+		}
 		if (item && item.observe) {
 			const observable = item.observe();
 			this.subscription = observable.subscribe((changes) => {

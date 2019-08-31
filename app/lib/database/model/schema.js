@@ -75,7 +75,8 @@ export default appSchema({
 				{ name: 'channels', type: 'string', isOptional: true },
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
-				{ name: 'translations', type: 'string', isOptional: true }
+				{ name: 'translations', type: 'string', isOptional: true },
+				{ name: 'tmsg', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

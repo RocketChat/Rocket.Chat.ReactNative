@@ -46,6 +46,7 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { Q } from '@nozbe/watermelondb';
 import { throttleTime } from 'rxjs/operators';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -498,12 +499,30 @@ class RoomView extends React.Component {
 	fetchThreadName = async(tmid) => {
 		try {
 			// TODO: we should build a tmid queue here in order to search for a single tmid only once
-			const thread = await RocketChat.getSingleMessage(tmid);
-			database.write(() => {
-				database.create('threads', buildMessage(EJSON.fromJSONValue(thread)), true);
-			});
+			const { room } = this.state;
+			const watermelon = watermelondb.database;
+			const threadCollection = watermelon.collections.get('threads');
+			try {
+				const threadRecord = await threadCollection.find(tmid);
+				// FAZER INSERT EM BATCH NA THREAD E NA MENSAGEM
+				await watermelon.action(async() => {
+					await threadRecord.update((t) => {
+						Object.assign(t, thread);
+					});
+				});
+			} catch (error) {
+				const thread = await RocketChat.getSingleMessage(tmid);
+				// FAZER INSERT EM BATCH NA THREAD E NA MENSAGEM
+				await watermelon.action(async() => {
+					const newv = await threadCollection.create((t) => {
+						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
+						t.subscription.set(room);
+						Object.assign(t, thread);
+					});
+				});
+			}
 		} catch (e) {
-			log(e);
+			// log(e);
 			console.log(e)
 		}
 	}
