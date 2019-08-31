@@ -122,7 +122,7 @@ class RoomView extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.tmid = props.navigation.getParam('tmid');
+		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
 		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
@@ -496,34 +496,42 @@ class RoomView extends React.Component {
 	};
 
 	// eslint-disable-next-line react/sort-comp
-	fetchThreadName = async(tmid) => {
+	fetchThreadName = async(tmid, messageId) => {
 		try {
-			// TODO: we should build a tmid queue here in order to search for a single tmid only once
 			const { room } = this.state;
 			const watermelon = watermelondb.database;
 			const threadCollection = watermelon.collections.get('threads');
+			const messageCollection = watermelon.collections.get('messages');
+			const messageRecord = await messageCollection.find(messageId);
+			let threadRecord;
 			try {
-				const threadRecord = await threadCollection.find(tmid);
-				// FAZER INSERT EM BATCH NA THREAD E NA MENSAGEM
+				threadRecord = await threadCollection.find(tmid);
+			} catch (error) {
+				console.log('Thread not found. We have to search for it.');
+			}
+			if (threadRecord) {
 				await watermelon.action(async() => {
-					await threadRecord.update((t) => {
-						Object.assign(t, thread);
+					await messageRecord.update((m) => {
+						m.tmsg = threadRecord.msg || (threadRecord.attachments && threadRecord.attachments.length && threadRecord.attachments[0].title);
 					});
 				});
-			} catch (error) {
+			} else {
 				const thread = await RocketChat.getSingleMessage(tmid);
-				// FAZER INSERT EM BATCH NA THREAD E NA MENSAGEM
 				await watermelon.action(async() => {
-					const newv = await threadCollection.create((t) => {
-						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-						t.subscription.set(room);
-						Object.assign(t, thread);
-					});
+					await watermelon.batch(
+						threadCollection.prepareCreate((t) => {
+							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
+							t.subscription.set(room);
+							Object.assign(t, thread);
+						}),
+						messageRecord.prepareUpdate((m) => {
+							m.tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
+						})
+					);
 				});
 			}
 		} catch (e) {
-			// log(e);
-			console.log(e)
+			log(e);
 		}
 	}
 

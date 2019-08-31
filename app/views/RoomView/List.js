@@ -57,12 +57,6 @@ export class List extends React.Component {
 					Q.where('rid', tmid)
 				)
 				.observeWithColumns(['updated_at']);
-			this.threadsObservable = watermelon.database.collections
-				.get('threads')
-				.query(
-					Q.where('rid', tmid)
-				)
-				.observeWithColumns(['updated_at']);
 		} else {
 			this.messagesObservable = watermelon.database.collections
 				.get('messages')
@@ -70,33 +64,16 @@ export class List extends React.Component {
 					Q.where('rid', rid)
 				)
 				.observeWithColumns(['updated_at']);
-			this.threadsObservable = watermelon.database.collections
-				.get('threads')
-				.query(
-					Q.where('rid', rid)
-				)
-				.observeWithColumns(['updated_at']);
 		}
 
 		this.messagesSubscription = this.messagesObservable
-			// .pipe(debounceTime(300))
+			.pipe(throttleTime(300))
 			.subscribe((data) => {
 				const messages = orderBy(data, ['ts'], ['desc']);
 				if (this.mounted) {
 					this.setState({ loading: false, messages });
 				} else {
 					this.state.messages = messages;
-					this.state.loading = false;
-				}
-			});
-
-		this.threadsSubscription = this.threadsObservable
-			// .pipe(debounceTime(300))
-			.subscribe((threads) => {
-				if (this.mounted) {
-					this.setState({ loading: false, threads });
-				} else {
-					this.state.threads = threads;
 					this.state.loading = false;
 				}
 			});
@@ -175,15 +152,8 @@ export class List extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { messages, threads } = this.state;
+		const { messages } = this.state;
 		const { renderRow } = this.props;
-		// if (item.tmid) {
-		// 	const thread = threads.find(t => t.id === item.tmid);
-		// 	if (thread) {
-		// 		const tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-		// 		item.tmsg = tmsg;
-		// 	}
-		// }
 		return renderRow(item, messages[index + 1]);
 	}
 

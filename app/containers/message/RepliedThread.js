@@ -9,14 +9,14 @@ import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
 
 const RepliedThread = React.memo(({
-	tmid, tmsg, isHeader, isTemp, fetchThreadName
+	tmid, tmsg, isHeader, isTemp, fetchThreadName, id
 }) => {
 	if (!tmid || !isHeader || isTemp) {
 		return null;
 	}
 
 	if (!tmsg) {
-		fetchThreadName(tmid);
+		fetchThreadName(tmid, id);
 		return null;
 	}
 
