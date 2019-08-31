@@ -608,7 +608,7 @@ class RoomsListView extends React.Component {
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					removeClippedSubviews
+					// removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}
@@ -640,7 +640,7 @@ class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					removeClippedSubviews
+					// removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}

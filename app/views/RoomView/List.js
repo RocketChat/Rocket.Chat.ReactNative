@@ -203,7 +203,7 @@ export class List extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
-					removeClippedSubviews
+					// removeClippedSubviews
 					initialNumToRender={7}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={5}
