@@ -71,20 +71,6 @@ export function togglePinFailure(err) {
 	};
 }
 
-export function replyInit(message, mention) {
-	return {
-		type: types.MESSAGES.REPLY_INIT,
-		message,
-		mention
-	};
-}
-
-export function replyCancel() {
-	return {
-		type: types.MESSAGES.REPLY_CANCEL
-	};
-}
-
 export function toggleReactionPicker(message) {
 	return {
 		type: types.MESSAGES.TOGGLE_REACTION_PICKER,

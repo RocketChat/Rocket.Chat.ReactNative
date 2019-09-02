@@ -64,7 +64,6 @@ class MessageBox extends Component {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
-		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
@@ -80,7 +79,7 @@ class MessageBox extends Component {
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
-		closeReply: PropTypes.func
+		replyCancel: PropTypes.func
 	}
 
 	constructor(props) {
@@ -155,7 +154,9 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { message, replyMessage, isFocused, editing } = this.props;
+		const {
+			message, isFocused, editing, replying
+		} = this.props;
 		if (!isFocused) {
 			return;
 		}
@@ -166,12 +167,11 @@ class MessageBox extends Component {
 		// 	}
 		// 	this.focus();
 		if (editing !== nextProps.editing && nextProps.editing) {
-			console.log(nextProps.message)
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
-		} else if (!equal(replyMessage, nextProps.replyMessage)) {
+		} else if (replying !== nextProps.replying && nextProps.replying) {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
@@ -630,7 +630,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			message: editingMessage, editRequest, onSubmit, rid: roomId
+			onSubmit, rid: roomId
 		} = this.props;
 		const message = this.text;
 
@@ -664,32 +664,35 @@ class MessageBox extends Component {
 		}
 		// Edit
 		if (editing) {
+			const { message: editingMessage, editRequest } = this.props;
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 
 		// Reply
 		} else if (replying) {
-			const { replyMessage, closeReply, threadsEnabled } = this.props;
+			const {
+				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+			} = this.props;
 
 			// Thread
-			if (threadsEnabled && replyMessage.mention) {
-				onSubmit(message, replyMessage._id);
+			if (threadsEnabled && replyWithMention) {
+				onSubmit(message, replyingMessage.id);
 
 			// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
-				const permalink = await this.getPermalink(replyMessage);
+				const permalink = await this.getPermalink(replyingMessage);
 				let msg = `[ ](${ permalink }) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-					msg += `@${ replyMessage.u.username } `;
+				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
+					msg += `@${ replyingMessage.u.username } `;
 				}
 
 				msg = `${ msg } ${ message }`;
 				onSubmit(msg);
 			}
-			closeReply();
+			replyCancel();
 
 		// Normal message
 		} else {
@@ -881,12 +884,12 @@ class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			replyMessage, replying, closeReply, user
+			message, replying, replyCancel, user
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
+		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} />;
 	};
 
 	renderContent = () => {
@@ -967,8 +970,6 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replying,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	threadsEnabled: state.settings.Threads_enabled,
 	user: {
@@ -979,8 +980,7 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	typing: (rid, status) => userTypingAction(rid, status),
-	closeReply: () => replyCancelAction()
+	typing: (rid, status) => userTypingAction(rid, status)
 });
 
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);

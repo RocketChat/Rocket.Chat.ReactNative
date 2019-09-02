@@ -8,7 +8,6 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	deleteRequest as deleteRequestAction,
-	replyInit as replyInitAction,
 	togglePinRequest as togglePinRequestAction,
 	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
@@ -400,8 +399,7 @@ const mapDispatchToProps = dispatch => ({
 	deleteRequest: message => dispatch(deleteRequestAction(message)),
 	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
 	togglePinRequest: message => dispatch(togglePinRequestAction(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	replyInit: (message, mention) => dispatch(replyInitAction(message, mention))
+	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageActions);
