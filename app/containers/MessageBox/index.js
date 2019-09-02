@@ -12,11 +12,6 @@ import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 
 import { userTyping as userTypingAction } from '../../actions/room';
-import {
-	editRequest as editRequestAction,
-	editCancel as editCancelAction,
-	replyCancel as replyCancelAction
-} from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/realm';
@@ -160,16 +155,22 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { message, replyMessage, isFocused } = this.props;
+		const { message, replyMessage, isFocused, editing } = this.props;
 		if (!isFocused) {
 			return;
 		}
-		if (!equal(message, nextProps.message) && nextProps.message.msg) {
+		// if (!equal(message, nextProps.message) && nextProps.message.msg) {
+		// 	this.setInput(nextProps.message.msg);
+		// 	if (this.text) {
+		// 		this.setShowSend(true);
+		// 	}
+		// 	this.focus();
+		if (editing !== nextProps.editing && nextProps.editing) {
+			console.log(nextProps.message)
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
-			this.focus();
 		} else if (!equal(replyMessage, nextProps.replyMessage)) {
 			this.focus();
 		} else if (!nextProps.message) {
@@ -177,45 +178,45 @@ class MessageBox extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
-		} = this.state;
-		const {
-			roomType, replying, editing, isFocused
-		} = this.props;
-		if (!isFocused) {
-			return false;
-		}
-		if (nextProps.roomType !== roomType) {
-			return true;
-		}
-		if (nextProps.replying !== replying) {
-			return true;
-		}
-		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
-			return true;
-		}
-		if (nextState.showSend !== showSend) {
-			return true;
-		}
-		if (nextState.recording !== recording) {
-			return true;
-		}
-		if (!equal(nextState.mentions, mentions)) {
-			return true;
-		}
-		if (!equal(nextState.commandPreview, commandPreview)) {
-			return true;
-		}
-		if (!equal(nextState.file, file)) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const {
+	// 		showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+	// 	} = this.state;
+	// 	const {
+	// 		roomType, replying, editing, isFocused
+	// 	} = this.props;
+	// 	if (!isFocused) {
+	// 		return false;
+	// 	}
+	// 	if (nextProps.roomType !== roomType) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.replying !== replying) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.editing !== editing) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.showSend !== showSend) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.recording !== recording) {
+	// 		return true;
+	// 	}
+	// 	if (!equal(nextState.mentions, mentions)) {
+	// 		return true;
+	// 	}
+	// 	if (!equal(nextState.commandPreview, commandPreview)) {
+	// 		return true;
+	// 	}
+	// 	if (!equal(nextState.file, file)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	onChangeText = debounce((text) => {
 		const isTextEmpty = text.length === 0;
@@ -663,8 +664,8 @@ class MessageBox extends Component {
 		}
 		// Edit
 		if (editing) {
-			const { _id, rid } = editingMessage;
-			editRequest({ _id, msg: message, rid });
+			const { id, subscription: { id: rid } } = editingMessage;
+			editRequest({ id, msg: message, rid });
 
 		// Reply
 		} else if (replying) {
@@ -966,10 +967,8 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	message: state.messages.message,
 	replyMessage: state.messages.replyMessage,
 	replying: state.messages.replying,
-	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	threadsEnabled: state.settings.Threads_enabled,
 	user: {
@@ -980,8 +979,6 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	editCancel: () => editCancelAction(),
-	editRequest: message => editRequestAction(message),
 	typing: (rid, status) => userTypingAction(rid, status),
 	closeReply: () => replyCancelAction()
 });

@@ -8,7 +8,6 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	deleteRequest as deleteRequestAction,
-	editInit as editInitAction,
 	replyInit as replyInitAction,
 	togglePinRequest as togglePinRequestAction,
 	toggleReactionPicker as toggleReactionPickerAction,
@@ -249,8 +248,7 @@ class MessageActions extends React.Component {
 
 	handleEdit = () => {
 		const { message, editInit } = this.props;
-		const { _id, msg, rid } = message;
-		editInit({ _id, msg, rid });
+		editInit(message);
 	}
 
 	handleCopy = async() => {
@@ -400,7 +398,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	deleteRequest: message => dispatch(deleteRequestAction(message)),
-	editInit: message => dispatch(editInitAction(message)),
 	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
 	togglePinRequest: message => dispatch(togglePinRequestAction(message)),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),

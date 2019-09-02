@@ -542,9 +542,9 @@ const RocketChat = {
 		return this.sdk.post('chat.delete', { roomId: rid, msgId: id });
 	},
 	editMessage(message) {
-		const { _id, msg, rid } = message;
+		const { id, msg, rid } = message;
 		// RC 0.49.0
-		return this.sdk.post('chat.update', { roomId: rid, msgId: _id, text: msg });
+		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
 	},
 	toggleStarMessage(message) {
 		if (message.starred) {

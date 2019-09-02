@@ -1,18 +1,5 @@
 import * as types from './actionsTypes';
 
-export function actionsShow(actionMessage) {
-	return {
-		type: types.MESSAGES.ACTIONS_SHOW,
-		actionMessage
-	};
-}
-
-export function actionsHide() {
-	return {
-		type: types.MESSAGES.ACTIONS_HIDE
-	};
-}
-
 export function errorActionsShow(actionMessage) {
 	return {
 		type: types.MESSAGES.ERROR_ACTIONS_SHOW,
@@ -42,39 +29,6 @@ export function deleteSuccess() {
 export function deleteFailure() {
 	return {
 		type: types.MESSAGES.DELETE_FAILURE
-	};
-}
-
-
-export function editInit(message) {
-	return {
-		type: types.MESSAGES.EDIT_INIT,
-		message
-	};
-}
-
-export function editCancel() {
-	return {
-		type: types.MESSAGES.EDIT_CANCEL
-	};
-}
-
-export function editRequest(message) {
-	return {
-		type: types.MESSAGES.EDIT_REQUEST,
-		message
-	};
-}
-
-export function editSuccess() {
-	return {
-		type: types.MESSAGES.EDIT_SUCCESS
-	};
-}
-
-export function editFailure() {
-	return {
-		type: types.MESSAGES.EDIT_FAILURE
 	};
 }
 

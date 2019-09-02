@@ -13,17 +13,6 @@ const initialState = {
 
 export default function messages(state = initialState, action) {
 	switch (action.type) {
-		case types.MESSAGES.ACTIONS_SHOW:
-			return {
-				...state,
-				showActions: true,
-				actionMessage: action.actionMessage
-			};
-		case types.MESSAGES.ACTIONS_HIDE:
-			return {
-				...state,
-				showActions: false
-			};
 		case types.MESSAGES.ERROR_ACTIONS_SHOW:
 			return {
 				...state,
@@ -34,30 +23,6 @@ export default function messages(state = initialState, action) {
 			return {
 				...state,
 				showErrorActions: false
-			};
-		case types.MESSAGES.EDIT_INIT:
-			return {
-				...state,
-				message: action.message,
-				editing: true
-			};
-		case types.MESSAGES.EDIT_CANCEL:
-			return {
-				...state,
-				message: {},
-				editing: false
-			};
-		case types.MESSAGES.EDIT_SUCCESS:
-			return {
-				...state,
-				message: {},
-				editing: false
-			};
-		case types.MESSAGES.EDIT_FAILURE:
-			return {
-				...state,
-				message: {},
-				editing: false
 			};
 		case types.MESSAGES.REPLY_INIT:
 			return {

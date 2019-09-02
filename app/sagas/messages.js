@@ -7,8 +7,6 @@ import { MESSAGES } from '../actions/actionsTypes';
 import {
 	deleteSuccess,
 	deleteFailure,
-	editSuccess,
-	editFailure,
 	toggleStarSuccess,
 	toggleStarFailure,
 	togglePinSuccess,
@@ -20,7 +18,6 @@ import database from '../lib/realm';
 import log from '../utils/log';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
-const editMessage = message => RocketChat.editMessage(message);
 const toggleStarMessage = message => RocketChat.toggleStarMessage(message);
 const togglePinMessage = message => RocketChat.togglePinMessage(message);
 
@@ -30,15 +27,6 @@ const handleDeleteRequest = function* handleDeleteRequest({ message }) {
 		yield put(deleteSuccess());
 	} catch (error) {
 		yield put(deleteFailure());
-	}
-};
-
-const handleEditRequest = function* handleEditRequest({ message }) {
-	try {
-		yield call(editMessage, message);
-		yield put(editSuccess());
-	} catch (error) {
-		yield put(editFailure());
 	}
 };
 
@@ -84,7 +72,6 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 
 const root = function* root() {
 	yield takeLatest(MESSAGES.DELETE_REQUEST, handleDeleteRequest);
-	yield takeLatest(MESSAGES.EDIT_REQUEST, handleEditRequest);
 	yield takeLatest(MESSAGES.TOGGLE_STAR_REQUEST, handleToggleStarRequest);
 	yield takeLatest(MESSAGES.TOGGLE_PIN_REQUEST, handleTogglePinRequest);
 	yield takeLatest(MESSAGES.REPLY_BROADCAST, handleReplyBroadcast);

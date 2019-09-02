@@ -137,7 +137,8 @@ class RoomView extends React.Component {
 			selectedMessage: {},
 			canAutoTranslate,
 			loading: true,
-			showActions: false
+			showActions: false,
+			editing: false
 		};
 
 		if (room && room.observe) {
@@ -236,22 +237,22 @@ class RoomView extends React.Component {
 
 	componentWillUnmount() {
 		this.mounted = false;
-		const { editing, replying } = this.props;
-		if (!editing && this.messagebox && this.messagebox.current) {
-			const { text } = this.messagebox.current;
-			let obj;
-			if (this.tmid) {
-				obj = database.objectForPrimaryKey('threads', this.tmid);
-			} else {
-				// [obj] = this.rooms;
-				// FIXME: grab from wm
-			}
-			if (obj) {
-				database.write(() => {
-					obj.draftMessage = text;
-				});
-			}
-		}
+		// const { editing, replying } = this.props;
+		// if (!editing && this.messagebox && this.messagebox.current) {
+		// 	const { text } = this.messagebox.current;
+		// 	let obj;
+		// 	if (this.tmid) {
+		// 		obj = database.objectForPrimaryKey('threads', this.tmid);
+		// 	} else {
+		// 		// [obj] = this.rooms;
+		// 		// FIXME: grab from wm
+		// 	}
+		// 	if (obj) {
+		// 		database.write(() => {
+		// 			obj.draftMessage = text;
+		// 		});
+		// 	}
+		// }
 		// this.rooms.removeAllListeners();
 		this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
@@ -260,14 +261,14 @@ class RoomView extends React.Component {
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
-		if (editing) {
-			const { editCancel } = this.props;
-			editCancel();
-		}
-		if (replying) {
-			const { replyCancel } = this.props;
-			replyCancel();
-		}
+		// if (editing) {
+		// 	const { editCancel } = this.props;
+		// 	editCancel();
+		// }
+		// if (replying) {
+		// 	const { replyCancel } = this.props;
+		// 	replyCancel();
+		// }
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -339,7 +340,28 @@ class RoomView extends React.Component {
 	}
 
 	actionsHide = () => {
+		const { editing, replying } = this.state;
+		if (editing || replying) {
+			return;
+		}
 		this.setState({ messageSelected: {}, showActions: false });
+	}
+
+	onEditInit = (message) => {
+		this.setState({ messageSelected: message, editing: true, showActions: false });
+	}
+
+	onEditCancel = () => {
+		this.setState({ messageSelected: {}, editing: false });
+	}
+
+	onEditRequest = async(message) => {
+		this.setState({ messageSelected: {}, editing: false });
+		try {
+			await RocketChat.editMessage(message);
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onMessageLongPress = (message) => {
@@ -624,7 +646,9 @@ class RoomView extends React.Component {
 	}
 
 	renderFooter = () => {
-		const { joined, room } = this.state;
+		const {
+			joined, room, messageSelected, editing
+		} = this.state;
 		const { navigation, user } = this.props;
 
 		if (!joined && !this.tmid) {
@@ -664,6 +688,10 @@ class RoomView extends React.Component {
 				tmid={this.tmid}
 				roomType={room.t}
 				isFocused={navigation.isFocused()}
+				message={messageSelected}
+				editing={editing}
+				editRequest={this.onEditRequest}
+				editCancel={this.onEditCancel}
 			/>
 		);
 	};
@@ -686,6 +714,7 @@ class RoomView extends React.Component {
 							user={user}
 							message={messageSelected}
 							actionsHide={this.actionsHide}
+							editInit={this.onEditInit}
 						/>
 					)
 					: null
@@ -736,8 +765,6 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	actionMessage: state.messages.actionMessage,
-	editing: state.messages.editing,
 	replying: state.messages.replying,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
@@ -752,7 +779,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	editCancel: () => dispatch(editCancelAction()),
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
