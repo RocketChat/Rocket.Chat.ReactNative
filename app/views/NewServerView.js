@@ -134,8 +134,8 @@ class NewServerView extends React.Component {
 			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
-			} catch (error) {
-				log('err_save_certificate', error);
+			} catch (e) {
+				log(e);
 			}
 			cert = {
 				path: this.uriToPath(certificatePath), // file:// isn't allowed by obj-C
@@ -166,9 +166,9 @@ class NewServerView extends React.Component {
 				],
 				'secure-text',
 			);
-		} catch (error) {
-			if (!DocumentPicker.isCancel(error)) {
-				log('err_choose_certificate', error);
+		} catch (e) {
+			if (!DocumentPicker.isCancel(e)) {
+				log(e);
 			}
 		}
 	}
