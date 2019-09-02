@@ -2,6 +2,7 @@ import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
+import * as FileSystem from 'expo-file-system';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -9,6 +10,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './realm';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
+import { extractHostname } from '../utils/server';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -364,6 +366,12 @@ const RocketChat = {
 		try {
 			const servers = await RNUserDefaults.objectForKey(SERVERS);
 			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
+			// clear certificate for server - SSL Pinning
+			const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
+			if (certificate && certificate.path) {
+				await RNUserDefaults.clear(extractHostname(server));
+				await FileSystem.deleteAsync(certificate.path);
+			}
 		} catch (error) {
 			console.log('logout_rn_user_defaults', error);
 		}

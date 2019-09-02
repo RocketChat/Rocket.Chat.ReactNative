@@ -4433,7 +4433,7 @@ expo-constants@~6.0.0:
   dependencies:
     ua-parser-js "^0.7.19"
 
-expo-file-system@~6.0.1:
+expo-file-system@^6.0.2, expo-file-system@~6.0.1:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-6.0.2.tgz#e65f30eb6a7213e07933df9688116eaf4e25bbf8"
   integrity sha512-s+6oQpLhcT7MQp7fcoj1E+zttMr0WX6c0FrddzqB4dUfhIggV+nb35nQMASIiTHAj8VPUanTFliY5rETHRMHRA==

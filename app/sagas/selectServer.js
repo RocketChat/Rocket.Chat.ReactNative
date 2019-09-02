@@ -14,6 +14,7 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
@@ -77,8 +78,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server }) {
+const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
+		if (certificate) {
+			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+		}
+
 		const serverInfo = yield getServerInfo({ server });
 
 		const loginServicesLength = yield RocketChat.getLoginServices(server);
