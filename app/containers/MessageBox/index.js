@@ -293,7 +293,7 @@ class MessageBox extends Component {
 		try {
 			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
-			log('onPressCommandPreview', e);
+			log(e);
 		}
 	}
 
@@ -468,7 +468,7 @@ class MessageBox extends Component {
 			this.setState({ commandPreview: preview.items });
 		} catch (e) {
 			this.showCommandPreview = false;
-			log('command Preview', e);
+			log(e);
 		}
 	}
 
@@ -546,9 +546,9 @@ class MessageBox extends Component {
 				mime: res.type,
 				path: res.uri
 			});
-		} catch (error) {
-			if (!DocumentPicker.isCancel(error)) {
-				log('chooseFile', error);
+		} catch (e) {
+			if (!DocumentPicker.isCancel(e)) {
+				log(e);
 			}
 		}
 	}
@@ -655,7 +655,7 @@ class MessageBox extends Component {
 					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
-					log('slashCommand', e);
+					log(e);
 				}
 				this.clearInput();
 				return;

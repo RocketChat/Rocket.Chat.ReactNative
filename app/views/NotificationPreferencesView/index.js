@@ -128,8 +128,8 @@ export default class NotificationPreferencesView extends React.Component {
 		};
 		try {
 			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (err) {
-			log('err_save_notification_settings', err);
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -142,8 +142,8 @@ export default class NotificationPreferencesView extends React.Component {
 		};
 		try {
 			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (err) {
-			log('err_save_notification_settings', err);
+		} catch (e) {
+			log(e);
 		}
 	}
 
