@@ -461,7 +461,7 @@ const RocketChat = {
 			return [];
 		}
 
-		let data = await watermelon.collections.get('subscriptions').query(
+		let data = await watermelon.database.collections.get('subscriptions').query(
 			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
 		).fetch();
 
@@ -565,17 +565,20 @@ const RocketChat = {
 	reportMessage(messageId) {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
-	getRoom(rid) {
-		const [result] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (!result) {
+	async getRoom(rid) {
+		try {
+			const room = await watermelon.database.collections
+				.get('subscriptions')
+				.find(rid);
+			return Promise.resolve(room);
+		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
 		}
-		return Promise.resolve(result);
 	},
 	async getPermalinkMessage(message) {
 		let room;
 		try {
-			room = await RocketChat.getRoom(message.rid);
+			room = await RocketChat.getRoom(message.subscription.id);
 		} catch (e) {
 			log(e);
 			return null;
@@ -586,7 +589,7 @@ const RocketChat = {
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ server }/${ roomType }/${ room.name }?msg=${ message._id }`;
+		return `${ server }/${ roomType }/${ room.name }?msg=${ message.id }`;
 	},
 	getPermalinkChannel(channel) {
 		const { server } = reduxStore.getState().server;
