@@ -537,9 +537,9 @@ const RocketChat = {
 		});
 	},
 	deleteMessage(message) {
-		const { _id, rid } = message;
+		const { id, subscription: { id: rid } } = message;
 		// RC 0.48.0
-		return this.sdk.post('chat.delete', { roomId: rid, msgId: _id });
+		return this.sdk.post('chat.delete', { roomId: rid, msgId: id });
 	},
 	editMessage(message) {
 		const { _id, msg, rid } = message;

@@ -102,19 +102,19 @@ export default class MessageContainer extends React.Component {
 	}, 300, true);
 
 	onLongPress = () => {
-		const { archived, onLongPress } = this.props;
+		const { archived, onLongPress, item } = this.props;
 		if (this.isInfo || this.hasError || archived) {
 			return;
 		}
 		if (onLongPress) {
-			onLongPress(this.parseMessage());
+			onLongPress(item);
 		}
 	}
 
 	onErrorPress = () => {
-		const { errorActionsShow } = this.props;
+		const { errorActionsShow, item } = this.props;
 		if (errorActionsShow) {
-			errorActionsShow(this.parseMessage());
+			errorActionsShow(item);
 		}
 	}
 
@@ -204,6 +204,7 @@ export default class MessageContainer extends React.Component {
 		return item.status === messagesStatus.ERROR;
 	}
 
+	// TODO: REMOVE
 	parseMessage = () => {
 		const { item } = this.props;
 		return JSON.parse(JSON.stringify(item));

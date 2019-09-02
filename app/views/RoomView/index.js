@@ -13,7 +13,6 @@ import * as Haptics from 'expo-haptics';
 
 import {
 	toggleReactionPicker as toggleReactionPickerAction,
-	actionsShow as actionsShowAction,
 	errorActionsShow as errorActionsShowAction,
 	editCancel as editCancelAction,
 	replyCancel as replyCancelAction,
@@ -137,7 +136,8 @@ class RoomView extends React.Component {
 			selectedAttachment: {},
 			selectedMessage: {},
 			canAutoTranslate,
-			loading: true
+			loading: true,
+			showActions: false
 		};
 
 		if (room && room.observe) {
@@ -338,9 +338,12 @@ class RoomView extends React.Component {
 		}
 	}
 
+	actionsHide = () => {
+		this.setState({ messageSelected: {}, showActions: false });
+	}
+
 	onMessageLongPress = (message) => {
-		const { actionsShow } = this.props;
-		actionsShow({ ...message, rid: this.rid });
+		this.setState({ messageSelected: message, showActions: true });
 	}
 
 	onOpenFileModal = (attachment) => {
@@ -666,21 +669,29 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const { room } = this.state;
+		const { room, messageSelected, showActions } = this.state;
 		const {
-			user, showActions, showErrorActions, navigation
+			user, showErrorActions, navigation
 		} = this.props;
 		if (!navigation.isFocused()) {
 			return null;
 		}
 		return (
-			<React.Fragment>
-				{room._id && showActions
-					? <MessageActions room={room} tmid={this.tmid} user={user} />
+			<>
+				{room.id && showActions
+					? (
+						<MessageActions
+							tmid={this.tmid}
+							room={room}
+							user={user}
+							actionMessage={messageSelected}
+							actionsHide={this.actionsHide}
+						/>
+					)
 					: null
 				}
 				{showErrorActions ? <MessageErrorActions /> : null}
-			</React.Fragment>
+			</>
 		);
 	}
 
@@ -745,7 +756,6 @@ const mapDispatchToProps = dispatch => ({
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
-	actionsShow: actionMessage => dispatch(actionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 

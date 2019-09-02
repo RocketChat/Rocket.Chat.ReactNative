@@ -7,7 +7,6 @@ import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
 import {
-	actionsHide as actionsHideAction,
 	deleteRequest as deleteRequestAction,
 	editInit as editInitAction,
 	replyInit as replyInitAction,
@@ -390,7 +389,6 @@ class MessageActions extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	actionMessage: state.messages.actionMessage,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
 	Message_AllowEditing: state.settings.Message_AllowEditing,
@@ -401,7 +399,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	actionsHide: () => dispatch(actionsHideAction()),
 	deleteRequest: message => dispatch(deleteRequestAction(message)),
 	editInit: message => dispatch(editInitAction(message)),
 	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
