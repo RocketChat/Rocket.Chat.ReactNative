@@ -16,7 +16,6 @@ export const getMessage = async(rid, msg = '', tmid, user) => {
 		tmid,
 		ts: new Date(),
 		_updatedAt: new Date(),
-		updatedAt: new Date(),
 		status: messagesStatus.TEMP,
 		u: {
 			_id: id || '1',

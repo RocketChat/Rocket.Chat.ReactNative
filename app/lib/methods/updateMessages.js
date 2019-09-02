@@ -59,31 +59,27 @@ export default function updateMessages(rid, messages) {
 			}));
 			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate((tm) => {
 				tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
-				tm.subscription.set(sub);
 				assignSub(tm, threadMessage);
-				tm.rid = threadMessage.tmid;
+				tm.subscription.rid = threadMessage.tmid;
 			}));
 
 			// Update
 			msgsToUpdate = msgsToUpdate.map((message) => {
 				const newMessage = messages.find(m => m._id === message.id);
-				return message.prepareUpdate(() => {
-					message.subscription.set(sub);
-					assignSub(message, newMessage);
+				return message.prepareUpdate((m) => {
+					assignSub(m, newMessage);
 				});
 			});
 			threadsToUpdate = threadsToUpdate.map((thread) => {
-				const newThread = messages.find(t => t._id === thread.id);
-				return thread.prepareUpdate(() => {
-					thread.subscription.set(sub);
-					assignSub(thread, newThread);
+				const newThread = allThreads.find(t => t._id === thread.id);
+				return thread.prepareUpdate((t) => {
+					assignSub(t, newThread);
 				});
 			});
 			threadMessagesToUpdate = threadMessagesToUpdate.map((threadMessage) => {
-				const newThreadMessage = messages.find(t => t._id === threadMessage.id);
-				return threadMessage.prepareUpdate(() => {
-					threadMessage.subscription.set(sub);
-					assignSub(threadMessage, newThreadMessage);
+				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
+				return threadMessage.prepareUpdate((tm) => {
+					assignSub(tm, newThreadMessage);
 				});
 			});
 
@@ -104,7 +100,6 @@ export default function updateMessages(rid, messages) {
 			return allRecords.length;
 		});
 	} catch (e) {
-		// log(e);
-		alert(e)
+		log(e);
 	}
 }
