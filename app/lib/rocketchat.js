@@ -557,10 +557,10 @@ const RocketChat = {
 	togglePinMessage(message) {
 		if (message.pinned) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unPinMessage', { messageId: message._id });
+			return this.sdk.post('chat.unPinMessage', { messageId: message.id });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.pinMessage', { messageId: message._id });
+		return this.sdk.post('chat.pinMessage', { messageId: message.id });
 	},
 	reportMessage(messageId) {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
