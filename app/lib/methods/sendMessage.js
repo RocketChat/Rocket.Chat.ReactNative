@@ -1,10 +1,12 @@
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
+import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-export const getMessage = (rid, msg = '', tmid, user) => {
+export const getMessage = async(rid, msg = '', tmid, user) => {
 	const _id = random(17);
 	const { id, username } = user;
 	const message = {
@@ -22,8 +24,17 @@ export const getMessage = (rid, msg = '', tmid, user) => {
 		}
 	};
 	try {
-		database.write(() => {
-			database.create('messages', message, true);
+		// database.write(() => {
+		// 	database.create('messages', message, true);
+		// });
+		const watermelon = watermelondb.database;
+		const msgCollection = watermelon.collections.get('messages');
+		await watermelon.action(async() => {
+			await msgCollection.create((m) => {
+				m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+				m.subscription.id = rid;
+				Object.assign(m, message);
+			});
 		});
 	} catch (error) {
 		console.warn('getMessage', error);
@@ -46,25 +57,25 @@ export async function sendMessageCall(message) {
 
 export default async function(rid, msg, tmid, user) {
 	try {
-		const message = getMessage(rid, msg, tmid, user);
-		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
+		const message = await getMessage(rid, msg, tmid, user);
+		// const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
-		if (room) {
-			database.write(() => {
-				room.draftMessage = null;
-			});
-		}
+		// if (room) {
+		// 	database.write(() => {
+		// 		room.draftMessage = null;
+		// 	});
+		// }
 
 		try {
 			const ret = await sendMessageCall.call(this, message);
-			database.write(() => {
-				database.create('messages', buildMessage({ ...message, ...ret }), true);
-			});
+			// database.write(() => {
+			// 	database.create('messages', buildMessage({ ...message, ...ret }), true);
+			// });
 		} catch (e) {
-			database.write(() => {
-				message.status = messagesStatus.ERROR;
-				database.create('messages', message, true);
-			});
+			// database.write(() => {
+			// 	message.status = messagesStatus.ERROR;
+			// 	database.create('messages', message, true);
+			// });
 		}
 	} catch (e) {
 		log(e);

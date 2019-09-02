@@ -13,6 +13,7 @@ const assignSub = (sub, newSub) => {
 };
 
 export default function updateMessages(rid, messages) {
+    console.log('TCL: updateMessages -> rid, messages', rid, messages);
 	try {
 		const watermelon = watermelondb.database;
 		return watermelon.action(async() => {
@@ -48,7 +49,7 @@ export default function updateMessages(rid, messages) {
 			// Create
 			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
 				m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-				m.subscription.set(sub);
+				m.subscription.set(sub); // TODO: do we need it?
 				assignSub(m, message);
 			}));
 			threadsToCreate = threadsToCreate.map(thread => threadCollection.prepareCreate((t) => {
@@ -103,6 +104,7 @@ export default function updateMessages(rid, messages) {
 			return allRecords.length;
 		});
 	} catch (e) {
-		log(e);
+		// log(e);
+		alert(e)
 	}
 }

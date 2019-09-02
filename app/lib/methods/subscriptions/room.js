@@ -113,7 +113,11 @@ export default function subscribeRoom({ rid }) {
 		if (rid !== message.rid) {
 			return;
 		}
-		await updateMessages(rid, [message]);
+		try {
+			await updateMessages(rid, [message]);
+		} catch (e) {
+			log(e);
+		}
 		// requestAnimationFrame(async() => {
 		// 	try {
 		// 		database.write(() => {
