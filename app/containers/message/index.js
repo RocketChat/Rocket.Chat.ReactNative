@@ -165,7 +165,6 @@ export default class MessageContainer extends React.Component {
 			}
 			return true;
 		} catch (error) {
-			console.log(item, previousItem)
 			return true;
 		}
 	}

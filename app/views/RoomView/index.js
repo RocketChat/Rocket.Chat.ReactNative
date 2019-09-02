@@ -130,8 +130,7 @@ class RoomView extends React.Component {
 		this.state = {
 			// joined: this.rooms.length > 0,
 			joined: true,
-			// room: this.rooms[0] || { rid: this.rid, t: this.t },
-			room,
+			room: room || { rid: this.rid, t: this.t },
 			lastOpen: null,
 			photoModalVisible: false,
 			reactionsModalVisible: false,
@@ -140,16 +139,17 @@ class RoomView extends React.Component {
 			canAutoTranslate,
 			loading: true
 		};
-		// this.observeRoom();
 
-		this.roomObservable = room.observe();
-		this.subscription = this.roomObservable
-			.pipe(throttleTime(5000))
-			.subscribe((changes) => {
-				// TODO: compare changes?
-				// this.forceUpdate();
-				this.setState({ room: changes });
-			});
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					// this.forceUpdate();
+					this.setState({ room: changes });
+				});
+		}
 
 		this.beginAnimating = false;
 		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
@@ -396,12 +396,12 @@ class RoomView extends React.Component {
 		const { navigation } = this.props;
 		if (item.tmid) {
 			navigation.push('RoomView', {
-				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
+				rid: item.subscription.id, tmid: item.tmid, name: item.tmsg, t: 'thread'
 			});
 		} else if (item.tlm) {
-			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
+			// const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
 			navigation.push('RoomView', {
-				rid: item.rid, tmid: item._id, name: title, t: 'thread'
+				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
 			});
 		}
 	}, 1000, true)
@@ -576,7 +576,6 @@ class RoomView extends React.Component {
 
 		const message = (
 			<Message
-				key={item._id}
 				item={item}
 				user={user}
 				archived={room.archived}

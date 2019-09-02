@@ -35,8 +35,7 @@ export class List extends React.Component {
 		this.state = {
 			loading: true,
 			end: false,
-			messages: [],
-			threads: []
+			messages: []
 		};
 		this.init();
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -47,14 +46,17 @@ export class List extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	init() {
+	async init() {
 		const { rid, tmid } = this.props;
 
 		if (tmid) {
+			this.thread = await watermelon.database.collections
+				.get('threads')
+				.find(tmid);
 			this.messagesObservable = watermelon.database.collections
 				.get('thread_messages')
 				.query(
-					Q.where('rid', tmid)
+					Q.where('tmid', tmid)
 				)
 				.observeWithColumns(['updated_at']);
 		} else {
@@ -67,8 +69,12 @@ export class List extends React.Component {
 		}
 
 		this.messagesSubscription = this.messagesObservable
-			.pipe(throttleTime(300))
+			// .pipe(throttleTime(300))
 			.subscribe((data) => {
+				if (tmid) {
+					delete data.tlm;
+					data = [this.thread, ...data];
+				}
 				const messages = orderBy(data, ['ts'], ['desc']);
 				if (this.mounted) {
 					this.setState({ messages });

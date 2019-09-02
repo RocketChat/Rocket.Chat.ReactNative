@@ -60,8 +60,6 @@ export default class Thread extends Model {
 
 	@field('tcount') tcount;
 
-	@date('tlm') tlm;
-
 	@json('replies', sanitizer) replies;
 
 	@json('mentions', sanitizer) mentions;
