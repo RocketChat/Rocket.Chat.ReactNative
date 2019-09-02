@@ -137,7 +137,8 @@ class RoomView extends React.Component {
 			reactionsModalVisible: false,
 			selectedAttachment: {},
 			selectedMessage: {},
-			canAutoTranslate
+			canAutoTranslate,
+			loading: true
 		};
 		// this.observeRoom();
 
@@ -183,43 +184,43 @@ class RoomView extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
-		} = this.state;
-		const { showActions, showErrorActions, appState } = this.props;
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const {
+	// 		room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
+	// 	} = this.state;
+	// 	const { showActions, showErrorActions, appState } = this.props;
 
-		if (lastOpen !== nextState.lastOpen) {
-			return true;
-		} else if (photoModalVisible !== nextState.photoModalVisible) {
-			return true;
-		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
-			return true;
-		} else if (room.ro !== nextState.room.ro) {
-			return true;
-		} else if (room.f !== nextState.room.f) {
-			return true;
-		} else if (room.blocked !== nextState.room.blocked) {
-			return true;
-		} else if (room.blocker !== nextState.room.blocker) {
-			return true;
-		} else if (room.archived !== nextState.room.archived) {
-			return true;
-		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-			return true;
-		} else if (showActions !== nextProps.showActions) {
-			return true;
-		} else if (showErrorActions !== nextProps.showErrorActions) {
-			return true;
-		} else if (appState !== nextProps.appState) {
-			return true;
-		} else if (!equal(room.muted, nextState.room.muted)) {
-			return true;
-		}
-		return false;
-	}
+	// 	if (lastOpen !== nextState.lastOpen) {
+	// 		return true;
+	// 	} else if (photoModalVisible !== nextState.photoModalVisible) {
+	// 		return true;
+	// 	} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
+	// 		return true;
+	// 	} else if (room.ro !== nextState.room.ro) {
+	// 		return true;
+	// 	} else if (room.f !== nextState.room.f) {
+	// 		return true;
+	// 	} else if (room.blocked !== nextState.room.blocked) {
+	// 		return true;
+	// 	} else if (room.blocker !== nextState.room.blocker) {
+	// 		return true;
+	// 	} else if (room.archived !== nextState.room.archived) {
+	// 		return true;
+	// 	} else if (joined !== nextState.joined) {
+	// 		return true;
+	// 	} else if (canAutoTranslate !== nextState.canAutoTranslate) {
+	// 		return true;
+	// 	} else if (showActions !== nextProps.showActions) {
+	// 		return true;
+	// 	} else if (showErrorActions !== nextProps.showErrorActions) {
+	// 		return true;
+	// 	} else if (appState !== nextProps.appState) {
+	// 		return true;
+	// 	} else if (!equal(room.muted, nextState.room.muted)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const { room } = this.state;
@@ -305,8 +306,8 @@ class RoomView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
-		console.log('init')
 		try {
+			this.setState({ loading: true });
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
 				const { room } = this.state;
 				if (this.tmid) {
@@ -329,11 +330,11 @@ class RoomView extends React.Component {
 				// We run `canAutoTranslate` again in order to refetch auto translate permission
 				// in case of a missing connection or poor connection on room open
 				const canAutoTranslate = RocketChat.canAutoTranslate();
-				this.setState({ canAutoTranslate });
+				this.setState({ canAutoTranslate, loading: false });
 			});
 		} catch (e) {
+			this.setState({ loading: false });
 			log(e);
-			console.log(e)
 		}
 	}
 
@@ -687,7 +688,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage
+			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading
 		} = this.state;
 		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
@@ -695,7 +696,7 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				<List rid={rid} t={t} tmid={this.tmid} room={room} renderRow={this.renderItem} />
+				<List rid={rid} t={t} tmid={this.tmid} room={room} renderRow={this.renderItem} loading={loading} />
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker onEmojiSelected={this.onReactionPress} />

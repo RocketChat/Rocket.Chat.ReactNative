@@ -71,12 +71,21 @@ export class List extends React.Component {
 			.subscribe((data) => {
 				const messages = orderBy(data, ['ts'], ['desc']);
 				if (this.mounted) {
-					this.setState({ loading: false, messages });
+					this.setState({ messages });
 				} else {
 					this.state.messages = messages;
-					this.state.loading = false;
 				}
 			});
+	}
+
+	// this.state.loading works for this.onEndReached and RoomView.init
+	static getDerivedStateFromProps(props, state) {
+		if (props.loading !== state.loading) {
+			return {
+				loading: props.loading
+			};
+		}
+		return null;
 	}
 
 	// shouldComponentUpdate(nextProps, nextState) {
@@ -161,14 +170,14 @@ export class List extends React.Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { messages } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				<EmptyRoom length={messages.length} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
 					keyExtractor={item => item.id}
 					data={messages}
-					extraData={messages}
+					extraData={this.state}
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
@@ -182,7 +191,7 @@ export class List extends React.Component {
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
-			</React.Fragment>
+			</>
 		);
 	}
 }
