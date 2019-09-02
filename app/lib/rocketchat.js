@@ -549,10 +549,10 @@ const RocketChat = {
 	toggleStarMessage(message) {
 		if (message.starred) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unStarMessage', { messageId: message._id });
+			return this.sdk.post('chat.unStarMessage', { messageId: message.id });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.starMessage', { messageId: message._id });
+		return this.sdk.post('chat.starMessage', { messageId: message.id });
 	},
 	togglePinMessage(message) {
 		if (message.pinned) {
