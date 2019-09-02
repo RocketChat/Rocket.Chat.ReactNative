@@ -29,6 +29,7 @@
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
     "deep-equal": "^1.0.1",
     "ejson": "2.2.0",
+    "expo-file-system": "^6.0.2",
     "expo-av": "^6.0.0",
     "expo-haptics": "6.0.0",
     "expo-web-browser": "^6.0.0",

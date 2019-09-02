@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import * as FileSystem from 'expo-file-system';
+import DocumentPicker from 'react-native-document-picker';
+import ActionSheet from 'react-native-action-sheet';
+import isEqual from 'deep-equal';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -18,6 +22,7 @@ import { isIOS, isNotch } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	image: {
@@ -41,6 +46,22 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		paddingHorizontal: 9,
 		left: 15
+	},
+	certificatePicker: {
+		flex: 1,
+		marginTop: 40,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	chooseCertificateTitle: {
+		fontSize: 15,
+		...sharedStyles.textRegular,
+		...sharedStyles.textColorDescription
+	},
+	chooseCertificate: {
+		fontSize: 15,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textColorHeaderBack
 	}
 });
 
@@ -61,9 +82,19 @@ class NewServerView extends React.Component {
 	constructor(props) {
 		super(props);
 		const server = props.navigation.getParam('server');
+
+		// Cancel
+		this.options = [I18n.t('Cancel')];
+		this.CANCEL_INDEX = 0;
+
+		// Delete
+		this.options.push(I18n.t('Delete'));
+		this.DELETE_INDEX = 1;
+
 		this.state = {
 			text: server || '',
-			autoFocus: !server
+			autoFocus: !server,
+			certificate: null
 		};
 	}
 
@@ -76,9 +107,12 @@ class NewServerView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { text } = this.state;
+		const { text, certificate } = this.state;
 		const { connecting } = this.props;
 		if (nextState.text !== text) {
+			return true;
+		}
+		if (!isEqual(nextState.certificate, certificate)) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -91,13 +125,51 @@ class NewServerView extends React.Component {
 		this.setState({ text });
 	}
 
-	submit = () => {
-		const { text } = this.state;
+	submit = async() => {
+		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
+		let cert = null;
+
+		if (certificate) {
+			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
+			try {
+				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
+			} catch (error) {
+				log('err_save_certificate', error);
+			}
+			cert = {
+				path: this.uriToPath(certificatePath), // file:// isn't allowed by obj-C
+				password: certificate.password
+			};
+		}
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text));
+			connectServer(this.completeUrl(text), cert);
+		}
+	}
+
+	chooseCertificate = async() => {
+		try {
+			const res = await DocumentPicker.pick({
+				type: ['com.rsa.pkcs-12']
+			});
+			const { uri: path, name } = res;
+			Alert.prompt(
+				I18n.t('Certificate_password'),
+				I18n.t('Whats_the_password_for_your_certificate'),
+				[
+					{
+						text: 'OK',
+						onPress: password => this.saveCertificate({ path, name, password })
+					}
+				],
+				'secure-text',
+			);
+		} catch (error) {
+			if (!DocumentPicker.isCancel(error)) {
+				log('err_choose_certificate', error);
+			}
 		}
 	}
 
@@ -120,6 +192,25 @@ class NewServerView extends React.Component {
 		return url.replace(/\/+$/, '');
 	}
 
+	uriToPath = uri => uri.replace('file://', '');
+
+	saveCertificate = (certificate) => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState({ certificate });
+	}
+
+	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX
+		}, (actionIndex) => {
+			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
+		});
+	}
+
 	renderBack = () => {
 		const { navigation } = this.props;
 
@@ -139,6 +230,18 @@ class NewServerView extends React.Component {
 					color={COLOR_PRIMARY}
 				/>
 			</TouchableOpacity>
+		);
+	}
+
+	renderCertificatePicker = () => {
+		const { certificate } = this.state;
+		return (
+			<View style={styles.certificatePicker}>
+				<Text style={styles.chooseCertificateTitle}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
+				<TouchableOpacity onPress={certificate ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
+					<Text style={styles.chooseCertificate}>{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}</Text>
+				</TouchableOpacity>
+			</View>
 		);
 	}
 
@@ -175,6 +278,7 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
+						{ isIOS ? this.renderCertificatePicker() : null }
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}
@@ -188,7 +292,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: server => dispatch(serverRequest(server))
+	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);
