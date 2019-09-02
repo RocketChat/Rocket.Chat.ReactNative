@@ -684,7 +684,7 @@ class RoomView extends React.Component {
 							tmid={this.tmid}
 							room={room}
 							user={user}
-							actionMessage={messageSelected}
+							message={messageSelected}
 							actionsHide={this.actionsHide}
 						/>
 					)

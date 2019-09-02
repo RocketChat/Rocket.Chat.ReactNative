@@ -27,7 +27,7 @@ class MessageActions extends React.Component {
 	static propTypes = {
 		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
-		actionMessage: PropTypes.object,
+		message: PropTypes.object,
 		user: PropTypes.object,
 		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
@@ -87,13 +87,13 @@ class MessageActions extends React.Component {
 
 		// Star
 		if (Message_AllowStarring) {
-			this.options.push(I18n.t(props.actionMessage.starred ? 'Unstar' : 'Star'));
+			this.options.push(I18n.t(props.message.starred ? 'Unstar' : 'Star'));
 			this.STAR_INDEX = this.options.length - 1;
 		}
 
 		// Pin
 		if (Message_AllowPinning) {
-			this.options.push(I18n.t(props.actionMessage.pinned ? 'Unpin' : 'Pin'));
+			this.options.push(I18n.t(props.message.pinned ? 'Unpin' : 'Pin'));
 			this.PIN_INDEX = this.options.length - 1;
 		}
 
@@ -110,8 +110,8 @@ class MessageActions extends React.Component {
 		}
 
 		// Toggle Auto-translate
-		if (props.room.autoTranslate && props.actionMessage.u && props.actionMessage.u._id !== props.user.id) {
-			this.options.push(I18n.t(props.actionMessage.autoTranslate ? 'View_Original' : 'Translate'));
+		if (props.room.autoTranslate && props.message.u && props.message.u._id !== props.user.id) {
+			this.options.push(I18n.t(props.message.autoTranslate ? 'View_Original' : 'Translate'));
 			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}
 
@@ -158,7 +158,7 @@ class MessageActions extends React.Component {
 		}
 	}
 
-	isOwn = props => props.actionMessage.u && props.actionMessage.u._id === props.user.id;
+	isOwn = props => props.message.u && props.message.u._id === props.user.id;
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
@@ -183,8 +183,8 @@ class MessageActions extends React.Component {
 		const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
 		if (blockEditInMinutes) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
-				msgTs = moment(props.actionMessage.ts);
+			if (props.message.ts != null) {
+				msgTs = moment(props.message.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -201,7 +201,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Prevent from deleting thread start message when positioned inside the thread
-		if (props.tmid && props.tmid === props.actionMessage._id) {
+		if (props.tmid && props.tmid === props.message._id) {
 			return false;
 		}
 		const deleteOwn = this.isOwn(props);
@@ -215,8 +215,8 @@ class MessageActions extends React.Component {
 		const blockDeleteInMinutes = Message_AllowDeleting_BlockDeleteInMinutes;
 		if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 			let msgTs;
-			if (props.actionMessage.ts != null) {
-				msgTs = moment(props.actionMessage.ts);
+			if (props.message.ts != null) {
+				msgTs = moment(props.message.ts);
 			}
 			let currentTsDiff;
 			if (msgTs != null) {
@@ -228,7 +228,7 @@ class MessageActions extends React.Component {
 	}
 
 	handleDelete = () => {
-		const { deleteRequest, actionMessage } = this.props;
+		const { deleteRequest, message } = this.props;
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('You_will_not_be_able_to_recover_this_message'),
@@ -240,7 +240,7 @@ class MessageActions extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: 'delete' }),
 					style: 'destructive',
-					onPress: () => deleteRequest(actionMessage)
+					onPress: () => deleteRequest(message)
 				}
 			],
 			{ cancelable: false }
@@ -248,66 +248,66 @@ class MessageActions extends React.Component {
 	}
 
 	handleEdit = () => {
-		const { actionMessage, editInit } = this.props;
-		const { _id, msg, rid } = actionMessage;
+		const { message, editInit } = this.props;
+		const { _id, msg, rid } = message;
 		editInit({ _id, msg, rid });
 	}
 
 	handleCopy = async() => {
-		const { actionMessage } = this.props;
-		await Clipboard.setString(actionMessage.msg);
+		const { message } = this.props;
+		await Clipboard.setString(message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
 	handleShare = async() => {
-		const { actionMessage } = this.props;
-		const permalink = await this.getPermalink(actionMessage);
+		const { message } = this.props;
+		const permalink = await this.getPermalink(message);
 		Share.share({
 			message: permalink
 		});
 	};
 
 	handleStar = () => {
-		const { actionMessage, toggleStarRequest } = this.props;
-		toggleStarRequest(actionMessage);
+		const { message, toggleStarRequest } = this.props;
+		toggleStarRequest(message);
 	}
 
 	handlePermalink = async() => {
-		const { actionMessage } = this.props;
-		const permalink = await this.getPermalink(actionMessage);
+		const { message } = this.props;
+		const permalink = await this.getPermalink(message);
 		Clipboard.setString(permalink);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 	}
 
 	handlePin = () => {
-		const { actionMessage, togglePinRequest } = this.props;
-		togglePinRequest(actionMessage);
+		const { message, togglePinRequest } = this.props;
+		togglePinRequest(message);
 	}
 
 	handleReply = () => {
-		const { actionMessage, replyInit } = this.props;
-		replyInit(actionMessage, true);
+		const { message, replyInit } = this.props;
+		replyInit(message, true);
 	}
 
 	handleQuote = () => {
-		const { actionMessage, replyInit } = this.props;
-		replyInit(actionMessage, false);
+		const { message, replyInit } = this.props;
+		replyInit(message, false);
 	}
 
 	handleReaction = () => {
-		const { actionMessage, toggleReactionPicker } = this.props;
-		toggleReactionPicker(actionMessage);
+		const { message, toggleReactionPicker } = this.props;
+		toggleReactionPicker(message);
 	}
 
 	handleReadReceipt = () => {
-		const { actionMessage } = this.props;
-		Navigation.navigate('ReadReceiptsView', { messageId: actionMessage._id });
+		const { message } = this.props;
+		Navigation.navigate('ReadReceiptsView', { messageId: message._id });
 	}
 
 	handleReport = async() => {
-		const { actionMessage } = this.props;
+		const { message } = this.props;
 		try {
-			await RocketChat.reportMessage(actionMessage.id);
+			await RocketChat.reportMessage(message.id);
 			Alert.alert(I18n.t('Message_Reported'));
 		} catch (e) {
 			log(e);
@@ -315,16 +315,16 @@ class MessageActions extends React.Component {
 	}
 
 	handleToggleTranslation = async() => {
-		const { actionMessage, room } = this.props;
+		const { message, room } = this.props;
 		try {
-			const message = database.objectForPrimaryKey('messages', actionMessage._id);
+			const message = database.objectForPrimaryKey('messages', message._id);
 			database.write(() => {
 				message.autoTranslate = !message.autoTranslate;
 				message._updatedAt = new Date();
 			});
 			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 			if (!translatedMessage) {
-				await RocketChat.translateMessage(actionMessage, room.autoTranslateLanguage);
+				await RocketChat.translateMessage(message, room.autoTranslateLanguage);
 			}
 		} catch (e) {
 			log(e);
