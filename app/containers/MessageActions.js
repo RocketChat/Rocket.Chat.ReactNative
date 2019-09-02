@@ -307,7 +307,7 @@ class MessageActions extends React.Component {
 	handleReport = async() => {
 		const { actionMessage } = this.props;
 		try {
-			await RocketChat.reportMessage(actionMessage._id);
+			await RocketChat.reportMessage(actionMessage.id);
 			Alert.alert(I18n.t('Message_Reported'));
 		} catch (e) {
 			log(e);
