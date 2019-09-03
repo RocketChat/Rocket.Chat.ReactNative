@@ -1,0 +1,16 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.js b/node_modules/@rocket.chat/sdk/lib/api/api.js
+index 7013176..15bbcf2 100644
+--- a/node_modules/@rocket.chat/sdk/lib/api/api.js
++++ b/node_modules/@rocket.chat/sdk/lib/api/api.js
+@@ -52,9 +52,10 @@ class Client {
+             headers: this.getHeaders(options)
+         }).then(this.handle);
+     }
+-    delete(url, options) {
++    delete(url, data, options) {
+         return fetch(`${this.host}/api/v1/${encodeURI(url)}`, {
+             method: 'DELETE',
++            body: this.getBody(data),
+             headers: this.getHeaders(options)
+         }).then(this.handle);
+     }

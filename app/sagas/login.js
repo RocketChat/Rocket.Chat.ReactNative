@@ -16,6 +16,7 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/realm';
 import EventEmitter from '../utils/events';
+import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -104,6 +105,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout() {
+	Navigation.navigate('AuthLoading');
 	const server = yield select(getServer);
 	if (server) {
 		try {
