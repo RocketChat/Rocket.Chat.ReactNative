@@ -234,7 +234,6 @@ class LoginSignupView extends React.Component {
 		const domain = `${ serverURL }`;
 		const absolutePath = `${ authorizePath }${ params }`;
 		const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
-		console.log('url = ', url);
 		this.openOAuth({ url });
 	}
 
