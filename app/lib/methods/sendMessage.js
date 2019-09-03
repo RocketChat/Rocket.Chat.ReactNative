@@ -1,49 +1,43 @@
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 export const getMessage = async(rid, msg = '', tmid, user) => {
 	const _id = random(17);
 	const { id, username } = user;
-	const message = {
-		_id,
-		rid,
-		msg,
-		tmid,
-		ts: new Date(),
-		_updatedAt: new Date(),
-		status: messagesStatus.TEMP,
-		u: {
-			_id: id || '1',
-			username
-		}
-	};
 	try {
-		// database.write(() => {
-		// 	database.create('messages', message, true);
-		// });
 		const watermelon = watermelondb.database;
 		const msgCollection = watermelon.collections.get('messages');
+		let message;
 		await watermelon.action(async() => {
-			await msgCollection.create((m) => {
-				m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+			message = await msgCollection.create((m) => {
+				m._raw = sanitizedRaw({ id: _id }, msgCollection.schema);
 				m.subscription.id = rid;
-				Object.assign(m, message);
+				m.msg = msg;
+				m.tmid = tmid;
+				m.ts = new Date();
+				m._updatedAt = new Date();
+				m.status = messagesStatus.TEMP;
+				m.u = {
+					_id: id || '1',
+					username
+				};
 			});
 		});
+		return message;
 	} catch (error) {
 		console.warn('getMessage', error);
 	}
-	return message;
 };
 
 export async function sendMessageCall(message) {
 	const {
-		_id, rid, msg, tmid
+		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
 	// RC 0.60.0
 	const data = await this.sdk.post('chat.sendMessage', {
@@ -57,6 +51,9 @@ export async function sendMessageCall(message) {
 export default async function(rid, msg, tmid, user) {
 	try {
 		const message = await getMessage(rid, msg, tmid, user);
+		if (!message) {
+			return;
+		}
 		// const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
 		// if (room) {
@@ -64,17 +61,15 @@ export default async function(rid, msg, tmid, user) {
 		// 		room.draftMessage = null;
 		// 	});
 		// }
-
+		const watermelon = watermelondb.database;
 		try {
-			const ret = await sendMessageCall.call(this, message);
-			// database.write(() => {
-			// 	database.create('messages', buildMessage({ ...message, ...ret }), true);
-			// });
+			await sendMessageCall.call(this, message);
 		} catch (e) {
-			// database.write(() => {
-			// 	message.status = messagesStatus.ERROR;
-			// 	database.create('messages', message, true);
-			// });
+			await watermelon.action(async() => {
+				await message.update((m) => {
+					m.status = messagesStatus.ERROR;
+				});
+			});
 		}
 	} catch (e) {
 		log(e);
