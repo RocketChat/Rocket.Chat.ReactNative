@@ -1,5 +1,7 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation, date, action, json, children } from '@nozbe/watermelondb/decorators';
+import {
+	field, date, json, children
+} from '@nozbe/watermelondb/decorators';
 
 export default class Subscription extends Model {
 	static table = 'subscriptions';

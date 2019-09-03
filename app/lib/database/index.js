@@ -7,10 +7,18 @@ import Subscription from './model/Subscription';
 import Message from './model/Message';
 import Thread from './model/Thread';
 import ThreadMessage from './model/ThreadMessage';
+import User from './model/User';
 
 class DB {
 	databases = {
-		// activeDB: databaseWatermelon
+		serversDB: new Database({
+			adapter: new SQLiteAdapter({
+				dbName: `${ RNRealmPath.realmPath }default.db`,
+				schema
+			}),
+			modelClasses: [User],
+			actionsEnabled: true
+		})
 	}
 
 	get database() {
