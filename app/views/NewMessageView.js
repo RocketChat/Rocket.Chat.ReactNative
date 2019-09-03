@@ -215,8 +215,13 @@ export default class NewMessageView extends React.Component {
 			if (foundResponse) {
 				contact.username = foundResponse.u;
 				syncedContacts.push(contact);
-			} else {
-				unsyncedContacts.push(contact);
+			}
+		});
+
+		deviceContacts.forEach((deviceContact) => {
+			const found = syncedContacts.find(syncedContact => syncedContact.recordID === deviceContact.recordID);
+			if (!found) {
+				unsyncedContacts.push(deviceContact);
 			}
 		});
 
