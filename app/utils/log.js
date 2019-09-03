@@ -9,7 +9,7 @@ export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 
 export default (e) => {
-	if (e instanceof Error) {
+	if (e instanceof Error && !__DEV__) {
 		bugsnag.notify(e);
 	} else {
 		console.log(e);
