@@ -7,6 +7,7 @@ import Subscription from './model/Subscription';
 import Message from './model/Message';
 import Thread from './model/Thread';
 import ThreadMessage from './model/ThreadMessage';
+import CustomEmoji from './model/CustomEmoji';
 
 class DB {
 	databases = {
@@ -32,7 +33,7 @@ class DB {
 
 		this.databases.activeDB = new Database({
 			adapter,
-			modelClasses: [Subscription, Message, Thread, ThreadMessage],
+			modelClasses: [Subscription, Message, Thread, ThreadMessage, CustomEmoji],
 			actionsEnabled: true
 		});
 	}

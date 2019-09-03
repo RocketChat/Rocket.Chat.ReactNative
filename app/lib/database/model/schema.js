@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 13,
+	version: 14,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -85,6 +85,7 @@ export default appSchema({
 				{ name: 'msg', type: 'string', isOptional: true },
 				{ name: 't', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: '_updated_at', type: 'number' },
 				// { name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'u', type: 'string' },
@@ -94,7 +95,6 @@ export default appSchema({
 				{ name: 'avatar', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' },
 				{ name: 'status', type: 'number', isOptional: true },
 				{ name: 'pinned', type: 'boolean', isOptional: true },
 				{ name: 'starred', type: 'boolean', isOptional: true },
@@ -120,6 +120,7 @@ export default appSchema({
 				{ name: 'msg', type: 'string', isOptional: true },
 				{ name: 't', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: '_updated_at', type: 'number' },
 				// { name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'u', type: 'string' },
@@ -129,7 +130,6 @@ export default appSchema({
 				{ name: 'avatar', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' },
 				{ name: 'status', type: 'number', isOptional: true },
 				{ name: 'pinned', type: 'boolean', isOptional: true },
 				{ name: 'starred', type: 'boolean', isOptional: true },
@@ -148,6 +148,15 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'custom_emojis',
+			columns: [
+				{ name: 'name', type: 'string', isOptional: true },
+				{ name: 'aliases', type: 'string', isOptional: true },
+				{ name: 'extension', type: 'string' },
+				{ name: '_updated_at', type: 'number' }
 			]
 		})
 	]
