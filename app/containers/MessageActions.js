@@ -13,6 +13,7 @@ import {
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
+import watermelon from '../lib/database';
 import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
@@ -313,14 +314,21 @@ class MessageActions extends React.Component {
 	handleToggleTranslation = async() => {
 		const { message, room } = this.props;
 		try {
-			const message = database.objectForPrimaryKey('messages', message._id);
-			database.write(() => {
-				message.autoTranslate = !message.autoTranslate;
-				message._updatedAt = new Date();
+			await watermelon.database.action(async() => {
+				await message.update((m) => {
+					m.autoTranslate = !m.autoTranslate;
+					m._updatedAt = new Date();
+				});
 			});
 			const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 			if (!translatedMessage) {
-				await RocketChat.translateMessage(message, room.autoTranslateLanguage);
+				const m = {
+					_id: message.id,
+					rid: message.subscription.id,
+					u: message.u,
+					msg: message.msg
+				};
+				await RocketChat.translateMessage(m, room.autoTranslateLanguage);
 			}
 		} catch (e) {
 			log(e);
