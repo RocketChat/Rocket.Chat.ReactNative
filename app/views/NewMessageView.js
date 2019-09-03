@@ -225,6 +225,17 @@ export default class NewMessageView extends React.Component {
 			}
 		});
 
+		syncedContacts.sort((a, b) => {
+			const a_name = a.givenName.concat(' ', a.familyName);
+			const b_name = b.givenName.concat(' ', b.familyName);
+			return (a_name.localeCompare(b_name));
+		});
+		unsyncedContacts.sort((a, b) => {
+			const a_name = a.givenName.concat(' ', a.familyName);
+			const b_name = b.givenName.concat(' ', b.familyName);
+			return (a_name.localeCompare(b_name));
+		});
+
 		return [syncedContacts, unsyncedContacts];
 	}
 
