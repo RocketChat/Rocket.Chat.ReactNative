@@ -12,10 +12,6 @@ import EJSON from 'ejson';
 import * as Haptics from 'expo-haptics';
 
 import {
-	toggleReactionPicker as toggleReactionPickerAction,
-	errorActionsShow as errorActionsShowAction,
-	editCancel as editCancelAction,
-	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { List } from './List';
@@ -103,8 +99,7 @@ class RoomView extends React.Component {
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		useMarkdown: PropTypes.bool,
-		replyBroadcast: PropTypes.func,
-		errorActionsShow: PropTypes.func
+		replyBroadcast: PropTypes.func
 	};
 
 	constructor(props) {
@@ -130,6 +125,7 @@ class RoomView extends React.Component {
 			canAutoTranslate,
 			loading: true,
 			showActions: false,
+			showErrorActions: false,
 			editing: false,
 			replying: false,
 			replyWithMention: false,
@@ -334,12 +330,20 @@ class RoomView extends React.Component {
 		}
 	}
 
-	actionsHide = () => {
+	errorActionsShow = (message) => {
+		this.setState({ selectedMessage: message, showErrorActions: true });
+	}
+
+	onActionsHide = () => {
 		const { editing, replying, reacting } = this.state;
 		if (editing || replying || reacting) {
 			return;
 		}
 		this.setState({ selectedMessage: {}, showActions: false });
+	}
+
+	onErrorActionsHide = () => {
+		this.setState({ selectedMessage: {}, showErrorActions: false });
 	}
 
 	onEditInit = (message) => {
@@ -447,11 +451,6 @@ class RoomView extends React.Component {
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
-	}
-
-	errorActionsShow = (message) => {
-		const { errorActionsShow } = this.props;
-		errorActionsShow(message);
 	}
 
 	handleConnected = () => {
@@ -708,9 +707,11 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const { room, selectedMessage, showActions } = this.state;
 		const {
-			user, showErrorActions, navigation
+			room, selectedMessage, showActions, showErrorActions
+		} = this.state;
+		const {
+			user, navigation
 		} = this.props;
 		if (!navigation.isFocused()) {
 			return null;
@@ -724,7 +725,7 @@ class RoomView extends React.Component {
 							room={room}
 							user={user}
 							message={selectedMessage}
-							actionsHide={this.actionsHide}
+							actionsHide={this.onActionsHide}
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
@@ -732,7 +733,12 @@ class RoomView extends React.Component {
 					)
 					: null
 				}
-				{showErrorActions ? <MessageErrorActions /> : null}
+				{showErrorActions ? (
+					<MessageErrorActions
+						message={selectedMessage}
+						actionsHide={this.onErrorActionsHide}
+					/>
+				) : null}
 			</>
 		);
 	}
@@ -783,8 +789,6 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	showActions: state.messages.showActions,
-	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
@@ -798,7 +802,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	replyCancel: () => dispatch(replyCancelAction()),
 	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 

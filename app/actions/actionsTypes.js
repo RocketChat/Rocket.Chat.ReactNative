@@ -34,8 +34,6 @@ export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
-	'ERROR_ACTIONS_SHOW',
-	'ERROR_ACTIONS_HIDE',
 	'DELETE_REQUEST',
 	'DELETE_SUCCESS',
 	'DELETE_FAILURE',

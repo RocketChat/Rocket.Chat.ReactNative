@@ -454,19 +454,20 @@ const RocketChat = {
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(messageId) {
-		const message = await database.objects('messages').filtered('_id = $0', messageId)[0];
+	async resendMessage(message) {
 		try {
-			database.write(() => {
-				message.status = messagesStatus.TEMP;
-				database.create('messages', message, true);
+			await watermelon.database.action(async() => {
+				await message.update((m) => {
+					m.status = messagesStatus.TEMP;
+				});
 			});
-			await sendMessageCall.call(this, JSON.parse(JSON.stringify(message)));
+			await sendMessageCall.call(this, message);
 		} catch (error) {
 			try {
-				database.write(() => {
-					message.status = messagesStatus.ERROR;
-					database.create('messages', message, true);
+				await watermelon.database.action(async() => {
+					await message.update((m) => {
+						m.status = messagesStatus.ERROR;
+					});
 				});
 			} catch (e) {
 				log(e);
