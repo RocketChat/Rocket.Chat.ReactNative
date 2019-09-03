@@ -59,7 +59,11 @@ const RocketChat = {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
 		}
-		this.roomsSub = await subscribeRooms.call(this);
+		try {
+			this.roomsSub = await subscribeRooms.call(this);
+		} catch (e) {
+			log(e);
+		}
 	},
 	subscribeRoom,
 	canOpenRoom,
@@ -152,14 +156,35 @@ const RocketChat = {
 			};
 		}
 	},
+	stopListener(listener) {
+		return listener && listener.stop();
+	},
 	connect({ server, user }) {
 		return new Promise((resolve) => {
-			database.setActiveDB(server);
-			watermelon.setActiveDB(server);
+			if (!this.sdk || this.sdk.client.host !== server) {
+				database.setActiveDB(server);
+				watermelon.setActiveDB(server);
+			}
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
 				clearTimeout(this.connectTimeout);
+			}
+
+			if (this.connectedListener) {
+				this.connectedListener.then(this.stopListener);
+			}
+
+			if (this.closeListener) {
+				this.closeListener.then(this.stopListener);
+			}
+
+			if (this.usersListener) {
+				this.usersListener.then(this.stopListener);
+			}
+
+			if (this.notifyLoggedListener) {
+				this.notifyLoggedListener.then(this.stopListener);
 			}
 
 			if (this.roomsSub) {
@@ -192,7 +217,7 @@ const RocketChat = {
 					}, 10000);
 				});
 
-			this.sdk.onStreamData('connected', () => {
+			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 				// const { isAuthenticated } = reduxStore.getState().login;
 				// if (isAuthenticated) {
@@ -200,13 +225,13 @@ const RocketChat = {
 				// }
 			});
 
-			this.sdk.onStreamData('close', () => {
+			this.closeListener = this.sdk.onStreamData('close', () => {
 				reduxStore.dispatch(disconnect());
 			});
 
-			this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
 				if (eventName === 'user-status') {
 					const userStatus = ddpMessage.fields.args[0];
