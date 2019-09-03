@@ -30,7 +30,6 @@ target 'RocketChatRN' do
 
   use_native_modules!
   use_unimodules!
-
 end
 
 target 'ShareRocketChatRN' do
