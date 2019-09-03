@@ -12,6 +12,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import database, { safeAddListener } from '../lib/realm';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
+import UnsyncedContactItem from '../presentation/UnsyncedContactItem';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
@@ -88,6 +89,13 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		height: 17,
 		width: 17
+	},
+	inviteText: {
+		backgroundColor: '#ffffff',
+		paddingTop: 22,
+		paddingBottom: 5,
+		paddingLeft: 15,
+		fontSize: 16
 	}
 });
 
@@ -248,10 +256,12 @@ export default class NewMessageView extends React.Component {
 		}
 	}))
 
-	onPressItem = (item) => {
-		const { navigation } = this.props;
-		const onPressItem = navigation.getParam('onPressItem', () => {});
-		onPressItem(item);
+	onPressItem = (item, itemType) => {
+		if (itemType === 'synced') {
+			const { navigation } = this.props;
+			const onPressItem = navigation.getParam('onPressItem', () => {});
+			onPressItem(item);
+		}
 	}
 
 	dismiss = () => {
@@ -315,7 +325,9 @@ export default class NewMessageView extends React.Component {
 
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
-	renderItem = ({ item, index }) => {
+	renderInviteText = () => <Text style={styles.inviteText}>INVITE CONTACTS</Text>
+
+	renderSyncedItem = ({ item, index }) => {
 		const { search } = this.state;
 		const { baseUrl, user } = this.props;
 
@@ -333,7 +345,7 @@ export default class NewMessageView extends React.Component {
 			<UserItem
 				name={item.givenName.concat(' ', item.familyName)}
 				username={item.username}
-				onPress={() => this.onPressItem(item)}
+				onPress={() => this.onPressItem(item, 'synced')}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.username }`}
 				style={style}
@@ -342,12 +354,38 @@ export default class NewMessageView extends React.Component {
 		);
 	}
 
-	renderSyncedContacts = (search, syncedContacts) => (
+	renderUnsyncedItem = ({ item, index }) => {
+		const { search } = this.state;
+		const { baseUrl, user } = this.props;
+
+		let style = {};
+		if (index === 0) {
+			style = { ...sharedStyles.separatorTop };
+		}
+		if (search.length > 0 && index === search.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
+		if (search.length === 0 && index === this.data.length - 1) {
+			style = { ...style, ...sharedStyles.separatorBottom };
+		}
+		return (
+			<UnsyncedContactItem
+				name={item.givenName.concat(' ', item.familyName)}
+				onPress={() => this.onPressItem(item, 'unsynced')}
+				baseUrl={baseUrl}
+				testID={`new-message-view-item-${ item.recordID }`}
+				style={style}
+				user={user}
+			/>
+		);
+	}
+
+	renderContacts = (search, contacts, renderItem) => (
 		<FlatList
-			data={search.length > 0 ? search : syncedContacts}
+			data={search.length > 0 ? search : contacts}
 			extraData={this.state}
 			keyExtractor={item => item._id}
-			renderItem={this.renderItem}
+			renderItem={renderItem}
 			ItemSeparatorComponent={this.renderSeparator}
 			keyboardShouldPersistTaps='always'
 		/>
@@ -356,12 +394,15 @@ export default class NewMessageView extends React.Component {
 	renderParentList = () => {
 		const { search } = this.state;
 		const { syncedContacts } = this.state;
+		const { unsyncedContacts } = this.state;
 		return (
 			<ScrollView>
 				{this.renderGroupChannelButtons('New Group', 'Lock.png')}
 				{this.renderSeparator()}
 				{this.renderGroupChannelButtons('New Channel', 'Hashtag.png', this.createChannel)}
-				{this.renderSyncedContacts(search, syncedContacts)}
+				{this.renderContacts(search, syncedContacts, this.renderSyncedItem)}
+				{this.renderInviteText()}
+				{this.renderContacts(search, unsyncedContacts, this.renderUnsyncedItem)}
 			</ScrollView>
 		);
 	}
