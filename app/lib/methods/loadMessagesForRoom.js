@@ -34,24 +34,6 @@ export default function loadMessagesForRoom(args) {
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(async() => {
 					await updateMessages(args.rid, data);
-					// database.write(() => data.forEach(async(message) => {
-					// 	message = buildMessage(message);
-					// 	try {
-					// 		database.create('messages', message, true);
-					// 		// if it's a thread "header"
-					// 		if (message.tlm) {
-					// 			database.create('threads', message, true);
-					// 		}
-					// 		// if it belongs to a thread
-					// 		if (message.tmid) {
-					// 			message.rid = message.tmid;
-					// 			database.create('threadMessages', message, true);
-					// 		}
-					// 	} catch (e) {
-					// 		log(e);
-					// 	}
-					// }));
-
 					return resolve(data);
 				});
 			} else {

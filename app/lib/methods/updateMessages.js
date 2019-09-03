@@ -1,28 +1,16 @@
-import { InteractionManager } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import buildMessage from './helpers/buildMessage';
-import database from '../realm';
 import log from '../../utils/log';
 import watermelondb from '../database';
-
-// TODO: move to utils
-const assignSub = (sub, newSub) => {
-	Object.assign(sub, newSub);
-};
+import protectedFunction from './helpers/protectedFunction';
 
 export default function updateMessages(rid, messages) {
-    console.log('TCL: updateMessages -> rid, messages', rid, messages);
 	try {
 		const watermelon = watermelondb.database;
 		return watermelon.action(async() => {
 			const subCollection = watermelon.collections.get('subscriptions');
-			const subQuery = await subCollection.query(Q.where('rid', rid)).fetch();
-			if (!subQuery) {
-				return;
-			}
-			const sub = subQuery[0];
+			const sub = await subCollection.find(rid);
 			const msgCollection = watermelon.collections.get('messages');
 			const threadCollection = watermelon.collections.get('threads');
 			const threadMessagesCollection = watermelon.collections.get('thread_messages');
@@ -47,42 +35,42 @@ export default function updateMessages(rid, messages) {
 			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
 
 			// Create
-			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate((m) => {
+			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate(protectedFunction((m) => {
 				m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 				m.subscription.set(sub); // TODO: do we need it?
-				assignSub(m, message);
-			}));
-			threadsToCreate = threadsToCreate.map(thread => threadCollection.prepareCreate((t) => {
+				Object.assign(m, message);
+			})));
+			threadsToCreate = threadsToCreate.map(thread => threadCollection.prepareCreate(protectedFunction((t) => {
 				t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 				t.subscription.set(sub);
-				assignSub(t, thread);
+				Object.assign(t, thread);
 				t.tlm = null;
-			}));
-			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate((tm) => {
+			})));
+			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 				tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
-				assignSub(tm, threadMessage);
+				Object.assign(tm, threadMessage);
 				tm.subscription.rid = threadMessage.tmid;
-			}));
+			})));
 
 			// Update
 			msgsToUpdate = msgsToUpdate.map((message) => {
 				const newMessage = messages.find(m => m._id === message.id);
-				return message.prepareUpdate((m) => {
-					assignSub(m, newMessage);
-				});
+				return message.prepareUpdate(protectedFunction((m) => {
+					Object.assign(m, newMessage);
+				}));
 			});
 			threadsToUpdate = threadsToUpdate.map((thread) => {
 				const newThread = allThreads.find(t => t._id === thread.id);
-				return thread.prepareUpdate((t) => {
-					assignSub(t, newThread);
+				return thread.prepareUpdate(protectedFunction((t) => {
+					Object.assign(t, newThread);
 					t.tlm = null;
-				});
+				}));
 			});
 			threadMessagesToUpdate = threadMessagesToUpdate.map((threadMessage) => {
 				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
-				return threadMessage.prepareUpdate((tm) => {
-					assignSub(tm, newThreadMessage);
-				});
+				return threadMessage.prepareUpdate(protectedFunction((tm) => {
+					Object.assign(tm, newThreadMessage);
+				}));
 			});
 
 			const allRecords = [
@@ -97,7 +85,7 @@ export default function updateMessages(rid, messages) {
 			try {
 				await watermelon.batch(...allRecords);
 			} catch (e) {
-				console.log('TCL: batch watermelon -> e', e);
+				log(e);
 			}
 			return allRecords.length;
 		});
