@@ -35,7 +35,8 @@ class MessagesView extends React.Component {
 			loading: false,
 			messages: [],
 			selectedAttachment: {},
-			photoModalVisible: false
+			photoModalVisible: false,
+			fileLoading: true
 		};
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
@@ -47,7 +48,9 @@ class MessagesView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, messages, photoModalVisible } = this.state;
+		const {
+			loading, messages, photoModalVisible, fileLoading
+		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -57,6 +60,10 @@ class MessagesView extends React.Component {
 		if (!equal(nextState.messages, messages)) {
 			return true;
 		}
+		if (fileLoading !== nextState.fileLoading) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -225,6 +232,10 @@ class MessagesView extends React.Component {
 		}
 	}
 
+	setFileLoading = (fileLoading) => {
+		this.setState({ fileLoading });
+	}
+
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID={this.content.testID}>
 			<Text style={styles.noDataFound}>{this.content.noDataMsg}</Text>
@@ -235,7 +246,7 @@ class MessagesView extends React.Component {
 
 	render() {
 		const {
-			messages, loading, selectedAttachment, photoModalVisible
+			messages, loading, selectedAttachment, photoModalVisible, fileLoading
 		} = this.state;
 		const { user, baseUrl } = this.props;
 
@@ -260,6 +271,8 @@ class MessagesView extends React.Component {
 					onClose={this.onCloseFileModal}
 					user={user}
 					baseUrl={baseUrl}
+					loading={fileLoading}
+					setLoading={this.setFileLoading}
 				/>
 			</SafeAreaView>
 		);

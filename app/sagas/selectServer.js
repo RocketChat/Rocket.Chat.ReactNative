@@ -14,6 +14,7 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
 import log from '../utils/log';
+import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
@@ -34,7 +35,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 		return serverInfo;
 	} catch (e) {
-		log('err_get_server_info', e);
+		log(e);
 	}
 };
 
@@ -73,25 +74,30 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
 	} catch (e) {
 		yield put(selectServerFailure());
-		log('err_select_server', e);
+		log(e);
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server }) {
+const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
-		const serverInfo = yield getServerInfo({ server });
-
-		const loginServicesLength = yield RocketChat.getLoginServices(server);
-		if (loginServicesLength === 0) {
-			Navigation.navigate('LoginView');
-		} else {
-			Navigation.navigate('LoginSignupView');
+		if (certificate) {
+			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
 		}
 
-		yield put(selectServerRequest(server, serverInfo.version, false));
+		const serverInfo = yield getServerInfo({ server });
+
+		if (serverInfo) {
+			const loginServicesLength = yield RocketChat.getLoginServices(server);
+			if (loginServicesLength === 0) {
+				Navigation.navigate('LoginView');
+			} else {
+				Navigation.navigate('LoginSignupView');
+			}
+			yield put(selectServerRequest(server, serverInfo.version, false));
+		}
 	} catch (e) {
 		yield put(serverFailure());
-		log('err_server_request', e);
+		log(e);
 	}
 };
 

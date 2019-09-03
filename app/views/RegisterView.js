@@ -47,7 +47,7 @@ class RegisterView extends React.Component {
 			try {
 				this.parsedCustomFields = JSON.parse(props.Accounts_CustomFields);
 			} catch (e) {
-				log('err_parsing_account_custom_fields', e);
+				log(e);
 			}
 		}
 		Object.keys(this.parsedCustomFields).forEach((key) => {

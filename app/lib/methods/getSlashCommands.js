@@ -10,7 +10,7 @@ export default function() {
 			const result = await this.sdk.get('commands.list');
 
 			if (!result.success) {
-				log('getSlashCommand fetch', result);
+				console.log(result);
 				return resolve();
 			}
 
@@ -22,14 +22,14 @@ export default function() {
 						try {
 							database.create('slashCommand', command, true);
 						} catch (e) {
-							log('get_slash_command', e);
+							log(e);
 						}
 					}));
 					return resolve();
 				});
 			}
 		} catch (e) {
-			log('err_get_slash_command', e);
+			log(e);
 			return resolve();
 		}
 	});

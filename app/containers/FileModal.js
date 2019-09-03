@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
 } from 'react-native';
@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import VideoPlayer from 'react-native-video-controls';
+import { Video } from 'expo-av';
 
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
@@ -38,6 +38,18 @@ const styles = StyleSheet.create({
 	},
 	indicator: {
 		flex: 1
+	},
+	video: {
+		flex: 1
+	},
+	loading: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
@@ -72,15 +84,26 @@ const ModalContent = React.memo(({
 		);
 	}
 	if (attachment && attachment.video_url) {
+		const [loading, setLoading] = useState(true);
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
-			<SafeAreaView style={styles.safeArea}>
-				<VideoPlayer
+			<>
+				<Video
 					source={{ uri }}
-					onBack={onClose}
-					disableVolume
+					rate={1.0}
+					volume={1.0}
+					isMuted={false}
+					resizeMode='cover'
+					shouldPlay
+					isLooping={false}
+					style={styles.video}
+					useNativeControls
+					onReadyForDisplay={() => setLoading(false)}
+					onLoadStart={() => setLoading(true)}
+					onError={console.log}
 				/>
-			</SafeAreaView>
+				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
+			</>
 		);
 	}
 	return null;
@@ -95,11 +118,11 @@ const FileModal = React.memo(({
 		onBackdropPress={onClose}
 		onBackButtonPress={onClose}
 		onSwipeComplete={onClose}
-		swipeDirection={['up', 'left', 'right', 'down']}
+		swipeDirection={['up', 'down']}
 	>
 		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
+), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading);
 
 FileModal.propTypes = {
 	isVisible: PropTypes.bool,
