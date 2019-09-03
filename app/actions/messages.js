@@ -71,13 +71,6 @@ export function togglePinFailure(err) {
 	};
 }
 
-export function toggleReactionPicker(message) {
-	return {
-		type: types.MESSAGES.TOGGLE_REACTION_PICKER,
-		message
-	};
-}
-
 export function replyBroadcast(message) {
 	return {
 		type: types.MESSAGES.REPLY_BROADCAST,

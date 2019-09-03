@@ -29,12 +29,6 @@ export default function messages(state = initialState, action) {
 				...state,
 				message: {}
 			};
-		case types.MESSAGES.TOGGLE_REACTION_PICKER:
-			return {
-				...state,
-				showReactionPicker: !state.showReactionPicker,
-				actionMessage: action.message
-			};
 		default:
 			return state;
 	}

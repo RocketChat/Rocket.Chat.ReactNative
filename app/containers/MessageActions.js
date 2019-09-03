@@ -9,7 +9,6 @@ import * as Haptics from 'expo-haptics';
 import {
 	deleteRequest as deleteRequestAction,
 	togglePinRequest as togglePinRequestAction,
-	toggleReactionPicker as toggleReactionPickerAction,
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
@@ -31,7 +30,7 @@ class MessageActions extends React.Component {
 		editInit: PropTypes.func.isRequired,
 		toggleStarRequest: PropTypes.func.isRequired,
 		togglePinRequest: PropTypes.func.isRequired,
-		toggleReactionPicker: PropTypes.func.isRequired,
+		reactionInit: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
@@ -292,8 +291,8 @@ class MessageActions extends React.Component {
 	}
 
 	handleReaction = () => {
-		const { message, toggleReactionPicker } = this.props;
-		toggleReactionPicker(message);
+		const { message, reactionInit } = this.props;
+		reactionInit(message);
 	}
 
 	handleReadReceipt = () => {
@@ -398,8 +397,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	deleteRequest: message => dispatch(deleteRequestAction(message)),
 	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
-	togglePinRequest: message => dispatch(togglePinRequestAction(message)),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
+	togglePinRequest: message => dispatch(togglePinRequestAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageActions);

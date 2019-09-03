@@ -94,23 +94,15 @@ class RoomView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
-		actionMessage: PropTypes.object,
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
-		editing: PropTypes.bool,
-		replying: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		useMarkdown: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func,
-		actionsShow: PropTypes.func,
-		editCancel: PropTypes.func,
-		replyCancel: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		errorActionsShow: PropTypes.func
 	};
@@ -140,7 +132,8 @@ class RoomView extends React.Component {
 			showActions: false,
 			editing: false,
 			replying: false,
-			replyWithMention: false
+			replyWithMention: false,
+			reacting: false
 		};
 
 		if (room && room.observe) {
@@ -342,23 +335,23 @@ class RoomView extends React.Component {
 	}
 
 	actionsHide = () => {
-		const { editing, replying } = this.state;
-		if (editing || replying) {
+		const { editing, replying, reacting } = this.state;
+		if (editing || replying || reacting) {
 			return;
 		}
-		this.setState({ messageSelected: {}, showActions: false });
+		this.setState({ selectedMessage: {}, showActions: false });
 	}
 
 	onEditInit = (message) => {
-		this.setState({ messageSelected: message, editing: true, showActions: false });
+		this.setState({ selectedMessage: message, editing: true, showActions: false });
 	}
 
 	onEditCancel = () => {
-		this.setState({ messageSelected: {}, editing: false });
+		this.setState({ selectedMessage: {}, editing: false });
 	}
 
 	onEditRequest = async(message) => {
-		this.setState({ messageSelected: {}, editing: false });
+		this.setState({ selectedMessage: {}, editing: false });
 		try {
 			await RocketChat.editMessage(message);
 		} catch (e) {
@@ -367,15 +360,25 @@ class RoomView extends React.Component {
 	}
 
 	onReplyInit = (message, mention) => {
-		this.setState({ messageSelected: message, replying: true, showActions: false, replyWithMention: mention });
+		this.setState({
+			selectedMessage: message, replying: true, showActions: false, replyWithMention: mention
+		});
 	}
 
 	onReplyCancel = () => {
-		this.setState({ messageSelected: {}, replying: false });
+		this.setState({ selectedMessage: {}, replying: false });
+	}
+
+	onReactionInit = (message) => {
+		this.setState({ selectedMessage: message, reacting: true, showActions: false });
+	}
+
+	onReactionClose = () => {
+		this.setState({ selectedMessage: {}, reacting: false });
 	}
 
 	onMessageLongPress = (message) => {
-		this.setState({ messageSelected: message, showActions: true });
+		this.setState({ selectedMessage: message, showActions: true });
 	}
 
 	onOpenFileModal = (attachment) => {
@@ -386,17 +389,12 @@ class RoomView extends React.Component {
 		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
-	onReactionPress = (shortname, messageId) => {
-		const { actionMessage, toggleReactionPicker } = this.props;
+	onReactionPress = async(shortname, messageId) => {
 		try {
-			if (!messageId) {
-				RocketChat.setReaction(shortname, actionMessage._id);
-				return toggleReactionPicker();
-			}
-			RocketChat.setReaction(shortname, messageId);
+			await RocketChat.setReaction(shortname, messageId);
+			this.onReactionClose();
 		} catch (e) {
 			log(e);
-			console.log(e)
 		}
 	};
 
@@ -529,7 +527,7 @@ class RoomView extends React.Component {
 			log(e);
 			console.log(e)
 		}
-	};
+	}
 
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid, messageId) => {
@@ -657,7 +655,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, messageSelected, editing, replying, replyWithMention
+			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
 		const { navigation, user } = this.props;
 
@@ -698,7 +696,7 @@ class RoomView extends React.Component {
 				tmid={this.tmid}
 				roomType={room.t}
 				isFocused={navigation.isFocused()}
-				message={messageSelected}
+				message={selectedMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
 				editCancel={this.onEditCancel}
@@ -710,7 +708,7 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const { room, messageSelected, showActions } = this.state;
+		const { room, selectedMessage, showActions } = this.state;
 		const {
 			user, showErrorActions, navigation
 		} = this.props;
@@ -725,10 +723,11 @@ class RoomView extends React.Component {
 							tmid={this.tmid}
 							room={room}
 							user={user}
-							message={messageSelected}
+							message={selectedMessage}
 							actionsHide={this.actionsHide}
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
+							reactionInit={this.onReactionInit}
 						/>
 					)
 					: null
@@ -741,7 +740,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading
+			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
 		} = this.state;
 		const { user, baseUrl } = this.props;
 		const { rid, t } = room;
@@ -752,7 +751,12 @@ class RoomView extends React.Component {
 				<List rid={rid} t={t} tmid={this.tmid} room={room} renderRow={this.renderItem} loading={loading} />
 				{this.renderFooter()}
 				{this.renderActions()}
-				<ReactionPicker onEmojiSelected={this.onReactionPress} />
+				<ReactionPicker
+					show={reacting}
+					message={selectedMessage}
+					onEmojiSelected={this.onReactionPress}
+					reactionClose={this.onReactionClose}
+				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
 				<FileModal
 					attachment={selectedAttachment}
@@ -779,7 +783,6 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	replying: state.messages.replying,
 	showActions: state.messages.showActions,
 	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
