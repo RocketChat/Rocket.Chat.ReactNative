@@ -34,7 +34,7 @@ export default function loadThreadMessages({ tmid, offset = 0 }) {
 							message.rid = tmid;
 							database.create('threadMessages', message, true);
 						} catch (e) {
-							log('err_load_thread_messages_create', e);
+							log(e);
 						}
 					}));
 					return resolve(data);
@@ -43,7 +43,7 @@ export default function loadThreadMessages({ tmid, offset = 0 }) {
 				return resolve([]);
 			}
 		} catch (e) {
-			log('err_load_thread_messages', e);
+			log(e);
 			reject(e);
 		}
 	});

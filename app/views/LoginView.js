@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import firebase from 'react-native-firebase';
+import { analytics } from '../utils/log';
 
 import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
@@ -156,7 +156,7 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password, code });
-		firebase.analytics().logEvent('login');
+		analytics().logEvent('login');
 	}
 
 	register = () => {

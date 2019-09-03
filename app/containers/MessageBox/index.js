@@ -293,7 +293,7 @@ class MessageBox extends Component {
 		try {
 			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
-			log('onPressCommandPreview', e);
+			log(e);
 		}
 	}
 
@@ -362,7 +362,7 @@ class MessageBox extends Component {
 						try {
 							database.create('users', user, true);
 						} catch (e) {
-							log('err_create_users', e);
+							log(e);
 						}
 					});
 				});
@@ -468,7 +468,7 @@ class MessageBox extends Component {
 			this.setState({ commandPreview: preview.items });
 		} catch (e) {
 			this.showCommandPreview = false;
-			log('command Preview', e);
+			log(e);
 		}
 	}
 
@@ -504,7 +504,7 @@ class MessageBox extends Component {
 		try {
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 		} catch (e) {
-			log('err_send_media_message', e);
+			log(e);
 		}
 	}
 
@@ -513,7 +513,7 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
-			log('err_take_photo', e);
+			log(e);
 		}
 	}
 
@@ -522,7 +522,7 @@ class MessageBox extends Component {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			this.showUploadModal(video);
 		} catch (e) {
-			log('err_take_video', e);
+			log(e);
 		}
 	}
 
@@ -531,7 +531,7 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.showUploadModal(image);
 		} catch (e) {
-			log('err_choose_from_library', e);
+			log(e);
 		}
 	}
 
@@ -546,9 +546,9 @@ class MessageBox extends Component {
 				mime: res.type,
 				path: res.uri
 			});
-		} catch (error) {
-			if (!DocumentPicker.isCancel(error)) {
-				log('chooseFile', error);
+		} catch (e) {
+			if (!DocumentPicker.isCancel(e)) {
+				log(e);
 			}
 		}
 	}
@@ -618,7 +618,7 @@ class MessageBox extends Component {
 				if (e && e.error === 'error-file-too-large') {
 					return Alert.alert(I18n.t(e.error));
 				}
-				log('err_finish_audio_message', e);
+				log(e);
 			}
 		}
 	}
@@ -655,7 +655,7 @@ class MessageBox extends Component {
 					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
-					log('slashCommand', e);
+					log(e);
 				}
 				this.clearInput();
 				return;
