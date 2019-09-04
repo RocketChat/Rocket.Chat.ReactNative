@@ -8,6 +8,7 @@ import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import database from '../lib/realm';
 import watermelondb from '../lib/database';
+import update	 from '../utils/update';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
@@ -44,7 +45,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			});
 		});
 		const watermelon = watermelondb.database;
-		yield watermelon.action(async(action) => {
+		yield watermelon.action(async() => {
 			// await watermelon.unsafeResetDatabase();
 			const subCollection = watermelon.collections.get('subscriptions');
 			const existingSubs = await subCollection.query().fetch();
@@ -82,6 +83,8 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			return allRecords.length;
 		});
 
+		const { serversDB } = watermelondb.databases;
+		yield update(serversDB, 'servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt });
 		database.databases.serversDB.write(() => {
 			try {
 				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);

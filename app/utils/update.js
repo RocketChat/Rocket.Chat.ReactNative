@@ -7,11 +7,15 @@ const update = (db, table, object) => {
 			try {
 				const obj = await collections.find(object.id);
 				await obj.update((record) => {
-					record._raw = sanitizedRaw({ ...object }, collections.schema);
+					record._raw = sanitizedRaw({ id: object.id, ...record._raw }, collections.schema);
+					delete object.id;
+					Object.assign(record, object);
 				});
 			} catch (error) {
 				await collections.create((record) => {
-					record._raw = sanitizedRaw({ ...object }, collections.schema);
+					record._raw = sanitizedRaw({ id: object.id }, collections.schema);
+					delete object.id;
+					Object.assign(record, object);
 				});
 			}
 		})
