@@ -158,6 +158,15 @@ export default appSchema({
 				{ name: 'extension', type: 'string' },
 				{ name: '_updated_at', type: 'number' }
 			]
+		}),
+		tableSchema({
+			name: 'frequently_used_emojis',
+			columns: [
+				{ name: 'content', type: 'string', isOptional: true },
+				{ name: 'extension', type: 'string', isOptional: true },
+				{ name: 'is_custom', type: 'boolean' },
+				{ name: 'count', type: 'number' }
+			]
 		})
 	]
 });

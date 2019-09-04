@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
+import orderBy from 'lodash/orderBy';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import database from '../../lib/realm';
+import watermelondb from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import log from '../../utils/log';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -32,7 +34,7 @@ class EmojiPicker extends Component {
 
 	constructor(props) {
 		super(props);
-		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
+		// this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
 		const customEmojis = Object.keys(props.customEmojis)
 			.filter(item => item === props.customEmojis[item].name)
 			.map(item => ({
@@ -47,9 +49,9 @@ class EmojiPicker extends Component {
 		};
 	}
 
-	componentDidMount() {
-		this.updateFrequentlyUsed();
-		requestAnimationFrame(() => this.setState({ show: true }));
+	async componentDidMount() {
+		await this.updateFrequentlyUsed();
+		this.setState({ show: true });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -67,43 +69,53 @@ class EmojiPicker extends Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.frequentlyUsed.removeAllListeners();
-	}
-
-	onEmojiSelected(emoji) {
-		const { onEmojiSelected } = this.props;
-		if (emoji.isCustom) {
-			const count = this._getFrequentlyUsedCount(emoji.content);
-			this._addFrequentlyUsed({
-				content: emoji.content, extension: emoji.extension, count, isCustom: true
-			});
-			onEmojiSelected(`:${ emoji.content }:`);
-		} else {
-			const content = emoji;
-			const count = this._getFrequentlyUsedCount(content);
-			this._addFrequentlyUsed({ content, count, isCustom: false });
-			const shortname = `:${ emoji }:`;
-			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+	onEmojiSelected = (emoji) => {
+		try {
+			const { onEmojiSelected } = this.props;
+			if (emoji.isCustom) {
+				// const count = this._getFrequentlyUsedCount(emoji.content);
+				this._addFrequentlyUsed({
+					content: emoji.content, extension: emoji.extension, isCustom: true
+				});
+				onEmojiSelected(`:${ emoji.content }:`);
+			} else {
+				const content = emoji;
+				// const count = this._getFrequentlyUsedCount(content);
+				this._addFrequentlyUsed({ content, isCustom: false });
+				const shortname = `:${ emoji }:`;
+				onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+			}
+		} catch (e) {
+			log(e);
 		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	_addFrequentlyUsed = protectedFunction((emoji) => {
-		database.write(() => {
-			database.create('frequentlyUsedEmoji', emoji, true);
+	_addFrequentlyUsed = protectedFunction(async(emoji) => {
+		const watermelon = watermelondb.database;
+		const freqEmojiCollection = watermelondb.database.collections.get('frequently_used_emojis');
+		await watermelon.action(async() => {
+			try {
+				const freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
+				await freqEmojiRecord.update((f) => {
+					f.count += 1;
+				});
+			} catch (error) {
+				await freqEmojiCollection.create((f) => {
+					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
+					Object.assign(f, emoji);
+					f.count = 1;
+				});
+			}
 		});
 	})
 
-	_getFrequentlyUsedCount = (content) => {
-		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);
-		return emojiRow.length ? emojiRow[0].count + 1 : 1;
-	}
-
-	updateFrequentlyUsed() {
-		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
+	updateFrequentlyUsed = async() => {
+		const frequentlyUsedRecords = await watermelondb.database.collections.get('frequently_used_emojis').query().fetch();
+		let frequentlyUsed = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		frequentlyUsed = frequentlyUsed.map((item) => {
 			if (item.isCustom) {
-				return item;
+				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
 			return emojify(`${ item.content }`, { output: 'unicode' });
 		});
