@@ -4,5 +4,13 @@ import { field } from '@nozbe/watermelondb/decorators';
 export default class User extends Model {
 	static table = 'user';
 
+	@field('token') token;
+
+	@field('username') username;
+
 	@field('name') name;
+
+	@field('language') language;
+
+	@field('status') status;
 }
