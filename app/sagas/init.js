@@ -17,6 +17,7 @@ import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
+import watermelon from '../lib/database';
 
 const restore = function* restore() {
 	try {
@@ -77,7 +78,9 @@ const restore = function* restore() {
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
-			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
+			const { serversDB } = watermelon.databases;
+			const serverCollections = serversDB.collections.get('servers');
+			const serverObj = yield serverCollections.find(server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 

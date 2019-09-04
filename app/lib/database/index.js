@@ -7,16 +7,19 @@ import Subscription from './model/Subscription';
 import Message from './model/Message';
 import Thread from './model/Thread';
 import ThreadMessage from './model/ThreadMessage';
+
+import servers from './model/servers';
 import User from './model/User';
+import Server from './model/Server';
 
 class DB {
 	databases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: `${ RNRealmPath.realmPath }default.db`,
-				schema
+				schema: servers
 			}),
-			modelClasses: [User],
+			modelClasses: [Server, User],
 			actionsEnabled: true
 		})
 	}

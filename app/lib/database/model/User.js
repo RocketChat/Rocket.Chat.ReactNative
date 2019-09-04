@@ -4,5 +4,5 @@ import { field } from '@nozbe/watermelondb/decorators';
 export default class User extends Model {
 	static table = 'user';
 
-	@field('id') id;
+	@field('name') name;
 }

@@ -15,7 +15,9 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/realm';
+import watermelon from '../lib/database';
 import EventEmitter from '../utils/events';
+import update from '../utils/update';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -77,13 +79,14 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
 
-		const { serversDB } = database.databases;
-		serversDB.write(() => {
-			try {
-				serversDB.create('user', user, true);
-			} catch (e) {
-				log(e);
-			}
+		const { serversDB } = watermelon.databases;
+		yield update(serversDB, 'user', {
+			id: user.id,
+			token: user.token,
+			username: user.username,
+			name: user.name,
+			language: user.language,
+			status: user.status
 		});
 
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);

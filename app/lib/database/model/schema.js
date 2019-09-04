@@ -149,12 +149,6 @@ export default appSchema({
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true }
 			]
-		}),
-		tableSchema({
-			name: 'user',
-			columns: [
-				{ name: 'id', type: 'string' }
-			]
 		})
 	]
 });

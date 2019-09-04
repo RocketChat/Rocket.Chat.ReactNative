@@ -13,6 +13,8 @@ import {
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/realm';
+import watermelon from '../lib/database';
+import update	 from '../utils/update';
 import log from '../utils/log';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
@@ -28,9 +30,8 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server, version: serverInfo.version }, true);
-		});
+		const { serversDB } = watermelon.databases;
+		yield update(serversDB, 'servers', { id: server, version: serverInfo.version });
 
 		return serverInfo;
 	} catch (e) {
@@ -40,11 +41,15 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
-		const { serversDB } = database.databases;
+		const { serversDB } = watermelon.databases;
 
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+		const userCollections = serversDB.collections.get('user');
+		let user = null;
+		if (userId) {
+			user = yield userCollections.find(userId);
+		}
 
 		const servers = yield RNUserDefaults.objectForKey(SERVERS);
 		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
