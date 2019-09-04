@@ -181,6 +181,16 @@ export default appSchema({
 				{ name: 'progress', type: 'number' },
 				{ name: 'error', type: 'boolean' }
 			]
+		}),
+		tableSchema({
+			name: 'settings',
+			columns: [
+				{ name: '_id', type: 'string' },
+				{ name: 'value_as_string', type: 'string', isOptional: true },
+				{ name: 'value_as_boolean', type: 'boolean', isOptional: true },
+				{ name: 'value_as_number', type: 'number', isOptional: true },
+				{ name: '_updated_at', type: 'number', isOptional: true }
+			]
 		})
 	]
 });

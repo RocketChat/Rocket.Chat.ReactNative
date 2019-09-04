@@ -73,6 +73,15 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(actions.appStart('outside'));
 		}
 
+		// const serversCollection = watermelon.database.collections.get('settings');
+		// const settingsRecords = yield serversCollection.query().fetch();
+		// const settings = Object.values(settingsRecords).map(item => ({
+		// 	_id: item.id,
+		// 	valueAsString: item.valueAsString,
+		// 	valueAsBoolean: item.valueAsBoolean,
+		// 	valueAsNumber: item.valueAsNumber,
+		// 	_updatedAt: item._updatedAt
+		// }));
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 

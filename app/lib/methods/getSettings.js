@@ -5,6 +5,8 @@ import database from '../realm';
 import * as actions from '../../actions';
 import log from '../../utils/log';
 import settings from '../../constants/settings';
+import watermelon from '../database';
+import update	 from '../../utils/update';
 
 function updateServer(param) {
 	database.databases.serversDB.write(() => {
@@ -18,6 +20,8 @@ function updateServer(param) {
 
 export default async function() {
 	try {
+		const { serversDB } = watermelon.databases;
+		const serverId = reduxStore.getState().server.server;
 		const settingsParams = JSON.stringify(Object.keys(settings));
 		// RC 0.60.0
 		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
@@ -30,24 +34,33 @@ export default async function() {
 
 		InteractionManager.runAfterInteractions(
 			() => database.write(
-				() => filteredSettings.forEach((setting) => {
+				() => filteredSettings.forEach(async(setting) => {
 					try {
-						database.create('settings', { ...setting, _updatedAt: new Date() }, true);
+						try {
+							database.create('settings', { ...setting, _updatedAt: new Date() }, true);
+						} catch (e) {
+							log(e);
+						}
+						await update(watermelon.database, 'settings', { ...setting, _updatedAt: new Date(), id: setting._id });
+
+						if (setting._id === 'Site_Name') {
+							updateServer.call(this, { name: setting.valueAsString });
+							await update(serversDB, 'servers', { id: serverId, name: setting.valueAsString });
+						}
+						if (setting._id === 'UI_Use_Real_Name') {
+							updateServer.call(this, { useRealName: setting.valueAsBoolean });
+							await update(serversDB, 'servers', { id: serverId, useRealName: setting.valueAsBoolean });
+						}
+						if (setting._id === 'FileUpload_MediaTypeWhiteList') {
+							updateServer.call(this, { FileUpload_MediaTypeWhiteList: setting.valueAsString });
+							await update(serversDB, 'servers', { id: serverId, FileUpload_MediaTypeWhiteList: setting.valueAsString });
+						}
+						if (setting._id === 'FileUpload_MaxFileSize') {
+							updateServer.call(this, { FileUpload_MaxFileSize: setting.valueAsNumber });
+							await update(serversDB, 'servers', { id: serverId, FileUpload_MaxFileSize: setting.valueAsNumber });
+						}
 					} catch (e) {
 						log(e);
-					}
-
-					if (setting._id === 'Site_Name') {
-						updateServer.call(this, { name: setting.valueAsString });
-					}
-					if (setting._id === 'UI_Use_Real_Name') {
-						updateServer.call(this, { useRealName: setting.valueAsBoolean });
-					}
-					if (setting._id === 'FileUpload_MediaTypeWhiteList') {
-						updateServer.call(this, { FileUpload_MediaTypeWhiteList: setting.valueAsString });
-					}
-					if (setting._id === 'FileUpload_MaxFileSize') {
-						updateServer.call(this, { FileUpload_MaxFileSize: setting.valueAsNumber });
 					}
 				})
 			)
@@ -59,6 +72,7 @@ export default async function() {
 			const baseUrl = reduxStore.getState().server.server;
 			const iconURL = `${ baseUrl }/${ iconSetting.value.url || iconSetting.value.defaultUrl }`;
 			updateServer.call(this, { iconURL });
+			await update(serversDB, 'servers', { id: serverId, iconURL });
 		}
 	} catch (e) {
 		log(e);
