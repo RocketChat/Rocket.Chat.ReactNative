@@ -36,7 +36,7 @@ export default class MessageContainer extends React.Component {
 		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func,
+		reactionInit: PropTypes.func,
 		fetchThreadName: PropTypes.func,
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
@@ -210,10 +210,10 @@ export default class MessageContainer extends React.Component {
 		return JSON.parse(JSON.stringify(item));
 	}
 
-	toggleReactionPicker = () => {
-		const { toggleReactionPicker } = this.props;
-		if (toggleReactionPicker) {
-			toggleReactionPicker(this.parseMessage());
+	reactionInit = () => {
+		const { reactionInit, item } = this.props;
+		if (reactionInit) {
+			reactionInit(item);
 		}
 	}
 
@@ -288,7 +288,7 @@ export default class MessageContainer extends React.Component {
 				onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
-				toggleReactionPicker={this.toggleReactionPicker}
+				reactionInit={this.reactionInit}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={onOpenFileModal}
 				getCustomEmoji={getCustomEmoji}

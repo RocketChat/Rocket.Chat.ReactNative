@@ -8,9 +8,9 @@ import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
 
-const AddReaction = React.memo(({ toggleReactionPicker }) => (
+const AddReaction = React.memo(({ reactionInit }) => (
 	<Touchable
-		onPress={toggleReactionPicker}
+		onPress={reactionInit}
 		key='message-add-reaction'
 		testID='message-add-reaction'
 		style={styles.reactionButton}
@@ -52,7 +52,7 @@ const Reaction = React.memo(({
 });
 
 const Reactions = React.memo(({
-	reactions, user, baseUrl, onReactionPress, toggleReactionPicker, onReactionLongPress, getCustomEmoji
+	reactions, user, baseUrl, onReactionPress, reactionInit, onReactionLongPress, getCustomEmoji
 }) => {
 	if (!reactions || reactions.length === 0) {
 		return null;
@@ -70,7 +70,7 @@ const Reactions = React.memo(({
 					getCustomEmoji={getCustomEmoji}
 				/>
 			))}
-			<AddReaction toggleReactionPicker={toggleReactionPicker} />
+			<AddReaction reactionInit={reactionInit} />
 		</View>
 	);
 });
@@ -91,14 +91,14 @@ Reactions.propTypes = {
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
 	onReactionPress: PropTypes.func,
-	toggleReactionPicker: PropTypes.func,
+	reactionInit: PropTypes.func,
 	onReactionLongPress: PropTypes.func,
 	getCustomEmoji: PropTypes.func
 };
 Reactions.displayName = 'MessageReactions';
 
 AddReaction.propTypes = {
-	toggleReactionPicker: PropTypes.func
+	reactionInit: PropTypes.func
 };
 AddReaction.displayName = 'MessageAddReaction';
 

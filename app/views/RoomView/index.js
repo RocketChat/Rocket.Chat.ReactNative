@@ -443,11 +443,6 @@ class RoomView extends React.Component {
 		}
 	}, 1000, true)
 
-	toggleReactionPicker = (message) => {
-		const { toggleReactionPicker } = this.props;
-		toggleReactionPicker(message);
-	}
-
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
@@ -631,7 +626,7 @@ class RoomView extends React.Component {
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				onOpenFileModal={this.onOpenFileModal}
-				toggleReactionPicker={this.toggleReactionPicker}
+				reactionInit={this.onReactionInit}
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
 				baseUrl={baseUrl}
@@ -811,8 +806,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyCancel: () => dispatch(replyCancelAction()),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
