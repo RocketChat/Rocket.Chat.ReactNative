@@ -56,7 +56,7 @@ export class List extends React.Component {
 			this.messagesObservable = watermelon.database.collections
 				.get('thread_messages')
 				.query(
-					Q.where('tmid', tmid)
+					Q.where('rid', tmid)
 				)
 				.observeWithColumns(['updated_at']);
 		} else {

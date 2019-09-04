@@ -173,7 +173,7 @@ export default class MessageContainer extends React.Component {
 		const {
 			item, previousItem
 		} = this.props;
-		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem._id !== item.tmid)) {
+		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem.id !== item.tmid)) {
 			return true;
 		}
 		return false;
@@ -183,7 +183,7 @@ export default class MessageContainer extends React.Component {
 		const {
 			item, previousItem
 		} = this.props;
-		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem._id === item.tmid))) {
+		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
 			return true;
 		}
 		return false;

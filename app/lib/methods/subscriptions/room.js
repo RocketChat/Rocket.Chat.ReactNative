@@ -160,14 +160,18 @@ export default function subscribeRoom({ rid }) {
 					batch.push(
 						threadMessageRecord.prepareUpdate((tm) => {
 							Object.assign(tm, message);
+							tm.rid = message.tmid;
+							delete tm.tmid;
 						})
 					);
 				} catch (error) {
 					batch.push(
 						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
-							tm.subscription.id = message.tmid;
 							Object.assign(tm, message);
+							tm.subscription.id = rid;
+							tm.rid = message.tmid;
+							delete tm.tmid;
 						}))
 					);
 				}

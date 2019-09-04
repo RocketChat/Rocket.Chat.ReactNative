@@ -9,7 +9,7 @@ export default class ThreadMessage extends Model {
 	static table = 'thread_messages';
 
 	static associations = {
-		subscriptions: { type: 'belongs_to', key: 'rid' }
+		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
 	}
 
 	@field('msg') msg;
@@ -20,9 +20,9 @@ export default class ThreadMessage extends Model {
 
 	@json('u', sanitizer) u;
 
-	// @relation('subscriptions', 'subscription_id') subscription;
-	// @field('rid') rid;
-	@relation('subscriptions', 'rid') subscription;
+	@relation('subscriptions', 'subscription_id') subscription;
+
+	@field('rid') rid;
 
 	@field('alias') alias;
 
@@ -55,8 +55,6 @@ export default class ThreadMessage extends Model {
 	@field('dcount') dcount;
 
 	@date('dlm') dlm;
-
-	@field('tmid') tmid;
 
 	@field('tcount') tcount;
 

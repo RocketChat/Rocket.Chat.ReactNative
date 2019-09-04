@@ -49,7 +49,9 @@ export default function updateMessages(rid, messages) {
 			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 				tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 				Object.assign(tm, threadMessage);
-				// tm.subscription.rid = threadMessage.tmid;
+				tm.subscription.id = sub.id;
+				tm.rid = threadMessage.tmid;
+				delete threadMessage.tmid;
 			})));
 
 			// Update
@@ -70,6 +72,8 @@ export default function updateMessages(rid, messages) {
 				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
 				return threadMessage.prepareUpdate(protectedFunction((tm) => {
 					Object.assign(tm, newThreadMessage);
+					tm.rid = threadMessage.tmid;
+					delete threadMessage.tmid;
 				}));
 			});
 
