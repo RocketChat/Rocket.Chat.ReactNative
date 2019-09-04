@@ -305,6 +305,7 @@ class RoomView extends React.Component {
 				if (this.tmid) {
 					await this.getThreadMessages();
 				} else {
+					const newLastOpen = new Date();
 					await this.getMessages(room);
 
 					// if room is joined
@@ -314,7 +315,7 @@ class RoomView extends React.Component {
 						} else {
 							this.setLastOpen(null);
 						}
-						RocketChat.readMessages(room.rid).catch(e => console.log(e));
+						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
