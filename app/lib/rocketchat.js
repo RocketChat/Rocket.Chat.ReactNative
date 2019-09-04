@@ -2,6 +2,7 @@ import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
+import { Q } from '@nozbe/watermelondb';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -42,7 +43,6 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
-import { Q } from '@nozbe/watermelondb';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -230,7 +230,6 @@ const RocketChat = {
 	},
 
 	async shareExtensionInit(server) {
-		database.setActiveDB(server);
 		watermelon.setActiveDB(server);
 
 		if (this.sdk) {
@@ -244,19 +243,31 @@ const RocketChat = {
 		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 
 		// set Server
-		const { serversDB } = database.databases;
+		const { serversDB } = watermelon.databases;
 		reduxStore.dispatch(shareSelectServer(server));
 
 		// set User info
-		const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		const user = userId && serversDB.objectForPrimaryKey('user', userId);
-		reduxStore.dispatch(shareSetUser({
-			id: user.id,
-			token: user.token,
-			username: user.username
-		}));
-
-		await RocketChat.login({ resume: user.token });
+		try {
+			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userCollections = serversDB.collections.get('users');
+			let user = null;
+			if (userId) {
+				user = await userCollections.find(userId);
+				user = {
+					id: user.id,
+					token: user.token,
+					username: user.usernamexww
+				};
+			}
+			reduxStore.dispatch(shareSetUser({
+				id: user.id,
+				token: user.token,
+				username: user.username
+			}));
+			await RocketChat.login({ resume: user.token });
+		} catch (e) {
+			log(e);
+		}
 	},
 
 	register(credentials) {
