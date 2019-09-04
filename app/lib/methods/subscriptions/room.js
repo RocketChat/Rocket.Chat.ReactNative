@@ -21,7 +21,7 @@ export default function subscribeRoom({ rid }) {
 	const typingTimeouts = {};
 
 	const handleConnection = () => {
-		this.loadMissedMessages({ rid });
+		this.loadMissedMessages({ rid }).catch(e => console.log(e));
 	};
 
 	const getUserTyping = username => (

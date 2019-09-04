@@ -499,7 +499,6 @@ class RoomView extends React.Component {
 			return Promise.resolve();
 		} catch (e) {
 			log(e);
-			console.log(e)
 		}
 	}
 

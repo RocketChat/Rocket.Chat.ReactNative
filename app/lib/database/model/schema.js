@@ -167,6 +167,20 @@ export default appSchema({
 				{ name: 'is_custom', type: 'boolean' },
 				{ name: 'count', type: 'number' }
 			]
+		}),
+		tableSchema({
+			name: 'uploads',
+			columns: [
+				{ name: 'path', type: 'string', isOptional: true },
+				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: 'name', type: 'string', isOptional: true },
+				{ name: 'description', type: 'string', isOptional: true },
+				{ name: 'size', type: 'number' },
+				{ name: 'type', type: 'string', isOptional: true },
+				{ name: 'store', type: 'string', isOptional: true },
+				{ name: 'progress', type: 'number' },
+				{ name: 'error', type: 'boolean' }
+			]
 		})
 	]
 });
