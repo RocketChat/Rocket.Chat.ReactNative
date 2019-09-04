@@ -72,7 +72,7 @@ export class List extends React.Component {
 			// .pipe(throttleTime(300))
 			.subscribe((data) => {
 				if (tmid) {
-					delete data.tlm;
+					// delete data.tlm;
 					data = [this.thread, ...data];
 				}
 				const messages = orderBy(data, ['ts'], ['desc']);

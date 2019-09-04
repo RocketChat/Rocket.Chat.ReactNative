@@ -9,7 +9,7 @@ export default class ThreadMessage extends Model {
 	static table = 'thread_messages';
 
 	static associations = {
-		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
+		subscriptions: { type: 'belongs_to', key: 'rid' }
 	}
 
 	@field('msg') msg;

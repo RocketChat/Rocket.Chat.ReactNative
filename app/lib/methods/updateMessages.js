@@ -49,7 +49,7 @@ export default function updateMessages(rid, messages) {
 			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 				tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 				Object.assign(tm, threadMessage);
-				tm.subscription.rid = threadMessage.tmid;
+				// tm.subscription.rid = threadMessage.tmid;
 			})));
 
 			// Update

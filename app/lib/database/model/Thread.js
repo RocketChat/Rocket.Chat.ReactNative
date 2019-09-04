@@ -9,7 +9,7 @@ export default class Thread extends Model {
 	static table = 'threads';
 
 	static associations = {
-		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
+		subscriptions: { type: 'belongs_to', key: 'rid' }
 	}
 
 	@field('msg') msg;
