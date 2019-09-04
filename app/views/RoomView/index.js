@@ -430,14 +430,16 @@ class RoomView extends React.Component {
 		}
 	}, 300, false)
 
-	onThreadPress = debounce((item) => {
+	onThreadPress = debounce(async(item) => {
 		const { navigation } = this.props;
 		if (item.tmid) {
+			if (!item.tmsg) {
+				await this.fetchThreadName(item.tmid, item.id);
+			}
 			navigation.push('RoomView', {
 				rid: item.subscription.id, tmid: item.tmid, name: item.tmsg, t: 'thread'
 			});
 		} else if (item.tlm) {
-			// const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
 			navigation.push('RoomView', {
 				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
 			});
