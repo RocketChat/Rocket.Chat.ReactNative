@@ -45,10 +45,17 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		const userCollections = serversDB.collections.get('user');
+		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
 			user = yield userCollections.find(userId);
+			user = {
+				token: user.token,
+				username: user.username,
+				name: user.name,
+				language: user.language,
+				status: user.status
+			};
 		}
 
 		const servers = yield RNUserDefaults.objectForKey(SERVERS);

@@ -4,7 +4,7 @@ export default appSchema({
 	version: 1,
 	tables: [
 		tableSchema({
-			name: 'user',
+			name: 'users',
 			columns: [
 				{ name: 'token', type: 'string', isOptional: true },
 				{ name: 'username', type: 'string', isOptional: true },
@@ -18,10 +18,10 @@ export default appSchema({
 			columns: [
 				{ name: 'name', type: 'string', isOptional: true },
 				{ name: 'iconURL', type: 'string', isOptional: true },
-				{ name: 'useRealName', type: 'boolean', isOptional: true },
-				{ name: 'FileUpload_MediaTypeWhiteList', type: 'string', isOptional: true },
-				{ name: 'FileUpload_MaxFileSize', type: 'number', isOptional: true },
-				{ name: 'roomsUpdatedAt', type: 'number', isOptional: true },
+				{ name: 'use_real_name', type: 'boolean', isOptional: true },
+				{ name: 'file_upload_media_type_white_list', type: 'string', isOptional: true },
+				{ name: 'file_upload_max_file_size', type: 'number', isOptional: true },
+				{ name: 'rooms_updated_at', type: 'number', isOptional: true },
 				{ name: 'version', type: 'string', isOptional: true }
 			]
 		})

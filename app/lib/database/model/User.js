@@ -2,7 +2,7 @@ import { Model } from '@nozbe/watermelondb';
 import { field } from '@nozbe/watermelondb/decorators';
 
 export default class User extends Model {
-	static table = 'user';
+	static table = 'users';
 
 	@field('token') token;
 

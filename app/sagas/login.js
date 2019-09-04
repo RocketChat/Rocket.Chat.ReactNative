@@ -80,7 +80,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		moment.locale(toMomentLocale(user.language));
 
 		const { serversDB } = watermelon.databases;
-		yield update(serversDB, 'user', {
+		yield update(serversDB, 'users', {
 			id: user.id,
 			token: user.token,
 			username: user.username,

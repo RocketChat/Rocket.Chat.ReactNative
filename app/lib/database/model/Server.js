@@ -8,13 +8,13 @@ export default class Server extends Model {
 
 	@field('iconURL') iconURL;
 
-	@field('useRealName') useRealName;
+	@field('use_real_name') useRealName;
 
-	@field('FileUpload_MediaTypeWhiteList') FileUpload_MediaTypeWhiteList;
+	@field('file_upload_media_type_white_list') FileUpload_MediaTypeWhiteList;
 
-	@field('FileUpload_MaxFileSize') FileUpload_MaxFileSize;
+	@field('file_upload_max_file_size') FileUpload_MaxFileSize;
 
-	@date('roomsUpdatedAt') roomsUpdatedAt;
+	@date('rooms_updated_at') roomsUpdatedAt;
 
 	@field('version') version;
 }
