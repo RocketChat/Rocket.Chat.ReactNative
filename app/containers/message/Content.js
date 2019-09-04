@@ -24,10 +24,10 @@ const Content = React.memo((props) => {
 				getCustomEmoji={props.getCustomEmoji}
 				username={props.user.username}
 				isEdited={props.isEdited}
-				numberOfLines={props.tmid ? 1 : 0}
+				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
 				channels={props.channels}
 				mentions={props.mentions}
-				useMarkdown={props.useMarkdown && !props.tmid}
+				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
 			/>
@@ -45,6 +45,7 @@ Content.propTypes = {
 	isTemp: PropTypes.bool,
 	isInfo: PropTypes.bool,
 	tmid: PropTypes.string,
+	isThreadRoom: PropTypes.bool,
 	msg: PropTypes.string,
 	isEdited: PropTypes.bool,
 	useMarkdown: PropTypes.bool,
