@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
-import database, { safeAddListener } from '../../../lib/realm';
+import watermelondb from '../../../lib/database';
 
 const styles = StyleSheet.create({
 	more: {
@@ -32,24 +32,27 @@ class RightButtonsContainer extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-		if (props.tmid) {
-			// FIXME: it may be empty if the thread header isn't fetched yet
-			this.thread = database.objectForPrimaryKey('messages', props.tmid);
-		}
 		this.state = {
 			isFollowingThread: true
 		};
 	}
 
-	componentDidMount() {
-		if (this.thread) {
-			safeAddListener(this.thread, this.updateThread);
+	async componentDidMount() {
+		const { tmid, userId } = this.props;
+		if (tmid) {
+			const watermelon = watermelondb.database;
+			const threadObservable = await watermelon.collections.get('messages').findAndObserve(tmid);
+			this.threadSubscription = threadObservable.subscribe((thread) => {
+				this.setState({
+					isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
+				});
+			});
 		}
 	}
 
 	componentWillUnmount() {
-		if (this.thread && this.thread.removeAllListeners) {
-			this.thread.removeAllListeners();
+		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
+			this.threadSubscription.unsubscribe();
 		}
 	}
 
