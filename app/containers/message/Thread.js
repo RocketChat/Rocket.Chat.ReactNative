@@ -8,9 +8,9 @@ import { CustomIcon } from '../../lib/Icons';
 import { THREAD } from './constants';
 
 const Thread = React.memo(({
-	msg, tcount, tlm, customThreadTimeFormat
+	msg, tcount, tlm, customThreadTimeFormat, isThreadRoom
 }) => {
-	if (!tlm) {
+	if (!tlm || isThreadRoom) {
 		return null;
 	}
 

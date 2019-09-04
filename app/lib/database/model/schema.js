@@ -106,6 +106,7 @@ export default appSchema({
 				{ name: 'dlm', type: 'number', isOptional: true },
 				{ name: 'tmid', type: 'string', isOptional: true },
 				{ name: 'tcount', type: 'number', isOptional: true },
+				{ name: 'tlm', type: 'number', isOptional: true },
 				{ name: 'replies', type: 'string', isOptional: true },
 				{ name: 'mentions', type: 'string', isOptional: true },
 				{ name: 'channels', type: 'string', isOptional: true },

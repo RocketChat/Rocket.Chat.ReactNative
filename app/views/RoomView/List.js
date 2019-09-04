@@ -69,10 +69,8 @@ export class List extends React.Component {
 		}
 
 		this.messagesSubscription = this.messagesObservable
-			// .pipe(throttleTime(300))
 			.subscribe((data) => {
 				if (tmid) {
-					// delete data.tlm;
 					data = [this.thread, ...data];
 				}
 				const messages = orderBy(data, ['ts'], ['desc']);

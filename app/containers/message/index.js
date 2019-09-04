@@ -25,6 +25,7 @@ export default class MessageContainer extends React.Component {
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		isReadReceiptEnabled: PropTypes.bool,
+		isThreadRoom: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
 		autoTranslateRoom: PropTypes.bool,
@@ -93,10 +94,10 @@ export default class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
-		const { item } = this.props;
+		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
-		if ((item.tlm || item.tmid)) {
+		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
 		}
 	}, 300, true);
@@ -171,8 +172,11 @@ export default class MessageContainer extends React.Component {
 
 	get isThreadReply() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
+		if (isThreadRoom) {
+			return false;
+		}
 		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem.id !== item.tmid)) {
 			return true;
 		}
@@ -181,8 +185,11 @@ export default class MessageContainer extends React.Component {
 
 	get isThreadSequential() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
+		if (isThreadRoom) {
+			return false;
+		}
 		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
 			return true;
 		}
@@ -226,7 +233,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -279,6 +286,7 @@ export default class MessageContainer extends React.Component {
 				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
+				isThreadRoom={isThreadRoom}
 				isInfo={this.isInfo}
 				isTemp={this.isTemp}
 				hasError={this.hasError}
