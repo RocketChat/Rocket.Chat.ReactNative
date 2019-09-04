@@ -5,12 +5,13 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import map from 'lodash/map';
 import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
+import { connect } from 'react-redux';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/realm';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
@@ -19,9 +20,10 @@ const scrollProps = {
 	keyboardDismissMode: 'none'
 };
 
-export default class EmojiPicker extends Component {
+class EmojiPicker extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
+		customEmojis: PropTypes.object,
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
 		emojisPerRow: PropTypes.number,
@@ -31,26 +33,27 @@ export default class EmojiPicker extends Component {
 	constructor(props) {
 		super(props);
 		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
-		this.customEmojis = database.objects('customEmojis');
+		const customEmojis = Object.keys(props.customEmojis)
+			.filter(item => item === props.customEmojis[item].name)
+			.map(item => ({
+				content: props.customEmojis[item].name,
+				extension: props.customEmojis[item].extension,
+				isCustom: true
+			}));
 		this.state = {
 			frequentlyUsed: [],
-			customEmojis: [],
+			customEmojis,
 			show: false
 		};
-		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
-		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
 	}
 
 	componentDidMount() {
 		this.updateFrequentlyUsed();
-		this.updateCustomEmojis();
 		requestAnimationFrame(() => this.setState({ show: true }));
-		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
-		safeAddListener(this.customEmojis, this.updateCustomEmojis);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { frequentlyUsed, customEmojis, show } = this.state;
+		const { frequentlyUsed, show } = this.state;
 		const { width } = this.props;
 		if (nextState.show !== show) {
 			return true;
@@ -61,15 +64,11 @@ export default class EmojiPicker extends Component {
 		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
 			return true;
 		}
-		if (!equal(nextState.customEmojis, customEmojis)) {
-			return true;
-		}
 		return false;
 	}
 
 	componentWillUnmount() {
 		this.frequentlyUsed.removeAllListeners();
-		this.customEmojis.removeAllListeners();
 	}
 
 	onEmojiSelected(emoji) {
@@ -111,14 +110,11 @@ export default class EmojiPicker extends Component {
 		this.setState({ frequentlyUsed });
 	}
 
-	updateCustomEmojis() {
-		const customEmojis = map(this.customEmojis.slice(), item => ({ content: item.name, extension: item.extension, isCustom: true }));
-		this.setState({ customEmojis });
-	}
-
 	renderCategory(category, i) {
 		const { frequentlyUsed, customEmojis } = this.state;
-		const { emojisPerRow, width, baseUrl } = this.props;
+		const {
+			emojisPerRow, width, baseUrl
+		} = this.props;
 
 		let emojis = [];
 		if (i === 0) {
@@ -171,3 +167,9 @@ export default class EmojiPicker extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	customEmojis: state.customEmojis
+});
+
+export default connect(mapStateToProps)(EmojiPicker);
