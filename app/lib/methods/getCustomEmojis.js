@@ -6,6 +6,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import reduxStore from '../createStore';
 import watermelondb from '../database';
 import log from '../../utils/log';
+import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
 
 const getUpdatedSince = (allEmojis) => {
 	if (!allEmojis.length) {
@@ -40,7 +41,27 @@ const updateEmojis = async(emojis, allEmojisRecords, db, emojisCollection) => {
 	});
 };
 
-export default function() {
+export async function setCustomEmojis() {
+	const watermelon = watermelondb.database;
+	const emojisCollection = watermelon.collections.get('custom_emojis');
+	const allEmojis = await emojisCollection.query().fetch();
+	const parsed = allEmojis.reduce((ret, item) => {
+		ret[item.name] = {
+			name: item.name,
+			extension: item.extension
+		};
+		item.aliases.forEach((alias) => {
+			ret[alias] = {
+				name: item.name,
+				extension: item.extension
+			};
+		});
+		return ret;
+	}, {});
+	reduxStore.dispatch(setCustomEmojisAction(parsed));
+}
+
+export function getCustomEmojis() {
 	return new Promise(async(resolve) => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
@@ -58,6 +79,9 @@ export default function() {
 					let { emojis } = result;
 					emojis = emojis.filter(emoji => !updatedSince || emoji._updatedAt > updatedSince);
 					await updateEmojis(emojis, allEmojisRecords, watermelon, emojisCollection);
+					if (emojis.length) {
+						setCustomEmojis();
+					}
 					return resolve();
 				});
 			} else {
@@ -76,8 +100,10 @@ export default function() {
 				InteractionManager.runAfterInteractions(
 					async() => {
 						const { emojis } = result;
+						let changedEmojis = false;
 						if (emojis.update && emojis.update.length) {
 							await updateEmojis(emojis.update, allEmojisRecords, watermelon, emojisCollection);
+							changedEmojis = true;
 						}
 
 						if (emojis.remove && emojis.remove.length) {
@@ -86,6 +112,13 @@ export default function() {
 							await watermelon.action(async() => {
 								await watermelon.batch(...emojisToDelete);
 							});
+							changedEmojis = true;
+						}
+
+						// `setCustomEmojis` is fired on selectServer
+						// We run it again only if emojis were changed
+						if (changedEmojis) {
+							setCustomEmojis();
 						}
 					}
 				);

@@ -4,7 +4,7 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getCustomEmoji, getMessageTranslation } from './utils';
+import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
 
 export default class MessageContainer extends React.Component {
@@ -226,7 +226,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage

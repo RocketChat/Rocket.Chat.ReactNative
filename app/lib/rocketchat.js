@@ -28,7 +28,7 @@ import getSettings from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
-import getCustomEmojis from './methods/getCustomEmojis';
+import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -550,6 +550,7 @@ const RocketChat = {
 	getSettings,
 	getPermissions,
 	getCustomEmojis,
+	setCustomEmojis,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {

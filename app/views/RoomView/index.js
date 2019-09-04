@@ -90,7 +90,6 @@ class RoomView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showErrorActions: PropTypes.bool,
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
@@ -98,6 +97,7 @@ class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		baseUrl: PropTypes.string,
+		customEmojis: PropTypes.object,
 		useMarkdown: PropTypes.bool,
 		replyBroadcast: PropTypes.func
 	};
@@ -514,6 +514,15 @@ class RoomView extends React.Component {
 		}
 	}
 
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
+	}
+
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
@@ -634,6 +643,7 @@ class RoomView extends React.Component {
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 
@@ -795,6 +805,7 @@ const mapStateToProps = state => ({
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
+	customEmojis: state.customEmojis,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
