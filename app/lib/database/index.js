@@ -7,6 +7,9 @@ import Subscription from './model/Subscription';
 import Message from './model/Message';
 import Thread from './model/Thread';
 import ThreadMessage from './model/ThreadMessage';
+import CustomEmoji from './model/CustomEmoji';
+import FrequentlyUsedEmoji from './model/FrequentlyUsedEmoji';
+import Upload from './model/Upload';
 
 import servers from './model/servers';
 import User from './model/User';
@@ -43,7 +46,7 @@ class DB {
 
 		this.databases.activeDB = new Database({
 			adapter,
-			modelClasses: [Subscription, Message, Thread, ThreadMessage],
+			modelClasses: [Subscription, Message, Thread, ThreadMessage, CustomEmoji, FrequentlyUsedEmoji, Upload],
 			actionsEnabled: true
 		});
 	}

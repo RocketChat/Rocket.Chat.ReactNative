@@ -4,7 +4,7 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getCustomEmoji, getMessageTranslation } from './utils';
+import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
 
 export default class MessageContainer extends React.Component {
@@ -25,6 +25,7 @@ export default class MessageContainer extends React.Component {
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		isReadReceiptEnabled: PropTypes.bool,
+		isThreadRoom: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
 		autoTranslateRoom: PropTypes.bool,
@@ -36,7 +37,7 @@ export default class MessageContainer extends React.Component {
 		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func,
+		reactionInit: PropTypes.func,
 		fetchThreadName: PropTypes.func,
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
@@ -93,10 +94,10 @@ export default class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
-		const { item } = this.props;
+		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
-		if ((item.tlm || item.tmid)) {
+		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
 		}
 	}, 300, true);
@@ -171,9 +172,12 @@ export default class MessageContainer extends React.Component {
 
 	get isThreadReply() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
-		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem._id !== item.tmid)) {
+		if (isThreadRoom) {
+			return false;
+		}
+		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem.id !== item.tmid)) {
 			return true;
 		}
 		return false;
@@ -181,9 +185,12 @@ export default class MessageContainer extends React.Component {
 
 	get isThreadSequential() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
-		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem._id === item.tmid))) {
+		if (isThreadRoom) {
+			return false;
+		}
+		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
 			return true;
 		}
 		return false;
@@ -210,10 +217,10 @@ export default class MessageContainer extends React.Component {
 		return JSON.parse(JSON.stringify(item));
 	}
 
-	toggleReactionPicker = () => {
-		const { toggleReactionPicker } = this.props;
-		if (toggleReactionPicker) {
-			toggleReactionPicker(this.parseMessage());
+	reactionInit = () => {
+		const { reactionInit, item } = this.props;
+		if (reactionInit) {
+			reactionInit(item);
 		}
 	}
 
@@ -226,7 +233,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -279,6 +286,7 @@ export default class MessageContainer extends React.Component {
 				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
+				isThreadRoom={isThreadRoom}
 				isInfo={this.isInfo}
 				isTemp={this.isTemp}
 				hasError={this.hasError}
@@ -288,7 +296,7 @@ export default class MessageContainer extends React.Component {
 				onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
-				toggleReactionPicker={this.toggleReactionPicker}
+				reactionInit={this.reactionInit}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={onOpenFileModal}
 				getCustomEmoji={getCustomEmoji}

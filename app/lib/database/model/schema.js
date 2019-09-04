@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 13,
+	version: 14,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -85,6 +85,7 @@ export default appSchema({
 				{ name: 'msg', type: 'string', isOptional: true },
 				{ name: 't', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: '_updated_at', type: 'number' },
 				// { name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'u', type: 'string' },
@@ -94,42 +95,6 @@ export default appSchema({
 				{ name: 'avatar', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' },
-				{ name: 'status', type: 'number', isOptional: true },
-				{ name: 'pinned', type: 'boolean', isOptional: true },
-				{ name: 'starred', type: 'boolean', isOptional: true },
-				{ name: 'edited_by', type: 'string', isOptional: true },
-				{ name: 'reactions', type: 'string', isOptional: true },
-				{ name: 'role', type: 'string', isOptional: true },
-				{ name: 'drid', type: 'string', isOptional: true },
-				{ name: 'dcount', type: 'number', isOptional: true },
-				{ name: 'dlm', type: 'number', isOptional: true },
-				{ name: 'tmid', type: 'string', isOptional: true },
-				{ name: 'tcount', type: 'number', isOptional: true },
-				{ name: 'replies', type: 'string', isOptional: true },
-				{ name: 'mentions', type: 'string', isOptional: true },
-				{ name: 'channels', type: 'string', isOptional: true },
-				{ name: 'unread', type: 'boolean', isOptional: true },
-				{ name: 'auto_translate', type: 'boolean', isOptional: true },
-				{ name: 'translations', type: 'string', isOptional: true }
-			]
-		}),
-		tableSchema({
-			name: 'thread_messages',
-			columns: [
-				{ name: 'msg', type: 'string', isOptional: true },
-				{ name: 't', type: 'string', isOptional: true },
-				{ name: 'rid', type: 'string', isIndexed: true },
-				// { name: 'subscription_id', type: 'string', isIndexed: true },
-				{ name: 'ts', type: 'number' },
-				{ name: 'u', type: 'string' },
-				{ name: 'alias', type: 'string', isOptional: true },
-				{ name: 'parse_urls', type: 'string', isOptional: true },
-				{ name: 'groupable', type: 'boolean', isOptional: true },
-				{ name: 'avatar', type: 'string', isOptional: true },
-				{ name: 'attachments', type: 'string', isOptional: true },
-				{ name: 'urls', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' },
 				{ name: 'status', type: 'number', isOptional: true },
 				{ name: 'pinned', type: 'boolean', isOptional: true },
 				{ name: 'starred', type: 'boolean', isOptional: true },
@@ -148,6 +113,73 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'thread_messages',
+			columns: [
+				{ name: 'msg', type: 'string', isOptional: true },
+				{ name: 't', type: 'string', isOptional: true },
+				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: 'subscription_id', type: 'string', isIndexed: true },
+				{ name: '_updated_at', type: 'number' },
+				{ name: 'ts', type: 'number' },
+				{ name: 'u', type: 'string' },
+				{ name: 'alias', type: 'string', isOptional: true },
+				{ name: 'parse_urls', type: 'string', isOptional: true },
+				{ name: 'groupable', type: 'boolean', isOptional: true },
+				{ name: 'avatar', type: 'string', isOptional: true },
+				{ name: 'attachments', type: 'string', isOptional: true },
+				{ name: 'urls', type: 'string', isOptional: true },
+				{ name: 'status', type: 'number', isOptional: true },
+				{ name: 'pinned', type: 'boolean', isOptional: true },
+				{ name: 'starred', type: 'boolean', isOptional: true },
+				{ name: 'edited_by', type: 'string', isOptional: true },
+				{ name: 'reactions', type: 'string', isOptional: true },
+				{ name: 'role', type: 'string', isOptional: true },
+				{ name: 'drid', type: 'string', isOptional: true },
+				{ name: 'dcount', type: 'number', isOptional: true },
+				{ name: 'dlm', type: 'number', isOptional: true },
+				{ name: 'tcount', type: 'number', isOptional: true },
+				{ name: 'tlm', type: 'number', isOptional: true },
+				{ name: 'replies', type: 'string', isOptional: true },
+				{ name: 'mentions', type: 'string', isOptional: true },
+				{ name: 'channels', type: 'string', isOptional: true },
+				{ name: 'unread', type: 'boolean', isOptional: true },
+				{ name: 'auto_translate', type: 'boolean', isOptional: true },
+				{ name: 'translations', type: 'string', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'custom_emojis',
+			columns: [
+				{ name: 'name', type: 'string', isOptional: true },
+				{ name: 'aliases', type: 'string', isOptional: true },
+				{ name: 'extension', type: 'string' },
+				{ name: '_updated_at', type: 'number' }
+			]
+		}),
+		tableSchema({
+			name: 'frequently_used_emojis',
+			columns: [
+				{ name: 'content', type: 'string', isOptional: true },
+				{ name: 'extension', type: 'string', isOptional: true },
+				{ name: 'is_custom', type: 'boolean' },
+				{ name: 'count', type: 'number' }
+			]
+		}),
+		tableSchema({
+			name: 'uploads',
+			columns: [
+				{ name: 'path', type: 'string', isOptional: true },
+				{ name: 'rid', type: 'string', isIndexed: true },
+				{ name: 'name', type: 'string', isOptional: true },
+				{ name: 'description', type: 'string', isOptional: true },
+				{ name: 'size', type: 'number' },
+				{ name: 'type', type: 'string', isOptional: true },
+				{ name: 'store', type: 'string', isOptional: true },
+				{ name: 'progress', type: 'number' },
+				{ name: 'error', type: 'boolean' }
 			]
 		})
 	]

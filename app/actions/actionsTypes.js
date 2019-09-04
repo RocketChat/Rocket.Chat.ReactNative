@@ -34,8 +34,6 @@ export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
 export const MESSAGES = createRequestTypes('MESSAGES', [
 	...defaultTypes,
-	'ERROR_ACTIONS_SHOW',
-	'ERROR_ACTIONS_HIDE',
 	'DELETE_REQUEST',
 	'DELETE_SUCCESS',
 	'DELETE_FAILURE',
@@ -65,3 +63,4 @@ export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL
 export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
 export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
+export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';

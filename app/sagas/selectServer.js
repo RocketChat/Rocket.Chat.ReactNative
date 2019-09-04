@@ -76,6 +76,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const settings = database.objects('settings');
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 
+		yield RocketChat.setCustomEmojis();
+
 		let serverInfo;
 		if (fetchVersion) {
 			serverInfo = yield getServerInfo({ server, raiseError: false });

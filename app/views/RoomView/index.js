@@ -12,10 +12,6 @@ import EJSON from 'ejson';
 import * as Haptics from 'expo-haptics';
 
 import {
-	toggleReactionPicker as toggleReactionPickerAction,
-	errorActionsShow as errorActionsShowAction,
-	editCancel as editCancelAction,
-	replyCancel as replyCancelAction,
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { List } from './List';
@@ -94,7 +90,6 @@ class RoomView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		showErrorActions: PropTypes.bool,
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
 		isAuthenticated: PropTypes.bool,
@@ -102,9 +97,9 @@ class RoomView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		baseUrl: PropTypes.string,
+		customEmojis: PropTypes.object,
 		useMarkdown: PropTypes.bool,
-		replyBroadcast: PropTypes.func,
-		errorActionsShow: PropTypes.func
+		replyBroadcast: PropTypes.func
 	};
 
 	constructor(props) {
@@ -130,6 +125,7 @@ class RoomView extends React.Component {
 			canAutoTranslate,
 			loading: true,
 			showActions: false,
+			showErrorActions: false,
 			editing: false,
 			replying: false,
 			replyWithMention: false,
@@ -309,6 +305,7 @@ class RoomView extends React.Component {
 				if (this.tmid) {
 					await this.getThreadMessages();
 				} else {
+					const newLastOpen = new Date();
 					await this.getMessages(room);
 
 					// if room is joined
@@ -318,7 +315,7 @@ class RoomView extends React.Component {
 						} else {
 							this.setLastOpen(null);
 						}
-						RocketChat.readMessages(room.rid).catch(e => console.log(e));
+						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -334,12 +331,20 @@ class RoomView extends React.Component {
 		}
 	}
 
-	actionsHide = () => {
+	errorActionsShow = (message) => {
+		this.setState({ selectedMessage: message, showErrorActions: true });
+	}
+
+	onActionsHide = () => {
 		const { editing, replying, reacting } = this.state;
 		if (editing || replying || reacting) {
 			return;
 		}
 		this.setState({ selectedMessage: {}, showActions: false });
+	}
+
+	onErrorActionsHide = () => {
+		this.setState({ selectedMessage: {}, showErrorActions: false });
 	}
 
 	onEditInit = (message) => {
@@ -425,33 +430,25 @@ class RoomView extends React.Component {
 		}
 	}, 300, false)
 
-	onThreadPress = debounce((item) => {
+	onThreadPress = debounce(async(item) => {
 		const { navigation } = this.props;
 		if (item.tmid) {
+			if (!item.tmsg) {
+				await this.fetchThreadName(item.tmid, item.id);
+			}
 			navigation.push('RoomView', {
 				rid: item.subscription.id, tmid: item.tmid, name: item.tmsg, t: 'thread'
 			});
 		} else if (item.tlm) {
-			// const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
 			navigation.push('RoomView', {
 				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
 			});
 		}
 	}, 1000, true)
 
-	toggleReactionPicker = (message) => {
-		const { toggleReactionPicker } = this.props;
-		toggleReactionPicker(message);
-	}
-
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
-	}
-
-	errorActionsShow = (message) => {
-		const { errorActionsShow } = this.props;
-		errorActionsShow(message);
 	}
 
 	handleConnected = () => {
@@ -502,7 +499,6 @@ class RoomView extends React.Component {
 			return Promise.resolve();
 		} catch (e) {
 			log(e);
-			console.log(e)
 		}
 	}
 
@@ -513,6 +509,15 @@ class RoomView extends React.Component {
 			log(e);
 			console.log(e)
 		}
+	}
+
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
 	}
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
@@ -614,7 +619,8 @@ class RoomView extends React.Component {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
-				_updatedAt={item._updatedAt}
+				isThreadRoom={!!this.tmid}
+				_updatedAt={item._updatedAt} // TODO: need it?
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
@@ -623,7 +629,7 @@ class RoomView extends React.Component {
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				onOpenFileModal={this.onOpenFileModal}
-				toggleReactionPicker={this.toggleReactionPicker}
+				reactionInit={this.onReactionInit}
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
 				baseUrl={baseUrl}
@@ -635,6 +641,7 @@ class RoomView extends React.Component {
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 
@@ -708,9 +715,11 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const { room, selectedMessage, showActions } = this.state;
 		const {
-			user, showErrorActions, navigation
+			room, selectedMessage, showActions, showErrorActions
+		} = this.state;
+		const {
+			user, navigation
 		} = this.props;
 		if (!navigation.isFocused()) {
 			return null;
@@ -724,7 +733,7 @@ class RoomView extends React.Component {
 							room={room}
 							user={user}
 							message={selectedMessage}
-							actionsHide={this.actionsHide}
+							actionsHide={this.onActionsHide}
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
@@ -732,7 +741,12 @@ class RoomView extends React.Component {
 					)
 					: null
 				}
-				{showErrorActions ? <MessageErrorActions /> : null}
+				{showErrorActions ? (
+					<MessageErrorActions
+						message={selectedMessage}
+						actionsHide={this.onErrorActionsHide}
+					/>
+				) : null}
 			</>
 		);
 	}
@@ -783,22 +797,18 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	showActions: state.messages.showActions,
-	showErrorActions: state.messages.showErrorActions,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
+	customEmojis: state.customEmojis,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyCancel: () => dispatch(replyCancelAction()),
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message)),
-	errorActionsShow: actionMessage => dispatch(errorActionsShowAction(actionMessage)),
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 

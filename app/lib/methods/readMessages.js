@@ -1,20 +1,26 @@
-import database from '../realm';
+import watermelondb from '../database';
 import log from '../../utils/log';
 
-export default async function readMessages(rid) {
-	const ls = new Date();
+export default async function readMessages(rid, lastOpen) {
 	try {
 		// RC 0.61.0
 		const data = await this.sdk.post('subscriptions.read', { rid });
-		const [subscription] = database.objects('subscriptions').filtered('rid = $0', rid);
-		database.write(() => {
-			subscription.open = true;
-			subscription.alert = false;
-			subscription.unread = 0;
-			subscription.userMentions = 0;
-			subscription.groupMentions = 0;
-			subscription.ls = ls;
-			subscription.lastOpen = ls;
+		const watermelon = watermelondb.database;
+		await watermelon.action(async() => {
+			try {
+				const subscription = await watermelon.collections.get('subscriptions').find(rid);
+				await subscription.update((s) => {
+					s.open = true;
+					s.alert = false;
+					s.unread = 0;
+					s.userMentions = 0;
+					s.groupMentions = 0;
+					s.ls = lastOpen;
+					s.lastOpen = lastOpen;
+				});
+			} catch (e) {
+				log(e);
+			}
 		});
 		return data;
 	} catch (e) {

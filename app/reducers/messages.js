@@ -1,24 +1,11 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	message: {},
-	showErrorActions: false,
-	showReactionPicker: false
+	message: {}
 };
 
 export default function messages(state = initialState, action) {
 	switch (action.type) {
-		case types.MESSAGES.ERROR_ACTIONS_SHOW:
-			return {
-				...state,
-				showErrorActions: true,
-				actionMessage: action.actionMessage
-			};
-		case types.MESSAGES.ERROR_ACTIONS_HIDE:
-			return {
-				...state,
-				showErrorActions: false
-			};
 		case types.MESSAGES.SET_INPUT:
 			return {
 				...state,

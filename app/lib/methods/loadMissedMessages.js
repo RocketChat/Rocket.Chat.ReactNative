@@ -42,22 +42,6 @@ export default function loadMissedMessages(args) {
 					const { updated } = data;
 					InteractionManager.runAfterInteractions(async() => {
 						await updateMessages(args.rid, updated);
-						// database.write(() => updated.forEach(async(message) => {
-						// 	try {
-						// 		message = buildMessage(message);
-						// 		database.create('messages', message, true);
-						// 		// if it's a thread "header"
-						// 		if (message.tlm) {
-						// 			database.create('threads', message, true);
-						// 		}
-						// 		if (message.tmid) {
-						// 			message.rid = message.tmid;
-						// 			database.create('threadMessages', message, true);
-						// 		}
-						// 	} catch (e) {
-						// 		log(e);
-						// 	}
-						// }));
 					});
 				}
 				if (data.deleted && data.deleted.length) {

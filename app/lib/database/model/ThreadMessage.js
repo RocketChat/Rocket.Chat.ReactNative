@@ -20,9 +20,9 @@ export default class ThreadMessage extends Model {
 
 	@json('u', sanitizer) u;
 
-	// @relation('subscriptions', 'subscription_id') subscription;
-	// @field('rid') rid;
-	@relation('subscriptions', 'rid') subscription;
+	@relation('subscriptions', 'subscription_id') subscription;
+
+	@field('rid') rid;
 
 	@field('alias') alias;
 
@@ -36,7 +36,7 @@ export default class ThreadMessage extends Model {
 
 	@json('urls', sanitizer) urls;
 
-	@date('updated_at') updatedAt;
+	@date('_updated_at') _updatedAt;
 
 	@field('status') status;
 
@@ -55,8 +55,6 @@ export default class ThreadMessage extends Model {
 	@field('dcount') dcount;
 
 	@date('dlm') dlm;
-
-	@field('tmid') tmid;
 
 	@field('tcount') tcount;
 

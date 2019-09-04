@@ -13,6 +13,7 @@ import notification from './notification';
 import markdown from './markdown';
 import share from './share';
 import crashReport from './crashReport';
+import customEmojis from './customEmojis';
 
 export default combineReducers({
 	settings,
@@ -28,5 +29,6 @@ export default combineReducers({
 	notification,
 	markdown,
 	share,
-	crashReport
+	crashReport,
+	customEmojis
 });
