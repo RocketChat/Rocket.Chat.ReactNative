@@ -423,7 +423,6 @@ const RocketChat = {
 		try {
 			database.deleteAll();
 			await watermelon.database.action(() => watermelon.database.unsafeResetDatabase());
-			await watermelon.databases.serversDB.action(() => watermelon.databases.serversDB.unsafeResetDatabase());
 		} catch (error) {
 			console.log(error);
 		}

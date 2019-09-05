@@ -18,6 +18,7 @@ import {
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
 import watermelon from '../lib/database';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const restore = function* restore() {
 	try {
@@ -32,44 +33,63 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
+		let servers = yield RNUserDefaults.objectForKey(SERVERS);
+
 		// get native credentials
-		if (isIOS && !hasMigration) {
-			const { serversDB } = watermelon.databases;
-			const serverCollections = serversDB.collections.get('servers');
-			const servers = yield RNUserDefaults.objectForKey(SERVERS);
-			if (servers) {
-				servers.forEach(async(serverItem) => {
-					const serverInfo = {
-						name: serverItem[SERVER_NAME],
-						iconURL: serverItem[SERVER_ICON]
-					};
+		if (servers && !hasMigration) {
+			// parse servers
+			servers = servers.map(async(s) => {
+				await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
+				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
+			});
+
+			try {
+				const { serversDB } = watermelon.databases;
+
+				yield serversDB.action(async() => {
+					const serversCollection = serversDB.collections.get('servers');
+					const allServerRecords = await serversCollection.query().fetch();
+
+					// filter servers
+					let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
+					let serversToUpdate = allServerRecords.filter(i1 => servers.find(i2 => i1.id === i2.id));
+
+					// Create
+					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
+						s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
+						delete record.id;
+						Object.assign(s, record);
+					})));
+
+					// Update
+					serversToUpdate = serversToUpdate.map((record) => {
+						const newServer = servers.find(s => s.id === record.id);
+						return server.prepareUpdate(protectedFunction((s) => {
+							delete newServer.id;
+							Object.assign(s, newServer);
+						}));
+					});
+
+					const allRecords = [
+						...serversToCreate,
+						...serversToUpdate
+					];
+
 					try {
-						serversDB.action(async() => {
-							try {
-								const serverRecord = await serverCollections.find(serverInfo.id);
-								await serverRecord.update((record) => {
-									record._raw = sanitizedRaw({ id: serverItem[SERVER_URL], ...record._raw }, serverCollections.schema);
-									Object.assign(record, serverInfo);
-								});
-							} catch (e) {
-								await serverCollections.create((record) => {
-									record._raw = sanitizedRaw({ id: serverItem[SERVER_URL] }, serverCollections.schema);
-									Object.assign(record, serverInfo);
-								});
-							}
-						});
-						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
+						await watermelon.batch(...allRecords);
 					} catch (e) {
 						log(e);
 					}
+					return allRecords.length;
 				});
-				yield AsyncStorage.setItem('hasMigration', '1');
-			}
 
-			// if not have current
-			if (servers && servers.length !== 0 && (!token || !server)) {
-				server = servers[0][SERVER_URL];
-				token = servers[0][TOKEN];
+				// if not have current
+				if (servers && servers.length !== 0 && (!token || !server)) {
+					server = servers[0][SERVER_URL];
+					token = servers[0][TOKEN];
+				}
+			} catch (e) {
+				log(e);
 			}
 		}
 

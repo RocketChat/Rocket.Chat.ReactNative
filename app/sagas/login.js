@@ -15,7 +15,6 @@ import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import database from '../lib/realm';
 import watermelon from '../lib/database';
 import EventEmitter from '../utils/events';
 
@@ -128,12 +127,16 @@ const handleLogout = function* handleLogout() {
 			const { serversDB } = watermelon.databases;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
-			const servers = yield serversCollection.query().fetch();
+			let servers = yield serversCollection.query().fetch();
+
 			// filter logging out server and delete it
-			const serverRecord = servers.find(s => s.id === server);
-			yield database.action(async() => {
+			yield serversDB.action(async() => {
+				const serverRecord = await serversCollection.find(server);
 				await serverRecord.destroyPermanently();
 			});
+
+			servers = yield serversCollection.query().fetch();
+
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
