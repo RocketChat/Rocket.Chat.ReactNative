@@ -89,7 +89,8 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
+			token: PropTypes.string.isRequired,
+			statusText: PropTypes.string
 		}),
 		showActions: PropTypes.bool,
 		showErrorActions: PropTypes.bool,
@@ -624,9 +625,11 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
-					{this.t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text> : null }
-				</View>
+				{this.t === 'd' ? (
+					<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
+						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text>
+					</View>
+				) : null }
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{this.renderActions()}
