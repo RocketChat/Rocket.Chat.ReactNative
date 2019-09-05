@@ -25,14 +25,48 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		if (!subscription) {
 			try {
-				subscription = await subCollection.find(room._id);
+				const s = await subCollection.find(room._id);
+				// We have to create a plain obj so we can manipulate it on `merge`
+				// Can we do it in a better way?
+				subscription = {
+					_id: s._id,
+					f: s.f,
+					t: s.t,
+					ts: s.ts,
+					ls: s.ls,
+					name: s.name,
+					fname: s.fname,
+					rid: s.rid,
+					open: s.open,
+					alert: s.alert,
+					unread: s.unread,
+					userMentions: s.userMentions,
+					_updated: s._updated,
+					ro: s.ro,
+					lastOpen: s.lastOpen,
+					description: s.description,
+					announcement: s.announcement,
+					topic: s.topic,
+					blocked: s.blocked,
+					blocker: s.blocker,
+					reactWhenReadOnly: s.reactWhenReadOnly,
+					archived: s.archived,
+					joinCodeRequired: s.joinCodeRequired,
+					broadcast: s.broadcast,
+					prid: s.prid,
+					draftMessage: s.draftMessage,
+					lastThreadSync: s.lastThreadSync,
+					autoTranslate: s.autoTranslate,
+					autoTranslateLanguage: s.autoTranslateLanguage,
+					lastMessage: s.lastMessage
+				};
 			} catch (error) {
 				try {
 					await watermelon.action(async() => {
-						await roomsCollection.create(protectedFunction((r) => {
+						await roomsCollection.create((r) => {
 							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 							Object.assign(r, room);
-						}));
+						});
 					});
 				} catch (e) {
 					// Do nothing
@@ -43,7 +77,15 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		if (!room && subscription) {
 			try {
-				room = await roomsCollection.find(subscription.rid);
+				const r = await roomsCollection.find(subscription.rid);
+				// We have to create a plain obj so we can manipulate it on `merge`
+				// Can we do it in a better way?
+				room = {
+					customFields: r.customFields,
+					broadcast: r.broadcast,
+					encrypted: r.encrypted,
+					ro: r.ro
+				};
 			} catch (error) {
 				// Do nothing
 			}
@@ -53,15 +95,14 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		await watermelon.action(async() => {
 			try {
 				const sub = await subCollection.find(tmp.rid);
-				await sub.update(protectedFunction((s) => {
+				await sub.update((s) => {
 					Object.assign(s, tmp);
-				}));
+				});
 			} catch (error) {
-				await subCollection.create(protectedFunction((s) => {
+				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
-					s._updatedAt = new Date();
-				}));
+				});
 			}
 		});
 	} catch (e) {

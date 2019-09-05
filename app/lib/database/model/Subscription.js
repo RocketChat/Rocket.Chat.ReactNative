@@ -29,8 +29,6 @@ export default class Subscription extends Model {
 
 	@field('rid') rid;
 
-	@field('f') f;
-
 	@field('open') open;
 
 	@field('alert') alert;
