@@ -1,17 +1,7 @@
 import { InteractionManager } from 'react-native';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
 
-import buildMessage from './helpers/buildMessage';
-import database from '../realm';
 import log from '../../utils/log';
-import watermelondb from '../database';
 import updateMessages from './updateMessages';
-
-// TODO: move to utils
-const assignSub = (sub, newSub) => {
-	Object.assign(sub, newSub);
-};
 
 async function load({ rid: roomId, latest, t }) {
 	let params = { roomId, count: 50 };

@@ -12,11 +12,6 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 
-// TODO: move to utils
-const assignSub = (sub, newSub) => {
-	Object.assign(sub, newSub);
-};
-
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
 		yield RocketChat.subscribeRooms();
@@ -47,14 +42,14 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			const allRecords = [
 				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
 					s._raw = sanitizedRaw({ id: subscription.rid }, subCollection.schema);
-					return assignSub(s, subscription);
+					return Object.assign(s, subscription);
 				})),
 				...subsToUpdate.map((subscription) => {
 					const newSub = subscriptions.find(
 						s => s._id === subscription._id
 					);
 					return subscription.prepareUpdate(() => {
-						assignSub(subscription, newSub);
+						Object.assign(subscription, newSub);
 					});
 				})
 			];

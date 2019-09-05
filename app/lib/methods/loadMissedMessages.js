@@ -1,11 +1,7 @@
 import { InteractionManager } from 'react-native';
 
-import buildMessage from './helpers/buildMessage';
 import database from '../realm';
 import log from '../../utils/log';
-import watermelondb from '../database';
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = (rid) => {
@@ -26,11 +22,6 @@ async function load({ rid: roomId, lastOpen }) {
 	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });
 	return result;
 }
-
-// TODO: move to utils
-const assignSub = (sub, newSub) => {
-	Object.assign(sub, newSub);
-};
 
 export default function loadMissedMessages(args) {
 	return new Promise(async(resolve, reject) => {
