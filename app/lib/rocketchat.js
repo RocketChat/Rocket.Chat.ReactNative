@@ -417,11 +417,15 @@ const RocketChat = {
 			serversDB.delete(user);
 		});
 
-		Promise.all([
-			RNUserDefaults.clear('currentServer'),
-			RNUserDefaults.clear(TOKEN_KEY),
-			RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`)
-		]).catch(error => console.log(error));
+		await watermelon.databases.serversDB.action(async() => {
+			const usersCollection = watermelon.databases.serversDB.collections.get('users');
+			const user = await usersCollection.find(userId);
+			await user.destroyPermanently();
+		});
+
+		await RNUserDefaults.clear('currentServer');
+		await RNUserDefaults.clear(TOKEN_KEY);
+		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
 			database.deleteAll();

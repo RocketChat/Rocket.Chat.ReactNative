@@ -314,7 +314,7 @@ class ShareListView extends React.Component {
 				<View style={styles.bordered}>
 					<ServerItem
 						server={server}
-						onPress={() => Navigation.navigate('SelectServerView')}
+						onPress={() => Navigation.navigate('SelectServerView', { servers: this.servers })}
 						item={currentServer}
 					/>
 				</View>

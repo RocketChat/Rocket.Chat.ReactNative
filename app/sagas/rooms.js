@@ -23,9 +23,8 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
-		const [serverRecord] = database.databases.serversDB
-			.objects('servers')
-			.filtered('id = $0', server);
+		const serversCollection = watermelondb.databases.serversDB.collections.get('servers');
+		const serverRecord = yield serversCollection.find(server);
 		const { roomsUpdatedAt } = serverRecord;
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(
 			roomsUpdatedAt

@@ -130,7 +130,7 @@ const handleLogout = function* handleLogout() {
 			// if there's no servers, go outside
 			yield put(appStart('outside'));
 		} catch (e) {
-			yield put(appStart('outside'));
+			// yield put(appStart('outside'));
 			log(e);
 		}
 	}
