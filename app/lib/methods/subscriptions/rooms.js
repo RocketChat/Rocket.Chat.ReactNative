@@ -39,21 +39,22 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
-				let messages = [];
-				const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
-
-				if (subscription) {
-					messages = database.objects('messages').filtered('rid == $0', subscription.rid);
-				}
 				try {
-					// database.write(() => {
-					// 	database.delete(messages);
-					// 	database.delete(subscription);
-					// });
+					const subCollection = watermelon.collections.get('subscriptions');
+					const sub = await subCollection.find(data.rid);
+					const messages = await sub.messages.fetch();
+					const threads = await sub.threads.fetch();
+					const threadMessages = await sub.threadMessages.fetch();
+					const messagesToDelete = messages.map(m => m.prepareDestroyPermanently());
+					const threadsToDelete = threads.map(m => m.prepareDestroyPermanently());
+					const threadMessagesToDelete = threadMessages.map(m => m.prepareDestroyPermanently());
 					await watermelon.action(async() => {
-						const subCollection = watermelon.collections.get('subscriptions');
-						const sub = await subCollection.find(subscription.id);
-						await sub.destroyPermanently();
+						await watermelon.batch(
+							sub.prepareDestroyPermanently(),
+							...messagesToDelete,
+							...threadsToDelete,
+							...threadMessagesToDelete,
+						);
 					});
 				} catch (e) {
 					log(e);
