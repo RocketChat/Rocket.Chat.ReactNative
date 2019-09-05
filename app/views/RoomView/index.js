@@ -625,7 +625,7 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				{this.t === 'd' ? (
+				{this.t === 'd' && user && user.statusText ? (
 					<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
 						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text>
 					</View>
