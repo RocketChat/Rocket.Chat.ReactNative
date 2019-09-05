@@ -4,12 +4,14 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
 
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -58,6 +60,7 @@ class RoomInfoView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.roles = database.objects('roles');
@@ -65,7 +68,7 @@ class RoomInfoView extends React.Component {
 			unsubscribe: () => {}
 		};
 		this.state = {
-			room: {},
+			room: room || {},
 			roomUser: {}
 		};
 	}
@@ -84,12 +87,17 @@ class RoomInfoView extends React.Component {
 			}
 			return;
 		}
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		safeAddListener(this.rooms, this.updateRoom);
-		let room = {};
-		if (this.rooms.length > 0) {
-			this.setState({ room: this.rooms[0] });
-			[room] = this.rooms;
+		const { navigation } = this.props;
+		let room = navigation.getParam('room');
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					this.forceUpdate();
+					this.setState({ room: changes });
+				});
 		} else {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);
@@ -104,7 +112,6 @@ class RoomInfoView extends React.Component {
 		}
 		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			const { navigation } = this.props;
 			navigation.setParams({ showEdit: true });
 		}
 	}

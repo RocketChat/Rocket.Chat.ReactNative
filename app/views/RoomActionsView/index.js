@@ -6,6 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
@@ -13,7 +15,6 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
-import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -43,14 +44,26 @@ class RoomActionsView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const room = props.navigation.getParam('room');
+
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					this.forceUpdate();
+					this.setState({ room: changes });
+				});
+		}
+
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			room: this.rooms[0] || { rid: this.rid, t: this.t },
+			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
 			member: {},
-			joined: this.rooms.length > 0,
+			joined: room,
 			canViewMembers: false,
 			canAutoTranslate: false
 		};
@@ -84,8 +97,6 @@ class RoomActionsView extends React.Component {
 
 		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.setState({ canAutoTranslate });
-
-		safeAddListener(this.rooms, this.updateRoom);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -108,10 +119,6 @@ class RoomActionsView extends React.Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
 	}
 
 	onPressTouchable = (item) => {
@@ -185,7 +192,7 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
-				params: { rid, t },
+				params: { rid, t, room },
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo

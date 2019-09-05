@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, LayoutAnimation, InteractionManager
+	Text, View, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView, HeaderBackButton } from 'react-navigation';
-import equal from 'deep-equal';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
-import EJSON from 'ejson';
 import * as Haptics from 'expo-haptics';
 
 import {
@@ -26,7 +27,6 @@ import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
-import { isIOS } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
@@ -34,14 +34,10 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { COLOR_WHITE, HEADER_BACK } from '../../constants/colors';
 import debounce from '../../utils/debounce';
-import buildMessage from '../../lib/methods/helpers/buildMessage';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
-import { Q } from '@nozbe/watermelondb';
-import { throttleTime } from 'rxjs/operators';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -50,6 +46,7 @@ class RoomView extends React.Component {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
+		const room = navigation.getParam('room');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
@@ -67,6 +64,7 @@ class RoomView extends React.Component {
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
+					room={room}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={toggleFollowThread}
@@ -529,7 +527,7 @@ class RoomView extends React.Component {
 			});
 		} catch (e) {
 			log(e);
-			console.log(e)
+			console.log(e);
 		}
 	}
 
@@ -579,7 +577,7 @@ class RoomView extends React.Component {
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
 			log(e);
-			console.log(e)
+			console.log(e);
 		}
 	}
 
