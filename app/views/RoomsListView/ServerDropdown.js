@@ -12,7 +12,7 @@ import { toggleServerDropdown as toggleServerDropdownAction } from '../../action
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import database, { safeAddListener } from '../../lib/realm';
+import { safeAddListener } from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -29,12 +29,14 @@ class ServerDropdown extends Component {
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		servers: PropTypes.array
 	}
 
 	constructor(props) {
 		super(props);
-		this.servers = database.databases.serversDB.objects('servers');
+		const { servers } = this.props;
+		this.servers = servers;
 		this.state = {
 			servers: this.servers
 		};
