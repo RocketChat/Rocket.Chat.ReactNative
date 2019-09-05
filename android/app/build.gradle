@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: 'com.bugsnag.android.gradle'
@@ -204,9 +206,10 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-core:16.0.9"
