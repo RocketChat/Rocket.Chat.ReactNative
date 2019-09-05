@@ -34,15 +34,19 @@ const restore = function* restore() {
 		});
 
 		let servers = yield RNUserDefaults.objectForKey(SERVERS);
+		// if not have current
+		if (servers && servers.length !== 0 && (!token || !server)) {
+			server = servers[0][SERVER_URL];
+			token = servers[0][TOKEN];
+		}
 
 		// get native credentials
 		if (servers && !hasMigration) {
 			// parse servers
-			servers = servers.map(async(s) => {
+			servers = yield Promise.all(servers.map(async(s) => {
 				await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
 				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
-			});
-
+			}));
 			try {
 				const { serversDB } = watermelon.databases;
 
@@ -57,7 +61,6 @@ const restore = function* restore() {
 					// Create
 					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
 						s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
-						delete record.id;
 						Object.assign(s, record);
 					})));
 
@@ -65,7 +68,6 @@ const restore = function* restore() {
 					serversToUpdate = serversToUpdate.map((record) => {
 						const newServer = servers.find(s => s.id === record.id);
 						return server.prepareUpdate(protectedFunction((s) => {
-							delete newServer.id;
 							Object.assign(s, newServer);
 						}));
 					});
@@ -76,18 +78,12 @@ const restore = function* restore() {
 					];
 
 					try {
-						await watermelon.batch(...allRecords);
+						await serversDB.batch(...allRecords);
 					} catch (e) {
 						log(e);
 					}
 					return allRecords.length;
 				});
-
-				// if not have current
-				if (servers && servers.length !== 0 && (!token || !server)) {
-					server = servers[0][SERVER_URL];
-					token = servers[0][TOKEN];
-				}
 			} catch (e) {
 				log(e);
 			}
