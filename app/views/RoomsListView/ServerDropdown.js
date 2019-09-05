@@ -12,12 +12,12 @@ import { toggleServerDropdown as toggleServerDropdownAction } from '../../action
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import { safeAddListener } from '../../lib/realm';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
+import watermelon from '../../lib/database';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -29,22 +29,26 @@ class ServerDropdown extends Component {
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
-		appStart: PropTypes.func,
-		servers: PropTypes.array
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		const { servers } = this.props;
-		this.servers = servers;
-		this.state = {
-			servers: this.servers
-		};
+		this.state = { servers: [] };
 		this.animatedValue = new Animated.Value(0);
-		safeAddListener(this.servers, this.updateState);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const { serversDB } = watermelon.databases;
+		const observable = await serversDB.collections
+			.get('servers')
+			.query()
+			.observeWithColumns(['name']);
+
+		observable.subscribe((data) => {
+			this.setState({ servers: data });
+		});
+
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -83,11 +87,6 @@ class ServerDropdown extends Component {
 			clearTimeout(this.newServerTimeout);
 			this.newServerTimeout = false;
 		}
-	}
-
-	updateState = () => {
-		const { servers } = this;
-		this.setState({ servers });
 	}
 
 	close = () => {

@@ -177,8 +177,7 @@ class RoomsListView extends React.Component {
 		));
 	}
 
-	async componentDidMount() {
-		const { serversDB } = watermelon.databases;
+	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation } = this.props;
 		navigation.setParams({
@@ -187,8 +186,6 @@ class RoomsListView extends React.Component {
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-		const serversCollection = serversDB.collections.get('servers');
-		this.servers = await serversCollection.query().fetch();
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -735,7 +732,7 @@ class RoomsListView extends React.Component {
 						showUnread={showUnread}
 					/>
 				) : null}
-				{showServerDropdown ? <ServerDropdown servers={this.servers} /> : null}
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};
