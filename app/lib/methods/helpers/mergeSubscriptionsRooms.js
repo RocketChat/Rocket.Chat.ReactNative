@@ -14,7 +14,7 @@ export const merge = (subscription, room) => {
 		if (room.rid) {
 			subscription.rid = room.rid;
 		}
-		subscription.roomUpdatedAt = room._updatedAt;
+		subscription._updatedAt = room._updatedAt;
 		subscription.lastMessage = normalizeMessage(room.lastMessage);
 		subscription.ro = room.ro;
 		subscription.description = room.description;

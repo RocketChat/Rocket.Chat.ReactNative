@@ -46,12 +46,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 
 			const allRecords = [
 				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
-					s._raw = sanitizedRaw(
-						{
-							id: subscription.rid
-						},
-						subCollection.schema
-					);
+					s._raw = sanitizedRaw({ id: subscription.rid }, subCollection.schema);
 					return assignSub(s, subscription);
 				})),
 				...subsToUpdate.map((subscription) => {

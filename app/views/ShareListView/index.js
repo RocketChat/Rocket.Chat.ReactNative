@@ -192,7 +192,7 @@ class ShareListView extends React.Component {
 					Q.where('archived', false),
 					Q.where('open', true)
 				).fetch();
-			this.data = orderBy(this.data, ['roomUpdatedAt'], ['desc']);
+			this.data = orderBy(this.data, ['_updatedAt'], ['desc']);
 
 			const serversCollection = serversDB.collections.get('servers');
 			this.servers = await serversCollection.query().fetch();

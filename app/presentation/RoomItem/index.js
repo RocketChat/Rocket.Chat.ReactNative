@@ -97,7 +97,7 @@ class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		// const { item: { roomUpdatedAt, lastMessage } } = this.props;
+		// const { item: { _updatedAt, lastMessage } } = this.props;
 		// const oldlastMessage = lastMessage;
 		// const newLastmessage = nextProps.item.lastMessage;
 
@@ -105,16 +105,16 @@ class RoomItem extends React.Component {
 		// if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
 		// 	return true;
 		// }
-		// // if (roomUpdatedAt && nextProps.item.roomUpdatedAt && nextProps.item.roomUpdatedAt.toISOString() !== roomUpdatedAt.toISOString()) {
+		// // if (_updatedAt && nextProps.item._updatedAt && nextProps.item._updatedAt.toISOString() !== _updatedAt.toISOString()) {
 		// // 	return true;
 		// // }
 		// // // eslint-disable-next-line react/destructuring-assignment
 		// // return attrs.some(key => nextProps.item[key] !== this.props.item[key]);
 		// if (nextProps.name === 'Tests') {
 		// 	console.log(nextProps.item, this.props.item)
-		// 	// console.log(nextProps.item.roomUpdatedAt.toISOString(), this.props.item.roomUpdatedAt.toISOString())
+		// 	// console.log(nextProps.item._updatedAt.toISOString(), this.props.item._updatedAt.toISOString())
 		// }
-		// return nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()
+		// return nextProps.item._updatedAt.toISOString() !== this.props.item._updatedAt.toISOString()
 		// return true;
 
 		// console.log(this.props.item, nextProps.item)
@@ -135,7 +135,7 @@ class RoomItem extends React.Component {
 	// 		if (nextProps._updatedAt !== this.props._updatedAt) {
 	// 			console.log('UPDATEEEEEEEERERERE')
 	// 		}
-	// 		if (nextProps.item.roomUpdatedAt.toISOString() !== this.props.item.roomUpdatedAt.toISOString()) {
+	// 		if (nextProps.item._updatedAt.toISOString() !== this.props.item._updatedAt.toISOString()) {
 	// 			console.log('UPDATEEEEEEEERERERE')
 	// 		}
 	// 	}
@@ -274,7 +274,7 @@ class RoomItem extends React.Component {
 			width
 		} = this.props;
 		const {
-			roomUpdatedAt,
+			_updatedAt,
 			lastMessage,
 			unread,
 			alert,
@@ -286,7 +286,7 @@ class RoomItem extends React.Component {
 		} = item;
 		const id = item.rid.replace(userId, '').trim();
 
-		const date = formatDate(roomUpdatedAt);
+		const date = formatDate(_updatedAt);
 
 		// // FIXME: it's updating rows while scrolling
 		if (name === 'Tests') {
@@ -370,7 +370,7 @@ class RoomItem extends React.Component {
 										>
 											{name}
 										</Text>
-										{roomUpdatedAt ? (
+										{_updatedAt ? (
 											<Text
 												style={[
 													styles.date,

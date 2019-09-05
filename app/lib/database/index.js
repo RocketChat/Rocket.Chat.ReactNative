@@ -4,6 +4,7 @@ import RNRealmPath from 'react-native-realm-path';
 
 import schema from './model/schema';
 import Subscription from './model/Subscription';
+import Room from './model/Room';
 import Message from './model/Message';
 import Thread from './model/Thread';
 import ThreadMessage from './model/ThreadMessage';
@@ -49,6 +50,7 @@ class DB {
 			adapter,
 			modelClasses: [
 				Subscription,
+				Room,
 				Message,
 				Thread,
 				ThreadMessage,

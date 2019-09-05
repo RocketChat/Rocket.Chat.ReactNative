@@ -68,7 +68,7 @@ class SelectedUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
+		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('_updatedAt', true);
 		this.state = {
 			search: []
 		};

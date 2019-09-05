@@ -86,7 +86,7 @@ const subscriptionSchema = {
 		roles: 'string[]',
 		unread: { type: 'int', optional: true },
 		userMentions: { type: 'int', optional: true },
-		roomUpdatedAt: { type: 'date', optional: true },
+		_updatedAt: { type: 'date', optional: true },
 		ro: { type: 'bool', optional: true },
 		lastOpen: { type: 'date', optional: true },
 		lastMessage: { type: 'messages', optional: true },

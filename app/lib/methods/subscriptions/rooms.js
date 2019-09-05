@@ -1,4 +1,5 @@
-import database from '../../realm';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import watermelondb from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
@@ -16,8 +17,56 @@ let disconnectedListener;
 let streamListener;
 let subServer;
 
-const assignSub = (sub, newSub) => {
-	Object.assign(sub, newSub);
+const createOrUpdateSubscription = async(subscription, room) => {
+	try {
+		const watermelon = watermelondb.database;
+		const subCollection = watermelon.collections.get('subscriptions');
+		const roomsCollection = watermelon.collections.get('rooms');
+
+		if (!subscription) {
+			try {
+				subscription = await subCollection.find(room._id);
+			} catch (error) {
+				try {
+					await watermelon.action(async() => {
+						await roomsCollection.create(protectedFunction((r) => {
+							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
+							Object.assign(r, room);
+						}));
+					});
+				} catch (e) {
+					// Do nothing
+				}
+				return;
+			}
+		}
+
+		if (!room && subscription) {
+			try {
+				room = await roomsCollection.find(subscription.rid);
+			} catch (error) {
+				// Do nothing
+			}
+		}
+
+		const tmp = merge(subscription, room);
+		await watermelon.action(async() => {
+			try {
+				const sub = await subCollection.find(tmp.rid);
+				await sub.update(protectedFunction((s) => {
+					Object.assign(s, tmp);
+				}));
+			} catch (error) {
+				await subCollection.create(protectedFunction((s) => {
+					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+					Object.assign(s, tmp);
+					s._updatedAt = new Date();
+				}));
+			}
+		});
+	} catch (e) {
+		log(e);
+	}
 };
 
 export default function subscribeRooms() {
@@ -60,52 +109,14 @@ export default function subscribeRooms() {
 					log(e);
 				}
 			} else {
-				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
-				const tmp = merge(data, rooms[0]);
-				try {
-					await watermelon.action(async() => {
-						const subCollection = watermelon.collections.get('subscriptions');
-						const sub = await subCollection.find(tmp.rid);
-						await sub.update((s) => {
-							assignSub(s, tmp);
-						});
-					});
-
-					database.write(() => {
-						database.create('subscriptions', tmp, true);
-						database.delete(rooms);
-					});
-				} catch (e) {
-					log(e);
-				}
+				await createOrUpdateSubscription(data);
 			}
 		}
 		if (/rooms/.test(ev)) {
 			if (type === 'updated') {
-				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-				const tmp = merge(sub, data);
-				try {
-					database.write(() => {
-						database.create('subscriptions', tmp, true);
-					});
-					await watermelon.action(async() => {
-						const subCollection = watermelon.collections.get('subscriptions');
-						const subW = await subCollection.find(tmp.rid);
-						await subW.update((s) => {
-							assignSub(s, tmp);
-						});
-					});
-				} catch (e) {
-					log(e);
-				}
+				await createOrUpdateSubscription(null, data);
 			} else if (type === 'inserted') {
-				try {
-					database.write(() => {
-						database.create('rooms', data, true);
-					});
-				} catch (e) {
-					log(e);
-				}
+				await createOrUpdateSubscription(null, data);
 			}
 		}
 		if (/message/.test(ev)) {
@@ -123,15 +134,18 @@ export default function subscribeRooms() {
 					username: 'rocket.cat'
 				}
 			};
-			requestAnimationFrame(() => {
-				try {
-					database.write(() => {
-						database.create('messages', message, true);
-					});
-				} catch (e) {
-					log(e);
-				}
-			});
+			try {
+				const msgCollection = watermelon.collections.get('messages');
+				await watermelon.action(async() => {
+					await msgCollection.create(protectedFunction((m) => {
+						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+						m.subscription.id = args.rid;
+						Object.assign(m, message);
+					}));
+				});
+			} catch (e) {
+				log(e);
+			}
 		}
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;

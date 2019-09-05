@@ -19,7 +19,7 @@ export default appSchema({
 				// roles: 'string[]',
 				{ name: 'unread', type: 'number' },
 				{ name: 'user_mentions', type: 'number' },
-				{ name: 'room_updated_at', type: 'number' },
+				{ name: '_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
 				// { name: 'last_message_id', type: 'string', isIndexed: true },
@@ -30,7 +30,7 @@ export default appSchema({
 				{ name: 'blocked', type: 'boolean', isOptional: true },
 				{ name: 'blocker', type: 'boolean', isOptional: true },
 				{ name: 'react_when_read_only', type: 'boolean', isOptional: true },
-				{ name: 'archived', type: 'boolean', isOptional: true },
+				{ name: 'archived', type: 'boolean' },
 				{ name: 'join_code_required', type: 'boolean', isOptional: true },
 				// { name: 'notifications', type: 'boolean', isOptional: true },
 				// { name: 'muted', type: 'string', isOptional: true },
@@ -40,6 +40,15 @@ export default appSchema({
 				{ name: 'last_thread_sync', type: 'number', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate_language', type: 'string' }
+			]
+		}),
+		tableSchema({
+			name: 'rooms',
+			columns: [
+				{ name: 'custom_fields', type: 'string' },
+				{ name: 'broadcast', type: 'boolean' },
+				{ name: 'encrypted', type: 'boolean' },
+				{ name: 'ro', type: 'boolean' }
 			]
 		}),
 		tableSchema({

@@ -317,7 +317,7 @@ class RoomsListView extends React.Component {
 				Q.where('open', true),
 				Q.where('t', Q.notEq('l'))
 			)
-			.observeWithColumns(['room_updated_at', 'unread', 'f', 't']);
+			.observeWithColumns(['_updated_at', 'unread', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
 			let chats = [];
@@ -330,7 +330,7 @@ class RoomsListView extends React.Component {
 			if (sortBy === 'alphabetical') {
 				chats = orderBy(data, ['name'], ['asc']);
 			} else {
-				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
+				chats = orderBy(data, ['_updatedAt'], ['desc']);
 			}
 
 			// unread
