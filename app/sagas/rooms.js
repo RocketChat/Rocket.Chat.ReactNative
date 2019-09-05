@@ -7,7 +7,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
 import watermelondb from '../lib/database';
-import update	 from '../utils/update';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
@@ -19,10 +18,11 @@ const assignSub = (sub, newSub) => {
 
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
+		const { serversDB } = watermelondb.databases;
 		yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
-		const serversCollection = watermelondb.databases.serversDB.collections.get('servers');
+		const serversCollection = serversDB.collections.get('servers');
 		const serverRecord = yield serversCollection.find(server);
 		const { roomsUpdatedAt } = serverRecord;
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(
@@ -72,8 +72,16 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			return allRecords.length;
 		});
 
-		const { serversDB } = watermelondb.databases;
-		yield update(serversDB, 'servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt });
+		serversDB.action(async() => {
+			try {
+				await serverRecord.update((record) => {
+					record._raw = sanitizedRaw({ id: server, ...record._raw }, serversCollection.schema);
+					record.roomsUpdatedAt = newRoomsUpdatedAt;
+				});
+			} catch (e) {
+				log(e);
+			}
+		});
 
 		yield put(roomsSuccess());
 	} catch (e) {

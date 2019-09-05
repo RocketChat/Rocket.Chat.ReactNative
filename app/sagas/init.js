@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -12,7 +13,6 @@ import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
-import update from '../utils/update';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
@@ -35,16 +35,29 @@ const restore = function* restore() {
 		// get native credentials
 		if (isIOS && !hasMigration) {
 			const { serversDB } = watermelon.databases;
+			const serverCollections = serversDB.collections.get('servers');
 			const servers = yield RNUserDefaults.objectForKey(SERVERS);
 			if (servers) {
 				servers.forEach(async(serverItem) => {
 					const serverInfo = {
-						id: serverItem[SERVER_URL],
 						name: serverItem[SERVER_NAME],
 						iconURL: serverItem[SERVER_ICON]
 					};
 					try {
-						await update(serversDB, 'servers', serverInfo);
+						serversDB.action(async() => {
+							try {
+								const serverRecord = await serverCollections.find(serverInfo.id);
+								await serverRecord.update((record) => {
+									record._raw = sanitizedRaw({ id: serverItem[SERVER_URL], ...record._raw }, serverCollections.schema);
+									Object.assign(record, serverInfo);
+								});
+							} catch (e) {
+								await serverCollections.create((record) => {
+									record._raw = sanitizedRaw({ id: serverItem[SERVER_URL] }, serverCollections.schema);
+									Object.assign(record, serverInfo);
+								});
+							}
+						});
 						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
 					} catch (e) {
 						log(e);
