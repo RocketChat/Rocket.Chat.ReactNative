@@ -7,7 +7,6 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
 import watermelondb from '../../database';
-import debounce from '../../../utils/debounce';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -82,27 +81,55 @@ export default function subscribeRoom({ rid }) {
 				removeUserTyping(username);
 			}
 		} else if (ev === 'deleteMessage') {
-			database.write(() => {
+			InteractionManager.runAfterInteractions(async() => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-					const { _id } = ddpMessage.fields.args[0];
-					const message = database.objects('messages').filtered('_id = $0', _id);
-					database.delete(message);
-					const thread = database.objects('threads').filtered('_id = $0', _id);
-					database.delete(thread);
-					const threadMessage = database.objects('threadMessages').filtered('_id = $0', _id);
-					database.delete(threadMessage);
-					const cleanTmids = database.objects('messages').filtered('tmid = $0', _id).snapshot();
-					if (cleanTmids && cleanTmids.length) {
-						cleanTmids.forEach((m) => {
-							m.tmid = null;
+					try {
+						const { _id } = ddpMessage.fields.args[0];
+						const watermelon = watermelondb.database;
+						const msgCollection = watermelon.collections.get('messages');
+						const threadsCollection = watermelon.collections.get('threads');
+						const threadMessagesCollection = watermelon.collections.get('thread_messages');
+						let deleteMessage;
+						let deleteThread;
+						let deleteThreadMessage;
+
+						// Delete message
+						try {
+							const m = await msgCollection.find(_id);
+							deleteMessage = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+
+						// Delete thread
+						try {
+							const m = await threadsCollection.find(_id);
+							deleteThread = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+
+						// Delete thread message
+						try {
+							const m = await threadMessagesCollection.find(_id);
+							deleteThreadMessage = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+						await watermelon.action(async() => {
+							await watermelon.batch(
+								deleteMessage, deleteThread, deleteThreadMessage
+							);
 						});
+					} catch (e) {
+						log(e);
 					}
 				}
 			});
 		}
 	});
 
-	const handleMessageReceived = protectedFunction(async(ddpMessage) => {
+	const handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		if (rid !== message.rid) {
 			return;
