@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import * as Haptics from 'expo-haptics';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import database, { safeAddListener } from '../../lib/realm';
+import watermelon from '../../lib/database';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
@@ -57,7 +59,19 @@ class RoomMembersView extends React.Component {
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+
+		const room = props.navigation.getParam('room');
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					this.forceUpdate();
+					this.setState({ room: changes });
+				});
+		}
+
 		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
 			isLoading: false,
@@ -67,7 +81,7 @@ class RoomMembersView extends React.Component {
 			members: [],
 			membersFiltered: [],
 			userLongPressed: {},
-			room: this.rooms[0] || {},
+			room: room || {},
 			options: [],
 			end: false
 		};
@@ -75,7 +89,6 @@ class RoomMembersView extends React.Component {
 
 	componentDidMount() {
 		this.fetchMembers();
-		safeAddListener(this.rooms, this.updateRoom);
 
 		const { navigation } = this.props;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
@@ -112,10 +125,6 @@ class RoomMembersView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
-	}
-
 	onSearchChangeText = protectedFunction((text) => {
 		const { members } = this.state;
 		let membersFiltered = [];
@@ -128,9 +137,11 @@ class RoomMembersView extends React.Component {
 
 	onPressUser = async(item) => {
 		try {
-			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
-			if (subscriptions.length) {
-				this.goRoom({ rid: subscriptions[0].rid, name: item.username });
+			const subsCollection = watermelon.database.collections.get('subscriptions');
+			const allSubscriptionsRecords = await subsCollection.query().fetch();
+			const subscription = allSubscriptionsRecords.find(sub => sub.name === item.username);
+			if (subscription) {
+				this.goRoom({ rid: subscription.rid, name: item.username });
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {

@@ -292,7 +292,7 @@ class RoomActionsView extends React.Component {
 					name: I18n.t('Members'),
 					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 					route: 'RoomMembersView',
-					params: { rid },
+					params: { rid, room },
 					testID: 'room-actions-members'
 				});
 			}
