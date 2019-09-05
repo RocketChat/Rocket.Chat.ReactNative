@@ -1,6 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../realm';
 import watermelondb from '../database';
 import log from '../../utils/log';
 
@@ -27,9 +26,10 @@ export async function cancelUpload(item) {
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			// FIXME: change after watermelon is configured for serversDB
-			const { serversDB } = database.databases;
-			const { FileUpload_MaxFileSize, id: Site_Url } = serversDB.objectForPrimaryKey('servers', server);
+			const { serversDB } = watermelondb.databases;
+			const serversCollection = serversDB.collections.get('servers');
+			const serverInfo = await serversCollection.find(server);
+			const { FileUpload_MaxFileSize, id: Site_Url } = serverInfo;
 			const { id, token } = user;
 
 			// -1 maxFileSize means there is no limit
