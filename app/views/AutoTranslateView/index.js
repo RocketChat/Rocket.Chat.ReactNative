@@ -4,6 +4,8 @@ import {
 	FlatList, Switch, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView, ScrollView } from 'react-navigation';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -17,7 +19,6 @@ import {
 	SWITCH_TRACK_COLOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR
 } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import database from '../../lib/realm';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -49,11 +50,22 @@ export default class AutoTranslateView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rid = props.navigation.getParam('rid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const room = props.navigation.getParam('room');
+
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					this.forceUpdate();
+					this.room = changes;
+				});
+		}
 		this.state = {
 			languages: [],
-			selectedLanguage: this.rooms[0].autoTranslateLanguage,
-			enableAutoTranslate: this.rooms[0].autoTranslate
+			selectedLanguage: this.room.autoTranslateLanguage,
+			enableAutoTranslate: this.room.autoTranslate
 		};
 	}
 

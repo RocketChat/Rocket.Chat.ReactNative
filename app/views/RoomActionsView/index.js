@@ -182,7 +182,7 @@ class RoomActionsView extends React.Component {
 			icon: 'bell',
 			name: I18n.t('Notifications'),
 			route: 'NotificationPrefView',
-			params: { rid },
+			params: { rid, room },
 			testID: 'room-actions-notifications'
 		};
 
@@ -264,7 +264,7 @@ class RoomActionsView extends React.Component {
 				icon: 'language',
 				name: I18n.t('Auto_Translate'),
 				route: 'AutoTranslateView',
-				params: { rid },
+				params: { rid, room },
 				testID: 'room-actions-auto-translate'
 			});
 		}

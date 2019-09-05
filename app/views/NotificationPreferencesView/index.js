@@ -5,6 +5,8 @@ import {
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { throttleTime } from 'rxjs/operators';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
@@ -14,7 +16,6 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 
@@ -113,9 +114,21 @@ export default class NotificationPreferencesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rid = props.navigation.getParam('rid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const room = props.navigation.getParam('room');
+
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.pipe(throttleTime(5000))
+				.subscribe((changes) => {
+					// TODO: compare changes?
+					this.forceUpdate();
+					this.setState({ room: changes });
+				});
+		}
+
 		this.state = {
-			room: JSON.parse(JSON.stringify(this.rooms[0] || {}))
+			room: room || {}
 		};
 	}
 
