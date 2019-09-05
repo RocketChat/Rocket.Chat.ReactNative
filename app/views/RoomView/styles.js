@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import {
-	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
+	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION, COLOR_BACKGROUND_NOTIFICATION
 } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
@@ -64,5 +64,16 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
+	},
+	statusTextContainer: {
+		padding: 10,
+		backgroundColor: '#292929',
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+	statusText: {
+		fontSize: 14,
+		color: COLOR_WHITE,
+		...sharedStyles.textMedium
 	}
 });

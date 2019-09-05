@@ -74,5 +74,11 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
+	},
+	statusText: {
+		paddingTop: 10,
+		fontSize: 18,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textMedium
 	}
 });

@@ -209,12 +209,12 @@ const RocketChat = {
 				const { eventName } = ddpMessage.fields;
 				if (eventName === 'user-status') {
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, username, status] = userStatus;
+					const [id, username, status, statusText] = userStatus;
 					if (username) {
 						database.memoryDatabase.write(() => {
 							try {
 								database.memoryDatabase.create('activeUsers', {
-									id, username, status: STATUSES[status]
+									id, username, status: STATUSES[status], statusText
 								}, true);
 							} catch (error) {
 								console.log(error);
@@ -326,6 +326,7 @@ const RocketChat = {
 				name: result.me.name,
 				language: result.me.language,
 				status: result.me.status,
+				statusText: result.me.statusText,
 				customFields: result.me.customFields,
 				emails: result.me.emails,
 				roles: result.me.roles

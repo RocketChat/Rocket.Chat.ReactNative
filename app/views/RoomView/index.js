@@ -624,6 +624,9 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
+				<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
+					{this.t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text> : null }
+				</View>
 				<List rid={rid} t={t} tmid={this.tmid} renderRow={this.renderItem} />
 				{this.renderFooter()}
 				{this.renderActions()}
@@ -652,7 +655,8 @@ const mapStateToProps = state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	actionMessage: state.messages.actionMessage,
 	editing: state.messages.editing,

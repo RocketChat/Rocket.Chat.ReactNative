@@ -88,6 +88,9 @@ class Sidebar extends Component {
 			if (nextProps.user.status !== user.status) {
 				return true;
 			}
+			if (nextProps.user.statusText !== user.statusText) {
+				return true;
+			}
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
@@ -210,6 +213,21 @@ class Sidebar extends Component {
 		);
 	}
 
+	renderStatusText = () => {
+		const { activeItemKey, user } = this.props;
+		return (
+			<React.Fragment>
+				<SidebarItem
+					text={user.statusText || I18n.t('Set_custom_status')}
+					left={<CustomIcon name='edit' size={20} color={COLOR_TEXT} />}
+					onPress={() => this.sidebarNavigate('RoomsListView')}
+					testID='sidebar-status'
+					current={activeItemKey === 'StatusStack'}
+				/>
+			</React.Fragment>
+		);
+	}
+
 	renderStatus = () => {
 		const { status } = this.state;
 		const { user } = this.props;
@@ -261,6 +279,8 @@ class Sidebar extends Component {
 
 					<Separator key='separator-header' />
 
+					{this.renderStatusText()}
+
 					{!showStatus ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
@@ -275,6 +295,7 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
+		statusText: state.login.user && state.login.user.statusText,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token,
 		roles: state.login.user && state.login.user.roles
