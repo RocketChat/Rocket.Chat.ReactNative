@@ -12,7 +12,7 @@ import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
-import database from '../lib/realm';
+import update from '../utils/update';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
@@ -34,23 +34,21 @@ const restore = function* restore() {
 
 		// get native credentials
 		if (isIOS && !hasMigration) {
-			const { serversDB } = database.databases;
+			const { serversDB } = watermelon.databases;
 			const servers = yield RNUserDefaults.objectForKey(SERVERS);
 			if (servers) {
-				serversDB.write(() => {
-					servers.forEach(async(serverItem) => {
-						const serverInfo = {
-							id: serverItem[SERVER_URL],
-							name: serverItem[SERVER_NAME],
-							iconURL: serverItem[SERVER_ICON]
-						};
-						try {
-							serversDB.create('servers', serverInfo, true);
-							await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
-						} catch (e) {
-							log(e);
-						}
-					});
+				servers.forEach(async(serverItem) => {
+					const serverInfo = {
+						id: serverItem[SERVER_URL],
+						name: serverItem[SERVER_NAME],
+						iconURL: serverItem[SERVER_ICON]
+					};
+					try {
+						await update(serversDB, 'servers', serverInfo);
+						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
+					} catch (e) {
+						log(e);
+					}
 				});
 				yield AsyncStorage.setItem('hasMigration', '1');
 			}

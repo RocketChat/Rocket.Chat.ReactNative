@@ -6,7 +6,6 @@ import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
-import database from '../lib/realm';
 import watermelondb from '../lib/database';
 import update	 from '../utils/update';
 import log from '../utils/log';
@@ -34,15 +33,6 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			roomsResult
 		);
 
-		database.write(() => {
-			subscriptions.forEach((subscription) => {
-				try {
-					database.create('subscriptions', subscription, true);
-				} catch (e) {
-					log(e);
-				}
-			});
-		});
 		const watermelon = watermelondb.database;
 		yield watermelon.action(async() => {
 			// await watermelon.unsafeResetDatabase();
@@ -84,13 +74,6 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 
 		const { serversDB } = watermelondb.databases;
 		yield update(serversDB, 'servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt });
-		database.databases.serversDB.write(() => {
-			try {
-				database.databases.serversDB.create('servers', { id: server, roomsUpdatedAt: newRoomsUpdatedAt }, true);
-			} catch (e) {
-				log(e);
-			}
-		});
 
 		yield put(roomsSuccess());
 	} catch (e) {
