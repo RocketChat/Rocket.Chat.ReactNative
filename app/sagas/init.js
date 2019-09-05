@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -12,12 +13,12 @@ import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
-import update from '../utils/update';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
 import watermelon from '../lib/database';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const restore = function* restore() {
 	try {
@@ -32,31 +33,47 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
+		let servers = yield RNUserDefaults.objectForKey(SERVERS);
+		// if not have current
+		if (servers && servers.length !== 0 && (!token || !server)) {
+			server = servers[0][SERVER_URL];
+			token = servers[0][TOKEN];
+		}
+
 		// get native credentials
-		if (isIOS && !hasMigration) {
-			const { serversDB } = watermelon.databases;
-			const servers = yield RNUserDefaults.objectForKey(SERVERS);
-			if (servers) {
-				servers.forEach(async(serverItem) => {
-					const serverInfo = {
-						id: serverItem[SERVER_URL],
-						name: serverItem[SERVER_NAME],
-						iconURL: serverItem[SERVER_ICON]
-					};
+		if (servers && !hasMigration) {
+			// parse servers
+			servers = yield Promise.all(servers.map(async(s) => {
+				await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
+				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
+			}));
+			try {
+				const { serversDB } = watermelon.databases;
+
+				yield serversDB.action(async() => {
+					const serversCollection = serversDB.collections.get('servers');
+					const allServerRecords = await serversCollection.query().fetch();
+
+					// filter servers
+					let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
+
+					// Create
+					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
+						s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
+						Object.assign(s, record);
+					})));
+
+					const allRecords = serversToCreate;
+
 					try {
-						await update(serversDB, 'servers', serverInfo);
-						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
+						await serversDB.batch(...allRecords);
 					} catch (e) {
 						log(e);
 					}
+					return allRecords.length;
 				});
-				yield AsyncStorage.setItem('hasMigration', '1');
-			}
-
-			// if not have current
-			if (servers && servers.length !== 0 && (!token || !server)) {
-				server = servers[0][SERVER_URL];
-				token = servers[0][TOKEN];
+			} catch (e) {
+				log(e);
 			}
 		}
 

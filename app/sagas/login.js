@@ -2,6 +2,7 @@ import {
 	put, call, takeLatest, select, take, fork, cancel
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
 
@@ -14,10 +15,8 @@ import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import database from '../lib/realm';
 import watermelon from '../lib/database';
 import EventEmitter from '../utils/events';
-import update from '../utils/update';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -80,13 +79,27 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		moment.locale(toMomentLocale(user.language));
 
 		const { serversDB } = watermelon.databases;
-		yield update(serversDB, 'users', {
-			id: user.id,
+		const usersCollection = serversDB.collections.get('users');
+		const u = {
 			token: user.token,
 			username: user.username,
 			name: user.name,
 			language: user.language,
 			status: user.status
+		};
+		serversDB.action(async() => {
+			try {
+				const userRecord = await usersCollection.find(user.id);
+				await userRecord.update((record) => {
+					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
+					Object.assign(record, u);
+				});
+			} catch (e) {
+				await usersCollection.create((record) => {
+					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
+					Object.assign(record, u);
+				});
+			}
 		});
 
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
@@ -114,12 +127,16 @@ const handleLogout = function* handleLogout() {
 			const { serversDB } = watermelon.databases;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
-			const servers = yield serversCollection.query().fetch();
+			let servers = yield serversCollection.query().fetch();
+
 			// filter logging out server and delete it
-			const serverRecord = servers.find(s => s.id === server);
-			yield database.action(async() => {
+			yield serversDB.action(async() => {
+				const serverRecord = await serversCollection.find(server);
 				await serverRecord.destroyPermanently();
 			});
+
+			servers = yield serversCollection.query().fetch();
+
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;

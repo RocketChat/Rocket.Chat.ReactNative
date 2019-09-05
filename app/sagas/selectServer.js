@@ -3,6 +3,7 @@ import {
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -13,7 +14,6 @@ import {
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import watermelon from '../lib/database';
-import update	 from '../utils/update';
 import log from '../utils/log';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
@@ -30,7 +30,21 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		}
 
 		const { serversDB } = watermelon.databases;
-		yield update(serversDB, 'servers', { id: server, version: serverInfo.version });
+		const serversCollection = serversDB.collections.get('servers');
+		serversDB.action(async() => {
+			try {
+				const serverRecord = await serversCollection.find(server);
+				await serverRecord.update((record) => {
+					record._raw = sanitizedRaw({ id: server, ...record._raw }, serversCollection.schema);
+					record.version = serverInfo.version;
+				});
+			} catch (e) {
+				await serversCollection.create((record) => {
+					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+					record.version = serverInfo.version;
+				});
+			}
+		});
 
 		return serverInfo;
 	} catch (e) {
@@ -47,14 +61,18 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
-			user = yield userCollections.find(userId);
-			user = {
-				token: user.token,
-				username: user.username,
-				name: user.name,
-				language: user.language,
-				status: user.status
-			};
+			try {
+				user = yield userCollections.find(userId);
+				user = {
+					token: user.token,
+					username: user.username,
+					name: user.name,
+					language: user.language,
+					status: user.status
+				};
+			} catch (e) {
+				// do nothing?
+			}
 		}
 
 		const servers = yield RNUserDefaults.objectForKey(SERVERS);
