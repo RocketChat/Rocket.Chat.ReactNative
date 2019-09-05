@@ -92,7 +92,7 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields
+			name, username, emails, customFields, statusText
 		} = user || userProps;
 
 		this.setState({
@@ -104,7 +104,7 @@ class ProfileView extends React.Component {
 			avatarUrl: null,
 			avatar: {},
 			customFields: customFields || {},
-			statusText: null
+			statusText
 		});
 	}
 
@@ -130,7 +130,7 @@ class ProfileView extends React.Component {
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
 			&& !customFieldsChanged
-			&& !(user.statusText === statusText)
+			&& user.statusText === statusText
 		);
 	}
 
