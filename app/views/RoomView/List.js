@@ -144,7 +144,7 @@ export class List extends React.Component {
 			let result;
 			if (tmid) {
 				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-				result = await RocketChat.loadThreadMessages({ tmid, offset: messages.length - 1 });
+				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
 			} else {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
 			}

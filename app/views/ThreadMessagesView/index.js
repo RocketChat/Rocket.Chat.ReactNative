@@ -7,21 +7,20 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
+import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import styles from './styles';
 import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import database, { safeAddListener } from '../../lib/realm';
 import watermelondb from '../../lib/database';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
-import { Q } from '@nozbe/watermelondb';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
@@ -43,9 +42,6 @@ class ThreadMessagesView extends React.Component {
 		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		// this.messages = database.objects('threads').filtered('rid = $0', this.rid).sorted('ts', true);
-		// safeAddListener(this.messages, this.updateMessages);
 		this.subscribeData();
 		this.state = {
 			loading: false,
@@ -110,11 +106,6 @@ class ThreadMessagesView extends React.Component {
 			log(e);
 		}
 	}
-
-	// // eslint-disable-next-line react/sort-comp
-	// updateMessages = debounce(() => {
-	// 	this.setState({ messages: this.messages });
-	// }, 300)
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {

@@ -504,10 +504,9 @@ class RoomView extends React.Component {
 
 	getThreadMessages = () => {
 		try {
-			return RocketChat.loadThreadMessages({ tmid: this.tmid });
+			return RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 		} catch (e) {
 			log(e);
-			console.log(e)
 		}
 	}
 
