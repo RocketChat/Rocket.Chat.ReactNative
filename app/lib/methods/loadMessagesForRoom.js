@@ -23,7 +23,7 @@ export default function loadMessagesForRoom(args) {
 
 			if (data && data.length) {
 				InteractionManager.runAfterInteractions(async() => {
-					await updateMessages(args.rid, data);
+					await updateMessages({ rid: args.rid, update: data });
 					return resolve(data);
 				});
 			} else {

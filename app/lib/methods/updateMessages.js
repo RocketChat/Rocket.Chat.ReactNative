@@ -5,8 +5,11 @@ import log from '../../utils/log';
 import watermelondb from '../database';
 import protectedFunction from './helpers/protectedFunction';
 
-export default function updateMessages(rid, messages) {
+export default function updateMessages({ rid, update, remove }) {
 	try {
+		if (!((update && update.length) || (remove && remove.length))) {
+			return;
+		}
 		const watermelon = watermelondb.database;
 		return watermelon.action(async() => {
 			const subCollection = watermelon.collections.get('subscriptions');
@@ -18,19 +21,19 @@ export default function updateMessages(rid, messages) {
 			const allThreadsRecords = await sub.threads.fetch();
 			const allThreadMessagesRecords = await sub.threadMessages.fetch();
 
-			messages = messages.map(m => buildMessage(m));
+			update = update.map(m => buildMessage(m));
 
 			// filter messages
-			let msgsToCreate = messages.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
-			let msgsToUpdate = allMessagesRecords.filter(i1 => messages.find(i2 => i1.id === i2._id));
+			let msgsToCreate = update.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
+			let msgsToUpdate = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
 
 			// filter threads
-			const allThreads = messages.filter(m => m.tlm);
+			const allThreads = update.filter(m => m.tlm);
 			let threadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
 			let threadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
 
 			// filter thread messages
-			const allThreadMessages = messages.filter(m => m.tmid);
+			const allThreadMessages = update.filter(m => m.tmid);
 			let threadMessagesToCreate = allThreadMessages.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
 			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
 
@@ -55,7 +58,7 @@ export default function updateMessages(rid, messages) {
 
 			// Update
 			msgsToUpdate = msgsToUpdate.map((message) => {
-				const newMessage = messages.find(m => m._id === message.id);
+				const newMessage = update.find(m => m._id === message.id);
 				return message.prepareUpdate(protectedFunction((m) => {
 					Object.assign(m, newMessage);
 				}));
@@ -75,13 +78,29 @@ export default function updateMessages(rid, messages) {
 				}));
 			});
 
+			// Delete
+			let msgsToDelete = [];
+			let threadsToDelete = [];
+			let threadMessagesToDelete = [];
+			if (remove && remove.length) {
+				msgsToDelete = allMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				msgsToDelete = msgsToDelete.map(m => m.prepareDestroyPermanently());
+				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
+				threadMessagesToDelete = allThreadMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
+			}
+
 			const allRecords = [
 				...msgsToCreate,
 				...msgsToUpdate,
+				...msgsToDelete,
 				...threadsToCreate,
 				...threadsToUpdate,
+				...threadsToDelete,
 				...threadMessagesToCreate,
-				...threadMessagesToUpdate
+				...threadMessagesToUpdate,
+				...threadMessagesToDelete
 			];
 
 			try {

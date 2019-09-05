@@ -29,31 +29,10 @@ export default function loadMissedMessages(args) {
 			const data = (await load.call(this, { rid: args.rid, lastOpen: args.lastOpen }));
 
 			if (data) {
-				if (data.updated && data.updated.length) {
-					const { updated } = data;
-					InteractionManager.runAfterInteractions(async() => {
-						await updateMessages(args.rid, updated);
-					});
-				}
-				if (data.deleted && data.deleted.length) {
-					const { deleted } = data;
-					InteractionManager.runAfterInteractions(() => {
-						try {
-							database.write(() => {
-								deleted.forEach((m) => {
-									const message = database.objects('messages').filtered('_id = $0', m._id);
-									database.delete(message);
-									const thread = database.objects('threads').filtered('_id = $0', m._id);
-									database.delete(thread);
-									const threadMessage = database.objects('threadMessages').filtered('_id = $0', m._id);
-									database.delete(threadMessage);
-								});
-							});
-						} catch (e) {
-							log(e);
-						}
-					});
-				}
+				const { updated, deleted } = data;
+				InteractionManager.runAfterInteractions(async() => {
+					await updateMessages({ rid: args.rid, update: updated, remove: deleted });
+				});
 			}
 			resolve();
 		} catch (e) {

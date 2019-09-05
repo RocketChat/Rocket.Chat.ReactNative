@@ -153,7 +153,7 @@ class ThreadMessagesView extends React.Component {
 
 			if (remove && remove.length) {
 				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-				threadsToDelete = threadsToDelete.map(emoji => emoji.prepareDestroyPermanently());
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
 			}
 
 			await watermelon.action(async() => {
