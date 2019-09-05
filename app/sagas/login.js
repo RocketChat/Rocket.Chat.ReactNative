@@ -111,13 +111,14 @@ const handleLogout = function* handleLogout() {
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
-			const { serversDB } = database.databases;
+			const { serversDB } = watermelon.databases;
 			// all servers
-			const servers = yield serversDB.objects('servers');
+			const serversCollection = serversDB.collections.get('servers');
+			const servers = yield serversCollection.query().fetch();
 			// filter logging out server and delete it
-			const serverRecord = servers.filtered('id = $0', server);
-			serversDB.write(() => {
-				serversDB.delete(serverRecord);
+			const serverRecord = servers.find(s => s.id === server);
+			yield database.action(async() => {
+				await serverRecord.destroyPermanently();
 			});
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
@@ -130,7 +131,7 @@ const handleLogout = function* handleLogout() {
 			// if there's no servers, go outside
 			yield put(appStart('outside'));
 		} catch (e) {
-			// yield put(appStart('outside'));
+			yield put(appStart('outside'));
 			log(e);
 		}
 	}
