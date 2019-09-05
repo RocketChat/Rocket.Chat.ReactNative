@@ -56,7 +56,6 @@ const restore = function* restore() {
 
 					// filter servers
 					let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
-					let serversToUpdate = allServerRecords.filter(i1 => servers.find(i2 => i1.id === i2.id));
 
 					// Create
 					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
@@ -64,18 +63,7 @@ const restore = function* restore() {
 						Object.assign(s, record);
 					})));
 
-					// Update
-					serversToUpdate = serversToUpdate.map((record) => {
-						const newServer = servers.find(s => s.id === record.id);
-						return server.prepareUpdate(protectedFunction((s) => {
-							Object.assign(s, newServer);
-						}));
-					});
-
-					const allRecords = [
-						...serversToCreate,
-						...serversToUpdate
-					];
+					const allRecords = serversToCreate;
 
 					try {
 						await serversDB.batch(...allRecords);
