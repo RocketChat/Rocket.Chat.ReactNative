@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
-// import * as actions from '../../actions';
+import * as actions from '../../actions';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import watermelondb from '../database';
@@ -61,6 +61,13 @@ export default async function() {
 		const data = result.settings || [];
 		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 
+		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+
+		// filter server info
+		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+		serverInfoUpdate(serverInfo, iconSetting);
+
 		watermelon.action(async() => {
 			const settingsCollection = watermelon.collections.get('settings');
 			const allSettingsRecords = await settingsCollection.query().fetch();
@@ -68,8 +75,6 @@ export default async function() {
 			// filter settings
 			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
 			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
-			const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
-			const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
 
 			// Create
 			settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
@@ -89,8 +94,6 @@ export default async function() {
 				...settingsToCreate,
 				...settingsToUpdate
 			];
-
-			serverInfoUpdate(serverInfo, iconSetting);
 
 			try {
 				await watermelon.batch(...allRecords);
