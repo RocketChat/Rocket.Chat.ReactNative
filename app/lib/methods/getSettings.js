@@ -1,3 +1,4 @@
+import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
@@ -62,46 +63,49 @@ export default async function() {
 		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+		InteractionManager.runAfterInteractions(
+			() => {
+				// filter server info
+				const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+				const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+				serverInfoUpdate(serverInfo, iconSetting);
 
-		// filter server info
-		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
-		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
-		serverInfoUpdate(serverInfo, iconSetting);
+				watermelon.action(async() => {
+					const settingsCollection = watermelon.collections.get('settings');
+					const allSettingsRecords = await settingsCollection.query().fetch();
 
-		watermelon.action(async() => {
-			const settingsCollection = watermelon.collections.get('settings');
-			const allSettingsRecords = await settingsCollection.query().fetch();
+					// filter settings
+					let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
+					let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
 
-			// filter settings
-			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
-			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
+					// Create
+					settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
+						s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
+						Object.assign(s, setting);
+					})));
 
-			// Create
-			settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
-				s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
-				Object.assign(s, setting);
-			})));
+					// Update
+					settingsToUpdate = settingsToUpdate.map((setting) => {
+						const newSetting = filteredSettings.find(s => s._id === setting.id);
+						return setting.prepareUpdate(protectedFunction((s) => {
+							Object.assign(s, newSetting);
+						}));
+					});
 
-			// Update
-			settingsToUpdate = settingsToUpdate.map((setting) => {
-				const newSetting = filteredSettings.find(s => s._id === setting.id);
-				return setting.prepareUpdate(protectedFunction((s) => {
-					Object.assign(s, newSetting);
-				}));
-			});
+					const allRecords = [
+						...settingsToCreate,
+						...settingsToUpdate
+					];
 
-			const allRecords = [
-				...settingsToCreate,
-				...settingsToUpdate
-			];
-
-			try {
-				await watermelon.batch(...allRecords);
-			} catch (e) {
-				log(e);
+					try {
+						await watermelon.batch(...allRecords);
+					} catch (e) {
+						log(e);
+					}
+					return allRecords.length;
+				});
 			}
-			return allRecords.length;
-		});
+		);
 	} catch (e) {
 		log(e);
 	}
