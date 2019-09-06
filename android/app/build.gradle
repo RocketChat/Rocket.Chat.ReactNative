@@ -211,9 +211,9 @@ dependencies {
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-perf:17.0.2"
+    implementation "com.google.firebase:firebase-messaging:20.0.0"
+    implementation "com.google.firebase:firebase-core:17.2.0"
+    implementation "com.google.firebase:firebase-perf:19.0.0"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
     }
