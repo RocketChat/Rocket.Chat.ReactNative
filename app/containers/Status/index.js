@@ -3,56 +3,32 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Status from './Status';
-import database, { safeAddListener } from '../../lib/realm';
 
-class StatusContainer extends React.PureComponent {
-	static propTypes = {
-		id: PropTypes.string,
-		style: PropTypes.any,
-		size: PropTypes.number,
-		offline: PropTypes.bool
-	};
-
-	static defaultProps = {
-		size: 16
+const StatusContainer = React.memo(({
+	userStatus, style, size, offline
+}) => {
+	let status;
+	if (offline) {
+		status = 'offline';
 	}
+	status = userStatus || 'offline';
+	return <Status size={size} style={style} status={status} />;
+});
 
-	constructor(props) {
-		super(props);
-		this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.id);
-		this.state = {
-			user: this.user[0] || {}
-		};
-		safeAddListener(this.user, this.updateState);
-	}
+StatusContainer.propTypes = {
+	userStatus: PropTypes.string,
+	style: PropTypes.any,
+	size: PropTypes.number,
+	offline: PropTypes.bool
+};
 
-	componentWillUnmount() {
-		this.user.removeAllListeners();
-	}
+StatusContainer.defaultProps = {
+	size: 16
+};
 
-	get status() {
-		const { user } = this.state;
-		const { offline } = this.props;
-		if (offline || !user) {
-			return 'offline';
-		}
-		return user.status || 'offline';
-	}
-
-	updateState = () => {
-		if (this.user.length) {
-			this.setState({ user: this.user[0] });
-		}
-	}
-
-	render() {
-		const { style, size } = this.props;
-		return <Status size={size} style={style} status={this.status} />;
-	}
-}
-
-const mapStateToProps = state => ({
-	offline: !state.meteor.connected
+const mapStateToProps = (state, ownProps) => ({
+	offline: !state.meteor.connected,
+	userStatus: state.activeUsers[ownProps.id]
 });
 
 export default connect(mapStateToProps)(StatusContainer);

@@ -43,7 +43,7 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { setActiveUsers } from '../actions/activeUsers';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -53,8 +53,6 @@ const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
-
-const { memoryDatabase } = watermelon;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -188,18 +186,18 @@ const RocketChat = {
 					this.activeUsers = this.activeUsers || {};
 					if (!this._setUserTimer) {
 						this._setUserTimer = setTimeout(() => {
-							const activeUsers = Object.keys(this.activeUsers).map(key => this.activeUsers[key]);
-							this.setActiveUsers(activeUsers);
+							const activeUsersBatch = this.activeUsers;
+							InteractionManager.runAfterInteractions(() => {
+								reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+							});
 							this._setUserTimer = null;
 							return this.activeUsers = {};
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, username, status] = userStatus;
-					if (username) {
-						this.activeUsers[id] = {
-							_id: id, username, status
-						};
+					const [id,, status] = userStatus;
+					if (status) {
+						this.activeUsers[id] = STATUSES[status];
 					}
 				}
 			}));
@@ -932,59 +930,19 @@ const RocketChat = {
 
 		if (!this._setUserTimer) {
 			this._setUserTimer = setTimeout(() => {
-				const activeUsers = Object.keys(this.activeUsers).map(key => this.activeUsers[key]);
-				this.setActiveUsers(activeUsers);
+				const activeUsersBatch = this.activeUsers;
+				InteractionManager.runAfterInteractions(() => {
+					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+				});
 				this._setUserTimer = null;
 				return this.activeUsers = {};
 			}, 10000);
 		}
 
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = {
-				_id: ddpMessage.id,
-				removed: true
-			};
-		} else {
-			this.activeUsers[ddpMessage.id] = {
-				_id: ddpMessage.id, ...this.activeUsers[ddpMessage.id], ...ddpMessage.fields
-			};
-		}
-	},
-	async setActiveUsers(activeUsers) {
-		// activeUsers = [{ _id, username, status }]
-		if (!activeUsers.length) {
-			return;
-		}
-		try {
-			const activeUsersCollection = memoryDatabase.collections.get('active_users');
-			const allActiveUsersRecords = await activeUsersCollection.query().fetch();
-			let activeUsersToCreate = activeUsers.filter(i1 => !allActiveUsersRecords.find(i2 => i1._id === i2.id));
-			let activeUsersToUpdate = allActiveUsersRecords.filter(i1 => activeUsers.find(i2 => i1.id === i2._id));
-
-			activeUsersToCreate = activeUsersToCreate.map(activeUser => activeUsersCollection.prepareCreate((a) => {
-				a._raw = sanitizedRaw({ id: activeUser._id }, activeUsersCollection.schema);
-				Object.assign(a, activeUser);
-			}));
-			activeUsersToUpdate = activeUsersToUpdate.map((activeUser) => {
-				const newActiveUser = activeUsers.find(a => a._id === activeUser.id);
-				return activeUser.prepareUpdate((a) => {
-					// RC version below 1.1 returns removed boolean indicating the user went offline
-					if (newActiveUser.removed) {
-						a.status = 0;
-					} else {
-						Object.assign(a, newActiveUser);
-					}
-				});
-			});
-
-			await memoryDatabase.action(async() => {
-				await memoryDatabase.batch(
-					...activeUsersToCreate,
-					...activeUsersToUpdate
-				);
-			});
-		} catch (e) {
-			log(e);
+			this.activeUsers[ddpMessage.id] = 'offline';
+		} else if (ddpMessage.fields.status) {
+			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
 		}
 	},
 	getUserPresence() {
@@ -1010,7 +968,13 @@ const RocketChat = {
 				// RC 1.1.0
 				const result = await this.sdk.get('users.presence', params);
 				if (result.success) {
-					await this.setActiveUsers(result.users);
+					const activeUsers = result.users.reduce((ret, item) => {
+						ret[item._id] = item.status;
+						return ret;
+					}, {});
+					InteractionManager.runAfterInteractions(() => {
+						reduxStore.dispatch(setActiveUsers(activeUsers));
+					});
 					this.sdk.subscribe('stream-notify-logged', 'user-status');
 					return resolve();
 				}

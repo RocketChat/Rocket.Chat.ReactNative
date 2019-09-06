@@ -21,7 +21,6 @@ import Server from './model/Server';
 
 import memorySchema from './model/memorySchema';
 import UserTyping from './model/UserTyping';
-import ActiveUser from './model/ActiveUser';
 
 import { isIOS } from '../../utils/deviceInfo';
 
@@ -40,7 +39,7 @@ class DB {
 				dbName: isIOS ? 'file::memory:' : ':memory:',
 				schema: memorySchema
 			}),
-			modelClasses: [UserTyping, ActiveUser],
+			modelClasses: [UserTyping],
 			actionsEnabled: true
 		})
 	}

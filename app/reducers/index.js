@@ -14,6 +14,7 @@ import markdown from './markdown';
 import share from './share';
 import crashReport from './crashReport';
 import customEmojis from './customEmojis';
+import activeUsers from './activeUsers';
 
 export default combineReducers({
 	settings,
@@ -30,5 +31,6 @@ export default combineReducers({
 	markdown,
 	share,
 	crashReport,
-	customEmojis
+	customEmojis,
+	activeUsers
 });

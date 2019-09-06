@@ -5,7 +5,6 @@ import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
-import database, { safeAddListener } from '../../../lib/realm';
 import watermelondb from '../../../lib/database';
 import Header from './Header';
 import RightButtons from './RightButtons';
@@ -20,23 +19,15 @@ class RoomHeaderView extends Component {
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
-		widthOffset: PropTypes.number,
-		isLoggedUser: PropTypes.bool,
-		userId: PropTypes.string
+		widthOffset: PropTypes.number
 	};
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
 		this.init();
-		this.user = [];
-		if (props.type === 'd' && !props.isLoggedUser) {
-			this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.userId);
-			safeAddListener(this.user, this.updateUser);
-		}
 		this.state = {
-			usersTyping: [],
-			user: this.user[0] || {}
+			usersTyping: []
 		};
 	}
 
@@ -45,7 +36,7 @@ class RoomHeaderView extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { usersTyping, user } = this.state;
+		const { usersTyping } = this.state;
 		const {
 			type, title, status, window, connecting
 		} = this.props;
@@ -70,16 +61,10 @@ class RoomHeaderView extends Component {
 		if (!equal(nextState.usersTyping, usersTyping)) {
 			return true;
 		}
-		if (!equal(nextState.user, user)) {
-			return true;
-		}
 		return false;
 	}
 
 	componentWillUnmount() {
-		if (this.user && this.user.removeAllListeners) {
-			this.user.removeAllListeners();
-		}
 		if (this.usersTypingSubscription && this.usersTypingSubscription.unsubscribe) {
 			this.usersTypingSubscription.unsubscribe();
 		}
@@ -104,26 +89,11 @@ class RoomHeaderView extends Component {
 			});
 	}
 
-	updateUser = () => {
-		if (this.user.length) {
-			this.setState({ user: this.user[0] });
-		}
-	}
-
 	render() {
-		const { usersTyping, user } = this.state;
+		const { usersTyping } = this.state;
 		const {
-			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting
+			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting
 		} = this.props;
-		let status = 'offline';
-
-		if (type === 'd') {
-			if (isLoggedUser) {
-				status = userStatus;
-			} else {
-				status = user.status || 'offline';
-			}
-		}
 
 		return (
 			<Header
@@ -144,24 +114,17 @@ class RoomHeaderView extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	let status;
-	let userId;
-	let isLoggedUser = false;
 	const { rid, type } = ownProps;
 	if (type === 'd') {
 		if (state.login.user && state.login.user.id) {
 			const { id: loggedUserId } = state.login.user;
-			userId = rid.replace(loggedUserId, '').trim();
-			isLoggedUser = userId === loggedUserId;
-			if (isLoggedUser) {
-				status = state.login.user.status; // eslint-disable-line
-			}
+			const userId = rid.replace(loggedUserId, '').trim();
+			status = state.activeUsers[userId];
 		}
 	}
 
 	return {
 		connecting: state.meteor.connecting,
-		userId,
-		isLoggedUser,
 		status
 	};
 };
