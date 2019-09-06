@@ -663,8 +663,13 @@ class MessageBox extends Component {
 		// Slash command
 
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			const { database: db } = watermelon;
+			const commandsCollection = db.collections.get('slashCommands');
 			const command = message.replace(/ .*/, '').slice(1);
-			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
+			const slashCommand = await commandsCollection.query(
+				Q.where('command', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+			).fetch();
+			// const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
