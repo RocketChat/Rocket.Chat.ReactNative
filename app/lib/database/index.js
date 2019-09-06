@@ -21,6 +21,8 @@ import Server from './model/Server';
 
 import memorySchema from './model/memorySchema';
 import UserTyping from './model/UserTyping';
+import ActiveUser from './model/ActiveUser';
+
 import { isIOS } from '../../utils/deviceInfo';
 
 class DB {
@@ -38,7 +40,7 @@ class DB {
 				dbName: isIOS ? 'file::memory:' : ':memory:',
 				schema: memorySchema
 			}),
-			modelClasses: [UserTyping],
+			modelClasses: [UserTyping, ActiveUser],
 			actionsEnabled: true
 		})
 	}
@@ -86,6 +88,3 @@ class DB {
 
 const db = new DB();
 export default db;
-
-const r = db.memoryDatabase.collections.get('users_typing').query().fetch().then(console.log)
-	.catch(console.log)
