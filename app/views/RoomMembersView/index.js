@@ -72,7 +72,6 @@ class RoomMembersView extends React.Component {
 				});
 		}
 
-		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -87,11 +86,13 @@ class RoomMembersView extends React.Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.fetchMembers();
 
 		const { navigation } = this.props;
+		const { rid } = navigation.state.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
+		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

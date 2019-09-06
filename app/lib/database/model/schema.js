@@ -215,6 +215,16 @@ export default appSchema({
 				{ name: 'roles', type: 'string' },
 				{ name: '_updated_at', type: 'number', isOptional: true }
 			]
+		}),
+		tableSchema({
+			name: 'slash_commands',
+			columns: [
+				{ name: 'command', type: 'string' },
+				{ name: 'params', type: 'string', isOptional: true },
+				{ name: 'description', type: 'string', isOptional: true },
+				{ name: 'client_only', type: 'boolean', isOptional: true },
+				{ name: 'provides_preview', type: 'boolean', isOptional: true }
+			]
 		})
 	]
 });

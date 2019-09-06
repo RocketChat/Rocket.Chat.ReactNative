@@ -6,13 +6,15 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { orderBy } from 'lodash';
+import { Q } from '@nozbe/watermelondb';
 
-import database, { safeAddListener } from '../lib/realm';
+import watermelon from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
+import log from '../utils/log';
 import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
@@ -67,24 +69,39 @@ class NewMessageView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('_updatedAt', true);
+		this.init();
 		this.state = {
-			search: []
+			search: [],
+			chats: []
 		};
-		safeAddListener(this.data, this.updateState);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		if (!equal(nextState.search, search)) {
+			return true;
+		}
+		if (!equal(nextState.chats, chats)) {
 			return true;
 		}
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.updateState.stop();
-		this.data.removeAllListeners();
+	// eslint-disable-next-line react/sort-comp
+	init = async() => {
+		try {
+			const observable = await watermelon.database.collections
+				.get('subscriptions')
+				.query(Q.where('t', 'd'))
+				.observeWithColumns(['_updated_at']);
+
+			this.querySubscription = observable.subscribe((data) => {
+				const chats = orderBy(data, ['_updatedAt'], ['asc']);
+				this.setState({ chats });
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -101,11 +118,6 @@ class NewMessageView extends React.Component {
 		const { navigation } = this.props;
 		return navigation.pop();
 	}
-
-	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.forceUpdate();
-	}, 1000);
 
 	search = async(text) => {
 		const result = await RocketChat.search({ text, filterRooms: false });
@@ -134,7 +146,7 @@ class NewMessageView extends React.Component {
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
 
 	renderItem = ({ item, index }) => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		const { baseUrl, user } = this.props;
 
 		let style = {};
@@ -144,7 +156,7 @@ class NewMessageView extends React.Component {
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
-		if (search.length === 0 && index === this.data.length - 1) {
+		if (search.length === 0 && index === chats.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
 		return (
@@ -161,10 +173,10 @@ class NewMessageView extends React.Component {
 	}
 
 	renderList = () => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		return (
 			<FlatList
-				data={search.length > 0 ? search : this.data}
+				data={search.length > 0 ? search : chats}
 				extraData={this.state}
 				keyExtractor={item => item._id}
 				ListHeaderComponent={this.renderHeader}

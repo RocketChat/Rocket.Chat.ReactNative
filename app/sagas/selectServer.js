@@ -68,8 +68,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					username: user.username,
 					name: user.name,
 					language: user.language,
-					status: user.status
+					status: user.status,
+					roles: user.roles
 				};
+				user = { ...user, roles: JSON.parse(user.roles) };
 			} catch (e) {
 				// do nothing?
 			}

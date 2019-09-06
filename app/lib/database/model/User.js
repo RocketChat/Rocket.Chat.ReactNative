@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field } from '@nozbe/watermelondb/decorators';
+import { field, json } from '@nozbe/watermelondb/decorators';
 
 export default class User extends Model {
 	static table = 'users';
@@ -13,4 +13,6 @@ export default class User extends Model {
 	@field('language') language;
 
 	@field('status') status;
+
+	@json('roles', r => r) roles;
 }

@@ -14,6 +14,7 @@ import Upload from './model/Upload';
 import Setting from './model/Setting';
 import Role from './model/Role';
 import Permission from './model/Permission';
+import Command from './model/Command';
 
 import servers from './model/servers';
 import User from './model/User';
@@ -61,7 +62,8 @@ class DB {
 				Upload,
 				Setting,
 				Role,
-				Permission
+				Permission,
+				Command
 			],
 			actionsEnabled: true
 		});

@@ -65,7 +65,8 @@ class RoomActionsView extends React.Component {
 			member: {},
 			joined: room,
 			canViewMembers: false,
-			canAutoTranslate: false
+			canAutoTranslate: false,
+			canAddUser: false
 		};
 	}
 
@@ -82,7 +83,7 @@ class RoomActionsView extends React.Component {
 			}
 		}
 
-		if (room && room.t !== 'd' && this.canViewMembers) {
+		if (room && room.t !== 'd' && this.canViewMembers()) {
 			try {
 				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
 				if (counters.success) {
@@ -97,11 +98,13 @@ class RoomActionsView extends React.Component {
 
 		const canAutoTranslate = await RocketChat.canAutoTranslate();
 		this.setState({ canAutoTranslate });
+
+		this.canAddUser();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, membersCount, member, joined, canViewMembers
+			room, membersCount, member, joined, canViewMembers, canAddUser
 		} = this.state;
 		if (nextState.membersCount !== membersCount) {
 			return true;
@@ -110,6 +113,9 @@ class RoomActionsView extends React.Component {
 			return true;
 		}
 		if (nextState.canViewMembers !== canViewMembers) {
+			return true;
+		}
+		if (nextState.canAddUser !== canAddUser) {
 			return true;
 		}
 		if (!equal(nextState.room, room)) {
@@ -132,32 +138,35 @@ class RoomActionsView extends React.Component {
 	}
 
 	// TODO: move to componentDidMount
-	get canAddUser() {
+	// eslint-disable-next-line react/sort-comp
+	canAddUser = async() => {
 		const { room, joined } = this.state;
 		const { rid, t } = room;
+		let canAdd = false;
 
 		const userInRoom = joined;
-		const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
+		const permissions = await RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
 		if (userInRoom && permissions['add-user-to-joined-room']) {
-			return true;
+			canAdd = true;
 		}
 		if (t === 'c' && permissions['add-user-to-any-c-room']) {
-			return true;
+			canAdd = true;
 		}
 		if (t === 'p' && permissions['add-user-to-any-p-room']) {
-			return true;
+			canAdd = true;
 		}
-		return false;
+		this.setState({ canAddUser: canAdd });
 	}
 
 	// TODO: move to componentDidMount
-	get canViewMembers() {
+	// eslint-disable-next-line react/sort-comp
+	canViewMembers = async() => {
 		const { room } = this.state;
 		const { rid, t, broadcast } = room;
 		if (broadcast) {
 			const viewBroadcastMemberListPermission = 'view-broadcast-member-list';
-			const permissions = RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
+			const permissions = await RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
 			if (!permissions[viewBroadcastMemberListPermission]) {
 				return false;
 			}
@@ -172,7 +181,7 @@ class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, membersCount, canViewMembers, joined, canAutoTranslate
+			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
 		const {
 			rid, t, blocker
@@ -297,7 +306,7 @@ class RoomActionsView extends React.Component {
 				});
 			}
 
-			if (this.canAddUser) {
+			if (canAddUser) {
 				actions.push({
 					icon: 'user-plus',
 					name: I18n.t('Add_user'),

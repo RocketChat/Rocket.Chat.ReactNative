@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 import I18n from '../../i18n';
-import database from '../../lib/realm';
 import { DISCUSSION } from './constants';
 
 export const formatLastMessage = (lm, customFormat) => {

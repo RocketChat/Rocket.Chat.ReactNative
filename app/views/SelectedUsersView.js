@@ -6,11 +6,13 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { orderBy } from 'lodash';
+import { Q } from '@nozbe/watermelondb';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
-import database, { safeAddListener } from '../lib/realm';
+import watermelon from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
@@ -68,11 +70,11 @@ class SelectedUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('_updatedAt', true);
+		this.init();
 		this.state = {
-			search: []
+			search: [],
+			chats: []
 		};
-		safeAddListener(this.data, this.updateState);
 	}
 
 	componentDidMount() {
@@ -81,7 +83,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		const { users, loading } = this.props;
 		if (nextProps.loading !== loading) {
 			return true;
@@ -92,14 +94,32 @@ class SelectedUsersView extends React.Component {
 		if (!equal(nextState.search, search)) {
 			return true;
 		}
+		if (!equal(nextState.chats, chats)) {
+			return true;
+		}
 		return false;
 	}
 
 	componentWillUnmount() {
 		const { reset } = this.props;
-		this.updateState.stop();
-		this.data.removeAllListeners();
 		reset();
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	init = async() => {
+		try {
+			const observable = await watermelon.database.collections
+				.get('subscriptions')
+				.query(Q.where('t', 'd'))
+				.observeWithColumns(['_updated_at']);
+
+			this.querySubscription = observable.subscribe((data) => {
+				const chats = orderBy(data, ['_updatedAt'], ['asc']);
+				this.setState({ chats });
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -208,7 +228,7 @@ class SelectedUsersView extends React.Component {
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
 	renderItem = ({ item, index }) => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		const { baseUrl, user } = this.props;
 
 		const name = item.search ? item.name : item.fname;
@@ -220,7 +240,7 @@ class SelectedUsersView extends React.Component {
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
-		if (search.length === 0 && index === this.data.length - 1) {
+		if (search.length === 0 && index === chats.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
 		return (
@@ -238,10 +258,10 @@ class SelectedUsersView extends React.Component {
 	}
 
 	renderList = () => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		return (
 			<FlatList
-				data={search.length > 0 ? search : this.data}
+				data={search.length > 0 ? search : chats}
 				extraData={this.props}
 				keyExtractor={item => item._id}
 				renderItem={this.renderItem}

@@ -10,10 +10,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
+import { Q } from '@nozbe/watermelondb';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
+import watermelon from '../../lib/database';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -129,20 +131,28 @@ class MessageBox extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const { database: db } = watermelon;
 		const { rid, tmid } = this.props;
 		let msg;
-		if (tmid) {
-			const thread = database.objectForPrimaryKey('threads', tmid);
-			if (thread) {
-				msg = thread.draftMessage;
+		try {
+			const threadsCollection = db.collections.get('threads');
+			const subsCollection = db.collections.get('subscriptions');
+			if (tmid) {
+				const thread = await threadsCollection.find(tmid); // database.objectForPrimaryKey('threads', tmid);
+				if (thread) {
+					msg = thread.draftMessage;
+				}
+			} else {
+				const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
+				if (room) {
+					msg = room.draftMessage;
+				}
 			}
-		} else {
-			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-			if (room) {
-				msg = room.draftMessage;
-			}
+		} catch (e) {
+			log(e);
 		}
+
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
@@ -218,7 +228,8 @@ class MessageBox extends Component {
 	// 	return false;
 	// }
 
-	onChangeText = debounce((text) => {
+	onChangeText = debounce(async(text) => {
+		const { database: db } = watermelon;
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
@@ -227,7 +238,9 @@ class MessageBox extends Component {
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
-			const command = database.objects('slashCommand').filtered('command == $0', name);
+			const commandsCollection = db.collections.get('slash_commands');
+			const command = await commandsCollection.query(Q.where('name', name)).fetch();
+			// const command = database.objects('slashCommand').filtered('command == $0', name);
 			if (command && command[0] && command[0].providesPreview) {
 				return this.setCommandPreview(name, params);
 			}
@@ -379,11 +392,12 @@ class MessageBox extends Component {
 	}
 
 	getRooms = async(keyword = '') => {
+		const { database: db } = watermelon;
+		const subsCollection = db.collections.get('subscriptions');
 		this.roomsCache = this.roomsCache || [];
-		this.rooms = database.objects('subscriptions')
-			.filtered('t != $0', 'd');
+		this.rooms = await subsCollection.query(Q.where('t', Q.notEq('d'))).fetch(); // database.objects('subscriptions').filtered('t != $0', 'd');
 		if (keyword) {
-			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
+			this.rooms = this.rooms.filter(r => r.name.includes(keyword));
 		}
 
 		const rooms = [];
@@ -420,18 +434,37 @@ class MessageBox extends Component {
 		}
 	}
 
-	getEmojis = (keyword) => {
+	getEmojis = async(keyword) => {
+		const { database: db } = watermelon;
 		if (keyword) {
-			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			try {
+				const customEmojisCollection = db.collections.get('custom_emojis');
+				this.customEmojis = await customEmojisCollection.query(
+					Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+				).fetch();
+			} catch (e) {
+				log(e);
+			}
+			this.customEmojis = this.customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			// this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis });
+			this.setState({ mentions: mergedEmojis || [] });
 		}
 	}
 
-	getSlashCommands = (keyword) => {
-		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
-		this.setState({ mentions: this.commands });
+	getSlashCommands = async(keyword) => {
+		const { database: db } = watermelon;
+		try {
+			const commandsCollection = db.collections.get('slash_commands');
+			this.commands = await commandsCollection.query(
+				Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			).fetch();
+		} catch (e) {
+			log(e);
+		}
+		// this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
+		this.setState({ mentions: this.commands || [] });
 	}
 
 	focus = () => {
@@ -649,8 +682,13 @@ class MessageBox extends Component {
 		// Slash command
 
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			const { database: db } = watermelon;
+			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
-			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
+			const slashCommand = await commandsCollection.query(
+				Q.where('command', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+			).fetch();
+			// const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);

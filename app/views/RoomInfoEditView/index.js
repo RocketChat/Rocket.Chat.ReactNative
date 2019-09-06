@@ -6,7 +6,9 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { Q } from '@nozbe/watermelondb';
 
+import watermelon from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -15,7 +17,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
@@ -52,11 +53,11 @@ class RoomInfoEditView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const rid = props.navigation.getParam('rid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		// const rid = props.navigation.getParam('rid');
+		// this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
-			room: JSON.parse(JSON.stringify(this.rooms[0] || {})),
+			room: {}, // JSON.parse(JSON.stringify(this.rooms[0] || {})),
 			name: '',
 			description: '',
 			topic: '',
@@ -68,15 +69,7 @@ class RoomInfoEditView extends React.Component {
 			ro: false,
 			reactWhenReadOnly: false
 		};
-	}
-
-
-	componentDidMount() {
-		this.updateRoom();
-		this.init();
-		safeAddListener(this.rooms, this.updateRoom);
-		const { room } = this.state;
-		this.permissions = RocketChat.hasPermission(PERMISSIONS_ARRAY, room.rid);
+		this.loadRoom();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -93,22 +86,38 @@ class RoomInfoEditView extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.rooms.removeAllListeners();
+	// eslint-disable-next-line react/sort-comp
+	loadRoom = async() => {
+		const { navigation } = this.props;
+		const rid = navigation.getParam('rid', null);
+		if (!rid) {
+			return;
+		}
+		try {
+			const observable = await watermelon.database.collections
+				.get('subscriptions')
+				.query(Q.where('rid', rid))
+				.observeWithColumns(['_updated_at']);
+
+			this.querySubscription = observable.subscribe((data) => {
+				const [room] = data;
+				this.init(room);
+			});
+
+			this.permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
+		} catch (e) {
+			log(e);
+		}
 	}
 
-	updateRoom = () => {
-		this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0] || {})) });
-	}
-
-	init = () => {
-		const { room } = this.state;
+	init = (room) => {
 		const {
 			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
 		this.setState({
+			room,
 			name,
 			description,
 			topic,

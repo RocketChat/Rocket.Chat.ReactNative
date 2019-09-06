@@ -12,7 +12,6 @@ import {
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
 import watermelon from '../lib/database';
 import I18n from '../i18n';
 import log from '../utils/log';
@@ -45,9 +44,14 @@ class MessageActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
-		this.setPermissions();
+	}
 
-		const { Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users } = this.props;
+	async componentDidMount() {
+		await this.setPermissions();
+
+		const {
+			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message
+		} = this.props;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -60,7 +64,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Edit
-		if (this.allowEdit(props)) {
+		if (this.allowEdit(this.props)) {
 			this.options.push(I18n.t('Edit'));
 			this.EDIT_INDEX = this.options.length - 1;
 		}
@@ -85,13 +89,13 @@ class MessageActions extends React.Component {
 
 		// Star
 		if (Message_AllowStarring) {
-			this.options.push(I18n.t(props.message.starred ? 'Unstar' : 'Star'));
+			this.options.push(I18n.t(message.starred ? 'Unstar' : 'Star'));
 			this.STAR_INDEX = this.options.length - 1;
 		}
 
 		// Pin
 		if (Message_AllowPinning) {
-			this.options.push(I18n.t(props.message.pinned ? 'Unpin' : 'Pin'));
+			this.options.push(I18n.t(message.pinned ? 'Unpin' : 'Pin'));
 			this.PIN_INDEX = this.options.length - 1;
 		}
 
@@ -108,8 +112,8 @@ class MessageActions extends React.Component {
 		}
 
 		// Toggle Auto-translate
-		if (props.room.autoTranslate && props.message.u && props.message.u._id !== props.user.id) {
-			this.options.push(I18n.t(props.message.autoTranslate ? 'View_Original' : 'Translate'));
+		if (room.autoTranslate && message.u && message.u._id !== user.id) {
+			this.options.push(I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'));
 			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}
 
@@ -118,7 +122,7 @@ class MessageActions extends React.Component {
 		this.REPORT_INDEX = this.options.length - 1;
 
 		// Delete
-		if (this.allowDelete(props)) {
+		if (this.allowDelete(this.props)) {
 			this.options.push(I18n.t('Delete'));
 			this.DELETE_INDEX = this.options.length - 1;
 		}
@@ -128,13 +132,18 @@ class MessageActions extends React.Component {
 		});
 	}
 
-	setPermissions() {
-		const { room } = this.props;
-		const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
-		const result = RocketChat.hasPermission(permissions, room.rid);
-		this.hasEditPermission = result[permissions[0]];
-		this.hasDeletePermission = result[permissions[1]];
-		this.hasForceDeletePermission = result[permissions[2]];
+	async setPermissions() {
+		try {
+			const { room } = this.props;
+			const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
+			const result = await RocketChat.hasPermission(permissions, room.rid);
+			this.hasEditPermission = result[permissions[0]];
+			this.hasDeletePermission = result[permissions[1]];
+			this.hasForceDeletePermission = result[permissions[2]];
+		} catch (e) {
+			log(e);
+		}
+		Promise.resolve();
 	}
 
 	showActionSheet = () => {
@@ -160,6 +169,7 @@ class MessageActions extends React.Component {
 
 	isRoomReadOnly = () => {
 		const { room } = this.props;
+		// TODO: We need to get -> is ReadOnly && !isOwner
 		return room.ro;
 	}
 

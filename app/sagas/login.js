@@ -85,7 +85,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			username: user.username,
 			name: user.name,
 			language: user.language,
-			status: user.status
+			status: user.status,
+			roles: user.roles
 		};
 		serversDB.action(async() => {
 			try {
