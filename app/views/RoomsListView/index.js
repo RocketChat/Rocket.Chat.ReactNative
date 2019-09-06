@@ -20,7 +20,6 @@ import withObservables from '@nozbe/with-observables';
 
 import { Q } from '@nozbe/watermelondb';
 import watermelon from '../../lib/database';
-import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
@@ -385,9 +384,6 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	// this is necessary during development (enables Cmd + r)
-	hasActiveDB = () => database && database.databases && database.databases.activeDB;
-
 	handleBackPress = () => {
 		const { searching } = this.state;
 		const { appStart } = this.props;
@@ -463,15 +459,19 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
+		const { database } = watermelon;
 		try {
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
-				database.write(() => {
-					const sub = database
-						.objects('subscriptions')
-						.filtered('rid == $0', rid)[0];
-					if (sub) {
-						sub.f = !favorite;
+				const subCollection = database.collections.get('subscriptions');
+				database.action(async() => {
+					try {
+						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						await subRecord.update((sub) => {
+							sub.f = !favorite;
+						});
+					} catch (e) {
+						log(e);
 					}
 				});
 			}
@@ -481,15 +481,19 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleRead = async(rid, isRead) => {
+		const { database } = watermelon;
 		try {
 			const result = await RocketChat.toggleRead(isRead, rid);
 			if (result.success) {
-				database.write(() => {
-					const sub = database
-						.objects('subscriptions')
-						.filtered('rid == $0', rid)[0];
-					if (sub) {
-						sub.alert = isRead;
+				const subCollection = database.collections.get('subscriptions');
+				database.action(async() => {
+					try {
+						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						await subRecord.update((sub) => {
+							sub.alert = isRead;
+						});
+					} catch (e) {
+						log(e);
 					}
 				});
 			}
@@ -499,14 +503,18 @@ class RoomsListView extends React.Component {
 	};
 
 	hideChannel = async(rid, type) => {
+		const { database } = watermelon;
 		try {
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
-				database.write(() => {
-					const sub = database
-						.objects('subscriptions')
-						.filtered('rid == $0', rid)[0];
-					database.delete(sub);
+				const [subCollection] = database.collections.get('subscriptions');
+				database.action(async() => {
+					try {
+						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						await subRecord.destroyPermanently();
+					} catch (e) {
+						log(e);
+					}
 				});
 			}
 		} catch (e) {
@@ -554,6 +562,9 @@ class RoomsListView extends React.Component {
 		return (
 			<RoomItem
 				item={item}
+				rid={item.rid}
+				favorite={item.f}
+				type={item.t}
 				isRead={this.getIsRead(item)}
 				name={this.getRoomTitle(item)}
 				userId={userId}
