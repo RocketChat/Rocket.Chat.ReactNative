@@ -5,9 +5,9 @@ import { InteractionManager } from 'react-native';
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import database from '../../realm';
 import watermelondb from '../../database';
-import { Q } from '@nozbe/watermelondb';
+import reduxStore from '../../createStore';
+import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -19,67 +19,9 @@ export default function subscribeRoom({ rid }) {
 	let notifyRoomListener;
 	let messageReceivedListener;
 	const typingTimeouts = {};
-	const { memoryDatabase } = watermelondb;
-	const usersTypingCollection = memoryDatabase.collections.get('users_typing');
 
 	const handleConnection = () => {
 		this.loadMissedMessages({ rid }).catch(e => console.log(e));
-	};
-
-	const getUserTyping = async(username) => {
-		try {
-			const userTyping = await usersTypingCollection.query(Q.where('rid', rid), Q.where('username', username)).fetch();
-			if (userTyping.length) {
-				return userTyping[0];
-			}
-			return null;
-		} catch (e) {
-			return null;
-		}
-	};
-
-	const removeUserTyping = async(username) => {
-		const userTyping = await getUserTyping(username);
-		try {
-			if (userTyping) {
-				await memoryDatabase.action(async() => {
-					await userTyping.destroyPermanently();
-				});
-			}
-
-			if (typingTimeouts[username]) {
-				clearTimeout(typingTimeouts[username]);
-				typingTimeouts[username] = null;
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const addUserTyping = async(username) => {
-		const userTyping = await getUserTyping(username);
-		// prevent duplicated
-		if (!userTyping) {
-			try {
-				await memoryDatabase.action(async() => {
-					await usersTypingCollection.create((u) => {
-						u.rid = rid;
-						u.username = username;
-					});
-				});
-
-				if (typingTimeouts[username]) {
-					clearTimeout(typingTimeouts[username]);
-					typingTimeouts[username] = null;
-				}
-
-				typingTimeouts[username] = setTimeout(() => {
-					removeUserTyping(username);
-				}, 10000);
-			} catch (e) {
-				log(e);
-			}
-		}
 	};
 
 	const handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
@@ -90,9 +32,9 @@ export default function subscribeRoom({ rid }) {
 		if (ev === 'typing') {
 			const [username, typing] = ddpMessage.fields.args;
 			if (typing) {
-				addUserTyping(username);
+				reduxStore.dispatch(addUserTyping(username));
 			} else {
-				removeUserTyping(username);
+				reduxStore.dispatch(removeUserTyping(username));
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async() => {
@@ -262,10 +204,7 @@ export default function subscribeRoom({ rid }) {
 				typingTimeouts[key] = null;
 			}
 		});
-		database.memoryDatabase.write(() => {
-			const usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid == $0', rid);
-			database.memoryDatabase.delete(usersTyping);
-		});
+		reduxStore.dispatch(clearUserTyping());
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnection);

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
-import { Q } from '@nozbe/watermelondb';
 
-import watermelondb from '../../../lib/database';
 import Header from './Header';
 import RightButtons from './RightButtons';
 
@@ -15,28 +13,15 @@ class RoomHeaderView extends Component {
 		type: PropTypes.string,
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
-		rid: PropTypes.string,
+		usersTyping: PropTypes.string,
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
 		widthOffset: PropTypes.number
 	};
 
-	constructor(props) {
-		super(props);
-		this.mounted = false;
-		this.init();
-		this.state = {
-			usersTyping: []
-		};
-	}
-
-	componentDidMount() {
-		this.mounted = true;
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { usersTyping } = this.state;
+	shouldComponentUpdate(nextProps) {
+		const { usersTyping } = this.props;
 		const {
 			type, title, status, window, connecting
 		} = this.props;
@@ -58,41 +43,15 @@ class RoomHeaderView extends Component {
 		if (nextProps.window.height !== window.height) {
 			return true;
 		}
-		if (!equal(nextState.usersTyping, usersTyping)) {
+		if (!equal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
 		return false;
 	}
 
-	componentWillUnmount() {
-		if (this.usersTypingSubscription && this.usersTypingSubscription.unsubscribe) {
-			this.usersTypingSubscription.unsubscribe();
-		}
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	init() {
-		const { rid } = this.props;
-		const { memoryDatabase } = watermelondb;
-
-		this.usersTypingObservable = memoryDatabase.collections
-			.get('users_typing')
-			.query(Q.where('rid', rid)).observe();
-
-		this.usersTypingSubscription = this.usersTypingObservable
-			.subscribe((usersTyping) => {
-				if (this.mounted) {
-					this.setState({ usersTyping });
-				} else {
-					this.state.usersTyping = usersTyping;
-				}
-			});
-	}
-
 	render() {
-		const { usersTyping } = this.state;
 		const {
-			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting
+			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping
 		} = this.props;
 
 		return (
@@ -125,6 +84,7 @@ const mapStateToProps = (state, ownProps) => {
 
 	return {
 		connecting: state.meteor.connecting,
+		usersTyping: state.usersTyping,
 		status
 	};
 };

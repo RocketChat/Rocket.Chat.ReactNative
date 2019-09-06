@@ -19,11 +19,6 @@ import servers from './model/servers';
 import User from './model/User';
 import Server from './model/Server';
 
-import memorySchema from './model/memorySchema';
-import UserTyping from './model/UserTyping';
-
-import { isIOS } from '../../utils/deviceInfo';
-
 class DB {
 	databases = {
 		serversDB: new Database({
@@ -33,23 +28,11 @@ class DB {
 			}),
 			modelClasses: [Server, User],
 			actionsEnabled: true
-		}),
-		inMemoryDB: new Database({
-			adapter: new SQLiteAdapter({
-				dbName: isIOS ? 'file::memory:' : ':memory:',
-				schema: memorySchema
-			}),
-			modelClasses: [UserTyping],
-			actionsEnabled: true
 		})
 	}
 
 	get database() {
 		return this.databases.activeDB;
-	}
-
-	get memoryDatabase() {
-		return this.databases.inMemoryDB;
 	}
 
 	action(...args) {
