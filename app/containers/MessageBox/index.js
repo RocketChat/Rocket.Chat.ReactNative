@@ -131,20 +131,28 @@ class MessageBox extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const { database: db } = watermelon;
 		const { rid, tmid } = this.props;
 		let msg;
-		if (tmid) {
-			const thread = database.objectForPrimaryKey('threads', tmid);
-			if (thread) {
-				msg = thread.draftMessage;
+		try {
+			const threadsCollection = db.collections.get('threads');
+			const subsCollection = db.collections.get('subscriptions');
+			if (tmid) {
+				const thread = await threadsCollection.find(tmid); // database.objectForPrimaryKey('threads', tmid);
+				if (thread) {
+					msg = thread.draftMessage;
+				}
+			} else {
+				const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
+				if (room) {
+					msg = room.draftMessage;
+				}
 			}
-		} else {
-			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-			if (room) {
-				msg = room.draftMessage;
-			}
+		} catch (e) {
+			log(e);
 		}
+
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
@@ -384,11 +392,12 @@ class MessageBox extends Component {
 	}
 
 	getRooms = async(keyword = '') => {
+		const { database: db } = watermelon;
+		const subsCollection = db.collections.get('subscriptions');
 		this.roomsCache = this.roomsCache || [];
-		this.rooms = database.objects('subscriptions')
-			.filtered('t != $0', 'd');
+		this.rooms = await subsCollection.query(Q.where('t', Q.notEq('d'))).fetch(); // database.objects('subscriptions').filtered('t != $0', 'd');
 		if (keyword) {
-			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
+			this.rooms = this.rooms.filter(r => r.name.includes(keyword));
 		}
 
 		const rooms = [];
