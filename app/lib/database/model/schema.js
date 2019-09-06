@@ -200,6 +200,13 @@ export default appSchema({
 				{ name: 'value_as_number', type: 'number', isOptional: true },
 				{ name: '_updated_at', type: 'number', isOptional: true }
 			]
+		}),
+		tableSchema({
+			name: 'roles',
+			columns: [
+				{ name: '_id', type: 'string' },
+				{ name: 'description', type: 'string', isOptional: true }
+			]
 		})
 	]
 });

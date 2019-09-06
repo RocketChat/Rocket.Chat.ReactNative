@@ -12,6 +12,7 @@ import CustomEmoji from './model/CustomEmoji';
 import FrequentlyUsedEmoji from './model/FrequentlyUsedEmoji';
 import Upload from './model/Upload';
 import Setting from './model/Setting';
+import Role from './model/Role';
 
 import servers from './model/servers';
 import User from './model/User';
@@ -57,7 +58,8 @@ class DB {
 				CustomEmoji,
 				FrequentlyUsedEmoji,
 				Upload,
-				Setting
+				Setting,
+				Role
 			],
 			actionsEnabled: true
 		});
