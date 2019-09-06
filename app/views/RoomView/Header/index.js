@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
+import { Q } from '@nozbe/watermelondb';
 
 import database, { safeAddListener } from '../../../lib/realm';
+import watermelondb from '../../../lib/database';
 import Header from './Header';
 import RightButtons from './RightButtons';
 
@@ -25,17 +27,21 @@ class RoomHeaderView extends Component {
 
 	constructor(props) {
 		super(props);
-		this.usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid = $0', props.rid);
+		this.mounted = false;
+		this.init();
 		this.user = [];
 		if (props.type === 'd' && !props.isLoggedUser) {
 			this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.userId);
 			safeAddListener(this.user, this.updateUser);
 		}
 		this.state = {
-			usersTyping: this.usersTyping.slice() || [],
+			usersTyping: [],
 			user: this.user[0] || {}
 		};
-		this.usersTyping.addListener(this.updateState);
+	}
+
+	componentDidMount() {
+		this.mounted = true;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -71,14 +77,31 @@ class RoomHeaderView extends Component {
 	}
 
 	componentWillUnmount() {
-		this.usersTyping.removeAllListeners();
 		if (this.user && this.user.removeAllListeners) {
 			this.user.removeAllListeners();
 		}
+		if (this.usersTypingSubscription && this.usersTypingSubscription.unsubscribe) {
+			this.usersTypingSubscription.unsubscribe();
+		}
 	}
 
-	updateState = () => {
-		this.setState({ usersTyping: this.usersTyping.slice() });
+	// eslint-disable-next-line react/sort-comp
+	init() {
+		const { rid } = this.props;
+		const { memoryDatabase } = watermelondb;
+
+		this.usersTypingObservable = memoryDatabase.collections
+			.get('users_typing')
+			.query(Q.where('rid', rid)).observe();
+
+		this.usersTypingSubscription = this.usersTypingObservable
+			.subscribe((usersTyping) => {
+				if (this.mounted) {
+					this.setState({ usersTyping });
+				} else {
+					this.state.usersTyping = usersTyping;
+				}
+			});
 	}
 
 	updateUser = () => {

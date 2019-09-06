@@ -7,6 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../realm';
 import watermelondb from '../../database';
+import { Q } from '@nozbe/watermelondb';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -18,23 +19,33 @@ export default function subscribeRoom({ rid }) {
 	let notifyRoomListener;
 	let messageReceivedListener;
 	const typingTimeouts = {};
+	const { memoryDatabase } = watermelondb;
+	const usersTypingCollection = memoryDatabase.collections.get('users_typing');
 
 	const handleConnection = () => {
 		this.loadMissedMessages({ rid }).catch(e => console.log(e));
 	};
 
-	const getUserTyping = username => (
-		database
-			.memoryDatabase.objects('usersTyping')
-			.filtered('rid = $0 AND username = $1', rid, username)
-	);
-
-	const removeUserTyping = (username) => {
-		const userTyping = getUserTyping(username);
+	const getUserTyping = async(username) => {
 		try {
-			database.memoryDatabase.write(() => {
-				database.memoryDatabase.delete(userTyping);
-			});
+			const userTyping = await usersTypingCollection.query(Q.where('rid', rid), Q.where('username', username)).fetch();
+			if (userTyping.length) {
+				return userTyping[0];
+			}
+			return null;
+		} catch (e) {
+			return null;
+		}
+	};
+
+	const removeUserTyping = async(username) => {
+		const userTyping = await getUserTyping(username);
+		try {
+			if (userTyping) {
+				await memoryDatabase.action(async() => {
+					await userTyping.destroyPermanently();
+				});
+			}
 
 			if (typingTimeouts[username]) {
 				clearTimeout(typingTimeouts[username]);
@@ -45,13 +56,16 @@ export default function subscribeRoom({ rid }) {
 		}
 	};
 
-	const addUserTyping = (username) => {
-		const userTyping = getUserTyping(username);
+	const addUserTyping = async(username) => {
+		const userTyping = await getUserTyping(username);
 		// prevent duplicated
-		if (userTyping.length === 0) {
+		if (!userTyping) {
 			try {
-				database.memoryDatabase.write(() => {
-					database.memoryDatabase.create('usersTyping', { rid, username });
+				await memoryDatabase.action(async() => {
+					await usersTypingCollection.create((u) => {
+						u.rid = rid;
+						u.username = username;
+					});
 				});
 
 				if (typingTimeouts[username]) {
