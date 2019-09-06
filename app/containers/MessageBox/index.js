@@ -230,7 +230,7 @@ class MessageBox extends Component {
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
-			const commandsCollection = db.collections.get('slashCommands');
+			const commandsCollection = db.collections.get('slash_commands');
 			const command = await commandsCollection.query(Q.where('name', name)).fetch();
 			// const command = database.objects('slashCommand').filtered('command == $0', name);
 			if (command && command[0] && command[0].providesPreview) {
@@ -425,19 +425,29 @@ class MessageBox extends Component {
 		}
 	}
 
-	getEmojis = (keyword) => {
+	getEmojis = async(keyword) => {
+		const { database: db } = watermelon;
 		if (keyword) {
-			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			try {
+				const customEmojisCollection = db.collections.get('custom_emojis');
+				this.customEmojis = await customEmojisCollection.query(
+					Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+				).fetch();
+			} catch (e) {
+				log(e);
+			}
+			this.customEmojis = this.customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			// this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis });
+			this.setState({ mentions: mergedEmojis || [] });
 		}
 	}
 
 	getSlashCommands = async(keyword) => {
 		const { database: db } = watermelon;
 		try {
-			const commandsCollection = db.collections.get('slashCommands');
+			const commandsCollection = db.collections.get('slash_commands');
 			this.commands = await commandsCollection.query(
 				Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
 			).fetch();
@@ -664,7 +674,7 @@ class MessageBox extends Component {
 
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const { database: db } = watermelon;
-			const commandsCollection = db.collections.get('slashCommands');
+			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(
 				Q.where('command', Q.like(`${ Q.sanitizeLikeString(command) }%`))

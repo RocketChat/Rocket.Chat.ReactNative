@@ -23,7 +23,7 @@ export default function() {
 				InteractionManager.runAfterInteractions(
 					() => {
 						database.action(async() => {
-							const slashCommandsCollection = database.collections.get('slashCommands');
+							const slashCommandsCollection = database.collections.get('slash_commands');
 							const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
 
 							// filter slash commands

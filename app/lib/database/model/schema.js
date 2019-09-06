@@ -217,7 +217,7 @@ export default appSchema({
 			]
 		}),
 		tableSchema({
-			name: 'slashCommands',
+			name: 'slash_commands',
 			columns: [
 				{ name: 'command', type: 'string' },
 				{ name: 'params', type: 'string', isOptional: true },
