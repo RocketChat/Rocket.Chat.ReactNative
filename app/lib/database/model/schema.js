@@ -207,6 +207,14 @@ export default appSchema({
 				{ name: '_id', type: 'string' },
 				{ name: 'description', type: 'string', isOptional: true }
 			]
+		}),
+		tableSchema({
+			name: 'permissions',
+			columns: [
+				{ name: '_id', type: 'string' },
+				{ name: 'roles', type: 'string' },
+				{ name: '_updated_at', type: 'number', isOptional: true }
+			]
 		})
 	]
 });

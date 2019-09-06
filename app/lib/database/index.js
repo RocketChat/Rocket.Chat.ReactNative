@@ -13,6 +13,7 @@ import FrequentlyUsedEmoji from './model/FrequentlyUsedEmoji';
 import Upload from './model/Upload';
 import Setting from './model/Setting';
 import Role from './model/Role';
+import Permission from './model/Permission';
 
 import servers from './model/servers';
 import User from './model/User';
@@ -59,7 +60,8 @@ class DB {
 				FrequentlyUsedEmoji,
 				Upload,
 				Setting,
-				Role
+				Role,
+				Permission
 			],
 			actionsEnabled: true
 		});

@@ -1,23 +1,71 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { orderBy } from 'lodash';
 
-import database from '../realm';
+import watermelon from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
+import protectedFunction from './helpers/protectedFunction';
 
-const getUpdatedSince = () => {
-	const permissions = database.objects('permissions').sorted('_updatedAt', true)[0];
-	return permissions && permissions._updatedAt.toISOString();
+const getUpdatedSince = async() => {
+	let permission = null;
+	try {
+		const { database } = watermelon;
+		const permissionsCollection = database.collections.get('permissions');
+		let permissions = await permissionsCollection.query().fetch();
+		permissions = orderBy(permissions, ['_updatedAt'], ['asc']);
+		[permission] = permissions;
+	} catch (e) {
+		log(e);
+	}
+	return permission && permission._updatedAt.toISOString();
 };
 
-const create = (permissions) => {
+const create = (permissions, toDelete = null) => {
+	const { database } = watermelon;
 	if (permissions && permissions.length) {
-		permissions.forEach((permission) => {
+		database.action(async() => {
+			const permissionsCollection = database.collections.get('permissions');
+			const allPermissionRecords = await permissionsCollection.query().fetch();
+
+			// filter permissions
+			let permissionsToCreate = permissions.filter(i1 => !allPermissionRecords.find(i2 => i1._id === i2.id));
+			let permissionsToUpdate = allPermissionRecords.filter(i1 => permissions.find(i2 => i1.id === i2._id));
+			let permissionsToDelete = [];
+			if (toDelete && toDelete.length) {
+				permissionsToDelete = allPermissionRecords.filter(i1 => toDelete.find(i2 => i1.id === i2._id));
+			}
+
+			// Create
+			permissionsToCreate = permissionsToCreate.map(permission => permissionsCollection.prepareCreate(protectedFunction((p) => {
+				p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
+				Object.assign(p, permission);
+			})));
+
+			// Update
+			permissionsToUpdate = permissionsToUpdate.map((permission) => {
+				const newPermission = permissions.find(p => p._id === permission.id);
+				return permission.prepareUpdate(protectedFunction((p) => {
+					Object.assign(p, newPermission);
+				}));
+			});
+
+			// Delete
+			permissionsToDelete = permissionsToDelete.map(permission => permission.prepareDestroyPermanently());
+
+			const allRecords = [
+				...permissionsToCreate,
+				...permissionsToUpdate,
+				...permissionsToDelete
+			];
+
 			try {
-				database.create('permissions', permission, true);
+				await database.batch(...allRecords);
 			} catch (e) {
 				log(e);
 			}
+			return allRecords.length;
 		});
 	}
 };
@@ -35,14 +83,12 @@ export default function() {
 					return resolve();
 				}
 				InteractionManager.runAfterInteractions(() => {
-					database.write(() => {
-						create(result.permissions);
-					});
+					create(result.permissions);
 					return resolve();
 				});
 			} else {
 				const params = {};
-				const updatedSince = getUpdatedSince();
+				const updatedSince = await getUpdatedSince();
 				if (updatedSince) {
 					params.updatedSince = updatedSince;
 				}
@@ -54,23 +100,10 @@ export default function() {
 				}
 
 				InteractionManager.runAfterInteractions(
-					() => database.write(() => {
-						create(result.update);
-
-						if (result.delete && result.delete.length) {
-							result.delete.forEach((p) => {
-								try {
-									const permission = database.objectForPrimaryKey('permissions', p._id);
-									if (permission) {
-										database.delete(permission);
-									}
-								} catch (e) {
-									log(e);
-								}
-							});
-						}
+					() => {
+						create(result.update, result.delete);
 						return resolve();
-					})
+					}
 				);
 			}
 		} catch (e) {
