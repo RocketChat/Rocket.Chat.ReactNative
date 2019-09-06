@@ -762,11 +762,14 @@ const RocketChat = {
 		// RC 0.57.0
 		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
-	hasPermission(permissions, rid) {
+	async hasPermission(permissions, rid) {
+		const { database: db } = watermelon;
+		const subsCollection = db.collections.get('subscriptions');
+		const permissionsCollection = db.collections.get('permissions');
 		let roomRoles = [];
 		try {
 			// get the room from realm
-			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
+			const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
 			if (!room) {
 				return permissions.reduce((result, permission) => {
 					result[permission] = false;
@@ -779,23 +782,27 @@ const RocketChat = {
 			console.log('hasPermission -> error', error);
 		}
 		// get permissions from realm
-		const permissionsFiltered = database.objects('permissions')
-			.filter(permission => permissions.includes(permission._id));
-		// get user roles on the server from redux
-		const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-		// merge both roles
-		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+		try {
+			let permissionsFiltered = await permissionsCollection.query().fetch();
+			permissionsFiltered = permissionsFiltered.filter(permission => permissions.includes(permission._id));
+			// get user roles on the server from redux
+			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
+			// merge both roles
+			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
-		// return permissions in object format
-		// e.g. { 'edit-room': true, 'set-readonly': false }
-		return permissions.reduce((result, permission) => {
-			result[permission] = false;
-			const permissionFound = permissionsFiltered.find(p => p._id === permission);
-			if (permissionFound) {
-				result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-			}
-			return result;
-		}, {});
+			// return permissions in object format
+			// e.g. { 'edit-room': true, 'set-readonly': false }
+			return permissions.reduce((result, permission) => {
+				result[permission] = false;
+				const permissionFound = permissionsFiltered.find(p => p._id === permission);
+				if (permissionFound) {
+					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
+				}
+				return result;
+			}, {});
+		} catch (e) {
+			log(e);
+		}
 	},
 	getAvatarSuggestion() {
 		// RC 0.51.0
