@@ -11,7 +11,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database from '../../lib/realm';
+import watermelon from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -63,13 +63,14 @@ class RoomInfoView extends React.Component {
 		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.roles = database.objects('roles');
+		// this.roles = database.objects('roles');
 		this.sub = {
 			unsubscribe: () => {}
 		};
 		this.state = {
 			room: room || {},
-			roomUser: {}
+			roomUser: {},
+			parsedRoles: []
 		};
 	}
 
@@ -80,7 +81,15 @@ class RoomInfoView extends React.Component {
 			try {
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ roomUser: result.user });
+					const { roles } = result.user;
+					let parsedRoles = [];
+					if (roles && roles.length) {
+						parsedRoles = await Promise.all(roles.map(async(role) => {
+							const description = await this.getRoleDescription(role);
+							return description;
+						}));
+					}
+					this.setState({ roomUser: result.user, parsedRoles });
 				}
 			} catch (e) {
 				log(e);
@@ -116,12 +125,19 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	getRoleDescription = (id) => {
-		const role = database.objectForPrimaryKey('roles', id);
-		if (role) {
-			return role.description;
+	getRoleDescription = async(id) => {
+		const { database } = watermelon;
+		try {
+			const rolesCollection = database.collections.get('roles');
+			const role = await rolesCollection.find(id); // database.objectForPrimaryKey('roles', id);
+			if (role) {
+				return role.description;
+			}
+			return null;
+		} catch (e) {
+			log(e);
+			return null;
 		}
-		return null;
 	}
 
 	isDirect = () => this.t === 'd'
@@ -143,12 +159,11 @@ class RoomInfoView extends React.Component {
 		</View>
 	);
 
-	renderRole = (role) => {
-		const description = this.getRoleDescription(role);
+	renderRole = (description) => {
 		if (description) {
 			return (
-				<View style={styles.roleBadge} key={role}>
-					<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
+				<View style={styles.roleBadge} key={description}>
+					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
 		}
@@ -156,13 +171,13 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
-		const { roomUser } = this.state;
-		if (roomUser && roomUser.roles && roomUser.roles.length) {
+		const { parsedRoles } = this.state;
+		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
-						{roomUser.roles.map(role => this.renderRole(role))}
+						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
 				</View>
 			);
