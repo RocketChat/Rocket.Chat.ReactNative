@@ -110,7 +110,7 @@ class RoomView extends React.Component {
 		const room = props.navigation.getParam('room');
 		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
-		const canAutoTranslate = RocketChat.canAutoTranslate();
+		// const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			// joined: this.rooms.length > 0,
 			joined: true,
@@ -120,7 +120,7 @@ class RoomView extends React.Component {
 			reactionsModalVisible: false,
 			selectedAttachment: {},
 			selectedMessage: {},
-			canAutoTranslate,
+			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
 			showErrorActions: false,
@@ -320,7 +320,7 @@ class RoomView extends React.Component {
 
 				// We run `canAutoTranslate` again in order to refetch auto translate permission
 				// in case of a missing connection or poor connection on room open
-				const canAutoTranslate = RocketChat.canAutoTranslate();
+				const canAutoTranslate = await RocketChat.canAutoTranslate();
 				this.setState({ canAutoTranslate, loading: false });
 			});
 		} catch (e) {

@@ -95,7 +95,7 @@ class RoomActionsView extends React.Component {
 			this.updateRoomMember();
 		}
 
-		const canAutoTranslate = RocketChat.canAutoTranslate();
+		const canAutoTranslate = await RocketChat.canAutoTranslate();
 		this.setState({ canAutoTranslate });
 	}
 

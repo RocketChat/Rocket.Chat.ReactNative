@@ -1012,13 +1012,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	canAutoTranslate() {
+	async canAutoTranslate() {
+		const { database: db } = watermelon;
 		try {
 			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const autoTranslatePermission = database.objectForPrimaryKey('permissions', 'auto-translate');
+			const permissionsCollection = db.collections.get('permissions');
+			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
 		} catch (e) {
