@@ -5,15 +5,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.AudioManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings.System
-import android.media.RingtoneManager
 
 import com.wix.reactnativenotifications.core.AppLaunchHelper
 import com.wix.reactnativenotifications.core.AppLifecycleFacade
@@ -31,8 +25,7 @@ class CustomPushNotification(
     jsIoHelper: JsIOHelper
 ) : PushNotification(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper) {
 
-    @Override
-    protected fun getNotificationBuilder(intent: PendingIntent): Notification.Builder {
+    override fun getNotificationBuilder(intent: PendingIntent): Notification.Builder {
         val res = mContext.getResources()
         val packageName = mContext.getPackageName()
 
