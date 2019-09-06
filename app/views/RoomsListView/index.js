@@ -507,7 +507,7 @@ class RoomsListView extends React.Component {
 		try {
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
-				const [subCollection] = database.collections.get('subscriptions');
+				const subCollection = database.collections.get('subscriptions');
 				database.action(async() => {
 					try {
 						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
