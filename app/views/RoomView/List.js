@@ -1,20 +1,17 @@
-/* eslint-disable react/sort-comp */
 import React from 'react';
-import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
 import equal from 'deep-equal';
-import { throttleTime, debounceTime } from 'rxjs/operators';
+import { Q } from '@nozbe/watermelondb';
 
 import styles from './styles';
-import database, { safeAddListener } from '../../lib/realm';
 import watermelon from '../../lib/database';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
-import { Q } from '@nozbe/watermelondb';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -46,13 +43,18 @@ export class List extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	async init() {
 		const { rid, tmid } = this.props;
 
 		if (tmid) {
-			this.thread = await watermelon.database.collections
-				.get('threads')
-				.find(tmid);
+			try {
+				this.thread = await watermelon.database.collections
+					.get('threads')
+					.find(tmid);
+			} catch (e) {
+				console.log(e);
+			}
 			this.messagesObservable = watermelon.database.collections
 				.get('thread_messages')
 				.query(
