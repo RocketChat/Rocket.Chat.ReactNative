@@ -14,6 +14,7 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
+import log from '../utils/log';
 import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
@@ -88,15 +89,19 @@ class NewMessageView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
-		const observable = await watermelon.database.collections
-			.get('subscriptions')
-			.query(Q.where('t', 'd'))
-			.observeWithColumns(['_updated_at']);
+		try {
+			const observable = await watermelon.database.collections
+				.get('subscriptions')
+				.query(Q.where('t', 'd'))
+				.observeWithColumns(['_updated_at']);
 
-		this.querySubscription = observable.subscribe((data) => {
-			const chats = orderBy(data, ['_updatedAt'], ['asc']);
-			this.setState({ chats });
-		});
+			this.querySubscription = observable.subscribe((data) => {
+				const chats = orderBy(data, ['_updatedAt'], ['asc']);
+				this.setState({ chats });
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onSearchChangeText(text) {
