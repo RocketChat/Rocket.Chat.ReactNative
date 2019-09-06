@@ -96,7 +96,7 @@ class NewMessageView extends React.Component {
 				.observeWithColumns(['_updated_at']);
 
 			this.querySubscription = observable.subscribe((data) => {
-				const chats = orderBy(data, ['_updatedAt'], ['asc']);
+				const chats = orderBy(data, ['_updatedAt'], ['desc']);
 				this.setState({ chats });
 			});
 		} catch (e) {

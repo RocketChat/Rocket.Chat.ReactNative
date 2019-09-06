@@ -98,11 +98,6 @@ class MessageBox extends Component {
 			commandPreview: []
 		};
 		this.showCommandPreview = false;
-		this.commands = [];
-		this.users = [];
-		this.rooms = [];
-		this.emojis = [];
-		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.fileOptions = [
@@ -338,134 +333,49 @@ class MessageBox extends Component {
 	}
 
 	getFixedMentions = (keyword) => {
+		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -1, username: 'all' }, ...this.users];
+			result = [{ _id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -2, username: 'here' }, ...this.users];
+			result = [{ _id: -1, username: 'all' }, ...result];
 		}
+		return result;
 	}
 
-	getUsers = async(keyword) => {
-		this.users = database.objects('users');
-		if (keyword) {
-			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
-		}
-		this.getFixedMentions(keyword);
-		this.setState({ mentions: this.users.slice() });
+	getUsers = debounce(async(keyword) => {
+		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		res = [...this.getFixedMentions(keyword), ...res];
+		this.setState({ mentions: res });
+	}, 300)
 
-		const usernames = [];
+	getRooms = debounce(async(keyword = '') => {
+		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		this.setState({ mentions: res });
+	}, 300)
 
-		if (keyword && this.users.length > 7) {
-			return;
-		}
-
-		this.users.forEach(user => usernames.push(user.username));
-
-		if (this.oldPromise) {
-			this.oldPromise();
-		}
-		try {
-			const results = await Promise.race([
-				RocketChat.spotlight(keyword, usernames, { users: true }),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]);
-			if (results.users && results.users.length) {
-				database.write(() => {
-					results.users.forEach((user) => {
-						try {
-							database.create('users', user, true);
-						} catch (e) {
-							log(e);
-						}
-					});
-				});
-			}
-		} catch (e) {
-			console.warn('spotlight canceled');
-		} finally {
-			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.getFixedMentions(keyword);
-			this.setState({ mentions: this.users });
-		}
-	}
-
-	getRooms = async(keyword = '') => {
-		const { database: db } = watermelon;
-		const subsCollection = db.collections.get('subscriptions');
-		this.roomsCache = this.roomsCache || [];
-		this.rooms = await subsCollection.query(Q.where('t', Q.notEq('d'))).fetch(); // database.objects('subscriptions').filtered('t != $0', 'd');
-		if (keyword) {
-			this.rooms = this.rooms.filter(r => r.name.includes(keyword));
-		}
-
-		const rooms = [];
-		this.rooms.forEach(room => rooms.push(room));
-
-		this.roomsCache.forEach((room) => {
-			if (room.name && room.name.toUpperCase().indexOf(keyword.toUpperCase()) !== -1) {
-				rooms.push(room);
-			}
-		});
-
-		if (rooms.length > 3) {
-			this.setState({ mentions: rooms });
-			return;
-		}
-
-		if (this.oldPromise) {
-			this.oldPromise();
-		}
-
-		try {
-			const results = await Promise.race([
-				RocketChat.spotlight(keyword, [...rooms, ...this.roomsCache].map(r => r.name), { rooms: true }),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]);
-			if (results.rooms && results.rooms.length) {
-				this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
-			}
-			this.setState({ mentions: [...rooms.slice(), ...results.rooms] });
-		} catch (e) {
-			console.warn('spotlight canceled');
-		} finally {
-			delete this.oldPromise;
-		}
-	}
-
-	getEmojis = async(keyword) => {
+	getEmojis = debounce(async(keyword) => {
 		const { database: db } = watermelon;
 		if (keyword) {
-			try {
-				const customEmojisCollection = db.collections.get('custom_emojis');
-				this.customEmojis = await customEmojisCollection.query(
-					Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
-				).fetch();
-			} catch (e) {
-				log(e);
-			}
-			this.customEmojis = this.customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			// this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const customEmojisCollection = db.collections.get('custom_emojis');
+			let customEmojis = await customEmojisCollection.query(
+				Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			).fetch();
+			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: mergedEmojis || [] });
 		}
-	}
+	}, 300)
 
-	getSlashCommands = async(keyword) => {
+	getSlashCommands = debounce(async(keyword) => {
 		const { database: db } = watermelon;
-		try {
-			const commandsCollection = db.collections.get('slash_commands');
-			this.commands = await commandsCollection.query(
-				Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
-			).fetch();
-		} catch (e) {
-			log(e);
-		}
-		// this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
-		this.setState({ mentions: this.commands || [] });
-	}
+		const commandsCollection = db.collections.get('slash_commands');
+		const commands = await commandsCollection.query(
+			Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+		).fetch();
+		this.setState({ mentions: commands || [] });
+	}, 300)
 
 	focus = () => {
 		if (this.component && this.component.focus) {
@@ -768,11 +678,6 @@ class MessageBox extends Component {
 			trackingType: '',
 			commandPreview: []
 		});
-		this.users = [];
-		this.rooms = [];
-		this.customEmojis = [];
-		this.emojis = [];
-		this.commands = [];
 	}
 
 	renderFixedMentionItem = item => (
@@ -859,7 +764,7 @@ class MessageBox extends Component {
 										style={styles.avatar}
 										text={item.username || item.name}
 										size={30}
-										type={item.username ? 'd' : 'c'}
+										type={item.t}
 										baseUrl={baseUrl}
 										userId={user.id}
 										token={user.token}

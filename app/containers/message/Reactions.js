@@ -74,7 +74,6 @@ const Reactions = React.memo(({
 		</View>
 	);
 });
-// FIXME: can't compare because it's a Realm object (it may be fixed by JSON.parse(JSON.stringify(reactions)))
 
 Reaction.propTypes = {
 	reaction: PropTypes.object,
