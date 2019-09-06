@@ -10,10 +10,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
+import { Q } from '@nozbe/watermelondb';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
+import watermelon from '../../lib/database';
 import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -218,7 +220,8 @@ class MessageBox extends Component {
 	// 	return false;
 	// }
 
-	onChangeText = debounce((text) => {
+	onChangeText = debounce(async(text) => {
+		const { database: db } = watermelon;
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
@@ -227,7 +230,9 @@ class MessageBox extends Component {
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
-			const command = database.objects('slashCommand').filtered('command == $0', name);
+			const commandsCollection = db.collections.get('slashCommands');
+			const command = await commandsCollection.query(Q.where('name', name)).fetch();
+			// const command = database.objects('slashCommand').filtered('command == $0', name);
 			if (command && command[0] && command[0].providesPreview) {
 				return this.setCommandPreview(name, params);
 			}
@@ -429,9 +434,18 @@ class MessageBox extends Component {
 		}
 	}
 
-	getSlashCommands = (keyword) => {
-		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
-		this.setState({ mentions: this.commands });
+	getSlashCommands = async(keyword) => {
+		const { database: db } = watermelon;
+		try {
+			const commandsCollection = db.collections.get('slashCommands');
+			this.commands = await commandsCollection.query(
+				Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			).fetch();
+		} catch (e) {
+			log(e);
+		}
+		// this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
+		this.setState({ mentions: this.commands || [] });
 	}
 
 	focus = () => {
