@@ -281,7 +281,7 @@ const RocketChat = {
 				user = {
 					id: user.id,
 					token: user.token,
-					username: user.usernamexww
+					username: user.username
 				};
 			}
 			reduxStore.dispatch(shareSetUser({

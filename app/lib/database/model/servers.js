@@ -10,8 +10,8 @@ export default appSchema({
 				{ name: 'username', type: 'string', isOptional: true },
 				{ name: 'name', type: 'string', isOptional: true },
 				{ name: 'language', type: 'string', isOptional: true },
-				{ name: 'status', type: 'string', isOptional: true }
-				// { name: 'roles', type: 'string[]', isOptional: true }
+				{ name: 'status', type: 'string', isOptional: true },
+				{ name: 'roles', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
