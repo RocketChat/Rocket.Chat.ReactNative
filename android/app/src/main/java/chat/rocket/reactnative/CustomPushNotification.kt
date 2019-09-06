@@ -26,17 +26,15 @@ class CustomPushNotification(
 ) : PushNotification(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper) {
 
     override fun getNotificationBuilder(intent: PendingIntent): Notification.Builder {
-        val res = mContext.getResources()
-        val packageName = mContext.getPackageName()
+        val res = mContext.resources
+        val packageName = mContext.packageName
 
         val bundle = mNotificationProps.asBundle()
-        val smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName)
-        val largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName)
         val title = bundle.getString("title")
         val message = bundle.getString("message")
 
         val notification = Notification.Builder(mContext)
-            .setSmallIcon(smallIconResId)
+            .setSmallIcon(res.getIdentifier("ic_notification", "mipmap", packageName))
             .setContentIntent(intent)
             .setContentTitle(title)
             .setContentText(message)
@@ -62,7 +60,12 @@ class CustomPushNotification(
             notification.setChannelId(CHANNEL_ID)
         }
 
-        notification.setLargeIcon(BitmapFactory.decodeResource(res, largeIconResId))
+        notification.setLargeIcon(
+            BitmapFactory.decodeResource(
+                res,
+                res.getIdentifier("ic_launcher", "mipmap", packageName)
+            )
+        )
 
         return notification
     }
