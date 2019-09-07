@@ -234,10 +234,14 @@ class MessageBox extends Component {
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
 			const commandsCollection = db.collections.get('slash_commands');
-			const command = await commandsCollection.query(Q.where('name', name)).fetch();
-			// const command = database.objects('slashCommand').filtered('command == $0', name);
-			if (command && command[0] && command[0].providesPreview) {
-				return this.setCommandPreview(name, params);
+			try {
+				const command = await commandsCollection.query(Q.where('command', name)).fetch();
+				// const command = database.objects('slashCommand').filtered('command == $0', name);
+				if (command && command[0] && command[0].providesPreview) {
+					return this.setCommandPreview(name, params);
+				}
+			} catch (e) {
+				log(e);
 			}
 		}
 
