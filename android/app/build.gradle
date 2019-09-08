@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
+apply plugin: 'kotlinx-serialization'
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: 'com.bugsnag.android.gradle'
@@ -207,13 +208,19 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
+
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.12.0"
+
     implementation "com.google.firebase:firebase-messaging:20.0.0"
     implementation "com.google.firebase:firebase-core:17.2.0"
     implementation "com.google.firebase:firebase-perf:19.0.0"
+
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
     }

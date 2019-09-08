@@ -1,4 +1,4 @@
-package chat.rocket.reactnative
+package chat.rocket.reactnative.pushnotification
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -8,14 +8,13 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-
+import chat.rocket.reactnative.R
 import com.wix.reactnativenotifications.core.AppLaunchHelper
 import com.wix.reactnativenotifications.core.AppLifecycleFacade
 import com.wix.reactnativenotifications.core.JsIOHelper
 import com.wix.reactnativenotifications.core.notification.PushNotification
-
-const val CHANNEL_ID = "rocketchatrn_channel_01"
-const val CHANNEL_NAME = "All"
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
 
 class CustomPushNotification(
     context: Context,
@@ -25,6 +24,7 @@ class CustomPushNotification(
     jsIoHelper: JsIOHelper
 ) : PushNotification(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper) {
 
+    @UnstableDefault
     override fun getNotificationBuilder(intent: PendingIntent): Notification.Builder {
         val res = mContext.resources
         val packageName = mContext.packageName
@@ -32,41 +32,43 @@ class CustomPushNotification(
         val bundle = mNotificationProps.asBundle()
         val title = bundle.getString("title")
         val message = bundle.getString("message")
+        val ejson = Json.nonstrict.parse(
+            Ejson.serializer(),
+            bundle.getString("ejson", "{}")
+        )
 
-        val notification = Notification.Builder(mContext)
+        val notificationBuilder = Notification.Builder(mContext)
             .setSmallIcon(res.getIdentifier("ic_notification", "mipmap", packageName))
-            .setContentIntent(intent)
             .setContentTitle(title)
             .setContentText(message)
+            .setGroup(ejson.toString())
+            .setGroupSummary(true)
             .setStyle(Notification.BigTextStyle().bigText(message))
-            .setPriority(Notification.PRIORITY_HIGH)
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setAutoCancel(true)
+            .setContentIntent(intent)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    res,
+                    res.getIdentifier("ic_launcher", "mipmap", packageName)
+                )
+            )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            notification.setColor(mContext.getColor(R.color.notification_text))
+            notificationBuilder.setColor(mContext.getColor(R.color.notification_text))
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             (mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .createNotificationChannel(
                     NotificationChannel(
-                        CHANNEL_ID,
-                        CHANNEL_NAME,
-                        NotificationManager.IMPORTANCE_DEFAULT
+                        ejson.rid,
+                        ejson.host,
+                        NotificationManager.IMPORTANCE_HIGH
                     )
                 )
 
-            notification.setChannelId(CHANNEL_ID)
+            notificationBuilder.setChannelId(ejson.rid)
         }
 
-        notification.setLargeIcon(
-            BitmapFactory.decodeResource(
-                res,
-                res.getIdentifier("ic_launcher", "mipmap", packageName)
-            )
-        )
-
-        return notification
+        return notificationBuilder
     }
 }

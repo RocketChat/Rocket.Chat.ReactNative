@@ -1,13 +1,10 @@
 package chat.rocket.reactnative;
 
 import android.app.Application;
-import android.util.Log;
 import android.content.Context;
 import android.os.Bundle;
 
 import com.facebook.react.PackageList;
-import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -27,6 +24,7 @@ import com.wix.reactnativenotifications.core.notification.INotificationsApplicat
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
+import chat.rocket.reactnative.pushnotification.CustomPushNotification;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
