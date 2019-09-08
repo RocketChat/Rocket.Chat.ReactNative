@@ -224,24 +224,31 @@ class RoomView extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
+		const { editing, room } = this.state;
+		const watermelon = watermelondb.database;
 		this.mounted = false;
-		// const { editing, replying } = this.props;
-		// if (!editing && this.messagebox && this.messagebox.current) {
-		// 	const { text } = this.messagebox.current;
-		// 	let obj;
-		// 	if (this.tmid) {
-		// 		obj = database.objectForPrimaryKey('threads', this.tmid);
-		// 	} else {
-		// 		// [obj] = this.rooms;
-		// 		// FIXME: grab from wm
-		// 	}
-		// 	if (obj) {
-		// 		database.write(() => {
-		// 			obj.draftMessage = text;
-		// 		});
-		// 	}
-		// }
+		if (!editing && this.messagebox && this.messagebox.current) {
+			const { text } = this.messagebox.current;
+			let obj;
+			if (this.tmid) {
+				try {
+					const threadsCollection = watermelon.collections.get('threads');
+					obj = await threadsCollection.find(this.tmid); // database.objectForPrimaryKey('threads', this.tmid);
+				} catch (e) {
+					log(e);
+				}
+			} else {
+				obj = room;
+			}
+			if (obj) {
+				await watermelon.action(async() => {
+					await obj.update((r) => {
+						r.draftMessage = text;
+					});
+				});
+			}
+		}
 		// this.rooms.removeAllListeners();
 		this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
