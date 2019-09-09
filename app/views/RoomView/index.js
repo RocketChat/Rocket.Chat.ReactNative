@@ -11,6 +11,7 @@ import { throttleTime } from 'rxjs/operators';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
+import { Q } from '@nozbe/watermelondb';
 
 import {
 	replyBroadcast as replyBroadcastAction
@@ -169,8 +170,11 @@ class RoomView extends React.Component {
 			EventEmitter.addEventListener('connected', this.handleConnected);
 		}
 		// safeAddListener(this.rooms, this.updateRoom);
-		safeAddListener(this.chats, this.updateUnreadCount);
+		// safeAddListener(this.chats, this.updateUnreadCount);
 		// });
+
+		this.updateUnreadCount();
+
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -425,15 +429,26 @@ class RoomView extends React.Component {
 	}, 1000, true)
 
 	// eslint-disable-next-line react/sort-comp
-	updateUnreadCount = debounce(() => {
-		const { navigation } = this.props;
-		const unreadsCount = this.chats.filtered('archived != true && open == true && unread > 0').reduce((a, b) => a + (b.unread || 0), 0);
-		if (unreadsCount !== navigation.getParam('unreadsCount')) {
-			navigation.setParams({
-				unreadsCount
-			});
-		}
-	}, 300, false)
+	updateUnreadCount = async() => {
+		const watermelon = watermelondb.database;
+		const observable = await watermelon.collections
+			.get('subscriptions')
+			.query(
+				Q.where('archived', false),
+				Q.where('open', true)
+			)
+			.observeWithColumns(['unread']);
+
+		this.queryUnreads = observable.subscribe((data) => {
+			const { navigation } = this.props;
+			const unreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
+			if (unreadsCount !== navigation.getParam('unreadsCount')) {
+				navigation.setParams({
+					unreadsCount
+				});
+			}
+		});
+	};
 
 	onThreadPress = debounce(async(item) => {
 		const { navigation } = this.props;
