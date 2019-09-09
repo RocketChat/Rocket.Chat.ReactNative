@@ -1,8 +1,8 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
-import database from '../realm';
 import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
@@ -50,18 +50,30 @@ export async function sendMessageCall(message) {
 
 export default async function(rid, msg, tmid, user) {
 	try {
+		const watermelon = watermelondb.database;
+		const subsCollections = watermelon.collections.get('subscriptions');
 		const message = await getMessage(rid, msg, tmid, user);
 		if (!message) {
 			return;
 		}
-		// const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
 
+		try {
+			const [room] = await subsCollections.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid == $0', rid);
+			if (room) {
+				await watermelon.action(async() => {
+					await room.update((r) => {
+						r.draftMessage = null;
+					});
+				});
+			}
+		} catch (e) {
+			log(e);
+		}
 		// if (room) {
 		// 	database.write(() => {
 		// 		room.draftMessage = null;
 		// 	});
 		// }
-		const watermelon = watermelondb.database;
 		try {
 			await sendMessageCall.call(this, message);
 		} catch (e) {

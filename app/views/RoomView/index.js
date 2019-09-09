@@ -11,12 +11,12 @@ import { throttleTime } from 'rxjs/operators';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
+import { Q } from '@nozbe/watermelondb';
 
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { List } from './List';
-import database, { safeAddListener } from '../../lib/realm';
 import watermelondb from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -109,7 +109,7 @@ class RoomView extends React.Component {
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
 		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
+		// this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		// const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			// joined: this.rooms.length > 0,
@@ -169,8 +169,11 @@ class RoomView extends React.Component {
 			EventEmitter.addEventListener('connected', this.handleConnected);
 		}
 		// safeAddListener(this.rooms, this.updateRoom);
-		safeAddListener(this.chats, this.updateUnreadCount);
+		// safeAddListener(this.chats, this.updateUnreadCount);
 		// });
+
+		this.updateUnreadCount();
+
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -224,26 +227,33 @@ class RoomView extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
+		const { editing, room } = this.state;
+		const watermelon = watermelondb.database;
 		this.mounted = false;
-		// const { editing, replying } = this.props;
-		// if (!editing && this.messagebox && this.messagebox.current) {
-		// 	const { text } = this.messagebox.current;
-		// 	let obj;
-		// 	if (this.tmid) {
-		// 		obj = database.objectForPrimaryKey('threads', this.tmid);
-		// 	} else {
-		// 		// [obj] = this.rooms;
-		// 		// FIXME: grab from wm
-		// 	}
-		// 	if (obj) {
-		// 		database.write(() => {
-		// 			obj.draftMessage = text;
-		// 		});
-		// 	}
-		// }
+		if (!editing && this.messagebox && this.messagebox.current) {
+			const { text } = this.messagebox.current;
+			let obj;
+			if (this.tmid) {
+				try {
+					const threadsCollection = watermelon.collections.get('threads');
+					obj = await threadsCollection.find(this.tmid); // database.objectForPrimaryKey('threads', this.tmid);
+				} catch (e) {
+					log(e);
+				}
+			} else {
+				obj = room;
+			}
+			if (obj) {
+				await watermelon.action(async() => {
+					await obj.update((r) => {
+						r.draftMessage = text;
+					});
+				});
+			}
+		}
 		// this.rooms.removeAllListeners();
-		this.chats.removeAllListeners();
+		// this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
@@ -418,15 +428,26 @@ class RoomView extends React.Component {
 	}, 1000, true)
 
 	// eslint-disable-next-line react/sort-comp
-	updateUnreadCount = debounce(() => {
-		const { navigation } = this.props;
-		const unreadsCount = this.chats.filtered('archived != true && open == true && unread > 0').reduce((a, b) => a + (b.unread || 0), 0);
-		if (unreadsCount !== navigation.getParam('unreadsCount')) {
-			navigation.setParams({
-				unreadsCount
-			});
-		}
-	}, 300, false)
+	updateUnreadCount = async() => {
+		const watermelon = watermelondb.database;
+		const observable = await watermelon.collections
+			.get('subscriptions')
+			.query(
+				Q.where('archived', false),
+				Q.where('open', true)
+			)
+			.observeWithColumns(['unread']);
+
+		this.queryUnreads = observable.subscribe((data) => {
+			const { navigation } = this.props;
+			const unreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
+			if (unreadsCount !== navigation.getParam('unreadsCount')) {
+				navigation.setParams({
+					unreadsCount
+				});
+			}
+		});
+	};
 
 	onThreadPress = debounce(async(item) => {
 		const { navigation } = this.props;

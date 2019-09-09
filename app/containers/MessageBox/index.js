@@ -16,7 +16,6 @@ import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import watermelon from '../../lib/database';
-import database from '../../lib/realm';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
@@ -234,10 +233,14 @@ class MessageBox extends Component {
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
 			const commandsCollection = db.collections.get('slash_commands');
-			const command = await commandsCollection.query(Q.where('name', name)).fetch();
-			// const command = database.objects('slashCommand').filtered('command == $0', name);
-			if (command && command[0] && command[0].providesPreview) {
-				return this.setCommandPreview(name, params);
+			try {
+				const command = await commandsCollection.query(Q.where('command', name)).fetch();
+				// const command = database.objects('slashCommand').filtered('command == $0', name);
+				if (command && command[0] && command[0].providesPreview) {
+					return this.setCommandPreview(name, params);
+				}
+			} catch (e) {
+				log(e);
 			}
 		}
 

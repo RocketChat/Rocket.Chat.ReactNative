@@ -1,6 +1,7 @@
 import {
 	takeLatest, put, call, delay
 } from 'redux-saga/effects';
+import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/Navigation';
 import { MESSAGES } from '../actions/actionsTypes';
@@ -14,7 +15,7 @@ import {
 	replyInit
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
+import watermelon from '../lib/database';
 import log from '../utils/log';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
@@ -55,8 +56,10 @@ const goRoom = function goRoom({ rid, name }) {
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
+		const { database } = watermelon;
 		const { username } = message.u;
-		const subscriptions = database.objects('subscriptions').filtered('name = $0', username);
+		const subsCollection = database.collections.get('subscriptions');
+		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 		if (subscriptions.length) {
 			yield goRoom({ rid: subscriptions[0].rid, name: username });
 		} else {

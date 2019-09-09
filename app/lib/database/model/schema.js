@@ -33,7 +33,7 @@ export default appSchema({
 				{ name: 'archived', type: 'boolean' },
 				{ name: 'join_code_required', type: 'boolean', isOptional: true },
 				// { name: 'notifications', type: 'boolean', isOptional: true },
-				// { name: 'muted', type: 'string', isOptional: true },
+				{ name: 'muted', type: 'string', isOptional: true },
 				{ name: 'broadcast', type: 'boolean', isOptional: true },
 				{ name: 'prid', type: 'string', isOptional: true },
 				{ name: 'draft_message', type: 'string', isOptional: true },
