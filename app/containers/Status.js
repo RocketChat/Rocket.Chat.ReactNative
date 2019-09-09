@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { STATUS_COLORS } from '../../constants/colors';
+import { STATUS_COLORS } from '../constants/colors';
 
 const Status = React.memo(({ status, size, style }) => (
 	<View

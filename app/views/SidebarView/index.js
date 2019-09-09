@@ -9,8 +9,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
-import StatusContainer from '../../containers/Status';
-import Status from '../../containers/Status/Status';
+import Status from '../../containers/Status';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -251,7 +250,7 @@ class Sidebar extends Component {
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
-								<StatusContainer style={styles.status} size={12} id={user.id} />
+								<Status style={styles.status} size={12} status={user && user.status} />
 								<Text numberOfLines={1} style={styles.username}>{user.username}</Text>
 							</View>
 							<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>

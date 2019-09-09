@@ -6,6 +6,7 @@ import {
 	PanGestureHandler,
 	State
 } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
@@ -32,7 +33,8 @@ const attrs = [
 	'type',
 	'width',
 	'isRead',
-	'favorite'
+	'favorite',
+	'userStatus'
 ];
 
 class RoomItem extends React.Component {
@@ -58,6 +60,7 @@ class RoomItem extends React.Component {
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
+		status: PropTypes.string,
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func
@@ -214,7 +217,7 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -285,6 +288,7 @@ class RoomItem extends React.Component {
 											type={type}
 											id={id}
 											prid={prid}
+											status={status}
 										/>
 										<Text
 											style={[
@@ -333,4 +337,8 @@ class RoomItem extends React.Component {
 	}
 }
 
-export default RoomItem;
+const mapStateToProps = (state, ownProps) => ({
+	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline'
+});
+
+export default connect(mapStateToProps)(RoomItem);
