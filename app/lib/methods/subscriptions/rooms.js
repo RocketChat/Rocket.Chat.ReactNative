@@ -41,7 +41,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					alert: s.alert,
 					unread: s.unread,
 					userMentions: s.userMentions,
-					_updated: s._updated,
+					roomUpdatedAt: s.roomUpdatedAt,
 					ro: s.ro,
 					lastOpen: s.lastOpen,
 					description: s.description,
@@ -61,7 +61,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					autoTranslateLanguage: s.autoTranslateLanguage,
 					lastMessage: s.lastMessage
 				};
-				subscription.muted = JSON.parse(subscription.muted);
 			} catch (error) {
 				try {
 					await watermelon.action(async() => {
@@ -156,9 +155,7 @@ export default function subscribeRooms() {
 			}
 		}
 		if (/rooms/.test(ev)) {
-			if (type === 'updated') {
-				await createOrUpdateSubscription(null, data);
-			} else if (type === 'inserted') {
+			if (type === 'updated' || type === 'inserted') {
 				await createOrUpdateSubscription(null, data);
 			}
 		}

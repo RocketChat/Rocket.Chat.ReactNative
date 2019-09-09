@@ -93,10 +93,10 @@ class NewMessageView extends React.Component {
 			const observable = await watermelon.database.collections
 				.get('subscriptions')
 				.query(Q.where('t', 'd'))
-				.observeWithColumns(['_updated_at']);
+				.observeWithColumns(['room_updated_at']);
 
 			this.querySubscription = observable.subscribe((data) => {
-				const chats = orderBy(data, ['_updatedAt'], ['desc']);
+				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 				this.setState({ chats });
 			});
 		} catch (e) {

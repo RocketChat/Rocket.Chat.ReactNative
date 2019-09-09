@@ -305,7 +305,7 @@ class RoomsListView extends React.Component {
 				Q.where('open', true),
 				Q.where('t', Q.notEq('l'))
 			)
-			.observeWithColumns(['_updated_at', 'unread', 'f', 't']);
+			.observeWithColumns(['room_updated_at', 'unread', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
 			let chats = [];
@@ -318,7 +318,7 @@ class RoomsListView extends React.Component {
 			if (sortBy === 'alphabetical') {
 				chats = orderBy(data, ['name'], ['asc']);
 			} else {
-				chats = orderBy(data, ['_updatedAt'], ['desc']);
+				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 			}
 
 			// unread
@@ -562,7 +562,7 @@ class RoomsListView extends React.Component {
 				favorite={item.f}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
-				_updatedAt={item._updatedAt}
+				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}
 				userId={userId}
@@ -779,29 +779,4 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
-// const enhance = withObservables(['db'], ({ db }) => ({
-// 	subscriptions: db.collections
-// 		.get('subscriptions')
-// 		.query()
-// 		.observeWithColumns(['room_updated_at'])
-// }));
-
-// const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProps)(RoomsListView));
-
-// const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
-
-// export default Root;
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(RoomsListView);
-
-// // eslint-disable-next-line
-// return (
-// 	// eslint-disable-next-line
-// 	<RoomsListView>
-// 		<List database>
-
-// 		</List>
-// 	</RoomsListView>
-// )
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);

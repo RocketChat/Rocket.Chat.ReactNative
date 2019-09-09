@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 14,
+	version: 15,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -19,7 +19,7 @@ export default appSchema({
 				// roles: 'string[]',
 				{ name: 'unread', type: 'number' },
 				{ name: 'user_mentions', type: 'number' },
-				{ name: '_updated_at', type: 'number' },
+				{ name: 'room_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
 				// { name: 'last_message_id', type: 'string', isIndexed: true },

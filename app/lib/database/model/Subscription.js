@@ -39,7 +39,7 @@ export default class Subscription extends Model {
 
 	@field('user_mentions') userMentions;
 
-	@date('_updated_at') _updatedAt;
+	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;
 
