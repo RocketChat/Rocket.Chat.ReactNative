@@ -63,7 +63,8 @@ export default class Subscription extends Model {
 
 	@field('notifications') notifications;
 
-	// @field('muted') muted;
+	@json('muted', r => r) muted;
+
 	@field('broadcast') broadcast;
 
 	@field('prid') prid;

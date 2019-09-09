@@ -52,6 +52,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					reactWhenReadOnly: s.reactWhenReadOnly,
 					archived: s.archived,
 					joinCodeRequired: s.joinCodeRequired,
+					muted: s.muted,
 					broadcast: s.broadcast,
 					prid: s.prid,
 					draftMessage: s.draftMessage,
@@ -60,6 +61,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					autoTranslateLanguage: s.autoTranslateLanguage,
 					lastMessage: s.lastMessage
 				};
+				subscription.muted = JSON.parse(subscription.muted);
 			} catch (error) {
 				try {
 					await watermelon.action(async() => {
