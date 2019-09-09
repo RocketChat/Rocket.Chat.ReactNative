@@ -188,12 +188,6 @@ export default class MessageContainer extends React.Component {
 		return item.status === messagesStatus.ERROR;
 	}
 
-	// TODO: REMOVE
-	parseMessage = () => {
-		const { item } = this.props;
-		return JSON.parse(JSON.stringify(item));
-	}
-
 	reactionInit = () => {
 		const { reactionInit, item } = this.props;
 		if (reactionInit) {
@@ -202,9 +196,9 @@ export default class MessageContainer extends React.Component {
 	}
 
 	replyBroadcast = () => {
-		const { replyBroadcast } = this.props;
+		const { replyBroadcast, item } = this.props;
 		if (replyBroadcast) {
-			replyBroadcast(this.parseMessage());
+			replyBroadcast(item);
 		}
 	}
 

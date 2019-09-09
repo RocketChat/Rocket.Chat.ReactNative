@@ -1,9 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
-import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
 import styles from './styles';
@@ -14,7 +13,7 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 
-export class List extends React.Component {
+export class List extends React.PureComponent {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -73,15 +72,17 @@ export class List extends React.Component {
 
 		this.messagesSubscription = this.messagesObservable
 			.subscribe((data) => {
-				if (tmid) {
-					data = [this.thread, ...data];
-				}
-				const messages = orderBy(data, ['ts'], ['desc']);
-				if (this.mounted) {
-					this.setState({ messages });
-				} else {
-					this.state.messages = messages;
-				}
+				this.interaction = InteractionManager.runAfterInteractions(() => {
+					if (tmid) {
+						data = [this.thread, ...data];
+					}
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages });
+					} else {
+						this.state.messages = messages;
+					}
+				});
 			});
 	}
 
@@ -95,43 +96,15 @@ export class List extends React.Component {
 		return null;
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { messages } = this.state;
-	// 	if (!equal(messages, nextState.messages)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	// componentWillUnmount() {
-	// 	this.data.removeAllListeners();
-	// 	this.threads.removeAllListeners();
-	// 	if (this.updateState && this.updateState.stop) {
-	// 		this.updateState.stop();
-	// 	}
-	// 	if (this.interactionManagerState && this.interactionManagerState.cancel) {
-	// 		this.interactionManagerState.cancel();
-	// 	}
-	// 	console.countReset(`${ this.constructor.name }.render calls`);
-	// }
-
-	// eslint-disable-next-line react/sort-comp
-	// updateState = debounce(() => {
-	// 	this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
-	// 		const { tmid } = this.props;
-	// 		let messages = this.data;
-	// 		if (tmid && this.threads[0]) {
-	// 			const thread = { ...this.threads[0] };
-	// 			thread.tlm = null;
-	// 			messages = [...messages, thread];
-	// 		}
-	// 		this.setState({
-	// 			messages: messages.slice(),
-	// 			threads: this.threads.slice(),
-	// 			loading: false
-	// 		});
-	// 	});
-	// }, 300, { leading: true });
+	componentWillUnmount() {
+		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+			this.messagesSubscription.unsubscribe();
+		}
+		if (this.interaction && this.interaction.cancel) {
+			this.interaction.cancel();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
+	}
 
 	onEndReached = debounce(async() => {
 		const {

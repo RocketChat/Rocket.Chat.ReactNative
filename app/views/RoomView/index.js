@@ -150,23 +150,22 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		const { room } = this.state;
-		const { navigation, isAuthenticated } = this.props;
-
-		if (room._id && !this.tmid) {
-			navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-		}
-		if (this.tmid) {
-			navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
-		}
-
-		if (isAuthenticated) {
-			this.init();
-		} else {
-			EventEmitter.addEventListener('connected', this.handleConnected);
-		}
-
-		this.updateUnreadCount();
+		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
+			const { room } = this.state;
+			const { navigation, isAuthenticated } = this.props;
+			if (room._id && !this.tmid) {
+				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+			}
+			if (this.tmid) {
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+			}
+			if (isAuthenticated) {
+				this.init();
+			} else {
+				EventEmitter.addEventListener('connected', this.handleConnected);
+			}
+			this.updateUnreadCount();
+		});
 
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -231,7 +230,7 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				try {
 					const threadsCollection = watermelon.collections.get('threads');
-					obj = await threadsCollection.find(this.tmid); // database.objectForPrimaryKey('threads', this.tmid);
+					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
 					log(e);
 				}
@@ -258,14 +257,17 @@ class RoomView extends React.Component {
 		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
 			this.onForegroundInteraction.cancel();
 		}
-		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
-			this.updateStateInteraction.cancel();
-		}
 		if (this.initInteraction && this.initInteraction.cancel) {
 			this.initInteraction.cancel();
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
+		}
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
+			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);

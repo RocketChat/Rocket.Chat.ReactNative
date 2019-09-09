@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { responsive } from 'react-native-responsive-ui';
-// import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
 import watermelondb from '../../lib/database';
@@ -86,18 +85,6 @@ class UploadProgress extends Component {
 	componentDidMount() {
 		this.mounted = true;
 	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { uploads } = this.state;
-	// 	const { window } = this.props;
-	// 	if (nextProps.window.width !== window.width) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.uploads, uploads)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentWillUnmount() {
 		if (this.uploadsSubscription && this.uploadsSubscription.unsubscribe) {

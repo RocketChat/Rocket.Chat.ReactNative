@@ -149,7 +149,6 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 
 		const { width } = Dimensions.get('window');
-		this.data = [];
 		this.state = {
 			searching: false,
 			search: [],
@@ -214,7 +213,6 @@ class RoomsListView extends React.Component {
 		if (nextState.searching !== searching) {
 			return true;
 		}
-
 		if (nextState.width !== width) {
 			return true;
 		}
@@ -256,14 +254,11 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.data && this.data.removeAllListeners) {
-			this.data.removeAllListeners();
-		}
 		if (this.getSubscriptions && this.getSubscriptions.stop) {
 			this.getSubscriptions.stop();
 		}
-		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
-			this.updateStateInteraction.cancel();
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
 		}
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
@@ -765,8 +760,7 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState:
-		state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message
 });
 
