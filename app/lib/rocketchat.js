@@ -720,7 +720,7 @@ const RocketChat = {
 		const permissionsCollection = database.collections.get('permissions');
 		let roomRoles = [];
 		try {
-			// get the room from realm
+			// get the room from watermelon
 			const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
 			if (!room) {
 				return permissions.reduce((result, permission) => {
@@ -733,7 +733,7 @@ const RocketChat = {
 		} catch (error) {
 			console.log('hasPermission -> error', error);
 		}
-		// get permissions from realm
+		// get permissions from watermelon
 		try {
 			let permissionsFiltered = await permissionsCollection.query().fetch();
 			permissionsFiltered = permissionsFiltered.filter(permission => permissions.includes(permission._id));

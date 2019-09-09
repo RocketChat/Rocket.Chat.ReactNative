@@ -70,5 +70,7 @@ class DB {
 	}
 }
 
+console.log(RNRealmPath.realmPath);
+
 const db = new DB();
 export default db;
