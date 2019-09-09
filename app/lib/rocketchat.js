@@ -43,7 +43,6 @@ import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFil
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
-import { addUserTyping, removeUserTyping } from '../actions/usersTyping';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';

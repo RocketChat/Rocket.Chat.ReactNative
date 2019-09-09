@@ -39,7 +39,8 @@ Thread.propTypes = {
 	msg: PropTypes.string,
 	tcount: PropTypes.string,
 	tlm: PropTypes.string,
-	customThreadTimeFormat: PropTypes.string
+	customThreadTimeFormat: PropTypes.string,
+	isThreadRoom: PropTypes.bool
 };
 Thread.displayName = 'MessageThread';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, InteractionManager
+	Text, View, InteractionManager, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
@@ -38,6 +38,7 @@ import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { isIOS } from '../../utils/deviceInfo';
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -135,8 +136,6 @@ class RoomView extends React.Component {
 			this.subscription = this.roomObservable
 				.pipe(throttleTime(5000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					// this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		}
@@ -151,9 +150,7 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		// this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 		const { room } = this.state;
-		console.log('TCL: componentDidMount -> room', room);
 		const { navigation, isAuthenticated } = this.props;
 
 		if (room._id && !this.tmid) {
@@ -168,9 +165,6 @@ class RoomView extends React.Component {
 		} else {
 			EventEmitter.addEventListener('connected', this.handleConnected);
 		}
-		// safeAddListener(this.rooms, this.updateRoom);
-		// safeAddListener(this.chats, this.updateUnreadCount);
-		// });
 
 		this.updateUnreadCount();
 
@@ -252,22 +246,12 @@ class RoomView extends React.Component {
 				});
 			}
 		}
-		// this.rooms.removeAllListeners();
-		// this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
-		// if (editing) {
-		// 	const { editCancel } = this.props;
-		// 	editCancel();
-		// }
-		// if (replying) {
-		// 	const { replyCancel } = this.props;
-		// 	replyCancel();
-		// }
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -286,23 +270,6 @@ class RoomView extends React.Component {
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
-
-	// eslint-disable-next-line react/sort-comp
-	// observeRoom = async() => {
-	// 	this.watermelon = watermelondb.database;
-	// 	const subCollection = this.watermelon.collections.get('subscriptions');
-	// 	this.subObservable = await subCollection.findAndObserve(this.rid);
-	// 	this.subSubscription = this.subObservable
-	// 		.subscribe((room) => {
-	// 			if (this.mounted) {
-	// 				console.log('ROOMVIEW: SET MOUNTED')
-	// 				this.setState({ room });
-	// 			} else {
-	// 				console.log('ROOMVIEW: SET NOT MOUNTED')
-	// 				this.state.room = room;
-	// 			}
-	// 		});
-	// }
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
@@ -479,24 +446,15 @@ class RoomView extends React.Component {
 		if (!this.mounted) {
 			return;
 		}
-		// if (isIOS && this.beginAnimating) {
-		// 	LayoutAnimation.easeInEaseOut();
-		// }
+		if (isIOS && this.beginAnimating) {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	}
 
-	// updateRoom = () => {
-	// 	this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-	// 		if (this.rooms[0]) {
-	// 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-	// 			this.internalSetState({ room });
-	// 		}
-	// 	});
-	// }
-
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
-		// LayoutAnimation.easeInEaseOut();
+		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
@@ -728,6 +686,7 @@ class RoomView extends React.Component {
 				replying={replying}
 				replyWithMention={replyWithMention}
 				replyCancel={this.onReplyCancel}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 	};
@@ -800,9 +759,10 @@ class RoomView extends React.Component {
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
-					onClose={this.onCloseReactionsModal}
 					user={user}
 					baseUrl={baseUrl}
+					onClose={this.onCloseReactionsModal}
+					getCustomEmoji={this.getCustomEmoji}
 				/>
 			</SafeAreaView>
 		);

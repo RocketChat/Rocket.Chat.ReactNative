@@ -33,9 +33,7 @@ const MessageAvatar = React.memo(({
 		);
 	}
 	return null;
-})
-// FIXME: do we need this?
-// }, (prevProps, nextProps) => prevProps.isHeader === nextProps.isHeader);
+});
 
 MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,

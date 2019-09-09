@@ -830,12 +830,12 @@ class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			message, replying, replyCancel, user
+			message, replying, replyCancel, user, getCustomEmoji
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} />;
+		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	};
 
 	renderContent = () => {
