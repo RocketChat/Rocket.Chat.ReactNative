@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import watermelon from '../../lib/database';
@@ -13,7 +14,7 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 
-export class List extends React.PureComponent {
+export class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -60,14 +61,14 @@ export class List extends React.PureComponent {
 				.query(
 					Q.where('rid', tmid)
 				)
-				.observeWithColumns(['updated_at']);
+				.observeWithColumns(['_updated_at']);
 		} else {
 			this.messagesObservable = watermelon.database.collections
 				.get('messages')
 				.query(
 					Q.where('rid', rid)
 				)
-				.observeWithColumns(['updated_at']);
+				.observeWithColumns(['_updated_at']);
 		}
 
 		this.messagesSubscription = this.messagesObservable
@@ -96,12 +97,29 @@ export class List extends React.PureComponent {
 		return null;
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const { messages, loading, end } = this.state;
+		if (loading !== nextState.loading) {
+			return true;
+		}
+		if (end !== nextState.end) {
+			return true;
+		}
+		if (!isEqual(messages, nextState.messages)) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
 		}
 		if (this.interaction && this.interaction.cancel) {
 			this.interaction.cancel();
+		}
+		if (this.onEndReached && this.onEndReached.stop) {
+			this.onEndReached.stop();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}

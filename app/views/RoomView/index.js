@@ -6,12 +6,11 @@ import {
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView, HeaderBackButton } from 'react-navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { throttleTime } from 'rxjs/operators';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'lodash/isEqual';
 
 import {
 	replyBroadcast as replyBroadcastAction
@@ -109,11 +108,7 @@ class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
-		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		// this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
-		// const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
-			// joined: this.rooms.length > 0,
 			joined: true,
 			room: room || { rid: this.rid, t: this.t },
 			lastOpen: null,
@@ -134,7 +129,6 @@ class RoomView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
 				.subscribe((changes) => {
 					this.setState({ room: changes });
 				});
@@ -170,43 +164,45 @@ class RoomView extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const {
-	// 		room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
-	// 	} = this.state;
-	// 	const { showActions, showErrorActions, appState } = this.props;
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate, showActions, showErrorActions
+		} = this.state;
+		const { appState } = this.props;
 
-	// 	if (lastOpen !== nextState.lastOpen) {
-	// 		return true;
-	// 	} else if (photoModalVisible !== nextState.photoModalVisible) {
-	// 		return true;
-	// 	} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
-	// 		return true;
-	// 	} else if (room.ro !== nextState.room.ro) {
-	// 		return true;
-	// 	} else if (room.f !== nextState.room.f) {
-	// 		return true;
-	// 	} else if (room.blocked !== nextState.room.blocked) {
-	// 		return true;
-	// 	} else if (room.blocker !== nextState.room.blocker) {
-	// 		return true;
-	// 	} else if (room.archived !== nextState.room.archived) {
-	// 		return true;
-	// 	} else if (joined !== nextState.joined) {
-	// 		return true;
-	// 	} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-	// 		return true;
-	// 	} else if (showActions !== nextProps.showActions) {
-	// 		return true;
-	// 	} else if (showErrorActions !== nextProps.showErrorActions) {
-	// 		return true;
-	// 	} else if (appState !== nextProps.appState) {
-	// 		return true;
-	// 	} else if (!equal(room.muted, nextState.room.muted)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+		if (lastOpen !== nextState.lastOpen) {
+			return true;
+		} else if (photoModalVisible !== nextState.photoModalVisible) {
+			return true;
+		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
+			return true;
+		}
+		// else if (room.ro !== nextState.room.ro) {
+		// 	return true;
+		// } else if (room.f !== nextState.room.f) {
+		// 	return true;
+		// } else if (room.blocked !== nextState.room.blocked) {
+		// 	return true;
+		// } else if (room.blocker !== nextState.room.blocker) {
+		// 	return true;
+		// } else if (room.archived !== nextState.room.archived) {
+		// 	return true;
+		// }
+		else if (joined !== nextState.joined) {
+			return true;
+		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
+			return true;
+		} else if (showActions !== nextState.showActions) {
+			return true;
+		} else if (showErrorActions !== nextState.showErrorActions) {
+			return true;
+		} else if (appState !== nextProps.appState) {
+			return true;
+		} else if (!isEqual(room, nextState.room)) {
+			return true;
+		}
+		return false;
+	}
 
 	componentDidUpdate(prevProps) {
 		const { room } = this.state;

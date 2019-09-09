@@ -206,7 +206,19 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
-		const { loading, searching, width } = this.state;
+		const {
+			loading,
+			searching,
+			width,
+			search,
+			chats,
+			unread,
+			favorites,
+			discussions,
+			channels,
+			privateGroup,
+			direct
+		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -216,9 +228,28 @@ class RoomsListView extends React.Component {
 		if (nextState.width !== width) {
 			return true;
 		}
-
-		const { search } = this.state;
 		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
+		if (!isEqual(nextState.chats, chats)) {
+			return true;
+		}
+		if (!isEqual(nextState.unread, unread)) {
+			return true;
+		}
+		if (!isEqual(nextState.favorites, favorites)) {
+			return true;
+		}
+		if (!isEqual(nextState.discussions, discussions)) {
+			return true;
+		}
+		if (!isEqual(nextState.channels, channels)) {
+			return true;
+		}
+		if (!isEqual(nextState.privateGroup, privateGroup)) {
+			return true;
+		}
+		if (!isEqual(nextState.direct, direct)) {
 			return true;
 		}
 		return false;
@@ -350,7 +381,6 @@ class RoomsListView extends React.Component {
 				direct,
 				loading: false
 			});
-			this.forceUpdate();
 		});
 	}, 300, true);
 
