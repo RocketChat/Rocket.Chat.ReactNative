@@ -3,7 +3,6 @@ import { Q } from '@nozbe/watermelondb';
 
 import messagesStatus from '../../constants/messagesStatus';
 import buildMessage from './helpers/buildMessage';
-import database from '../realm';
 import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';

@@ -17,7 +17,6 @@ import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { List } from './List';
-import database, { safeAddListener } from '../../lib/realm';
 import watermelondb from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -110,7 +109,7 @@ class RoomView extends React.Component {
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
 		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
+		// this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		// const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
 			// joined: this.rooms.length > 0,
@@ -254,7 +253,7 @@ class RoomView extends React.Component {
 			}
 		}
 		// this.rooms.removeAllListeners();
-		this.chats.removeAllListeners();
+		// this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}

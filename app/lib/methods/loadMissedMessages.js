@@ -1,14 +1,20 @@
 import { InteractionManager } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
-import database from '../realm';
+import watermelon from '../database';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
-const getLastUpdate = (rid) => {
-	const sub = database
-		.objects('subscriptions')
-		.filtered('rid == $0', rid)[0];
-	return sub && new Date(sub.lastOpen).toISOString();
+const getLastUpdate = async(rid) => {
+	const { database } = watermelon;
+	try {
+		const subsCollection = database.collections.get('subscriptions');
+		const [sub] = await subsCollection.query(Q.where('rid', rid)).fetch();
+		return sub && new Date(sub.lastOpen).toISOString();
+	} catch (e) {
+		log(e);
+	}
+	return null;
 };
 
 async function load({ rid: roomId, lastOpen }) {
@@ -16,7 +22,7 @@ async function load({ rid: roomId, lastOpen }) {
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
 	} else {
-		lastUpdate = getLastUpdate(roomId);
+		lastUpdate = await getLastUpdate(roomId);
 	}
 	// RC 0.60.0
 	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });

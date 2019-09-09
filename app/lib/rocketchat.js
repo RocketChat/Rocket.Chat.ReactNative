@@ -7,7 +7,6 @@ import { Q } from '@nozbe/watermelondb';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import database from './realm';
 import watermelon from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
@@ -112,7 +111,7 @@ const RocketChat = {
 	connect({ server, user }) {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {
-				database.setActiveDB(server);
+				// database.setActiveDB(server);
 				watermelon.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -374,7 +373,7 @@ const RocketChat = {
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			database.deleteAll();
+			// database.deleteAll();
 			await watermelon.database.action(() => watermelon.database.unsafeResetDatabase());
 		} catch (error) {
 			console.log(error);
@@ -716,9 +715,9 @@ const RocketChat = {
 		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
 	async hasPermission(permissions, rid) {
-		const { database: db } = watermelon;
-		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
+		const { database } = watermelon;
+		const subsCollection = database.collections.get('subscriptions');
+		const permissionsCollection = database.collections.get('permissions');
 		let roomRoles = [];
 		try {
 			// get the room from realm
@@ -998,13 +997,13 @@ const RocketChat = {
 		});
 	},
 	async canAutoTranslate() {
-		const { database: db } = watermelon;
+		const { database } = watermelon;
 		try {
 			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
+			const permissionsCollection = database.collections.get('permissions');
 			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));

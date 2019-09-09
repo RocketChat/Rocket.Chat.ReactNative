@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { RectButton } from 'react-native-gesture-handler';
+import { Q } from '@nozbe/watermelondb';
 
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
@@ -19,7 +20,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
-import database from '../../lib/realm';
+import watermelon from '../../lib/database';
 
 const keyExtractor = item => item.id;
 
@@ -46,12 +47,14 @@ class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
+			isAdmin: false,
 			status: []
 		};
 	}
 
 	componentDidMount() {
 		this.setStatus();
+		this.setIsAdmin();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -116,14 +119,22 @@ class Sidebar extends Component {
 		});
 	}
 
-	toggleStatus = () => {
-		LayoutAnimation.easeInEaseOut();
-		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
-	}
-
-	sidebarNavigate = (route) => {
-		const { navigation } = this.props;
-		navigation.navigate(route);
+	async setIsAdmin() {
+		const { database } = watermelon;
+		const { user } = this.props;
+		const { roles } = user;
+		try {
+			if	(roles) {
+				const permissionsCollection = database.collections.get('permissions');
+				const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+				const isAdmin = permissionsFiltered.reduce((result, permission) => (
+					result || permission.roles.some(r => roles.indexOf(r) !== -1)),
+				false);
+				this.setState({ isAdmin });
+			}
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	logout = () => {
@@ -131,17 +142,14 @@ class Sidebar extends Component {
 		logout();
 	}
 
-	canSeeAdminPanel() {
-		const { user } = this.props;
-		const { roles } = user;
-		if	(roles) {
-			const permissionsFiltered = database.objects('permissions')
-				.filter(permission => permissions.includes(permission._id));
-			return permissionsFiltered.reduce((result, permission) => (
-				result || permission.roles.some(r => roles.indexOf(r) !== -1)),
-			false);
-		}
-		return false;
+	sidebarNavigate = (route) => {
+		const { navigation } = this.props;
+		navigation.navigate(route);
+	}
+
+	toggleStatus = () => {
+		LayoutAnimation.easeInEaseOut();
+		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
 	renderStatusItem = ({ item }) => {
@@ -166,6 +174,7 @@ class Sidebar extends Component {
 	}
 
 	renderNavigation = () => {
+		const { isAdmin } = this.state;
 		const { activeItemKey } = this.props;
 		return (
 			<React.Fragment>
@@ -190,7 +199,7 @@ class Sidebar extends Component {
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
-				{this.canSeeAdminPanel() ? (
+				{isAdmin ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
 						left={<CustomIcon name='shield-alt' size={20} color={COLOR_TEXT} />}
