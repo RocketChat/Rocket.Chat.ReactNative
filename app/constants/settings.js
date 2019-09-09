@@ -23,6 +23,9 @@ export default {
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Jitsi_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	Message_AllowDeleting: {
 		type: 'valueAsBoolean'
 	},

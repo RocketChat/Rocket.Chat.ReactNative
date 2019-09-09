@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import JitsiMeet from 'react-native-jitsi-meet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
@@ -39,7 +40,8 @@ class RoomActionsView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		leaveRoom: PropTypes.func
+		leaveRoom: PropTypes.func,
+		jitsiEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -147,14 +149,16 @@ class RoomActionsView extends React.Component {
 		const userInRoom = joined;
 		const permissions = await RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
-		if (userInRoom && permissions['add-user-to-joined-room']) {
-			canAdd = true;
-		}
-		if (t === 'c' && permissions['add-user-to-any-c-room']) {
-			canAdd = true;
-		}
-		if (t === 'p' && permissions['add-user-to-any-p-room']) {
-			canAdd = true;
+		if (permissions) {
+			if (userInRoom && permissions['add-user-to-joined-room']) {
+				canAdd = true;
+			}
+			if (t === 'c' && permissions['add-user-to-any-c-room']) {
+				canAdd = true;
+			}
+			if (t === 'p' && permissions['add-user-to-any-p-room']) {
+				canAdd = true;
+			}
 		}
 		this.setState({ canAddUser: canAdd });
 	}
@@ -183,6 +187,7 @@ class RoomActionsView extends React.Component {
 		const {
 			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
+		const { jitsiEnabled } = this.props;
 		const {
 			rid, t, blocker
 		} = room;
@@ -210,13 +215,15 @@ class RoomActionsView extends React.Component {
 				{
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
-					disabled: true,
+					disabled: !jitsiEnabled,
+					event: () => this.callJitsi(),
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
-					disabled: true,
+					disabled: !jitsiEnabled,
+					event: () => this.callJitsi(),
 					testID: 'room-actions-video'
 				}
 			],
@@ -338,6 +345,13 @@ class RoomActionsView extends React.Component {
 			}
 		}
 		return sections;
+	}
+
+	callJitsi = () => {
+		JitsiMeet.initialize();
+		setTimeout(() => {
+			JitsiMeet.call('https://meet.jit.si/testRocketChat');
+		}, 1000);
 	}
 
 	updateRoom = () => {
@@ -502,7 +516,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 
 const mapDispatchToProps = dispatch => ({
