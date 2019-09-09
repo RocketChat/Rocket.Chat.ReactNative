@@ -84,62 +84,14 @@ class RoomItem extends React.Component {
 		this._value = 0;
 	}
 
-	componentDidMount() {
-		const { item } = this.props;
-		if (item && item.observe) {
-			const observable = item.observe();
-			this.subscription = observable.subscribe((changes) => {
-				// TODO: compare changes?
-				this.forceUpdate();
-				// this.setState({ subscriptions: changes });
-			});
-		}
-	}
-
 	shouldComponentUpdate(nextProps) {
-		// const { item: { _updatedAt, lastMessage } } = this.props;
-		// const oldlastMessage = lastMessage;
-		// const newLastmessage = nextProps.item.lastMessage;
-
-		// // console.log(oldlastMessage.ts, newLastmessage.ts)
-		// if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-		// 	return true;
-		// }
-		// // if (_updatedAt && nextProps.item._updatedAt && nextProps.item._updatedAt.toISOString() !== _updatedAt.toISOString()) {
-		// // 	return true;
-		// // }
-		// // // eslint-disable-next-line react/destructuring-assignment
-		// // return attrs.some(key => nextProps.item[key] !== this.props.item[key]);
-		// if (nextProps.name === 'Tests') {
-		// 	console.log(nextProps.item, this.props.item)
-		// 	// console.log(nextProps.item._updatedAt.toISOString(), this.props.item._updatedAt.toISOString())
-		// }
-		// return nextProps.item._updatedAt.toISOString() !== this.props.item._updatedAt.toISOString()
-		// return true;
-
-		// console.log(this.props.item, nextProps.item)
-		// return true;
-		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
+		const { _updatedAt } = this.props;
+		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
+			return true;
 		}
+		// eslint-disable-next-line react/destructuring-assignment
+		return attrs.some(key => nextProps[key] !== this.props[key]);
 	}
-
-	// componentWillReceiveProps(nextProps) {
-	// 	// this.forceUpdate();
-	// 	if (nextProps.name === 'diego.mello2') {
-	// 		console.log('TCL: RoomItem -> componentWillReceiveProps -> nextProps', nextProps, this.props);
-	// 		if (nextProps._updatedAt !== this.props._updatedAt) {
-	// 			console.log('UPDATEEEEEEEERERERE')
-	// 		}
-	// 		if (nextProps.item._updatedAt.toISOString() !== this.props.item._updatedAt.toISOString()) {
-	// 			console.log('UPDATEEEEEEEERERERE')
-	// 		}
-	// 	}
-	// }
 
 	_onHandlerStateChange = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
@@ -262,36 +214,10 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			item,
-			testID,
-			name,
-			avatarSize,
-			baseUrl,
-			userId,
-			username,
-			token,
-			showLastMessage,
-			width
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
 		} = this.props;
-		const {
-			_updatedAt,
-			lastMessage,
-			unread,
-			alert,
-			userMentions,
-			t,
-			prid,
-			isRead,
-			favorite
-		} = item;
-		const id = item.rid.replace(userId, '').trim();
 
 		const date = formatDate(_updatedAt);
-
-		// // FIXME: it's updating rows while scrolling
-		if (name === 'Tests') {
-			console.log('RENRENRENRNERENRENRENRENRERN TESTS');
-		}
 
 		let accessibilityLabel = name;
 		if (unread === 1) {
@@ -347,7 +273,7 @@ class RoomItem extends React.Component {
 								<Avatar
 									text={name}
 									size={avatarSize}
-									type={t}
+									type={type}
 									baseUrl={baseUrl}
 									style={styles.avatar}
 									userId={userId}
@@ -356,7 +282,7 @@ class RoomItem extends React.Component {
 								<View style={styles.centerContainer}>
 									<View style={styles.titleContainer}>
 										<TypeIcon
-											type={t}
+											type={type}
 											id={id}
 											prid={prid}
 										/>
@@ -386,7 +312,7 @@ class RoomItem extends React.Component {
 									<View style={styles.row}>
 										<LastMessage
 											lastMessage={lastMessage}
-											type={t}
+											type={type}
 											showLastMessage={showLastMessage}
 											username={username}
 											alert={alert}
@@ -394,7 +320,7 @@ class RoomItem extends React.Component {
 										<UnreadBadge
 											unread={unread}
 											userMentions={userMentions}
-											type={t}
+											type={type}
 										/>
 									</View>
 								</View>
@@ -406,9 +332,5 @@ class RoomItem extends React.Component {
 		);
 	}
 }
-
-// const Item = withObservables(['item'], ({ item }) => ({
-// 	item: item.observe().pipe(throttleTime(1000))
-// }))(RoomItem);
 
 export default RoomItem;

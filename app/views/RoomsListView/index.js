@@ -558,19 +558,27 @@ class RoomsListView extends React.Component {
 			baseUrl,
 			StoreLastMessage
 		} = this.props;
+		const id = item.rid.replace(userId, '').trim();
 
 		return (
 			<RoomItem
-				item={item}
-				rid={item.rid}
-				favorite={item.f}
-				type={item.t}
+				alert={item.alert}
+				unread={item.unread}
+				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
+				favorite={item.f}
+				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
+				_updatedAt={item._updatedAt}
+				key={item._id}
+				id={id}
 				userId={userId}
 				username={username}
 				token={token}
+				rid={item.rid}
+				type={item.t}
 				baseUrl={baseUrl}
+				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
