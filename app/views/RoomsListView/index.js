@@ -305,7 +305,7 @@ class RoomsListView extends React.Component {
 				Q.where('open', true),
 				Q.where('t', Q.notEq('l'))
 			)
-			.observeWithColumns(['room_updated_at', 'unread', 'f', 't']);
+			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
 			let chats = [];
@@ -620,7 +620,7 @@ class RoomsListView extends React.Component {
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}
@@ -652,7 +652,7 @@ class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}
@@ -694,7 +694,7 @@ class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}

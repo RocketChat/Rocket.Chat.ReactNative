@@ -12,6 +12,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
+import { isIOS } from '../../utils/deviceInfo';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -188,12 +189,12 @@ export class List extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
-					// removeClippedSubviews
-					initialNumToRender={7}
+					removeClippedSubviews={isIOS}
+					// initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
+					// onEndReachedThreshold={5}
+					// maxToRenderPerBatch={5}
+					// windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
