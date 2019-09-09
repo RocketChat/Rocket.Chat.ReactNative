@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView, HeaderBackButton } from 'react-navigation';
+import JitsiMeet from 'react-native-jitsi-meet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -48,6 +49,7 @@ class RoomView extends React.Component {
 		const tmid = navigation.getParam('tmid');
 		const room = navigation.getParam('room');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
+		const callJitsi = navigation.getParam('callJitsi', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
 			headerTitle: (
@@ -67,6 +69,7 @@ class RoomView extends React.Component {
 					room={room}
 					t={t}
 					navigation={navigation}
+					callJitsi={callJitsi}
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
@@ -97,7 +100,8 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		useMarkdown: PropTypes.bool,
-		replyBroadcast: PropTypes.func
+		replyBroadcast: PropTypes.func,
+		jitsiBaseURL: PropTypes.string
 	};
 
 	constructor(props) {
@@ -162,6 +166,8 @@ class RoomView extends React.Component {
 		if (this.tmid) {
 			navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
 		}
+
+		navigation.setParams({ callJitsi: this.callJitsi });
 
 		if (isAuthenticated) {
 			this.init();
@@ -552,6 +558,16 @@ class RoomView extends React.Component {
 		}
 	}
 
+	callJitsi = () => {
+		const { room } = this.state;
+		const { jitsiBaseURL } = this.props;
+		const { rid } = room;
+		JitsiMeet.initialize();
+		setTimeout(() => {
+			JitsiMeet.call(`${ jitsiBaseURL }${ rid }`);
+		}, 1000);
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid, messageId) => {
 		try {
@@ -660,6 +676,7 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
+				callJitsi={this.callJitsi}
 			/>
 		);
 
@@ -823,7 +840,8 @@ const mapStateToProps = state => ({
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
+	jitsiBaseURL: state.jitsi.jitsiBaseURL
 });
 
 const mapDispatchToProps = dispatch => ({

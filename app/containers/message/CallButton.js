@@ -9,14 +9,14 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 
 const CallButton = React.memo(({
-	dlm, onCallButtonPress
+	dlm, callJitsi
 }) => {
 	const time = formatLastMessage(dlm);
 	return (
 		<React.Fragment>
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={onCallButtonPress}
+					onPress={callJitsi}
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
@@ -34,7 +34,7 @@ const CallButton = React.memo(({
 
 CallButton.propTypes = {
 	dlm: PropTypes.string,
-	onCallButtonPress: PropTypes.func
+	callJitsi: PropTypes.func
 };
 CallButton.displayName = 'CallButton';
 
