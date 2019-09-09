@@ -9,14 +9,12 @@ import {
 	ScrollView,
 	Keyboard,
 	LayoutAnimation,
-	InteractionManager,
 	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
-import withObservables from '@nozbe/with-observables';
 
 import { Q } from '@nozbe/watermelondb';
 import watermelon from '../../lib/database';
@@ -202,31 +200,31 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	// const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-	// 	// if (propsUpdated) {
-	// 	// 	return true;
-	// 	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		// eslint-disable-next-line react/destructuring-assignment
+		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+		if (propsUpdated) {
+			return true;
+		}
 
-	// 	const { loading, searching, width } = this.state;
-	// 	if (nextState.loading !== loading) {
-	// 		return true;
-	// 	}
-	// 	// if (nextState.searching !== searching) {
-	// 	// 	return true;
-	// 	// }
+		const { loading, searching, width } = this.state;
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.searching !== searching) {
+			return true;
+		}
 
-	// 	// if (nextState.width !== width) {
-	// 	// 	return true;
-	// 	// }
+		if (nextState.width !== width) {
+			return true;
+		}
 
-	// 	// const { search } = this.state;
-	// 	// if (!isEqual(nextState.search, search)) {
-	// 	// 	return true;
-	// 	// }
-	// 	return false;
-	// }
+		const { search } = this.state;
+		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
+		return false;
+	}
 
 	componentDidUpdate(prevProps) {
 		const {
@@ -281,31 +279,25 @@ class RoomsListView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
-		// const { navigation } = this.props;
-		// if (isIOS && navigation.isFocused()) {
-		// 	LayoutAnimation.easeInEaseOut();
-		// }
+		const { navigation } = this.props;
+		if (isIOS && navigation.isFocused()) {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	};
 
 	getSubscriptions = debounce(async() => {
-		console.log('getSubscriptions');
-		// if (this.data && this.data.removeAllListeners) {
-		// 	this.data.removeAllListeners();
-		// }
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
 
 		const {
-			server,
 			sortBy,
 			showUnread,
 			showFavorites,
 			groupByType
 		} = this.props;
 
-		// if (server && this.hasActiveDB()) {
 		const observable = await watermelon.database.collections
 			.get('subscriptions')
 			.query(
@@ -363,6 +355,7 @@ class RoomsListView extends React.Component {
 				direct,
 				loading: false
 			});
+			this.forceUpdate();
 		});
 	}, 300, true);
 
@@ -724,7 +717,6 @@ class RoomsListView extends React.Component {
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { loading } = this.state;
 		const {
 			sortBy,
 			groupByType,
