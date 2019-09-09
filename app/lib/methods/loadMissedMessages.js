@@ -1,18 +1,17 @@
 import { InteractionManager } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 
 import watermelon from '../database';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = async(rid) => {
-	const { database } = watermelon;
 	try {
+		const { database } = watermelon;
 		const subsCollection = database.collections.get('subscriptions');
-		const [sub] = await subsCollection.query(Q.where('rid', rid)).fetch();
-		return sub && new Date(sub.lastOpen).toISOString();
+		const sub = await subsCollection.find(rid);
+		return sub.lastOpen.toISOString();
 	} catch (e) {
-		log(e);
+		// Do nothing
 	}
 	return null;
 };
