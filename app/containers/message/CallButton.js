@@ -17,7 +17,7 @@ const CallButton = React.memo(({
 		<React.Fragment>
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={() => callJitsi(rid, false)}
+					onPress={() => callJitsi(rid, {}, false)}
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}

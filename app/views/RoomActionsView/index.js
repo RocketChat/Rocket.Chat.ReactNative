@@ -193,7 +193,7 @@ class RoomActionsView extends React.Component {
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
 					disabled: !jitsiEnabled,
-					event: () => callJitsi(rid),
+					event: () => callJitsi(rid, { videoMuted: true }),
 					testID: 'room-actions-voice'
 				},
 				{

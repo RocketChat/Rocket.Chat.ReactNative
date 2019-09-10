@@ -3539,3 +3539,81 @@ index 3855488..6991307 100644
  
  import com.facebook.react.ReactInstanceManager;
  import com.facebook.react.modules.core.PermissionListener;
+diff --git a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h b/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h
+index b68acd5..2a1e05a 100644
+--- a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h
++++ b/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h
+@@ -13,6 +13,7 @@
+ 
+ - (void) setDelegate:(id<JitsiMeetViewDelegate>) delegate;
+ - (void)loadUrl:(NSString *) url;
++- (void)call:(NSString *)url options:(NSDictionary *)options;
+ 
+ @end
+ 
+diff --git a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.m b/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.m
+index 005824a..33a2187 100644
+--- a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.m
++++ b/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.m
+@@ -21,6 +21,22 @@ - (void) setDelegate:(id<JitsiMeetViewDelegate>) delegate {
+     }
+ }
+ 
++- (BOOL)checkKey:(NSString *)key options:(NSDictionary *)options
++{
++  id obj = options[key];
++  if (obj != nil) {
++    if (obj != (id)[NSNull null]) {
++      return [[options objectForKey:key] boolValue];
++    }
++    else {
++      return NO;
++    }
++  }
++  else {
++    return NO;
++  }
++}
++
+ - (void)loadUrl:(NSString *) url {
+     JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
+     JitsiMeetConferenceOptions *options = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {        builder.room = url;
+@@ -28,6 +44,15 @@ - (void)loadUrl:(NSString *) url {
+     [jitsiMeetView join:options];
+ }
+ 
++- (void)call:(NSString *)url options:(NSDictionary *)options {
++  JitsiMeetView *jitsiMeetView = (JitsiMeetView *) self.view;
++  JitsiMeetConferenceOptions *optionsBuilder = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
++    builder.room = url;
++    builder.videoMuted = [self checkKey:@"videoMuted" options:options];
++  }];
++  [jitsiMeetView join:optionsBuilder];
++}
++
+ 
+ - (void)didReceiveMemoryWarning {
+     [super didReceiveMemoryWarning];
+diff --git a/node_modules/react-native-jitsi-meet/ios/RNJitsiMeetNavigator.m b/node_modules/react-native-jitsi-meet/ios/RNJitsiMeetNavigator.m
+index e641838..d579077 100644
+--- a/node_modules/react-native-jitsi-meet/ios/RNJitsiMeetNavigator.m
++++ b/node_modules/react-native-jitsi-meet/ios/RNJitsiMeetNavigator.m
+@@ -41,15 +41,15 @@ - (void)enterPictureInPicture:(NSDictionary *)data {
+     jitsiMeetViewController = [storyboard instantiateViewControllerWithIdentifier:@"jitsiMeetStoryBoardID"];
+ }
+ 
+-RCT_EXPORT_METHOD(call:(NSString *)urlString)
++RCT_EXPORT_METHOD(call:(NSString *)urlString options:(NSDictionary *)options)
+ {
+-    RCTLogInfo(@"Load URL %@", urlString);
++    RCTLogInfo(@"Conference on %@ with Options %@", urlString, options);
+     dispatch_sync(dispatch_get_main_queue(), ^{
+         UIViewController* rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
+         UINavigationController *navigationController = (UINavigationController *) rootViewController;
+         [navigationController pushViewController:jitsiMeetViewController animated:true];
+         [jitsiMeetViewController setDelegate:self];
+-        [jitsiMeetViewController loadUrl:urlString];
++        [jitsiMeetViewController call:urlString options:options];
+     });
+ }
+ 

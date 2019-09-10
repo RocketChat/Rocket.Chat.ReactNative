@@ -3,7 +3,7 @@ import JitsiMeet from 'react-native-jitsi-meet';
 import reduxStore from '../createStore';
 import RocketChat from '../rocketchat';
 
-const callJitsi = (rid, newCall = true) => {
+const callJitsi = (rid, options = {}, newCall = true) => {
 	const { login, jitsi } = reduxStore.getState();
 	const { jitsiBaseURL } = jitsi;
 	const { id, username, token } = login.user;
@@ -19,7 +19,7 @@ const callJitsi = (rid, newCall = true) => {
 
 	JitsiMeet.initialize();
 	setTimeout(() => {
-		JitsiMeet.call(`${ jitsiBaseURL }${ rid }`);
+		JitsiMeet.call(`${ jitsiBaseURL }${ rid }`, options);
 	}, 1000);
 };
 
