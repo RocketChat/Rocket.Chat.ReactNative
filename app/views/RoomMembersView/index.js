@@ -4,7 +4,6 @@ import { FlatList, View, ActivityIndicator } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 import * as Haptics from 'expo-haptics';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
@@ -64,10 +63,8 @@ class RoomMembersView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		}
@@ -81,7 +78,6 @@ class RoomMembersView extends React.Component {
 			membersFiltered: [],
 			userLongPressed: {},
 			room: room || {},
-			options: [],
 			end: false
 		};
 	}
@@ -93,37 +89,6 @@ class RoomMembersView extends React.Component {
 		const { rid } = navigation.state.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			allUsers, filtering, members, membersFiltered, userLongPressed, room, options, isLoading
-		} = this.state;
-		if (nextState.allUsers !== allUsers) {
-			return true;
-		}
-		if (nextState.filtering !== filtering) {
-			return true;
-		}
-		if (!equal(nextState.members, members)) {
-			return true;
-		}
-		if (!equal(nextState.options, options)) {
-			return true;
-		}
-		if (!equal(nextState.membersFiltered, membersFiltered)) {
-			return true;
-		}
-		if (!equal(nextState.userLongPressed, userLongPressed)) {
-			return true;
-		}
-		if (!equal(nextState.room.muted, room.muted)) {
-			return true;
-		}
-		if (isLoading !== nextState.isLoading) {
-			return true;
-		}
-		return false;
 	}
 
 	onSearchChangeText = protectedFunction((text) => {
@@ -218,13 +183,6 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 			this.setState({ isLoading: false });
-		}
-	}
-
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			const [room] = this.rooms;
-			this.setState({ room });
 		}
 	}
 

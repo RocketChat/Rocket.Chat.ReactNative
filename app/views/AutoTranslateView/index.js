@@ -55,10 +55,8 @@ export default class AutoTranslateView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.room = changes;
 				});
 		}
@@ -164,5 +162,3 @@ export default class AutoTranslateView extends React.Component {
 		);
 	}
 }
-
-console.disableYellowBox = true;

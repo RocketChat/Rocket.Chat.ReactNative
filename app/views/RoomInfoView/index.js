@@ -63,10 +63,6 @@ class RoomInfoView extends React.Component {
 		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		// this.roles = database.objects('roles');
-		this.sub = {
-			unsubscribe: () => {}
-		};
 		this.state = {
 			room: room || {},
 			roomUser: {},
@@ -101,10 +97,8 @@ class RoomInfoView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		} else {
@@ -129,24 +123,17 @@ class RoomInfoView extends React.Component {
 		const { database } = watermelon;
 		try {
 			const rolesCollection = database.collections.get('roles');
-			const role = await rolesCollection.find(id); // database.objectForPrimaryKey('roles', id);
+			const role = await rolesCollection.find(id);
 			if (role) {
 				return role.description;
 			}
 			return null;
 		} catch (e) {
-			log(e);
 			return null;
 		}
 	}
 
 	isDirect = () => this.t === 'd'
-
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
-		}
-	}
 
 	renderItem = (key, room) => (
 		<View style={styles.item}>

@@ -119,10 +119,8 @@ export default class NotificationPreferencesView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		}

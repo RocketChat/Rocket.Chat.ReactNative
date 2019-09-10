@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
@@ -49,10 +48,8 @@ class RoomActionsView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		}
@@ -100,31 +97,6 @@ class RoomActionsView extends React.Component {
 		this.setState({ canAutoTranslate });
 
 		this.canAddUser();
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			room, membersCount, member, joined, canViewMembers, canAddUser
-		} = this.state;
-		if (nextState.membersCount !== membersCount) {
-			return true;
-		}
-		if (nextState.joined !== joined) {
-			return true;
-		}
-		if (nextState.canViewMembers !== canViewMembers) {
-			return true;
-		}
-		if (nextState.canAddUser !== canAddUser) {
-			return true;
-		}
-		if (!equal(nextState.room, room)) {
-			return true;
-		}
-		if (!equal(nextState.member, member)) {
-			return true;
-		}
-		return false;
 	}
 
 	onPressTouchable = (item) => {
