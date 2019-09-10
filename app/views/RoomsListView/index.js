@@ -149,7 +149,6 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 
 		const { width } = Dimensions.get('window');
-		this.data = [];
 		this.state = {
 			searching: false,
 			search: [],
@@ -207,20 +206,50 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
-		const { loading, searching, width } = this.state;
+		const {
+			loading,
+			searching,
+			width,
+			search,
+			chats,
+			unread,
+			favorites,
+			discussions,
+			channels,
+			privateGroup,
+			direct
+		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
 		if (nextState.searching !== searching) {
 			return true;
 		}
-
 		if (nextState.width !== width) {
 			return true;
 		}
-
-		const { search } = this.state;
 		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
+		if (!isEqual(nextState.chats, chats)) {
+			return true;
+		}
+		if (!isEqual(nextState.unread, unread)) {
+			return true;
+		}
+		if (!isEqual(nextState.favorites, favorites)) {
+			return true;
+		}
+		if (!isEqual(nextState.discussions, discussions)) {
+			return true;
+		}
+		if (!isEqual(nextState.channels, channels)) {
+			return true;
+		}
+		if (!isEqual(nextState.privateGroup, privateGroup)) {
+			return true;
+		}
+		if (!isEqual(nextState.direct, direct)) {
 			return true;
 		}
 		return false;
@@ -256,14 +285,11 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.data && this.data.removeAllListeners) {
-			this.data.removeAllListeners();
-		}
 		if (this.getSubscriptions && this.getSubscriptions.stop) {
 			this.getSubscriptions.stop();
 		}
-		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
-			this.updateStateInteraction.cancel();
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
 		}
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
@@ -305,7 +331,7 @@ class RoomsListView extends React.Component {
 				Q.where('open', true),
 				Q.where('t', Q.notEq('l'))
 			)
-			.observeWithColumns(['_updated_at', 'unread', 'f', 't']);
+			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
 			let chats = [];
@@ -318,7 +344,7 @@ class RoomsListView extends React.Component {
 			if (sortBy === 'alphabetical') {
 				chats = orderBy(data, ['name'], ['asc']);
 			} else {
-				chats = orderBy(data, ['_updatedAt'], ['desc']);
+				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 			}
 
 			// unread
@@ -355,7 +381,6 @@ class RoomsListView extends React.Component {
 				direct,
 				loading: false
 			});
-			this.forceUpdate();
 		});
 	}, 300, true);
 
@@ -562,7 +587,7 @@ class RoomsListView extends React.Component {
 				favorite={item.f}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
-				_updatedAt={item._updatedAt}
+				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}
 				userId={userId}
@@ -620,7 +645,7 @@ class RoomsListView extends React.Component {
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}
@@ -652,7 +677,7 @@ class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					enableEmptySections
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={12}
 					windowSize={7}
@@ -694,7 +719,7 @@ class RoomsListView extends React.Component {
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
-					// removeClippedSubviews
+					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
 					initialNumToRender={9}
 					windowSize={9}
@@ -765,8 +790,7 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState:
-		state.app.ready && state.app.foreground ? 'foreground' : 'background',
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message
 });
 
@@ -779,29 +803,4 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
-// const enhance = withObservables(['db'], ({ db }) => ({
-// 	subscriptions: db.collections
-// 		.get('subscriptions')
-// 		.query()
-// 		.observeWithColumns(['room_updated_at'])
-// }));
-
-// const EnhancedRoomsListView = enhance(connect(mapStateToProps, mapDispatchToProps)(RoomsListView));
-
-// const Root = ({ ...props }) => <EnhancedRoomsListView db={watermelon} {...props} />;
-
-// export default Root;
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(RoomsListView);
-
-// // eslint-disable-next-line
-// return (
-// 	// eslint-disable-next-line
-// 	<RoomsListView>
-// 		<List database>
-
-// 		</List>
-// 	</RoomsListView>
-// )
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);

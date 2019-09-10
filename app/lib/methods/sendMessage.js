@@ -1,8 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
 
 import messagesStatus from '../../constants/messagesStatus';
-import buildMessage from './helpers/buildMessage';
 import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
@@ -58,22 +56,16 @@ export default async function(rid, msg, tmid, user) {
 		}
 
 		try {
-			const [room] = await subsCollections.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid == $0', rid);
-			if (room) {
-				await watermelon.action(async() => {
-					await room.update((r) => {
-						r.draftMessage = null;
-					});
+			const room = await subsCollections.find(rid);
+			await watermelon.action(async() => {
+				await room.update((r) => {
+					r.draftMessage = null;
 				});
-			}
+			});
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
-		// if (room) {
-		// 	database.write(() => {
-		// 		room.draftMessage = null;
-		// 	});
-		// }
+
 		try {
 			await sendMessageCall.call(this, message);
 		} catch (e) {

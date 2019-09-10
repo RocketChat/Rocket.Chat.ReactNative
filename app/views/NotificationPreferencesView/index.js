@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
@@ -119,10 +118,8 @@ export default class NotificationPreferencesView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.setState({ room: changes });
 				});
 		}

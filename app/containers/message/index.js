@@ -21,7 +21,6 @@ export default class MessageContainer extends React.Component {
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
-		_updatedAt: PropTypes.instanceOf(Date),
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		isReadReceiptEnabled: PropTypes.bool,
@@ -31,6 +30,7 @@ export default class MessageContainer extends React.Component {
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
+		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
@@ -47,44 +47,21 @@ export default class MessageContainer extends React.Component {
 
 	static defaultProps = {
 		onLongPress: () => {},
-		_updatedAt: new Date(),
 		archived: false,
 		broadcast: false
 	}
 
 	componentDidMount() {
 		const { item } = this.props;
-        if (item.msg === '123123123') {
-			console.log('TCL: MessageContainer -> componentDidMount -> item', item);
-		}
 		if (item && item.observe) {
 			const observable = item.observe();
-			this.subscription = observable.subscribe((changes) => {
-				// TODO: compare changes?
+			this.subscription = observable.subscribe(() => {
 				this.forceUpdate();
 			});
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		// const {
-		// 	status, item, _updatedAt, autoTranslateRoom
-		// } = this.props;
-
-		// if (status !== nextProps.status) {
-		// 	return true;
-		// }
-		// if (autoTranslateRoom !== nextProps.autoTranslateRoom) {
-		// 	return true;
-		// }
-		// if (item.tmsg !== nextProps.item.tmsg) {
-		// 	return true;
-		// }
-		// if (item.unread !== nextProps.item.unread) {
-		// 	return true;
-		// }
-
-		// return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	shouldComponentUpdate() {
 		return false;
 	}
 
@@ -212,12 +189,6 @@ export default class MessageContainer extends React.Component {
 		return item.status === messagesStatus.ERROR;
 	}
 
-	// TODO: REMOVE
-	parseMessage = () => {
-		const { item } = this.props;
-		return JSON.parse(JSON.stringify(item));
-	}
-
 	reactionInit = () => {
 		const { reactionInit, item } = this.props;
 		if (reactionInit) {
@@ -226,9 +197,9 @@ export default class MessageContainer extends React.Component {
 	}
 
 	replyBroadcast = () => {
-		const { replyBroadcast } = this.props;
+		const { replyBroadcast, item } = this.props;
 		if (replyBroadcast) {
-			replyBroadcast(this.parseMessage());
+			replyBroadcast(item);
 		}
 	}
 
@@ -246,8 +217,6 @@ export default class MessageContainer extends React.Component {
 		if (autoTranslateRoom && autoTranslateMessage) {
 			message = getMessageTranslation(item, autoTranslateLanguage) || message;
 		}
-
-		// console.count(`${ id }.render calls`);
 
 		return (
 			<Message

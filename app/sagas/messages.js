@@ -1,6 +1,4 @@
-import {
-	takeLatest, put, call, delay
-} from 'redux-saga/effects';
+import { takeLatest, put, call } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/Navigation';
@@ -11,8 +9,7 @@ import {
 	toggleStarSuccess,
 	toggleStarFailure,
 	togglePinSuccess,
-	togglePinFailure,
-	replyInit
+	togglePinFailure
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import watermelon from '../lib/database';
@@ -49,9 +46,11 @@ const handleTogglePinRequest = function* handleTogglePinRequest({ message }) {
 	}
 };
 
-const goRoom = function goRoom({ rid, name }) {
+const goRoom = function goRoom({ rid, name, message }) {
 	Navigation.navigate('RoomsListView');
-	Navigation.navigate('RoomView', { rid, name, t: 'd' });
+	Navigation.navigate('RoomView', {
+		rid, name, t: 'd', message
+	});
 };
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
@@ -61,13 +60,11 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const subsCollection = database.collections.get('subscriptions');
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 		if (subscriptions.length) {
-			yield goRoom({ rid: subscriptions[0].rid, name: username });
+			yield goRoom({ rid: subscriptions[0].rid, name: username, message });
 		} else {
 			const room = yield RocketChat.createDirectMessage(username);
-			yield goRoom({ rid: room.rid, name: username });
+			yield goRoom({ rid: room.rid, name: username, message });
 		}
-		yield delay(500);
-		yield put(replyInit(message, false));
 	} catch (e) {
 		log(e);
 	}

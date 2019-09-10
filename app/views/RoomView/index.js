@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, InteractionManager
+	Text, View, InteractionManager, LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView, HeaderBackButton } from 'react-navigation';
 import JitsiMeet from 'react-native-jitsi-meet';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { throttleTime } from 'rxjs/operators';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'lodash/isEqual';
 
 import {
 	replyBroadcast as replyBroadcastAction
@@ -39,6 +38,23 @@ import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { isIOS } from '../../utils/deviceInfo';
+
+const stateAttrsUpdate = [
+	'roomUpdate',
+	'joined',
+	'lastOpen',
+	'photoModalVisible',
+	'reactionsModalVisible',
+	'canAutoTranslate',
+	'showActions',
+	'showErrorActions',
+	'loading',
+	'editing',
+	'replying',
+	'reacting'
+];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -112,37 +128,30 @@ class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
-		// this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		// this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
-		// const canAutoTranslate = RocketChat.canAutoTranslate();
+		const selectedMessage = props.navigation.getParam('message');
 		this.state = {
-			// joined: this.rooms.length > 0,
 			joined: true,
 			room: room || { rid: this.rid, t: this.t },
+			roomUpdate: {},
 			lastOpen: null,
 			photoModalVisible: false,
 			reactionsModalVisible: false,
 			selectedAttachment: {},
-			selectedMessage: {},
+			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
 			showErrorActions: false,
 			editing: false,
-			replying: false,
+			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false
 		};
 
 		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
-				.subscribe((changes) => {
-					// TODO: compare changes?
-					// this.forceUpdate();
-					this.setState({ room: changes });
-				});
+			this.observeRoom(room);
+		} else {
+			this.findAndObserveRoom(this.rid);
 		}
 
 		this.beginAnimating = false;
@@ -155,71 +164,40 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		// this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-		const { room } = this.state;
-		console.log('TCL: componentDidMount -> room', room);
-		const { navigation, isAuthenticated } = this.props;
-
-		if (room._id && !this.tmid) {
-			navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
-		}
-		if (this.tmid) {
-			navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
-		}
-
-		navigation.setParams({ callJitsi: this.callJitsi });
-
-		if (isAuthenticated) {
-			this.init();
-		} else {
-			EventEmitter.addEventListener('connected', this.handleConnected);
-		}
-		// safeAddListener(this.rooms, this.updateRoom);
-		// safeAddListener(this.chats, this.updateUnreadCount);
-		// });
-
-		this.updateUnreadCount();
+		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
+			const { room } = this.state;
+			const { navigation, isAuthenticated } = this.props;
+			if (room._id && !this.tmid) {
+				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+			}
+			if (this.tmid) {
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+			}
+			if (isAuthenticated) {
+				this.init();
+			} else {
+				EventEmitter.addEventListener('connected', this.handleConnected);
+			}
+			navigation.setParams({ callJitsi: this.callJitsi });
+			this.updateUnreadCount();
+		});
 
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const {
-	// 		room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate
-	// 	} = this.state;
-	// 	const { showActions, showErrorActions, appState } = this.props;
-
-	// 	if (lastOpen !== nextState.lastOpen) {
-	// 		return true;
-	// 	} else if (photoModalVisible !== nextState.photoModalVisible) {
-	// 		return true;
-	// 	} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
-	// 		return true;
-	// 	} else if (room.ro !== nextState.room.ro) {
-	// 		return true;
-	// 	} else if (room.f !== nextState.room.f) {
-	// 		return true;
-	// 	} else if (room.blocked !== nextState.room.blocked) {
-	// 		return true;
-	// 	} else if (room.blocker !== nextState.room.blocker) {
-	// 		return true;
-	// 	} else if (room.archived !== nextState.room.archived) {
-	// 		return true;
-	// 	} else if (joined !== nextState.joined) {
-	// 		return true;
-	// 	} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-	// 		return true;
-	// 	} else if (showActions !== nextProps.showActions) {
-	// 		return true;
-	// 	} else if (showErrorActions !== nextProps.showErrorActions) {
-	// 		return true;
-	// 	} else if (appState !== nextProps.appState) {
-	// 		return true;
-	// 	} else if (!equal(room.muted, nextState.room.muted)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const { state } = this;
+		const { roomUpdate } = state;
+		const { appState } = this.props;
+		if (appState !== nextProps.appState) {
+			return true;
+		}
+		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
+		if (stateUpdated) {
+			return true;
+		}
+		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
+	}
 
 	componentDidUpdate(prevProps) {
 		const { room } = this.state;
@@ -243,7 +221,7 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				try {
 					const threadsCollection = watermelon.collections.get('threads');
-					obj = await threadsCollection.find(this.tmid); // database.objectForPrimaryKey('threads', this.tmid);
+					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
 					log(e);
 				}
@@ -258,30 +236,17 @@ class RoomView extends React.Component {
 				});
 			}
 		}
-		// this.rooms.removeAllListeners();
-		// this.chats.removeAllListeners();
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
 		if (this.beginAnimatingTimeout) {
 			clearTimeout(this.beginAnimatingTimeout);
 		}
-		// if (editing) {
-		// 	const { editCancel } = this.props;
-		// 	editCancel();
-		// }
-		// if (replying) {
-		// 	const { replyCancel } = this.props;
-		// 	replyCancel();
-		// }
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
 		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
 			this.onForegroundInteraction.cancel();
-		}
-		if (this.updateStateInteraction && this.updateStateInteraction.cancel) {
-			this.updateStateInteraction.cancel();
 		}
 		if (this.initInteraction && this.initInteraction.cancel) {
 			this.initInteraction.cancel();
@@ -289,26 +254,15 @@ class RoomView extends React.Component {
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
+		if (this.subSubscription && this.subSubscription.unsubscribe) {
+			this.subSubscription.unsubscribe();
+		}
+		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
+			this.queryUnreads.unsubscribe();
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
-
-	// eslint-disable-next-line react/sort-comp
-	// observeRoom = async() => {
-	// 	this.watermelon = watermelondb.database;
-	// 	const subCollection = this.watermelon.collections.get('subscriptions');
-	// 	this.subObservable = await subCollection.findAndObserve(this.rid);
-	// 	this.subSubscription = this.subObservable
-	// 		.subscribe((room) => {
-	// 			if (this.mounted) {
-	// 				console.log('ROOMVIEW: SET MOUNTED')
-	// 				this.setState({ room });
-	// 			} else {
-	// 				console.log('ROOMVIEW: SET NOT MOUNTED')
-	// 				this.state.room = room;
-	// 			}
-	// 		});
-	// }
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
@@ -343,6 +297,30 @@ class RoomView extends React.Component {
 			this.setState({ loading: false });
 			log(e);
 		}
+	}
+
+	findAndObserveRoom = async(rid) => {
+		try {
+			const watermelon = watermelondb.database;
+			const subCollection = await watermelon.collections.get('subscriptions');
+			const room = await subCollection.find(rid);
+			this.observeRoom(room);
+			this.init();
+		} catch (error) {
+			console.log('Room not found');
+		}
+	}
+
+	observeRoom = (room) => {
+		const observable = room.observe();
+		this.subSubscription = observable
+			.subscribe((changes) => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+					ret[attr] = changes[attr];
+					return ret;
+				}, {});
+				this.setState({ room: changes, roomUpdate });
+			});
 	}
 
 	errorActionsShow = (message) => {
@@ -485,24 +463,15 @@ class RoomView extends React.Component {
 		if (!this.mounted) {
 			return;
 		}
-		// if (isIOS && this.beginAnimating) {
-		// 	LayoutAnimation.easeInEaseOut();
-		// }
+		if (isIOS && this.beginAnimating) {
+			LayoutAnimation.easeInEaseOut();
+		}
 		this.setState(...args);
 	}
 
-	// updateRoom = () => {
-	// 	this.updateStateInteraction = InteractionManager.runAfterInteractions(() => {
-	// 		if (this.rooms[0]) {
-	// 			const room = JSON.parse(JSON.stringify(this.rooms[0] || {}));
-	// 			this.internalSetState({ room });
-	// 		}
-	// 	});
-	// }
-
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
-		// LayoutAnimation.easeInEaseOut();
+		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
@@ -745,6 +714,7 @@ class RoomView extends React.Component {
 				replying={replying}
 				replyWithMention={replyWithMention}
 				replyCancel={this.onReplyCancel}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 	};
@@ -817,9 +787,10 @@ class RoomView extends React.Component {
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
-					onClose={this.onCloseReactionsModal}
 					user={user}
 					baseUrl={baseUrl}
+					onClose={this.onCloseReactionsModal}
+					getCustomEmoji={this.getCustomEmoji}
 				/>
 			</SafeAreaView>
 		);

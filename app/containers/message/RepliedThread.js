@@ -49,6 +49,7 @@ const RepliedThread = React.memo(({
 RepliedThread.propTypes = {
 	tmid: PropTypes.string,
 	tmsg: PropTypes.string,
+	id: PropTypes.string,
 	isHeader: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	fetchThreadName: PropTypes.func

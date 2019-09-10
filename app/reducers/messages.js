@@ -6,6 +6,7 @@ const initialState = {
 
 export default function messages(state = initialState, action) {
 	switch (action.type) {
+		// FIXME: needed?
 		case types.MESSAGES.SET_INPUT:
 			return {
 				...state,

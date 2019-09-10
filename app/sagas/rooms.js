@@ -102,5 +102,3 @@ const root = function* root() {
 	}
 };
 export default root;
-
-console.disableYellowBox = true;

@@ -36,10 +36,6 @@ const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
-const onlyUnique = function onlyUnique(value, index, self) {
-	return self.indexOf(({ _id }) => value._id === _id) === index;
-};
-
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
@@ -76,6 +72,8 @@ class MessageBox extends Component {
 		}),
 		roomType: PropTypes.string,
 		tmid: PropTypes.string,
+		replyWithMention: PropTypes.bool,
+		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
@@ -133,14 +131,20 @@ class MessageBox extends Component {
 			const threadsCollection = db.collections.get('threads');
 			const subsCollection = db.collections.get('subscriptions');
 			if (tmid) {
-				const thread = await threadsCollection.find(tmid); // database.objectForPrimaryKey('threads', tmid);
-				if (thread) {
-					msg = thread.draftMessage;
+				try {
+					const thread = await threadsCollection.find(tmid);
+					if (thread) {
+						msg = thread.draftMessage;
+					}
+				} catch (error) {
+					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else {
-				const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
-				if (room) {
+				try {
+					const room = await subsCollection.find(rid);
 					msg = room.draftMessage;
+				} catch (error) {
+					console.log('Messagebox.didMount: Room not found');
 				}
 			}
 		} catch (e) {
@@ -158,18 +162,10 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const {
-			message, isFocused, editing, replying
-		} = this.props;
+		const { isFocused, editing, replying } = this.props;
 		if (!isFocused) {
 			return;
 		}
-		// if (!equal(message, nextProps.message) && nextProps.message.msg) {
-		// 	this.setInput(nextProps.message.msg);
-		// 	if (this.text) {
-		// 		this.setShowSend(true);
-		// 	}
-		// 	this.focus();
 		if (editing !== nextProps.editing && nextProps.editing) {
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
@@ -182,45 +178,50 @@ class MessageBox extends Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const {
-	// 		showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
-	// 	} = this.state;
-	// 	const {
-	// 		roomType, replying, editing, isFocused
-	// 	} = this.props;
-	// 	if (!isFocused) {
-	// 		return false;
-	// 	}
-	// 	if (nextProps.roomType !== roomType) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.replying !== replying) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.editing !== editing) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.showSend !== showSend) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.recording !== recording) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.mentions, mentions)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.commandPreview, commandPreview)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.file, file)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+		} = this.state;
+
+		const {
+			roomType, replying, editing, isFocused
+		} = this.props;
+		if (!isFocused) {
+			return false;
+		}
+		if (nextProps.roomType !== roomType) {
+			return true;
+		}
+		if (nextProps.replying !== replying) {
+			return true;
+		}
+		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.showSend !== showSend) {
+			return true;
+		}
+		if (nextState.recording !== recording) {
+			return true;
+		}
+		if (!equal(nextState.mentions, mentions)) {
+			return true;
+		}
+		if (!equal(nextState.commandPreview, commandPreview)) {
+			return true;
+		}
+		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		return false;
+	}
+
+	componentWillUnmount() {
+		console.countReset(`${ this.constructor.name }.render calls`);
+	}
 
 	onChangeText = debounce(async(text) => {
 		const { database: db } = watermelon;
@@ -234,13 +235,12 @@ class MessageBox extends Component {
 			const [, name, params] = slashCommand;
 			const commandsCollection = db.collections.get('slash_commands');
 			try {
-				const command = await commandsCollection.query(Q.where('command', name)).fetch();
-				// const command = database.objects('slashCommand').filtered('command == $0', name);
-				if (command && command[0] && command[0].providesPreview) {
+				const command = await commandsCollection.find(name);
+				if (command.providesPreview) {
 					return this.setCommandPreview(name, params);
 				}
 			} catch (e) {
-				log(e);
+				console.log('Slash command not found');
 			}
 		}
 
@@ -375,7 +375,7 @@ class MessageBox extends Component {
 		const { database: db } = watermelon;
 		const commandsCollection = db.collections.get('slash_commands');
 		const commands = await commandsCollection.query(
-			Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -593,15 +593,13 @@ class MessageBox extends Component {
 		} = this.props;
 
 		// Slash command
-
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const { database: db } = watermelon;
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(
-				Q.where('command', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
 			).fetch();
-			// const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
@@ -747,21 +745,21 @@ class MessageBox extends Component {
 					switch (trackingType) {
 						case MENTIONS_TRACKING_TYPE_EMOJIS:
 							return (
-								<React.Fragment>
+								<>
 									{this.renderMentionEmoji(item)}
 									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-								</React.Fragment>
+								</>
 							);
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
 							return (
-								<React.Fragment>
+								<>
 									<Text key='mention-item-command' style={styles.slash}>/</Text>
 									<Text key='mention-item-param'>{ item.command}</Text>
-								</React.Fragment>
+								</>
 							);
 						default:
 							return (
-								<React.Fragment>
+								<>
 									<Avatar
 										key='mention-item-avatar'
 										style={styles.avatar}
@@ -773,7 +771,7 @@ class MessageBox extends Component {
 										token={user.token}
 									/>
 									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
-								</React.Fragment>
+								</>
 							);
 					}
 				})()
@@ -830,12 +828,12 @@ class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			message, replying, replyCancel, user
+			message, replying, replyCancel, user, getCustomEmoji
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} />;
+		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	};
 
 	renderContent = () => {
@@ -846,7 +844,7 @@ class MessageBox extends Component {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
-			<React.Fragment>
+			<>
 				{this.renderCommandPreview()}
 				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
@@ -885,14 +883,15 @@ class MessageBox extends Component {
 						/>
 					</View>
 				</View>
-			</React.Fragment>
+			</>
 		);
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				<KeyboardAccessoryView
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
@@ -910,7 +909,7 @@ class MessageBox extends Component {
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
 				/>
-			</React.Fragment>
+			</>
 		);
 	}
 }

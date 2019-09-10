@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 14,
+	version: 15,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -16,13 +16,12 @@ export default appSchema({
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'open', type: 'boolean' },
 				{ name: 'alert', type: 'boolean' },
-				// roles: 'string[]',
+				{ name: 'roles', type: 'string', isOptional: true },
 				{ name: 'unread', type: 'number' },
 				{ name: 'user_mentions', type: 'number' },
-				{ name: '_updated_at', type: 'number' },
+				{ name: 'room_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
-				// { name: 'last_message_id', type: 'string', isIndexed: true },
 				{ name: 'last_message', type: 'string', isOptional: true },
 				{ name: 'description', type: 'string', isOptional: true },
 				{ name: 'announcement', type: 'string', isOptional: true },
@@ -32,7 +31,6 @@ export default appSchema({
 				{ name: 'react_when_read_only', type: 'boolean', isOptional: true },
 				{ name: 'archived', type: 'boolean' },
 				{ name: 'join_code_required', type: 'boolean', isOptional: true },
-				// { name: 'notifications', type: 'boolean', isOptional: true },
 				{ name: 'muted', type: 'string', isOptional: true },
 				{ name: 'broadcast', type: 'boolean', isOptional: true },
 				{ name: 'prid', type: 'string', isOptional: true },
@@ -57,7 +55,6 @@ export default appSchema({
 				{ name: 'msg', type: 'string', isOptional: true },
 				{ name: 't', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
-				// { name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'u', type: 'string' },
 				{ name: 'alias', type: 'string' },
@@ -95,7 +92,6 @@ export default appSchema({
 				{ name: 't', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: '_updated_at', type: 'number' },
-				// { name: 'subscription_id', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'u', type: 'string' },
 				{ name: 'alias', type: 'string', isOptional: true },
@@ -194,7 +190,6 @@ export default appSchema({
 		tableSchema({
 			name: 'settings',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'value_as_string', type: 'string', isOptional: true },
 				{ name: 'value_as_boolean', type: 'boolean', isOptional: true },
 				{ name: 'value_as_number', type: 'number', isOptional: true },
@@ -204,14 +199,12 @@ export default appSchema({
 		tableSchema({
 			name: 'roles',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'description', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
 			name: 'permissions',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'roles', type: 'string' },
 				{ name: '_updated_at', type: 'number', isOptional: true }
 			]
@@ -219,7 +212,6 @@ export default appSchema({
 		tableSchema({
 			name: 'slash_commands',
 			columns: [
-				{ name: 'command', type: 'string' },
 				{ name: 'params', type: 'string', isOptional: true },
 				{ name: 'description', type: 'string', isOptional: true },
 				{ name: 'client_only', type: 'boolean', isOptional: true },

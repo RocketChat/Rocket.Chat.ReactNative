@@ -10,7 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
-import Status from '../../containers/Status';
+import Status from '../../containers/Status/Status';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';

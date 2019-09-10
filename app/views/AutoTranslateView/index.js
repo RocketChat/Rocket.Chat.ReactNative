@@ -4,7 +4,6 @@ import {
 	FlatList, Switch, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView, ScrollView } from 'react-navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
 import RocketChat from '../../lib/rocketchat';
@@ -55,10 +54,8 @@ export default class AutoTranslateView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(5000))
+				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
-					// TODO: compare changes?
-					this.forceUpdate();
 					this.room = changes;
 				});
 		}
@@ -164,5 +161,3 @@ export default class AutoTranslateView extends React.Component {
 		);
 	}
 }
-
-console.disableYellowBox = true;

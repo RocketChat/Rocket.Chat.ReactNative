@@ -34,7 +34,7 @@ const attrs = [
 	'width',
 	'isRead',
 	'favorite',
-	'userStatus'
+	'status'
 ];
 
 class RoomItem extends React.Component {

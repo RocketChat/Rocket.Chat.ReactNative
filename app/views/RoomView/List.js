@@ -1,10 +1,10 @@
 import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
-import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import watermelon from '../../lib/database';
@@ -12,6 +12,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
+import { isIOS } from '../../utils/deviceInfo';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -60,27 +61,29 @@ export class List extends React.Component {
 				.query(
 					Q.where('rid', tmid)
 				)
-				.observeWithColumns(['updated_at']);
+				.observeWithColumns(['_updated_at']);
 		} else {
 			this.messagesObservable = watermelon.database.collections
 				.get('messages')
 				.query(
 					Q.where('rid', rid)
 				)
-				.observeWithColumns(['updated_at']);
+				.observeWithColumns(['_updated_at']);
 		}
 
 		this.messagesSubscription = this.messagesObservable
 			.subscribe((data) => {
-				if (tmid) {
-					data = [this.thread, ...data];
-				}
-				const messages = orderBy(data, ['ts'], ['desc']);
-				if (this.mounted) {
-					this.setState({ messages });
-				} else {
-					this.state.messages = messages;
-				}
+				this.interaction = InteractionManager.runAfterInteractions(() => {
+					if (tmid) {
+						data = [this.thread, ...data];
+					}
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages });
+					} else {
+						this.state.messages = messages;
+					}
+				});
 			});
 	}
 
@@ -94,43 +97,32 @@ export class List extends React.Component {
 		return null;
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { messages } = this.state;
-	// 	if (!equal(messages, nextState.messages)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const { messages, loading, end } = this.state;
+		if (loading !== nextState.loading) {
+			return true;
+		}
+		if (end !== nextState.end) {
+			return true;
+		}
+		if (!isEqual(messages, nextState.messages)) {
+			return true;
+		}
+		return false;
+	}
 
-	// componentWillUnmount() {
-	// 	this.data.removeAllListeners();
-	// 	this.threads.removeAllListeners();
-	// 	if (this.updateState && this.updateState.stop) {
-	// 		this.updateState.stop();
-	// 	}
-	// 	if (this.interactionManagerState && this.interactionManagerState.cancel) {
-	// 		this.interactionManagerState.cancel();
-	// 	}
-	// 	console.countReset(`${ this.constructor.name }.render calls`);
-	// }
-
-	// eslint-disable-next-line react/sort-comp
-	// updateState = debounce(() => {
-	// 	this.interactionManagerState = InteractionManager.runAfterInteractions(() => {
-	// 		const { tmid } = this.props;
-	// 		let messages = this.data;
-	// 		if (tmid && this.threads[0]) {
-	// 			const thread = { ...this.threads[0] };
-	// 			thread.tlm = null;
-	// 			messages = [...messages, thread];
-	// 		}
-	// 		this.setState({
-	// 			messages: messages.slice(),
-	// 			threads: this.threads.slice(),
-	// 			loading: false
-	// 		});
-	// 	});
-	// }, 300, { leading: true });
+	componentWillUnmount() {
+		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+			this.messagesSubscription.unsubscribe();
+		}
+		if (this.interaction && this.interaction.cancel) {
+			this.interaction.cancel();
+		}
+		if (this.onEndReached && this.onEndReached.stop) {
+			this.onEndReached.stop();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
+	}
 
 	onEndReached = debounce(async() => {
 		const {
@@ -188,12 +180,12 @@ export class List extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
 					inverted
-					// removeClippedSubviews
-					initialNumToRender={7}
+					removeClippedSubviews={isIOS}
+					// initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
+					// onEndReachedThreshold={5}
+					// maxToRenderPerBatch={5}
+					// windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>

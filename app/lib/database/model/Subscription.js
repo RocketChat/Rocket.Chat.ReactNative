@@ -33,13 +33,13 @@ export default class Subscription extends Model {
 
 	@field('alert') alert;
 
-	// @field('roles') roles;
+	@json('roles', r => r) roles;
 
 	@field('unread') unread;
 
 	@field('user_mentions') userMentions;
 
-	@date('_updated_at') _updatedAt;
+	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;
 
