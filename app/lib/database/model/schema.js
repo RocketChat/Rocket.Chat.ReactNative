@@ -190,7 +190,6 @@ export default appSchema({
 		tableSchema({
 			name: 'settings',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'value_as_string', type: 'string', isOptional: true },
 				{ name: 'value_as_boolean', type: 'boolean', isOptional: true },
 				{ name: 'value_as_number', type: 'number', isOptional: true },
@@ -200,14 +199,12 @@ export default appSchema({
 		tableSchema({
 			name: 'roles',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'description', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
 			name: 'permissions',
 			columns: [
-				{ name: '_id', type: 'string' },
 				{ name: 'roles', type: 'string' },
 				{ name: '_updated_at', type: 'number', isOptional: true }
 			]
@@ -215,7 +212,6 @@ export default appSchema({
 		tableSchema({
 			name: 'slash_commands',
 			columns: [
-				{ name: 'command', type: 'string' },
 				{ name: 'params', type: 'string', isOptional: true },
 				{ name: 'description', type: 'string', isOptional: true },
 				{ name: 'client_only', type: 'boolean', isOptional: true },

@@ -4,8 +4,6 @@ import { field } from '@nozbe/watermelondb/decorators';
 export default class Command extends Model {
 	static table = 'slash_commands';
 
-  @field('command') command;
-
   @field('params') params;
 
   @field('description') description;

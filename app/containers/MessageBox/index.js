@@ -131,14 +131,20 @@ class MessageBox extends Component {
 			const threadsCollection = db.collections.get('threads');
 			const subsCollection = db.collections.get('subscriptions');
 			if (tmid) {
-				const thread = await threadsCollection.find(tmid); // database.objectForPrimaryKey('threads', tmid);
-				if (thread) {
-					msg = thread.draftMessage;
+				try {
+					const thread = await threadsCollection.find(tmid);
+					if (thread) {
+						msg = thread.draftMessage;
+					}
+				} catch (error) {
+					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else {
-				const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
-				if (room) {
+				try {
+					const room = await subsCollection.find(rid);
 					msg = room.draftMessage;
+				} catch (error) {
+					console.log('Messagebox.didMount: Room not found');
 				}
 			}
 		} catch (e) {
@@ -229,12 +235,12 @@ class MessageBox extends Component {
 			const [, name, params] = slashCommand;
 			const commandsCollection = db.collections.get('slash_commands');
 			try {
-				const command = await commandsCollection.query(Q.where('command', name)).fetch();
-				if (command && command[0] && command[0].providesPreview) {
+				const command = await commandsCollection.find(name);
+				if (command.providesPreview) {
 					return this.setCommandPreview(name, params);
 				}
 			} catch (e) {
-				log(e);
+				console.log('Slash command not found');
 			}
 		}
 
@@ -369,7 +375,7 @@ class MessageBox extends Component {
 		const { database: db } = watermelon;
 		const commandsCollection = db.collections.get('slash_commands');
 		const commands = await commandsCollection.query(
-			Q.where('command', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -592,7 +598,7 @@ class MessageBox extends Component {
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(
-				Q.where('command', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
 			).fetch();
 			if (slashCommand.length > 0) {
 				try {

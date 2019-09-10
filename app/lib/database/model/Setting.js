@@ -4,8 +4,6 @@ import { field, date } from '@nozbe/watermelondb/decorators';
 export default class Setting extends Model {
   static table = 'settings';
 
-	@field('_id') _id;
-
 	@field('value_as_string') valueAsString;
 
 	@field('value_as_boolean') valueAsBoolean;
