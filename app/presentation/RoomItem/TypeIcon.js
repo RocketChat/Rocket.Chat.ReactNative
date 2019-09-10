@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Status from '../../containers/Status';
+import Status from '../../containers/Status/Status';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles from './styles';
 

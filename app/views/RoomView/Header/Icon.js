@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { STATUS_COLORS, COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
-import Status from '../../../containers/Status';
+import Status from '../../../containers/Status/Status';
 import { isIOS } from '../../../utils/deviceInfo';
 
 const ICON_SIZE = 18;

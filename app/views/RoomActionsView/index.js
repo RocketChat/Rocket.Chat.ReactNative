@@ -340,12 +340,6 @@ class RoomActionsView extends React.Component {
 		return sections;
 	}
 
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
-		}
-	}
-
 	updateRoomMember = async() => {
 		const { room } = this.state;
 		const { rid } = room;
