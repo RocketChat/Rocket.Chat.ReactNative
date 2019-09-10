@@ -361,18 +361,21 @@ const RocketChat = {
 
 		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
 
-		await watermelon.databases.serversDB.action(async() => {
-			const usersCollection = watermelon.databases.serversDB.collections.get('users');
-			const user = await usersCollection.find(userId);
-			await user.destroyPermanently();
-		});
+		try {
+			await watermelon.databases.serversDB.action(async() => {
+				const usersCollection = watermelon.databases.serversDB.collections.get('users');
+				const user = await usersCollection.find(userId);
+				await user.destroyPermanently();
+			});
+		} catch (error) {
+			// Do nothing
+		}
 
 		await RNUserDefaults.clear('currentServer');
 		await RNUserDefaults.clear(TOKEN_KEY);
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			// database.deleteAll();
 			await watermelon.database.action(() => watermelon.database.unsafeResetDatabase());
 		} catch (error) {
 			console.log(error);

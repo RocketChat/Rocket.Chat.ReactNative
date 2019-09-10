@@ -19,7 +19,7 @@ export default async function readMessages(rid, lastOpen) {
 					s.lastOpen = lastOpen;
 				});
 			} catch (e) {
-				log(e);
+				// Do nothing
 			}
 		});
 		return data;
