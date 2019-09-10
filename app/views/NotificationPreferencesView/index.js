@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';

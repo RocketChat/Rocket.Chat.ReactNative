@@ -4,7 +4,6 @@ import {
 	FlatList, Switch, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView, ScrollView } from 'react-navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { throttleTime } from 'rxjs/operators';
 
 import RocketChat from '../../lib/rocketchat';
