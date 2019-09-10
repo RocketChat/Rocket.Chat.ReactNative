@@ -39,6 +39,20 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
 
+const stateAttrsUpdate = [
+	'roomUpdate',
+	'joined',
+	'lastOpen',
+	'photoModalVisible',
+	'reactionsModalVisible',
+	'canAutoTranslate',
+	'showActions',
+	'showErrorActions',
+	'loading',
+	'editing',
+	'replying',
+	'reacting'
+];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
 
 class RoomView extends React.Component {
@@ -110,6 +124,7 @@ class RoomView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
+		const selectedMessage = props.navigation.getParam('message');
 		this.state = {
 			joined: true,
 			room: room || { rid: this.rid, t: this.t },
@@ -118,27 +133,21 @@ class RoomView extends React.Component {
 			photoModalVisible: false,
 			reactionsModalVisible: false,
 			selectedAttachment: {},
-			selectedMessage: {},
+			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
 			showErrorActions: false,
 			editing: false,
-			replying: false,
+			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false
 		};
 
 		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
-						ret[attr] = changes[attr];
-						return ret;
-					}, {});
-					this.setState({ room: changes, roomUpdate });
-				});
+			this.observeRoom(room);
+		} else {
+			this.findAndObserveRoom(this.rid);
 		}
 
 		this.beginAnimating = false;
@@ -172,26 +181,14 @@ class RoomView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			roomUpdate, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate, showActions, showErrorActions
-		} = this.state;
+		const { state } = this;
+		const { roomUpdate } = state;
 		const { appState } = this.props;
-
-		if (lastOpen !== nextState.lastOpen) {
+		if (appState !== nextProps.appState) {
 			return true;
-		} else if (photoModalVisible !== nextState.photoModalVisible) {
-			return true;
-		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
-			return true;
-		} else if (joined !== nextState.joined) {
-			return true;
-		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
-			return true;
-		} else if (showActions !== nextState.showActions) {
-			return true;
-		} else if (showErrorActions !== nextState.showErrorActions) {
-			return true;
-		} else if (appState !== nextProps.appState) {
+		}
+		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
+		if (stateUpdated) {
 			return true;
 		}
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
@@ -252,8 +249,8 @@ class RoomView extends React.Component {
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
+		if (this.subSubscription && this.subSubscription.unsubscribe) {
+			this.subSubscription.unsubscribe();
 		}
 		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
 			this.queryUnreads.unsubscribe();
@@ -295,6 +292,30 @@ class RoomView extends React.Component {
 			this.setState({ loading: false });
 			log(e);
 		}
+	}
+
+	findAndObserveRoom = async(rid) => {
+		try {
+			const watermelon = watermelondb.database;
+			const subCollection = await watermelon.collections.get('subscriptions');
+			const room = await subCollection.find(rid);
+			this.observeRoom(room);
+			this.init();
+		} catch (error) {
+			console.log('Room not found');
+		}
+	}
+
+	observeRoom = (room) => {
+		const observable = room.observe();
+		this.subSubscription = observable
+			.subscribe((changes) => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+					ret[attr] = changes[attr];
+					return ret;
+				}, {});
+				this.setState({ room: changes, roomUpdate });
+			});
 	}
 
 	errorActionsShow = (message) => {
