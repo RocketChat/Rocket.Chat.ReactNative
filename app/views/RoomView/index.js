@@ -483,7 +483,6 @@ class RoomView extends React.Component {
 
 	getMessages = async() => {
 		const { room } = this.state;
-        console.log('TCL: getMessages -> room', room);
 		try {
 			if (room.lastOpen) {
 				await RocketChat.loadMissedMessages(room);

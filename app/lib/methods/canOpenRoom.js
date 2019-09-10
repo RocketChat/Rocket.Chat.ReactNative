@@ -1,5 +1,3 @@
-import { Q } from '@nozbe/watermelondb';
-
 import watermelon from '../database';
 
 const restTypes = {

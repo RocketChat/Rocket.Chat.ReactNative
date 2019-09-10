@@ -107,7 +107,7 @@ class EmojiPicker extends Component {
 						Object.assign(f, emoji);
 						f.count = 1;
 					});
-				} catch (error) {
+				} catch (e) {
 					// Do nothing
 				}
 			}
