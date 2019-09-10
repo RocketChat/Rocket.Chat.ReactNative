@@ -720,17 +720,15 @@ const RocketChat = {
 		let roomRoles = [];
 		try {
 			// get the room from watermelon
-			const [room] = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid = $0', rid);
-			if (!room) {
-				return permissions.reduce((result, permission) => {
-					result[permission] = false;
-					return result;
-				}, {});
-			}
+			const room = await subsCollection.find(rid);
 			// get room roles
 			roomRoles = room.roles;
 		} catch (error) {
-			console.log('hasPermission -> error', error);
+			console.log('hasPermission -> Room not found');
+			return permissions.reduce((result, permission) => {
+				result[permission] = false;
+				return result;
+			}, {});
 		}
 		// get permissions from watermelon
 		try {

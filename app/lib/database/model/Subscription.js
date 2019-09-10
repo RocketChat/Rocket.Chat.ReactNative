@@ -33,7 +33,7 @@ export default class Subscription extends Model {
 
 	@field('alert') alert;
 
-	// @field('roles') roles;
+	@json('roles', r => r) roles;
 
 	@field('unread') unread;
 
