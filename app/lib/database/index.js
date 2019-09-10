@@ -2,7 +2,6 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import RNRealmPath from 'react-native-realm-path';
 
-import schema from './model/schema';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -15,17 +14,18 @@ import Setting from './model/Setting';
 import Role from './model/Role';
 import Permission from './model/Permission';
 import Command from './model/Command';
-
-import servers from './model/servers';
 import User from './model/User';
 import Server from './model/Server';
+
+import serversSchema from './schema/servers';
+import appSchema from './schema/app';
 
 class DB {
 	databases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: `${ RNRealmPath.realmPath }default.db`,
-				schema: servers
+				schema: serversSchema
 			}),
 			modelClasses: [Server, User],
 			actionsEnabled: true
@@ -46,7 +46,7 @@ class DB {
 
 		const adapter = new SQLiteAdapter({
 			dbName,
-			schema
+			schema: appSchema
 		});
 
 		this.databases.activeDB = new Database({
@@ -69,8 +69,6 @@ class DB {
 		});
 	}
 }
-
-console.log(RNRealmPath.realmPath);
 
 const db = new DB();
 export default db;
