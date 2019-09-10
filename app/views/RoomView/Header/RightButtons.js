@@ -28,8 +28,7 @@ class RightButtonsContainer extends React.PureComponent {
 		tmid: PropTypes.string,
 		navigation: PropTypes.object,
 		toggleFollowThread: PropTypes.func,
-		room: PropTypes.object,
-		callJitsi: PropTypes.func
+		room: PropTypes.object
 	};
 
 	constructor(props) {
@@ -72,10 +71,10 @@ class RightButtonsContainer extends React.PureComponent {
 
 	goRoomActionsView = () => {
 		const {
-			rid, t, navigation, room, callJitsi
+			rid, t, navigation, room
 		} = this.props;
 		navigation.navigate('RoomActionsView', {
-			rid, t, room, callJitsi
+			rid, t, room
 		});
 	}
 

@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView, HeaderBackButton } from 'react-navigation';
-import JitsiMeet from 'react-native-jitsi-meet';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
@@ -65,7 +64,6 @@ class RoomView extends React.Component {
 		const tmid = navigation.getParam('tmid');
 		const room = navigation.getParam('room');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
-		const callJitsi = navigation.getParam('callJitsi', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
 			headerTitle: (
@@ -85,7 +83,6 @@ class RoomView extends React.Component {
 					room={room}
 					t={t}
 					navigation={navigation}
-					callJitsi={callJitsi}
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
@@ -116,8 +113,7 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		useMarkdown: PropTypes.bool,
-		replyBroadcast: PropTypes.func,
-		jitsiBaseURL: PropTypes.string
+		replyBroadcast: PropTypes.func
 	};
 
 	constructor(props) {
@@ -178,7 +174,6 @@ class RoomView extends React.Component {
 			} else {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
-			navigation.setParams({ callJitsi: this.callJitsi });
 			this.updateUnreadCount();
 		});
 
@@ -472,7 +467,7 @@ class RoomView extends React.Component {
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
+		RocketChat.sendMessage(this.rid, { message }, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
 	};
@@ -525,16 +520,6 @@ class RoomView extends React.Component {
 			log(e);
 			console.log(e);
 		}
-	}
-
-	callJitsi = () => {
-		const { room } = this.state;
-		const { jitsiBaseURL } = this.props;
-		const { rid } = room;
-		JitsiMeet.initialize();
-		setTimeout(() => {
-			JitsiMeet.call(`${ jitsiBaseURL }${ rid }`);
-		}, 1000);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -622,6 +607,7 @@ class RoomView extends React.Component {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
+				rid={this.rid}
 				isThreadRoom={!!this.tmid}
 				_updatedAt={item._updatedAt} // TODO: need it?
 				previousItem={previousItem}
@@ -645,7 +631,6 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
-				callJitsi={this.callJitsi}
 			/>
 		);
 
@@ -811,8 +796,7 @@ const mapStateToProps = state => ({
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	jitsiBaseURL: state.jitsi.jitsiBaseURL
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
 
 const mapDispatchToProps = dispatch => ({

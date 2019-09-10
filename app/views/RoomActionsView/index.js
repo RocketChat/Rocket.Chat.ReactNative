@@ -22,6 +22,7 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
+import callJitsi from '../../lib/methods/callJitsi';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -163,8 +164,7 @@ class RoomActionsView extends React.Component {
 		const {
 			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
-		const { jitsiEnabled, navigation } = this.props;
-		const callJitsi = navigation.getParam('callJitsi', () => {});
+		const { jitsiEnabled } = this.props;
 		const {
 			rid, t, blocker
 		} = room;
@@ -193,14 +193,14 @@ class RoomActionsView extends React.Component {
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
 					disabled: !jitsiEnabled,
-					event: callJitsi,
+					event: () => callJitsi(rid),
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
 					disabled: !jitsiEnabled,
-					event: callJitsi,
+					event: () => callJitsi(rid),
 					testID: 'room-actions-video'
 				}
 			],
