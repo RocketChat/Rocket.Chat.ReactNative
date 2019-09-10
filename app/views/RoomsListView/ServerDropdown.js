@@ -45,7 +45,7 @@ class ServerDropdown extends Component {
 			.query()
 			.observeWithColumns(['name']);
 
-		observable.subscribe((data) => {
+		this.subscription = observable.subscribe((data) => {
 			this.setState({ servers: data });
 		});
 
@@ -86,6 +86,9 @@ class ServerDropdown extends Component {
 		if (this.newServerTimeout) {
 			clearTimeout(this.newServerTimeout);
 			this.newServerTimeout = false;
+		}
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
 	}
 

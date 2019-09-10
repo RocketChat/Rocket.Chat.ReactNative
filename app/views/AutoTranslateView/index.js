@@ -75,6 +75,12 @@ export default class AutoTranslateView extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
 	toggleAutoTranslate = async() => {
 		const { enableAutoTranslate } = this.state;
 		try {

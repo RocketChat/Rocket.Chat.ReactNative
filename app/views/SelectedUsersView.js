@@ -103,6 +103,9 @@ class SelectedUsersView extends React.Component {
 	componentWillUnmount() {
 		const { reset } = this.props;
 		reset();
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp

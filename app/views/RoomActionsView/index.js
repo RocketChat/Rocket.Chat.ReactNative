@@ -98,6 +98,12 @@ class RoomActionsView extends React.Component {
 		this.canAddUser();
 	}
 
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
 	onPressTouchable = (item) => {
 		if (item.route) {
 			const { navigation } = this.props;

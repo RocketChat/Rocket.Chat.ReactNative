@@ -87,6 +87,12 @@ class NewMessageView extends React.Component {
 		return false;
 	}
 
+	componentWillUnmount() {
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
