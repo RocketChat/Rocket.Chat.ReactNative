@@ -39,6 +39,8 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
 
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
+
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
@@ -111,6 +113,7 @@ class RoomView extends React.Component {
 		this.state = {
 			joined: true,
 			room: room || { rid: this.rid, t: this.t },
+			roomUpdate: {},
 			lastOpen: null,
 			photoModalVisible: false,
 			reactionsModalVisible: false,
@@ -130,7 +133,11 @@ class RoomView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.setState({ room: changes });
+					const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+						ret[attr] = changes[attr];
+						return ret;
+					}, {});
+					this.setState({ room: changes, roomUpdate });
 				});
 		}
 
@@ -166,7 +173,7 @@ class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			room, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate, showActions, showErrorActions
+			roomUpdate, joined, lastOpen, photoModalVisible, reactionsModalVisible, canAutoTranslate, showActions, showErrorActions
 		} = this.state;
 		const { appState } = this.props;
 
@@ -176,19 +183,7 @@ class RoomView extends React.Component {
 			return true;
 		} else if (reactionsModalVisible !== nextState.reactionsModalVisible) {
 			return true;
-		}
-		// else if (room.ro !== nextState.room.ro) {
-		// 	return true;
-		// } else if (room.f !== nextState.room.f) {
-		// 	return true;
-		// } else if (room.blocked !== nextState.room.blocked) {
-		// 	return true;
-		// } else if (room.blocker !== nextState.room.blocker) {
-		// 	return true;
-		// } else if (room.archived !== nextState.room.archived) {
-		// 	return true;
-		// }
-		else if (joined !== nextState.joined) {
+		} else if (joined !== nextState.joined) {
 			return true;
 		} else if (canAutoTranslate !== nextState.canAutoTranslate) {
 			return true;
@@ -198,10 +193,8 @@ class RoomView extends React.Component {
 			return true;
 		} else if (appState !== nextProps.appState) {
 			return true;
-		} else if (!isEqual(room, nextState.room)) {
-			return true;
 		}
-		return false;
+		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps) {
