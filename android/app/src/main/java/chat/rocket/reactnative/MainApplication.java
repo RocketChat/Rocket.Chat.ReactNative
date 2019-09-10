@@ -32,6 +32,7 @@ import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
 import com.nozbe.watermelondb.WatermelonDBPackage;
+import com.reactnativejitsimeet.JitsiMeetPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +57,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
+      packages.add(new JitsiMeetPackage());
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       return packages;
     }
