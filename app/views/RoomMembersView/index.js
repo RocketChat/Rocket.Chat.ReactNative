@@ -90,6 +90,12 @@ class RoomMembersView extends React.Component {
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
 	onSearchChangeText = protectedFunction((text) => {
 		const { members } = this.state;
 		let membersFiltered = [];

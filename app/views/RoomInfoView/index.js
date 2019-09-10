@@ -118,6 +118,12 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
 	getRoleDescription = async(id) => {
 		const { database } = watermelon;
 		try {

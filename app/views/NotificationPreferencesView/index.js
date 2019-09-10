@@ -129,6 +129,12 @@ export default class NotificationPreferencesView extends React.Component {
 		};
 	}
 
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
 	onValueChangeSwitch = async(key, value) => {
 		const { room: newRoom } = this.state;
 		newRoom[key] = value;
