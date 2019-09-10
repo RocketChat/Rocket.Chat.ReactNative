@@ -303,7 +303,9 @@ class RoomView extends React.Component {
 			const subCollection = await watermelon.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.observeRoom(room);
-			this.init();
+			if (this.mounted) {
+				this.init();
+			}
 		} catch (error) {
 			console.log('Room not found');
 		}

@@ -128,7 +128,6 @@ const handleLogout = function* handleLogout() {
 			const { serversDB } = watermelon.databases;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
-			let servers = yield serversCollection.query().fetch();
 
 			// filter logging out server and delete it
 			yield serversDB.action(async() => {
@@ -136,7 +135,7 @@ const handleLogout = function* handleLogout() {
 				await serverRecord.destroyPermanently();
 			});
 
-			servers = yield serversCollection.query().fetch();
+			const servers = yield serversCollection.query().fetch();
 
 			// see if there's other logged in servers and selects first one
 			if (servers.length > 0) {
