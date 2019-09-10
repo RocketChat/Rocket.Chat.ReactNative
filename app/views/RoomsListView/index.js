@@ -211,7 +211,8 @@ class RoomsListView extends React.Component {
 			loading,
 			searching,
 			width,
-			allChats
+			allChats,
+			search
 		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
@@ -220,6 +221,9 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 		if (nextState.width !== width) {
+			return true;
+		}
+		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
 		if (!isEqual(nextState.allChats, allChats)) {
