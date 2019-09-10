@@ -80,7 +80,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/compile_library_classes/debug/classes.jar b/node_modules/react-native-jitsi-meet/android/build/intermediates/compile_library_classes/debug/classes.jar
 new file mode 100644
-index 0000000..906d616
+index 0000000..7669408
 Binary files /dev/null and b/node_modules/react-native-jitsi-meet/android/build/intermediates/compile_library_classes/debug/classes.jar differ
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-jitsi-meet/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar
 new file mode 100644
@@ -151,11 +151,11 @@ index 0000000..7da193e
 Binary files /dev/null and b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiBroadcastReceiver.class differ
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetModule.class b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetModule.class
 new file mode 100644
-index 0000000..2582b6b
+index 0000000..9c36755
 Binary files /dev/null and b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetModule.class differ
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.class b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.class
 new file mode 100644
-index 0000000..c6000a9
+index 0000000..44d3737
 Binary files /dev/null and b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.class differ
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetPackage.class b/node_modules/react-native-jitsi-meet/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativejitsimeet/JitsiMeetPackage.class
 new file mode 100644
@@ -1597,7 +1597,7 @@ index 0000000..9465224
 +xml rn_dev_preferences
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/runtime_library_classes/debug/classes.jar b/node_modules/react-native-jitsi-meet/android/build/intermediates/runtime_library_classes/debug/classes.jar
 new file mode 100644
-index 0000000..906d616
+index 0000000..7669408
 Binary files /dev/null and b/node_modules/react-native-jitsi-meet/android/build/intermediates/runtime_library_classes/debug/classes.jar differ
 diff --git a/node_modules/react-native-jitsi-meet/android/build/intermediates/symbols/debug/R.txt b/node_modules/react-native-jitsi-meet/android/build/intermediates/symbols/debug/R.txt
 new file mode 100644
@@ -3526,8 +3526,34 @@ index 0000000..f169ce7
 +		INJECTED from /Users/djorkaeff/projects/pranav/Rocket.Chat.ReactNative/node_modules/react-native-jitsi-meet/android/src/main/AndroidManifest.xml
 +		ADDED from /Users/djorkaeff/projects/pranav/Rocket.Chat.ReactNative/node_modules/react-native-jitsi-meet/android/src/main/AndroidManifest.xml
 +		INJECTED from /Users/djorkaeff/projects/pranav/Rocket.Chat.ReactNative/node_modules/react-native-jitsi-meet/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetModule.java b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetModule.java
+index e966745..297649b 100644
+--- a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetModule.java
++++ b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetModule.java
+@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.bridge.ReactContextBaseJavaModule;
+ import com.facebook.react.bridge.ReactMethod;
+ import com.facebook.react.bridge.WritableMap;
++import com.facebook.react.bridge.ReadableMap;
+ import com.facebook.react.modules.core.DeviceEventManagerModule;
+ 
+ public class JitsiMeetModule extends ReactContextBaseJavaModule {
+@@ -40,10 +41,12 @@ public class JitsiMeetModule extends ReactContextBaseJavaModule {
+     }
+ 
+     @ReactMethod
+-    public void call(String url) {
++    public void call(String url, ReadableMap options) {
+         ReactApplicationContext context = getReactApplicationContext();
+         Intent intent = new Intent(context, JitsiMeetNavigatorActivity.class);
++        Boolean videoMuted = options.hasKey("videoMuted") ? options.getBoolean("videoMuted") : false;
+         intent.putExtra("url", url);
++        intent.putExtra("videoMuted", videoMuted);
+         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         context.startActivity(intent);
+     }
 diff --git a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.java b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.java
-index 3855488..6991307 100644
+index 3855488..b258ffd 100644
 --- a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.java
 +++ b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/JitsiMeetNavigatorActivity.java
 @@ -9,7 +9,7 @@ import android.os.Bundle;
@@ -3539,6 +3565,19 @@ index 3855488..6991307 100644
  
  import com.facebook.react.ReactInstanceManager;
  import com.facebook.react.modules.core.PermissionListener;
+@@ -50,10 +50,12 @@ public class JitsiMeetNavigatorActivity extends FragmentActivity implements Jits
+         super.onCreate(savedInstanceState);
+ 
+         String url = getIntent().getStringExtra("url");
++        Boolean videoMuted = getIntent().getExtras().getBoolean("videoMuted");
+         view = new JitsiMeetView(this);
+         view.setListener(this);
+         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+             .setRoom(url)
++            .setVideoMuted(videoMuted)
+             .build();
+         view.join(options);
+ 
 diff --git a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h b/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h
 index b68acd5..2a1e05a 100644
 --- a/node_modules/react-native-jitsi-meet/ios/JitsiMeetViewController.h
