@@ -40,7 +40,6 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
 
 const stateAttrsUpdate = [
-	'roomUpdate',
 	'joined',
 	'lastOpen',
 	'photoModalVisible',
@@ -151,7 +150,7 @@ class RoomView extends React.Component {
 		}
 
 		this.beginAnimating = false;
-		this.beginAnimatingTimeout = setTimeout(() => this.beginAnimating = true, 300);
+		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
@@ -218,24 +217,28 @@ class RoomView extends React.Component {
 					const threadsCollection = watermelon.collections.get('threads');
 					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
-					log(e);
+					// Do nothing
 				}
 			} else {
 				obj = room;
 			}
 			if (obj) {
-				await watermelon.action(async() => {
-					await obj.update((r) => {
-						r.draftMessage = text;
+				try {
+					await watermelon.action(async() => {
+						await obj.update((r) => {
+							r.draftMessage = text;
+						});
 					});
-				});
+				} catch (error) {
+					// Do nothing
+				}
 			}
 		}
 		if (this.sub && this.sub.stop) {
 			this.sub.stop();
 		}
-		if (this.beginAnimatingTimeout) {
-			clearTimeout(this.beginAnimatingTimeout);
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
 		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
@@ -314,7 +317,7 @@ class RoomView extends React.Component {
 					ret[attr] = changes[attr];
 					return ret;
 				}, {});
-				this.setState({ room: changes, roomUpdate });
+				this.internalSetState({ room: changes, roomUpdate });
 			});
 	}
 
@@ -413,7 +416,8 @@ class RoomView extends React.Component {
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
-				Q.where('open', true)
+				Q.where('open', true),
+				Q.where('rid', Q.notEq(this.rid))
 			)
 			.observeWithColumns(['unread']);
 
@@ -479,6 +483,7 @@ class RoomView extends React.Component {
 
 	getMessages = async() => {
 		const { room } = this.state;
+        console.log('TCL: getMessages -> room', room);
 		try {
 			if (room.lastOpen) {
 				await RocketChat.loadMissedMessages(room);
@@ -751,7 +756,15 @@ class RoomView extends React.Component {
 		return (
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
-				<List rid={rid} t={t} tmid={this.tmid} room={room} renderRow={this.renderItem} loading={loading} />
+				<List
+					rid={rid}
+					t={t}
+					tmid={this.tmid}
+					room={room}
+					renderRow={this.renderItem}
+					loading={loading}
+					animated={this.beginAnimating}
+				/>
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker

@@ -164,10 +164,13 @@ class RoomsListView extends React.Component {
 			width
 		};
 		Orientation.unlockAllOrientations();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener(
-			'hardwareBackPress',
-			this.handleBackPress
-		));
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+			this.forceUpdate();
+		});
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
 			'hardwareBackPress',
 			this.handleBackPress
@@ -205,6 +208,10 @@ class RoomsListView extends React.Component {
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
+		}
+
+		if (!nextProps.navigation.isFocused()) {
+			return false;
 		}
 
 		const {
