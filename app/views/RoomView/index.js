@@ -305,6 +305,7 @@ class RoomView extends React.Component {
 			this.observeRoom(room);
 		} catch (error) {
 			console.log('Room not found');
+			this.internalSetState({ joined: false });
 		}
 	}
 
