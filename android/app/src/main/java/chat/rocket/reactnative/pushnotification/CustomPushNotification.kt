@@ -52,6 +52,7 @@ class CustomPushNotification(
             .setContentText(message)
             .setSmallIcon(smallIcon)
             .setStyle(NotificationCompat.InboxStyle().setSummaryText(title))
+            .setContentIntent(intent)
             .setGroup(ejson.toString())
             .setGroupSummary(true)
 
@@ -72,6 +73,7 @@ class CustomPushNotification(
                     .submit(100, 100)
                     .get()
             )
+            .setContentIntent(intent)
             .setGroup(ejson.toString())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
