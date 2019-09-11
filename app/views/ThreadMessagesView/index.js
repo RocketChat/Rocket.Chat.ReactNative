@@ -15,7 +15,7 @@ import Message from '../../containers/message';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import watermelondb from '../../lib/database';
+import database from '../../lib/database';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
@@ -78,15 +78,15 @@ class ThreadMessagesView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	subscribeData = () => {
 		try {
-			const watermelon = watermelondb.database;
-			this.subObservable = watermelon.collections
+			const db = database.active;
+			this.subObservable = db.collections
 				.get('subscriptions')
 				.findAndObserve(this.rid);
 			this.subSubscription = this.subObservable
 				.subscribe((data) => {
 					this.subscription = data;
 				});
-			this.messagesObservable = watermelon.collections
+			this.messagesObservable = db.collections
 				.get('threads')
 				.query(
 					Q.where('rid', this.rid),
@@ -126,8 +126,8 @@ class ThreadMessagesView extends React.Component {
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
 		try {
-			const watermelon = watermelondb.database;
-			const threadsCollection = watermelon.collections.get('threads');
+			const db = database.active;
+			const threadsCollection = db.collections.get('threads');
 			const allThreadsRecords = await this.subscription.threads.fetch();
 			let threadsToCreate = [];
 			let threadsToUpdate = [];
@@ -156,8 +156,8 @@ class ThreadMessagesView extends React.Component {
 				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
 			}
 
-			await watermelon.action(async() => {
-				await watermelon.batch(
+			await db.action(async() => {
+				await db.batch(
 					...threadsToCreate,
 					...threadsToUpdate,
 					...threadsToDelete,

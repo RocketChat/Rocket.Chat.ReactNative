@@ -6,14 +6,14 @@ import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure } from '../actions/rooms';
-import watermelondb from '../lib/database';
+import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
-		const { serversDB } = watermelondb.databases;
+		const serversDB = database.servers;
 		yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
@@ -28,10 +28,9 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			roomsResult
 		);
 
-		const watermelon = watermelondb.database;
-		yield watermelon.action(async() => {
-			// await watermelon.unsafeResetDatabase();
-			const subCollection = watermelon.collections.get('subscriptions');
+		const db = database.active;
+		yield db.action(async() => {
+			const subCollection = db.collections.get('subscriptions');
 			const existingSubs = await subCollection.query().fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(
@@ -55,9 +54,9 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			];
 
 			try {
-				await watermelon.batch(...allRecords);
+				await db.batch(...allRecords);
 			} catch (e) {
-				console.log('TCL: batch watermelon -> e', e);
+				log(e);
 			}
 			return allRecords.length;
 		});

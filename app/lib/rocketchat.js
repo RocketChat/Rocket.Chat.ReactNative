@@ -8,7 +8,7 @@ import * as FileSystem from 'expo-file-system';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import messagesStatus from '../constants/messagesStatus';
-import watermelon from './database';
+import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
@@ -113,7 +113,7 @@ const RocketChat = {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {
 				// database.setActiveDB(server);
-				watermelon.setActiveDB(server);
+				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
 
@@ -211,7 +211,7 @@ const RocketChat = {
 	},
 
 	async shareExtensionInit(server) {
-		watermelon.setActiveDB(server);
+		database.setActiveDB(server);
 
 		if (this.sdk) {
 			this.sdk.disconnect();
@@ -224,7 +224,7 @@ const RocketChat = {
 		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 
 		// set Server
-		const { serversDB } = watermelon.databases;
+		const serversDB = database.servers;
 		reduxStore.dispatch(shareSelectServer(server));
 
 		// set User info
@@ -373,8 +373,9 @@ const RocketChat = {
 		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			await watermelon.databases.serversDB.action(async() => {
-				const usersCollection = watermelon.databases.serversDB.collections.get('users');
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
+				const usersCollection = serversDB.collections.get('users');
 				const user = await usersCollection.find(userId);
 				await user.destroyPermanently();
 			});
@@ -387,7 +388,8 @@ const RocketChat = {
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			await watermelon.database.action(() => watermelon.database.unsafeResetDatabase());
+			const db = database.active;
+			await db.action(() => db.unsafeResetDatabase());
 		} catch (error) {
 			console.log(error);
 		}
@@ -428,8 +430,9 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	async resendMessage(message) {
+		const db = database.active;
 		try {
-			await watermelon.database.action(async() => {
+			await db.action(async() => {
 				await message.update((m) => {
 					m.status = messagesStatus.TEMP;
 				});
@@ -437,7 +440,7 @@ const RocketChat = {
 			await sendMessageCall.call(this, message);
 		} catch (error) {
 			try {
-				await watermelon.database.action(async() => {
+				await db.action(async() => {
 					await message.update((m) => {
 						m.status = messagesStatus.ERROR;
 					});
@@ -460,7 +463,8 @@ const RocketChat = {
 			return [];
 		}
 
-		let data = await watermelon.database.collections.get('subscriptions').query(
+		const db = database.active;
+		let data = await db.collections.get('subscriptions').query(
 			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
 		).fetch();
 
@@ -567,9 +571,8 @@ const RocketChat = {
 	},
 	async getRoom(rid) {
 		try {
-			const room = await watermelon.database.collections
-				.get('subscriptions')
-				.find(rid);
+			const db = database.active;
+			const room = await db.collections.get('subscriptions').find(rid);
 			return Promise.resolve(room);
 		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
@@ -728,12 +731,12 @@ const RocketChat = {
 		return this.sdk.methodCall('getSingleMessage', msgId);
 	},
 	async hasPermission(permissions, rid) {
-		const { database } = watermelon;
-		const subsCollection = database.collections.get('subscriptions');
-		const permissionsCollection = database.collections.get('permissions');
+		const db = database.active;
+		const subsCollection = db.collections.get('subscriptions');
+		const permissionsCollection = db.collections.get('permissions');
 		let roomRoles = [];
 		try {
-			// get the room from watermelon
+			// get the room from database
 			const room = await subsCollection.find(rid);
 			// get room roles
 			roomRoles = room.roles;
@@ -744,7 +747,7 @@ const RocketChat = {
 				return result;
 			}, {});
 		}
-		// get permissions from watermelon
+		// get permissions from database
 		try {
 			let permissionsFiltered = await permissionsCollection.query().fetch();
 			permissionsFiltered = permissionsFiltered.filter(permission => permissions.includes(permission._id));
@@ -1008,13 +1011,13 @@ const RocketChat = {
 		});
 	},
 	async canAutoTranslate() {
-		const { database } = watermelon;
+		const db = database.active;
 		try {
 			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = database.collections.get('permissions');
+			const permissionsCollection = db.collections.get('permissions');
 			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			return autoTranslatePermission.roles.some(role => userRoles.includes(role));

@@ -11,7 +11,7 @@ import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
@@ -108,7 +108,8 @@ class RoomMembersView extends React.Component {
 
 	onPressUser = async(item) => {
 		try {
-			const subsCollection = watermelon.database.collections.get('subscriptions');
+			const db = database.active;
+			const subsCollection = db.collections.get('subscriptions');
 			const allSubscriptionsRecords = await subsCollection.query().fetch();
 			const subscription = allSubscriptionsRecords.find(sub => sub.name === item.username);
 			if (subscription) {

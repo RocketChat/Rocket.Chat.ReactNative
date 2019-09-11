@@ -13,7 +13,7 @@ import {
 } from '../actions/server';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import log from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
@@ -30,7 +30,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const { serversDB } = watermelon.databases;
+		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
 		serversDB.action(async() => {
 			try {
@@ -55,8 +55,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
-		const { serversDB } = watermelon.databases;
-
+		const serversDB = database.servers;
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
@@ -93,7 +92,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(actions.appStart('outside'));
 		}
 
-		const serversCollection = watermelon.database.collections.get('settings');
+		const db = database.active;
+		const serversCollection = db.collections.get('settings');
 		const settingsRecords = yield serversCollection.query().fetch();
 		const settings = Object.values(settingsRecords).map(item => ({
 			_id: item.id,

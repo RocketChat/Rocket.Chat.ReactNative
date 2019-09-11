@@ -1,13 +1,13 @@
 import { InteractionManager } from 'react-native';
 
-import watermelon from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = async(rid) => {
 	try {
-		const { database } = watermelon;
-		const subsCollection = database.collections.get('subscriptions');
+		const db = database.active;
+		const subsCollection = db.collections.get('subscriptions');
 		const sub = await subsCollection.find(rid);
 		return sub.lastOpen.toISOString();
 	} catch (e) {

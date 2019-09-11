@@ -12,7 +12,7 @@ import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../../lib/ShareNavigation';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -182,11 +182,11 @@ class ShareListView extends React.Component {
 
 	getSubscriptions = async(server, fileInfo) => {
 		const { fileInfo: fileData } = this.state;
-		const { collections } = watermelon.database;
-		const { serversDB } = watermelon.databases;
+		const db = database.active;
+		const serversDB = database.servers;
 
 		if (server) {
-			this.data = await collections
+			this.data = await db.collections
 				.get('subscriptions')
 				.query(
 					Q.where('archived', false),

@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import buildMessage from './helpers/buildMessage';
-import watermelondb from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 
@@ -32,8 +32,8 @@ export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
 				InteractionManager.runAfterInteractions(async() => {
 					try {
 						data = data.map(m => buildMessage(m));
-						const watermelon = watermelondb.database;
-						const threadMessagesCollection = watermelon.collections.get('thread_messages');
+						const db = database.active;
+						const threadMessagesCollection = db.collections.get('thread_messages');
 						const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
 						let threadMessagesToCreate = data.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
 						let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => data.find(i2 => i1.id === i2._id));
@@ -55,8 +55,8 @@ export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
 							}));
 						});
 
-						await watermelon.action(async() => {
-							await watermelon.batch(
+						await db.action(async() => {
+							await db.batch(
 								...threadMessagesToCreate,
 								...threadMessagesToUpdate
 							);

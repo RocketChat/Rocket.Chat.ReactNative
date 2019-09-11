@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import buildMessage from './helpers/buildMessage';
 import log from '../../utils/log';
-import watermelondb from '../database';
+import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 
 export default function updateMessages({ rid, update, remove }) {
@@ -11,9 +11,9 @@ export default function updateMessages({ rid, update, remove }) {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;
 		}
-		const watermelon = watermelondb.database;
-		return watermelon.action(async() => {
-			const subCollection = watermelon.collections.get('subscriptions');
+		const db = database.active;
+		return db.action(async() => {
+			const subCollection = db.collections.get('subscriptions');
 			let sub;
 			try {
 				sub = await subCollection.find(rid);
@@ -21,9 +21,9 @@ export default function updateMessages({ rid, update, remove }) {
 				sub = { id: rid };
 				console.log('updateMessages: subscription not found');
 			}
-			const msgCollection = watermelon.collections.get('messages');
-			const threadCollection = watermelon.collections.get('threads');
-			const threadMessagesCollection = watermelon.collections.get('thread_messages');
+			const msgCollection = db.collections.get('messages');
+			const threadCollection = db.collections.get('threads');
+			const threadMessagesCollection = db.collections.get('thread_messages');
 			const allMessagesRecords = await msgCollection.query(Q.where('rid', rid)).fetch();
 			const allThreadsRecords = await threadCollection.query(Q.where('rid', rid)).fetch();
 			const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('subscription_id', rid)).fetch();
@@ -111,7 +111,7 @@ export default function updateMessages({ rid, update, remove }) {
 			];
 
 			try {
-				await watermelon.batch(...allRecords);
+				await db.batch(...allRecords);
 			} catch (e) {
 				log(e);
 			}

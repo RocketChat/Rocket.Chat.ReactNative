@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
-import watermelondb from '../../../lib/database';
+import database from '../../../lib/database';
 
 const styles = StyleSheet.create({
 	more: {
@@ -41,8 +41,8 @@ class RightButtonsContainer extends React.PureComponent {
 	async componentDidMount() {
 		const { tmid, userId } = this.props;
 		if (tmid) {
-			const watermelon = watermelondb.database;
-			const threadObservable = await watermelon.collections.get('messages').findAndObserve(tmid);
+			const db = database.active;
+			const threadObservable = await db.collections.get('messages').findAndObserve(tmid);
 			this.threadSubscription = threadObservable.subscribe((thread) => {
 				this.setState({
 					isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)

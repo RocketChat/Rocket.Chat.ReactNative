@@ -9,7 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
@@ -50,23 +50,24 @@ export class List extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	async init() {
 		const { rid, tmid } = this.props;
+		const db = database.active;
 
 		if (tmid) {
 			try {
-				this.thread = await watermelon.database.collections
+				this.thread = await db.collections
 					.get('threads')
 					.find(tmid);
 			} catch (e) {
 				console.log(e);
 			}
-			this.messagesObservable = watermelon.database.collections
+			this.messagesObservable = db.collections
 				.get('thread_messages')
 				.query(
 					Q.where('rid', tmid)
 				)
 				.observeWithColumns(['_updated_at']);
 		} else {
-			this.messagesObservable = watermelon.database.collections
+			this.messagesObservable = db.collections
 				.get('messages')
 				.query(
 					Q.where('rid', rid)

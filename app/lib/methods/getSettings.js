@@ -5,13 +5,13 @@ import reduxStore from '../createStore';
 import * as actions from '../../actions';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
-import watermelondb from '../database';
+import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
 const serverInfoUpdate = (serverInfo, iconSetting) => {
-	const { serversDB } = watermelondb.databases;
+	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
 
 	let info = serverInfo.reduce((allSettings, setting) => {
@@ -51,7 +51,7 @@ const serverInfoUpdate = (serverInfo, iconSetting) => {
 
 export default async function() {
 	try {
-		const watermelon = watermelondb.database;
+		const db = database.active;
 		const settingsParams = JSON.stringify(Object.keys(settings));
 		// RC 0.60.0
 		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
@@ -70,8 +70,8 @@ export default async function() {
 				const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
 				serverInfoUpdate(serverInfo, iconSetting);
 
-				watermelon.action(async() => {
-					const settingsCollection = watermelon.collections.get('settings');
+				db.action(async() => {
+					const settingsCollection = db.collections.get('settings');
 					const allSettingsRecords = await settingsCollection.query().fetch();
 
 					// filter settings
@@ -98,7 +98,7 @@ export default async function() {
 					];
 
 					try {
-						await watermelon.batch(...allRecords);
+						await db.batch(...allRecords);
 					} catch (e) {
 						log(e);
 					}

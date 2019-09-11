@@ -9,7 +9,7 @@ import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
@@ -96,7 +96,8 @@ class NewMessageView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
-			const observable = await watermelon.database.collections
+			const db = database.active;
+			const observable = await db.collections
 				.get('subscriptions')
 				.query(Q.where('t', 'd'))
 				.observeWithColumns(['room_updated_at']);

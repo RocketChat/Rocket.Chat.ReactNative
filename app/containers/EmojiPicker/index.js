@@ -12,7 +12,7 @@ import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import watermelondb from '../../lib/database';
+import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import log from '../../utils/log';
@@ -92,9 +92,9 @@ class EmojiPicker extends Component {
 
 	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction(async(emoji) => {
-		const watermelon = watermelondb.database;
-		const freqEmojiCollection = watermelondb.database.collections.get('frequently_used_emojis');
-		await watermelon.action(async() => {
+		const db = database.active;
+		const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+		await database.action(async() => {
 			try {
 				const freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 				await freqEmojiRecord.update((f) => {
@@ -115,7 +115,8 @@ class EmojiPicker extends Component {
 	})
 
 	updateFrequentlyUsed = async() => {
-		const frequentlyUsedRecords = await watermelondb.database.collections.get('frequently_used_emojis').query().fetch();
+		const db = database.active;
+		const frequentlyUsedRecords = await db.collections.get('frequently_used_emojis').query().fetch();
 		let frequentlyUsed = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
 		frequentlyUsed = frequentlyUsed.map((item) => {
 			if (item.isCustom) {

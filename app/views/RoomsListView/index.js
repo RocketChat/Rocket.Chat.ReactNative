@@ -15,9 +15,9 @@ import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
-
 import { Q } from '@nozbe/watermelondb';
-import watermelon from '../../lib/database';
+
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
@@ -309,7 +309,8 @@ class RoomsListView extends React.Component {
 			groupByType
 		} = this.props;
 
-		const observable = await watermelon.database.collections
+		const db = database.active;
+		const observable = await db.collections
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
@@ -479,12 +480,12 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
-		const { database } = watermelon;
 		try {
+			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
-				const subCollection = database.collections.get('subscriptions');
-				database.action(async() => {
+				const subCollection = db.collections.get('subscriptions');
+				db.action(async() => {
 					try {
 						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
 						await subRecord.update((sub) => {
@@ -501,12 +502,12 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleRead = async(rid, isRead) => {
-		const { database } = watermelon;
 		try {
+			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
 			if (result.success) {
-				const subCollection = database.collections.get('subscriptions');
-				database.action(async() => {
+				const subCollection = db.collections.get('subscriptions');
+				db.action(async() => {
 					try {
 						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
 						await subRecord.update((sub) => {
@@ -523,12 +524,12 @@ class RoomsListView extends React.Component {
 	};
 
 	hideChannel = async(rid, type) => {
-		const { database } = watermelon;
 		try {
+			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
-				const subCollection = database.collections.get('subscriptions');
-				database.action(async() => {
+				const subCollection = db.collections.get('subscriptions');
+				db.action(async() => {
 					try {
 						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
 						await subRecord.destroyPermanently();

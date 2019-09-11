@@ -1,12 +1,12 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import watermelon from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 
 export default function() {
-	const { database } = watermelon;
+	const db = database.active;
 	return new Promise(async(resolve) => {
 		try {
 			// RC 0.70.0
@@ -21,8 +21,8 @@ export default function() {
 			if (roles && roles.length) {
 				InteractionManager.runAfterInteractions(
 					() => {
-						database.action(async() => {
-							const rolesCollections = database.collections.get('roles');
+						db.action(async() => {
+							const rolesCollections = db.collections.get('roles');
 							const allRolesRecords = await rolesCollections.query().fetch();
 
 							// filter roles
@@ -49,7 +49,7 @@ export default function() {
 							];
 
 							try {
-								await database.batch(...allRecords);
+								await db.batch(...allRecords);
 							} catch (e) {
 								log(e);
 							}
