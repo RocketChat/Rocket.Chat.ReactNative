@@ -1,6 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import watermelondb from '../database';
+import database from '../database';
 import log from '../../utils/log';
 
 const uploadQueue = {};
@@ -13,7 +13,8 @@ export async function cancelUpload(item) {
 	if (uploadQueue[item.path]) {
 		uploadQueue[item.path].abort();
 		try {
-			await watermelondb.database.action(async() => {
+			const db = database.active;
+			await db.database.action(async() => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -26,7 +27,7 @@ export async function cancelUpload(item) {
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const { serversDB } = watermelondb.databases;
+			const serversDB = database.servers;
 			const serversCollection = serversDB.collections.get('servers');
 			const serverInfo = await serversCollection.find(server);
 			const { FileUpload_MaxFileSize, id: Site_Url } = serverInfo;
@@ -44,14 +45,14 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			fileInfo.rid = rid;
 
-			const watermelon = watermelondb.database;
-			const uploadsCollection = watermelon.collections.get('uploads');
+			const db = database.active;
+			const uploadsCollection = db.collections.get('uploads');
 			let uploadRecord;
 			try {
 				uploadRecord = await uploadsCollection.find(fileInfo.path);
 			} catch (error) {
 				try {
-					await watermelon.action(async() => {
+					await db.action(async() => {
 						uploadRecord = await uploadsCollection.create((u) => {
 							u._raw = sanitizedRaw({ id: fileInfo.path }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
@@ -85,7 +86,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {
-					await watermelon.action(async() => {
+					await db.action(async() => {
 						await uploadRecord.update((u) => {
 							u.progress = Math.floor((loaded / total) * 100);
 						});
@@ -98,7 +99,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			xhr.onload = async() => {
 				if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
 					try {
-						await watermelon.action(async() => {
+						await db.action(async() => {
 							await uploadRecord.destroyPermanently();
 						});
 						const response = JSON.parse(xhr.response);
@@ -108,7 +109,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					}
 				} else {
 					try {
-						await watermelon.action(async() => {
+						await db.action(async() => {
 							await uploadRecord.update((u) => {
 								u.error = true;
 							});
@@ -123,7 +124,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.onerror = async(error) => {
 				try {
-					await watermelon.action(async() => {
+					await db.action(async() => {
 						await uploadRecord.update((u) => {
 							u.error = true;
 						});

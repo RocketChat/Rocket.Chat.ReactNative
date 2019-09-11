@@ -3,7 +3,7 @@ import semver from 'semver';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { orderBy } from 'lodash';
 
-import watermelon from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
@@ -11,8 +11,8 @@ import protectedFunction from './helpers/protectedFunction';
 const getUpdatedSince = async() => {
 	let permission = null;
 	try {
-		const { database } = watermelon;
-		const permissionsCollection = database.collections.get('permissions');
+		const db = database.active;
+		const permissionsCollection = db.collections.get('permissions');
 		let permissions = await permissionsCollection.query().fetch();
 		permissions = orderBy(permissions, ['_updatedAt'], ['asc']);
 		[permission] = permissions;
@@ -23,10 +23,10 @@ const getUpdatedSince = async() => {
 };
 
 const create = (permissions, toDelete = null) => {
-	const { database } = watermelon;
+	const db = database.active;
 	if (permissions && permissions.length) {
-		database.action(async() => {
-			const permissionsCollection = database.collections.get('permissions');
+		db.action(async() => {
+			const permissionsCollection = db.collections.get('permissions');
 			const allPermissionRecords = await permissionsCollection.query().fetch();
 
 			// filter permissions
@@ -61,7 +61,7 @@ const create = (permissions, toDelete = null) => {
 			];
 
 			try {
-				await database.batch(...allRecords);
+				await db.batch(...allRecords);
 			} catch (e) {
 				log(e);
 			}

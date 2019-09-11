@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import messagesStatus from '../../constants/messagesStatus';
-import watermelondb from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
@@ -9,10 +9,10 @@ export const getMessage = async(rid, msg = '', tmid, user) => {
 	const _id = random(17);
 	const { id, username } = user;
 	try {
-		const watermelon = watermelondb.database;
-		const msgCollection = watermelon.collections.get('messages');
+		const db = database.active;
+		const msgCollection = db.collections.get('messages');
 		let message;
-		await watermelon.action(async() => {
+		await db.action(async() => {
 			message = await msgCollection.create((m) => {
 				m._raw = sanitizedRaw({ id: _id }, msgCollection.schema);
 				m.subscription.id = rid;
@@ -48,8 +48,8 @@ export async function sendMessageCall(message) {
 
 export default async function(rid, msg, tmid, user) {
 	try {
-		const watermelon = watermelondb.database;
-		const subsCollections = watermelon.collections.get('subscriptions');
+		const db = database.active;
+		const subsCollections = db.collections.get('subscriptions');
 		const message = await getMessage(rid, msg, tmid, user);
 		if (!message) {
 			return;
@@ -57,7 +57,7 @@ export default async function(rid, msg, tmid, user) {
 
 		try {
 			const room = await subsCollections.find(rid);
-			await watermelon.action(async() => {
+			await db.action(async() => {
 				await room.update((r) => {
 					r.draftMessage = null;
 				});
@@ -69,7 +69,7 @@ export default async function(rid, msg, tmid, user) {
 		try {
 			await sendMessageCall.call(this, message);
 		} catch (e) {
-			await watermelon.action(async() => {
+			await db.action(async() => {
 				await message.update((m) => {
 					m.status = messagesStatus.ERROR;
 				});

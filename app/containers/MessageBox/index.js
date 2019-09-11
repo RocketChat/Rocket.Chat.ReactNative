@@ -15,7 +15,7 @@ import { Q } from '@nozbe/watermelondb';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
@@ -124,7 +124,7 @@ class MessageBox extends Component {
 	}
 
 	async componentDidMount() {
-		const { database: db } = watermelon;
+		const db = database.active;
 		const { rid, tmid } = this.props;
 		let msg;
 		try {
@@ -224,7 +224,7 @@ class MessageBox extends Component {
 	}
 
 	onChangeText = debounce(async(text) => {
-		const { database: db } = watermelon;
+		const db = database.active;
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
@@ -358,7 +358,7 @@ class MessageBox extends Component {
 	}, 300)
 
 	getEmojis = debounce(async(keyword) => {
-		const { database: db } = watermelon;
+		const db = database.active;
 		if (keyword) {
 			const customEmojisCollection = db.collections.get('custom_emojis');
 			let customEmojis = await customEmojisCollection.query(
@@ -372,7 +372,7 @@ class MessageBox extends Component {
 	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
-		const { database: db } = watermelon;
+		const db = database.active;
 		const commandsCollection = db.collections.get('slash_commands');
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
@@ -594,7 +594,7 @@ class MessageBox extends Component {
 
 		// Slash command
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
-			const { database: db } = watermelon;
+			const db = database.active;
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(

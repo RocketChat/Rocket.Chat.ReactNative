@@ -1,12 +1,12 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import watermelon from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 
 export default function() {
-	const { database } = watermelon;
+	const db = database.active;
 	return new Promise(async(resolve) => {
 		try {
 			// RC 0.60.2
@@ -22,8 +22,8 @@ export default function() {
 			if (commands && commands.length) {
 				InteractionManager.runAfterInteractions(
 					() => {
-						database.action(async() => {
-							const slashCommandsCollection = database.collections.get('slash_commands');
+						db.action(async() => {
+							const slashCommandsCollection = db.collections.get('slash_commands');
 							const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
 
 							// filter slash commands
@@ -50,7 +50,7 @@ export default function() {
 							];
 
 							try {
-								await database.batch(...allRecords);
+								await db.batch(...allRecords);
 							} catch (e) {
 								log(e);
 							}

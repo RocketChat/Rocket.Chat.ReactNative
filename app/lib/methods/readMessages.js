@@ -1,14 +1,14 @@
-import watermelondb from '../database';
+import database from '../database';
 import log from '../../utils/log';
 
 export default async function readMessages(rid, lastOpen) {
 	try {
 		// RC 0.61.0
 		const data = await this.sdk.post('subscriptions.read', { rid });
-		const watermelon = watermelondb.database;
-		await watermelon.action(async() => {
+		const db = database.active;
+		await db.action(async() => {
 			try {
-				const subscription = await watermelon.collections.get('subscriptions').find(rid);
+				const subscription = await db.collections.get('subscriptions').find(rid);
 				await subscription.update((s) => {
 					s.open = true;
 					s.alert = false;

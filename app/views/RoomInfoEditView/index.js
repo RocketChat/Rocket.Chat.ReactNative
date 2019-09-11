@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
@@ -98,7 +98,8 @@ class RoomInfoEditView extends React.Component {
 			return;
 		}
 		try {
-			const observable = await watermelon.database.collections
+			const db = database.active;
+			const observable = await db.collections
 				.get('subscriptions')
 				.query(Q.where('rid', rid))
 				.observeWithColumns(['_updated_at']);

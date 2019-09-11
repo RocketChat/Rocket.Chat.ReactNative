@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { responsive } from 'react-native-responsive-ui';
 import { Q } from '@nozbe/watermelondb';
 
-import watermelondb from '../../lib/database';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -95,8 +95,8 @@ class UploadProgress extends Component {
 	init = () => {
 		const { rid } = this.props;
 
-		const watermelon = watermelondb.database;
-		this.uploadsObservable = watermelon.collections
+		const db = database.active;
+		this.uploadsObservable = db.collections
 			.get('uploads')
 			.query(
 				Q.where('rid', rid)
@@ -122,7 +122,7 @@ class UploadProgress extends Component {
 		uploads.forEach(async(u) => {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
-					await watermelondb.database.action(async() => {
+					await database.database.action(async() => {
 						await u.update(() => {
 							u.error = true;
 						});
@@ -136,7 +136,8 @@ class UploadProgress extends Component {
 
 	deleteUpload = async(item) => {
 		try {
-			await watermelondb.database.action(async() => {
+			const db = database.active;
+			await db.action(async() => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -156,7 +157,8 @@ class UploadProgress extends Component {
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
-			await watermelondb.database.action(async() => {
+			const db = database.active;
+			await db.action(async() => {
 				await item.update(() => {
 					item.error = false;
 				});

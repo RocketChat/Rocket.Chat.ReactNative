@@ -44,8 +44,12 @@ class DB {
 		return this.databases.activeDB;
 	}
 
-	action(...args) {
-		return this.database.action(...args);
+	get active() {
+		return this.databases.activeDB;
+	}
+
+	get servers() {
+		return this.databases.serversDB;
 	}
 
 	setActiveDB(database = '') {

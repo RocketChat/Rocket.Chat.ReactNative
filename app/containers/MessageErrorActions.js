@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-action-sheet';
 
 import RocketChat from '../lib/rocketchat';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
 
@@ -33,7 +33,8 @@ class MessageErrorActions extends React.Component {
 
 	handleDelete = protectedFunction(async() => {
 		const { message } = this.props;
-		await watermelon.database.action(async() => {
+		const db = database.active;
+		await db.action(async() => {
 			await message.destroyPermanently();
 		});
 	})

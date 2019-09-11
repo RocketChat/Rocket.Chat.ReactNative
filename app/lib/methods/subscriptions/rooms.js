@@ -1,6 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import watermelondb from '../../database';
+import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
@@ -19,9 +19,9 @@ let subServer;
 
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
-		const watermelon = watermelondb.database;
-		const subCollection = watermelon.collections.get('subscriptions');
-		const roomsCollection = watermelon.collections.get('rooms');
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
+		const roomsCollection = db.collections.get('rooms');
 
 		if (!subscription) {
 			try {
@@ -64,7 +64,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				};
 			} catch (error) {
 				try {
-					await watermelon.action(async() => {
+					await db.action(async() => {
 						await roomsCollection.create((r) => {
 							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 							Object.assign(r, room);
@@ -94,7 +94,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		}
 
 		const tmp = merge(subscription, room);
-		await watermelon.action(async() => {
+		await db.action(async() => {
 			try {
 				const sub = await subCollection.find(tmp.rid);
 				await sub.update((s) => {
@@ -104,6 +104,9 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
+					if (s.roomUpdatedAt) {
+						s.roomUpdatedAt = new Date();
+					}
 				});
 			}
 		});
@@ -118,7 +121,7 @@ export default function subscribeRooms() {
 	};
 
 	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
-		const watermelon = watermelondb.database;
+		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
 		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
@@ -132,7 +135,7 @@ export default function subscribeRooms() {
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
 				try {
-					const subCollection = watermelon.collections.get('subscriptions');
+					const subCollection = db.collections.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
 					const messages = await sub.messages.fetch();
 					const threads = await sub.threads.fetch();
@@ -140,8 +143,8 @@ export default function subscribeRooms() {
 					const messagesToDelete = messages.map(m => m.prepareDestroyPermanently());
 					const threadsToDelete = threads.map(m => m.prepareDestroyPermanently());
 					const threadMessagesToDelete = threadMessages.map(m => m.prepareDestroyPermanently());
-					await watermelon.action(async() => {
-						await watermelon.batch(
+					await db.action(async() => {
+						await db.batch(
 							sub.prepareDestroyPermanently(),
 							...messagesToDelete,
 							...threadsToDelete,
@@ -176,8 +179,8 @@ export default function subscribeRooms() {
 				}
 			};
 			try {
-				const msgCollection = watermelon.collections.get('messages');
-				await watermelon.action(async() => {
+				const msgCollection = db.collections.get('messages');
+				await db.action(async() => {
 					await msgCollection.create(protectedFunction((m) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 						m.subscription.id = args.rid;

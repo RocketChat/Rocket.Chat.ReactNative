@@ -17,7 +17,7 @@ import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const restore = function* restore() {
@@ -48,8 +48,7 @@ const restore = function* restore() {
 				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
 			}));
 			try {
-				const { serversDB } = watermelon.databases;
-
+				const serversDB = database.servers;
 				yield serversDB.action(async() => {
 					const serversCollection = serversDB.collections.get('servers');
 					const allServerRecords = await serversCollection.query().fetch();
@@ -93,7 +92,7 @@ const restore = function* restore() {
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
-			const { serversDB } = watermelon.databases;
+			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 			const serverObj = yield serverCollections.find(server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));

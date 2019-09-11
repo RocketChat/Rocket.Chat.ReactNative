@@ -6,7 +6,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
@@ -66,7 +66,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 	} else {
 		// search if deep link's server already exists
-		const { serversDB } = watermelon.databases;
+		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
 		try {
 			const servers = yield serversCollection.find(host);

@@ -19,7 +19,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 
 const keyExtractor = item => item.id;
 
@@ -119,12 +119,12 @@ class Sidebar extends Component {
 	}
 
 	async setIsAdmin() {
-		const { database } = watermelon;
+		const db = database.active;
 		const { user } = this.props;
 		const { roles } = user;
 		try {
 			if	(roles) {
-				const permissionsCollection = database.collections.get('permissions');
+				const permissionsCollection = db.collections.get('permissions');
 				const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 				const isAdmin = permissionsFiltered.reduce((result, permission) => (
 					result || permission.roles.some(r => roles.indexOf(r) !== -1)),

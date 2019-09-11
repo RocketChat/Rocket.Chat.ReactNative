@@ -5,7 +5,7 @@ import { InteractionManager } from 'react-native';
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import watermelondb from '../../database';
+import database from '../../database';
 import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 
@@ -13,6 +13,7 @@ const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscrib
 const removeListener = listener => listener.stop();
 
 export default function subscribeRoom({ rid }) {
+	console.log(`[RCRN] Subscribed to room ${ rid }`);
 	let promises;
 	let connectedListener;
 	let disconnectedListener;
@@ -41,10 +42,10 @@ export default function subscribeRoom({ rid }) {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
 					try {
 						const { _id } = ddpMessage.fields.args[0];
-						const watermelon = watermelondb.database;
-						const msgCollection = watermelon.collections.get('messages');
-						const threadsCollection = watermelon.collections.get('threads');
-						const threadMessagesCollection = watermelon.collections.get('thread_messages');
+						const db = database.active;
+						const msgCollection = db.collections.get('messages');
+						const threadsCollection = db.collections.get('threads');
+						const threadMessagesCollection = db.collections.get('thread_messages');
 						let deleteMessage;
 						let deleteThread;
 						let deleteThreadMessage;
@@ -72,8 +73,8 @@ export default function subscribeRoom({ rid }) {
 						} catch (e) {
 							// Do nothing
 						}
-						await watermelon.action(async() => {
-							await watermelon.batch(
+						await db.action(async() => {
+							await db.batch(
 								deleteMessage, deleteThread, deleteThreadMessage
 							);
 						});
@@ -91,12 +92,12 @@ export default function subscribeRoom({ rid }) {
 			return;
 		}
 		InteractionManager.runAfterInteractions(async() => {
-			const watermelon = watermelondb.database;
+			const db = database.active;
 			const batch = [];
-			const subCollection = watermelon.collections.get('subscriptions');
-			const msgCollection = watermelon.collections.get('messages');
-			const threadsCollection = watermelon.collections.get('threads');
-			const threadMessagesCollection = watermelon.collections.get('thread_messages');
+			const subCollection = db.collections.get('subscriptions');
+			const msgCollection = db.collections.get('messages');
+			const threadsCollection = db.collections.get('threads');
+			const threadMessagesCollection = db.collections.get('thread_messages');
 
 			// Create or update message
 			try {
@@ -168,8 +169,8 @@ export default function subscribeRoom({ rid }) {
 			}
 
 			try {
-				await watermelon.action(async() => {
-					await watermelon.batch(...batch);
+				await db.action(async() => {
+					await db.batch(...batch);
 				});
 			} catch (e) {
 				log(e);

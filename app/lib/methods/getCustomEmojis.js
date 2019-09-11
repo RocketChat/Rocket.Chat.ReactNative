@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
-import watermelondb from '../database';
+import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
 
@@ -42,8 +42,8 @@ const updateEmojis = async(emojis, allEmojisRecords, db, emojisCollection) => {
 };
 
 export async function setCustomEmojis() {
-	const watermelon = watermelondb.database;
-	const emojisCollection = watermelon.collections.get('custom_emojis');
+	const db = database.active;
+	const emojisCollection = db.collections.get('custom_emojis');
 	const allEmojis = await emojisCollection.query().fetch();
 	const parsed = allEmojis.reduce((ret, item) => {
 		ret[item.name] = {
@@ -65,8 +65,8 @@ export function getCustomEmojis() {
 	return new Promise(async(resolve) => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
-			const watermelon = watermelondb.database;
-			const emojisCollection = watermelon.collections.get('custom_emojis');
+			const db = database.active;
+			const emojisCollection = db.collections.get('custom_emojis');
 			const allEmojisRecords = await emojisCollection.query().fetch();
 			const updatedSince = await getUpdatedSince(allEmojisRecords);
 
@@ -78,7 +78,7 @@ export function getCustomEmojis() {
 				InteractionManager.runAfterInteractions(async() => {
 					let { emojis } = result;
 					emojis = emojis.filter(emoji => !updatedSince || emoji._updatedAt > updatedSince);
-					await updateEmojis(emojis, allEmojisRecords, watermelon, emojisCollection);
+					await updateEmojis(emojis, allEmojisRecords, db, emojisCollection);
 					if (emojis.length) {
 						setCustomEmojis();
 					}
@@ -102,15 +102,15 @@ export function getCustomEmojis() {
 						const { emojis } = result;
 						let changedEmojis = false;
 						if (emojis.update && emojis.update.length) {
-							await updateEmojis(emojis.update, allEmojisRecords, watermelon, emojisCollection);
+							await updateEmojis(emojis.update, allEmojisRecords, db, emojisCollection);
 							changedEmojis = true;
 						}
 
 						if (emojis.remove && emojis.remove.length) {
 							let emojisToDelete = allEmojisRecords.filter(i1 => emojis.remove.find(i2 => i1.id === i2._id));
 							emojisToDelete = emojisToDelete.map(emoji => emoji.prepareDestroyPermanently());
-							await watermelon.action(async() => {
-								await watermelon.batch(...emojisToDelete);
+							await db.action(async() => {
+								await db.batch(...emojisToDelete);
 							});
 							changedEmojis = true;
 						}

@@ -10,7 +10,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -125,9 +125,9 @@ class RoomInfoView extends React.Component {
 	}
 
 	getRoleDescription = async(id) => {
-		const { database } = watermelon;
+		const db = database.active;
 		try {
-			const rolesCollection = database.collections.get('roles');
+			const rolesCollection = db.collections.get('roles');
 			const role = await rolesCollection.find(id);
 			if (role) {
 				return role.description;

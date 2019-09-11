@@ -17,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
-import watermelon from '../../lib/database';
+import database from '../../lib/database';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -39,7 +39,7 @@ class ServerDropdown extends Component {
 	}
 
 	async componentDidMount() {
-		const { serversDB } = watermelon.databases;
+		const serversDB = database.servers;
 		const observable = await serversDB.collections
 			.get('servers')
 			.query()

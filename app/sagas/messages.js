@@ -12,7 +12,7 @@ import {
 	togglePinFailure
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import log from '../utils/log';
 
 const deleteMessage = message => RocketChat.deleteMessage(message);
@@ -55,9 +55,9 @@ const goRoom = function goRoom({ rid, name, message }) {
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
-		const { database } = watermelon;
+		const db = database.active;
 		const { username } = message.u;
-		const subsCollection = database.collections.get('subscriptions');
+		const subsCollection = db.collections.get('subscriptions');
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 		if (subscriptions.length) {
 			yield goRoom({ rid: subscriptions[0].rid, name: username, message });

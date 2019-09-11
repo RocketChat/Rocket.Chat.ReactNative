@@ -1,4 +1,4 @@
-import watermelon from '../database';
+import database from '../database';
 
 const restTypes = {
 	channel: 'channels', direct: 'im', group: 'groups'
@@ -18,8 +18,8 @@ async function open({ type, rid }) {
 }
 
 export default async function canOpenRoom({ rid, path }) {
-	const { database } = watermelon;
-	const subsCollection = database.collections.get('subscriptions');
+	const db = database.active;
+	const subsCollection = db.get('subscriptions');
 
 	try {
 		const [type] = path.split('/');

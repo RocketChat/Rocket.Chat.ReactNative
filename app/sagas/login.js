@@ -15,7 +15,7 @@ import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import EventEmitter from '../utils/events';
 
 const getServer = state => state.server.server;
@@ -78,7 +78,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
 
-		const { serversDB } = watermelon.databases;
+		const serversDB = database.servers;
 		const usersCollection = serversDB.collections.get('users');
 		const u = {
 			token: user.token,
@@ -125,7 +125,7 @@ const handleLogout = function* handleLogout() {
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
-			const { serversDB } = watermelon.databases;
+			const serversDB = database.servers;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
 

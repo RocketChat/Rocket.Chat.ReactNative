@@ -16,7 +16,7 @@ import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
 import { List } from './List';
-import watermelondb from '../../lib/database';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
@@ -162,7 +162,7 @@ class RoomView extends React.Component {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
 			const { navigation, isAuthenticated } = this.props;
-			if (room._id && !this.tmid) {
+			if (room.id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
 			}
 			if (this.tmid) {
@@ -207,14 +207,14 @@ class RoomView extends React.Component {
 
 	async componentWillUnmount() {
 		const { editing, room } = this.state;
-		const watermelon = watermelondb.database;
+		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
 			let obj;
 			if (this.tmid) {
 				try {
-					const threadsCollection = watermelon.collections.get('threads');
+					const threadsCollection = db.collections.get('threads');
 					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
 					// Do nothing
@@ -224,7 +224,7 @@ class RoomView extends React.Component {
 			}
 			if (obj) {
 				try {
-					await watermelon.action(async() => {
+					await db.action(async() => {
 						await obj.update((r) => {
 							r.draftMessage = text;
 						});
@@ -267,7 +267,7 @@ class RoomView extends React.Component {
 		try {
 			this.setState({ loading: true });
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
-				const { room } = this.state;
+				const { room, joined } = this.state;
 				if (this.tmid) {
 					await this.getThreadMessages();
 				} else {
@@ -275,7 +275,7 @@ class RoomView extends React.Component {
 					await this.getMessages(room);
 
 					// if room is joined
-					if (room._id) {
+					if (joined) {
 						if (room.alert || room.unread || room.userMentions) {
 							this.setLastOpen(room.ls);
 						} else {
@@ -299,13 +299,26 @@ class RoomView extends React.Component {
 
 	findAndObserveRoom = async(rid) => {
 		try {
-			const watermelon = watermelondb.database;
-			const subCollection = await watermelon.collections.get('subscriptions');
-			const room = await subCollection.find(rid);
+			const db = database.active;
+			const subCollection = await db.collections.get('subscriptions');
+			const room = await subCollection.find('OIAUSHDOIUASHD');
+			this.setState({ room });
 			this.observeRoom(room);
 		} catch (error) {
-			console.log('Room not found');
-			this.internalSetState({ joined: false });
+			if (this.t !== 'd') {
+				console.log('Room not found');
+				this.internalSetState({ joined: false });
+			} else {
+				// We navigate to RoomView before the DM is inserted to the local db
+				// So we retry just to make sure we have the right content
+				this.retryFindCount = this.retryFindCount + 1 || 1;
+				if (this.retryFindCount <= 3) {
+					this.retryFindTimeout = setTimeout(() => {
+						this.findAndObserveRoom(rid);
+						this.init();
+					}, 300);
+				}
+			}
 		}
 	}
 
@@ -411,8 +424,8 @@ class RoomView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = async() => {
-		const watermelon = watermelondb.database;
-		const observable = await watermelon.collections
+		const db = database.active;
+		const observable = await db.collections
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
@@ -530,9 +543,9 @@ class RoomView extends React.Component {
 	fetchThreadName = async(tmid, messageId) => {
 		try {
 			const { room } = this.state;
-			const watermelon = watermelondb.database;
-			const threadCollection = watermelon.collections.get('threads');
-			const messageCollection = watermelon.collections.get('messages');
+			const db = database.active;
+			const threadCollection = db.collections.get('threads');
+			const messageCollection = db.collections.get('messages');
 			const messageRecord = await messageCollection.find(messageId);
 			let threadRecord;
 			try {
@@ -541,15 +554,15 @@ class RoomView extends React.Component {
 				console.log('Thread not found. We have to search for it.');
 			}
 			if (threadRecord) {
-				await watermelon.action(async() => {
+				await db.action(async() => {
 					await messageRecord.update((m) => {
 						m.tmsg = threadRecord.msg || (threadRecord.attachments && threadRecord.attachments.length && threadRecord.attachments[0].title);
 					});
 				});
 			} else {
 				const thread = await RocketChat.getSingleMessage(tmid);
-				await watermelon.action(async() => {
-					await watermelon.batch(
+				await db.action(async() => {
+					await db.batch(
 						threadCollection.prepareCreate((t) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 							t.subscription.set(room);

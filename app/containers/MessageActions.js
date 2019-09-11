@@ -12,7 +12,7 @@ import {
 	toggleStarRequest as toggleStarRequestAction
 } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import watermelon from '../lib/database';
+import database from '../lib/database';
 import I18n from '../i18n';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
@@ -324,7 +324,8 @@ class MessageActions extends React.Component {
 	handleToggleTranslation = async() => {
 		const { message, room } = this.props;
 		try {
-			await watermelon.database.action(async() => {
+			const db = database.active;
+			await db.action(async() => {
 				await message.update((m) => {
 					m.autoTranslate = !m.autoTranslate;
 					m._updatedAt = new Date();
