@@ -9,6 +9,7 @@ let jitsiTimeOut = null;
 // call is not ended and is available to web users.
 const updateJitsiTimeout = (rid) => {
 	JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
+		RocketChat.updateJitsiTimeout(rid);
 		jitsiTimeOut = setInterval(async() => {
 			await RocketChat.updateJitsiTimeout(rid);
 		}, 10000);
