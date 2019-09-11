@@ -1,22 +1,22 @@
 diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
-index 369b894..7fc14e2 100644
+index 369b894..4da2617 100644
 --- a/node_modules/react-native-jitsi-meet/android/build.gradle
 +++ b/node_modules/react-native-jitsi-meet/android/build.gradle
-@@ -36,9 +36,10 @@ android {
+@@ -36,8 +36,12 @@ android {
  }
  
  repositories {
--  maven {
--      url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
--  }
 +  // maven {
 +  //     url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
 +  // }
-+  maven { url "file:/tmp/repo" }
+   maven {
+-      url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
++    // Jitsi self-builded SDK
++    url("$rootDir/jitsi-sdk")
+   }
    google()
    mavenCentral()
-   jcenter()
-@@ -46,7 +47,7 @@ repositories {
+@@ -46,7 +50,7 @@ repositories {
  
  dependencies {
      //resolutionStrategy.force "org.webkit:android-jsc:r224109"
