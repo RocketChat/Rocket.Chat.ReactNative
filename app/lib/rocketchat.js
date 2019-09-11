@@ -200,6 +200,11 @@ const RocketChat = {
 					if (status) {
 						this.activeUsers[id] = STATUSES[status];
 					}
+
+					const { user: loggedUser } = reduxStore.getState().login;
+					if (loggedUser && loggedUser.id === id) {
+						reduxStore.dispatch(setUser({ status: STATUSES[status] }));
+					}
 				}
 			}));
 
