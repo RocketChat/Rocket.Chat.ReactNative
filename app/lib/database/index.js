@@ -1,6 +1,6 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import RNRealmPath from 'react-native-realm-path';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import Subscription from './model/Subscription';
 import Room from './model/Room';
@@ -20,15 +20,19 @@ import Server from './model/Server';
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 
-if (__DEV__) {
-	console.log(RNRealmPath.realmPath);
+import { isIOS } from '../../utils/deviceInfo';
+
+const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.ios.chat.rocket') }/` : '';
+
+if (__DEV__ && isIOS) {
+	console.log(appGroupPath);
 }
 
 class DB {
 	databases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
-				dbName: `${ RNRealmPath.realmPath }default.db`,
+				dbName: `${ appGroupPath }default.db`,
 				schema: serversSchema
 			}),
 			modelClasses: [Server, User],
@@ -46,7 +50,7 @@ class DB {
 
 	setActiveDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '');
-		const dbName = `${ RNRealmPath.realmPath }${ path }.db`;
+		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({
 			dbName,
