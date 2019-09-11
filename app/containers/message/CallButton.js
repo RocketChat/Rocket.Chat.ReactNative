@@ -14,7 +14,7 @@ const call = (rid, jitsiTimeout) => {
 	if (jitsiTimeout < Date.now()) {
 		showErrorAlert(I18n.t('Call_already_ended'));
 	} else {
-		callJitsi(rid, {}, false);
+		callJitsi(rid, {});
 	}
 };
 

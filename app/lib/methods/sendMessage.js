@@ -4,9 +4,8 @@ import messagesStatus from '../../constants/messagesStatus';
 import watermelondb from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
-import I18n from '../../i18n';
 
-export const getMessage = async(rid, msg = { message: '', type: null }, tmid, user) => {
+export const getMessage = async(rid, msg = '', tmid, user) => {
 	const _id = random(17);
 	const { id, username } = user;
 	try {
@@ -17,8 +16,7 @@ export const getMessage = async(rid, msg = { message: '', type: null }, tmid, us
 			message = await msgCollection.create((m) => {
 				m._raw = sanitizedRaw({ id: _id }, msgCollection.schema);
 				m.subscription.id = rid;
-				m.msg = msg.message;
-				m.t = msg.type;
+				m.msg = msg;
 				m.tmid = tmid;
 				m.ts = new Date();
 				m._updatedAt = new Date();
@@ -37,28 +35,14 @@ export const getMessage = async(rid, msg = { message: '', type: null }, tmid, us
 
 export async function sendMessageCall(message) {
 	const {
-		id: _id, subscription: { id: rid }, msg, tmid, t
+		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
 	// RC 0.60.0
-
-	const _message = {
-		_id, rid, msg, tmid
-	};
-
-	if (t) {
-		_message.t = t;
-	}
-
-	if (t === 'jitsi_call_started') {
-		_message.actionLinks = [{
-			icon: 'icon-videocam',
-			label: I18n.t('Click_to_join'),
-			method_id: 'joinJitsiCall',
-			params: ''
-		}];
-	}
-
-	const data = await this.sdk.post('chat.sendMessage', { message: _message });
+	const data = await this.sdk.post('chat.sendMessage', {
+		message: {
+			_id, rid, msg, tmid
+		}
+	});
 	return data;
 }
 

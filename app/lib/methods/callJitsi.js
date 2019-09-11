@@ -21,19 +21,9 @@ const updateJitsiTimeout = (rid) => {
 	});
 };
 
-const callJitsi = (rid, options = {}, newCall = true) => {
-	const { login, jitsi } = reduxStore.getState();
+const callJitsi = (rid, options = {}) => {
+	const { jitsi } = reduxStore.getState();
 	const { jitsiBaseURL } = jitsi;
-	const { id, username, token } = login.user;
-
-	if (newCall) {
-		RocketChat.sendMessage(
-			rid,
-			{ type: 'jitsi_call_started' },
-			undefined,
-			{ id, username, token }
-		);
-	}
 
 	JitsiMeet.initialize();
 	updateJitsiTimeout(rid);
