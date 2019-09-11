@@ -36,6 +36,7 @@ export default appSchema({
 				{ name: 'prid', type: 'string', isOptional: true },
 				{ name: 'draft_message', type: 'string', isOptional: true },
 				{ name: 'last_thread_sync', type: 'number', isOptional: true },
+				{ name: 'jitsi_timeout', type: 'number', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate_language', type: 'string' }
 			]

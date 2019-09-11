@@ -8,16 +8,25 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import callJitsi from '../../lib/methods/callJitsi';
+import { showErrorAlert } from '../../utils/info';
+
+const call = (rid, jitsiTimeout) => {
+	if (jitsiTimeout < Date.now()) {
+		showErrorAlert(I18n.t('Call_already_ended'));
+	} else {
+		callJitsi(rid, {}, false);
+	}
+};
 
 const CallButton = React.memo(({
-	dlm, rid
+	dlm, rid, jitsiTimeout
 }) => {
 	const time = formatLastMessage(dlm);
 	return (
 		<React.Fragment>
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={() => callJitsi(rid, {}, false)}
+					onPress={() => call(rid, jitsiTimeout)}
 					background={Touchable.Ripple('#fff')}
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
@@ -35,7 +44,8 @@ const CallButton = React.memo(({
 
 CallButton.propTypes = {
 	dlm: PropTypes.string,
-	rid: PropTypes.string
+	rid: PropTypes.string,
+	jitsiTimeout: PropTypes.number
 };
 CallButton.displayName = 'CallButton';
 

@@ -119,6 +119,7 @@ export default {
 	Channel_Name: 'Channel Name',
 	Channels: 'Channels',
 	Chats: 'Chats',
+	Call_already_ended: 'Call already ended!',
 	Click_to_join: 'Click to Join!',
 	Close: 'Close',
 	Close_emoji_selector: 'Close emoji selector',

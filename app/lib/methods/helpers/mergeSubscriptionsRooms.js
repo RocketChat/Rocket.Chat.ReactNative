@@ -23,6 +23,7 @@ export const merge = (subscription, room) => {
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
+		subscription.jitsiTimeout = room.jitsiTimeout;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}

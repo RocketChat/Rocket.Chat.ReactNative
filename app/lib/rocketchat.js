@@ -246,6 +246,10 @@ const RocketChat = {
 		}
 	},
 
+	updateJitsiTimeout(rid) {
+		return this.sdk.methodCall('jitsi:updateTimeout', rid);
+	},
+
 	register(credentials) {
 		// RC 0.50.0
 		return this.sdk.post('users.register', credentials, false);

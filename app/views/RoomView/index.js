@@ -53,7 +53,7 @@ const stateAttrsUpdate = [
 	'replying',
 	'reacting'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -609,6 +609,7 @@ class RoomView extends React.Component {
 				status={item.status}
 				rid={this.rid}
 				isThreadRoom={!!this.tmid}
+				jitsiTimeout={room.jitsiTimeout}
 				_updatedAt={item._updatedAt} // TODO: need it?
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
