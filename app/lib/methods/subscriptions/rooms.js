@@ -103,6 +103,9 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
+					if (s.roomUpdatedAt) {
+						s.roomUpdatedAt = new Date();
+					}
 				});
 			}
 		});
