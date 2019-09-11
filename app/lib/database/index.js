@@ -20,6 +20,10 @@ import Server from './model/Server';
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 
+if (__DEV__) {
+	console.log(RNRealmPath.realmPath);
+}
+
 class DB {
 	databases = {
 		serversDB: new Database({
