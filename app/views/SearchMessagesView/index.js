@@ -25,7 +25,8 @@ class SearchMessagesView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.object,
-		baseUrl: PropTypes.string
+		baseUrl: PropTypes.string,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
@@ -74,6 +75,15 @@ class SearchMessagesView extends React.Component {
 		}
 	}, 1000)
 
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
+	}
+
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer}>
 			<Text style={styles.noDataFound}>{I18n.t('No_results_found')}</Text>
@@ -94,6 +104,7 @@ class SearchMessagesView extends React.Component {
 				isEdited={!!item.editedAt}
 				isHeader
 				onOpenFileModal={() => {}}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 	}
@@ -145,7 +156,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(SearchMessagesView);

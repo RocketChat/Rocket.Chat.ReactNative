@@ -34,7 +34,8 @@ class ThreadMessagesView extends React.Component {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
@@ -232,6 +233,15 @@ class ThreadMessagesView extends React.Component {
 		}) : null
 	)
 
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
+	}
+
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -266,6 +276,7 @@ class ThreadMessagesView extends React.Component {
 				onThreadPress={this.onThreadPress}
 				baseUrl={baseUrl}
 				useRealName={useRealName}
+				getCustomEmoji={this.getCustomEmoji}
 			/>
 		);
 	}
@@ -306,7 +317,8 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(ThreadMessagesView);
