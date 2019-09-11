@@ -162,7 +162,7 @@ class RoomView extends React.Component {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
 			const { navigation, isAuthenticated } = this.props;
-			if (room._id && !this.tmid) {
+			if (room.id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
 			}
 			if (this.tmid) {
@@ -267,7 +267,7 @@ class RoomView extends React.Component {
 		try {
 			this.setState({ loading: true });
 			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
-				const { room } = this.state;
+				const { room, joined } = this.state;
 				if (this.tmid) {
 					await this.getThreadMessages();
 				} else {
@@ -275,7 +275,7 @@ class RoomView extends React.Component {
 					await this.getMessages(room);
 
 					// if room is joined
-					if (room._id) {
+					if (joined) {
 						if (room.alert || room.unread || room.userMentions) {
 							this.setLastOpen(room.ls);
 						} else {
@@ -301,11 +301,24 @@ class RoomView extends React.Component {
 		try {
 			const db = database.active;
 			const subCollection = await db.collections.get('subscriptions');
-			const room = await subCollection.find(rid);
+			const room = await subCollection.find('OIAUSHDOIUASHD');
+			this.setState({ room });
 			this.observeRoom(room);
 		} catch (error) {
-			console.log('Room not found');
-			this.internalSetState({ joined: false });
+			if (this.t !== 'd') {
+				console.log('Room not found');
+				this.internalSetState({ joined: false });
+			} else {
+				// We navigate to RoomView before the DM is inserted to the local db
+				// So we retry just to make sure we have the right content
+				this.retryFindCount = this.retryFindCount + 1 || 1;
+				if (this.retryFindCount <= 3) {
+					this.retryFindTimeout = setTimeout(() => {
+						this.findAndObserveRoom(rid);
+						this.init();
+					}, 300);
+				}
+			}
 		}
 	}
 
