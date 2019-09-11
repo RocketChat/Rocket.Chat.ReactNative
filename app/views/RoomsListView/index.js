@@ -153,6 +153,7 @@ class RoomsListView extends React.Component {
 			searching: false,
 			search: [],
 			loading: true,
+			allChats: [],
 			chats: [],
 			unread: [],
 			favorites: [],
@@ -163,10 +164,13 @@ class RoomsListView extends React.Component {
 			width
 		};
 		Orientation.unlockAllOrientations();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener(
-			'hardwareBackPress',
-			this.handleBackPress
-		));
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+			this.forceUpdate();
+		});
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
 			'hardwareBackPress',
 			this.handleBackPress
@@ -206,18 +210,16 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
+		if (!nextProps.navigation.isFocused()) {
+			return false;
+		}
+
 		const {
 			loading,
 			searching,
 			width,
-			search,
-			chats,
-			unread,
-			favorites,
-			discussions,
-			channels,
-			privateGroup,
-			direct
+			allChats,
+			search
 		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
@@ -231,25 +233,7 @@ class RoomsListView extends React.Component {
 		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextState.chats, chats)) {
-			return true;
-		}
-		if (!isEqual(nextState.unread, unread)) {
-			return true;
-		}
-		if (!isEqual(nextState.favorites, favorites)) {
-			return true;
-		}
-		if (!isEqual(nextState.discussions, discussions)) {
-			return true;
-		}
-		if (!isEqual(nextState.channels, channels)) {
-			return true;
-		}
-		if (!isEqual(nextState.privateGroup, privateGroup)) {
-			return true;
-		}
-		if (!isEqual(nextState.direct, direct)) {
+		if (!isEqual(nextState.allChats, allChats)) {
 			return true;
 		}
 		return false;
@@ -347,6 +331,22 @@ class RoomsListView extends React.Component {
 				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 			}
 
+			// it's better to map and test all subs altogether then testing them individually
+			const allChats = data.map(item => ({
+				alert: item.alert,
+				unread: item.unread,
+				userMentions: item.userMentions,
+				isRead: this.getIsRead(item),
+				favorite: item.f,
+				lastMessage: item.lastMessage,
+				name: this.getRoomTitle(item),
+				_updatedAt: item.roomUpdatedAt,
+				key: item._id,
+				rid: item.rid,
+				type: item.t,
+				prid: item.prid
+			}));
+
 			// unread
 			if (showUnread) {
 				unread = chats.filter(s => s.unread > 0 || s.alert);
@@ -372,6 +372,7 @@ class RoomsListView extends React.Component {
 			}
 
 			this.internalSetState({
+				allChats,
 				chats,
 				unread,
 				favorites,

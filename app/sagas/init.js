@@ -102,6 +102,7 @@ const restore = function* restore() {
 		yield put(actions.appReady({}));
 	} catch (e) {
 		log(e);
+		yield put(actions.appStart('outside'));
 	}
 };
 

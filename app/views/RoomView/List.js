@@ -1,5 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, InteractionManager } from 'react-native';
+import {
+	ActivityIndicator, FlatList, InteractionManager, LayoutAnimation
+} from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
@@ -21,7 +23,8 @@ export class List extends React.Component {
 		renderRow: PropTypes.func,
 		rid: PropTypes.string,
 		t: PropTypes.string,
-		tmid: PropTypes.string
+		tmid: PropTypes.string,
+		animated: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -79,6 +82,7 @@ export class List extends React.Component {
 					}
 					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
+						LayoutAnimation.easeInEaseOut();
 						this.setState({ messages });
 					} else {
 						this.state.messages = messages;
@@ -122,6 +126,17 @@ export class List extends React.Component {
 			this.onEndReached.stop();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	internalSetState = (...args) => {
+		const { animated } = this.props;
+		if (!this.mounted) {
+			return;
+		}
+		if (isIOS && animated) {
+			LayoutAnimation.easeInEaseOut();
+		}
+		this.setState(...args);
 	}
 
 	onEndReached = debounce(async() => {

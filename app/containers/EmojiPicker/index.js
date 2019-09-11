@@ -101,11 +101,15 @@ class EmojiPicker extends Component {
 					f.count += 1;
 				});
 			} catch (error) {
-				await freqEmojiCollection.create((f) => {
-					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
-					Object.assign(f, emoji);
-					f.count = 1;
-				});
+				try {
+					await freqEmojiCollection.create((f) => {
+						f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
+						Object.assign(f, emoji);
+						f.count = 1;
+					});
+				} catch (e) {
+					// Do nothing
+				}
 			}
 		});
 	})

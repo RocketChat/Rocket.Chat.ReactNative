@@ -53,11 +53,9 @@ class RoomInfoEditView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		// const rid = props.navigation.getParam('rid');
-		// this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
 		this.permissions = {};
 		this.state = {
-			room: {}, // JSON.parse(JSON.stringify(this.rooms[0] || {})),
+			room: {},
 			name: '',
 			description: '',
 			topic: '',

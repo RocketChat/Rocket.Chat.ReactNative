@@ -3,6 +3,7 @@ import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
+import * as FileSystem from 'expo-file-system';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -10,6 +11,7 @@ import messagesStatus from '../constants/messagesStatus';
 import watermelon from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
+import { extractHostname } from '../utils/server';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -359,24 +361,33 @@ const RocketChat = {
 		try {
 			const servers = await RNUserDefaults.objectForKey(SERVERS);
 			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
+			// clear certificate for server - SSL Pinning
+			const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
+			if (certificate && certificate.path) {
+				await RNUserDefaults.clear(extractHostname(server));
+				await FileSystem.deleteAsync(certificate.path);
+			}
 		} catch (error) {
 			console.log('logout_rn_user_defaults', error);
 		}
 
 		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
 
-		await watermelon.databases.serversDB.action(async() => {
-			const usersCollection = watermelon.databases.serversDB.collections.get('users');
-			const user = await usersCollection.find(userId);
-			await user.destroyPermanently();
-		});
+		try {
+			await watermelon.databases.serversDB.action(async() => {
+				const usersCollection = watermelon.databases.serversDB.collections.get('users');
+				const user = await usersCollection.find(userId);
+				await user.destroyPermanently();
+			});
+		} catch (error) {
+			// Do nothing
+		}
 
 		await RNUserDefaults.clear('currentServer');
 		await RNUserDefaults.clear(TOKEN_KEY);
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			// database.deleteAll();
 			await watermelon.database.action(() => watermelon.database.unsafeResetDatabase());
 		} catch (error) {
 			console.log(error);

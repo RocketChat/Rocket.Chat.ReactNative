@@ -15,6 +15,7 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import watermelon from '../lib/database';
 import log from '../utils/log';
+import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 
@@ -118,18 +119,23 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server }) {
+const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
-		const serverInfo = yield getServerInfo({ server });
-
-		const loginServicesLength = yield RocketChat.getLoginServices(server);
-		if (loginServicesLength === 0) {
-			Navigation.navigate('LoginView');
-		} else {
-			Navigation.navigate('LoginSignupView');
+		if (certificate) {
+			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
 		}
 
-		yield put(selectServerRequest(server, serverInfo.version, false));
+		const serverInfo = yield getServerInfo({ server });
+
+		if (serverInfo) {
+			const loginServicesLength = yield RocketChat.getLoginServices(server);
+			if (loginServicesLength === 0) {
+				Navigation.navigate('LoginView');
+			} else {
+				Navigation.navigate('LoginSignupView');
+			}
+			yield put(selectServerRequest(server, serverInfo.version, false));
+		}
 	} catch (e) {
 		yield put(serverFailure());
 		log(e);

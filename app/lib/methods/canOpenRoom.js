@@ -1,5 +1,3 @@
-import { Q } from '@nozbe/watermelondb';
-
 import watermelon from '../database';
 
 const restTypes = {
@@ -29,9 +27,11 @@ export default async function canOpenRoom({ rid, path }) {
 			return true;
 		}
 
-		const room = await subsCollection.query(Q.where('rid', rid)).fetch(); // database.objects('subscriptions').filtered('rid == $0', rid);
-		if (room.length) {
+		try {
+			await subsCollection.find(rid);
 			return true;
+		} catch (error) {
+			// Do nothing
 		}
 
 		try {

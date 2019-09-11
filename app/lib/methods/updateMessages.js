@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import buildMessage from './helpers/buildMessage';
 import log from '../../utils/log';
@@ -13,13 +14,19 @@ export default function updateMessages({ rid, update, remove }) {
 		const watermelon = watermelondb.database;
 		return watermelon.action(async() => {
 			const subCollection = watermelon.collections.get('subscriptions');
-			const sub = await subCollection.find(rid);
+			let sub;
+			try {
+				sub = await subCollection.find(rid);
+			} catch (error) {
+				sub = { id: rid };
+				console.log('updateMessages: subscription not found');
+			}
 			const msgCollection = watermelon.collections.get('messages');
 			const threadCollection = watermelon.collections.get('threads');
 			const threadMessagesCollection = watermelon.collections.get('thread_messages');
-			const allMessagesRecords = await sub.messages.fetch();
-			const allThreadsRecords = await sub.threads.fetch();
-			const allThreadMessagesRecords = await sub.threadMessages.fetch();
+			const allMessagesRecords = await msgCollection.query(Q.where('rid', rid)).fetch();
+			const allThreadsRecords = await threadCollection.query(Q.where('rid', rid)).fetch();
+			const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('subscription_id', rid)).fetch();
 
 			update = update.map(m => buildMessage(m));
 
@@ -40,12 +47,12 @@ export default function updateMessages({ rid, update, remove }) {
 			// Create
 			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate(protectedFunction((m) => {
 				m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-				m.subscription.set(sub); // TODO: do we need it?
+				m.subscription.id = sub.id;
 				Object.assign(m, message);
 			})));
 			threadsToCreate = threadsToCreate.map(thread => threadCollection.prepareCreate(protectedFunction((t) => {
 				t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-				t.subscription.set(sub);
+				t.subscription.id = sub.id;
 				Object.assign(t, thread);
 			})));
 			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage => threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
