@@ -1,7 +1,9 @@
 import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
 
-import reduxStore from '../createStore';
-import RocketChat from '../rocketchat';
+// I don't know why, but import .. from ..
+// doesn't work on jest
+const reduxStore = require('../createStore').default;
+const RocketChat = require('../rocketchat').default;
 
 let jitsiTimeOut = null;
 
