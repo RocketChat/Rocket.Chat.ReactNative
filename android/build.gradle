@@ -43,7 +43,7 @@ allprojects {
         maven {
             // We should change it when Jitsi-SDK
             // release a version with support RN 0.60
-            url("$rootDir/jitsi-sdk")
+            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
         }
 
         google()
