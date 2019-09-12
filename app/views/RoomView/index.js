@@ -301,7 +301,7 @@ class RoomView extends React.Component {
 		try {
 			const db = database.active;
 			const subCollection = await db.collections.get('subscriptions');
-			const room = await subCollection.find('OIAUSHDOIUASHD');
+			const room = await subCollection.find(rid);
 			this.setState({ room });
 			this.observeRoom(room);
 		} catch (error) {
@@ -728,7 +728,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const {
-			room, selectedMessage, showActions, showErrorActions
+			room, selectedMessage, showActions, showErrorActions, joined
 		} = this.state;
 		const {
 			user, navigation
@@ -738,7 +738,7 @@ class RoomView extends React.Component {
 		}
 		return (
 			<>
-				{room.id && showActions
+				{joined && showActions
 					? (
 						<MessageActions
 							tmid={this.tmid}
