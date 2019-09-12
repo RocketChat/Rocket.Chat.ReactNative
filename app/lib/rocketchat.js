@@ -546,17 +546,19 @@ const RocketChat = {
 		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
 	},
 	toggleStarMessage(message) {
+		const { _id: messageId } = message;
 		if (message.starred) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unStarMessage', { messageId: message.id });
+			return this.sdk.post('chat.unStarMessage', { messageId });
 		}
 		// RC 0.59.0
 		return this.sdk.post('chat.starMessage', { messageId: message.id });
 	},
 	togglePinMessage(message) {
+		const { _id: messageId } = message;
 		if (message.pinned) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unPinMessage', { messageId: message.id });
+			return this.sdk.post('chat.unPinMessage', { messageId });
 		}
 		// RC 0.59.0
 		return this.sdk.post('chat.pinMessage', { messageId: message.id });
