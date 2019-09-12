@@ -18,7 +18,7 @@ export default appSchema({
 			name: 'servers',
 			columns: [
 				{ name: 'name', type: 'string', isOptional: true },
-				{ name: 'iconURL', type: 'string', isOptional: true },
+				{ name: 'icon_url', type: 'string', isOptional: true },
 				{ name: 'use_real_name', type: 'boolean', isOptional: true },
 				{ name: 'file_upload_media_type_white_list', type: 'string', isOptional: true },
 				{ name: 'file_upload_max_file_size', type: 'number', isOptional: true },
