@@ -301,7 +301,7 @@ class RoomView extends React.Component {
 		try {
 			const db = database.active;
 			const subCollection = await db.collections.get('subscriptions');
-			const room = await subCollection.find('OIAUSHDOIUASHD');
+			const room = await subCollection.find(rid);
 			this.setState({ room });
 			this.observeRoom(room);
 		} catch (error) {
@@ -597,6 +597,12 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	get isReadOnly() {
+		const { room } = this.state;
+		const { user } = this.props;
+		return isReadOnly(room, user);
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -671,7 +677,7 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
-		const { navigation, user } = this.props;
+		const { navigation } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
@@ -688,7 +694,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (isReadOnly(room, user)) {
+		if (this.isReadOnly) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
@@ -724,7 +730,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const {
-			room, selectedMessage, showActions, showErrorActions
+			room, selectedMessage, showActions, showErrorActions, joined
 		} = this.state;
 		const {
 			user, navigation
@@ -734,7 +740,7 @@ class RoomView extends React.Component {
 		}
 		return (
 			<>
-				{room.id && showActions
+				{joined && showActions
 					? (
 						<MessageActions
 							tmid={this.tmid}
@@ -745,6 +751,7 @@ class RoomView extends React.Component {
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
+							isReadOnly={this.isReadOnly}
 						/>
 					)
 					: null
