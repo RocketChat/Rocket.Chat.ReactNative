@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import chat.rocket.reactnative.R
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.wix.reactnativenotifications.core.AppLaunchHelper
 import com.wix.reactnativenotifications.core.AppLifecycleFacade
@@ -68,7 +69,7 @@ class CustomPushNotification(
             .setLargeIcon(
                 Glide.with(mContext)
                     .asBitmap()
-                    .apply(RequestOptions.circleCropTransform())
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
                     .load(ejson.avatarUri)
                     .submit(100, 100)
                     .get()
