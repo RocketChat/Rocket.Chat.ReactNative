@@ -70,7 +70,6 @@ export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
 				return resolve([]);
 			}
 		} catch (e) {
-			// log(e);
 			reject(e);
 		}
 	});

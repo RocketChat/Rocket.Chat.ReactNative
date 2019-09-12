@@ -73,14 +73,12 @@ class EmojiPicker extends Component {
 		try {
 			const { onEmojiSelected } = this.props;
 			if (emoji.isCustom) {
-				// const count = this._getFrequentlyUsedCount(emoji.content);
 				this._addFrequentlyUsed({
 					content: emoji.content, extension: emoji.extension, isCustom: true
 				});
 				onEmojiSelected(`:${ emoji.content }:`);
 			} else {
 				const content = emoji;
-				// const count = this._getFrequentlyUsedCount(content);
 				this._addFrequentlyUsed({ content, isCustom: false });
 				const shortname = `:${ emoji }:`;
 				onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);

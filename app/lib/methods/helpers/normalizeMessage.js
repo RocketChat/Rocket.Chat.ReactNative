@@ -42,7 +42,6 @@ export default (msg) => {
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
 	msg._updatedAt = new Date();
-	// msg.updatedAt = msg._updatedAt;
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array
 	msg.starred = msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred);

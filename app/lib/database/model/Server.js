@@ -6,7 +6,7 @@ export default class Server extends Model {
 
 	@field('name') name;
 
-	@field('iconURL') iconURL;
+	@field('icon_url') iconURL;
 
 	@field('use_real_name') useRealName;
 

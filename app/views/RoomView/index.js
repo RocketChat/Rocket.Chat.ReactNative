@@ -631,7 +631,6 @@ class RoomView extends React.Component {
 				broadcast={room.broadcast}
 				status={item.status}
 				isThreadRoom={!!this.tmid}
-				_updatedAt={item._updatedAt} // TODO: need it?
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}

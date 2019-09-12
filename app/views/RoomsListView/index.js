@@ -109,8 +109,7 @@ class RoomsListView extends React.Component {
 						iconName='edit-rounded'
 						onPress={() => navigation.navigate('NewMessageView', {
 							onPressItem
-						})
-						}
+						})}
 						testID='rooms-list-view-create-channel'
 					/>
 				</CustomHeaderButtons>

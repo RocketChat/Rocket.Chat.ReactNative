@@ -124,14 +124,16 @@ class RoomActionsView extends React.Component {
 		const userInRoom = joined;
 		const permissions = await RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
-		if (userInRoom && permissions['add-user-to-joined-room']) {
-			canAdd = true;
-		}
-		if (t === 'c' && permissions['add-user-to-any-c-room']) {
-			canAdd = true;
-		}
-		if (t === 'p' && permissions['add-user-to-any-p-room']) {
-			canAdd = true;
+		if (permissions) {
+			if (userInRoom && permissions['add-user-to-joined-room']) {
+				canAdd = true;
+			}
+			if (t === 'c' && permissions['add-user-to-any-c-room']) {
+				canAdd = true;
+			}
+			if (t === 'p' && permissions['add-user-to-any-p-room']) {
+				canAdd = true;
+			}
 		}
 		this.setState({ canAddUser: canAdd });
 	}

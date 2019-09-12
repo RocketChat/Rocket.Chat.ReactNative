@@ -112,7 +112,6 @@ const RocketChat = {
 	connect({ server, user }) {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {
-				// database.setActiveDB(server);
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -169,10 +168,6 @@ const RocketChat = {
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
-				// const { isAuthenticated } = reduxStore.getState().login;
-				// if (isAuthenticated) {
-				// 	this.getUserPresence();
-				// }
 			});
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
