@@ -32,6 +32,7 @@ class MessageActions extends React.Component {
 		togglePinRequest: PropTypes.func.isRequired,
 		reactionInit: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
+		isReadOnly: PropTypes.bool,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
 		Message_AllowEditing: PropTypes.bool,
@@ -50,7 +51,7 @@ class MessageActions extends React.Component {
 		await this.setPermissions();
 
 		const {
-			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message
+			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
 		// Cancel
@@ -58,7 +59,7 @@ class MessageActions extends React.Component {
 		this.CANCEL_INDEX = 0;
 
 		// Reply
-		if (!this.isRoomReadOnly()) {
+		if (!isReadOnly) {
 			this.options.push(I18n.t('Reply'));
 			this.REPLY_INDEX = this.options.length - 1;
 		}
@@ -82,7 +83,7 @@ class MessageActions extends React.Component {
 		this.SHARE_INDEX = this.options.length - 1;
 
 		// Quote
-		if (!this.isRoomReadOnly()) {
+		if (!isReadOnly) {
 			this.options.push(I18n.t('Quote'));
 			this.QUOTE_INDEX = this.options.length - 1;
 		}
@@ -100,7 +101,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Reaction
-		if (!this.isRoomReadOnly() || this.canReactWhenReadOnly()) {
+		if (!isReadOnly || this.canReactWhenReadOnly()) {
 			this.options.push(I18n.t('Add_Reaction'));
 			this.REACTION_INDEX = this.options.length - 1;
 		}
@@ -167,19 +168,13 @@ class MessageActions extends React.Component {
 
 	isOwn = props => props.message.u && props.message.u._id === props.user.id;
 
-	isRoomReadOnly = () => {
-		const { room } = this.props;
-		// TODO: We need to get -> is ReadOnly && !isOwner
-		return room.ro;
-	}
-
 	canReactWhenReadOnly = () => {
 		const { room } = this.props;
 		return room.reactWhenReadOnly;
 	}
 
 	allowEdit = (props) => {
-		if (this.isRoomReadOnly()) {
+		if (props.isReadOnly) {
 			return false;
 		}
 		const editOwn = this.isOwn(props);
@@ -204,7 +199,7 @@ class MessageActions extends React.Component {
 	}
 
 	allowDelete = (props) => {
-		if (this.isRoomReadOnly()) {
+		if (props.isReadOnly) {
 			return false;
 		}
 
