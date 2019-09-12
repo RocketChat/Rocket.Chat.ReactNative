@@ -76,7 +76,7 @@ class RoomView extends React.Component {
 			headerLeft: (
 				<HeaderBackButton
 					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-					backTitleVisible
+					backTitleVisible={isIOS}
 					onPress={() => navigation.goBack()}
 					tintColor={HEADER_BACK}
 				/>
@@ -158,7 +158,9 @@ class RoomView extends React.Component {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
 			safeAddListener(this.rooms, this.updateRoom);
-			safeAddListener(this.chats, this.updateUnreadCount);
+			if (isIOS) {
+				safeAddListener(this.chats, this.updateUnreadCount);
+			}
 			this.mounted = true;
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
