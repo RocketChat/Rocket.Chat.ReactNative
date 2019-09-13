@@ -194,13 +194,11 @@ class RoomView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { room } = this.state;
 		const { appState } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				RocketChat.loadMissedMessages(room).catch(e => console.log(e));
-				RocketChat.readMessages(room.rid).catch(e => console.log(e));
+				this.init();
 			});
 		}
 	}
