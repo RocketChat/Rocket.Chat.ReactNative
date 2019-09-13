@@ -64,7 +64,6 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		yield serversDB.action(async() => {
 			try {
 				await serverRecord.update((record) => {
-					record._raw = sanitizedRaw({ id: server, ...record._raw }, serversCollection.schema);
 					record.roomsUpdatedAt = newRoomsUpdatedAt;
 				});
 			} catch (e) {
@@ -82,9 +81,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 const root = function* root() {
 	while (true) {
 		const params = yield take(types.ROOMS.REQUEST);
-		const isAuthenticated = yield select(
-			state => state.login.isAuthenticated
-		);
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
 		if (isAuthenticated) {
 			const roomsRequestTask = yield fork(handleRoomsRequest, params);
 			yield race({
