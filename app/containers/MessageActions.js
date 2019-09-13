@@ -204,7 +204,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Prevent from deleting thread start message when positioned inside the thread
-		if (props.tmid && props.tmid === props.message._id) {
+		if (props.tmid && props.tmid === props.message.id) {
 			return false;
 		}
 		const deleteOwn = this.isOwn(props);
@@ -303,7 +303,7 @@ class MessageActions extends React.Component {
 
 	handleReadReceipt = () => {
 		const { message } = this.props;
-		Navigation.navigate('ReadReceiptsView', { messageId: message._id });
+		Navigation.navigate('ReadReceiptsView', { messageId: message.id });
 	}
 
 	handleReport = async() => {
