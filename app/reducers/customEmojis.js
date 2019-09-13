@@ -7,9 +7,7 @@ const initialState = {
 export default function customEmojis(state = initialState, action) {
 	switch (action.type) {
 		case SET_CUSTOM_EMOJIS:
-			return {
-				...action.emojis
-			};
+			return action.emojis;
 		default:
 			return state;
 	}
