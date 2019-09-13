@@ -13,7 +13,7 @@ import Upload from './model/Upload';
 import Setting from './model/Setting';
 import Role from './model/Role';
 import Permission from './model/Permission';
-import Command from './model/Command';
+import SlashCommand from './model/SlashCommand';
 import User from './model/User';
 import Server from './model/Server';
 
@@ -71,7 +71,7 @@ class DB {
 				Setting,
 				Role,
 				Permission,
-				Command
+				SlashCommand
 			],
 			actionsEnabled: true
 		});
