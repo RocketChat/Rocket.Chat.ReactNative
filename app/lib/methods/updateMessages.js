@@ -21,12 +21,20 @@ export default function updateMessages({ rid, update, remove }) {
 				sub = { id: rid };
 				console.log('updateMessages: subscription not found');
 			}
+
+			const messagesIds = update.map(m => m._id);
 			const msgCollection = db.collections.get('messages');
 			const threadCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
-			const allMessagesRecords = await msgCollection.query(Q.where('rid', rid)).fetch();
-			const allThreadsRecords = await threadCollection.query(Q.where('rid', rid)).fetch();
-			const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('subscription_id', rid)).fetch();
+			const allMessagesRecords = await msgCollection
+				.query(Q.where('rid', rid), Q.where('id', Q.oneOf(messagesIds)))
+				.fetch();
+			const allThreadsRecords = await threadCollection
+				.query(Q.where('rid', rid), Q.where('id', Q.oneOf(messagesIds)))
+				.fetch();
+			const allThreadMessagesRecords = await threadMessagesCollection
+				.query(Q.where('subscription_id', rid), Q.where('id', Q.oneOf(messagesIds)))
+				.fetch();
 
 			update = update.map(m => buildMessage(m));
 
