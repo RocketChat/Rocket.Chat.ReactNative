@@ -17,6 +17,7 @@ let disconnectedListener;
 let streamListener;
 let subServer;
 
+// TODO: batch execution
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
 		const db = database.active;
