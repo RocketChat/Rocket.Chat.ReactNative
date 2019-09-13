@@ -6,7 +6,7 @@ import { sanitizer } from '../utils';
 export default class Permission extends Model {
 	static table = 'permissions';
 
-  @json('roles', sanitizer) roles;
+	@json('roles', sanitizer) roles;
 
-  @date('_updated_at') _updatedAt;
+	@date('_updated_at') _updatedAt;
 }
