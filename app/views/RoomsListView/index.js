@@ -486,7 +486,7 @@ class RoomsListView extends React.Component {
 				const subCollection = db.collections.get('subscriptions');
 				db.action(async() => {
 					try {
-						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
 							sub.f = !favorite;
 						});
@@ -508,7 +508,7 @@ class RoomsListView extends React.Component {
 				const subCollection = db.collections.get('subscriptions');
 				db.action(async() => {
 					try {
-						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
 							sub.alert = isRead;
 						});
@@ -530,7 +530,7 @@ class RoomsListView extends React.Component {
 				const subCollection = db.collections.get('subscriptions');
 				db.action(async() => {
 					try {
-						const [subRecord] = await subCollection.query(Q.where('rid', rid)).fetch();
+						const subRecord = await subCollection.find(rid);
 						await subRecord.destroyPermanently();
 					} catch (e) {
 						log(e);
