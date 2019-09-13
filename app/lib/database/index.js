@@ -40,10 +40,6 @@ class DB {
 		})
 	}
 
-	get database() {
-		return this.databases.activeDB;
-	}
-
 	get active() {
 		return this.databases.activeDB;
 	}
