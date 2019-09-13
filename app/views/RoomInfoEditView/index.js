@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
@@ -96,15 +95,12 @@ class RoomInfoEditView extends React.Component {
 		}
 		try {
 			const db = database.active;
-			const observable = await db.collections
-				.get('subscriptions')
-				.query(Q.where('rid', rid))
-				.observeWithColumns(['archived', '_updated_at']);
+			const sub = await db.collections.get('subscriptions').find(rid);
+			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {
-				const [room] = data;
-				this.room = room;
-				this.init(room);
+				this.room = data;
+				this.init(this.room);
 			});
 
 			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
