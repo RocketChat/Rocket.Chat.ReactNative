@@ -11,7 +11,7 @@ export default appSchema({
 				{ name: 't', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'ls', type: 'number' },
-				{ name: 'name', type: 'string' },
+				{ name: 'name', type: 'string', isIndexed: true },
 				{ name: 'fname', type: 'string' },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'open', type: 'boolean' },
