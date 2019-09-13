@@ -4,7 +4,6 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
-import { throttleTime } from 'rxjs/operators';
 
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -96,7 +95,6 @@ class RoomInfoView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
 					this.setState({ room: changes });
 				});

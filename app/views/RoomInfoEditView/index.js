@@ -106,6 +106,7 @@ class RoomInfoEditView extends React.Component {
 
 			this.querySubscription = observable.subscribe((data) => {
 				const [room] = data;
+				this.room = room;
 				this.init(room);
 			});
 
@@ -142,7 +143,7 @@ class RoomInfoEditView extends React.Component {
 
 	reset = () => {
 		this.clearErrors();
-		this.init();
+		this.init(this.room);
 	}
 
 	formIsChanged = () => {
