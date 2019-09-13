@@ -28,8 +28,7 @@ export const merge = (subscription, room) => {
 		}
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(muted => !!muted);
-		}
-		if (room.muted && !room.muted.length && subscription.muted && subscription.muted.length) {
+		} else {
 			subscription.muted = [];
 		}
 	}
