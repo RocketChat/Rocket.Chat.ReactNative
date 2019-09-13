@@ -746,8 +746,7 @@ const RocketChat = {
 		}
 		// get permissions from database
 		try {
-			let permissionsFiltered = await permissionsCollection.query().fetch();
-			permissionsFiltered = permissionsFiltered.filter(permission => permissions.includes(permission._id));
+			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			// get user roles on the server from redux
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			// merge both roles
@@ -757,7 +756,7 @@ const RocketChat = {
 			// e.g. { 'edit-room': true, 'set-readonly': false }
 			return permissions.reduce((result, permission) => {
 				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p._id === permission);
+				const permissionFound = permissionsFiltered.find(p => p.id === permission);
 				if (permissionFound) {
 					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
 				}
