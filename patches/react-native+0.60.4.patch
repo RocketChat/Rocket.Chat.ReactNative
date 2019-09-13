@@ -169,16 +169,15 @@ index cf5ca40..262f22a 100644
      } catch (ClassNotFoundException ignored) {
        return false;
 diff --git a/node_modules/react-native/react.gradle b/node_modules/react-native/react.gradle
-index 5a2259a..3670073 100644
+index 5a2259a..bc3be3e 100644
 --- a/node_modules/react-native/react.gradle
 +++ b/node_modules/react-native/react.gradle
-@@ -148,7 +148,13 @@ afterEvaluate {
+@@ -148,7 +148,12 @@ afterEvaluate {
                              hermesFlags = config.hermesFlagsDebug
                              if (hermesFlags == null) hermesFlags = []
                          }
 -                        commandLine(getHermesCommand(), "-emit-binary", "-out", jsBundleFile, jsBundleFile, *hermesFlags)
 +                        // commandLine(getHermesCommand(), "-emit-binary", "-out", jsBundleFile, jsBundleFile, *hermesFlags)
-+                        // https://github.com/facebook/react-native/issues/25601#issuecomment-510856047
 +                        ant.move(
 +                            file: jsBundleFile,
 +                            tofile: "${jsBundleFile}_temp"

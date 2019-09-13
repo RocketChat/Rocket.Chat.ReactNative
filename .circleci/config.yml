@@ -14,9 +14,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      # - restore_cache:
+      #     name: Restore NPM cache
+      #     key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install NPM modules
@@ -38,11 +38,11 @@ jobs:
           command: |
             yarn codecov
 
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          name: Save NPM cache
-          paths:
-            - ./node_modules
+      # - save_cache:
+      #     key: node-modules-{{ checksum "yarn.lock" }}
+      #     name: Save NPM cache
+      #     paths:
+      #       - ./node_modules
 
   e2e-test:
     macos:
@@ -127,9 +127,9 @@ jobs:
             echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
             source ~/.bash_profile
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      # - restore_cache:
+      #     name: Restore NPM cache
+      #     key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install React Native CLI
@@ -209,11 +209,11 @@ jobs:
       - store_artifacts:
           path: /tmp/build/outputs
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
+      # - save_cache:
+      #     name: Save NPM cache
+      #     key: node-modules-{{ checksum "yarn.lock" }}
+      #     paths:
+      #       - ./node_modules
 
       - save_cache:
           name: Save gradle cache
@@ -235,9 +235,9 @@ jobs:
           name: Restore gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      # - restore_cache:
+      #     name: Restore NPM cache
+      #     key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -296,11 +296,11 @@ jobs:
             fi
           working_directory: ios
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      # - save_cache:
+      #     name: Save NPM cache
+      #     key: node-v1-mac-{{ checksum "yarn.lock" }}
+      #     paths:
+      #       - node_modules
 
       - save_cache:
           name: Save gems cache
