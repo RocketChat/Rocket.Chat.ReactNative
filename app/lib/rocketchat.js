@@ -535,33 +535,30 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	deleteMessage(message) {
-		const { id, subscription: { id: rid } } = message;
+	deleteMessage(messageId, rid) {
 		// RC 0.48.0
-		return this.sdk.post('chat.delete', { roomId: rid, msgId: id });
+		return this.sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 	},
 	editMessage(message) {
 		const { id, msg, rid } = message;
 		// RC 0.49.0
 		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
 	},
-	toggleStarMessage(message) {
-		const { _id: messageId } = message;
-		if (message.starred) {
+	toggleStarMessage(messageId, starred) {
+		if (starred) {
 			// RC 0.59.0
 			return this.sdk.post('chat.unStarMessage', { messageId });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.starMessage', { messageId: message.id });
+		return this.sdk.post('chat.starMessage', { messageId });
 	},
-	togglePinMessage(message) {
-		const { _id: messageId } = message;
-		if (message.pinned) {
+	togglePinMessage(messageId, pinned) {
+		if (pinned) {
 			// RC 0.59.0
 			return this.sdk.post('chat.unPinMessage', { messageId });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.pinMessage', { messageId: message.id });
+		return this.sdk.post('chat.pinMessage', { messageId });
 	},
 	reportMessage(messageId) {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });

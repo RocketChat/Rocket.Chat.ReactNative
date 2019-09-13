@@ -6,11 +6,6 @@ import ActionSheet from 'react-native-action-sheet';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
-import {
-	deleteRequest as deleteRequestAction,
-	togglePinRequest as togglePinRequestAction,
-	toggleStarRequest as toggleStarRequestAction
-} from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import I18n from '../i18n';
@@ -26,10 +21,7 @@ class MessageActions extends React.Component {
 		room: PropTypes.object.isRequired,
 		message: PropTypes.object,
 		user: PropTypes.object,
-		deleteRequest: PropTypes.func.isRequired,
 		editInit: PropTypes.func.isRequired,
-		toggleStarRequest: PropTypes.func.isRequired,
-		togglePinRequest: PropTypes.func.isRequired,
 		reactionInit: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
 		isReadOnly: PropTypes.bool,
@@ -231,7 +223,7 @@ class MessageActions extends React.Component {
 	}
 
 	handleDelete = () => {
-		const { deleteRequest, message } = this.props;
+		const { message } = this.props;
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('You_will_not_be_able_to_recover_this_message'),
@@ -243,7 +235,13 @@ class MessageActions extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: 'delete' }),
 					style: 'destructive',
-					onPress: () => deleteRequest(message)
+					onPress: async() => {
+						try {
+							await RocketChat.deleteMessage(message.id, message.rid);
+						} catch (e) {
+							log(e);
+						}
+					}
 				}
 			],
 			{ cancelable: false }
@@ -269,9 +267,13 @@ class MessageActions extends React.Component {
 		});
 	};
 
-	handleStar = () => {
-		const { message, toggleStarRequest } = this.props;
-		toggleStarRequest(message);
+	handleStar = async() => {
+		const { message } = this.props;
+		try {
+			await RocketChat.toggleStarMessage(message.id, message.starred);
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	handlePermalink = async() => {
@@ -281,9 +283,13 @@ class MessageActions extends React.Component {
 		EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 	}
 
-	handlePin = () => {
-		const { message, togglePinRequest } = this.props;
-		togglePinRequest(message);
+	handlePin = async() => {
+		const { message } = this.props;
+		try {
+			await RocketChat.togglePinMessage(message.id, message.pinned);
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	handleReply = () => {
@@ -408,10 +414,4 @@ const mapStateToProps = state => ({
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 });
 
-const mapDispatchToProps = dispatch => ({
-	deleteRequest: message => dispatch(deleteRequestAction(message)),
-	toggleStarRequest: message => dispatch(toggleStarRequestAction(message)),
-	togglePinRequest: message => dispatch(togglePinRequestAction(message))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageActions);
+export default connect(mapStateToProps)(MessageActions);

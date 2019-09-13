@@ -147,7 +147,7 @@ class MessagesView extends React.Component {
 					/>
 				),
 				actionTitle: I18n.t('Unstar'),
-				handleActionPress: message => RocketChat.toggleStarMessage(message)
+				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
@@ -163,7 +163,7 @@ class MessagesView extends React.Component {
 					/>
 				),
 				actionTitle: I18n.t('Unpin'),
-				handleActionPress: message => RocketChat.togglePinMessage(message)
+				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
 	}

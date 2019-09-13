@@ -32,19 +32,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 ]);
 export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
-export const MESSAGES = createRequestTypes('MESSAGES', [
-	...defaultTypes,
-	'DELETE_REQUEST',
-	'DELETE_SUCCESS',
-	'DELETE_FAILURE',
-	'TOGGLE_STAR_REQUEST',
-	'TOGGLE_STAR_SUCCESS',
-	'TOGGLE_STAR_FAILURE',
-	'TOGGLE_PIN_REQUEST',
-	'TOGGLE_PIN_SUCCESS',
-	'TOGGLE_PIN_FAILURE',
-	'REPLY_BROADCAST'
-]);
+export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
