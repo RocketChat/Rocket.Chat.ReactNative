@@ -535,7 +535,6 @@ class RoomView extends React.Component {
 			});
 		} catch (e) {
 			log(e);
-			console.log(e);
 		}
 	}
 
@@ -585,7 +584,6 @@ class RoomView extends React.Component {
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
 			log(e);
-			console.log(e);
 		}
 	}
 
