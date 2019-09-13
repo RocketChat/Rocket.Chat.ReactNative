@@ -4,7 +4,6 @@ import {
 	FlatList, Switch, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView, ScrollView } from 'react-navigation';
-import { throttleTime } from 'rxjs/operators';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -54,7 +53,6 @@ export default class AutoTranslateView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
 					this.room = changes;
 				});
