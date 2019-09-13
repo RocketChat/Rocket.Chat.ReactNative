@@ -3,7 +3,7 @@ import {
 	field, relation, date, json
 } from '@nozbe/watermelondb/decorators';
 
-const sanitizer = r => r;
+import { sanitizer } from '../utils';
 
 export default class Message extends Model {
 	static table = 'messages';
