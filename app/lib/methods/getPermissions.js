@@ -22,10 +22,10 @@ const getUpdatedSince = async() => {
 	return null;
 };
 
-const create = (permissions, toDelete = null) => {
+const create = async(permissions, toDelete = null) => {
 	const db = database.active;
 	if (permissions && permissions.length) {
-		db.action(async() => {
+		await db.action(async() => {
 			const permissionsCollection = db.collections.get('permissions');
 			const allPermissionRecords = await permissionsCollection.query().fetch();
 
@@ -82,8 +82,8 @@ export default function() {
 				if (!result.success) {
 					return resolve();
 				}
-				InteractionManager.runAfterInteractions(() => {
-					create(result.permissions);
+				InteractionManager.runAfterInteractions(async() => {
+					await create(result.permissions);
 					return resolve();
 				});
 			} else {
@@ -99,12 +99,10 @@ export default function() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(
-					() => {
-						create(result.update, result.delete);
-						return resolve();
-					}
-				);
+				InteractionManager.runAfterInteractions(async() => {
+					await create(result.update, result.delete);
+					return resolve();
+				});
 			}
 		} catch (e) {
 			log(e);

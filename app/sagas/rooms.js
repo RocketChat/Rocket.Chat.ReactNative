@@ -61,7 +61,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			return allRecords.length;
 		});
 
-		serversDB.action(async() => {
+		yield serversDB.action(async() => {
 			try {
 				await serverRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: server, ...record._raw }, serversCollection.schema);

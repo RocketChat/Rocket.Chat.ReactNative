@@ -32,7 +32,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
-		serversDB.action(async() => {
+		yield serversDB.action(async() => {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {

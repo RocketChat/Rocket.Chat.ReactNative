@@ -484,7 +484,7 @@ class RoomsListView extends React.Component {
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				const subCollection = db.collections.get('subscriptions');
-				db.action(async() => {
+				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
@@ -506,7 +506,7 @@ class RoomsListView extends React.Component {
 			const result = await RocketChat.toggleRead(isRead, rid);
 			if (result.success) {
 				const subCollection = db.collections.get('subscriptions');
-				db.action(async() => {
+				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
@@ -528,7 +528,7 @@ class RoomsListView extends React.Component {
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
 				const subCollection = db.collections.get('subscriptions');
-				db.action(async() => {
+				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.destroyPermanently();
