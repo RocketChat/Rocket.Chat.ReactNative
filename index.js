@@ -6,7 +6,7 @@ if (__DEV__) {
 	require('./app/ReactotronConfig');
 }
 
-AppRegistry.registerComponent(appName, () => require('./app/index').default);
+AppRegistry.registerComponent(appName, () => require('./app/tablet').default);
 AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 
 // For storybook, comment everything above and uncomment below

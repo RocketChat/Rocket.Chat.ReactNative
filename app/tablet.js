@@ -90,6 +90,9 @@ const ListStack = createStackNavigator({
 	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -97,8 +100,8 @@ const ListStack = createStackNavigator({
 
 // Inside
 const ChatsStack = createStackNavigator({
-	RoomsListView: {
-		getScreen: () => require('./views/RoomsListView').default
+	Home: {
+		getScreen: () => require('./views/RoomView').default
 	},
 	RoomView: {
 		getScreen: () => require('./views/RoomView').default

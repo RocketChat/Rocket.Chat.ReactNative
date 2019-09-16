@@ -123,7 +123,7 @@ class RoomView extends React.Component {
 		this.chats = database.objects('subscriptions').filtered('rid != $0', this.rid);
 		const canAutoTranslate = RocketChat.canAutoTranslate();
 		this.state = {
-			joined: this.rooms.length > 0,
+			joined: true, // this.rooms.length > 0,
 			room: this.rooms[0] || { rid: this.rid, t: this.t },
 			lastOpen: null,
 			photoModalVisible: false,
