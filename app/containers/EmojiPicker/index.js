@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
@@ -80,7 +80,7 @@ class EmojiPicker extends Component {
 				const content = emoji;
 				this._addFrequentlyUsed({ content, isCustom: false });
 				const shortname = `:${ emoji }:`;
-				onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+				onEmojiSelected(shortnameToUnicode(shortname), shortname);
 			}
 		} catch (e) {
 			log(e);
@@ -119,7 +119,7 @@ class EmojiPicker extends Component {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
-			return emojify(`${ item.content }`, { output: 'unicode' });
+			return shortnameToUnicode(`${ item.content }`);
 		});
 		this.setState({ frequentlyUsed });
 	}
