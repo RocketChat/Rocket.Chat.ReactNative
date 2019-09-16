@@ -6,7 +6,6 @@ import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { toggleReactionPicker as toggleReactionPickerAction } from '../../actions/messages';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
 
@@ -17,36 +16,37 @@ class ReactionPicker extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,
-		showReactionPicker: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func,
+		message: PropTypes.object,
+		show: PropTypes.bool,
+		reactionClose: PropTypes.func,
 		onEmojiSelected: PropTypes.func
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { showReactionPicker, window } = this.props;
-		return nextProps.showReactionPicker !== showReactionPicker || window.width !== nextProps.window.width;
+		const { show, window } = this.props;
+		return nextProps.show !== show || window.width !== nextProps.window.width;
 	}
 
 	onEmojiSelected(emoji, shortname) {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
-		const { onEmojiSelected } = this.props;
-		onEmojiSelected(shortname || emoji);
+		const { onEmojiSelected, message } = this.props;
+		onEmojiSelected(shortname || emoji, message.id);
 	}
 
 	render() {
 		const {
-			window: { width, height }, showReactionPicker, baseUrl, toggleReactionPicker
+			window: { width, height }, show, baseUrl, reactionClose
 		} = this.props;
 
-		return (showReactionPicker
+		return (show
 			? (
 				<Modal
-					isVisible={showReactionPicker}
+					isVisible={show}
 					style={{ alignItems: 'center' }}
-					onBackdropPress={() => toggleReactionPicker()}
-					onBackButtonPress={() => toggleReactionPicker()}
+					onBackdropPress={reactionClose}
+					onBackButtonPress={reactionClose}
 					animationIn='fadeIn'
 					animationOut='fadeOut'
 				>
@@ -69,12 +69,7 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	showReactionPicker: state.messages.showReactionPicker,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 
-const mapDispatchToProps = dispatch => ({
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-});
-
-export default responsive(connect(mapStateToProps, mapDispatchToProps)(ReactionPicker));
+export default responsive(connect(mapStateToProps)(ReactionPicker));

@@ -6,10 +6,7 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         glideVersion = "4.9.0"
-        // googlePlayServicesVersion = "17.0.0"
-        // supportLibVersion = "1.0.2"
-        // mediaCompatVersion = '1.0.1'
-        // supportV4Version = '1.0.0'
+        kotlin_version = "1.3.50"
     }
     repositories {
         mavenLocal()
@@ -24,6 +21,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.28.1'
         classpath 'com.google.firebase:perf-plugin:1.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
 
         // NOTE: Do not place your application dependencies here; they belong

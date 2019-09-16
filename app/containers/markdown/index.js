@@ -3,6 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
+import { toShort, shortnameToUnicode } from 'emoji-toolkit';
 
 import I18n from '../../i18n';
 
@@ -51,6 +52,8 @@ const emojiCount = (str) => {
 
 	return counter;
 };
+
+const encodeEmojis = str => toShort(shortnameToUnicode(str));
 
 export default class Markdown extends PureComponent {
 	static propTypes = {
@@ -154,16 +157,12 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
-		const { numberOfLines } = this.props;
-
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
 			<View style={styles.block}>
-				<Text numberOfLines={numberOfLines}>
-					{children}
-				</Text>
+				{children}
 			</View>
 		);
 	};
@@ -286,7 +285,8 @@ export default class Markdown extends PureComponent {
 		}
 
 		const ast = this.parser.parse(m);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
+		const encodedEmojis = encodeEmojis(m);
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(encodedEmojis) && emojiCount(encodedEmojis) <= 3;
 
 		this.editedMessage(ast);
 

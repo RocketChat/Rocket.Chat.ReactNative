@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -20,7 +20,7 @@ const formatMsg = ({
 	let prefix = '';
 	const isLastMessageSentByMe = lastMessage.u.username === username;
 
-	if (!lastMessage.msg && Object.keys(lastMessage.attachments).length) {
+	if (!lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length) {
 		const user = isLastMessageSentByMe ? I18n.t('You') : lastMessage.u.username;
 		return I18n.t('User_sent_an_attachment', { user });
 	}
@@ -33,7 +33,7 @@ const formatMsg = ({
 
 	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
 	if (msg) {
-		msg = emojify(msg, { output: 'unicode' });
+		msg = shortnameToUnicode(msg);
 	}
 	return msg;
 };
