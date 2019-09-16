@@ -6,7 +6,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
-import database from '../lib/realm';
+import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
@@ -66,21 +66,27 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 	} else {
 		// search if deep link's server already exists
-		const servers = yield database.databases.serversDB.objects('servers').filtered('id = $0', host); // TODO: need better test
-		if (servers.length && user) {
-			yield put(selectServerRequest(host));
-			yield take(types.SERVER.SELECT_SUCCESS);
-			yield navigate({ params });
-		} else {
-			// if deep link is from a different server
-			const result = yield RocketChat.getServerInfo(server);
-			if (!result.success) {
+		const serversDB = database.servers;
+		const serversCollection = serversDB.collections.get('servers');
+		try {
+			const servers = yield serversCollection.find(host);
+			if (servers && user) {
+				yield put(selectServerRequest(host));
+				yield take(types.SERVER.SELECT_SUCCESS);
+				yield navigate({ params });
 				return;
 			}
-			Navigation.navigate('OnboardingView', { previousServer: server });
-			yield delay(1000);
-			EventEmitter.emit('NewServer', { server: host });
+		} catch (e) {
+			// do nothing?
 		}
+		// if deep link is from a different server
+		const result = yield RocketChat.getServerInfo(server);
+		if (!result.success) {
+			return;
+		}
+		Navigation.navigate('OnboardingView', { previousServer: server });
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
 	}
 };
 

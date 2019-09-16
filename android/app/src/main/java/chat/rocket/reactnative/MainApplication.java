@@ -31,6 +31,8 @@ import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
+import com.nozbe.watermelondb.WatermelonDBPackage;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new RNFirebasePerformancePackage());
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new RNNotificationsPackage(MainApplication.this));
+      packages.add(new WatermelonDBPackage());
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       return packages;
     }

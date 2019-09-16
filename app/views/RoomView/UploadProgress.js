@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { responsive } from 'react-native-responsive-ui';
-import equal from 'deep-equal';
+import { Q } from '@nozbe/watermelondb';
 
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -74,47 +74,72 @@ class UploadProgress extends Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
+		this.ranInitialUploadCheck = false;
+		this.init();
 		this.state = {
 			uploads: []
 		};
-		const { rid } = this.props;
-		this.uploads = database.objects('uploads').filtered('rid = $0', rid);
-		safeAddListener(this.uploads, this.updateUploads);
 	}
 
 	componentDidMount() {
-		this.uploads.forEach((u) => {
+		this.mounted = true;
+	}
+
+	componentWillUnmount() {
+		if (this.uploadsSubscription && this.uploadsSubscription.unsubscribe) {
+			this.uploadsSubscription.unsubscribe();
+		}
+	}
+
+	init = () => {
+		const { rid } = this.props;
+
+		const db = database.active;
+		this.uploadsObservable = db.collections
+			.get('uploads')
+			.query(
+				Q.where('rid', rid)
+			)
+			.observeWithColumns(['progress', 'error']);
+
+		this.uploadsSubscription = this.uploadsObservable
+			.subscribe((uploads) => {
+				if (this.mounted) {
+					this.setState({ uploads });
+				} else {
+					this.state.uploads = uploads;
+				}
+				if (!this.ranInitialUploadCheck) {
+					this.uploadCheck();
+				}
+			});
+	}
+
+	uploadCheck = () => {
+		this.ranInitialUploadCheck = true;
+		const { uploads } = this.state;
+		uploads.forEach(async(u) => {
 			if (!RocketChat.isUploadActive(u.path)) {
-				database.write(() => {
-					const [upload] = database.objects('uploads').filtered('path = $0', u.path);
-					if (upload) {
-						upload.error = true;
-					}
-				});
+				try {
+					await database.database.action(async() => {
+						await u.update(() => {
+							u.error = true;
+						});
+					});
+				} catch (e) {
+					log(e);
+				}
 			}
 		});
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { uploads } = this.state;
-		const { window } = this.props;
-		if (nextProps.window.width !== window.width) {
-			return true;
-		}
-		if (!equal(nextState.uploads, uploads)) {
-			return true;
-		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		this.uploads.removeAllListeners();
-	}
-
-	deleteUpload = (item) => {
-		const uploadItem = this.uploads.filtered('path = $0', item.path);
+	deleteUpload = async(item) => {
 		try {
-			database.write(() => database.delete(uploadItem[0]));
+			const db = database.active;
+			await db.action(async() => {
+				await item.destroyPermanently();
+			});
 		} catch (e) {
 			log(e);
 		}
@@ -122,7 +147,7 @@ class UploadProgress extends Component {
 
 	cancelUpload = async(item) => {
 		try {
-			await RocketChat.cancelUpload(item.path);
+			await RocketChat.cancelUpload(item);
 		} catch (e) {
 			log(e);
 		}
@@ -132,18 +157,16 @@ class UploadProgress extends Component {
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
-			database.write(() => {
-				item.error = false;
+			const db = database.active;
+			await db.action(async() => {
+				await item.update(() => {
+					item.error = false;
+				});
 			});
 			await RocketChat.sendFileMessage(rid, item, undefined, server, user);
 		} catch (e) {
 			log(e);
 		}
-	}
-
-	updateUploads = () => {
-		const uploads = this.uploads.map(item => JSON.parse(JSON.stringify(item)));
-		this.setState({ uploads });
 	}
 
 	renderItemContent = (item) => {
@@ -177,6 +200,7 @@ class UploadProgress extends Component {
 		);
 	}
 
+	// TODO: transform into stateless and update based on its own observable changes
 	renderItem = (item, index) => (
 		<View key={item.path} style={[styles.item, index !== 0 ? { marginTop: 10 } : {}]}>
 			{this.renderItemContent(item)}

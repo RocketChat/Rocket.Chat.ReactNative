@@ -10,14 +10,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = React.memo(({ length }) => {
-	if (length === 0) {
+const EmptyRoom = React.memo(({ length, mounted }) => {
+	if (length === 0 && mounted) {
 		return <ImageBackground source={{ uri: 'message_empty' }} style={styles.image} />;
 	}
 	return null;
 });
 
 EmptyRoom.propTypes = {
-	length: PropTypes.number.isRequired
+	length: PropTypes.number.isRequired,
+	mounted: PropTypes.bool
 };
 export default EmptyRoom;
