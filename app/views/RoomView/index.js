@@ -298,9 +298,11 @@ class RoomView extends React.Component {
 	findAndObserveRoom = async(rid) => {
 		try {
 			const db = database.active;
+			const { navigation } = this.props;
 			const subCollection = await db.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
+			navigation.setParams({ room });
 			this.observeRoom(room);
 		} catch (error) {
 			if (this.t !== 'd') {
