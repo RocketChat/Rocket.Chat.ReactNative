@@ -174,7 +174,7 @@ export class List extends React.Component {
 		const { messages } = this.state;
 		return (
 			<>
-				<EmptyRoom length={messages.length} />
+				<EmptyRoom length={messages.length} mounted={this.mounted} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
