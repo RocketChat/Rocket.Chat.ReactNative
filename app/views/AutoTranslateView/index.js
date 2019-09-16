@@ -59,8 +59,8 @@ export default class AutoTranslateView extends React.Component {
 		}
 		this.state = {
 			languages: [],
-			selectedLanguage: this.room.autoTranslateLanguage,
-			enableAutoTranslate: this.room.autoTranslate
+			selectedLanguage: room.autoTranslateLanguage,
+			enableAutoTranslate: room.autoTranslate
 		};
 	}
 
