@@ -5,6 +5,7 @@ import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
+import { Q } from '@nozbe/watermelondb';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -113,10 +114,10 @@ class RoomMembersView extends React.Component {
 		try {
 			const db = database.active;
 			const subsCollection = db.collections.get('subscriptions');
-			const allSubscriptionsRecords = await subsCollection.query().fetch();
-			const subscription = allSubscriptionsRecords.find(sub => sub.name === item.username);
-			if (subscription) {
-				this.goRoom({ rid: subscription.rid, name: item.username });
+			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
+			if (query) {
+				const [room] = query;
+				this.goRoom({ rid: room.rid, name: item.username, room });
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
@@ -195,10 +196,12 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	goRoom = async({ rid, name }) => {
+	goRoom = async({ rid, name, room }) => {
 		const { navigation } = this.props;
 		await navigation.popToTop();
-		navigation.navigate('RoomView', { rid, name, t: 'd' });
+		navigation.navigate('RoomView', {
+			rid, name, t: 'd', room
+		});
 	}
 
 	handleMute = async() => {
