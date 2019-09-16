@@ -5,6 +5,8 @@ import android.util.Log;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
@@ -32,6 +34,7 @@ import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
 import com.nozbe.watermelondb.WatermelonDBPackage;
+import com.reactnativejitsimeet.JitsiMeetPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +59,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
+      packages.add(new JitsiMeetPackage());
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       return packages;
     }
@@ -63,6 +67,11 @@ public class MainApplication extends Application implements ReactApplication, IN
     @Override
     protected String getJSMainModuleName() {
       return "index";
+    }
+
+    @Override
+    protected @Nullable String getBundleAssetName() {
+      return "app.bundle";
     }
   };
 

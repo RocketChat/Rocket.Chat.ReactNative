@@ -8,6 +8,7 @@ import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
+import { setJitsiBaseUrl } from '../../actions/jitsi';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
@@ -50,6 +51,22 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	});
 };
 
+const jitsiBaseUrl = ({
+	Jitsi_Enabled, Jitsi_SSL, Jitsi_Domain, Jitsi_URL_Room_Prefix, uniqueID
+}) => {
+	if (!Jitsi_Enabled) {
+		return '';
+	}
+	const uniqueIdentifier = uniqueID || 'undefined';
+	const domain = Jitsi_Domain;
+	const prefix = Jitsi_URL_Room_Prefix;
+
+	const urlProtocol = Jitsi_SSL ? 'https://' : 'http://';
+	const urlDomain = `${ domain }/`;
+
+	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
+};
+
 export default async function() {
 	try {
 		const db = database.active;
@@ -63,8 +80,10 @@ export default async function() {
 		const data = result.settings || [];
 		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
+		const parsedSettings = this.parseSettings(filteredSettings);
 
-		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+		reduxStore.dispatch(setJitsiBaseUrl(jitsiBaseUrl(parsedSettings)));
+		reduxStore.dispatch(actions.addSettings(parsedSettings));
 		InteractionManager.runAfterInteractions(async() => {
 			// filter server info
 			const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));

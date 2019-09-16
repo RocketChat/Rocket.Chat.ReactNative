@@ -52,7 +52,7 @@ const stateAttrsUpdate = [
 	'replying',
 	'reacting'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -370,6 +370,77 @@ class RoomView extends React.Component {
 		try {
 			await RocketChat.editMessage(message);
 		} catch (e) {
+			this.setState({ loading: false });
+			log(e);
+		}
+	}
+
+	findAndObserveRoom = async(rid) => {
+		try {
+			const db = database.active;
+			const subCollection = await db.collections.get('subscriptions');
+			const room = await subCollection.find(rid);
+			this.setState({ room });
+			this.observeRoom(room);
+		} catch (error) {
+			if (this.t !== 'd') {
+				console.log('Room not found');
+				this.internalSetState({ joined: false });
+			} else {
+				// We navigate to RoomView before the DM is inserted to the local db
+				// So we retry just to make sure we have the right content
+				this.retryFindCount = this.retryFindCount + 1 || 1;
+				if (this.retryFindCount <= 3) {
+					this.retryFindTimeout = setTimeout(() => {
+						this.findAndObserveRoom(rid);
+						this.init();
+					}, 300);
+				}
+			}
+		}
+	}
+
+	observeRoom = (room) => {
+		const observable = room.observe();
+		this.subSubscription = observable
+			.subscribe((changes) => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+					ret[attr] = changes[attr];
+					return ret;
+				}, {});
+				this.internalSetState({ room: changes, roomUpdate });
+			});
+	}
+
+	errorActionsShow = (message) => {
+		this.setState({ selectedMessage: message, showErrorActions: true });
+	}
+
+	onActionsHide = () => {
+		const { editing, replying, reacting } = this.state;
+		if (editing || replying || reacting) {
+			return;
+		}
+		this.setState({ selectedMessage: {}, showActions: false });
+	}
+
+	onErrorActionsHide = () => {
+		this.setState({ selectedMessage: {}, showErrorActions: false });
+	}
+
+	onEditInit = (message) => {
+		this.setState({ selectedMessage: message, editing: true, showActions: false });
+	}
+
+	onEditCancel = () => {
+		this.setState({ selectedMessage: {}, editing: false });
+	}
+
+	onEditRequest = async(message) => {
+		this.setState({ selectedMessage: {}, editing: false });
+		try {
+			await RocketChat.editMessage(message);
+		} catch (e) {
 			log(e);
 		}
 	}
@@ -491,7 +562,7 @@ class RoomView extends React.Component {
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
 		LayoutAnimation.easeInEaseOut();
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
+		RocketChat.sendMessage(this.rid, { message }, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
 	};
@@ -635,7 +706,9 @@ class RoomView extends React.Component {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
+				rid={this.rid}
 				isThreadRoom={!!this.tmid}
+				jitsiTimeout={room.jitsiTimeout}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}

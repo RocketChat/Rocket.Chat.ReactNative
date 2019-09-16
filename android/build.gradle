@@ -40,6 +40,11 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+        maven {
+            // We should change it when Jitsi-SDK
+            // release a version with support RN 0.60
+            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
+        }
 
         google()
         jcenter()

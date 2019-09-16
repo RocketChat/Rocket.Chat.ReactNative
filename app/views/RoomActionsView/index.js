@@ -21,6 +21,7 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
+import callJitsi from '../../lib/methods/callJitsi';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -36,7 +37,8 @@ class RoomActionsView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		leaveRoom: PropTypes.func
+		leaveRoom: PropTypes.func,
+		jitsiEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -166,6 +168,7 @@ class RoomActionsView extends React.Component {
 		const {
 			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
+		const { jitsiEnabled } = this.props;
 		const {
 			rid, t, blocker
 		} = room;
@@ -193,13 +196,15 @@ class RoomActionsView extends React.Component {
 				{
 					icon: 'livechat',
 					name: I18n.t('Voice_call'),
-					disabled: true,
+					disabled: !jitsiEnabled,
+					event: () => callJitsi(rid, { videoMuted: true }),
 					testID: 'room-actions-voice'
 				},
 				{
 					icon: 'video',
 					name: I18n.t('Video_call'),
-					disabled: true,
+					disabled: !jitsiEnabled,
+					event: () => callJitsi(rid),
 					testID: 'room-actions-video'
 				}
 			],
@@ -479,7 +484,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 
 const mapDispatchToProps = dispatch => ({
