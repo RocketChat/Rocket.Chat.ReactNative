@@ -15,7 +15,8 @@ const reducers = combineReducers({
 			username: 'diego.mello'
 		}
 	}),
-	meteor: () => ({ connected: true })
+	meteor: () => ({ connected: true }),
+	activeUsers: () => ({ abc: 'online' })
 });
 const store = createStore(reducers);
 

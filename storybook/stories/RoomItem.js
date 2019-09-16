@@ -11,6 +11,7 @@ const { width } = Dimensions.get('window');
 
 const RoomItem = props => (
 	<RoomItemComponent
+		id='abc'
 		type='d'
 		name='rocket.cat'
 		_updatedAt={date}
