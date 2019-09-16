@@ -111,6 +111,7 @@ export default class NotificationPreferencesView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 
@@ -118,13 +119,21 @@ export default class NotificationPreferencesView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.setState({ room: changes });
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
 				});
 		}
 
 		this.state = {
 			room: room || {}
 		};
+	}
+
+	componentDidMount() {
+		this.mounted = true;
 	}
 
 	componentWillUnmount() {

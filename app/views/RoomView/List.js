@@ -129,17 +129,6 @@ export class List extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	internalSetState = (...args) => {
-		const { animated } = this.props;
-		if (!this.mounted) {
-			return;
-		}
-		if (isIOS && animated) {
-			LayoutAnimation.easeInEaseOut();
-		}
-		this.setState(...args);
-	}
-
 	onEndReached = debounce(async() => {
 		const {
 			loading, end, messages

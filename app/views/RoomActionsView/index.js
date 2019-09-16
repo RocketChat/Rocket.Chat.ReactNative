@@ -41,13 +41,18 @@ class RoomActionsView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		const room = props.navigation.getParam('room');
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.setState({ room: changes });
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
 				});
 		}
 
@@ -57,7 +62,7 @@ class RoomActionsView extends React.Component {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
 			member: {},
-			joined: room,
+			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
 			canAddUser: false
@@ -65,6 +70,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.mounted = true;
 		const { room } = this.state;
 		if (!room.id) {
 			try {

@@ -51,7 +51,7 @@ class RoomMembersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
+		this.mounted = false;
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
@@ -62,7 +62,11 @@ class RoomMembersView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.setState({ room: changes });
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
 				});
 		}
 
@@ -80,6 +84,7 @@ class RoomMembersView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.mounted = true;
 		this.fetchMembers();
 
 		const { navigation } = this.props;

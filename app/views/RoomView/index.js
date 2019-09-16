@@ -330,7 +330,12 @@ class RoomView extends React.Component {
 					ret[attr] = changes[attr];
 					return ret;
 				}, {});
-				this.internalSetState({ room: changes, roomUpdate });
+				if (this.mounted) {
+					this.internalSetState({ room: changes, roomUpdate });
+				} else {
+					this.state.room = changes;
+					this.state.roomUpdate = roomUpdate;
+				}
 			});
 	}
 
