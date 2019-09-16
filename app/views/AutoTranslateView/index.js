@@ -17,7 +17,6 @@ import {
 	SWITCH_TRACK_COLOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR
 } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import database from '../../lib/realm';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -49,11 +48,19 @@ export default class AutoTranslateView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rid = props.navigation.getParam('rid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const room = props.navigation.getParam('room');
+
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					this.room = changes;
+				});
+		}
 		this.state = {
 			languages: [],
-			selectedLanguage: this.rooms[0].autoTranslateLanguage,
-			enableAutoTranslate: this.rooms[0].autoTranslate
+			selectedLanguage: room.autoTranslateLanguage,
+			enableAutoTranslate: room.autoTranslate
 		};
 	}
 
@@ -63,6 +70,12 @@ export default class AutoTranslateView extends React.Component {
 			this.setState({ languages });
 		} catch (error) {
 			console.log(error);
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
 	}
 
@@ -152,5 +165,3 @@ export default class AutoTranslateView extends React.Component {
 		);
 	}
 }
-
-console.disableYellowBox = true;

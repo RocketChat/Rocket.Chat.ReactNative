@@ -5,7 +5,7 @@ const initialState = {
 	loading: false
 };
 
-export default function messages(state = initialState, action) {
+export default function(state = initialState, action) {
 	switch (action.type) {
 		case SELECTED_USERS.ADD_USER:
 			return {
