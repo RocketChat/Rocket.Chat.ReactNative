@@ -303,10 +303,11 @@ export class MasterDetailView extends React.Component {
 		ListContainer.router.getStateForAction = (action, state) => {
 			if (action.type === NavigationActions.NAVIGATE) {
 				const { routeName, params } = action;
-				Navigation.navigate(routeName, params);
 				if (routeName === 'RoomView') {
 					this.listRef.dispatch(NavigationActions.navigate({ routeName: 'RoomsListView' }));
+					Navigation.navigate('Home');
 				}
+				Navigation.navigate(routeName, params);
 			}
 
 			return defaultDetailsGetStateForAction(action, state);
