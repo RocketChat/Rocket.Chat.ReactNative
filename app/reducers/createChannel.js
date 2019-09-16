@@ -7,7 +7,7 @@ const initialState = {
 	error: {}
 };
 
-export default function messages(state = initialState, action) {
+export default function(state = initialState, action) {
 	switch (action.type) {
 		case CREATE_CHANNEL.REQUEST:
 			return {
