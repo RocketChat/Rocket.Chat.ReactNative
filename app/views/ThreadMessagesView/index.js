@@ -269,7 +269,6 @@ class ThreadMessagesView extends React.Component {
 				archived={false}
 				broadcast={false}
 				status={item.status}
-				_updatedAt={item._updatedAt}
 				navigation={navigation}
 				timeFormat='MMM D'
 				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'

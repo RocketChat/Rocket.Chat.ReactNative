@@ -11,10 +11,6 @@ import I18n from '../../i18n';
 const Broadcast = React.memo(({
 	author, user, broadcast, replyBroadcast
 }) => {
-	// FIXME: do we need this?
-	if (!author) {
-		return null;
-	}
 	const isOwn = author._id === user.id;
 	if (broadcast && !isOwn) {
 		return (

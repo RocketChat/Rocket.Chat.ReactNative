@@ -8,10 +8,10 @@ export default appSchema({
 			columns: [
 				{ name: '_id', type: 'string' },
 				{ name: 'f', type: 'boolean' },
-				{ name: 't', type: 'string' },
+				{ name: 't', type: 'string', isIndexed: true },
 				{ name: 'ts', type: 'number' },
 				{ name: 'ls', type: 'number' },
-				{ name: 'name', type: 'string' },
+				{ name: 'name', type: 'string', isIndexed: true },
 				{ name: 'fname', type: 'string' },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'open', type: 'boolean' },

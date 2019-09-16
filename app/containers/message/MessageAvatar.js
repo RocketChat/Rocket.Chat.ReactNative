@@ -8,8 +8,7 @@ import styles from './styles';
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo
 }) => {
-	// FIXME: do we need this author test?
-	if (isHeader && author) {
+	if (isHeader) {
 		const navParam = {
 			t: 'd',
 			rid: author._id

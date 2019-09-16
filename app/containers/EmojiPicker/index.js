@@ -34,7 +34,6 @@ class EmojiPicker extends Component {
 
 	constructor(props) {
 		super(props);
-		// this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
 		const customEmojis = Object.keys(props.customEmojis)
 			.filter(item => item === props.customEmojis[item].name)
 			.map(item => ({
@@ -73,14 +72,12 @@ class EmojiPicker extends Component {
 		try {
 			const { onEmojiSelected } = this.props;
 			if (emoji.isCustom) {
-				// const count = this._getFrequentlyUsedCount(emoji.content);
 				this._addFrequentlyUsed({
 					content: emoji.content, extension: emoji.extension, isCustom: true
 				});
 				onEmojiSelected(`:${ emoji.content }:`);
 			} else {
 				const content = emoji;
-				// const count = this._getFrequentlyUsedCount(content);
 				this._addFrequentlyUsed({ content, isCustom: false });
 				const shortname = `:${ emoji }:`;
 				onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
@@ -94,7 +91,7 @@ class EmojiPicker extends Component {
 	_addFrequentlyUsed = protectedFunction(async(emoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.collections.get('frequently_used_emojis');
-		await database.action(async() => {
+		await db.action(async() => {
 			try {
 				const freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 				await freqEmojiRecord.update((f) => {

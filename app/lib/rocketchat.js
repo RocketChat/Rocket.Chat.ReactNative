@@ -112,7 +112,6 @@ const RocketChat = {
 	connect({ server, user }) {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {
-				// database.setActiveDB(server);
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -169,10 +168,6 @@ const RocketChat = {
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
-				// const { isAuthenticated } = reduxStore.getState().login;
-				// if (isAuthenticated) {
-				// 	this.getUserPresence();
-				// }
 			});
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
@@ -544,31 +539,30 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	deleteMessage(message) {
-		const { id, subscription: { id: rid } } = message;
+	deleteMessage(messageId, rid) {
 		// RC 0.48.0
-		return this.sdk.post('chat.delete', { roomId: rid, msgId: id });
+		return this.sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 	},
 	editMessage(message) {
 		const { id, msg, rid } = message;
 		// RC 0.49.0
 		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
 	},
-	toggleStarMessage(message) {
-		if (message.starred) {
+	toggleStarMessage(messageId, starred) {
+		if (starred) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unStarMessage', { messageId: message.id });
+			return this.sdk.post('chat.unStarMessage', { messageId });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.starMessage', { messageId: message.id });
+		return this.sdk.post('chat.starMessage', { messageId });
 	},
-	togglePinMessage(message) {
-		if (message.pinned) {
+	togglePinMessage(messageId, pinned) {
+		if (pinned) {
 			// RC 0.59.0
-			return this.sdk.post('chat.unPinMessage', { messageId: message.id });
+			return this.sdk.post('chat.unPinMessage', { messageId });
 		}
 		// RC 0.59.0
-		return this.sdk.post('chat.pinMessage', { messageId: message.id });
+		return this.sdk.post('chat.pinMessage', { messageId });
 	},
 	reportMessage(messageId) {
 		return this.sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
@@ -753,8 +747,7 @@ const RocketChat = {
 		}
 		// get permissions from database
 		try {
-			let permissionsFiltered = await permissionsCollection.query().fetch();
-			permissionsFiltered = permissionsFiltered.filter(permission => permissions.includes(permission._id));
+			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			// get user roles on the server from redux
 			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
 			// merge both roles
@@ -764,7 +757,7 @@ const RocketChat = {
 			// e.g. { 'edit-room': true, 'set-readonly': false }
 			return permissions.reduce((result, permission) => {
 				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p._id === permission);
+				const permissionFound = permissionsFiltered.find(p => p.id === permission);
 				if (permissionFound) {
 					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
 				}

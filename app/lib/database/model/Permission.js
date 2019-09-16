@@ -1,10 +1,12 @@
 import { Model } from '@nozbe/watermelondb';
 import { json, date } from '@nozbe/watermelondb/decorators';
 
+import { sanitizer } from '../utils';
+
 export default class Permission extends Model {
 	static table = 'permissions';
 
-  @json('roles', r => r) roles;
+	@json('roles', sanitizer) roles;
 
-  @date('_updated_at') _updatedAt;
+	@date('_updated_at') _updatedAt;
 }

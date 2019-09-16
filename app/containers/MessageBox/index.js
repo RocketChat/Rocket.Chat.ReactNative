@@ -341,7 +341,7 @@ class MessageBox extends Component {
 			result = [{ _id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ _id: -1, username: 'all' }, ...result];
+			result = [{ _id: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}

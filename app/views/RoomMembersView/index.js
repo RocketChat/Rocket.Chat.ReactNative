@@ -5,7 +5,6 @@ import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
-import { throttleTime } from 'rxjs/operators';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -62,7 +61,6 @@ class RoomMembersView extends React.Component {
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
-				.pipe(throttleTime(1000))
 				.subscribe((changes) => {
 					this.setState({ room: changes });
 				});
@@ -133,7 +131,7 @@ class RoomMembersView extends React.Component {
 		const { muted } = room;
 
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m === user.username);
+		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));

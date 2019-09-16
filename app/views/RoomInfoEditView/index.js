@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
@@ -53,9 +52,9 @@ class RoomInfoEditView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.permissions = {};
 		this.state = {
 			room: {},
+			permissions: {},
 			name: '',
 			description: '',
 			topic: '',
@@ -65,17 +64,14 @@ class RoomInfoEditView extends React.Component {
 			saving: false,
 			t: false,
 			ro: false,
-			reactWhenReadOnly: false
+			reactWhenReadOnly: false,
+			archived: false
 		};
 		this.loadRoom();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { room } = this.state;
 		if (!equal(nextState, this.state)) {
-			return true;
-		}
-		if (!equal(nextState.room, room)) {
 			return true;
 		}
 		if (!equal(nextProps, this.props)) {
@@ -99,17 +95,16 @@ class RoomInfoEditView extends React.Component {
 		}
 		try {
 			const db = database.active;
-			const observable = await db.collections
-				.get('subscriptions')
-				.query(Q.where('rid', rid))
-				.observeWithColumns(['_updated_at']);
+			const sub = await db.collections.get('subscriptions').find(rid);
+			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {
-				const [room] = data;
-				this.init(room);
+				this.room = data;
+				this.init(this.room);
 			});
 
-			this.permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
+			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
+			this.setState({ permissions });
 		} catch (e) {
 			log(e);
 		}
@@ -130,7 +125,8 @@ class RoomInfoEditView extends React.Component {
 			t: t === 'p',
 			ro,
 			reactWhenReadOnly,
-			joinCode: joinCodeRequired ? this.randomValue : ''
+			joinCode: joinCodeRequired ? this.randomValue : '',
+			archived: room.archived
 		});
 	}
 
@@ -142,7 +138,7 @@ class RoomInfoEditView extends React.Component {
 
 	reset = () => {
 		this.clearErrors();
-		this.init();
+		this.init(this.room);
 	}
 
 	formIsChanged = () => {
@@ -285,19 +281,20 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	hasDeletePermission = () => {
-		const { room } = this.state;
+		const { room, permissions } = this.state;
 		return (
-			room.t === 'p' ? this.permissions[PERMISSION_DELETE_P] : this.permissions[PERMISSION_DELETE_C]
+			room.t === 'p' ? permissions[PERMISSION_DELETE_P] : permissions[PERMISSION_DELETE_C]
 		);
 	}
 
-	hasArchivePermission = () => (
-		this.permissions[PERMISSION_ARCHIVE] || this.permissions[PERMISSION_UNARCHIVE]
-	);
+	hasArchivePermission = () => {
+		const { permissions } = this.state;
+		return (permissions[PERMISSION_ARCHIVE] || permissions[PERMISSION_UNARCHIVE]);
+	};
 
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived
 		} = this.state;
 		return (
 			<KeyboardView
@@ -369,7 +366,7 @@ class RoomInfoEditView extends React.Component {
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={value => this.setState({ ro: value })}
-							disabled={!this.permissions[PERMISSION_SET_READONLY] || room.broadcast}
+							disabled={!permissions[PERMISSION_SET_READONLY] || room.broadcast}
 							testID='room-info-edit-view-ro'
 						/>
 						{ro && !room.broadcast
@@ -381,7 +378,7 @@ class RoomInfoEditView extends React.Component {
 									rightLabelPrimary={I18n.t('Allow_Reactions')}
 									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
-									disabled={!this.permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+									disabled={!permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 									testID='room-info-edit-view-react-when-ro'
 								/>
 							)
@@ -422,7 +419,7 @@ class RoomInfoEditView extends React.Component {
 								testID='room-info-edit-view-archive'
 							>
 								<Text style={[sharedStyles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
-									{ room.archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
+									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 								</Text>
 							</TouchableOpacity>
 						</View>

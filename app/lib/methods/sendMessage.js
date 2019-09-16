@@ -68,6 +68,11 @@ export default async function(rid, msg, tmid, user) {
 
 		try {
 			await sendMessageCall.call(this, message);
+			await db.action(async() => {
+				await message.update((m) => {
+					m.status = messagesStatus.SENT;
+				});
+			});
 		} catch (e) {
 			await db.action(async() => {
 				await message.update((m) => {

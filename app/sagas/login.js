@@ -88,7 +88,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			roles: user.roles
 		};
-		serversDB.action(async() => {
+		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
 				await userRecord.update((record) => {

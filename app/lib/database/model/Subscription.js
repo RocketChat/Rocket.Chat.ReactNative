@@ -2,6 +2,7 @@ import { Model } from '@nozbe/watermelondb';
 import {
 	field, date, json, children
 } from '@nozbe/watermelondb/decorators';
+import { sanitizer } from '../utils';
 
 export default class Subscription extends Model {
 	static table = 'subscriptions';
@@ -33,7 +34,7 @@ export default class Subscription extends Model {
 
 	@field('alert') alert;
 
-	@json('roles', r => r) roles;
+	@json('roles', sanitizer) roles;
 
 	@field('unread') unread;
 
@@ -63,7 +64,7 @@ export default class Subscription extends Model {
 
 	@field('notifications') notifications;
 
-	@json('muted', r => r) muted;
+	@json('muted', sanitizer) muted;
 
 	@field('broadcast') broadcast;
 
@@ -79,7 +80,7 @@ export default class Subscription extends Model {
 
 	@field('auto_translate_language') autoTranslateLanguage;
 
-	@json('last_message', r => r) lastMessage;
+	@json('last_message', sanitizer) lastMessage;
 
 	@children('messages') messages;
 

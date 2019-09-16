@@ -194,13 +194,11 @@ class RoomView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { room } = this.state;
 		const { appState } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				RocketChat.loadMissedMessages(room).catch(e => console.log(e));
-				RocketChat.readMessages(room.rid).catch(e => console.log(e));
+				this.init();
 			});
 		}
 	}
@@ -301,7 +299,7 @@ class RoomView extends React.Component {
 		try {
 			const db = database.active;
 			const subCollection = await db.collections.get('subscriptions');
-			const room = await subCollection.find('OIAUSHDOIUASHD');
+			const room = await subCollection.find(rid);
 			this.setState({ room });
 			this.observeRoom(room);
 		} catch (error) {
@@ -535,7 +533,6 @@ class RoomView extends React.Component {
 			});
 		} catch (e) {
 			log(e);
-			console.log(e);
 		}
 	}
 
@@ -585,7 +582,6 @@ class RoomView extends React.Component {
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
 		} catch (e) {
 			log(e);
-			console.log(e);
 		}
 	}
 
@@ -595,6 +591,12 @@ class RoomView extends React.Component {
 			return;
 		}
 		navigation.navigate('RoomInfoView', navParam);
+	}
+
+	get isReadOnly() {
+		const { room } = this.state;
+		const { user } = this.props;
+		return isReadOnly(room, user);
 	}
 
 	renderItem = (item, previousItem) => {
@@ -627,7 +629,6 @@ class RoomView extends React.Component {
 				rid={this.rid}
 				isThreadRoom={!!this.tmid}
 				jitsiTimeout={room.jitsiTimeout}
-				_updatedAt={item._updatedAt} // TODO: need it?
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
@@ -671,7 +672,7 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
-		const { navigation, user } = this.props;
+		const { navigation } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
@@ -688,7 +689,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (isReadOnly(room, user)) {
+		if (this.isReadOnly) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
@@ -724,7 +725,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const {
-			room, selectedMessage, showActions, showErrorActions
+			room, selectedMessage, showActions, showErrorActions, joined
 		} = this.state;
 		const {
 			user, navigation
@@ -734,7 +735,7 @@ class RoomView extends React.Component {
 		}
 		return (
 			<>
-				{room.id && showActions
+				{joined && showActions
 					? (
 						<MessageActions
 							tmid={this.tmid}
@@ -745,6 +746,7 @@ class RoomView extends React.Component {
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
+							isReadOnly={this.isReadOnly}
 						/>
 					)
 					: null

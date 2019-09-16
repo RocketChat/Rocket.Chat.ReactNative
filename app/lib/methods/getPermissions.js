@@ -2,6 +2,7 @@ import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { orderBy } from 'lodash';
+import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from '../../utils/log';
@@ -9,23 +10,22 @@ import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
 
 const getUpdatedSince = async() => {
-	let permission = null;
 	try {
 		const db = database.active;
 		const permissionsCollection = db.collections.get('permissions');
-		let permissions = await permissionsCollection.query().fetch();
-		permissions = orderBy(permissions, ['_updatedAt'], ['asc']);
-		[permission] = permissions;
+		const permissions = await permissionsCollection.query(Q.where('_updated_at', Q.notEq(null))).fetch();
+		const ordered = orderBy(permissions, ['_updatedAt'], ['desc']);
+		return ordered && ordered[0]._updatedAt.toISOString();
 	} catch (e) {
 		log(e);
 	}
-	return permission && permission._updatedAt.toISOString();
+	return null;
 };
 
-const create = (permissions, toDelete = null) => {
+const create = async(permissions, toDelete = null) => {
 	const db = database.active;
 	if (permissions && permissions.length) {
-		db.action(async() => {
+		await db.action(async() => {
 			const permissionsCollection = db.collections.get('permissions');
 			const allPermissionRecords = await permissionsCollection.query().fetch();
 
@@ -82,8 +82,8 @@ export default function() {
 				if (!result.success) {
 					return resolve();
 				}
-				InteractionManager.runAfterInteractions(() => {
-					create(result.permissions);
+				InteractionManager.runAfterInteractions(async() => {
+					await create(result.permissions);
 					return resolve();
 				});
 			} else {
@@ -99,12 +99,10 @@ export default function() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(
-					() => {
-						create(result.update, result.delete);
-						return resolve();
-					}
-				);
+				InteractionManager.runAfterInteractions(async() => {
+					await create(result.update, result.delete);
+					return resolve();
+				});
 			}
 		} catch (e) {
 			log(e);

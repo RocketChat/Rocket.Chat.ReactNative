@@ -3,7 +3,7 @@ import {
 	field, relation, date, json
 } from '@nozbe/watermelondb/decorators';
 
-const sanitizer = r => r;
+import { sanitizer } from '../utils';
 
 export default class Thread extends Model {
 	static table = 'threads';
@@ -20,8 +20,6 @@ export default class Thread extends Model {
 
 	@json('u', sanitizer) u;
 
-	// @relation('subscriptions', 'subscription_id') subscription;
-	// @field('rid') rid;
 	@relation('subscriptions', 'rid') subscription;
 
 	@field('alias') alias;

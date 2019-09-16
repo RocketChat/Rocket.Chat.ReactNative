@@ -3,13 +3,12 @@ import {
 	field, relation, date, json
 } from '@nozbe/watermelondb/decorators';
 
-const sanitizer = r => r;
+import { sanitizer } from '../utils';
 
 export default class Message extends Model {
 	static table = 'messages';
 
 	static associations = {
-		// subscriptions: { type: 'belongs_to', key: 'subscription_id' }
 		subscriptions: { type: 'belongs_to', key: 'rid' }
 	}
 
