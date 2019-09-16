@@ -11,7 +11,6 @@ import { Video } from 'expo-av';
 import sharedStyles from '../views/Styles';
 import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
-import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -85,7 +84,7 @@ const ModalContent = React.memo(({
 		);
 	}
 	if (attachment && attachment.video_url) {
-		const [loading, setLoading] = useState(0);
+		const [loading, setLoading] = useState(true);
 		const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 		return (
 			<>
@@ -101,7 +100,7 @@ const ModalContent = React.memo(({
 					useNativeControls
 					onReadyForDisplay={() => setLoading(false)}
 					onLoadStart={() => setLoading(true)}
-					onError={log}
+					onError={console.log}
 				/>
 				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
 			</>

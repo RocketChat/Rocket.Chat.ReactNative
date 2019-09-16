@@ -4,7 +4,7 @@ import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getCustomEmoji, getMessageTranslation } from './utils';
+import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
 
 export default class MessageContainer extends React.Component {
@@ -21,22 +21,23 @@ export default class MessageContainer extends React.Component {
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
 		previousItem: PropTypes.object,
-		_updatedAt: PropTypes.instanceOf(Date),
 		baseUrl: PropTypes.string,
 		Message_GroupingPeriod: PropTypes.number,
 		isReadReceiptEnabled: PropTypes.bool,
+		isThreadRoom: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		useMarkdown: PropTypes.bool,
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
+		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
-		toggleReactionPicker: PropTypes.func,
+		reactionInit: PropTypes.func,
 		fetchThreadName: PropTypes.func,
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
@@ -45,55 +46,53 @@ export default class MessageContainer extends React.Component {
 
 	static defaultProps = {
 		onLongPress: () => {},
-		_updatedAt: new Date(),
 		archived: false,
 		broadcast: false
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const {
-			status, item, _updatedAt, autoTranslateRoom
-		} = this.props;
+	componentDidMount() {
+		const { item } = this.props;
+		if (item && item.observe) {
+			const observable = item.observe();
+			this.subscription = observable.subscribe(() => {
+				this.forceUpdate();
+			});
+		}
+	}
 
-		if (status !== nextProps.status) {
-			return true;
-		}
-		if (autoTranslateRoom !== nextProps.autoTranslateRoom) {
-			return true;
-		}
-		if (item.tmsg !== nextProps.item.tmsg) {
-			return true;
-		}
-		if (item.unread !== nextProps.item.unread) {
-			return true;
-		}
+	shouldComponentUpdate() {
+		return false;
+	}
 
-		return _updatedAt.toISOString() !== nextProps._updatedAt.toISOString();
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	onPress = debounce(() => {
-		const { item } = this.props;
+		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
-		if ((item.tlm || item.tmid)) {
+		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
 		}
 	}, 300, true);
 
 	onLongPress = () => {
-		const { archived, onLongPress } = this.props;
+		const { archived, onLongPress, item } = this.props;
 		if (this.isInfo || this.hasError || archived) {
 			return;
 		}
 		if (onLongPress) {
-			onLongPress(this.parseMessage());
+			onLongPress(item);
 		}
 	}
 
 	onErrorPress = () => {
-		const { errorActionsShow } = this.props;
+		const { errorActionsShow, item } = this.props;
 		if (errorActionsShow) {
-			errorActionsShow(this.parseMessage());
+			errorActionsShow(item);
 		}
 	}
 
@@ -132,23 +131,30 @@ export default class MessageContainer extends React.Component {
 		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
 			return true;
 		}
-		if (previousItem && (
-			(previousItem.ts.toDateString() === item.ts.toDateString())
-			&& (previousItem.u.username === item.u.username)
-			&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
-			&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
-			&& (previousItem.tmid === item.tmid)
-		)) {
-			return false;
+		try {
+			if (previousItem && (
+				(previousItem.ts.toDateString() === item.ts.toDateString())
+				&& (previousItem.u.username === item.u.username)
+				&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
+				&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
+				&& (previousItem.tmid === item.tmid)
+			)) {
+				return false;
+			}
+			return true;
+		} catch (error) {
+			return true;
 		}
-		return true;
 	}
 
 	get isThreadReply() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
-		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem._id !== item.tmid)) {
+		if (isThreadRoom) {
+			return false;
+		}
+		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem.id !== item.tmid)) {
 			return true;
 		}
 		return false;
@@ -156,9 +162,12 @@ export default class MessageContainer extends React.Component {
 
 	get isThreadSequential() {
 		const {
-			item, previousItem
+			item, previousItem, isThreadRoom
 		} = this.props;
-		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem._id === item.tmid))) {
+		if (isThreadRoom) {
+			return false;
+		}
+		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
 			return true;
 		}
 		return false;
@@ -179,31 +188,26 @@ export default class MessageContainer extends React.Component {
 		return item.status === messagesStatus.ERROR;
 	}
 
-	parseMessage = () => {
-		const { item } = this.props;
-		return JSON.parse(JSON.stringify(item));
-	}
-
-	toggleReactionPicker = () => {
-		const { toggleReactionPicker } = this.props;
-		if (toggleReactionPicker) {
-			toggleReactionPicker(this.parseMessage());
+	reactionInit = () => {
+		const { reactionInit, item } = this.props;
+		if (reactionInit) {
+			reactionInit(item);
 		}
 	}
 
 	replyBroadcast = () => {
-		const { replyBroadcast } = this.props;
+		const { replyBroadcast, item } = this.props;
 		if (replyBroadcast) {
-			replyBroadcast(this.parseMessage());
+			replyBroadcast(item);
 		}
 	}
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom
 		} = this.props;
 		const {
-			_id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
 		} = item;
 
 		let message = msg;
@@ -215,7 +219,7 @@ export default class MessageContainer extends React.Component {
 
 		return (
 			<Message
-				id={_id}
+				id={id}
 				msg={message}
 				author={u}
 				ts={ts}
@@ -251,6 +255,7 @@ export default class MessageContainer extends React.Component {
 				isHeader={this.isHeader}
 				isThreadReply={this.isThreadReply}
 				isThreadSequential={this.isThreadSequential}
+				isThreadRoom={isThreadRoom}
 				isInfo={this.isInfo}
 				isTemp={this.isTemp}
 				hasError={this.hasError}
@@ -260,7 +265,7 @@ export default class MessageContainer extends React.Component {
 				onReactionLongPress={this.onReactionLongPress}
 				onReactionPress={this.onReactionPress}
 				replyBroadcast={this.replyBroadcast}
-				toggleReactionPicker={this.toggleReactionPicker}
+				reactionInit={this.reactionInit}
 				onDiscussionPress={this.onDiscussionPress}
 				onOpenFileModal={onOpenFileModal}
 				getCustomEmoji={getCustomEmoji}
