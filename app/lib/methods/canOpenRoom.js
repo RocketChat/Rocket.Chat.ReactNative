@@ -18,10 +18,9 @@ async function open({ type, rid }) {
 }
 
 export default async function canOpenRoom({ rid, path }) {
-	const db = database.active;
-	const subsCollection = db.get('subscriptions');
-
 	try {
+		const db = database.active;
+		const subsCollection = db.collections.get('subscriptions');
 		const [type] = path.split('/');
 		if (type === 'channel') {
 			return true;
