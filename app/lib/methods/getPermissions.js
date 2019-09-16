@@ -2,19 +2,18 @@ import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { orderBy } from 'lodash';
-import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
 
-const getUpdatedSince = async() => {
+const getUpdatedSince = (allRecords) => {
 	try {
-		const db = database.active;
-		const permissionsCollection = db.collections.get('permissions');
-		const permissions = await permissionsCollection.query(Q.where('_updated_at', Q.notEq(null))).fetch();
-		const ordered = orderBy(permissions, ['_updatedAt'], ['desc']);
+		if (!allRecords.length) {
+			return null;
+		}
+		const ordered = orderBy(allRecords.filter(item => item._updatedAt !== null), ['_updatedAt'], ['desc']);
 		return ordered && ordered[0]._updatedAt.toISOString();
 	} catch (e) {
 		log(e);
@@ -22,51 +21,52 @@ const getUpdatedSince = async() => {
 	return null;
 };
 
-const create = async(permissions, toDelete = null) => {
+const updatePermissions = async({ update = [], remove = [], allRecords }) => {
+	if (!((update && update.length) || (remove && remove.length))) {
+		return;
+	}
 	const db = database.active;
-	if (permissions && permissions.length) {
-		await db.action(async() => {
-			const permissionsCollection = db.collections.get('permissions');
-			const allPermissionRecords = await permissionsCollection.query().fetch();
+	const permissionsCollection = db.collections.get('permissions');
 
-			// filter permissions
-			let permissionsToCreate = permissions.filter(i1 => !allPermissionRecords.find(i2 => i1._id === i2.id));
-			let permissionsToUpdate = allPermissionRecords.filter(i1 => permissions.find(i2 => i1.id === i2._id));
-			let permissionsToDelete = [];
-			if (toDelete && toDelete.length) {
-				permissionsToDelete = allPermissionRecords.filter(i1 => toDelete.find(i2 => i1.id === i2._id));
-			}
+	// filter permissions
+	let permissionsToCreate = [];
+	let permissionsToUpdate = [];
+	let permissionsToDelete = [];
 
-			// Create
-			permissionsToCreate = permissionsToCreate.map(permission => permissionsCollection.prepareCreate(protectedFunction((p) => {
-				p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
-				Object.assign(p, permission);
-			})));
-
-			// Update
-			permissionsToUpdate = permissionsToUpdate.map((permission) => {
-				const newPermission = permissions.find(p => p._id === permission.id);
-				return permission.prepareUpdate(protectedFunction((p) => {
-					Object.assign(p, newPermission);
-				}));
-			});
-
-			// Delete
-			permissionsToDelete = permissionsToDelete.map(permission => permission.prepareDestroyPermanently());
-
-			const allRecords = [
-				...permissionsToCreate,
-				...permissionsToUpdate,
-				...permissionsToDelete
-			];
-
-			try {
-				await db.batch(...allRecords);
-			} catch (e) {
-				log(e);
-			}
-			return allRecords.length;
+	// Create or update
+	if (update && update.length) {
+		permissionsToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
+		permissionsToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+		permissionsToCreate = permissionsToCreate.map(permission => permissionsCollection.prepareCreate(protectedFunction((p) => {
+			p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
+			Object.assign(p, permission);
+		})));
+		permissionsToUpdate = permissionsToUpdate.map((permission) => {
+			const newPermission = update.find(p => p._id === permission.id);
+			return permission.prepareUpdate(protectedFunction((p) => {
+				Object.assign(p, newPermission);
+			}));
 		});
+	}
+
+	// Delete
+	if (remove && remove.length) {
+		permissionsToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+		permissionsToDelete = permissionsToDelete.map(permission => permission.prepareDestroyPermanently());
+	}
+
+	const batch = [
+		...permissionsToCreate,
+		...permissionsToUpdate,
+		...permissionsToDelete
+	];
+
+	try {
+		await db.action(async() => {
+			await db.batch(...batch);
+		});
+	} catch (e) {
+		log(e);
 	}
 };
 
@@ -74,6 +74,9 @@ export default function() {
 	return new Promise(async(resolve) => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
+			const db = database.active;
+			const permissionsCollection = db.collections.get('permissions');
+			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api
 			if (semver.lt(serverVersion, '0.73.0')) {
@@ -83,12 +86,12 @@ export default function() {
 					return resolve();
 				}
 				InteractionManager.runAfterInteractions(async() => {
-					await create(result.permissions);
+					await updatePermissions({ update: result.permissions, allRecords });
 					return resolve();
 				});
 			} else {
 				const params = {};
-				const updatedSince = await getUpdatedSince();
+				const updatedSince = await getUpdatedSince(allRecords);
 				if (updatedSince) {
 					params.updatedSince = updatedSince;
 				}
@@ -100,7 +103,7 @@ export default function() {
 				}
 
 				InteractionManager.runAfterInteractions(async() => {
-					await create(result.update, result.delete);
+					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
 					return resolve();
 				});
 			}

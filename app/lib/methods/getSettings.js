@@ -1,5 +1,6 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import reduxStore from '../createStore';
 import * as actions from '../../actions';
@@ -61,6 +62,7 @@ export default async function() {
 		}
 		const data = result.settings || [];
 		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
+		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
 		InteractionManager.runAfterInteractions(async() => {
@@ -71,7 +73,9 @@ export default async function() {
 
 			await db.action(async() => {
 				const settingsCollection = db.collections.get('settings');
-				const allSettingsRecords = await settingsCollection.query().fetch();
+				const allSettingsRecords = await settingsCollection
+					.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
+					.fetch();
 
 				// filter settings
 				let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
