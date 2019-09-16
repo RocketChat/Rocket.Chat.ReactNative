@@ -96,7 +96,12 @@ const ListStack = createStackNavigator({
 		getScreen: () => require('./views/SelectedUsersView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	transitionConfig: () => ({
+		transitionSpec: {
+			duration: 0
+		}
+	})
 });
 
 // Inside
@@ -292,26 +297,33 @@ const ListContainer = createAppContainer(ListStackModal);
 
 export class MasterDetailView extends React.Component {
 	componentDidMount() {
-		const defaultMasterGetStateForAction = ListContainer.router.getStateForAction;
-		const defaultDetailGetStateForAction = App.router.getStateForAction;
+		const defaultDetailsGetStateForAction = ListContainer.router.getStateForAction;
+		const defaultMasterGetStateForAction = App.router.getStateForAction;
 
 		ListContainer.router.getStateForAction = (action, state) => {
 			if (action.type === NavigationActions.NAVIGATE) {
 				const { routeName, params } = action;
 				Navigation.navigate(routeName, params);
+				if (routeName === 'RoomView') {
+					this.listRef.dispatch(NavigationActions.navigate({ routeName: 'RoomsListView' }));
+				}
 			}
 
-			return defaultMasterGetStateForAction(action, state);
+			return defaultDetailsGetStateForAction(action, state);
 		};
 
-		App.router.getStateForAction = (action, state) => defaultDetailGetStateForAction(action, state);
+		App.router.getStateForAction = (action, state) => defaultMasterGetStateForAction(action, state);
 	}
 
 	render() {
 		return (
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				<View style={{ flex: 4 }}>
-					<ListContainer />
+					<ListContainer
+						ref={(listRef) => {
+							this.listRef = listRef;
+						}}
+					/>
 				</View>
 				<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
 				<View style={{ flex: 8 }}>
