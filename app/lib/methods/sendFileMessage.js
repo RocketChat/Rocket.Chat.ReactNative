@@ -1,4 +1,6 @@
-import database from '../realm';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
+import database from '../database';
 import log from '../../utils/log';
 
 const uploadQueue = {};
@@ -7,26 +9,28 @@ export function isUploadActive(path) {
 	return !!uploadQueue[path];
 }
 
-export function cancelUpload(path) {
-	if (uploadQueue[path]) {
-		uploadQueue[path].abort();
-		database.write(() => {
-			const upload = database.objects('uploads').filtered('path = $0', path);
-			try {
-				database.delete(upload);
-			} catch (e) {
-				log(e);
-			}
-		});
-		delete uploadQueue[path];
+export async function cancelUpload(item) {
+	if (uploadQueue[item.path]) {
+		uploadQueue[item.path].abort();
+		try {
+			const db = database.active;
+			await db.database.action(async() => {
+				await item.destroyPermanently();
+			});
+		} catch (e) {
+			log(e);
+		}
+		delete uploadQueue[item.path];
 	}
 }
 
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
-	return new Promise((resolve, reject) => {
+	return new Promise(async(resolve, reject) => {
 		try {
-			const { serversDB } = database.databases;
-			const { FileUpload_MaxFileSize, id: Site_Url } = serversDB.objectForPrimaryKey('servers', server);
+			const serversDB = database.servers;
+			const serversCollection = serversDB.collections.get('servers');
+			const serverInfo = await serversCollection.find(server);
+			const { FileUpload_MaxFileSize, id: Site_Url } = serverInfo;
 			const { id, token } = user;
 
 			// -1 maxFileSize means there is no limit
@@ -41,13 +45,24 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			fileInfo.rid = rid;
 
-			database.write(() => {
+			const db = database.active;
+			const uploadsCollection = db.collections.get('uploads');
+			let uploadRecord;
+			try {
+				uploadRecord = await uploadsCollection.find(fileInfo.path);
+			} catch (error) {
 				try {
-					database.create('uploads', fileInfo, true);
+					await db.action(async() => {
+						uploadRecord = await uploadsCollection.create((u) => {
+							u._raw = sanitizedRaw({ id: fileInfo.path }, uploadsCollection.schema);
+							Object.assign(u, fileInfo);
+							u.subscription.id = rid;
+						});
+					});
 				} catch (e) {
 					return log(e);
 				}
-			});
+			}
 
 			uploadQueue[fileInfo.path] = xhr;
 			xhr.open('POST', uploadUrl);
@@ -69,56 +84,55 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
 
-			xhr.upload.onprogress = ({ total, loaded }) => {
-				database.write(() => {
-					fileInfo.progress = Math.floor((loaded / total) * 100);
-					try {
-						database.create('uploads', fileInfo, true);
-					} catch (e) {
-						return log(e);
-					}
-				});
-			};
-
-			xhr.onload = () => {
-				if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
-					database.write(() => {
-						const upload = database.objects('uploads').filtered('path = $0', fileInfo.path);
-						try {
-							database.delete(upload);
-							const response = JSON.parse(xhr.response);
-							resolve(response);
-						} catch (e) {
-							reject(e);
-							log(e);
-						}
+			xhr.upload.onprogress = async({ total, loaded }) => {
+				try {
+					await db.action(async() => {
+						await uploadRecord.update((u) => {
+							u.progress = Math.floor((loaded / total) * 100);
+						});
 					});
-				} else {
-					database.write(() => {
-						fileInfo.error = true;
-						try {
-							database.create('uploads', fileInfo, true);
-							const response = JSON.parse(xhr.response);
-							reject(response);
-						} catch (e) {
-							reject(e);
-							log(e);
-						}
-					});
+				} catch (e) {
+					log(e);
 				}
 			};
 
-			xhr.onerror = (error) => {
-				database.write(() => {
-					fileInfo.error = true;
+			xhr.onload = async() => {
+				if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
 					try {
-						database.create('uploads', fileInfo, true);
-						reject(error);
+						await db.action(async() => {
+							await uploadRecord.destroyPermanently();
+						});
+						const response = JSON.parse(xhr.response);
+						resolve(response);
 					} catch (e) {
-						reject(e);
 						log(e);
 					}
-				});
+				} else {
+					try {
+						await db.action(async() => {
+							await uploadRecord.update((u) => {
+								u.error = true;
+							});
+						});
+					} catch (e) {
+						log(e);
+					}
+					const response = JSON.parse(xhr.response);
+					reject(response);
+				}
+			};
+
+			xhr.onerror = async(error) => {
+				try {
+					await db.action(async() => {
+						await uploadRecord.update((u) => {
+							u.error = true;
+						});
+					});
+				} catch (e) {
+					log(e);
+				}
+				reject(error);
 			};
 
 			xhr.send(formData);

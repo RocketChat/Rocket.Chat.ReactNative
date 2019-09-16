@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 import I18n from '../../i18n';
-import database from '../../lib/realm';
 import { DISCUSSION } from './constants';
 
 export const formatLastMessage = (lm, customFormat) => {
@@ -94,25 +93,6 @@ export const getInfoMessage = ({
 		return I18n.t('Created_snippet');
 	}
 	return '';
-};
-
-export const getCustomEmoji = (content) => {
-	// search by name
-	const data = database.objects('customEmojis').filtered('name == $0', content);
-	if (data.length) {
-		return data[0];
-	}
-
-	// searches by alias
-	// RealmJS doesn't support IN operator: https://github.com/realm/realm-js/issues/450
-	const emojis = database.objects('customEmojis');
-	const findByAlias = emojis.find((emoji) => {
-		if (emoji.aliases.length && emoji.aliases.findIndex(alias => alias === content) !== -1) {
-			return true;
-		}
-		return false;
-	});
-	return findByAlias;
 };
 
 export const getMessageTranslation = (message, autoTranslateLanguage) => {

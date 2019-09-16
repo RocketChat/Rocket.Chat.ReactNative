@@ -181,7 +181,7 @@ class NewServerView extends React.Component {
 			url = `${ url }.rocket.chat`;
 		}
 
-		if (/^(https?:\/\/)?(((\w|[0-9])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
+		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			if (/^localhost(:\d+)?/.test(url)) {
 				url = `http://${ url }`;
 			} else if (/^https?:\/\//.test(url) === false) {

@@ -231,7 +231,9 @@ class LoginSignupView extends React.Component {
 		const redirectUri = `${ server }/_oauth/${ service }`;
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirectUri }&response_type=code&state=${ state }&scope=${ scope }`;
-		const url = `${ serverURL }${ authorizePath }${ params }`;
+		const domain = `${ serverURL }`;
+		const absolutePath = `${ authorizePath }${ params }`;
+		const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
 		this.openOAuth({ url });
 	}
 
