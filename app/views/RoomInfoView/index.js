@@ -9,7 +9,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -58,15 +58,13 @@ class RoomInfoView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.roles = database.objects('roles');
-		this.sub = {
-			unsubscribe: () => {}
-		};
 		this.state = {
-			room: {},
-			roomUser: {}
+			room: room || {},
+			roomUser: {},
+			parsedRoles: []
 		};
 	}
 
@@ -77,19 +75,29 @@ class RoomInfoView extends React.Component {
 			try {
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ roomUser: result.user });
+					const { roles } = result.user;
+					let parsedRoles = [];
+					if (roles && roles.length) {
+						parsedRoles = await Promise.all(roles.map(async(role) => {
+							const description = await this.getRoleDescription(role);
+							return description;
+						}));
+					}
+					this.setState({ roomUser: result.user, parsedRoles });
 				}
 			} catch (e) {
 				log(e);
 			}
 			return;
 		}
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		safeAddListener(this.rooms, this.updateRoom);
-		let room = {};
-		if (this.rooms.length > 0) {
-			this.setState({ room: this.rooms[0] });
-			[room] = this.rooms;
+		const { navigation } = this.props;
+		let room = navigation.getParam('room');
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					this.setState({ room: changes });
+				});
 		} else {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);
@@ -102,28 +110,33 @@ class RoomInfoView extends React.Component {
 				log(e);
 			}
 		}
-		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			const { navigation } = this.props;
 			navigation.setParams({ showEdit: true });
 		}
 	}
 
-	getRoleDescription = (id) => {
-		const role = database.objectForPrimaryKey('roles', id);
-		if (role) {
-			return role.description;
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
-		return null;
+	}
+
+	getRoleDescription = async(id) => {
+		const db = database.active;
+		try {
+			const rolesCollection = db.collections.get('roles');
+			const role = await rolesCollection.find(id);
+			if (role) {
+				return role.description;
+			}
+			return null;
+		} catch (e) {
+			return null;
+		}
 	}
 
 	isDirect = () => this.t === 'd'
-
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
-		}
-	}
 
 	renderItem = (key, room) => (
 		<View style={styles.item}>
@@ -136,12 +149,11 @@ class RoomInfoView extends React.Component {
 		</View>
 	);
 
-	renderRole = (role) => {
-		const description = this.getRoleDescription(role);
+	renderRole = (description) => {
 		if (description) {
 			return (
-				<View style={styles.roleBadge} key={role}>
-					<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
+				<View style={styles.roleBadge} key={description}>
+					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
 		}
@@ -149,13 +161,13 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
-		const { roomUser } = this.state;
-		if (roomUser && roomUser.roles && roomUser.roles.length) {
+		const { parsedRoles } = this.state;
+		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
-						{roomUser.roles.map(role => this.renderRole(role))}
+						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
 				</View>
 			);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView
 } from 'react-native';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
@@ -47,19 +47,18 @@ const styles = StyleSheet.create({
 });
 
 const Typing = React.memo(({ usersTyping }) => {
-	const users = usersTyping.map(item => item.username);
 	let usersText;
-	if (!users.length) {
+	if (!usersTyping.length) {
 		return null;
-	} else if (users.length === 2) {
-		usersText = users.join(` ${ I18n.t('and') } `);
+	} else if (usersTyping.length === 2) {
+		usersText = usersTyping.join(` ${ I18n.t('and') } `);
 	} else {
-		usersText = users.join(', ');
+		usersText = usersTyping.join(', ');
 	}
 	return (
 		<Text style={styles.typing} numberOfLines={1}>
 			<Text style={styles.typingUsers}>{usersText} </Text>
-			{ users.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+			{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
 		</Text>
 	);
 });
@@ -102,7 +101,7 @@ const Header = React.memo(({
 		}
 	}
 	if (title) {
-		title = emojify(title, { output: 'unicode' });
+		title = shortnameToUnicode(title);
 		if (tmid) {
 			title = removeMarkdown(title);
 		}

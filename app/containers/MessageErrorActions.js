@@ -1,32 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 
-import { errorActionsHide as errorActionsHideAction } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
+import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
 
 class MessageErrorActions extends React.Component {
 	static propTypes = {
-		errorActionsHide: PropTypes.func.isRequired,
-		actionMessage: PropTypes.object
+		actionsHide: PropTypes.func.isRequired,
+		message: PropTypes.object
 	};
-
-	handleResend = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		RocketChat.resendMessage(actionMessage._id);
-	});
-
-	handleDelete = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		database.write(() => {
-			const msg = database.objects('messages').filtered('_id = $0', actionMessage._id);
-			database.delete(msg);
-		});
-	})
 
 	// eslint-disable-next-line react/sort-comp
 	constructor(props) {
@@ -41,6 +26,19 @@ class MessageErrorActions extends React.Component {
 		});
 	}
 
+	handleResend = protectedFunction(async() => {
+		const { message } = this.props;
+		await RocketChat.resendMessage(message);
+	});
+
+	handleDelete = protectedFunction(async() => {
+		const { message } = this.props;
+		const db = database.active;
+		await db.action(async() => {
+			await message.destroyPermanently();
+		});
+	})
+
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.options,
@@ -53,7 +51,7 @@ class MessageErrorActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { errorActionsHide } = this.props;
+		const { actionsHide } = this.props;
 		switch (actionIndex) {
 			case this.RESEND_INDEX:
 				this.handleResend();
@@ -64,7 +62,7 @@ class MessageErrorActions extends React.Component {
 			default:
 				break;
 		}
-		errorActionsHide();
+		actionsHide();
 	}
 
 	render() {
@@ -74,12 +72,4 @@ class MessageErrorActions extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	actionMessage: state.messages.actionMessage
-});
-
-const mapDispatchToProps = dispatch => ({
-	errorActionsHide: () => dispatch(errorActionsHideAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageErrorActions);
+export default MessageErrorActions;

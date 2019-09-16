@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import removeMarkdown from 'remove-markdown';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
@@ -9,18 +9,18 @@ import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
 
 const RepliedThread = React.memo(({
-	tmid, tmsg, isHeader, isTemp, fetchThreadName
+	tmid, tmsg, isHeader, isTemp, fetchThreadName, id
 }) => {
 	if (!tmid || !isHeader || isTemp) {
 		return null;
 	}
 
 	if (!tmsg) {
-		fetchThreadName(tmid);
+		fetchThreadName(tmid, id);
 		return null;
 	}
 
-	let msg = emojify(tmsg, { output: 'unicode' });
+	let msg = shortnameToUnicode(tmsg);
 	msg = removeMarkdown(msg);
 
 	return (
@@ -49,6 +49,7 @@ const RepliedThread = React.memo(({
 RepliedThread.propTypes = {
 	tmid: PropTypes.string,
 	tmsg: PropTypes.string,
+	id: PropTypes.string,
 	isHeader: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	fetchThreadName: PropTypes.func
