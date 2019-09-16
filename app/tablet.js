@@ -1,10 +1,12 @@
 import React from 'react';
 import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
+	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, NavigationActions
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking } from 'react-native';
+import {
+	View, Linking
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
@@ -81,6 +83,18 @@ const OutsideStackModal = createStackNavigator({
 	headerMode: 'none'
 });
 
+// Side list
+const ListStack = createStackNavigator({
+	RoomsListView: {
+		getScreen: () => require('./views/RoomsListView').default
+	},
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
 // Inside
 const ChatsStack = createStackNavigator({
 	RoomsListView: {
@@ -118,9 +132,6 @@ const ChatsStack = createStackNavigator({
 	},
 	ReadReceiptsView: {
 		getScreen: () => require('./views/ReadReceiptView').default
-	},
-	DirectoryView: {
-		getScreen: () => require('./views/DirectoryView').default
 	},
 	TableView: {
 		getScreen: () => require('./views/TableView').default
@@ -190,7 +201,7 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 };
 
 const ChatsDrawer = createDrawerNavigator({
-	ChatsStack,
+	ListStack,
 	ProfileStack,
 	SettingsStack,
 	AdminPanelStack
@@ -213,6 +224,14 @@ const NewMessageStack = createStackNavigator({
 });
 
 const InsideStackModal = createStackNavigator({
+	Main: ChatsStack
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
+
+const ListStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack
 },
@@ -259,6 +278,44 @@ const App = createAppContainer(createSwitchNavigator(
 		initialRouteName: 'AuthLoading'
 	}
 ));
+
+const ListContainer = createAppContainer(ListStackModal);
+
+export class MasterDetailView extends React.Component {
+	componentDidMount() {
+		const defaultMasterGetStateForAction = ListContainer.router.getStateForAction;
+		const defaultDetailGetStateForAction = App.router.getStateForAction;
+
+		ListContainer.router.getStateForAction = (action, state) => {
+			if (action.type === NavigationActions.NAVIGATE) {
+				const { routeName, params } = action;
+				Navigation.navigate(routeName, params);
+			}
+
+			return defaultMasterGetStateForAction(action, state);
+		};
+
+		App.router.getStateForAction = (action, state) => defaultDetailGetStateForAction(action, state);
+	}
+
+	render() {
+		return (
+			<View style={{ flex: 1, flexDirection: 'row' }}>
+				<View style={{ flex: 4 }}>
+					<ListContainer />
+				</View>
+				<View style={{ flex: 8 }}>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</View>
+			</View>
+		);
+	}
+}
 
 export default class Root extends React.Component {
 	constructor(props) {
@@ -308,12 +365,7 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<App
-					ref={(navigatorRef) => {
-						Navigation.setTopLevelNavigator(navigatorRef);
-					}}
-					onNavigationStateChange={onNavigationStateChange}
-				/>
+				<MasterDetailView />
 			</Provider>
 		);
 	}
