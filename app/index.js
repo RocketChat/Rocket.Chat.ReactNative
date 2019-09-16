@@ -87,6 +87,9 @@ const OutsideStackModal = createStackNavigator({
 const ListStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
+	},
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -129,9 +132,6 @@ const ChatsStack = createStackNavigator({
 	},
 	ReadReceiptsView: {
 		getScreen: () => require('./views/ReadReceiptView').default
-	},
-	DirectoryView: {
-		getScreen: () => require('./views/DirectoryView').default
 	},
 	TableView: {
 		getScreen: () => require('./views/TableView').default
@@ -201,7 +201,7 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 };
 
 const ChatsDrawer = createDrawerNavigator({
-	ChatsStack,
+	ListStack,
 	ProfileStack,
 	SettingsStack,
 	AdminPanelStack
@@ -224,6 +224,14 @@ const NewMessageStack = createStackNavigator({
 });
 
 const InsideStackModal = createStackNavigator({
+	Main: ChatsStack
+},
+{
+	mode: 'modal',
+	headerMode: 'none'
+});
+
+const ListStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack
 },
@@ -271,7 +279,7 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-const ListContainer = createAppContainer(ListStack);
+const ListContainer = createAppContainer(ListStackModal);
 
 export class MasterDetailView extends React.Component {
 	componentDidMount() {
