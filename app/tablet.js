@@ -21,6 +21,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
+import { COLOR_BORDER } from './constants/colors';
 
 useScreens();
 
@@ -143,7 +144,12 @@ const ChatsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	transitionConfig: () => ({
+		transitionSpec: {
+			duration: 0
+		}
+	})
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -307,6 +313,7 @@ export class MasterDetailView extends React.Component {
 				<View style={{ flex: 4 }}>
 					<ListContainer />
 				</View>
+				<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
 				<View style={{ flex: 8 }}>
 					<App
 						ref={(navigatorRef) => {
