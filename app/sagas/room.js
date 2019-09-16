@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import {
-	call, takeLatest, take, select, delay
+	takeLatest, take, select, delay
 } from 'redux-saga/effects';
 
 import Navigation from '../lib/Navigation';
@@ -19,7 +19,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 		yield RocketChat.emitTyping(rid, status);
 
 		if (status) {
-			yield call(delay, 5000);
+			yield delay(5000);
 			yield RocketChat.emitTyping(rid, false);
 		}
 	} catch (e) {
