@@ -5,7 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView, HeaderBackButton } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
+import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
