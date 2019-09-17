@@ -162,7 +162,9 @@ export default class Markdown extends PureComponent {
 		}
 		return (
 			<View style={styles.block}>
-				{children}
+				<Text>
+					{children}
+				</Text>
 			</View>
 		);
 	};
