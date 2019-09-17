@@ -43,19 +43,6 @@ class RoomActionsView extends React.Component {
 		super(props);
 		this.mounted = false;
 		const room = props.navigation.getParam('room');
-
-		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
-		}
-
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
@@ -67,6 +54,17 @@ class RoomActionsView extends React.Component {
 			canAutoTranslate: false,
 			canAddUser: false
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 	}
 
 	async componentDidMount() {

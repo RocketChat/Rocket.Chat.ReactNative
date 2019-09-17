@@ -43,12 +43,12 @@ class ThreadMessagesView extends React.Component {
 		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.subscribeData();
 		this.state = {
 			loading: false,
 			end: false,
 			messages: []
 		};
+		this.subscribeData();
 	}
 
 	componentDidMount() {

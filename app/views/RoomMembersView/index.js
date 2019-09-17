@@ -57,20 +57,7 @@ class RoomMembersView extends React.Component {
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
-
 		const room = props.navigation.getParam('room');
-		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
-		}
-
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -82,6 +69,17 @@ class RoomMembersView extends React.Component {
 			room: room || {},
 			end: false
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 	}
 
 	async componentDidMount() {

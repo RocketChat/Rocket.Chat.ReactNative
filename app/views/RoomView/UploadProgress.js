@@ -76,10 +76,10 @@ class UploadProgress extends Component {
 		super(props);
 		this.mounted = false;
 		this.ranInitialUploadCheck = false;
-		this.init();
 		this.state = {
 			uploads: []
 		};
+		this.init();
 	}
 
 	componentDidMount() {
