@@ -8,7 +8,7 @@ import Video from './Video';
 import Reply from './Reply';
 
 const Attachments = React.memo(({
-	attachments, timeFormat, user, baseUrl, useMarkdown, onOpenFileModal, getCustomEmoji
+	attachments, timeFormat, user, baseUrl, useMarkdown, onOpenFileModal, getCustomEmoji, onLongPress
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
@@ -16,7 +16,7 @@ const Attachments = React.memo(({
 
 	return attachments.map((file, index) => {
 		if (file.image_url) {
-			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />;
+			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} onLongPress={onLongPress} />;
 		}
 		if (file.audio_url) {
 			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />;
@@ -37,7 +37,8 @@ Attachments.propTypes = {
 	baseUrl: PropTypes.string,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	onLongPress: PropTypes.func
 };
 Attachments.displayName = 'MessageAttachments';
 

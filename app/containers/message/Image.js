@@ -9,9 +9,10 @@ import Markdown from './Markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
 
-const Button = React.memo(({ children, onPress }) => (
+const Button = React.memo(({ children, onPress, onLongPress }) => (
 	<Touchable
 		onPress={onPress}
+		onLongPress={onLongPress}
 		style={styles.imageContainer}
 		background={Touchable.Ripple('#fff')}
 	>
@@ -28,7 +29,7 @@ const Image = React.memo(({ img }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, onLongPress
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -39,7 +40,10 @@ const ImageContainer = React.memo(({
 
 	if (file.description) {
 		return (
-			<Button onPress={onPress}>
+			<Button
+				onLongPress={onLongPress}
+				onPress={onPress}
+			>
 				<View>
 					<Image img={img} />
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
@@ -61,7 +65,8 @@ ImageContainer.propTypes = {
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	onLongPress: PropTypes.func
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
