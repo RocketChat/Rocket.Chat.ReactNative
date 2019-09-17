@@ -21,7 +21,6 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
-import callJitsi from '../../lib/methods/callJitsi';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
@@ -181,6 +180,21 @@ class RoomActionsView extends React.Component {
 			testID: 'room-actions-notifications'
 		};
 
+		const jitsiActions = jitsiEnabled ? [
+			{
+				icon: 'livechat',
+				name: I18n.t('Voice_call'),
+				event: () => RocketChat.callJitsi(rid, { videoMuted: true }),
+				testID: 'room-actions-voice'
+			},
+			{
+				icon: 'video',
+				name: I18n.t('Video_call'),
+				event: () => RocketChat.callJitsi(rid),
+				testID: 'room-actions-video'
+			}
+		] : [];
+
 		const sections = [{
 			data: [{
 				icon: 'star',
@@ -192,22 +206,7 @@ class RoomActionsView extends React.Component {
 			}],
 			renderItem: this.renderRoomInfo
 		}, {
-			data: [
-				{
-					icon: 'livechat',
-					name: I18n.t('Voice_call'),
-					disabled: !jitsiEnabled,
-					event: () => callJitsi(rid, { videoMuted: true }),
-					testID: 'room-actions-voice'
-				},
-				{
-					icon: 'video',
-					name: I18n.t('Video_call'),
-					disabled: !jitsiEnabled,
-					event: () => callJitsi(rid),
-					testID: 'room-actions-video'
-				}
-			],
+			data: jitsiActions,
 			renderItem: this.renderItem
 		}, {
 			data: [

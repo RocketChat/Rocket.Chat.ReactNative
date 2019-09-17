@@ -42,8 +42,7 @@ export default class MessageContainer extends React.Component {
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
-		rid: PropTypes.string,
-		jitsiTimeout: PropTypes.number
+		callJitsi: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -206,7 +205,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, rid, jitsiTimeout
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -272,8 +271,7 @@ export default class MessageContainer extends React.Component {
 				onOpenFileModal={onOpenFileModal}
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
-				rid={rid}
-				jitsiTimeout={jitsiTimeout}
+				callJitsi={callJitsi}
 			/>
 		);
 	}

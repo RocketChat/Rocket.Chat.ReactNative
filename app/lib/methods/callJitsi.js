@@ -1,18 +1,35 @@
 import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
 
-// import .. from .. doesn't work on jest
-const reduxStore = require('../createStore').default;
-const RocketChat = require('../rocketchat').default;
+import reduxStore from '../createStore';
 
 let jitsiTimeOut = null;
 
-// Jitsi Update Call needs to be called every 10 seconds to make sure
-// call is not ended and is available to web users.
-const updateJitsiTimeout = (rid) => {
+const jitsiBaseUrl = ({
+	Jitsi_Enabled, Jitsi_SSL, Jitsi_Domain, Jitsi_URL_Room_Prefix, uniqueID
+}) => {
+	if (!Jitsi_Enabled) {
+		return '';
+	}
+	const uniqueIdentifier = uniqueID || 'undefined';
+	const domain = Jitsi_Domain;
+	const prefix = Jitsi_URL_Room_Prefix;
+
+	const urlProtocol = Jitsi_SSL ? 'https://' : 'http://';
+	const urlDomain = `${ domain }/`;
+
+	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
+};
+
+function callJitsi(rid, options = {}) {
+	const { settings } = reduxStore.getState();
+
+	// Jitsi Update Call needs to be called every 10 seconds to make sure
+	// call is not ended and is available to web users.
+	JitsiMeet.initialize();
 	JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
-		RocketChat.updateJitsiTimeout(rid);
+		this.updateJitsiTimeout(rid);
 		jitsiTimeOut = setInterval(async() => {
-			await RocketChat.updateJitsiTimeout(rid);
+			await this.updateJitsiTimeout(rid);
 		}, 10000);
 	});
 	JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
@@ -20,17 +37,9 @@ const updateJitsiTimeout = (rid) => {
 			clearInterval(jitsiTimeOut);
 		}
 	});
-};
-
-const callJitsi = (rid, options = {}) => {
-	const { jitsi } = reduxStore.getState();
-	const { jitsiBaseURL } = jitsi;
-
-	JitsiMeet.initialize();
-	updateJitsiTimeout(rid);
 	setTimeout(() => {
-		JitsiMeet.call(`${ jitsiBaseURL }${ rid }`, options);
+		JitsiMeet.call(`${ jitsiBaseUrl(settings) }${ rid }`, options);
 	}, 1000);
-};
+}
 
 export default callJitsi;

@@ -19,9 +19,6 @@ export const SHARE = createRequestTypes('SHARE', [
 	'SET_USER',
 	'SET_SERVER_INFO'
 ]);
-export const JITSI = createRequestTypes('JITSI', [
-	'SET_BASE_URL'
-]);
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,

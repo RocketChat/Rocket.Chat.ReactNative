@@ -38,6 +38,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
+import { showErrorAlert } from '../../utils/info';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -602,6 +603,14 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	callJitsi = (rid, jitsiTimeout) => {
+		if (jitsiTimeout < Date.now()) {
+			showErrorAlert(I18n.t('Call_already_ended'));
+		} else {
+			RocketChat.callJitsi(rid, {});
+		}
+	};
+
 	get isReadOnly() {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -635,9 +644,7 @@ class RoomView extends React.Component {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
-				rid={this.rid}
 				isThreadRoom={!!this.tmid}
-				jitsiTimeout={room.jitsiTimeout}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
@@ -659,6 +666,7 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
+				callJitsi={() => this.callJitsi(this.rid, room.jitsiTimeout)}
 			/>
 		);
 
