@@ -23,8 +23,8 @@
     }
   },
   "dependencies": {
+    "@rocket.chat/sdk": "1.0.0-alpha.31",
     "@nozbe/watermelondb": "^0.14.0",
-    "@rocket.chat/sdk": "1.0.0-alpha.30",
     "bugsnag-react-native": "^2.22.3",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
