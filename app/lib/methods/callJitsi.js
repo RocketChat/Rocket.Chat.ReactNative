@@ -23,18 +23,24 @@ const jitsiBaseUrl = ({
 function callJitsi(rid, options = {}) {
 	const { settings } = reduxStore.getState();
 
-	// Jitsi Update Call needs to be called every 10 seconds to make sure
+	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
 	JitsiMeet.initialize();
-	JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
+	const conferenceJoined = JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
 		this.updateJitsiTimeout(rid);
 		jitsiTimeOut = setInterval(async() => {
 			await this.updateJitsiTimeout(rid);
 		}, 10000);
 	});
-	JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
+	const conferenceLeft = JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
 		if (jitsiTimeOut) {
 			clearInterval(jitsiTimeOut);
+		}
+		if (conferenceJoined && conferenceJoined.remove) {
+			conferenceJoined.remove();
+		}
+		if (conferenceLeft && conferenceLeft.remove) {
+			conferenceLeft.remove();
 		}
 	});
 	setTimeout(() => {
