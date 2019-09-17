@@ -1,4 +1,6 @@
-import database from '../../realm';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
+import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
@@ -15,12 +17,112 @@ let disconnectedListener;
 let streamListener;
 let subServer;
 
+// TODO: batch execution
+const createOrUpdateSubscription = async(subscription, room) => {
+	try {
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
+		const roomsCollection = db.collections.get('rooms');
+
+		if (!subscription) {
+			try {
+				const s = await subCollection.find(room._id);
+				// We have to create a plain obj so we can manipulate it on `merge`
+				// Can we do it in a better way?
+				subscription = {
+					_id: s._id,
+					f: s.f,
+					t: s.t,
+					ts: s.ts,
+					ls: s.ls,
+					name: s.name,
+					fname: s.fname,
+					rid: s.rid,
+					open: s.open,
+					alert: s.alert,
+					unread: s.unread,
+					userMentions: s.userMentions,
+					roomUpdatedAt: s.roomUpdatedAt,
+					ro: s.ro,
+					lastOpen: s.lastOpen,
+					description: s.description,
+					announcement: s.announcement,
+					topic: s.topic,
+					blocked: s.blocked,
+					blocker: s.blocker,
+					reactWhenReadOnly: s.reactWhenReadOnly,
+					archived: s.archived,
+					joinCodeRequired: s.joinCodeRequired,
+					muted: s.muted,
+					broadcast: s.broadcast,
+					prid: s.prid,
+					draftMessage: s.draftMessage,
+					lastThreadSync: s.lastThreadSync,
+					autoTranslate: s.autoTranslate,
+					autoTranslateLanguage: s.autoTranslateLanguage,
+					lastMessage: s.lastMessage
+				};
+			} catch (error) {
+				try {
+					await db.action(async() => {
+						await roomsCollection.create((r) => {
+							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
+							Object.assign(r, room);
+						});
+					});
+				} catch (e) {
+					// Do nothing
+				}
+				return;
+			}
+		}
+
+		if (!room && subscription) {
+			try {
+				const r = await roomsCollection.find(subscription.rid);
+				// We have to create a plain obj so we can manipulate it on `merge`
+				// Can we do it in a better way?
+				room = {
+					customFields: r.customFields,
+					broadcast: r.broadcast,
+					encrypted: r.encrypted,
+					ro: r.ro
+				};
+			} catch (error) {
+				// Do nothing
+			}
+		}
+
+		const tmp = merge(subscription, room);
+		await db.action(async() => {
+			try {
+				const sub = await subCollection.find(tmp.rid);
+				await sub.update((s) => {
+					Object.assign(s, tmp);
+				});
+			} catch (error) {
+				await subCollection.create((s) => {
+					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+					Object.assign(s, tmp);
+					if (s.roomUpdatedAt) {
+						s.roomUpdatedAt = new Date();
+					}
+				});
+			}
+		});
+	} catch (e) {
+		log(e);
+	}
+};
+
 export default function subscribeRooms() {
 	const handleConnection = () => {
 		store.dispatch(roomsRequest());
 	};
 
-	const handleStreamMessageReceived = protectedFunction((ddpMessage) => {
+	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
+		const db = database.active;
+
 		// check if the server from variable is the same as the js sdk client
 		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
 			return;
@@ -32,52 +134,33 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
-				let messages = [];
-				const [subscription] = database.objects('subscriptions').filtered('_id == $0', data._id);
-
-				if (subscription) {
-					messages = database.objects('messages').filtered('rid == $0', subscription.rid);
-				}
 				try {
-					database.write(() => {
-						database.delete(messages);
-						database.delete(subscription);
+					const subCollection = db.collections.get('subscriptions');
+					const sub = await subCollection.find(data.rid);
+					const messages = await sub.messages.fetch();
+					const threads = await sub.threads.fetch();
+					const threadMessages = await sub.threadMessages.fetch();
+					const messagesToDelete = messages.map(m => m.prepareDestroyPermanently());
+					const threadsToDelete = threads.map(m => m.prepareDestroyPermanently());
+					const threadMessagesToDelete = threadMessages.map(m => m.prepareDestroyPermanently());
+					await db.action(async() => {
+						await db.batch(
+							sub.prepareDestroyPermanently(),
+							...messagesToDelete,
+							...threadsToDelete,
+							...threadMessagesToDelete,
+						);
 					});
 				} catch (e) {
 					log(e);
 				}
 			} else {
-				const rooms = database.objects('rooms').filtered('_id == $0', data.rid);
-				const tpm = merge(data, rooms[0]);
-				try {
-					database.write(() => {
-						database.create('subscriptions', tpm, true);
-						database.delete(rooms);
-					});
-				} catch (e) {
-					log(e);
-				}
+				await createOrUpdateSubscription(data);
 			}
 		}
 		if (/rooms/.test(ev)) {
-			if (type === 'updated') {
-				const [sub] = database.objects('subscriptions').filtered('rid == $0', data._id);
-				try {
-					database.write(() => {
-						const tmp = merge(sub, data);
-						database.create('subscriptions', tmp, true);
-					});
-				} catch (e) {
-					log(e);
-				}
-			} else if (type === 'inserted') {
-				try {
-					database.write(() => {
-						database.create('rooms', data, true);
-					});
-				} catch (e) {
-					log(e);
-				}
+			if (type === 'updated' || type === 'inserted') {
+				await createOrUpdateSubscription(null, data);
 			}
 		}
 		if (/message/.test(ev)) {
@@ -95,15 +178,18 @@ export default function subscribeRooms() {
 					username: 'rocket.cat'
 				}
 			};
-			requestAnimationFrame(() => {
-				try {
-					database.write(() => {
-						database.create('messages', message, true);
-					});
-				} catch (e) {
-					log(e);
-				}
-			});
+			try {
+				const msgCollection = db.collections.get('messages');
+				await db.action(async() => {
+					await msgCollection.create(protectedFunction((m) => {
+						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+						m.subscription.id = args.rid;
+						Object.assign(m, message);
+					}));
+				});
+			} catch (e) {
+				log(e);
+			}
 		}
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;

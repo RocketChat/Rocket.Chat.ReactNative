@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -12,11 +13,12 @@ import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
-import database from '../lib/realm';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
+import database from '../lib/database';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const restore = function* restore() {
 	try {
@@ -31,33 +33,46 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
-		// get native credentials
-		if (isIOS && !hasMigration) {
-			const { serversDB } = database.databases;
-			const servers = yield RNUserDefaults.objectForKey(SERVERS);
-			if (servers) {
-				serversDB.write(() => {
-					servers.forEach(async(serverItem) => {
-						const serverInfo = {
-							id: serverItem[SERVER_URL],
-							name: serverItem[SERVER_NAME],
-							iconURL: serverItem[SERVER_ICON]
-						};
-						try {
-							serversDB.create('servers', serverInfo, true);
-							await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ serverInfo.id }`, serverItem[USER_ID]);
-						} catch (e) {
-							log(e);
-						}
-					});
-				});
-				yield AsyncStorage.setItem('hasMigration', '1');
-			}
+		let servers = yield RNUserDefaults.objectForKey(SERVERS);
+		// if not have current
+		if (servers && servers.length !== 0 && (!token || !server)) {
+			server = servers[0][SERVER_URL];
+			token = servers[0][TOKEN];
+		}
 
-			// if not have current
-			if (servers && servers.length !== 0 && (!token || !server)) {
-				server = servers[0][SERVER_URL];
-				token = servers[0][TOKEN];
+		// get native credentials
+		if (servers && !hasMigration) {
+			// parse servers
+			servers = yield Promise.all(servers.map(async(s) => {
+				await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
+				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
+			}));
+			try {
+				const serversDB = database.servers;
+				yield serversDB.action(async() => {
+					const serversCollection = serversDB.collections.get('servers');
+					const allServerRecords = await serversCollection.query().fetch();
+
+					// filter servers
+					let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
+
+					// Create
+					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
+						s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
+						Object.assign(s, record);
+					})));
+
+					const allRecords = serversToCreate;
+
+					try {
+						await serversDB.batch(...allRecords);
+					} catch (e) {
+						log(e);
+					}
+					return allRecords.length;
+				});
+			} catch (e) {
+				log(e);
 			}
 		}
 
@@ -77,13 +92,16 @@ const restore = function* restore() {
 			]);
 			yield put(actions.appStart('outside'));
 		} else if (server) {
-			const serverObj = database.databases.serversDB.objectForPrimaryKey('servers', server);
+			const serversDB = database.servers;
+			const serverCollections = serversDB.collections.get('servers');
+			const serverObj = yield serverCollections.find(server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 
 		yield put(actions.appReady({}));
 	} catch (e) {
 		log(e);
+		yield put(actions.appStart('outside'));
 	}
 };
 
