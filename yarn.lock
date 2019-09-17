@@ -8746,7 +8746,7 @@ react-native-iphone-x-helper@^1.0.3:
 
 "react-native-jitsi-meet@git+https://github.com/RocketChat/react-native-jitsi-meet.git":
   version "1.2.0"
-  resolved "git+https://github.com/RocketChat/react-native-jitsi-meet.git#d12fd5b150123197f6a0f01abd32cdf67e750d22"
+  resolved "git+https://github.com/RocketChat/react-native-jitsi-meet.git#6308b4718a964fb3dc8ca3c2d52ecac33ad1c4c3"
 
 react-native-keyboard-aware-scroll-view@0.8.0:
   version "0.8.0"

@@ -604,11 +604,13 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
-	callJitsi = (rid, jitsiTimeout) => {
+	callJitsi = () => {
+		const { room } = this.state;
+		const { jitsiTimeout } = room;
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(rid, {});
+			RocketChat.callJitsi(this.rid, {});
 		}
 	};
 
@@ -667,7 +669,7 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
-				callJitsi={() => this.callJitsi(this.rid, room.jitsiTimeout)}
+				callJitsi={this.callJitsi}
 			/>
 		);
 
