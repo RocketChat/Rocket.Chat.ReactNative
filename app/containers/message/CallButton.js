@@ -23,22 +23,20 @@ const CallButton = React.memo(({
 }) => {
 	const time = formatLastMessage(dlm);
 	return (
-		<React.Fragment>
-			<View style={styles.buttonContainer}>
-				<Touchable
-					onPress={() => call(rid, jitsiTimeout)}
-					background={Touchable.Ripple('#fff')}
-					style={[styles.button, styles.smallButton]}
-					hitSlop={BUTTON_HIT_SLOP}
-				>
-					<React.Fragment>
-						<CustomIcon name='video' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{I18n.t('Click_to_join')}</Text>
-					</React.Fragment>
-				</Touchable>
-				<Text style={styles.time}>{time}</Text>
-			</View>
-		</React.Fragment>
+		<View style={styles.buttonContainer}>
+			<Touchable
+				onPress={() => call(rid, jitsiTimeout)}
+				background={Touchable.Ripple('#fff')}
+				style={[styles.button, styles.smallButton]}
+				hitSlop={BUTTON_HIT_SLOP}
+			>
+				<>
+					<CustomIcon name='video' size={20} style={styles.buttonIcon} />
+					<Text style={styles.buttonText}>{I18n.t('Click_to_join')}</Text>
+				</>
+			</Touchable>
+			<Text style={styles.time}>{time}</Text>
+		</View>
 	);
 });
 

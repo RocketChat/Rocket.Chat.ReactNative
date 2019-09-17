@@ -26,9 +26,6 @@ export default {
 	Jitsi_Enabled: {
 		type: 'valueAsBoolean'
 	},
-	Jisti_Enable_Channels: {
-		type: 'valueAsBoolean'
-	},
 	Jitsi_SSL: {
 		type: 'valueAsBoolean'
 	},
