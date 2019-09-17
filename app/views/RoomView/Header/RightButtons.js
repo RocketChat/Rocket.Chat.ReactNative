@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
-import database, { safeAddListener } from '../../../lib/realm';
+import database from '../../../lib/database';
 
 const styles = StyleSheet.create({
 	more: {
@@ -27,29 +27,33 @@ class RightButtonsContainer extends React.PureComponent {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		navigation: PropTypes.object,
-		toggleFollowThread: PropTypes.func
+		toggleFollowThread: PropTypes.func,
+		room: PropTypes.object
 	};
 
 	constructor(props) {
 		super(props);
-		if (props.tmid) {
-			// FIXME: it may be empty if the thread header isn't fetched yet
-			this.thread = database.objectForPrimaryKey('messages', props.tmid);
-		}
 		this.state = {
 			isFollowingThread: true
 		};
 	}
 
-	componentDidMount() {
-		if (this.thread) {
-			safeAddListener(this.thread, this.updateThread);
+	async componentDidMount() {
+		const { tmid, userId } = this.props;
+		if (tmid) {
+			const db = database.active;
+			const threadObservable = await db.collections.get('messages').findAndObserve(tmid);
+			this.threadSubscription = threadObservable.subscribe((thread) => {
+				this.setState({
+					isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
+				});
+			});
 		}
 	}
 
 	componentWillUnmount() {
-		if (this.thread && this.thread.removeAllListeners) {
-			this.thread.removeAllListeners();
+		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
+			this.threadSubscription.unsubscribe();
 		}
 	}
 
@@ -66,8 +70,10 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goRoomActionsView = () => {
-		const { rid, t, navigation } = this.props;
-		navigation.navigate('RoomActionsView', { rid, t });
+		const {
+			rid, t, navigation, room
+		} = this.props;
+		navigation.navigate('RoomActionsView', { rid, t, room });
 	}
 
 	toggleFollowThread = () => {
