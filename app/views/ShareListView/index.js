@@ -25,7 +25,7 @@ import ShareListHeader from './Header';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
-import { animateNextTransition } from '../../index';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });

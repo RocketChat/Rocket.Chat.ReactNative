@@ -15,7 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
-import { animateNextTransition } from '../../index';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 export class List extends React.Component {
 	static propTypes = {

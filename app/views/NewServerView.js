@@ -23,7 +23,7 @@ import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 import log from '../utils/log';
-import { animateNextTransition } from '../index';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	image: {

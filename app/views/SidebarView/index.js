@@ -20,7 +20,7 @@ import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
-import { animateNextTransition } from '../../index';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const keyExtractor = item => item.id;
 

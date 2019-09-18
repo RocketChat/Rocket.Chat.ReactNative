@@ -8,7 +8,7 @@ import { CloseShareExtensionButton } from '../../../containers/HeaderButton';
 import { HEADER_BACKGROUND } from '../../../constants/colors';
 
 import sharedStyles from '../../Styles';
-import { animateNextTransition } from '../../../index';
+import { animateNextTransition } from '../../../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	container: {

@@ -42,7 +42,7 @@ import {
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { animateNextTransition } from '../../index';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const SCROLL_OFFSET = 56;
 

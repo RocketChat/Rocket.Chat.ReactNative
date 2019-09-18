@@ -23,7 +23,7 @@ import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
-import { animateNextTransition } from '../index';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
