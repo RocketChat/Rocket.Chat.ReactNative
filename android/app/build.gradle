@@ -221,6 +221,7 @@ dependencies {
       exclude group: 'com.facebook.react', module:'react-native-fast-image'
       exclude group: 'com.facebook.react', module:'react-native-vector-icons'
       exclude group: 'com.facebook.react', module:'react-native-webview'
+      exclude group: 'com.facebook.react', module:'react-native-background-timer'
     }
 
     if (enableHermes) {

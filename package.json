@@ -23,8 +23,8 @@
     }
   },
   "dependencies": {
-    "@rocket.chat/sdk": "1.0.0-alpha.31",
     "@nozbe/watermelondb": "^0.14.0",
+    "@rocket.chat/sdk": "1.0.0-alpha.31",
     "bugsnag-react-native": "^2.22.3",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
@@ -46,6 +46,7 @@
     "react-native": "0.60.4",
     "react-native-action-sheet": "^2.2.0",
     "react-native-audio": "^4.3.0",
+    "react-native-background-timer": "2.1.1",
     "react-native-console-time-polyfill": "^1.2.1",
     "react-native-device-info": "^2.3.0",
     "react-native-dialog": "^5.6.0",
