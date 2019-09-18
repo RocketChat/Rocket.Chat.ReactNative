@@ -20,6 +20,8 @@ import Server from './model/Server';
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 
+import migrations from './model/migrations';
+
 import { isIOS } from '../../utils/deviceInfo';
 
 const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.ios.chat.rocket') }/` : '';
@@ -54,7 +56,8 @@ class DB {
 
 		const adapter = new SQLiteAdapter({
 			dbName,
-			schema: appSchema
+			schema: appSchema,
+			migrations
 		});
 
 		this.databases.activeDB = new Database({

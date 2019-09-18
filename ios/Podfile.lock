@@ -157,6 +157,8 @@ PODS:
     - React-cxxreact (= 0.60.4)
     - React-jsi (= 0.60.4)
   - React-jsinspector (0.60.4)
+  - react-native-background-timer (2.1.1):
+    - React
   - react-native-document-picker (3.2.4):
     - React
   - react-native-keyboard-input (5.3.1):
@@ -282,6 +284,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-keyboard-input (from `../node_modules/react-native-keyboard-input`)
   - react-native-keyboard-tracking-view (from `../node_modules/react-native-keyboard-tracking-view`)
@@ -391,6 +394,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-background-timer:
+    :path: "../node_modules/react-native-background-timer"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-keyboard-input:
@@ -524,6 +529,7 @@ SPEC CHECKSUMS:
   React-jsi: 21d3153b1153fbf6510a92b6b11e33e725cb7432
   React-jsiexecutor: 7549641e48bafae7bfee3f3ea19bf4901639c5de
   React-jsinspector: 73f24a02fa684ed6a2b828ba116874a2191ded88
+  react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1

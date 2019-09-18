@@ -81,6 +81,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
+    bundleAssetName: "app.bundle",
     iconFontNames: [ 'custom.ttf' ],
     enableHermes: false,  // clean and rebuild if changing
 ]
@@ -215,6 +216,12 @@ dependencies {
     implementation "com.google.firebase:firebase-perf:17.0.2"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
+    }
+    implementation(project(':react-native-jitsi-meet')) {
+      exclude group: 'com.facebook.react', module:'react-native-fast-image'
+      exclude group: 'com.facebook.react', module:'react-native-vector-icons'
+      exclude group: 'com.facebook.react', module:'react-native-webview'
+      exclude group: 'com.facebook.react', module:'react-native-background-timer'
     }
 
     if (enableHermes) {
