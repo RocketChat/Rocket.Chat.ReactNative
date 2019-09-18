@@ -17,7 +17,8 @@ const formatMsg = ({
 		return I18n.t('No_Message');
 	}
 	if (lastMessage.t === 'jitsi_call_started') {
-		return I18n.t('Started_call', { userBy: username });
+		const { u } = lastMessage;
+		return I18n.t('Started_call', { userBy: u.username });
 	}
 
 	let prefix = '';
