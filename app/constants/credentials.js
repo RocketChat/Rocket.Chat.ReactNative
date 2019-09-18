@@ -1,4 +1,4 @@
-// This file hosts the contansts with the values used on native apps (User Defaults on iOS and Shared Preferences on Android).
+// This file hosts the constants with the values used on native apps (User Defaults on iOS and Shared Preferences on Android).
 import { isIOS } from '../utils/deviceInfo';
 
 export const IDENTIFIER = isIOS ? 'group.ios.chat.rocket' : 'chat.rocket.android';
