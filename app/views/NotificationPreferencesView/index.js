@@ -14,7 +14,6 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 
@@ -112,11 +111,33 @@ export default class NotificationPreferencesView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
+		const room = props.navigation.getParam('room');
 		this.state = {
-			room: JSON.parse(JSON.stringify(this.rooms[0] || {}))
+			room: room || {}
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
+	}
+
+	componentDidMount() {
+		this.mounted = true;
+	}
+
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	onValueChangeSwitch = async(key, value) => {
@@ -128,8 +149,8 @@ export default class NotificationPreferencesView extends React.Component {
 		};
 		try {
 			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (err) {
-			log('err_save_notification_settings', err);
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -142,8 +163,8 @@ export default class NotificationPreferencesView extends React.Component {
 		};
 		try {
 			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (err) {
-			log('err_save_notification_settings', err);
+		} catch (e) {
+			log(e);
 		}
 	}
 
