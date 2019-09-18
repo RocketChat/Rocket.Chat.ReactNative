@@ -290,7 +290,7 @@ class RoomsListView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
-		if (isIOS && navigation.isFocused()) {
+		if (navigation.isFocused()) {
 			animateNextTransition();
 		}
 		this.setState(...args);

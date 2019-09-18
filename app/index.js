@@ -21,6 +21,8 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import debounce from './utils/debounce';
+import sharedStyles from './views/Styles';
+import { isIOS, isAndroid } from './utils/deviceInfo';
 
 useScreens();
 
@@ -272,7 +274,11 @@ const transition = (
 
 const TRANSITION_REF = React.createRef();
 
-export const animateNextTransition = debounce(() => TRANSITION_REF.current.animateNextTransition(), 200, true);
+export const animateNextTransition = debounce(() => {
+	if (isIOS) {
+		TRANSITION_REF.current.animateNextTransition();
+	}
+}, 200, true);
 
 export default class Root extends React.Component {
 	constructor(props) {
@@ -320,10 +326,22 @@ export default class Root extends React.Component {
 	}
 
 	render() {
+		if (isAndroid) {
+			return (
+				<Provider store={store}>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</Provider>
+			);
+		}
 		return (
 			<Provider store={store}>
 				<Transitioning.View
-					style={{ flex: 1 }}
+					style={sharedStyles.root}
 					transition={transition}
 					ref={TRANSITION_REF}
 				>
