@@ -44,9 +44,7 @@ function callJitsi(rid, options = {}) {
 			conferenceLeft.remove();
 		}
 	});
-	setTimeout(() => {
-		JitsiMeet.call(`${ jitsiBaseUrl(settings) }${ rid }`, options);
-	}, 1000);
+	JitsiMeet.call(`${ jitsiBaseUrl(settings) }${ rid }`, options);
 }
 
 export default callJitsi;
