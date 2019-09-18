@@ -53,7 +53,7 @@ const ImageContainer = React.memo(({
 	}
 
 	return (
-		<Button onPress={onPress}>
+		<Button onPress={onPress} onLongPress={onLongPress}>
 			<Image img={img} />
 		</Button>
 	);
