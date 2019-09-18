@@ -42,6 +42,8 @@ import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
+import callJitsi from './methods/callJitsi';
+
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
@@ -57,6 +59,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
+	callJitsi,
 	async subscribeRooms() {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
@@ -244,6 +247,10 @@ const RocketChat = {
 		} catch (e) {
 			log(e);
 		}
+	},
+
+	updateJitsiTimeout(rid) {
+		return this.sdk.methodCall('jitsi:updateTimeout', rid);
 	},
 
 	register(credentials) {
