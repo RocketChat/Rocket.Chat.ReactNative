@@ -29,6 +29,9 @@ function callJitsi(rid, options = {}) {
 	JitsiMeet.initialize();
 	const conferenceJoined = JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
 		this.updateJitsiTimeout(rid);
+		if (jitsiTimeout) {
+			BackgroundTimer.clearInterval(jitsiTimeout);
+		}
 		jitsiTimeout = BackgroundTimer.setInterval(async() => {
 			await this.updateJitsiTimeout(rid);
 		}, 10000);
