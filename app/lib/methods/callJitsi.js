@@ -28,12 +28,12 @@ function callJitsi(rid, options = {}) {
 	// call is not ended and is available to web users.
 	JitsiMeet.initialize();
 	const conferenceJoined = JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
-		this.updateJitsiTimeout(rid);
+		this.updateJitsiTimeout(rid).catch(e => console.log(e));
 		if (jitsiTimeout) {
 			BackgroundTimer.clearInterval(jitsiTimeout);
 		}
-		jitsiTimeout = BackgroundTimer.setInterval(async() => {
-			await this.updateJitsiTimeout(rid);
+		jitsiTimeout = BackgroundTimer.setInterval(() => {
+			this.updateJitsiTimeout(rid).catch(e => console.log(e));
 		}, 10000);
 	});
 	const conferenceLeft = JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
