@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, InteractionManager, LayoutAnimation
-} from 'react-native';
+import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
@@ -484,15 +482,11 @@ class RoomView extends React.Component {
 		if (!this.mounted) {
 			return;
 		}
-		if (isIOS && this.beginAnimating) {
-			LayoutAnimation.easeInEaseOut();
-		}
 		this.setState(...args);
 	}
 
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
-		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});

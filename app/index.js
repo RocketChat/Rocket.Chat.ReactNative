@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import { Transition, Transitioning } from 'react-native-reanimated';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -19,6 +20,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
+import debounce from './utils/debounce';
 
 useScreens();
 
@@ -260,6 +262,18 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
+const transition = (
+	<Transition.Together>
+		<Transition.In type='fade' />
+		<Transition.Out type='fade' />
+		<Transition.Change interpolation='easeInOut' />
+	</Transition.Together>
+);
+
+const TRANSITION_REF = React.createRef();
+
+export const animateNextTransition = debounce(() => TRANSITION_REF.current.animateNextTransition(), 200, true);
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -308,12 +322,18 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<App
-					ref={(navigatorRef) => {
-						Navigation.setTopLevelNavigator(navigatorRef);
-					}}
-					onNavigationStateChange={onNavigationStateChange}
-				/>
+				<Transitioning.View
+					style={{ flex: 1 }}
+					transition={transition}
+					ref={TRANSITION_REF}
+				>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</Transitioning.View>
 			</Provider>
 		);
 	}
