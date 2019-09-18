@@ -1004,7 +1004,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../../../react-native/React/**",
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
@@ -1055,7 +1054,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../../../react-native/React/**",
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
@@ -1177,7 +1175,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-keyboard-tracking-view\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-notifications\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-orientation-locker\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-realm-path\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
@@ -1292,7 +1289,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-keyboard-tracking-view\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-notifications\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-orientation-locker\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-realm-path\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
