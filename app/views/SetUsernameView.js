@@ -83,7 +83,7 @@ class SetUsernameView extends React.Component {
 			await RocketChat.setUsername(username);
 			await loginRequest({ resume: token });
 		} catch (e) {
-			log('err_submit_username', e);
+			log(e);
 		}
 		this.setState({ saving: false });
 	}

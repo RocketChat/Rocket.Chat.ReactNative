@@ -9,7 +9,7 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -20,8 +20,8 @@ import log from '../../utils/log';
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = room => (room.t === 'd'
-	? <Text testID='room-info-view-name' style={styles.roomTitle}>{room.fname}</Text>
+const getRoomTitle = (room, type, name) => (type === 'd'
+	? <Text testID='room-info-view-name' style={styles.roomTitle}>{name}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
@@ -58,65 +58,85 @@ class RoomInfoView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
+		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.roles = database.objects('roles');
-		this.sub = {
-			unsubscribe: () => {}
-		};
 		this.state = {
-			room: this.rooms[0] || room || {},
-			roomUser: {}
+			room: room || {},
+			roomUser: {},
+			parsedRoles: []
 		};
 	}
 
 	async componentDidMount() {
-		safeAddListener(this.rooms, this.updateRoom);
-		const { room } = this.state;
-		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			const { navigation } = this.props;
-			navigation.setParams({ showEdit: true });
-		}
-
 		if (this.t === 'd') {
 			const { user } = this.props;
 			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
 			try {
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ roomUser: result.user });
+					const { roles } = result.user;
+					let parsedRoles = [];
+					if (roles && roles.length) {
+						parsedRoles = await Promise.all(roles.map(async(role) => {
+							const description = await this.getRoleDescription(role);
+							return description;
+						}));
+					}
+					this.setState({ roomUser: result.user, parsedRoles });
 				}
-			} catch (error) {
-				log('err_get_user_info', error);
+			} catch (e) {
+				log(e);
 			}
+			return;
+		}
+		const { navigation } = this.props;
+		let room = navigation.getParam('room');
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					this.setState({ room: changes });
+				});
+		} else {
+			try {
+				const result = await RocketChat.getRoomInfo(this.rid);
+				if (result.success) {
+					// eslint-disable-next-line prefer-destructuring
+					room = result.room;
+					this.setState({ room });
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
+			navigation.setParams({ showEdit: true });
 		}
 	}
 
 	componentWillUnmount() {
-		this.rooms.removeAllListeners();
-	}
-
-	getRoleDescription = (id) => {
-		const role = database.objectForPrimaryKey('roles', id);
-		if (role) {
-			return role.description;
-		}
-		return null;
-	}
-
-	isDirect = () => {
-		const { room: { t } } = this.state;
-		return t === 'd';
-	}
-
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
 	}
+
+	getRoleDescription = async(id) => {
+		const db = database.active;
+		try {
+			const rolesCollection = db.collections.get('roles');
+			const role = await rolesCollection.find(id);
+			if (role) {
+				return role.description;
+			}
+			return null;
+		} catch (e) {
+			return null;
+		}
+	}
+
+	isDirect = () => this.t === 'd'
 
 	renderItem = (key, room) => (
 		<View style={styles.item}>
@@ -129,12 +149,11 @@ class RoomInfoView extends React.Component {
 		</View>
 	);
 
-	renderRole = (role) => {
-		const description = this.getRoleDescription(role);
+	renderRole = (description) => {
 		if (description) {
 			return (
-				<View style={styles.roleBadge} key={role}>
-					<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
+				<View style={styles.roleBadge} key={description}>
+					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
 		}
@@ -142,13 +161,13 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
-		const { roomUser } = this.state;
-		if (roomUser && roomUser.roles && roomUser.roles.length) {
+		const { parsedRoles } = this.state;
+		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
-						{roomUser.roles.map(role => this.renderRole(role))}
+						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
 				</View>
 			);
@@ -181,15 +200,15 @@ class RoomInfoView extends React.Component {
 
 		return (
 			<Avatar
-				text={room.name}
+				text={room.name || roomUser.username}
 				size={100}
 				style={styles.avatar}
-				type={room.t}
+				type={this.t}
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
 			>
-				{room.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}
@@ -231,6 +250,29 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
+	renderChannel = () => {
+		const { room } = this.state;
+		return (
+			<React.Fragment>
+				{this.renderItem('description', room)}
+				{this.renderItem('topic', room)}
+				{this.renderItem('announcement', room)}
+				{room.broadcast ? this.renderBroadcast() : null}
+			</React.Fragment>
+		);
+	}
+
+	renderDirect = () => {
+		const { roomUser } = this.state;
+		return (
+			<React.Fragment>
+				{this.renderRoles()}
+				{this.renderTimezone()}
+				{this.renderCustomFields(roomUser._id)}
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		const { room, roomUser } = this.state;
 		if (!room) {
@@ -242,15 +284,9 @@ class RoomInfoView extends React.Component {
 				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name) }</View>
 					</View>
-					{!this.isDirect() ? this.renderItem('description', room) : null}
-					{!this.isDirect() ? this.renderItem('topic', room) : null}
-					{!this.isDirect() ? this.renderItem('announcement', room) : null}
-					{this.isDirect() ? this.renderRoles() : null}
-					{this.isDirect() ? this.renderTimezone() : null}
-					{this.isDirect() ? this.renderCustomFields(roomUser._id) : null}
-					{room.broadcast ? this.renderBroadcast() : null}
+					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
 			</ScrollView>
 		);

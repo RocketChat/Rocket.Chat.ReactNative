@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 

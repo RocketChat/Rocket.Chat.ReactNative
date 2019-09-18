@@ -11,18 +11,17 @@ export const merge = (subscription, room) => {
 		return;
 	}
 	if (room) {
-		if (room.rid) {
-			subscription.rid = room.rid;
+		if (room._updatedAt) {
+			subscription.roomUpdatedAt = room._updatedAt;
+			subscription.lastMessage = normalizeMessage(room.lastMessage);
+			subscription.description = room.description;
+			subscription.topic = room.topic;
+			subscription.announcement = room.announcement;
+			subscription.reactWhenReadOnly = room.reactWhenReadOnly;
+			subscription.archived = room.archived || false;
+			subscription.joinCodeRequired = room.joinCodeRequired;
 		}
-		subscription.roomUpdatedAt = room._updatedAt;
-		subscription.lastMessage = normalizeMessage(room.lastMessage);
 		subscription.ro = room.ro;
-		subscription.description = room.description;
-		subscription.topic = room.topic;
-		subscription.announcement = room.announcement;
-		subscription.reactWhenReadOnly = room.reactWhenReadOnly;
-		subscription.archived = room.archived;
-		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
@@ -32,12 +31,6 @@ export const merge = (subscription, room) => {
 		} else {
 			subscription.muted = [];
 		}
-	}
-
-	if (subscription.mobilePushNotifications === 'nothing') {
-		subscription.notifications = true;
-	} else {
-		subscription.notifications = false;
 	}
 
 	if (!subscription.name) {

@@ -4,6 +4,22 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
+// try open 3 times because it not open if is
+// connecting || updating
+async function openServerDropdown() {
+	let i = 0;
+	await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+	while(i < 3) {
+		try {
+			await expect(element(by.id('rooms-list-header-server-dropdown'))).toExist();
+			break;
+		} catch (e) {
+			i += 1;
+		}
+	}
+};
+
+
 describe('Change server', () => {
 	before(async() => {
 		await device.reloadReactNative();
@@ -12,7 +28,7 @@ describe('Change server', () => {
 
 	it('should add server and create new user', async() => {
 		// Navigate to add server
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+		await openServerDropdown();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
 		await element(by.id('rooms-list-header-server-add')).tap();
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);
@@ -51,7 +67,7 @@ describe('Change server', () => {
 	});
 
 	it('should change server', async() => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+		await openServerDropdown();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

@@ -15,7 +15,6 @@ import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
-import database from '../../lib/realm';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 
@@ -59,8 +58,7 @@ class ShareView extends React.Component {
 		const value = navigation.getParam('value', '');
 		const isMedia = navigation.getParam('isMedia', false);
 		const fileInfo = navigation.getParam('fileInfo', {});
-
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
+		const room = navigation.getParam('room', { rid });
 
 		this.state = {
 			rid,
@@ -68,8 +66,8 @@ class ShareView extends React.Component {
 			isMedia,
 			name,
 			fileInfo,
+			room,
 			loading: false,
-			room: this.rooms[0] || { rid },
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
@@ -116,7 +114,7 @@ class ShareView extends React.Component {
 			try {
 				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
 			} catch (e) {
-				log('err_send_media_message', e);
+				log(e);
 			}
 		}
 	}
@@ -127,8 +125,8 @@ class ShareView extends React.Component {
 		if (value !== '' && rid !== '') {
 			try {
 				await RocketChat.sendMessage(rid, value, undefined, user);
-			} catch (error) {
-				log('err_share_extension_send_message', error);
+			} catch (e) {
+				log(e);
 			}
 		}
 	};

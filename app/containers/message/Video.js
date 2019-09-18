@@ -4,13 +4,13 @@ import { StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
-import Markdown from './Markdown';
+import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
 
-const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/webm', 'video/3gp', 'video/mkv'])];
+const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({

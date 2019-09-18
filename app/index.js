@@ -1,7 +1,7 @@
 import React from 'react';
-import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
-} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
@@ -16,7 +16,9 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
+import RocketChat from './lib/rocketchat';
 
 useScreens();
 
@@ -119,6 +121,12 @@ const ChatsStack = createStackNavigator({
 	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
+	},
+	TableView: {
+		getScreen: () => require('./views/TableView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -256,6 +264,7 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
+		this.initCrashReport();
 	}
 
 	componentDidMount() {
@@ -283,6 +292,17 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	initCrashReport = () => {
+		RocketChat.getAllowCrashReport()
+			.then((allowCrashReport) => {
+				if (!allowCrashReport) {
+					loggerConfig.autoNotify = false;
+					loggerConfig.registerBeforeSendCallback(() => false);
+					analytics().setAnalyticsCollectionEnabled(false);
+				}
+			});
 	}
 
 	render() {

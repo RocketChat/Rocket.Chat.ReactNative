@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
@@ -13,7 +12,6 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import Touch from '../../utils/touch';
-import database, { safeAddListener } from '../../lib/realm';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -43,75 +41,69 @@ class RoomActionsView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
+		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
 		this.state = {
-			room: this.rooms[0] || { rid: this.rid, t: this.t },
+			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
 			member: {},
-			joined: this.rooms.length > 0,
+			joined: !!room,
 			canViewMembers: false,
-			canAutoTranslate: false
+			canAutoTranslate: false,
+			canAddUser: false
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 	}
 
 	async componentDidMount() {
+		this.mounted = true;
 		const { room } = this.state;
-		if (!room._id) {
+		if (!room.id) {
 			try {
 				const result = await RocketChat.getChannelInfo(room.rid);
 				if (result.success) {
 					this.setState({ room: { ...result.channel, rid: result.channel._id } });
 				}
-			} catch (error) {
-				log('err_get_channel_info', error);
+			} catch (e) {
+				log(e);
 			}
 		}
 
-		if (room && room.t !== 'd' && this.canViewMembers) {
+		if (room && room.t !== 'd' && this.canViewMembers()) {
 			try {
 				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
 				if (counters.success) {
 					this.setState({ membersCount: counters.members, joined: counters.joined });
 				}
-			} catch (error) {
-				log('err_get_room_counters', error);
+			} catch (e) {
+				log(e);
 			}
 		} else if (room.t === 'd') {
 			this.updateRoomMember();
 		}
 
-		const canAutoTranslate = RocketChat.canAutoTranslate();
+		const canAutoTranslate = await RocketChat.canAutoTranslate();
 		this.setState({ canAutoTranslate });
 
-		safeAddListener(this.rooms, this.updateRoom);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			room, membersCount, member, joined, canViewMembers
-		} = this.state;
-		if (nextState.membersCount !== membersCount) {
-			return true;
-		}
-		if (nextState.joined !== joined) {
-			return true;
-		}
-		if (nextState.canViewMembers !== canViewMembers) {
-			return true;
-		}
-		if (!equal(nextState.room, room)) {
-			return true;
-		}
-		if (!equal(nextState.member, member)) {
-			return true;
-		}
-		return false;
+		this.canAddUser();
 	}
 
 	componentWillUnmount() {
-		this.rooms.removeAllListeners();
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	onPressTouchable = (item) => {
@@ -125,32 +117,37 @@ class RoomActionsView extends React.Component {
 	}
 
 	// TODO: move to componentDidMount
-	get canAddUser() {
+	// eslint-disable-next-line react/sort-comp
+	canAddUser = async() => {
 		const { room, joined } = this.state;
 		const { rid, t } = room;
+		let canAdd = false;
 
 		const userInRoom = joined;
-		const permissions = RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
+		const permissions = await RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
 
-		if (userInRoom && permissions['add-user-to-joined-room']) {
-			return true;
+		if (permissions) {
+			if (userInRoom && permissions['add-user-to-joined-room']) {
+				canAdd = true;
+			}
+			if (t === 'c' && permissions['add-user-to-any-c-room']) {
+				canAdd = true;
+			}
+			if (t === 'p' && permissions['add-user-to-any-p-room']) {
+				canAdd = true;
+			}
 		}
-		if (t === 'c' && permissions['add-user-to-any-c-room']) {
-			return true;
-		}
-		if (t === 'p' && permissions['add-user-to-any-p-room']) {
-			return true;
-		}
-		return false;
+		this.setState({ canAddUser: canAdd });
 	}
 
 	// TODO: move to componentDidMount
-	get canViewMembers() {
+	// eslint-disable-next-line react/sort-comp
+	canViewMembers = async() => {
 		const { room } = this.state;
 		const { rid, t, broadcast } = room;
 		if (broadcast) {
 			const viewBroadcastMemberListPermission = 'view-broadcast-member-list';
-			const permissions = RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
+			const permissions = await RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
 			if (!permissions[viewBroadcastMemberListPermission]) {
 				return false;
 			}
@@ -165,16 +162,17 @@ class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, membersCount, canViewMembers, joined, canAutoTranslate
+			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
 		const {
-			rid, t, blocker, notifications
+			rid, t, blocker
 		} = room;
 
 		const notificationsAction = {
-			icon: notifications ? 'bell' : 'Bell-off',
-			name: I18n.t(`${ notifications ? 'Enable' : 'Disable' }_notifications`),
-			event: this.toggleNotifications,
+			icon: 'bell',
+			name: I18n.t('Notifications'),
+			route: 'NotificationPrefView',
+			params: { rid, room },
 			testID: 'room-actions-notifications'
 		};
 
@@ -184,7 +182,7 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
-				params: { rid, t, room: joined ? null : room },
+				params: { rid, t, room },
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
@@ -256,7 +254,7 @@ class RoomActionsView extends React.Component {
 				icon: 'language',
 				name: I18n.t('Auto_Translate'),
 				route: 'AutoTranslateView',
-				params: { rid },
+				params: { rid, room },
 				testID: 'room-actions-auto-translate'
 			});
 		}
@@ -284,12 +282,12 @@ class RoomActionsView extends React.Component {
 					name: I18n.t('Members'),
 					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 					route: 'RoomMembersView',
-					params: { rid },
+					params: { rid, room },
 					testID: 'room-actions-members'
 				});
 			}
 
-			if (this.canAddUser) {
+			if (canAddUser) {
 				actions.push({
 					icon: 'user-plus',
 					name: I18n.t('Add_user'),
@@ -323,12 +321,6 @@ class RoomActionsView extends React.Component {
 		return sections;
 	}
 
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
-		}
-	}
-
 	updateRoomMember = async() => {
 		const { room } = this.state;
 		const { rid } = room;
@@ -341,7 +333,7 @@ class RoomActionsView extends React.Component {
 				this.setState({ member: result.user });
 			}
 		} catch (e) {
-			log('err_update_room_member', e);
+			log(e);
 			this.setState({ member: {} });
 		}
 	}
@@ -353,7 +345,7 @@ class RoomActionsView extends React.Component {
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
-			log('err_toggle_block_user', e);
+			log(e);
 		}
 	}
 
@@ -384,18 +376,6 @@ class RoomActionsView extends React.Component {
 				}
 			]
 		);
-	}
-
-	toggleNotifications = () => {
-		const { room } = this.state;
-		try {
-			const notifications = {
-				mobilePushNotifications: room.notifications ? 'default' : 'nothing'
-			};
-			RocketChat.saveNotificationSettings(room.rid, notifications);
-		} catch (e) {
-			log('err_toggle_notifications', e);
-		}
 	}
 
 	renderRoomInfo = ({ item }) => {

@@ -26,7 +26,8 @@ class MessagesView extends React.Component {
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		customEmojis: PropTypes.object
 	}
 
 	constructor(props) {
@@ -35,7 +36,8 @@ class MessagesView extends React.Component {
 			loading: false,
 			messages: [],
 			selectedAttachment: {},
-			photoModalVisible: false
+			photoModalVisible: false,
+			fileLoading: true
 		};
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
@@ -47,7 +49,9 @@ class MessagesView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, messages, photoModalVisible } = this.state;
+		const {
+			loading, messages, photoModalVisible, fileLoading
+		} = this.state;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -57,6 +61,10 @@ class MessagesView extends React.Component {
 		if (!equal(nextState.messages, messages)) {
 			return true;
 		}
+		if (fileLoading !== nextState.fileLoading) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -73,7 +81,8 @@ class MessagesView extends React.Component {
 			isEdited: !!item.editedAt,
 			isHeader: true,
 			attachments: item.attachments || [],
-			onOpenFileModal: this.onOpenFileModal
+			onOpenFileModal: this.onOpenFileModal,
+			getCustomEmoji: this.getCustomEmoji
 		});
 
 		return ({
@@ -138,7 +147,7 @@ class MessagesView extends React.Component {
 					/>
 				),
 				actionTitle: I18n.t('Unstar'),
-				handleActionPress: message => RocketChat.toggleStarMessage(message)
+				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
@@ -154,7 +163,7 @@ class MessagesView extends React.Component {
 					/>
 				),
 				actionTitle: I18n.t('Unpin'),
-				handleActionPress: message => RocketChat.togglePinMessage(message)
+				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
 	}
@@ -182,6 +191,15 @@ class MessagesView extends React.Component {
 			this.setState({ loading: false });
 			console.warn('MessagesView -> catch -> error', error);
 		}
+	}
+
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
 	}
 
 	onOpenFileModal = (attachment) => {
@@ -225,6 +243,10 @@ class MessagesView extends React.Component {
 		}
 	}
 
+	setFileLoading = (fileLoading) => {
+		this.setState({ fileLoading });
+	}
+
 	renderEmpty = () => (
 		<View style={styles.listEmptyContainer} testID={this.content.testID}>
 			<Text style={styles.noDataFound}>{this.content.noDataMsg}</Text>
@@ -235,7 +257,7 @@ class MessagesView extends React.Component {
 
 	render() {
 		const {
-			messages, loading, selectedAttachment, photoModalVisible
+			messages, loading, selectedAttachment, photoModalVisible, fileLoading
 		} = this.state;
 		const { user, baseUrl } = this.props;
 
@@ -260,6 +282,8 @@ class MessagesView extends React.Component {
 					onClose={this.onCloseFileModal}
 					user={user}
 					baseUrl={baseUrl}
+					loading={fileLoading}
+					setLoading={this.setFileLoading}
 				/>
 			</SafeAreaView>
 		);
@@ -272,7 +296,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(MessagesView);

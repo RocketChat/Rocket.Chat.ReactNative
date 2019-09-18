@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import settings from './reducers';
 import login from './login';
 import meteor from './connect';
-import messages from './messages';
 import rooms from './rooms';
 import server from './server';
 import selectedUsers from './selectedUsers';
@@ -12,12 +11,15 @@ import sortPreferences from './sortPreferences';
 import notification from './notification';
 import markdown from './markdown';
 import share from './share';
+import crashReport from './crashReport';
+import customEmojis from './customEmojis';
+import activeUsers from './activeUsers';
+import usersTyping from './usersTyping';
 
 export default combineReducers({
 	settings,
 	login,
 	meteor,
-	messages,
 	server,
 	selectedUsers,
 	createChannel,
@@ -26,5 +28,9 @@ export default combineReducers({
 	sortPreferences,
 	notification,
 	markdown,
-	share
+	share,
+	crashReport,
+	customEmojis,
+	activeUsers,
+	usersTyping
 });
