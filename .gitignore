@@ -30,6 +30,12 @@ build/
 local.properties
 *.iml
 
+# Legacy Eclipse project files
+.classpath
+.project
+.cproject
+.settings/
+
 # node.js
 #
 node_modules/
