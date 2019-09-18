@@ -1,8 +1,9 @@
 import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
+import BackgroundTimer from 'react-native-background-timer';
 
 import reduxStore from '../createStore';
 
-let jitsiTimeOut = null;
+let jitsiTimeout = null;
 
 const jitsiBaseUrl = ({
 	Jitsi_Enabled, Jitsi_SSL, Jitsi_Domain, Jitsi_URL_Room_Prefix, uniqueID
@@ -28,13 +29,13 @@ function callJitsi(rid, options = {}) {
 	JitsiMeet.initialize();
 	const conferenceJoined = JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
 		this.updateJitsiTimeout(rid);
-		jitsiTimeOut = setInterval(async() => {
+		jitsiTimeout = BackgroundTimer.setInterval(async() => {
 			await this.updateJitsiTimeout(rid);
 		}, 10000);
 	});
 	const conferenceLeft = JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
-		if (jitsiTimeOut) {
-			clearInterval(jitsiTimeOut);
+		if (jitsiTimeout) {
+			BackgroundTimer.clearInterval(jitsiTimeout);
 		}
 		if (conferenceJoined && conferenceJoined.remove) {
 			conferenceJoined.remove();
