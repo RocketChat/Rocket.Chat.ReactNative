@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -25,6 +25,7 @@ import ShareListHeader from './Header';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -174,8 +175,8 @@ class ShareListView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
-		if (isIOS && navigation.isFocused()) {
-			LayoutAnimation.easeInEaseOut();
+		if (navigation.isFocused()) {
+			animateNextTransition();
 		}
 		this.setState(...args);
 	}
