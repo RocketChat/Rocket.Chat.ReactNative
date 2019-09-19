@@ -28,36 +28,53 @@ const Image = React.memo(({ img }) => (
 	/>
 ));
 
-const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, onLongPress
-}) => {
-	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
-	if (!img) {
-		return null;
-	}
+const ImageContainer = React.memo(
+	({
+		file,
+		baseUrl,
+		user,
+		useMarkdown,
+		onOpenFileModal,
+		getCustomEmoji,
+		onLongPress
+	}) => {
+		const img = formatAttachmentUrl(
+			file.image_url,
+			user.id,
+			user.token,
+			baseUrl
+		);
+		if (!img) {
+			return null;
+		}
 
-	const onPress = () => onOpenFileModal(file);
+		const onPress = () => onOpenFileModal(file);
 
-	if (file.description) {
+		if (file.description) {
+			return (
+				<Button onLongPress={onLongPress} onPress={onPress}>
+					<View>
+						<Image img={img} />
+						<Markdown
+							msg={file.description}
+							baseUrl={baseUrl}
+							username={user.username}
+							getCustomEmoji={getCustomEmoji}
+							useMarkdown={useMarkdown}
+						/>
+					</View>
+				</Button>
+			);
+		}
+
 		return (
-			<Button
-				onLongPress={onLongPress}
-				onPress={onPress}
-			>
-				<View>
-					<Image img={img} />
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
-				</View>
+			<Button onPress={onPress} onLongPress={onLongPress}>
+				<Image img={img} />
 			</Button>
 		);
-	}
-
-	return (
-		<Button onPress={onPress} onLongPress={onLongPress}>
-			<Image img={img} />
-		</Button>
-	);
-}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file));
+	},
+	(prevProps, nextProps) => equal(prevProps.file, nextProps.file)
+);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
@@ -77,7 +94,8 @@ ImageContainer.displayName = 'MessageImage';
 
 Button.propTypes = {
 	children: PropTypes.node,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	onLongPress: PropTypes.func
 };
 ImageContainer.displayName = 'MessageButton';
 
