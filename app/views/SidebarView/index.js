@@ -177,7 +177,7 @@ class Sidebar extends Component {
 		const { isAdmin } = this.state;
 		const { activeItemKey } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={COLOR_TEXT} />}
@@ -215,7 +215,7 @@ class Sidebar extends Component {
 					onPress={this.logout}
 					testID='sidebar-logout'
 				/>
-			</React.Fragment>
+			</>
 		);
 	}
 

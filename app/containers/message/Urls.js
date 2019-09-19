@@ -89,10 +89,10 @@ const Url = React.memo(({
 			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
 			background={Touchable.Ripple('#fff')}
 		>
-			<React.Fragment>
+			<>
 				<UrlImage image={url.image} user={user} baseUrl={baseUrl} />
 				<UrlContent title={url.title} description={url.description} />
-			</React.Fragment>
+			</>
 		</Touchable>
 	);
 }, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));

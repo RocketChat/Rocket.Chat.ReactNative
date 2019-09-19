@@ -669,13 +669,13 @@ class RoomView extends React.Component {
 
 		if (showUnreadSeparator || dateSeparator) {
 			return (
-				<React.Fragment>
+				<>
 					{message}
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
 					/>
-				</React.Fragment>
+				</>
 			);
 		}
 
