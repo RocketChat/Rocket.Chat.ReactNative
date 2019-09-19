@@ -58,6 +58,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					prid: s.prid,
 					draftMessage: s.draftMessage,
 					lastThreadSync: s.lastThreadSync,
+					jitsiTimeout: s.jitsiTimeout,
 					autoTranslate: s.autoTranslate,
 					autoTranslateLanguage: s.autoTranslateLanguage,
 					lastMessage: s.lastMessage

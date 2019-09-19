@@ -5,7 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView, HeaderBackButton } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
+import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
@@ -38,6 +39,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
+import { showErrorAlert } from '../../utils/info';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -52,7 +54,7 @@ const stateAttrsUpdate = [
 	'replying',
 	'reacting'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -602,6 +604,16 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	callJitsi = () => {
+		const { room } = this.state;
+		const { jitsiTimeout } = room;
+		if (jitsiTimeout < Date.now()) {
+			showErrorAlert(I18n.t('Call_already_ended'));
+		} else {
+			RocketChat.callJitsi(this.rid, {});
+		}
+	};
+
 	get isReadOnly() {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -657,6 +669,7 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
+				callJitsi={this.callJitsi}
 			/>
 		);
 

@@ -7,6 +7,7 @@ buildscript {
         targetSdkVersion = 28
         glideVersion = "4.9.0"
         kotlin_version = "1.3.50"
+        supportLibVersion = "28.0.0"
     }
     repositories {
         mavenLocal()
@@ -39,6 +40,9 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
+        }
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
