@@ -205,11 +205,13 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
     implementation project(':watermelondb')
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-core:16.0.9"
