@@ -11,7 +11,7 @@ import styles from '../Styles';
 
 class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
+		headerLeft: () => <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})
 

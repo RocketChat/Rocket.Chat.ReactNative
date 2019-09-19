@@ -28,7 +28,7 @@ class RegisterView extends React.Component {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
 			title,
-			headerRight: <LegalButton testID='register-view-more' navigation={navigation} />
+			headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
 		};
 	}
 

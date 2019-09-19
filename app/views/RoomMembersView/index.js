@@ -30,7 +30,7 @@ class RoomMembersView extends React.Component {
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
-			headerRight: (
+			headerRight: () => (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
 				</CustomHeaderButtons>

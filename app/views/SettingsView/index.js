@@ -36,7 +36,7 @@ ItemInfo.propTypes = {
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
+		headerLeft: () => <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
 	});
 

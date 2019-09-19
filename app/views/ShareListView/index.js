@@ -53,20 +53,22 @@ class ShareListView extends React.Component {
 
 		return {
 			headerBackTitle: null,
-			headerLeft: searching
-				? (
-					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
-					</CustomHeaderButtons>
-				)
-				: (
-					<CloseShareExtensionButton
-						onPress={ShareExtension.close}
-						testID='share-extension-close'
-					/>
-				),
-			headerTitle: <ShareListHeader searching={searching} search={search} />,
-			headerRight: (
+			headerLeft: () => (
+				searching
+					? (
+						<CustomHeaderButtons left>
+							<Item title='cancel' iconName='cross' onPress={cancelSearch} />
+						</CustomHeaderButtons>
+					)
+					: (
+						<CloseShareExtensionButton
+							onPress={ShareExtension.close}
+							testID='share-extension-close'
+						/>
+					)
+			),
+			headerTitle: () => <ShareListHeader searching={searching} search={search} />,
+			headerRight: () => (
 				searching
 					? null
 					: (

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.14.0",
+    "@react-native-community/masked-view": "^0.1.1",
     "@rocket.chat/sdk": "1.0.0-alpha.31",
     "bugsnag-react-native": "^2.22.3",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
@@ -83,7 +84,7 @@
     "react-navigation": "^4.0.5",
     "react-navigation-drawer": "^2.2.1",
     "react-navigation-header-buttons": "3.0.1",
-    "react-navigation-stack": "^1.7.3",
+    "react-navigation-stack": "^2.0.0-alpha.14",
     "react-redux": "7.1.0",
     "reactotron-react-native": "3.6.4",
     "redux": "4.0.4",

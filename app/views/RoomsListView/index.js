@@ -80,39 +80,43 @@ class RoomsListView extends React.Component {
 		);
 
 		return {
-			headerLeft: searching ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
-						iconName='cross'
-						onPress={cancelSearchingAndroid}
-					/>
-				</CustomHeaderButtons>
-			) : (
-				<DrawerButton
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-				/>
-			),
-			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching ? null : (
-				<CustomHeaderButtons>
-					{isAndroid ? (
+			headerLeft: () => (
+				searching ? (
+					<CustomHeaderButtons left>
 						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={initSearchingAndroid}
+							title='cancel'
+							iconName='cross'
+							onPress={cancelSearchingAndroid}
 						/>
-					) : null}
-					<Item
-						title='new'
-						iconName='edit-rounded'
-						onPress={() => navigation.navigate('NewMessageView', {
-							onPressItem
-						})}
-						testID='rooms-list-view-create-channel'
+					</CustomHeaderButtons>
+				) : (
+					<DrawerButton
+						navigation={navigation}
+						testID='rooms-list-view-sidebar'
 					/>
-				</CustomHeaderButtons>
+				)
+			),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (
+				searching ? null : (
+					<CustomHeaderButtons>
+						{isAndroid ? (
+							<Item
+								title='search'
+								iconName='magnifier'
+								onPress={initSearchingAndroid}
+							/>
+						) : null}
+						<Item
+							title='new'
+							iconName='edit-rounded'
+							onPress={() => navigation.navigate('NewMessageView', {
+								onPressItem
+							})}
+							testID='rooms-list-view-create-channel'
+						/>
+					</CustomHeaderButtons>
+				)
 			)
 		};
 	};

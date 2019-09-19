@@ -10,6 +10,7 @@ export const defaultHeader = {
 		color: HEADER_TITLE
 	},
 	headerBackTitle: null,
+	headerBackTitleVisible: false,
 	headerTintColor: HEADER_BACK
 };
 

@@ -65,7 +65,7 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
-			headerTitle: (
+			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
 					prid={prid}
@@ -75,7 +75,7 @@ class RoomView extends React.Component {
 					widthOffset={tmid ? 95 : 130}
 				/>
 			),
-			headerRight: (
+			headerRight: () => (
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
@@ -85,10 +85,10 @@ class RoomView extends React.Component {
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
-			headerLeft: (
+			headerLeft: () => (
 				<HeaderBackButton
-					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-					backTitleVisible={isIOS}
+					label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+					labelVisible={isIOS}
 					onPress={() => navigation.goBack()}
 					tintColor={HEADER_BACK}
 				/>

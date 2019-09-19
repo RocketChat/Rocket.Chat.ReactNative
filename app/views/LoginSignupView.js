@@ -93,7 +93,7 @@ class LoginSignupView extends React.Component {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
 			title,
-			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
+			headerRight: () => <LegalButton testID='welcome-view-more' navigation={navigation} />
 		};
 	}
 

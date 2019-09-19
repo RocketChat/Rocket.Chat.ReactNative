@@ -36,13 +36,15 @@ class RoomInfoView extends React.Component {
 		const rid = navigation.getParam('rid');
 		return {
 			title: I18n.t('Room_Info'),
-			headerRight: showEdit
-				? (
-					<CustomHeaderButtons>
-						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
-					</CustomHeaderButtons>
-				)
-				: null
+			headerRight: () => (
+				showEdit
+					? (
+						<CustomHeaderButtons>
+							<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
+						</CustomHeaderButtons>
+					)
+					: null
+			)
 		};
 	}
 

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 export default class WithoutServerView extends React.Component {
 	static navigationOptions = () => ({
-		headerLeft: (
+		headerLeft: () => (
 			<CloseShareExtensionButton
 				onPress={ShareExtension.close}
 				testID='share-extension-close'

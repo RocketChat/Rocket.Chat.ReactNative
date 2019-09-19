@@ -24,7 +24,7 @@ class ShareView extends React.Component {
 
 		return ({
 			title: I18n.t('Share'),
-			headerRight:
+			headerRight: () => (
 				canSend
 					? (
 						<CustomHeaderButtons>
@@ -37,6 +37,7 @@ class ShareView extends React.Component {
 						</CustomHeaderButtons>
 					)
 					: null
+			)
 		});
 	}
 

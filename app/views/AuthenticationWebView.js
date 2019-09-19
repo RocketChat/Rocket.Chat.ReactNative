@@ -28,7 +28,7 @@ class AuthenticationWebView extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => {
 		const authType = navigation.getParam('authType', 'oauth');
 		return {
-			headerLeft: <CloseModalButton navigation={navigation} />,
+			headerLeft: () => <CloseModalButton navigation={navigation} />,
 			title: authType === 'saml' || authType === 'cas' ? 'SSO' : 'OAuth'
 		};
 	}

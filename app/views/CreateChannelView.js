@@ -82,7 +82,7 @@ class CreateChannelView extends React.Component {
 		const showSubmit = navigation.getParam('showSubmit');
 		return {
 			title: I18n.t('Create_Channel'),
-			headerRight: (
+			headerRight: () => (
 				showSubmit
 					? (
 						<CustomHeaderButtons>
