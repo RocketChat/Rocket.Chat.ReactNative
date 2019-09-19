@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Animated } from 'react-native';
-import { RectButton, PanGestureHandler, State } from 'react-native-gesture-handler';
+import {
+	RectButton,
+	PanGestureHandler,
+	State
+} from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
 import styles, {
-	ROW_HEIGHT, ACTION_WIDTH, SMALL_SWIPE, LONG_SWIPE
+	ROW_HEIGHT,
+	ACTION_WIDTH,
+	SMALL_SWIPE,
+	LONG_SWIPE
 } from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
@@ -16,9 +24,20 @@ import { LeftActions, RightActions } from './Actions';
 
 export { ROW_HEIGHT };
 
-const attrs = ['name', 'unread', 'userMentions', 'showLastMessage', 'alert', 'type', 'width', 'isRead', 'favorite'];
+const attrs = [
+	'name',
+	'unread',
+	'userMentions',
+	'showLastMessage',
+	'alert',
+	'type',
+	'width',
+	'isRead',
+	'favorite',
+	'status'
+];
 
-export default class RoomItem extends React.Component {
+class RoomItem extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
@@ -41,17 +60,16 @@ export default class RoomItem extends React.Component {
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
+		status: PropTypes.string,
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func
-	}
+	};
 
 	static defaultProps = {
 		avatarSize: 48
-	}
+	};
 
-	// Making jest happy: https://github.com/facebook/react-native/issues/22175
-	// eslint-disable-next-line no-useless-constructor
 	constructor(props) {
 		super(props);
 		this.dragX = new Animated.Value(0);
@@ -70,13 +88,7 @@ export default class RoomItem extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { lastMessage, _updatedAt } = this.props;
-		const oldlastMessage = lastMessage;
-		const newLastmessage = nextProps.lastMessage;
-
-		if (oldlastMessage && newLastmessage && oldlastMessage.ts !== newLastmessage.ts) {
-			return true;
-		}
+		const { _updatedAt } = this.props;
 		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
 			return true;
 		}
@@ -165,31 +177,31 @@ export default class RoomItem extends React.Component {
 			toggleFav(rid, favorite);
 		}
 		this.close();
-	}
+	};
 
 	toggleRead = () => {
 		const { toggleRead, rid, isRead } = this.props;
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
-	}
+	};
 
 	hideChannel = () => {
 		const { hideChannel, rid, type } = this.props;
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
-	}
+	};
 
 	onToggleReadPress = () => {
 		this.toggleRead();
 		this.close();
-	}
+	};
 
 	onHidePress = () => {
 		this.hideChannel();
 		this.close();
-	}
+	};
 
 	onPress = () => {
 		const { rowState } = this.state;
@@ -201,11 +213,11 @@ export default class RoomItem extends React.Component {
 		if (onPress) {
 			onPress();
 		}
-	}
+	};
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -246,11 +258,9 @@ export default class RoomItem extends React.Component {
 						onHidePress={this.onHidePress}
 					/>
 					<Animated.View
-						style={
-							{
-								transform: [{ translateX: this.transX }]
-							}
-						}
+						style={{
+							transform: [{ translateX: this.transX }]
+						}}
 					>
 						<RectButton
 							onPress={this.onPress}
@@ -263,16 +273,59 @@ export default class RoomItem extends React.Component {
 								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
-								<Avatar text={name} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+								<Avatar
+									text={name}
+									size={avatarSize}
+									type={type}
+									baseUrl={baseUrl}
+									style={styles.avatar}
+									userId={userId}
+									token={token}
+								/>
 								<View style={styles.centerContainer}>
 									<View style={styles.titleContainer}>
-										<TypeIcon type={type} id={id} prid={prid} />
-										<Text style={[styles.title, alert && styles.alert]} ellipsizeMode='tail' numberOfLines={1}>{ name }</Text>
-										{_updatedAt ? <Text style={[styles.date, alert && styles.updateAlert]} ellipsizeMode='tail' numberOfLines={1}>{ capitalize(date) }</Text> : null}
+										<TypeIcon
+											type={type}
+											id={id}
+											prid={prid}
+											status={status}
+										/>
+										<Text
+											style={[
+												styles.title,
+												alert && styles.alert
+											]}
+											ellipsizeMode='tail'
+											numberOfLines={1}
+										>
+											{name}
+										</Text>
+										{_updatedAt ? (
+											<Text
+												style={[
+													styles.date,
+													alert && styles.updateAlert
+												]}
+												ellipsizeMode='tail'
+												numberOfLines={1}
+											>
+												{capitalize(date)}
+											</Text>
+										) : null}
 									</View>
 									<View style={styles.row}>
-										<LastMessage lastMessage={lastMessage} type={type} showLastMessage={showLastMessage} username={username} alert={alert} />
-										<UnreadBadge unread={unread} userMentions={userMentions} type={type} />
+										<LastMessage
+											lastMessage={lastMessage}
+											type={type}
+											showLastMessage={showLastMessage}
+											username={username}
+											alert={alert}
+										/>
+										<UnreadBadge
+											unread={unread}
+											userMentions={userMentions}
+											type={type}
+										/>
 									</View>
 								</View>
 							</View>
@@ -283,3 +336,9 @@ export default class RoomItem extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (state, ownProps) => ({
+	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline'
+});
+
+export default connect(mapStateToProps)(RoomItem);

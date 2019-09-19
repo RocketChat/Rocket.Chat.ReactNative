@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
-import database, { safeAddListener } from '../../../lib/realm';
 import Header from './Header';
 import RightButtons from './RightButtons';
 
@@ -14,32 +13,15 @@ class RoomHeaderView extends Component {
 		type: PropTypes.string,
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
-		rid: PropTypes.string,
+		usersTyping: PropTypes.string,
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
-		widthOffset: PropTypes.number,
-		isLoggedUser: PropTypes.bool,
-		userId: PropTypes.string
+		widthOffset: PropTypes.number
 	};
 
-	constructor(props) {
-		super(props);
-		this.usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid = $0', props.rid);
-		this.user = [];
-		if (props.type === 'd' && !props.isLoggedUser) {
-			this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.userId);
-			safeAddListener(this.user, this.updateUser);
-		}
-		this.state = {
-			usersTyping: this.usersTyping.slice() || [],
-			user: this.user[0] || {}
-		};
-		this.usersTyping.addListener(this.updateState);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { usersTyping, user } = this.state;
+	shouldComponentUpdate(nextProps) {
+		const { usersTyping } = this.props;
 		const {
 			type, title, status, window, connecting
 		} = this.props;
@@ -61,46 +43,16 @@ class RoomHeaderView extends Component {
 		if (nextProps.window.height !== window.height) {
 			return true;
 		}
-		if (!equal(nextState.usersTyping, usersTyping)) {
-			return true;
-		}
-		if (!equal(nextState.user, user)) {
+		if (!equal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.usersTyping.removeAllListeners();
-		if (this.user && this.user.removeAllListeners) {
-			this.user.removeAllListeners();
-		}
-	}
-
-	updateState = () => {
-		this.setState({ usersTyping: this.usersTyping.slice() });
-	}
-
-	updateUser = () => {
-		if (this.user.length) {
-			this.setState({ user: this.user[0] });
-		}
-	}
-
 	render() {
-		const { usersTyping, user } = this.state;
 		const {
-			window, title, type, prid, tmid, widthOffset, isLoggedUser, status: userStatus, connecting
+			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping
 		} = this.props;
-		let status = 'offline';
-
-		if (type === 'd') {
-			if (isLoggedUser) {
-				status = userStatus;
-			} else {
-				status = user.status || 'offline';
-			}
-		}
 
 		return (
 			<Header
@@ -121,24 +73,18 @@ class RoomHeaderView extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	let status;
-	let userId;
-	let isLoggedUser = false;
 	const { rid, type } = ownProps;
 	if (type === 'd') {
 		if (state.login.user && state.login.user.id) {
 			const { id: loggedUserId } = state.login.user;
-			userId = rid.replace(loggedUserId, '').trim();
-			isLoggedUser = userId === loggedUserId;
-			if (isLoggedUser) {
-				status = state.login.user.status; // eslint-disable-line
-			}
+			const userId = rid.replace(loggedUserId, '').trim();
+			status = state.activeUsers[userId];
 		}
 	}
 
 	return {
 		connecting: state.meteor.connecting,
-		userId,
-		isLoggedUser,
+		usersTyping: state.usersTyping,
 		status
 	};
 };

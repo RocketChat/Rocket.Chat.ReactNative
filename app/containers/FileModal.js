@@ -93,7 +93,7 @@ const ModalContent = React.memo(({
 					rate={1.0}
 					volume={1.0}
 					isMuted={false}
-					resizeMode='cover'
+					resizeMode={Video.RESIZE_MODE_CONTAIN}
 					shouldPlay
 					isLooping={false}
 					style={styles.video}

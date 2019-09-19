@@ -1,8 +1,9 @@
 module.exports = {
 	dependencies: {
-		realm: {
+		'react-native-jitsi-meet': {
 			platforms: {
-				ios: null
+				ios: null,
+				android: null
 			}
 		},
 		'react-native-notifications': {
@@ -13,6 +14,12 @@ module.exports = {
 		'react-native-keyboard-input': {
 			platforms: {
 				android: null
+			}
+		},
+		'@nozbe/watermelondb': {
+			platforms: {
+				android: null,
+				ios: null
 			}
 		}
 	}

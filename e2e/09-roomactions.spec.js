@@ -174,18 +174,20 @@ describe('Room actions screen', () => {
 
 	describe('Usage', async() => {
 		describe('TDB', async() => {
-			it('should NOT navigate to voice call', async() => {
-				await waitFor(element(by.id('room-actions-voice'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'up');
-				await element(by.id('room-actions-voice')).tap();
-				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('room-actions-view'))).toBeVisible();
-			});
+			// TODO: test into a jitsi call
+			// it('should NOT navigate to voice call', async() => {
+			// 	await waitFor(element(by.id('room-actions-voice'))).toBeVisible().whileElement(by.id('room-actions-list')).scroll(scrollDown, 'up');
+			// 	await element(by.id('room-actions-voice')).tap();
+			// 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+			// 	await expect(element(by.id('room-actions-view'))).toBeVisible();
+			// });
 
-			it('should NOT navigate to video call', async() => {
-				await element(by.id('room-actions-video')).tap();
-				await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('room-actions-view'))).toBeVisible();
-			});
+			// TODO: test into a jitsi call
+			// it('should NOT navigate to video call', async() => {
+			// 	await element(by.id('room-actions-video')).tap();
+			// 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
+			// 	await expect(element(by.id('room-actions-view'))).toBeVisible();
+			// });
 
 			// TODO: test share room link
 			// it('should NOT navigate to share room', async() => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
@@ -10,6 +11,7 @@ import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
+import LayoutAnimation from './utils/layoutAnimation';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -83,12 +85,14 @@ class Root extends React.Component {
 				onLayout={this.handleLayout}
 			>
 				<Provider store={store}>
-					<AppContainer
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
+					<LayoutAnimation>
+						<AppContainer
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							onNavigationStateChange={onNavigationStateChange}
+						/>
+					</LayoutAnimation>
 				</Provider>
 			</View>
 		);

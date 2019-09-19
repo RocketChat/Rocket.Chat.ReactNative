@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
-import { isEqual } from 'lodash';
+import { isEqual, orderBy } from 'lodash';
+import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../../lib/ShareNavigation';
-import database from '../../lib/realm';
+import database from '../../lib/database';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -24,6 +25,7 @@ import ShareListHeader from './Header';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -173,21 +175,30 @@ class ShareListView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
-		if (isIOS && navigation.isFocused()) {
-			LayoutAnimation.easeInEaseOut();
+		if (navigation.isFocused()) {
+			animateNextTransition();
 		}
 		this.setState(...args);
 	}
 
-	getSubscriptions = (server, fileInfo) => {
+	getSubscriptions = async(server, fileInfo) => {
 		const { fileInfo: fileData } = this.state;
-		const { serversDB } = database.databases;
+		const db = database.active;
+		const serversDB = database.servers;
 
 		if (server) {
-			this.data = database.objects('subscriptions').filtered('archived != true && open == true').sorted('roomUpdatedAt', true);
-			this.servers = serversDB.objects('servers');
+			this.data = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('archived', false),
+					Q.where('open', true)
+				).fetch();
+			this.data = orderBy(this.data, ['roomUpdatedAt'], ['desc']);
+
+			const serversCollection = serversDB.collections.get('servers');
+			this.servers = await serversCollection.query().fetch();
 			this.chats = this.data.slice(0, LIMIT);
-			const serverInfo = serversDB.objectForPrimaryKey('servers', server);
+			const serverInfo = await serversCollection.find(server);
 
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
@@ -222,7 +233,7 @@ class ShareListView extends React.Component {
 	}
 
 	search = (text) => {
-		const result = database.objects('subscriptions').filtered('name CONTAINS[c] $0', text);
+		const result = this.data.filter(item => item.name.includes(text)) || [];
 		this.internalSetState({
 			searchResults: result.slice(0, LIMIT),
 			searchText: text
@@ -304,7 +315,7 @@ class ShareListView extends React.Component {
 				<View style={styles.bordered}>
 					<ServerItem
 						server={server}
-						onPress={() => Navigation.navigate('SelectServerView')}
+						onPress={() => Navigation.navigate('SelectServerView', { servers: this.servers })}
 						item={currentServer}
 					/>
 				</View>
