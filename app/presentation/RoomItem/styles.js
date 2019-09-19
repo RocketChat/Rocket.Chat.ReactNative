@@ -91,6 +91,7 @@ export default StyleSheet.create({
 		flex: 1,
 		fontSize: 14,
 		lineHeight: 17,
+		paddingTop:9,
 		...sharedStyles.textRegular,
 		...sharedStyles.textColorDescription
 	},
