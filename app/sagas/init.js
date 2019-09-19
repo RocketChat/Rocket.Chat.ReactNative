@@ -30,6 +30,8 @@ const restore = function* restore() {
 		});
 
 		let servers = yield RNUserDefaults.objectForKey(SERVERS);
+
+		console.log(servers);
 		// if not have current
 		if (servers && servers.length !== 0 && (!token || !server)) {
 			server = servers[0][SERVER_URL];

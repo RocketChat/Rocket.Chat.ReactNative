@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 import android.content.Context;
 import android.os.Bundle;
+import android.content.SharedPreferences;
 
 import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
@@ -75,6 +76,20 @@ public class MainApplication extends Application implements ReactApplication, IN
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    setupContext();
+  }
+
+  private void setupContext() {
+    try {
+      Context context = this.createPackageContext("chat.rocket.android", Context.CONTEXT_INCLUDE_CODE);
+      SharedPreferences pref = context.getSharedPreferences("chat.rocket.android", Context.MODE_PRIVATE);
+      String event = pref.getString("ACCOUNTS_KEY", null);
+      Log.d("ACCOUNTS_KEY", "Pegou ${event}");
+    } catch (Exception e) {
+      String error = e.getMessage();
+      Log.d("ACCOUNTS_KEY", "${error}");
+      return;
+    }
   }
 
   @Override

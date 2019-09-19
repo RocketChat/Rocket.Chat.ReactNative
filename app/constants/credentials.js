@@ -1,5 +1,5 @@
 // This file hosts the constants with the values used on native apps (User Defaults on iOS and Shared Preferences on Android).
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS, isAndroid } from '../utils/deviceInfo'; // TODO: remove it
 
 export const IDENTIFIER = isIOS ? 'group.ios.chat.rocket' : 'chat.rocket.android';
 export const SERVERS = isIOS ? 'kServers' : 'ACCOUNTS_KEY';
