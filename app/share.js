@@ -8,7 +8,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, isIOS, isAndroid } from './utils/deviceInfo';
+import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation from './utils/layoutAnimation';
@@ -79,23 +79,6 @@ class Root extends React.Component {
 
 	render() {
 		const { isLandscape } = this.state;
-		if (isAndroid) {
-			return (
-				<View
-					style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
-					onLayout={this.handleLayout}
-				>
-					<Provider store={store}>
-						<AppContainer
-							ref={(navigatorRef) => {
-								Navigation.setTopLevelNavigator(navigatorRef);
-							}}
-							onNavigationStateChange={onNavigationStateChange}
-						/>
-					</Provider>
-				</View>
-			);
-		}
 		return (
 			<View
 				style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
