@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert, LayoutAnimation
+	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -23,6 +23,7 @@ import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 import log from '../utils/log';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	image: {
@@ -195,7 +196,7 @@ class NewServerView extends React.Component {
 	uriToPath = uri => uri.replace('file://', '');
 
 	saveCertificate = (certificate) => {
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 		this.setState({ certificate });
 	}
 
