@@ -8,7 +8,6 @@ import {
 	Text,
 	ScrollView,
 	Keyboard,
-	LayoutAnimation,
 	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -43,6 +42,7 @@ import {
 import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const SCROLL_OFFSET = 56;
 
@@ -290,8 +290,8 @@ class RoomsListView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
-		if (isIOS && navigation.isFocused()) {
-			LayoutAnimation.easeInEaseOut();
+		if (navigation.isFocused()) {
+			animateNextTransition();
 		}
 		this.setState(...args);
 	};
