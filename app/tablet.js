@@ -296,6 +296,10 @@ const App = createAppContainer(createSwitchNavigator(
 const ListContainer = createAppContainer(ListStackModal);
 
 export class MasterDetailView extends React.Component {
+	state = {
+		inside: false
+	};
+
 	componentDidMount() {
 		const defaultDetailsGetStateForAction = ListContainer.router.getStateForAction;
 		const defaultMasterGetStateForAction = App.router.getStateForAction;
@@ -313,20 +317,38 @@ export class MasterDetailView extends React.Component {
 			return defaultDetailsGetStateForAction(action, state);
 		};
 
-		App.router.getStateForAction = (action, state) => defaultMasterGetStateForAction(action, state);
+		App.router.getStateForAction = (action, state) => {
+			if (action.type === NavigationActions.NAVIGATE) {
+				const { routeName } = action;
+				if (routeName === 'InsideStack') {
+					this.setState({ inside: true });
+				}
+				if (routeName === 'OutsideStack') {
+					this.setState({ inside: false });
+				}
+			}
+			return defaultMasterGetStateForAction(action, state);
+		};
 	}
 
+	renderSideView = () => (
+		<>
+			<View style={{ flex: 4 }}>
+				<ListContainer
+					ref={(listRef) => {
+						this.listRef = listRef;
+					}}
+				/>
+			</View>
+			<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
+		</>
+	);
+
 	render() {
+		const { inside } = this.state;
 		return (
 			<View style={{ flex: 1, flexDirection: 'row' }}>
-				<View style={{ flex: 4 }}>
-					<ListContainer
-						ref={(listRef) => {
-							this.listRef = listRef;
-						}}
-					/>
-				</View>
-				<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
+				{ inside ? this.renderSideView() : null }
 				<View style={{ flex: 8 }}>
 					<App
 						ref={(navigatorRef) => {
