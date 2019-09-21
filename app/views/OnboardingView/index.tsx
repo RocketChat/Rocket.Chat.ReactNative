@@ -19,22 +19,32 @@ import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
 
-class OnboardingView extends React.Component {
+
+const mapStateToProps = (state: ReduxState) => ({
+	currentServer: state.server.server,
+	adding: state.server.adding
+});
+
+const mapDispatchToProps = (dispatch: (x: any) => Action) => ({
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	selectServer: (server?: string) => dispatch(selectServerRequest(server)),
+	appStart: (root: 'inside' | 'background') => dispatch(appStartAction(root))
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>
+type DispatchProps = ReturnType<typeof mapDispatchToProps>
+type OwnProps = { navigation?: any }
+
+type OnboardingViewProps = StateProps & DispatchProps & OwnProps
+class OnboardingView extends React.Component<OnboardingViewProps> {
 	static navigationOptions = () => ({
 		header: null
 	})
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		adding: PropTypes.bool,
-		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func,
-		appStart: PropTypes.func
-	}
+	previousServer?: string
 
-	constructor(props) {
+	constructor(props: OnboardingViewProps) {
 		super(props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		this.previousServer = props.navigation.getParam('previousServer');
@@ -78,12 +88,12 @@ class OnboardingView extends React.Component {
 		appStart('inside');
 	}
 
-	newServer = (server) => {
+	newServer = (server?: string) => {
 		const { navigation } = this.props;
 		navigation.navigate('NewServerView', { server });
 	}
 
-	handleNewServerEvent = (event) => {
+	handleNewServerEvent = (event: { server: string }) => {
 		const { server } = event;
 		this.newServer(server);
 	}
@@ -160,16 +170,14 @@ class OnboardingView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	currentServer: state.server.server,
-	adding: state.server.adding
-});
-
-const mapDispatchToProps = dispatch => ({
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
-});
+OnboardingView.propTypes = {
+	navigation: PropTypes.object,
+	adding: PropTypes.bool,
+	selectServer: PropTypes.func.isRequired,
+	currentServer: PropTypes.string,
+	initAdd: PropTypes.func,
+	finishAdd: PropTypes.func,
+	appStart: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnboardingView);

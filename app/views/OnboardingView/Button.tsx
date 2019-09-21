@@ -5,7 +5,17 @@ import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import styles from './styles';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
-export default class Button extends React.PureComponent {
+type ButtonProps = {
+	title: string
+	subtitle: string
+	type: string
+	onPress: () => void
+	icon?: React.ReactNode
+	testID?: string
+}
+
+type Styles = {[index: string]: StyleProp<ViewStyle>}
+export default class Button extends React.PureComponent<ButtonProps> {
 	static propTypes = {
 		title: PropTypes.string,
 		subtitle: PropTypes.string,
@@ -38,12 +48,12 @@ export default class Button extends React.PureComponent {
 				onPressOut={() => this.setState({ active: false })}
 				testID={testID}
 			>
-				<View style={[styles.buttonContainer, styles[`button_container_${ type }`]]}>
+				<View style={[styles.buttonContainer, (styles as Styles)[`button_container_${ type }`]]}>
 					<View style={styles.buttonIconContainer}>
 						{icon}
 					</View>
 					<View style={styles.buttonCenter}>
-						<Text style={[styles.buttonTitle, styles[`button_text_${ type }`], activeStyle]}>{title}</Text>
+						<Text style={[styles.buttonTitle, (styles as Styles)[`button_text_${ type }`], activeStyle]}>{title}</Text>
 						{subtitle ? <Text style={[styles.buttonSubtitle, activeStyle]}>{subtitle}</Text> : null}
 					</View>
 					{type === 'secondary' ? <DisclosureIndicator /> : null}

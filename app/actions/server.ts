@@ -1,6 +1,6 @@
 import { SERVER } from './actionsTypes';
 
-export function selectServerRequest(server, version, fetchVersion = true) {
+export function selectServerRequest(server?: string, version?: number, fetchVersion = true) {
 	return {
 		type: SERVER.SELECT_REQUEST,
 		server,

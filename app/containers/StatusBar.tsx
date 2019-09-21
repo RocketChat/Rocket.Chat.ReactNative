@@ -7,7 +7,10 @@ import { HEADER_BACKGROUND, COLOR_WHITE } from '../constants/colors';
 
 const HEADER_BAR_STYLE = isIOS ? 'dark-content' : 'light-content';
 
-const StatusBar = React.memo(({ light }) => {
+type StatusBarProps = {
+	light?: boolean
+}
+const StatusBar = React.memo(({ light }: StatusBarProps) => {
 	if (light) {
 		return <StatusBarRN backgroundColor={COLOR_WHITE} barStyle='dark-content' animated />;
 	}
