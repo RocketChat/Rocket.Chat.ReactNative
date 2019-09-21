@@ -97,6 +97,7 @@
     "semver": "6.3.0",
     "snyk": "1.210.0",
     "strip-ansi": "5.2.0",
+    "typescript": "^3.6.3",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
@@ -108,6 +109,13 @@
     "@storybook/addon-storyshots": "5.1.10",
     "@storybook/addons": "5.1.10",
     "@storybook/react-native": "5.1.10",
+    "@types/i18n-js": "^3.0.1",
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.2",
+    "@types/react-native": "^0.60.15",
+    "@types/react-redux": "^7.1.2",
+    "@types/react-test-renderer": "^16.9.0",
+    "@typescript-eslint/parser": "^2.3.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^24.8.0",
@@ -133,22 +141,6 @@
     "react-test-renderer": "16.8.6",
     "reactotron-redux": "3.1.1",
     "reactotron-redux-saga": "4.2.2"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "e2e",
-      "node_modules"
-    ],
-    "preset": "react-native",
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
-      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-    }
   },
   "snyk": true,
   "engines": {
