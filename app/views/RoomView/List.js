@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	ActivityIndicator, FlatList, InteractionManager, LayoutAnimation
+	ActivityIndicator, FlatList, InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
@@ -15,6 +15,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -83,7 +84,7 @@ export class List extends React.Component {
 					}
 					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
-						LayoutAnimation.easeInEaseOut();
+						animateNextTransition();
 						this.setState({ messages });
 					} else {
 						this.state.messages = messages;
@@ -186,11 +187,11 @@ export class List extends React.Component {
 					style={styles.list}
 					inverted
 					removeClippedSubviews={isIOS}
-					initialNumToRender={7}
+					// initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
+					// onEndReachedThreshold={5}
+					// maxToRenderPerBatch={5}
+					// windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>

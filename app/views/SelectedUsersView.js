@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, StyleSheet, FlatList, LayoutAnimation
-} from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
@@ -25,6 +23,7 @@ import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -169,7 +168,7 @@ class SelectedUsersView extends React.Component {
 	toggleUser = (user) => {
 		const { addUser, removeUser } = this.props;
 
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 		if (!this.isChecked(user.name)) {
 			addUser(user);
 		} else {
