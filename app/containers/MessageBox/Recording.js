@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, PermissionsAndroid, Text
+	View, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import styles from './styles';
 import I18n from '../../i18n';

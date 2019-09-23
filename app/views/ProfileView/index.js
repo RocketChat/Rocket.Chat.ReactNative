@@ -6,7 +6,7 @@ import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
 import KeyboardView from '../../presentation/KeyboardView';

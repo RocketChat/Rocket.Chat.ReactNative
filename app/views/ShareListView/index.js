@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
