@@ -5,6 +5,9 @@ import {
 } from '../constants/colors';
 
 export default StyleSheet.create({
+	root: {
+		flex: 1
+	},
 	container: {
 		backgroundColor: 'white',
 		flex: 1

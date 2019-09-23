@@ -32,31 +32,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 ]);
 export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT']);
-export const MESSAGES = createRequestTypes('MESSAGES', [
-	...defaultTypes,
-	'ACTIONS_SHOW',
-	'ACTIONS_HIDE',
-	'ERROR_ACTIONS_SHOW',
-	'ERROR_ACTIONS_HIDE',
-	'DELETE_REQUEST',
-	'DELETE_SUCCESS',
-	'DELETE_FAILURE',
-	'EDIT_INIT',
-	'EDIT_CANCEL',
-	'EDIT_REQUEST',
-	'EDIT_SUCCESS',
-	'EDIT_FAILURE',
-	'TOGGLE_STAR_REQUEST',
-	'TOGGLE_STAR_SUCCESS',
-	'TOGGLE_STAR_FAILURE',
-	'TOGGLE_PIN_REQUEST',
-	'TOGGLE_PIN_SUCCESS',
-	'TOGGLE_PIN_FAILURE',
-	'REPLY_INIT',
-	'REPLY_CANCEL',
-	'TOGGLE_REACTION_PICKER',
-	'REPLY_BROADCAST'
-]);
+export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
@@ -75,3 +51,6 @@ export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL
 export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
 export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
+export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
+export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
+export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE', 'CLEAR']);

@@ -1,7 +1,7 @@
 import React from 'react';
-import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator
-} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
@@ -19,6 +19,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
+import LayoutAnimation from './utils/layoutAnimation';
 
 useScreens();
 
@@ -308,12 +309,14 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<App
-					ref={(navigatorRef) => {
-						Navigation.setTopLevelNavigator(navigatorRef);
-					}}
-					onNavigationStateChange={onNavigationStateChange}
-				/>
+				<LayoutAnimation>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</LayoutAnimation>
 			</Provider>
 		);
 	}
