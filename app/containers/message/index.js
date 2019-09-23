@@ -75,7 +75,7 @@ export default class MessageContainer extends React.Component {
 		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
-		if (((item.tlm || item.tmid) && !isThreadRoom)) {
+		if (((item.tlm || item.tmid) && !isThreadRoom && item.tcount > 0)) {
 			this.onThreadPress();
 		}
 	}, 300, true);
