@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-	Keyboard, LayoutAnimation, View, StyleSheet
-} from 'react-native';
+import { Keyboard, View, StyleSheet } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
@@ -10,6 +8,7 @@ import { CloseShareExtensionButton } from '../../../containers/HeaderButton';
 import { HEADER_BACKGROUND } from '../../../constants/colors';
 
 import sharedStyles from '../../Styles';
+import { animateNextTransition } from '../../../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,12 +32,12 @@ const Header = React.memo(({
 		Keyboard.dismiss();
 		onChangeText('');
 		cancelSearch();
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 	};
 
 	const onFocus = () => {
 		initSearch();
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 	};
 
 	return (

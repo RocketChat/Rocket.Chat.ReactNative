@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Keyboard, Text, ScrollView, View, StyleSheet, Alert, LayoutAnimation
+	Keyboard, Text, ScrollView, View, StyleSheet, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -18,6 +18,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -84,7 +85,7 @@ class LoginView extends React.Component {
 			this.setTitle(nextProps.Site_Name);
 		} else if (nextProps.failure && !equal(error, nextProps.error)) {
 			if (nextProps.error && nextProps.error.error === 'totp-required') {
-				LayoutAnimation.easeInEaseOut();
+				animateNextTransition();
 				this.setState({ showTOTP: true });
 				return;
 			}
