@@ -91,7 +91,7 @@
     "remove-markdown": "^0.3.0",
     "rn-extensions-share": "^2.3.10",
     "rn-fetch-blob": "^0.10.16",
-    "rn-user-defaults": "^1.4.5",
+    "rn-user-defaults": "^1.5.0",
     "semver": "6.3.0",
     "snyk": "1.210.0",
     "strip-ansi": "5.2.0",

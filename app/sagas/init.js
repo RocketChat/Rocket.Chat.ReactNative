@@ -14,14 +14,16 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import {
-	IDENTIFIER, SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
+	IDENTIFIER, SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID, ANDROID_PACKAGE_CONTEXT
 } from '../constants/credentials';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { isAndroid } from '../utils/deviceInfo';
 
 const restore = function* restore() {
 	try {
 		yield RNUserDefaults.setName(IDENTIFIER);
+		if (isAndroid) { yield RNUserDefaults.setPackageContext(ANDROID_PACKAGE_CONTEXT); }
 		const hasMigration = yield AsyncStorage.getItem('hasMigration');
 
 		let { token, server } = yield all({

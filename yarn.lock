@@ -9587,10 +9587,10 @@ rn-host-detect@1.1.5, rn-host-detect@^1.1.5:
   resolved "https://registry.yarnpkg.com/rn-host-detect/-/rn-host-detect-1.1.5.tgz#fbecb982b73932f34529e97932b9a63e58d8deb6"
   integrity sha512-ufk2dFT3QeP9HyZ/xTuMtW27KnFy815CYitJMqQm+pgG3ZAtHBsrU8nXizNKkqXGy3bQmhEoloVbrfbvMJMqkg==
 
-rn-user-defaults@^1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.4.5.tgz#97b2d2c04252fa3df1ed3dd03a803001f79734f0"
-  integrity sha512-0b7dsGuR7PUfN4zfuc9HVcCdDLaydqsPf35Cuwlfan+FS24GO3WMCIfP9MtlRLCcJ45wJnzMjQRwhZAfTidU9A==
+rn-user-defaults@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.5.0.tgz#e6b9606e6a74c2ff7785eb4f2fed6bac7583db40"
+  integrity sha512-PRPpMkzI9/qo/8eCjfR8vKIsJFsmeFxPLT+Jy39X6D5WJLIXN4fY+IxIysOF6E7CkFRW8UCpwxeiMyldXN9Lqw==
 
 rsvp@^3.3.3:
   version "3.6.2"
