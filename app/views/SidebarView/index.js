@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, FlatList, LayoutAnimation
+	ScrollView, Text, View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
@@ -21,6 +21,7 @@ import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const keyExtractor = item => item.id;
 
@@ -148,7 +149,7 @@ class Sidebar extends Component {
 	}
 
 	toggleStatus = () => {
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
 	}
 
