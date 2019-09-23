@@ -53,8 +53,6 @@ const emojiCount = (str) => {
 	return counter;
 };
 
-const encodeEmojis = str => toShort(shortnameToUnicode(str));
-
 export default class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
@@ -133,11 +131,11 @@ export default class Markdown extends PureComponent {
 	};
 
 	renderText = ({ context, literal }) => {
-		const { numberOfLines } = this.props;
+		const { numberOfLines, useMarkdown } = this.props;
 		return (
 			<Text
 				style={[
-					this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
+					this.isMessageContainsOnlyEmoji && useMarkdown ? styles.textBig : styles.text,
 					...context.map(type => styles[type])
 				]}
 				numberOfLines={numberOfLines}
@@ -199,12 +197,12 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderEmoji = ({ emojiName, literal }) => {
-		const { getCustomEmoji, baseUrl } = this.props;
+		const { getCustomEmoji, baseUrl, useMarkdown } = this.props;
 		return (
 			<MarkdownEmoji
 				emojiName={emojiName}
 				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji && useMarkdown}
 				getCustomEmoji={getCustomEmoji}
 				baseUrl={baseUrl}
 			/>
@@ -281,13 +279,14 @@ export default class Markdown extends PureComponent {
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = shortnameToUnicode(m);
 
 		if (!useMarkdown) {
 			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
 		const ast = this.parser.parse(m);
-		const encodedEmojis = encodeEmojis(m);
+		const encodedEmojis = toShort(m);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(encodedEmojis) && emojiCount(encodedEmojis) <= 3;
 
 		this.editedMessage(ast);
