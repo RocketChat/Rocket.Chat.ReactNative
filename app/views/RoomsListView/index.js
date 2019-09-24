@@ -169,7 +169,13 @@ class RoomsListView extends React.Component {
 				'hardwareBackPress',
 				this.handleBackPress
 			);
-			this.forceUpdate();
+		});
+		this.willFocusListener = props.navigation.addListener('willFocus', () => {
+			if (this.shouldUpdate) {
+				animateNextTransition();
+				this.forceUpdate();
+				this.shouldUpdate = false;
+			}
 		});
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
 			'hardwareBackPress',
@@ -204,10 +210,17 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		const { allChats } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
+		}
+
+		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+
+		if (chatsNotEqual) {
+			this.shouldUpdate = true;
 		}
 
 		if (!nextProps.navigation.isFocused()) {
@@ -218,7 +231,6 @@ class RoomsListView extends React.Component {
 			loading,
 			searching,
 			width,
-			allChats,
 			search
 		} = this.state;
 		if (nextState.loading !== loading) {
@@ -233,7 +245,8 @@ class RoomsListView extends React.Component {
 		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextState.allChats, allChats)) {
+		if (chatsNotEqual) {
+			this.shouldUpdate = false;
 			return true;
 		}
 		return false;
@@ -280,6 +293,9 @@ class RoomsListView extends React.Component {
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
+		}
+		if (this.willFocusListener && this.willFocusListener.remove) {
+			this.willFocusListener.remove();
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
