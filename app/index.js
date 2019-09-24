@@ -196,7 +196,8 @@ const ChatsDrawer = createDrawerNavigator({
 	SettingsStack,
 	AdminPanelStack
 }, {
-	contentComponent: Sidebar
+	contentComponent: Sidebar,
+	overlayColor: '#00000090'
 });
 
 const NewMessageStack = createStackNavigator({
