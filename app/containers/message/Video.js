@@ -48,7 +48,7 @@ const Video = React.memo(({
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Touchable
 				onPress={onPress}
 				style={styles.button}
@@ -61,7 +61,7 @@ const Video = React.memo(({
 				/>
 			</Touchable>
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
-		</React.Fragment>
+		</>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file));
 

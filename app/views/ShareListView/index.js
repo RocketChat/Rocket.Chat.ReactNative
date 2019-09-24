@@ -312,7 +312,7 @@ class ShareListView extends React.Component {
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
-			<React.Fragment>
+			<>
 				{this.renderSectionHeader('Select_Server')}
 				<View style={styles.bordered}>
 					<ServerItem
@@ -321,7 +321,7 @@ class ShareListView extends React.Component {
 						item={currentServer}
 					/>
 				</View>
-			</React.Fragment>
+			</>
 		) : null;
 	}
 
@@ -334,17 +334,17 @@ class ShareListView extends React.Component {
 	renderHeader = () => {
 		const { searching } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{ !searching
 					? (
-						<React.Fragment>
+						<>
 							{this.renderSelectServer()}
 							{this.renderSectionHeader('Chats')}
-						</React.Fragment>
+						</>
 					)
 					: null
 				}
-			</React.Fragment>
+			</>
 		);
 	}
 
@@ -391,9 +391,9 @@ class ShareListView extends React.Component {
 			<View style={styles.container}>
 				{ !searching
 					? (
-						<React.Fragment>
+						<>
 							{this.renderSelectServer()}
-						</React.Fragment>
+						</>
 					)
 					: null
 				}
