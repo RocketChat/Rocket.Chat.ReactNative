@@ -30,13 +30,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.collections.get('servers');
 			const serverInfo = await serversCollection.find(server);
-			const { FileUpload_MaxFileSize, id: Site_Url } = serverInfo;
+			const { id: Site_Url } = serverInfo;
 			const { id, token } = user;
-
-			// -1 maxFileSize means there is no limit
-			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-				return reject({ error: 'error-file-too-large' }); // eslint-disable-line
-			}
 
 			const uploadUrl = `${ Site_Url }/api/v1/rooms.upload/${ rid }`;
 

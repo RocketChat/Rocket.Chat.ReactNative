@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import FileSystem from 'expo-file-system';
 
 import styles from './styles';
 import I18n from '../../i18n';
@@ -68,7 +69,7 @@ export default class extends React.PureComponent {
 		//
 		AudioRecorder.onFinished = (data) => {
 			if (!this.recordingCanceled && isIOS) {
-				this.finishRecording(data.status === 'OK', data.audioFileURL);
+				this.finishRecording(data.status === 'OK', data.audioFileURL, data.audioFileSize);
 			}
 		};
 		AudioRecorder.startRecording();
@@ -80,7 +81,7 @@ export default class extends React.PureComponent {
 		}
 	}
 
-	finishRecording = (didSucceed, filePath) => {
+	finishRecording = (didSucceed, filePath, size) => {
 		const { onFinish } = this.props;
 		if (!didSucceed) {
 			return onFinish && onFinish(didSucceed);
@@ -90,9 +91,11 @@ export default class extends React.PureComponent {
 		}
 		const fileInfo = {
 			name: this.name,
+			mime: 'audio/aac',
 			type: 'audio/aac',
 			store: 'Uploads',
-			path: filePath
+			path: filePath,
+			size
 		};
 		return onFinish && onFinish(fileInfo);
 	}
@@ -102,7 +105,8 @@ export default class extends React.PureComponent {
 			this.recording = false;
 			const filePath = await AudioRecorder.stopRecording();
 			if (isAndroid) {
-				this.finishRecording(true, filePath);
+				const data = await FileSystem.getInfoAsync(decodeURIComponent(filePath));
+				this.finishRecording(true, filePath, data.size);
 			}
 		} catch (err) {
 			this.finishRecording(false);

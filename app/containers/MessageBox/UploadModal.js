@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
 	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight
 } from 'react-native';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
@@ -13,9 +12,8 @@ import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
-import { canUploadFile } from '../../utils/media';
 import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_DANGER
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
 } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -75,23 +73,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		textAlign: 'center'
 	},
-	errorIcon: {
-		color: COLOR_DANGER
-	},
-	fileMime: {
-		...sharedStyles.textColorTitle,
-		...sharedStyles.textBold,
-		textAlign: 'center',
-		fontSize: 20,
-		marginBottom: 20
-	},
-	errorContainer: {
-		margin: 20,
-		flex: 1,
-		textAlign: 'center',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
 	video: {
 		flex: 1,
 		borderRadius: 4,
@@ -110,9 +91,7 @@ class UploadModal extends Component {
 		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
-		window: PropTypes.object,
-		FileUpload_MediaTypeWhiteList: PropTypes.string,
-		FileUpload_MaxFileSize: PropTypes.number
+		window: PropTypes.object
 	}
 
 	state = {
@@ -154,77 +133,10 @@ class UploadModal extends Component {
 		return false;
 	}
 
-	canUploadFile = () => {
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize, file } = this.props;
-		if (!(file && file.path)) {
-			return true;
-		}
-		if (file.size > FileUpload_MaxFileSize) {
-			return false;
-		}
-		// if white list is empty, all media types are enabled
-		if (!FileUpload_MediaTypeWhiteList) {
-			return true;
-		}
-		const allowedMime = FileUpload_MediaTypeWhiteList.split(',');
-		if (allowedMime.includes(file.mime)) {
-			return true;
-		}
-		const wildCardGlob = '/*';
-		const wildCards = allowedMime.filter(item => item.indexOf(wildCardGlob) > 0);
-		if (wildCards.includes(file.mime.replace(/(\/.*)$/, wildCardGlob))) {
-			return true;
-		}
-		return false;
-	}
-
 	submit = () => {
 		const { file, submit } = this.props;
 		const { name, description } = this.state;
 		submit({ ...file, name, description });
-	}
-
-	renderError = () => {
-		const { file, FileUpload_MaxFileSize, close } = this.props;
-		const { window: { width } } = this.props;
-		const errorMessage = (FileUpload_MaxFileSize < file.size)
-			? 'error-file-too-large'
-			: 'error-invalid-file-type';
-		return (
-			<View style={[styles.container, { width: width - 32 }]}>
-				<View style={styles.titleContainer}>
-					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
-				</View>
-				<View style={styles.errorContainer}>
-					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-				</View>
-				<Text style={styles.fileMime}>{ file.mime }</Text>
-				<View style={styles.buttonContainer}>
-					{
-						(isIOS)
-							? (
-								<Button
-									title={I18n.t('Cancel')}
-									type='secondary'
-									backgroundColor={cancelButtonColor}
-									style={styles.button}
-									onPress={close}
-								/>
-							)
-							: (
-								<TouchableHighlight
-									onPress={close}
-									style={[styles.androidButton, { backgroundColor: cancelButtonColor }]}
-									underlayColor={cancelButtonColor}
-									activeOpacity={0.5}
-								>
-									<Text style={[styles.androidButtonText, { ...sharedStyles.textBold, color: COLOR_PRIMARY }]}>{I18n.t('Cancel')}</Text>
-								</TouchableHighlight>
-							)
-					}
-				</View>
-			</View>
-		);
 	}
 
 	renderButtons = () => {
@@ -288,10 +200,9 @@ class UploadModal extends Component {
 
 	render() {
 		const {
-			window: { width }, isVisible, close, file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize
+			window: { width }, isVisible, close
 		} = this.props;
 		const { name, description } = this.state;
-		const showError = !canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
 		return (
 			<Modal
 				isVisible={isVisible}
@@ -304,37 +215,29 @@ class UploadModal extends Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				{(showError) ? this.renderError()
-					: (
-						<View style={[styles.container, { width: width - 32 }]}>
-							<View style={styles.titleContainer}>
-								<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
-							</View>
+				<View style={[styles.container, { width: width - 32 }]}>
+					<View style={styles.titleContainer}>
+						<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
+					</View>
 
-							<ScrollView style={styles.scrollView}>
-								{this.renderPreview()}
-								<TextInput
-									placeholder={I18n.t('File_name')}
-									value={name}
-									onChangeText={value => this.setState({ name: value })}
-								/>
-								<TextInput
-									placeholder={I18n.t('File_description')}
-									value={description}
-									onChangeText={value => this.setState({ description: value })}
-								/>
-							</ScrollView>
-							{this.renderButtons()}
-						</View>
-					)}
+					<ScrollView style={styles.scrollView}>
+						{this.renderPreview()}
+						<TextInput
+							placeholder={I18n.t('File_name')}
+							value={name}
+							onChangeText={value => this.setState({ name: value })}
+						/>
+						<TextInput
+							placeholder={I18n.t('File_description')}
+							value={description}
+							onChangeText={value => this.setState({ description: value })}
+						/>
+					</ScrollView>
+					{this.renderButtons()}
+				</View>
 			</Modal>
 		);
 	}
 }
 
-const mapStateToProps = state => ({
-	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
-});
-
-export default responsive(connect(mapStateToProps)(UploadModal));
+export default responsive(UploadModal);
