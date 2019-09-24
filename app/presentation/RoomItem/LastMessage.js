@@ -16,6 +16,10 @@ const formatMsg = ({
 	if (!lastMessage || lastMessage.pinned) {
 		return I18n.t('No_Message');
 	}
+	if (lastMessage.t === 'jitsi_call_started') {
+		const { u } = lastMessage;
+		return I18n.t('Started_call', { userBy: u.username });
+	}
 
 	let prefix = '';
 	const isLastMessageSentByMe = lastMessage.u.username === username;

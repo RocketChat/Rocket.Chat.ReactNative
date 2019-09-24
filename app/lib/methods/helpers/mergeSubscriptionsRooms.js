@@ -20,6 +20,7 @@ export const merge = (subscription, room) => {
 			subscription.reactWhenReadOnly = room.reactWhenReadOnly;
 			subscription.archived = room.archived || false;
 			subscription.joinCodeRequired = room.joinCodeRequired;
+			subscription.jitsiTimeout = room.jitsiTimeout;
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;

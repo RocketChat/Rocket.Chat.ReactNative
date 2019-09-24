@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, LayoutAnimation, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -25,6 +25,7 @@ import ShareListHeader from './Header';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
+import { animateNextTransition } from '../../utils/layoutAnimation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -174,8 +175,8 @@ class ShareListView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		const { navigation } = this.props;
-		if (isIOS && navigation.isFocused()) {
-			LayoutAnimation.easeInEaseOut();
+		if (navigation.isFocused()) {
+			animateNextTransition();
 		}
 		this.setState(...args);
 	}
@@ -198,12 +199,14 @@ class ShareListView extends React.Component {
 			this.servers = await serversCollection.query().fetch();
 			this.chats = this.data.slice(0, LIMIT);
 			const serverInfo = await serversCollection.find(server);
+			const canUploadFileResult = canUploadFile(fileInfo || fileData, serverInfo);
 
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !canUploadFile(fileInfo || fileData, serverInfo),
+				showError: !canUploadFileResult.success,
+				error: canUploadFileResult.error,
 				serverInfo
 			});
 			this.forceUpdate();
@@ -309,7 +312,7 @@ class ShareListView extends React.Component {
 		const { server } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
-			<React.Fragment>
+			<>
 				{this.renderSectionHeader('Select_Server')}
 				<View style={styles.bordered}>
 					<ServerItem
@@ -318,7 +321,7 @@ class ShareListView extends React.Component {
 						item={currentServer}
 					/>
 				</View>
-			</React.Fragment>
+			</>
 		) : null;
 	}
 
@@ -331,17 +334,17 @@ class ShareListView extends React.Component {
 	renderHeader = () => {
 		const { searching } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{ !searching
 					? (
-						<React.Fragment>
+						<>
 							{this.renderSelectServer()}
 							{this.renderSectionHeader('Chats')}
-						</React.Fragment>
+						</>
 					)
 					: null
 				}
-			</React.Fragment>
+			</>
 		);
 	}
 
@@ -377,12 +380,8 @@ class ShareListView extends React.Component {
 
 	renderError = () => {
 		const {
-			fileInfo: file, loading, searching, serverInfo
+			fileInfo: file, loading, searching, error
 		} = this.state;
-		const { FileUpload_MaxFileSize } = serverInfo;
-		const errorMessage = (FileUpload_MaxFileSize < file.size)
-			? 'error-file-too-large'
-			: 'error-invalid-file-type';
 
 		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
@@ -392,14 +391,14 @@ class ShareListView extends React.Component {
 			<View style={styles.container}>
 				{ !searching
 					? (
-						<React.Fragment>
+						<>
 							{this.renderSelectServer()}
-						</React.Fragment>
+						</>
 					)
 					: null
 				}
 				<View style={[styles.container, styles.centered]}>
-					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+					<Text style={styles.title}>{I18n.t(error)}</Text>
 					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
 					<Text style={styles.fileMime}>{ file.mime }</Text>
 				</View>

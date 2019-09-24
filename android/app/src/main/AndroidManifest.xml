@@ -9,7 +9,19 @@
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 	<uses-permission-sdk-23 android:name="android.permission.VIBRATE"/>
+	
+	<uses-feature android:name="android.hardware.camera" />
+	<uses-feature android:name="android.hardware.camera.autofocus"/>
+
+	<permission
+		android:name="${applicationId}.permission.JITSI_BROADCAST"
+		android:label="Jitsi Meet Event Broadcast"
+		android:protectionLevel="normal"
+	></permission>
+	<uses-permission android:name="${applicationId}.permission.JITSI_BROADCAST"/>
 
 	<application
 		android:name=".MainApplication"
@@ -52,6 +64,7 @@
 					<data android:mimeType="*/*" />
 				</intent-filter>
 		</activity>
+		<activity android:name="com.reactnativejitsimeet.JitsiMeetNavigatorActivity" />
 		<meta-data
 				android:name="com.bugsnag.android.API_KEY"
 				android:value="${BugsnagAPIKey}" />

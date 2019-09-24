@@ -74,6 +74,8 @@ export default class Subscription extends Model {
 
 	@date('last_thread_sync') lastThreadSync;
 
+	@date('jitsi_timeout') jitsiTimeout;
+
 	@field('auto_translate') autoTranslate;
 
 	@field('auto_translate_language') autoTranslateLanguage;
