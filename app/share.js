@@ -4,6 +4,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
@@ -78,11 +79,11 @@ class Root extends React.Component {
 	}
 
 	render() {
-		const { isLandscape } = this.state;
+		// const { isLandscape } = this.state;
 		return (
-			<View
-				style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
-				onLayout={this.handleLayout}
+			<SafeAreaProvider
+				// style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
+				// onLayout={this.handleLayout}
 			>
 				<Provider store={store}>
 					<LayoutAnimation>
@@ -94,7 +95,7 @@ class Root extends React.Component {
 						/>
 					</LayoutAnimation>
 				</Provider>
-			</View>
+			</SafeAreaProvider>
 		);
 	}
 }
