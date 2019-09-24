@@ -3513,10 +3513,10 @@ emoji-regex@^7.0.1, emoji-regex@^7.0.2:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
-emoji-toolkit@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/emoji-toolkit/-/emoji-toolkit-5.0.4.tgz#73e6902b73894aa1899c7f148d3801eb157455a6"
-  integrity sha512-ZZfVQkWQ+1v3q3EdeYSVOQHVg/idvOhARoG4G+hPesN1i00vSeSgI+PUrsRRQSdrET7/Fe9Jr0n7iFbLlY5dKA==
+emoji-toolkit@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/emoji-toolkit/-/emoji-toolkit-5.0.5.tgz#83f92fc5e78031e046f9fe861c804effdc4380ee"
+  integrity sha512-I57/yzEll8mIczqUCv2DaBhF61eBKtOwUN/7bxFPjwtwoVB9FnkRoabQRLZS6+KeSZNscw0av8o/N7tfy59PUg==
 
 emotion-theming@^10.0.9:
   version "10.0.14"
