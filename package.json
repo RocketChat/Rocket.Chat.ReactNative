@@ -81,7 +81,7 @@
     "react-native-video": "^5.0.0",
     "react-native-webview": "6.8.0",
     "react-navigation": "^4.0.5",
-    "react-navigation-drawer": "^2.2.1",
+    "react-navigation-drawer": "1.4.0",
     "react-navigation-header-buttons": "3.0.1",
     "react-navigation-stack": "^1.7.3",
     "react-redux": "7.1.0",

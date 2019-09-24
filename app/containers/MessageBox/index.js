@@ -30,6 +30,7 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
+import { canUploadFile } from '../../utils/media';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -73,6 +74,8 @@ class MessageBox extends Component {
 		roomType: PropTypes.string,
 		tmid: PropTypes.string,
 		replyWithMention: PropTypes.bool,
+		FileUpload_MediaTypeWhiteList: PropTypes.string,
+		FileUpload_MaxFileSize: PropTypes.number,
 		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
@@ -435,6 +438,16 @@ class MessageBox extends Component {
 		this.setShowSend(false);
 	}
 
+	canUploadFile = (file) => {
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+		const result = canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
+		if (result.success) {
+			return true;
+		}
+		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		return false;
+	}
+
 	sendMediaMessage = async(file) => {
 		const {
 			rid, tmid, baseUrl: server, user
@@ -458,7 +471,9 @@ class MessageBox extends Component {
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -467,7 +482,9 @@ class MessageBox extends Component {
 	takeVideo = async() => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			this.showUploadModal(video);
+			if (this.canUploadFile(video)) {
+				this.showUploadModal(video);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -476,7 +493,9 @@ class MessageBox extends Component {
 	chooseFromLibrary = async() => {
 		try {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -487,12 +506,15 @@ class MessageBox extends Component {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
 			});
-			this.showUploadModal({
+			const file = {
 				filename: res.name,
 				size: res.size,
 				mime: res.type,
 				path: res.uri
-			});
+			};
+			if (this.canUploadFile(file)) {
+				this.showUploadModal(file);
+			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
@@ -560,11 +582,10 @@ class MessageBox extends Component {
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-			} catch (e) {
-				if (e && e.error === 'error-file-too-large') {
-					return Alert.alert(I18n.t(e.error));
+				if (this.canUploadFile(fileInfo)) {
+					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
+			} catch (e) {
 				log(e);
 			}
 		}
@@ -921,7 +942,9 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
 const dispatchToProps = ({
