@@ -199,12 +199,14 @@ class ShareListView extends React.Component {
 			this.servers = await serversCollection.query().fetch();
 			this.chats = this.data.slice(0, LIMIT);
 			const serverInfo = await serversCollection.find(server);
+			const canUploadFileResult = canUploadFile(fileInfo || fileData, serverInfo);
 
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !canUploadFile(fileInfo || fileData, serverInfo),
+				showError: !canUploadFileResult.success,
+				error: canUploadFileResult.error,
 				serverInfo
 			});
 			this.forceUpdate();
@@ -378,12 +380,8 @@ class ShareListView extends React.Component {
 
 	renderError = () => {
 		const {
-			fileInfo: file, loading, searching, serverInfo
+			fileInfo: file, loading, searching, error
 		} = this.state;
-		const { FileUpload_MaxFileSize } = serverInfo;
-		const errorMessage = (FileUpload_MaxFileSize < file.size)
-			? 'error-file-too-large'
-			: 'error-invalid-file-type';
 
 		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
@@ -400,7 +398,7 @@ class ShareListView extends React.Component {
 					: null
 				}
 				<View style={[styles.container, styles.centered]}>
-					<Text style={styles.title}>{I18n.t(errorMessage)}</Text>
+					<Text style={styles.title}>{I18n.t(error)}</Text>
 					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
 					<Text style={styles.fileMime}>{ file.mime }</Text>
 				</View>
