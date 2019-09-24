@@ -146,17 +146,18 @@ class SettingsView extends React.Component {
 					/>
 					<Separator />
 					<ListItem
+						title={I18n.t('Share_this_app')}
+						showActionIndicator
+						onPress={this.shareApp}
+						testID='settings-view-share-app'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
-					/>
-					<Separator />
-					<ListItem
-						title={I18n.t('Share_this_app')}
-						showActionIndicator
-						disabled
-						testID='settings-view-share-app'
 					/>
 					<Separator />
 
