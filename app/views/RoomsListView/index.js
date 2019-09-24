@@ -164,18 +164,19 @@ class RoomsListView extends React.Component {
 			width
 		};
 		Orientation.unlockAllOrientations();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				this.handleBackPress
-			);
-		});
 		this.willFocusListener = props.navigation.addListener('willFocus', () => {
+			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
 				animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
+		});
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
 		});
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
 			'hardwareBackPress',
@@ -217,12 +218,15 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
+		// Compare changes only once
 		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
 
+		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
 			this.shouldUpdate = true;
 		}
 
+		// Abort if it's not focused
 		if (!nextProps.navigation.isFocused()) {
 			return false;
 		}
@@ -245,6 +249,7 @@ class RoomsListView extends React.Component {
 		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
+		// If it's focused and there are changes, update
 		if (chatsNotEqual) {
 			this.shouldUpdate = false;
 			return true;
@@ -288,14 +293,14 @@ class RoomsListView extends React.Component {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
+		if (this.willFocusListener && this.willFocusListener.remove) {
+			this.willFocusListener.remove();
+		}
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
-		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
