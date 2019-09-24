@@ -239,11 +239,11 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
 				<Toast />
-			</React.Fragment>
+			</>
 		);
 	}
 }
