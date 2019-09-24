@@ -63,7 +63,7 @@ class Sidebar extends Component {
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
 		}
-		if (nextProps.loadingServer !== loadingServer) {
+		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();
 		}
 	}
