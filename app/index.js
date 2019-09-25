@@ -216,7 +216,10 @@ const NewMessageStack = createStackNavigator({
 
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
-	NewMessageStack
+	NewMessageStack,
+	JitsiMeetView: {
+		getScreen: () => require('./views/JitsiMeetView').default
+	}
 },
 {
 	mode: 'modal',
