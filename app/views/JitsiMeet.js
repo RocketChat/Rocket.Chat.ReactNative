@@ -58,6 +58,7 @@ class VideoCall extends React.Component {
 			<JitsiMeetView
 				onConferenceTerminated={this.onConferenceTerminated}
 				onConferenceJoined={this.onConferenceJoined}
+				onConferenceWillJoined={() => {}}
 				style={sharedStyles.root}
 			/>
 		);

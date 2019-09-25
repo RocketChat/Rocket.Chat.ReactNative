@@ -1,10 +1,5 @@
 module.exports = {
 	dependencies: {
-		'react-native-jitsi-meet': {
-			platforms: {
-				android: null
-			}
-		},
 		'react-native-notifications': {
 			platforms: {
 				android: null

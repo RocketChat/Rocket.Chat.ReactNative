@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
+index 1efa23d..a6edd69 100644
+--- a/node_modules/react-native-jitsi-meet/android/build.gradle
++++ b/node_modules/react-native-jitsi-meet/android/build.gradle
+@@ -46,6 +46,10 @@ repositories {
+ 
+ dependencies {
+     implementation ('org.jitsi.react:jitsi-meet-sdk:2.3.0') {
++      exclude group: 'com.facebook.react', module:'react-native-fast-image'
++      exclude group: 'com.facebook.react', module:'react-native-vector-icons'
++      exclude group: 'com.facebook.react', module:'react-native-webview'
++      exclude group: 'com.facebook.react', module:'react-native-background-timer'
+       transitive = true
+     }
+ }
+diff --git a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/RNJitsiMeetViewManager.java b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/RNJitsiMeetViewManager.java
+index 071b3a6..2a74816 100644
+--- a/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/RNJitsiMeetViewManager.java
++++ b/node_modules/react-native-jitsi-meet/android/src/main/java/com/reactnativejitsimeet/RNJitsiMeetViewManager.java
+@@ -72,9 +72,9 @@ public class RNJitsiMeetViewManager extends SimpleViewManager<RNJitsiMeetView> i
+ 
+     public Map getExportedCustomBubblingEventTypeConstants() {
+         return MapBuilder.builder()
++                .put("conferenceWillJoin", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onConferenceWillJoin")))
+                 .put("conferenceJoined", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onConferenceJoined")))
+                 .put("conferenceTerminated", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onConferenceTerminated")))
+-                .put("conferenceWillJoin", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onConferenceWillJoin")))
+                 .build();
+     }
+ }
+\ No newline at end of file
