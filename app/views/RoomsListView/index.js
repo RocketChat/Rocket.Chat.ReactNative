@@ -57,8 +57,7 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
-	'isAuthenticated'
+	'appState'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -139,8 +138,7 @@ class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func,
-		isAuthenticated: PropTypes.bool
+		roomsRequest: PropTypes.func
 	};
 
 	constructor(props) {
@@ -264,8 +262,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
-			roomsRequest,
-			isAuthenticated
+			roomsRequest
 		} = this.props;
 
 		if (
@@ -280,7 +277,6 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
-			&& isAuthenticated
 		) {
 			roomsRequest();
 		}
@@ -801,7 +797,6 @@ const mapStateToProps = state => ({
 	userId: state.login.user && state.login.user.id,
 	username: state.login.user && state.login.user.username,
 	token: state.login.user && state.login.user.token,
-	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
