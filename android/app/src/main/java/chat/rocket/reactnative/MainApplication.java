@@ -1,7 +1,6 @@
 package chat.rocket.reactnative;
 
 import android.app.Application;
-import android.util.Log;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -35,6 +34,7 @@ import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
 import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.reactnativejitsimeet.JitsiMeetPackage;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +60,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new JitsiMeetPackage());
+      packages.add(new RNCViewPagerPackage());
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       return packages;
     }
