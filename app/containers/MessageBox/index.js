@@ -286,6 +286,9 @@ class MessageBox extends Component {
 			? `${ item.name || item }:`
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
+			this.setState({ showCommandPreview: true });
+		}
 		this.setInput(text);
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
