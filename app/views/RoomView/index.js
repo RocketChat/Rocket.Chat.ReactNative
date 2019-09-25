@@ -604,7 +604,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid, {});
+			RocketChat.callJitsi(this.rid);
 		}
 	};
 

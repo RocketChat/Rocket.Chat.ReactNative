@@ -17,7 +17,7 @@ const jitsiBaseUrl = ({
 	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
 };
 
-function callJitsi(rid, onlyAudio) {
+function callJitsi(rid, onlyAudio = false) {
 	const { settings } = reduxStore.getState();
 
 	Navigation.navigate('JitsiMeet', { url: `${ jitsiBaseUrl(settings) }${ rid }`, onlyAudio, rid });
