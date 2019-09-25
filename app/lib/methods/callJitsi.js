@@ -20,7 +20,7 @@ const jitsiBaseUrl = ({
 function callJitsi(rid, onlyAudio = false) {
 	const { settings } = reduxStore.getState();
 
-	Navigation.navigate('JitsiMeet', { url: `${ jitsiBaseUrl(settings) }${ rid }`, onlyAudio, rid });
+	Navigation.navigate('JitsiMeetView', { url: `${ jitsiBaseUrl(settings) }${ rid }`, onlyAudio, rid });
 }
 
 export default callJitsi;
