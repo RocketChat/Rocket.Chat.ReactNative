@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 import android.content.Context;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
@@ -63,6 +64,11 @@ public class MainApplication extends Application implements ReactApplication, IN
     @Override
     protected String getJSMainModuleName() {
       return "index";
+    }
+
+    @Override
+    protected @Nullable String getBundleAssetName() {
+      return "app.bundle";
     }
   };
 
