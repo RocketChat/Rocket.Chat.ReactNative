@@ -620,7 +620,7 @@ class MessageBox extends Component {
 			).fetch();
 			if (slashCommand.length > 0) {
 				try {
-					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
+					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
 					log(e);
