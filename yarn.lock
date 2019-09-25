@@ -8818,7 +8818,7 @@ react-native-optimized-flatlist@^1.0.4:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-orientation-locker@^1.1.6:
+react-native-orientation-locker@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.6.tgz#7d66a62cdbf4dd1548522efe69a4e04af5daf929"
   integrity sha512-yXTC8KmKfhuEAh+gCOcehx0v4IjYapV0lJ6W1muafoISvxMsT+Cizzy+Iz78hQywVZTJNB/Xusl7WMXev7OxDQ==
