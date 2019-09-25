@@ -604,7 +604,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid, {});
+			RocketChat.callJitsi(this.rid);
 		}
 	};
 
@@ -669,13 +669,13 @@ class RoomView extends React.Component {
 
 		if (showUnreadSeparator || dateSeparator) {
 			return (
-				<React.Fragment>
+				<>
 					{message}
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
 					/>
-				</React.Fragment>
+				</>
 			);
 		}
 

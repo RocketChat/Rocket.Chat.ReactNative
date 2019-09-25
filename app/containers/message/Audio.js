@@ -168,7 +168,7 @@ export default class Audio extends React.Component {
 		}
 
 		return (
-			<React.Fragment>
+			<>
 				<View style={styles.audioContainer}>
 					<Video
 						ref={this.setRef}
@@ -196,7 +196,7 @@ export default class Audio extends React.Component {
 					<Text style={styles.duration}>{this.duration}</Text>
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
-			</React.Fragment>
+			</>
 		);
 	}
 }
