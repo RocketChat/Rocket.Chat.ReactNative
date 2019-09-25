@@ -64,10 +64,12 @@ class Sort extends PureComponent {
 
 	sortByName = () => {
 		this.setSortPreference({ sortBy: 'alphabetical' });
+		this.close();
 	}
 
 	sortByActivity = () => {
 		this.setSortPreference({ sortBy: 'activity' });
+		this.close();
 	}
 
 	toggleGroupByType = () => {

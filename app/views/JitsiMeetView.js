@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
+import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
 
 import RocketChat from '../lib/rocketchat';
 
 import sharedStyles from './Styles';
 
-class VideoCall extends React.Component {
+class JitsiMeetView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object
 	}
@@ -55,14 +55,13 @@ class VideoCall extends React.Component {
 
 	render() {
 		return (
-			<JitsiMeetView
+			<RNJitsiMeetView
 				onConferenceTerminated={this.onConferenceTerminated}
 				onConferenceJoined={this.onConferenceJoined}
-				onConferenceWillJoined={() => {}}
 				style={sharedStyles.root}
 			/>
 		);
 	}
 }
 
-export default VideoCall;
+export default JitsiMeetView;

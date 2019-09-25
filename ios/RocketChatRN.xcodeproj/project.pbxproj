@@ -45,13 +45,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1E1EA7FA2326CB0100E22452 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E1EA7F62326CB0000E22452 /* RNJitsiMeet.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
-			remoteInfo = RNJitsiMeet;
-		};
 		1E1EA8632326CE4B00E22452 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1E1EA8502326CE4B00E22452 /* React.xcodeproj */;
@@ -224,7 +217,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RocketChatRN/main.m; sourceTree = "<group>"; };
-		1E1EA7F62326CB0000E22452 /* RNJitsiMeet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNJitsiMeet.xcodeproj; path = "../node_modules/react-native-jitsi-meet/ios/RNJitsiMeet.xcodeproj"; sourceTree = "<group>"; };
 		1E1EA7FE2326CC5900E22452 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JitsiMeet.framework; path = "../node_modules/react-native-jitsi-meet/ios/JitsiMeet.framework"; sourceTree = "<group>"; };
 		1E1EA7FF2326CC5900E22452 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-jitsi-meet/ios/WebRTC.framework"; sourceTree = "<group>"; };
 		1E1EA8092326CD2200E22452 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -315,14 +307,6 @@
 			name = RocketChatRN;
 			sourceTree = "<group>";
 		};
-		1E1EA7F72326CB0000E22452 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1E1EA7FB2326CB0100E22452 /* libRNJitsiMeet.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		1E1EA8512326CE4B00E22452 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,7 +366,6 @@
 			isa = PBXGroup;
 			children = (
 				1E1EA8502326CE4B00E22452 /* React.xcodeproj */,
-				1E1EA7F62326CB0000E22452 /* RNJitsiMeet.xcodeproj */,
 				290E43E48AD8418287FA99D6 /* WatermelonDB.xcodeproj */,
 			);
 			name = Libraries;
@@ -560,10 +543,6 @@
 					ProjectRef = 1E1EA8502326CE4B00E22452 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 1E1EA7F72326CB0000E22452 /* Products */;
-					ProjectRef = 1E1EA7F62326CB0000E22452 /* RNJitsiMeet.xcodeproj */;
-				},
-				{
 					ProductGroup = 7AAA749723043AD300F1ADE9 /* Products */;
 					ProjectRef = 290E43E48AD8418287FA99D6 /* WatermelonDB.xcodeproj */;
 				},
@@ -577,13 +556,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1E1EA7FB2326CB0100E22452 /* libRNJitsiMeet.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNJitsiMeet.a;
-			remoteRef = 1E1EA7FA2326CB0100E22452 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		1E1EA8642326CE4B00E22452 /* libReact.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;

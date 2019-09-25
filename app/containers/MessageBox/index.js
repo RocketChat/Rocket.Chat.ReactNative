@@ -95,9 +95,9 @@ class MessageBox extends Component {
 			file: {
 				isVisible: false
 			},
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		};
-		this.showCommandPreview = false;
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.fileOptions = [
@@ -254,7 +254,6 @@ class MessageBox extends Component {
 			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 			const result = lastNativeText.substr(0, cursor).match(regexp);
-			this.showCommandPreview = false;
 			if (!result) {
 				const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
 				if (slash) {
@@ -266,7 +265,6 @@ class MessageBox extends Component {
 			this.identifyMentionKeyword(name, lastChar);
 		} else {
 			this.stopTrackingMention();
-			this.showCommandPreview = false;
 		}
 	}, 100)
 
@@ -289,7 +287,7 @@ class MessageBox extends Component {
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
-			this.showCommandPreview = true;
+			this.setState({ showCommandPreview: true });
 		}
 		this.setInput(text);
 		this.focus();
@@ -301,10 +299,10 @@ class MessageBox extends Component {
 		const { text } = this;
 		const command = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.showCommandPreview = false;
-		this.setState({ commandPreview: [] });
+		this.setState({ commandPreview: [], showCommandPreview: false });
 		this.stopTrackingMention();
 		this.clearInput();
+		this.handleTyping(false);
 		try {
 			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
@@ -414,10 +412,9 @@ class MessageBox extends Component {
 		const { rid } = this.props;
 		try	{
 			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
-			this.showCommandPreview = true;
-			this.setState({ commandPreview: preview.items });
+			this.setState({ commandPreview: preview.items, showCommandPreview: true });
 		} catch (e) {
-			this.showCommandPreview = false;
+			this.setState({ commandPreview: [], showCommandPreview: true });
 			log(e);
 		}
 	}
@@ -691,14 +688,15 @@ class MessageBox extends Component {
 	}
 
 	stopTrackingMention = () => {
-		const { trackingType } = this.state;
-		if (!trackingType) {
+		const { trackingType, showCommandPreview } = this.state;
+		if (!trackingType && !showCommandPreview) {
 			return;
 		}
 		this.setState({
 			mentions: [],
 			trackingType: '',
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		});
 	}
 
@@ -828,8 +826,8 @@ class MessageBox extends Component {
 	);
 
 	renderCommandPreview = () => {
-		const { commandPreview } = this.state;
-		if (!this.showCommandPreview) {
+		const { commandPreview, showCommandPreview } = this.state;
+		if (!showCommandPreview) {
 			return null;
 		}
 		return (
