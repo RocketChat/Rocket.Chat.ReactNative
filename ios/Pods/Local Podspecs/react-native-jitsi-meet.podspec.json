@@ -1,0 +1,30 @@
+{
+  "name": "react-native-jitsi-meet",
+  "version": "2.0.0",
+  "summary": "Jitsi Meet SDK wrapper for React Native.",
+  "license": "Apache-2.0",
+  "authors": {
+    "name": "Sébastien Krafft",
+    "email": "skrafft@gmail.com"
+  },
+  "homepage": "https://github.com/skrafft/react-native-jitsi-meet",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/skrafft/react-native-jitsi-meet.git",
+    "tag": "v2.0.0"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "ios": {
+    "vendored_frameworks": [
+      "ios/WebRTC.framework",
+      "ios/JitsiMeet.framework"
+    ]
+  },
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

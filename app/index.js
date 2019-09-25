@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import logger from '@nozbe/watermelondb/utils/common/logger';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -22,6 +23,7 @@ import RocketChat from './lib/rocketchat';
 import LayoutAnimation from './utils/layoutAnimation';
 
 useScreens();
+logger.silence();
 
 const parseDeepLinking = (url) => {
 	if (url) {
@@ -216,7 +218,10 @@ const NewMessageStack = createStackNavigator({
 
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
-	NewMessageStack
+	NewMessageStack,
+	JitsiMeet: {
+		getScreen: () => require('./views/JitsiMeet').default
+	}
 },
 {
 	mode: 'modal',
