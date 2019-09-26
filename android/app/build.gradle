@@ -173,11 +173,19 @@ android {
     productFlavors {
         play {
             dimension "store"
+            manifestPlaceholders = [
+                    appIcon: "@mipmap/ic_launcher",
+                    appName: "@string/app_name"
+            ]
         }
 
         playExperimental {
             dimension "store"
             applicationId "chat.rocket.reactnative"
+            manifestPlaceholders = [
+                    appIcon: "@mipmap/ic_launcher_experimental",
+                    appName: "@string/app_name_experimental"
+            ]
         }
     }
 
