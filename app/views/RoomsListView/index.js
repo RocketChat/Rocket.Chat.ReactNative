@@ -603,6 +603,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
+				avatar={item.name}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
