@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, View, ActivityIndicator } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 
