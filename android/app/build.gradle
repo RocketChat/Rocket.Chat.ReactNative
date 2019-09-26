@@ -129,29 +129,28 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
     }
 
     defaultConfig {
-        applicationId "chat.rocket.reactnative"
+        applicationId "chat.rocket.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode VERSIONCODE as Integer
-        versionName "1.20.0"
+        versionCode rootProject.ext.appCodeVersion
+        versionName rootProject.ext.appNameVersion
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
     }
 
     signingConfigs {
         release {
-            if (project.hasProperty('KEYSTORE')) {
-                storeFile file(KEYSTORE)
-                storePassword KEYSTORE_PASSWORD
-                keyAlias KEY_ALIAS
-                keyPassword KEY_PASSWORD
-            }
+            storeFile project.rootProject.file('chat-rocket-android.jks').getCanonicalFile()
+            storePassword System.getenv("CHAT_ROCKET_ANDROID_STORE_PASSWORD")
+            keyAlias System.getenv("CHAT_ROCKET_ANDROID_KEY_ALIAS")
+            keyPassword System.getenv("CHAT_ROCKET_ANDROID_KEY_PASSWORD")
         }
+
         debug {
             storeFile project.rootProject.file('debug.keystore').getCanonicalFile()
             storePassword "android"
@@ -159,6 +158,28 @@ android {
             keyPassword "android"
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "store"
+
+    productFlavors {
+        play {
+            dimension "store"
+        }
+
+        playExperimental {
+            dimension "store"
+            applicationId "chat.rocket.reactnative"
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -167,13 +188,7 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    buildTypes {
-        release {
-            minifyEnabled enableProguardInReleaseBuilds
-            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
-            signingConfig signingConfigs.release
-        }
-    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->

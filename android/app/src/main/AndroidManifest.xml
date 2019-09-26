@@ -1,16 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="chat.rocket.reactnative"
+    package="chat.rocket.android"
     android:sharedUserId="chat.rocket.android">
 
     <application
-        android:name=".MainApplication"
+        android:name="chat.rocket.android.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="chat.rocket.android.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -44,7 +44,7 @@
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
         <activity
-            android:name=".share.ShareActivity"
+            android:name="chat.rocket.android.share.ShareActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/share_extension_name"
             android:noHistory="true"

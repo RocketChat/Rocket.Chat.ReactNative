@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.android;
 
 import android.app.Application;
 import android.util.Log;
@@ -9,14 +9,12 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.PackageList;
-import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import chat.rocket.reactnative.generated.BasePackageList;
+import chat.rocket.android.generated.BasePackageList;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
