@@ -4,7 +4,7 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 
 import database from '../../lib/database';

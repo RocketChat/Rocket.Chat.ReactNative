@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	FlatList, Switch, View, StyleSheet
 } from 'react-native';
-import { SafeAreaView, ScrollView } from 'react-navigation';
+import { ScrollView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -314,12 +315,14 @@ export default class Root extends React.Component {
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
+					<SafeAreaProvider>
+						<App
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							onNavigationStateChange={onNavigationStateChange}
+						/>
+					</SafeAreaProvider>
 				</LayoutAnimation>
 			</Provider>
 		);
