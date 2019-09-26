@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -253,23 +253,23 @@ class RoomInfoView extends React.Component {
 	renderChannel = () => {
 		const { room } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderItem('description', room)}
 				{this.renderItem('topic', room)}
 				{this.renderItem('announcement', room)}
 				{room.broadcast ? this.renderBroadcast() : null}
-			</React.Fragment>
+			</>
 		);
 	}
 
 	renderDirect = () => {
 		const { roomUser } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderRoles()}
 				{this.renderTimezone()}
 				{this.renderCustomFields(roomUser._id)}
-			</React.Fragment>
+			</>
 		);
 	}
 

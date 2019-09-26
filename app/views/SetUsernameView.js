@@ -4,7 +4,7 @@ import {
 	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import Orientation from 'react-native-orientation-locker';
 
 import { loginRequest as loginRequestAction } from '../actions/login';

@@ -35,10 +35,8 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UIViewController *rootViewController = [UIViewController new];
-    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
-    navigationController.navigationBarHidden = YES;
     rootViewController.view = rootView;
-    self.window.rootViewController = navigationController;
+    self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
   
     [RNSplashScreen show];

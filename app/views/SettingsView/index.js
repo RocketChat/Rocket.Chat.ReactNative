@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share
+	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
@@ -146,17 +147,18 @@ class SettingsView extends React.Component {
 					/>
 					<Separator />
 					<ListItem
+						title={I18n.t('Share_this_app')}
+						showActionIndicator
+						onPress={this.shareApp}
+						testID='settings-view-share-app'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
-					/>
-					<Separator />
-					<ListItem
-						title={I18n.t('Share_this_app')}
-						showActionIndicator
-						disabled
-						testID='settings-view-share-app'
 					/>
 					<Separator />
 

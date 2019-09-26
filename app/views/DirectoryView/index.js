@@ -4,7 +4,7 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -142,7 +142,7 @@ class DirectoryView extends React.Component {
 	renderHeader = () => {
 		const { type } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
@@ -155,7 +155,7 @@ class DirectoryView extends React.Component {
 						<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
 					</View>
 				</Touch>
-			</React.Fragment>
+			</>
 		);
 	}
 

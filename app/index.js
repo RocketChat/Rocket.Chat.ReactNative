@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -196,7 +197,8 @@ const ChatsDrawer = createDrawerNavigator({
 	SettingsStack,
 	AdminPanelStack
 }, {
-	contentComponent: Sidebar
+	contentComponent: Sidebar,
+	overlayColor: '#00000090'
 });
 
 const NewMessageStack = createStackNavigator({
@@ -215,7 +217,10 @@ const NewMessageStack = createStackNavigator({
 
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
-	NewMessageStack
+	NewMessageStack,
+	JitsiMeetView: {
+		getScreen: () => require('./views/JitsiMeetView').default
+	}
 },
 {
 	mode: 'modal',
@@ -238,11 +243,11 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
 				<Toast />
-			</React.Fragment>
+			</>
 		);
 	}
 }
@@ -310,12 +315,14 @@ export default class Root extends React.Component {
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
+					<SafeAreaProvider>
+						<App
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							onNavigationStateChange={onNavigationStateChange}
+						/>
+					</SafeAreaProvider>
 				</LayoutAnimation>
 			</Provider>
 		);
