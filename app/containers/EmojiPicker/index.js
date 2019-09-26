@@ -11,9 +11,9 @@
 /* eslint-disable indent */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView } from 'react-native';
 // import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, SceneMap } from 'react-native-tab-view';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
