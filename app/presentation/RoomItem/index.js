@@ -274,7 +274,15 @@ class RoomItem extends React.Component {
 								style={styles.container}
 								accessibilityLabel={accessibilityLabel}
 							>
-								<Avatar text={avatar} size={avatarSize} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+								<Avatar
+									text={avatar}
+									size={avatarSize}
+									type={type}
+									baseUrl={baseUrl}
+									style={styles.avatar}
+									userId={userId}
+									token={token}
+								/>
 								<View style={styles.centerContainer}>
 									<View style={styles.titleContainer}>
 										<TypeIcon
