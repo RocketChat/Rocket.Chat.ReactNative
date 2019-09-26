@@ -144,11 +144,20 @@ android {
     }
 
     signingConfigs {
-        release {
+        playRelease {
             storeFile project.rootProject.file('chat-rocket-android.jks').getCanonicalFile()
             storePassword System.getenv("CHAT_ROCKET_ANDROID_STORE_PASSWORD")
             keyAlias System.getenv("CHAT_ROCKET_ANDROID_KEY_ALIAS")
             keyPassword System.getenv("CHAT_ROCKET_ANDROID_KEY_PASSWORD")
+        }
+
+        playExperimentalRelease {
+            if (project.hasProperty('KEYSTORE')) {
+                storeFile file(KEYSTORE)
+                storePassword KEYSTORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
         }
 
         debug {
@@ -156,14 +165,6 @@ android {
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled enableProguardInReleaseBuilds
-            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
-            signingConfig signingConfigs.release
         }
     }
 
@@ -177,6 +178,17 @@ android {
         playExperimental {
             dimension "store"
             applicationId "chat.rocket.reactnative"
+        }
+    }
+
+    buildTypes {
+        release {
+            productFlavors.play.signingConfig signingConfigs.playRelease
+            productFlavors.playExperimental.signingConfig signingConfigs.playExperimentalRelease
+
+            minifyEnabled enableProguardInReleaseBuilds
+            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+
         }
     }
 
