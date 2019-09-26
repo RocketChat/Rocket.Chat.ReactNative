@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
+	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import SafeAreaView from 'react-native-safe-area-view';
 import { Video } from 'expo-av';
 
 import sharedStyles from '../views/Styles';

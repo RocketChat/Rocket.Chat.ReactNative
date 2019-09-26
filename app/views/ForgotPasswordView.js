@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
 
 import KeyboardView from '../presentation/KeyboardView';

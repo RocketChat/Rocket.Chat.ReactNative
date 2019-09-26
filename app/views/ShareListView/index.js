@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import Navigation from '../../lib/ShareNavigation';
 import database from '../../lib/database';

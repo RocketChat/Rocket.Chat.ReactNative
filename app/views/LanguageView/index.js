@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView, NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
