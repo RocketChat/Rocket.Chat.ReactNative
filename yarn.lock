@@ -3513,10 +3513,10 @@ emoji-regex@^7.0.1, emoji-regex@^7.0.2:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
-emoji-toolkit@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/emoji-toolkit/-/emoji-toolkit-5.0.4.tgz#73e6902b73894aa1899c7f148d3801eb157455a6"
-  integrity sha512-ZZfVQkWQ+1v3q3EdeYSVOQHVg/idvOhARoG4G+hPesN1i00vSeSgI+PUrsRRQSdrET7/Fe9Jr0n7iFbLlY5dKA==
+emoji-toolkit@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/emoji-toolkit/-/emoji-toolkit-5.0.5.tgz#83f92fc5e78031e046f9fe861c804effdc4380ee"
+  integrity sha512-I57/yzEll8mIczqUCv2DaBhF61eBKtOwUN/7bxFPjwtwoVB9FnkRoabQRLZS6+KeSZNscw0av8o/N7tfy59PUg==
 
 emotion-theming@^10.0.9:
   version "10.0.14"
@@ -8749,9 +8749,10 @@ react-native-iphone-x-helper@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
   integrity sha512-xIeTo4s77wwKgBZLVRIZC9tM9/PkXS46Ul76NXmvmixEb3ZwqGdQesR3zRiLMOoIdfOURB6N9bba9po7+x9Bag==
 
-"react-native-jitsi-meet@git+https://github.com/RocketChat/react-native-jitsi-meet.git":
-  version "1.2.0"
-  resolved "git+https://github.com/RocketChat/react-native-jitsi-meet.git#6308b4718a964fb3dc8ca3c2d52ecac33ad1c4c3"
+react-native-jitsi-meet@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-jitsi-meet/-/react-native-jitsi-meet-2.0.0.tgz#db0837fbc46d080fb9bb09c4359be8e1620e966f"
+  integrity sha512-LI9QgX9ggjlBZOJiCi+SFgJTetOlpyrh2QJ62sb/FvM2bJxjaOyqogbZh5YQzMQOwIDXWgswqPp0Cp7DPsvyvg==
 
 react-native-keyboard-aware-scroll-view@0.8.0:
   version "0.8.0"
@@ -8817,7 +8818,7 @@ react-native-optimized-flatlist@^1.0.4:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-orientation-locker@^1.1.6:
+react-native-orientation-locker@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.6.tgz#7d66a62cdbf4dd1548522efe69a4e04af5daf929"
   integrity sha512-yXTC8KmKfhuEAh+gCOcehx0v4IjYapV0lJ6W1muafoISvxMsT+Cizzy+Iz78hQywVZTJNB/Xusl7WMXev7OxDQ==

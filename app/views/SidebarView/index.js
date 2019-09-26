@@ -41,7 +41,8 @@ class Sidebar extends Component {
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
-		activeItemKey: PropTypes.string
+		activeItemKey: PropTypes.string,
+		loadingServer: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -59,14 +60,17 @@ class Sidebar extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { user } = this.props;
+		const { user, loadingServer } = this.props;
 		if (nextProps.user && user && user.language !== nextProps.user.language) {
 			this.setStatus();
+		}
+		if (loadingServer && nextProps.loadingServer !== loadingServer) {
+			this.setIsAdmin();
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus } = this.state;
+		const { status, showStatus, isAdmin } = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey
 		} = this.props;
@@ -97,6 +101,9 @@ class Sidebar extends Component {
 			}
 		}
 		if (!equal(nextState.status, status)) {
+			return true;
+		}
+		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
 		return false;
@@ -178,7 +185,7 @@ class Sidebar extends Component {
 		const { isAdmin } = this.state;
 		const { activeItemKey } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={COLOR_TEXT} />}
@@ -216,7 +223,7 @@ class Sidebar extends Component {
 					onPress={this.logout}
 					testID='sidebar-logout'
 				/>
-			</React.Fragment>
+			</>
 		);
 	}
 
@@ -289,7 +296,8 @@ const mapStateToProps = state => ({
 		token: state.login.user && state.login.user.token,
 		roles: state.login.user && state.login.user.roles
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	loadingServer: state.server.loading
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -10,10 +10,10 @@ const RightButtons = React.memo(({
 		return <SendButton onPress={submit} />;
 	}
 	return (
-		<React.Fragment>
+		<>
 			<AudioButton onPress={recordAudioMessage} />
 			<FileButton onPress={showFileActions} />
-		</React.Fragment>
+		</>
 	);
 });
 

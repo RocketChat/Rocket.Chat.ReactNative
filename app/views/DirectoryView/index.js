@@ -142,7 +142,7 @@ class DirectoryView extends React.Component {
 	renderHeader = () => {
 		const { type } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
@@ -155,7 +155,7 @@ class DirectoryView extends React.Component {
 						<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
 					</View>
 				</Touch>
-			</React.Fragment>
+			</>
 		);
 	}
 

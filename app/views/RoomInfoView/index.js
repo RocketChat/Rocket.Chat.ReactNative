@@ -253,23 +253,23 @@ class RoomInfoView extends React.Component {
 	renderChannel = () => {
 		const { room } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderItem('description', room)}
 				{this.renderItem('topic', room)}
 				{this.renderItem('announcement', room)}
 				{room.broadcast ? this.renderBroadcast() : null}
-			</React.Fragment>
+			</>
 		);
 	}
 
 	renderDirect = () => {
 		const { roomUser } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderRoles()}
 				{this.renderTimezone()}
 				{this.renderCustomFields(roomUser._id)}
-			</React.Fragment>
+			</>
 		);
 	}
 
