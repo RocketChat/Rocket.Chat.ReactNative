@@ -8,6 +8,9 @@ import com.facebook.react.ReactFragmentActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.content.Intent;
 import android.content.res.Configuration;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 public class MainActivity extends ReactFragmentActivity {
 
@@ -44,5 +47,7 @@ public class MainActivity extends ReactFragmentActivity {
         intent.putExtra("newConfig", newConfig);
         this.sendBroadcast(intent);
     }
+
+  
 }
 

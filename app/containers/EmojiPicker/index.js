@@ -1,14 +1,26 @@
+/* eslint-disable semi */
+/* eslint-disable arrow-body-style */
+/* eslint-disable arrow-spacing */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable arrow-parens */
+/* eslint-disable key-spacing */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable semi-style */
+/* eslint-disable brace-style */
+/* eslint-disable indent */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { ScrollView, Text } from 'react-native';
+// import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import TabBar from './TabBar';
+// import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
@@ -16,6 +28,7 @@ import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import log from '../../utils/log';
+
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -50,7 +63,19 @@ class EmojiPicker extends Component {
 
 	async componentDidMount() {
 		await this.updateFrequentlyUsed();
-		this.setState({ show: true });
+		const routes = categories.tabs.map(tab=>{ 
+			return {
+			key: tab.category, 
+			title: tab.tabLabel
+			}
+		})
+		this.setState({ 
+			show: true,
+			navProps:{
+				index: 1,
+			 routes
+			}
+		 });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -151,33 +176,78 @@ class EmojiPicker extends Component {
 	}
 
 	render() {
-		const { show, frequentlyUsed } = this.state;
-		const { tabEmojiStyle } = this.props;
+		// eslint-disable-next-line react/destructuring-assignment
+		const { show, frequentlyUsed, navProps } = this.state;
+		const { tabEmojiStyle, width } = this.props;
+		const SceneMapObj = {};
+		categories.tabs.forEach((tab, i) => {
+			SceneMapObj[tab.category] = (i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
+				: (
+					<ScrollView
+						key={tab.category}
+						tabLabel={tab.tabLabel}
+						style={styles.background}
+						{...scrollProps}
+					>
+						{this.renderCategory(tab.category, i)}
+					</ScrollView>
+				)
+; });
 
 		if (!show) {
 			return null;
 		}
 		return (
-			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
-				contentProps={scrollProps}
+			<TabView
+				navigationState={navProps}
+				renderScene={SceneMap(SceneMapObj)}
 				style={styles.background}
-			>
-				{
-					categories.tabs.map((tab, i) => (
-						(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
-							: (
-								<ScrollView
-									key={tab.category}
-									tabLabel={tab.tabLabel}
-									style={styles.background}
-									{...scrollProps}
-								>
-									{this.renderCategory(tab.category, i)}
-								</ScrollView>
-							)))
+				renderTabBar={props =>
+					(
+					<TabBar
+					style={styles.tabsContainer}
+					getTestID={({route})=>`reaction-picker-${ route }`}
+					// eslint-disable-next-line react/jsx-indent-props
+					
+					tabStyle={styles.tab}
+					renderLabel={({ route, focused, color }) => (
+						<Text style={[styles.tabEmoji, tabEmojiStyle]}>
+						  {route.title}
+						</Text>
+					  )}
+					// eslint-disable-next-line react/jsx-indent-props
+					{...props}
+				// eslint-disable-next-line react/jsx-closing-bracket-location
+				/>
+					)
 				}
-			</ScrollableTabView>
+			  // eslint-disable-next-line no-mixed-spaces-and-tabs
+			  // eslint-disable-next-line no-mixed-spaces-and-tabs
+			  
+				// eslint-disable-next-line react/no-unused-state
+				onIndexChange={index => this.setState({ index })}
+				initialLayout={{ width }}
+			/>
+			// <ScrollableTabView
+			// 	renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
+			// 	contentProps={scrollProps}
+			// 	style={styles.background}
+			// >
+			// 	{
+			// 		categories.tabs.map((tab, i) => (
+			// 			(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
+			// 				: (
+			// 					<ScrollView
+			// 						key={tab.category}
+			// 						tabLabel={tab.tabLabel}
+			// 						style={styles.background}
+			// 						{...scrollProps}
+			// 					>
+			// 						{this.renderCategory(tab.category, i)}
+			// 					</ScrollView>
+			// 				)))
+			// 	}
+			// </ScrollableTabView>
 		);
 	}
 }

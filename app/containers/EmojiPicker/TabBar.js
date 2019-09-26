@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
 
+
 export default class TabBar extends React.Component {
 	static propTypes = {
 		goToPage: PropTypes.func,
@@ -20,6 +21,7 @@ export default class TabBar extends React.Component {
 	}
 
 	render() {
+	//	console.log(this.props);
 		const {
 			tabs, goToPage, tabEmojiStyle, activeTab
 		} = this.props;
