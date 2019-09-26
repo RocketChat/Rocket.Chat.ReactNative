@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
 	COLOR_TEXT_DESCRIPTION
@@ -225,7 +226,7 @@ class ShareView extends React.Component {
 		}
 
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container} forceInset={{ vertical: 'never' }}>
 				<View style={isMedia ? styles.toContent : styles.toContentText}>
 					<Text style={styles.text} numberOfLines={1}>
 						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
@@ -236,7 +237,7 @@ class ShareView extends React.Component {
 					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
 				{ loading ? <Loading /> : null }
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

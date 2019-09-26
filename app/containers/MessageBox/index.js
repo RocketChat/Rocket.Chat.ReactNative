@@ -266,7 +266,7 @@ class MessageBox extends Component {
 		} else {
 			this.stopTrackingMention();
 		}
-	}, 100)
+	}, 100, true)
 
 	onKeyboardResigned = () => {
 		this.closeEmoji();

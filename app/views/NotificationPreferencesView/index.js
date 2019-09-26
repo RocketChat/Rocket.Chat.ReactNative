@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -165,7 +165,6 @@ class RoomsListView extends React.Component {
 		this.willFocusListener = props.navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
-				animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
@@ -604,6 +603,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
+				avatar={item.name}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}

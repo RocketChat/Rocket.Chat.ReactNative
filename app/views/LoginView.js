@@ -4,7 +4,7 @@ import {
 	Keyboard, Text, ScrollView, View, StyleSheet, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import equal from 'deep-equal';
 import { analytics } from '../utils/log';
 
