@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-	View, Text, FlatList, StyleSheet, SafeAreaView
+	View, Text, FlatList, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import Emoji from './message/Emoji';
 import I18n from '../i18n';
