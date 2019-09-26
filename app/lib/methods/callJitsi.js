@@ -1,9 +1,5 @@
-import JitsiMeet, { JitsiMeetEvents } from 'react-native-jitsi-meet';
-import BackgroundTimer from 'react-native-background-timer';
-
 import reduxStore from '../createStore';
-
-let jitsiTimeout = null;
+import Navigation from '../Navigation';
 
 const jitsiBaseUrl = ({
 	Jitsi_Enabled, Jitsi_SSL, Jitsi_Domain, Jitsi_URL_Room_Prefix, uniqueID
@@ -21,33 +17,10 @@ const jitsiBaseUrl = ({
 	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
 };
 
-function callJitsi(rid, options = {}) {
+function callJitsi(rid, onlyAudio = false) {
 	const { settings } = reduxStore.getState();
 
-	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
-	// call is not ended and is available to web users.
-	JitsiMeet.initialize();
-	const conferenceJoined = JitsiMeetEvents.addListener('CONFERENCE_JOINED', () => {
-		this.updateJitsiTimeout(rid).catch(e => console.log(e));
-		if (jitsiTimeout) {
-			BackgroundTimer.clearInterval(jitsiTimeout);
-		}
-		jitsiTimeout = BackgroundTimer.setInterval(() => {
-			this.updateJitsiTimeout(rid).catch(e => console.log(e));
-		}, 10000);
-	});
-	const conferenceLeft = JitsiMeetEvents.addListener('CONFERENCE_LEFT', () => {
-		if (jitsiTimeout) {
-			BackgroundTimer.clearInterval(jitsiTimeout);
-		}
-		if (conferenceJoined && conferenceJoined.remove) {
-			conferenceJoined.remove();
-		}
-		if (conferenceLeft && conferenceLeft.remove) {
-			conferenceLeft.remove();
-		}
-	});
-	JitsiMeet.call(`${ jitsiBaseUrl(settings) }${ rid }`, options);
+	Navigation.navigate('JitsiMeetView', { url: `${ jitsiBaseUrl(settings) }${ rid }`, onlyAudio, rid });
 }
 
 export default callJitsi;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -604,7 +604,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid, {});
+			RocketChat.callJitsi(this.rid);
 		}
 	};
 

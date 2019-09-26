@@ -14,7 +14,7 @@ export async function cancelUpload(item) {
 		uploadQueue[item.path].abort();
 		try {
 			const db = database.active;
-			await db.database.action(async() => {
+			await db.action(async() => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -112,8 +112,12 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					} catch (e) {
 						log(e);
 					}
-					const response = JSON.parse(xhr.response);
-					reject(response);
+					try {
+						const response = JSON.parse(xhr.response);
+						reject(response);
+					} catch (e) {
+						reject(e);
+					}
 				}
 			};
 

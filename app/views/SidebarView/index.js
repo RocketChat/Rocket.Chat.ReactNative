@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, FlatList, SafeAreaView
+	ScrollView, Text, View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { RectButton } from 'react-native-gesture-handler';
+import SafeAreaView from 'react-native-safe-area-view';
 import { Q } from '@nozbe/watermelondb';
 
 import { logout as logoutAction } from '../../actions/login';

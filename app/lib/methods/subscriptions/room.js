@@ -88,6 +88,7 @@ export default function subscribeRoom({ rid }) {
 
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		const lastOpen = new Date();
 		if (rid !== message.rid) {
 			return;
 		}
@@ -163,7 +164,7 @@ export default function subscribeRoom({ rid }) {
 
 			try {
 				await subCollection.find(rid);
-				this.readMessages(rid);
+				this.readMessages(rid, lastOpen);
 			} catch (e) {
 				console.log('Subscription not found. We probably subscribed to a not joined channel. No need to mark as read.');
 			}
