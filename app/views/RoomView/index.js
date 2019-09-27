@@ -204,9 +204,7 @@ class RoomView extends React.Component {
 			});
 		}
 		if (appState === 'background' && appState !== prevProps.appState) {
-			if (this.sub && this.sub.stop) {
-				this.sub.stop();
-			}
+			this.unsubscribe();
 		}
 	}
 
@@ -239,9 +237,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		if (this.sub && this.sub.stop) {
-			this.sub.stop();
-		}
+		this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -287,9 +283,7 @@ class RoomView extends React.Component {
 							this.setLastOpen(null);
 						}
 						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-						if (this.sub && this.sub.stop) {
-							this.sub.stop();
-						}
+						this.unsubscribe();
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -329,6 +323,12 @@ class RoomView extends React.Component {
 					}, 300);
 				}
 			}
+		}
+	}
+
+	unsubscribe = () => {
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
 		}
 	}
 
