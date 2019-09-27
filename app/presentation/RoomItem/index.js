@@ -64,6 +64,7 @@ class RoomItem extends React.Component {
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
+		customEmojis: PropTypes.object,
 		avatar: PropTypes.bool
 	}
 
@@ -218,7 +219,7 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status, avatar
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status, avatar, customEmojis
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -321,6 +322,8 @@ class RoomItem extends React.Component {
 											showLastMessage={showLastMessage}
 											username={username}
 											alert={alert}
+											customEmojis={customEmojis}
+											baseUrl={baseUrl}
 										/>
 										<UnreadBadge
 											unread={unread}
@@ -339,7 +342,8 @@ class RoomItem extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline'
+	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline',
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(RoomItem);

@@ -53,8 +53,6 @@ const emojiCount = (str) => {
 	return counter;
 };
 
-const encodeEmojis = str => toShort(shortnameToUnicode(str));
-
 export default class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
@@ -67,39 +65,41 @@ export default class Markdown extends PureComponent {
 		useMarkdown: PropTypes.bool,
 		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-		navToRoomInfo: PropTypes.func
+		navToRoomInfo: PropTypes.func,
+		preview: PropTypes.bool,
+		style: PropTypes.array
 	};
 
 	constructor(props) {
 		super(props);
 
 		this.parser = this.createParser();
-		this.renderer = this.createRenderer();
+		this.renderer = this.createRenderer(props.preview);
 	}
 
 	createParser = () => new Parser();
 
-	createRenderer = () => new Renderer({
+	createRenderer = (preview = false) => new Renderer({
 		renderers: {
 			text: this.renderText,
 
 			emph: Renderer.forwardChildren,
 			strong: Renderer.forwardChildren,
 			del: Renderer.forwardChildren,
-			code: this.renderCodeInline,
-			link: this.renderLink,
-			image: this.renderImage,
-			atMention: this.renderAtMention,
+			code: preview ? this.renderText : this.renderCodeInline,
+			link: preview ? this.renderText : this.renderLink,
+			image: preview ? this.renderText : this.renderImage,
+			atMention: preview ? this.renderText : this.renderAtMention,
 			emoji: this.renderEmoji,
-			hashtag: this.renderHashtag,
+			hashtag: preview ? this.renderText : this.renderHashtag,
 
 			paragraph: this.renderParagraph,
-			heading: this.renderHeading,
-			codeBlock: this.renderCodeBlock,
-			blockQuote: this.renderBlockQuote,
+			heading: preview ? this.renderText : this.renderHeading,
+			codeBlock: preview ? this.renderText : this.renderCodeBlock,
+			blockQuote: preview ? this.renderText : this.renderBlockQuote,
 
-			list: this.renderList,
-			item: this.renderListItem,
+			list: preview ? this.renderText : this.renderList,
+			item: preview ? this.renderText : this.renderListItem,
 
 			hardBreak: this.renderBreak,
 			thematicBreak: this.renderBreak,
@@ -108,11 +108,11 @@ export default class Markdown extends PureComponent {
 			htmlBlock: this.renderText,
 			htmlInline: this.renderText,
 
-			table: this.renderTable,
-			table_row: this.renderTableRow,
-			table_cell: this.renderTableCell,
+			table: preview ? this.renderText : this.renderTable,
+			table_row: preview ? this.renderText : this.renderTableRow,
+			table_cell: preview ? this.renderText : this.renderTableCell,
 
-			editedIndicator: this.renderEditedIndicator
+			editedIndicator: preview ? this.renderText : this.renderEditedIndicator
 		},
 		renderParagraphsInLists: true
 	});
@@ -133,12 +133,13 @@ export default class Markdown extends PureComponent {
 	};
 
 	renderText = ({ context, literal }) => {
-		const { numberOfLines } = this.props;
+		const { numberOfLines, preview, style = [] } = this.props;
 		return (
 			<Text
 				style={[
-					this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-					...context.map(type => styles[type])
+					this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : styles.text,
+					...context.map(type => styles[type]),
+					...style
 				]}
 				numberOfLines={numberOfLines}
 			>
@@ -157,12 +158,13 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
+		const { numberOfLines } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
 			<View style={styles.block}>
-				<Text>
+				<Text numberOfLines={numberOfLines}>
 					{children}
 				</Text>
 			</View>
@@ -199,12 +201,12 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderEmoji = ({ emojiName, literal }) => {
-		const { getCustomEmoji, baseUrl } = this.props;
+		const { getCustomEmoji, baseUrl, preview } = this.props;
 		return (
 			<MarkdownEmoji
 				emojiName={emojiName}
 				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji && !preview}
 				getCustomEmoji={getCustomEmoji}
 				baseUrl={baseUrl}
 			/>
@@ -269,7 +271,7 @@ export default class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, useMarkdown = true, numberOfLines
+			msg, useMarkdown = true, numberOfLines, preview = false
 		} = this.props;
 
 		if (!msg) {
@@ -281,13 +283,14 @@ export default class Markdown extends PureComponent {
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = shortnameToUnicode(m);
 
-		if (!useMarkdown) {
+		if (!useMarkdown && !preview) {
 			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
 		const ast = this.parser.parse(m);
-		const encodedEmojis = encodeEmojis(m);
+		const encodedEmojis = toShort(m);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(encodedEmojis) && emojiCount(encodedEmojis) <= 3;
 
 		this.editedMessage(ast);
