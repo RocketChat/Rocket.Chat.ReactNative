@@ -132,20 +132,16 @@ export default class Markdown extends PureComponent {
 		}
 	};
 
-	renderText = ({ context, literal }) => {
-		const { numberOfLines } = this.props;
-		return (
-			<Text
-				style={[
-					this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-					...context.map(type => styles[type])
-				]}
-				numberOfLines={numberOfLines}
-			>
-				{literal}
-			</Text>
-		);
-	}
+	renderText = ({ context, literal }) => (
+		<Text
+			style={[
+				this.isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
+				...context.map(type => styles[type])
+			]}
+		>
+			{literal}
+		</Text>
+	);
 
 	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
 

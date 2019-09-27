@@ -213,7 +213,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -443,7 +442,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -673,7 +671,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -885,7 +882,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -979,7 +975,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -1073,7 +1068,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -1285,7 +1279,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -1397,7 +1390,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -1641,7 +1633,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -1867,7 +1858,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -2097,7 +2087,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -2352,7 +2341,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -2592,7 +2580,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -2633,7 +2620,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -2895,7 +2881,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -2967,7 +2952,6 @@ exports[`Storyshots Message list 1`] = `
                             numberOfLines={0}
                           >
                             <Text
-                              numberOfLines={0}
                               style={
                                 Array [
                                   Object {
@@ -3043,7 +3027,6 @@ exports[`Storyshots Message list 1`] = `
                             numberOfLines={0}
                           >
                             <Text
-                              numberOfLines={0}
                               style={
                                 Array [
                                   Object {
@@ -3313,7 +3296,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -3387,7 +3369,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -3653,7 +3634,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -3783,7 +3763,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -4017,7 +3996,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4247,7 +4225,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4492,7 +4469,6 @@ exports[`Storyshots Message list 1`] = `
                       @rocket.cat
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4531,7 +4507,6 @@ exports[`Storyshots Message list 1`] = `
                       @diego.mello
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4570,7 +4545,6 @@ exports[`Storyshots Message list 1`] = `
                       @all
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4609,7 +4583,6 @@ exports[`Storyshots Message list 1`] = `
                       @here
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -4854,7 +4827,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -5084,7 +5056,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -5346,7 +5317,6 @@ exports[`Storyshots Message list 1`] = `
                       />
                     </View>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -5402,7 +5372,6 @@ exports[`Storyshots Message list 1`] = `
                       />
                     </View>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -5902,7 +5871,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -6164,7 +6132,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -6220,7 +6187,6 @@ exports[`Storyshots Message list 1`] = `
                       />
                     </View>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -6450,7 +6416,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -6680,7 +6645,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -7229,7 +7193,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -8189,7 +8152,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -8401,7 +8363,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -8613,7 +8574,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -8825,7 +8785,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -9055,7 +9014,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -9332,7 +9290,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -9473,7 +9430,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -9685,7 +9641,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -9936,7 +9891,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -11589,7 +11543,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -12607,7 +12560,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -12631,7 +12583,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -12655,7 +12606,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -12978,7 +12928,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13002,7 +12951,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13026,7 +12974,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13399,7 +13346,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13423,7 +13369,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13447,7 +13392,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13541,7 +13485,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13565,7 +13508,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13589,7 +13531,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13801,7 +13742,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13825,7 +13765,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13849,7 +13788,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13965,7 +13903,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -13989,7 +13926,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -14013,7 +13949,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -14265,7 +14200,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -14558,7 +14492,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -14881,7 +14814,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -14905,7 +14837,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -14929,7 +14860,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15171,7 +15101,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15195,7 +15124,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15219,7 +15147,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15461,7 +15388,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15485,7 +15411,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15509,7 +15434,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15751,7 +15675,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15775,7 +15698,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -15799,7 +15721,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -16041,7 +15962,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -16283,7 +16203,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -16730,7 +16649,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -16978,7 +16896,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17002,7 +16919,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17026,7 +16942,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17193,7 +17108,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17595,7 +17509,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17619,7 +17532,6 @@ exports[`Storyshots Message list 1`] = `
                       I
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17643,7 +17555,6 @@ exports[`Storyshots Message list 1`] = `
                       'm fine
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17810,7 +17721,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -17834,7 +17744,6 @@ exports[`Storyshots Message list 1`] = `
                       Cool
                     </Text>
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -18001,7 +17910,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={1}
                   >
                     <Text
-                      numberOfLines={1}
                       style={
                         Array [
                           Object {
@@ -19901,7 +19809,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -20348,7 +20255,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -20899,7 +20805,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -21531,7 +21436,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -21840,7 +21744,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -22101,7 +22004,6 @@ exports[`Storyshots Message list 1`] = `
                   numberOfLines={0}
                 >
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -22275,7 +22177,6 @@ exports[`Storyshots Message list 1`] = `
                   numberOfLines={0}
                 >
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -22510,7 +22411,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -22740,7 +22640,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25360,7 +25259,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25590,7 +25488,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25614,7 +25511,6 @@ exports[`Storyshots Message list 1`] = `
                       Italic with single 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25641,7 +25537,6 @@ exports[`Storyshots Message list 1`] = `
                       underscore
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25665,7 +25560,6 @@ exports[`Storyshots Message list 1`] = `
                        or double 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25692,7 +25586,6 @@ exports[`Storyshots Message list 1`] = `
                       underscores
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25716,7 +25609,6 @@ exports[`Storyshots Message list 1`] = `
                       . Bold with single 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25743,7 +25635,6 @@ exports[`Storyshots Message list 1`] = `
                       asterisk
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25767,7 +25658,6 @@ exports[`Storyshots Message list 1`] = `
                        or double 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25794,7 +25684,6 @@ exports[`Storyshots Message list 1`] = `
                       asterisks
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25818,7 +25707,6 @@ exports[`Storyshots Message list 1`] = `
                       . Strikethrough with single 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25845,7 +25733,6 @@ exports[`Storyshots Message list 1`] = `
                       Strikethrough
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -25869,7 +25756,6 @@ exports[`Storyshots Message list 1`] = `
                        or double 
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -26094,7 +25980,6 @@ exports[`Storyshots Message list 1`] = `
               <View>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26118,7 +26003,6 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26142,7 +26026,6 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26166,7 +26049,6 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26190,7 +26072,6 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26214,7 +26095,6 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
                 <Text>
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26441,7 +26321,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -26477,7 +26356,6 @@ exports[`Storyshots Message list 1`] = `
                       }
                     >
                       <Text
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -26509,7 +26387,6 @@ exports[`Storyshots Message list 1`] = `
                       </Text>
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -26545,7 +26422,6 @@ exports[`Storyshots Message list 1`] = `
                       }
                     >
                       <Text
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -26576,7 +26452,6 @@ exports[`Storyshots Message list 1`] = `
                         I
                       </Text>
                       <Text
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -26607,7 +26482,6 @@ exports[`Storyshots Message list 1`] = `
                         \`
                       </Text>
                       <Text
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -26639,7 +26513,6 @@ exports[`Storyshots Message list 1`] = `
                       </Text>
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -26675,7 +26548,6 @@ exports[`Storyshots Message list 1`] = `
                       }
                     >
                       <Text
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -27133,7 +27005,6 @@ exports[`Storyshots Message list 1`] = `
                     numberOfLines={0}
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -27170,7 +27041,6 @@ exports[`Storyshots Message list 1`] = `
                       code
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -27207,7 +27077,6 @@ exports[`Storyshots Message list 1`] = `
                       back-ticks around
                     </Text>
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -27478,7 +27347,6 @@ exports[`Storyshots Message list 1`] = `
                         numberOfLines={0}
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -27784,7 +27652,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
@@ -27827,7 +27694,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
@@ -27887,7 +27753,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
@@ -27930,7 +27795,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
@@ -27986,7 +27850,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
@@ -28029,7 +27892,6 @@ exports[`Storyshots Message list 1`] = `
                               style={null}
                             >
                               <Text
-                                numberOfLines={0}
                                 style={
                                   Array [
                                     Object {
