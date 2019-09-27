@@ -224,14 +224,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -455,14 +458,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -686,14 +692,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -899,14 +908,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -994,14 +1006,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1089,14 +1104,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1302,14 +1320,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1415,14 +1436,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1660,14 +1684,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1887,14 +1914,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2118,14 +2148,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2374,15 +2407,18 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -2615,15 +2651,18 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -2657,14 +2696,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2920,16 +2962,19 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -2993,18 +3038,21 @@ exports[`Storyshots Message list 1`] = `
                                     "fontSize": 16,
                                     "fontWeight": "400",
                                   },
-                                  undefined,
-                                  undefined,
-                                  undefined,
-                                  undefined,
-                                  Object {
-                                    "alignItems": "flex-start",
-                                    "flexDirection": "row",
-                                    "flexWrap": "wrap",
-                                    "justifyContent": "flex-start",
-                                    "marginBottom": 0,
-                                    "marginTop": 0,
-                                  },
+                                  Array [
+                                    Object {},
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    Object {
+                                      "alignItems": "flex-start",
+                                      "flexDirection": "row",
+                                      "flexWrap": "wrap",
+                                      "justifyContent": "flex-start",
+                                      "marginBottom": 0,
+                                      "marginTop": 0,
+                                    },
+                                  ],
                                 ]
                               }
                             >
@@ -3070,18 +3118,21 @@ exports[`Storyshots Message list 1`] = `
                                     "fontSize": 16,
                                     "fontWeight": "400",
                                   },
-                                  undefined,
-                                  undefined,
-                                  undefined,
-                                  undefined,
-                                  Object {
-                                    "alignItems": "flex-start",
-                                    "flexDirection": "row",
-                                    "flexWrap": "wrap",
-                                    "justifyContent": "flex-start",
-                                    "marginBottom": 0,
-                                    "marginTop": 0,
-                                  },
+                                  Array [
+                                    Object {},
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    Object {
+                                      "alignItems": "flex-start",
+                                      "flexDirection": "row",
+                                      "flexWrap": "wrap",
+                                      "justifyContent": "flex-start",
+                                      "marginBottom": 0,
+                                      "marginTop": 0,
+                                    },
+                                  ],
                                 ]
                               }
                             >
@@ -3341,16 +3392,19 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -3416,16 +3470,19 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -3683,16 +3740,19 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -3814,16 +3874,19 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -4049,14 +4112,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4280,14 +4346,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4526,14 +4595,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4565,14 +4637,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4604,14 +4679,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4643,14 +4721,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4886,17 +4967,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -5117,17 +5207,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -5380,17 +5479,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -5436,17 +5544,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -5938,17 +6055,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6201,17 +6327,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6257,17 +6392,26 @@ exports[`Storyshots Message list 1`] = `
                             "backgroundColor": "transparent",
                             "color": "#2F343D",
                             "fontFamily": "System",
-                            "fontSize": 30,
+                            "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "color": "#2F343D",
+                              "fontFamily": "System",
+                              "fontSize": 30,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6491,14 +6635,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6722,14 +6869,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -7272,14 +7422,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -8233,14 +8386,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -8446,14 +8602,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -8659,14 +8818,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -8872,14 +9034,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9103,14 +9268,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9381,14 +9549,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9523,14 +9694,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9736,14 +9910,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9988,14 +10165,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -10271,14 +10451,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -10537,14 +10720,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -10845,14 +11031,17 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
                       ]
                     }
                   >
@@ -11520,14 +11709,17 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
                       ]
                     }
                   >
@@ -11646,14 +11838,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -11934,14 +12129,17 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
                       ]
                     }
                   >
@@ -12666,14 +12864,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -12690,14 +12891,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -12714,14 +12918,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -12825,14 +13032,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -13039,14 +13249,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13063,14 +13276,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13087,14 +13303,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13198,14 +13417,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -13462,14 +13684,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13486,14 +13711,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13510,14 +13738,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13605,14 +13836,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13629,14 +13863,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13653,14 +13890,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13866,14 +14106,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13890,14 +14133,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -13914,14 +14160,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14031,14 +14280,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14055,14 +14307,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14079,14 +14334,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14332,14 +14590,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14626,14 +14887,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -14950,14 +15214,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -14974,14 +15231,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -14998,14 +15248,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15241,14 +15484,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15265,14 +15501,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15289,14 +15518,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15532,14 +15754,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15556,14 +15771,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15580,14 +15788,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15823,14 +16024,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15847,14 +16041,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -15871,14 +16058,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -16114,14 +16294,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -16357,14 +16530,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -16805,14 +16971,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -17054,14 +17223,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17078,14 +17240,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17102,14 +17257,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17270,14 +17418,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17673,14 +17814,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17697,14 +17831,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17721,14 +17848,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17889,14 +18009,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -17913,14 +18026,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -18081,14 +18187,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Object {},
                         ]
                       }
                     >
@@ -19982,14 +20081,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -20430,14 +20532,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -20541,14 +20646,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -20983,14 +21091,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -21094,14 +21205,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -21296,14 +21410,17 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
                           ]
                         }
                       >
@@ -21618,14 +21735,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -21928,14 +22048,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -22190,14 +22313,17 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
                       ]
                     }
                   >
@@ -22365,14 +22491,17 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
                       ]
                     }
                   >
@@ -22601,14 +22730,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -22832,14 +22964,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25453,14 +25588,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25684,14 +25822,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25708,17 +25849,20 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "fontStyle": "italic",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "fontStyle": "italic",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25735,14 +25879,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25759,17 +25906,20 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "fontStyle": "italic",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "fontStyle": "italic",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25786,14 +25936,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25810,17 +25963,20 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "fontWeight": "bold",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "fontWeight": "bold",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25837,14 +25993,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25861,17 +26020,20 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "fontWeight": "bold",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "fontWeight": "bold",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25888,14 +26050,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25912,17 +26077,20 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "textDecorationLine": "line-through",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "textDecorationLine": "line-through",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25939,14 +26107,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -25963,20 +26134,23 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                          Object {
-                            "textDecorationLine": "line-through",
-                          },
-                          Object {
-                            "textDecorationLine": "line-through",
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                            Object {
+                              "textDecorationLine": "line-through",
+                            },
+                            Object {
+                              "textDecorationLine": "line-through",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -26176,7 +26350,9 @@ exports[`Storyshots Message list 1`] = `
                 </Text>
               </View>
               <View>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26188,19 +26364,24 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 24,
-                          "fontWeight": "700",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 24,
+                            "fontWeight": "700",
+                          },
+                        ],
                       ]
                     }
                   >
                     H1
                   </Text>
                 </Text>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26212,19 +26393,24 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 22,
-                          "fontWeight": "700",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 22,
+                            "fontWeight": "700",
+                          },
+                        ],
                       ]
                     }
                   >
                     H2
                   </Text>
                 </Text>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26236,19 +26422,24 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 20,
-                          "fontWeight": "600",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 20,
+                            "fontWeight": "600",
+                          },
+                        ],
                       ]
                     }
                   >
                     H3
                   </Text>
                 </Text>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26260,19 +26451,24 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 18,
-                          "fontWeight": "600",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 18,
+                            "fontWeight": "600",
+                          },
+                        ],
                       ]
                     }
                   >
                     H4
                   </Text>
                 </Text>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26284,19 +26480,24 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                          },
+                        ],
                       ]
                     }
                   >
                     H5
                   </Text>
                 </Text>
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -26308,12 +26509,15 @@ exports[`Storyshots Message list 1`] = `
                           "fontSize": 16,
                           "fontWeight": "400",
                         },
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 14,
-                          "fontWeight": "500",
-                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 14,
+                            "fontWeight": "500",
+                          },
+                        ],
                       ]
                     }
                   >
@@ -26536,14 +26740,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -26572,21 +26779,24 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                            Object {
-                              "backgroundColor": "transparent",
-                              "color": "#1d74f5",
-                              "fontFamily": "System",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                              Object {
+                                "backgroundColor": "transparent",
+                                "color": "#1d74f5",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -26604,14 +26814,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -26640,21 +26853,24 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                            Object {
-                              "backgroundColor": "transparent",
-                              "color": "#1d74f5",
-                              "fontFamily": "System",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                              Object {
+                                "backgroundColor": "transparent",
+                                "color": "#1d74f5",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -26671,21 +26887,24 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                            Object {
-                              "backgroundColor": "transparent",
-                              "color": "#1d74f5",
-                              "fontFamily": "System",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                              Object {
+                                "backgroundColor": "transparent",
+                                "color": "#1d74f5",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -26702,21 +26921,24 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                            Object {
-                              "backgroundColor": "transparent",
-                              "color": "#1d74f5",
-                              "fontFamily": "System",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                              Object {
+                                "backgroundColor": "transparent",
+                                "color": "#1d74f5",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -26734,14 +26956,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -26770,21 +26995,24 @@ exports[`Storyshots Message list 1`] = `
                               "fontSize": 16,
                               "fontWeight": "400",
                             },
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                            Object {
-                              "backgroundColor": "transparent",
-                              "color": "#1d74f5",
-                              "fontFamily": "System",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                              Object {
+                                "backgroundColor": "transparent",
+                                "color": "#1d74f5",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -27230,14 +27458,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -27267,14 +27498,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -27304,14 +27538,17 @@ exports[`Storyshots Message list 1`] = `
                             "fontSize": 16,
                             "fontWeight": "400",
                           },
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
                         ]
                       }
                     >
@@ -27576,15 +27813,18 @@ exports[`Storyshots Message list 1`] = `
                                 "fontSize": 16,
                                 "fontWeight": "400",
                               },
-                              undefined,
-                              Object {
-                                "alignItems": "flex-start",
-                                "flexDirection": "row",
-                                "flexWrap": "wrap",
-                                "justifyContent": "flex-start",
-                                "marginBottom": 0,
-                                "marginTop": 0,
-                              },
+                              Array [
+                                Object {},
+                                undefined,
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
                             ]
                           }
                         >
@@ -27882,13 +28122,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >
@@ -27925,13 +28168,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >
@@ -27985,13 +28231,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >
@@ -28028,13 +28277,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >
@@ -28084,13 +28336,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >
@@ -28127,13 +28382,16 @@ exports[`Storyshots Message list 1`] = `
                                       "fontSize": 16,
                                       "fontWeight": "400",
                                     },
-                                    Object {
-                                      "borderColor": "#e1e5e8",
-                                      "borderLeftWidth": 1,
-                                      "borderTopWidth": 1,
-                                    },
-                                    undefined,
-                                    undefined,
+                                    Array [
+                                      Object {},
+                                      Object {
+                                        "borderColor": "#e1e5e8",
+                                        "borderLeftWidth": 1,
+                                        "borderTopWidth": 1,
+                                      },
+                                      undefined,
+                                      undefined,
+                                    ],
                                   ]
                                 }
                               >

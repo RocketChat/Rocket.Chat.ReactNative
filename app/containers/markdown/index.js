@@ -86,33 +86,33 @@ export default class Markdown extends PureComponent {
 			emph: Renderer.forwardChildren,
 			strong: Renderer.forwardChildren,
 			del: Renderer.forwardChildren,
-			code: preview ? this.renderText : this.renderCodeInline,
-			link: preview ? this.renderText : this.renderLink,
-			image: preview ? this.renderText : this.renderImage,
-			atMention: preview ? this.renderText : this.renderAtMention,
+			code: this.renderCodeInline,
+			link: this.renderLink,
+			image: this.renderImage,
+			atMention: this.renderAtMention,
 			emoji: this.renderEmoji,
-			hashtag: preview ? this.renderText : this.renderHashtag,
+			hashtag: this.renderHashtag,
 
 			paragraph: this.renderParagraph,
-			heading: preview ? this.renderText : this.renderHeading,
-			codeBlock: preview ? this.renderText : this.renderCodeBlock,
-			blockQuote: preview ? this.renderText : this.renderBlockQuote,
+			heading: this.renderHeading,
+			codeBlock: this.renderCodeBlock,
+			blockQuote: this.renderBlockQuote,
 
-			list: preview ? this.renderText : this.renderList,
-			item: preview ? this.renderText : this.renderListItem,
+			list: this.renderList,
+			item: this.renderListItem,
 
 			hardBreak: this.renderBreak,
 			thematicBreak: this.renderBreak,
 			softBreak: this.renderBreak,
 
-			htmlBlock: preview ? this.renderText : this.renderText,
-			htmlInline: preview ? this.renderText : this.renderText,
+			htmlBlock: this.renderText,
+			htmlInline: this.renderText,
 
-			table: preview ? this.renderText : this.renderTable,
-			table_row: preview ? this.renderText : this.renderTableRow,
-			table_cell: preview ? this.renderText : this.renderTableCell,
+			table: this.renderTable,
+			table_row: this.renderTableRow,
+			table_cell: this.renderTableCell,
 
-			editedIndicator: preview ? this.renderText : this.renderEditedIndicator
+			editedIndicator: preview ? () => null : this.renderEditedIndicator
 		},
 		renderParagraphsInLists: true
 	});
@@ -134,11 +134,15 @@ export default class Markdown extends PureComponent {
 
 	renderText = ({ context, literal }) => {
 		const { numberOfLines, preview, style = [] } = this.props;
+		const defaultStyle = [
+			this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : {},
+			...context.map(type => styles[type])
+		];
 		return (
 			<Text
 				style={[
-					this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : styles.text,
-					...context.map(type => styles[type]),
+					styles.text,
+					!preview ? defaultStyle : {},
 					...style
 				]}
 				numberOfLines={numberOfLines}
@@ -148,9 +152,15 @@ export default class Markdown extends PureComponent {
 		);
 	}
 
-	renderCodeInline = ({ literal }) => <Text style={styles.codeInline}>{literal}</Text>;
+	renderCodeInline = ({ literal }) => {
+		const { preview } = this.props;
+		return <Text style={!preview ? styles.codeInline : {}}>{literal}</Text>;
+	};
 
-	renderCodeBlock = ({ literal }) => <Text style={styles.codeBlock}>{literal}</Text>;
+	renderCodeBlock = ({ literal }) => {
+		const { preview } = this.props;
+		return <Text style={!preview ? styles.codeBlock : {}}>{literal}</Text>;
+	};
 
 	renderBreak = () => {
 		const { tmid } = this.props;
@@ -201,14 +211,18 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderEmoji = ({ emojiName, literal }) => {
-		const { getCustomEmoji, baseUrl, preview } = this.props;
+		const {
+			getCustomEmoji, baseUrl, preview, style
+		} = this.props;
 		return (
 			<MarkdownEmoji
 				emojiName={emojiName}
 				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji && !preview}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
 				baseUrl={baseUrl}
+				preview={preview}
+				style={style}
 			/>
 		);
 	}
@@ -218,9 +232,10 @@ export default class Markdown extends PureComponent {
 	renderEditedIndicator = () => <Text style={styles.edited}> ({I18n.t('edited')})</Text>;
 
 	renderHeading = ({ children, level }) => {
+		const { numberOfLines } = this.props;
 		const textStyle = styles[`heading${ level }Text`];
 		return (
-			<Text style={textStyle}>
+			<Text numberOfLines={numberOfLines} style={textStyle}>
 				{children}
 			</Text>
 		);
@@ -289,9 +304,8 @@ export default class Markdown extends PureComponent {
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 		m = shortnameToUnicode(m);
 
-		// We need to replace hardbreaks on previews
 		if (preview) {
-			m = m.replace('\n\n', ' ');
+			m = m.split('\n').reduce((lines, line) => `${ lines } ${ line }`, '');
 		}
 
 		if (!useMarkdown && !preview) {
