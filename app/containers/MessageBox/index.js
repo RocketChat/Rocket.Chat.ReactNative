@@ -365,10 +365,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ _id: -1, username: 'all' }];
+			result = [{ id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ _id: -2, username: 'here' }, ...result];
+			result = [{ id: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -839,8 +839,9 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
+					extraData={mentions}
 					renderItem={this.renderMentionItem}
-					keyExtractor={item => item._id || item.username || item.command || item}
+					keyExtractor={item => item.id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</ScrollView>
