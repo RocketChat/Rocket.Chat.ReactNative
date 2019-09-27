@@ -203,6 +203,11 @@ class RoomView extends React.Component {
 				this.init();
 			});
 		}
+		if (appState === 'background' && appState !== prevProps.appState) {
+			if (this.sub && this.sub.stop) {
+				this.sub.stop();
+			}
+		}
 	}
 
 	async componentWillUnmount() {
