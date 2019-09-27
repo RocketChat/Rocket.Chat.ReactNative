@@ -228,15 +228,19 @@ export default class Markdown extends PureComponent {
 
 	renderList = ({
 		children, start, tight, type
-	}) => (
-		<MarkdownList
-			ordered={type !== 'bullet'}
-			start={start}
-			tight={tight}
-		>
-			{children}
-		</MarkdownList>
-	);
+	}) => {
+		const { numberOfLines } = this.props;
+		return (
+			<MarkdownList
+				ordered={type !== 'bullet'}
+				start={start}
+				tight={tight}
+				numberOfLines={numberOfLines}
+			>
+				{children}
+			</MarkdownList>
+		);
+	};
 
 	renderListItem = ({
 		children, context, ...otherProps
@@ -284,6 +288,11 @@ export default class Markdown extends PureComponent {
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 		m = shortnameToUnicode(m);
+
+		// We need to replace hardbreaks on previews
+		if (preview) {
+			m = m.replace('\n\n', ' ');
+		}
 
 		if (!useMarkdown && !preview) {
 			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
