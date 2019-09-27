@@ -99,7 +99,7 @@ const restore = function* restore() {
 				RNUserDefaults.clear('currentServer')
 			]);
 			yield put(actions.appStart('outside'));
-		} else if (server) {
+		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 			const serverObj = yield serverCollections.find(server);
