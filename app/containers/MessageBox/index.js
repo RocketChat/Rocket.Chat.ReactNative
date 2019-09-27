@@ -241,10 +241,17 @@ class MessageBox extends Component {
 		}
 	}
 
-	onChangeText = debounce(async(text) => {
-		const db = database.active;
+	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
+		this.debouncedOnChangeText(text);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedOnChangeText = debounce(async(text) => {
+		const db = database.active;
+		const isTextEmpty = text.length === 0;
+		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
@@ -370,12 +377,12 @@ class MessageBox extends Component {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res });
-	}, 1000)
+	}, 300)
 
 	getRooms = debounce(async(keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res });
-	}, 1000)
+	}, 300)
 
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
@@ -389,7 +396,7 @@ class MessageBox extends Component {
 			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: mergedEmojis || [] });
 		}
-	}, 1000)
+	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
 		const db = database.active;
@@ -398,7 +405,7 @@ class MessageBox extends Component {
 			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
-	}, 1000)
+	}, 300)
 
 	focus = () => {
 		if (this.component && this.component.focus) {
