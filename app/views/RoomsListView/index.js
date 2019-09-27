@@ -165,6 +165,7 @@ class RoomsListView extends React.Component {
 		this.willFocusListener = props.navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
+				animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
