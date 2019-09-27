@@ -19,7 +19,6 @@ export default function subscribeRoom({ rid }) {
 	let disconnectedListener;
 	let notifyRoomListener;
 	let messageReceivedListener;
-	const typingTimeouts = {};
 
 	const handleConnection = () => {
 		this.loadMissedMessages({ rid }).catch(e => console.log(e));
@@ -200,12 +199,6 @@ export default function subscribeRoom({ rid }) {
 			messageReceivedListener.then(removeListener);
 			messageReceivedListener = false;
 		}
-		Object.keys(typingTimeouts).forEach((key) => {
-			if (typingTimeouts[key]) {
-				clearTimeout(typingTimeouts[key]);
-				typingTimeouts[key] = null;
-			}
-		});
 		reduxStore.dispatch(clearUserTyping());
 	};
 
