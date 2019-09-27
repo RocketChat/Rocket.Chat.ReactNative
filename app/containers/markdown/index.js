@@ -105,8 +105,8 @@ export default class Markdown extends PureComponent {
 			thematicBreak: this.renderBreak,
 			softBreak: this.renderBreak,
 
-			htmlBlock: this.renderText,
-			htmlInline: this.renderText,
+			htmlBlock: preview ? this.renderText : this.renderText,
+			htmlInline: preview ? this.renderText : this.renderText,
 
 			table: preview ? this.renderText : this.renderTable,
 			table_row: preview ? this.renderText : this.renderTableRow,
