@@ -101,6 +101,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.3.0):
     - GoogleUtilities/Logger
+  - JitsiMeetSDK (2.3.0)
   - libwebp (1.0.3):
     - libwebp/demux (= 1.0.3)
     - libwebp/mux (= 1.0.3)
@@ -283,7 +284,8 @@ PODS:
     - React
   - react-native-document-picker (3.2.4):
     - React
-  - react-native-jitsi-meet (2.0.0):
+  - react-native-jitsi-meet (2.0.1):
+    - JitsiMeetSDK (= 2.3.0)
     - React
   - react-native-keyboard-input (5.3.1):
     - React
@@ -490,6 +492,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
+    - JitsiMeetSDK
     - libwebp
     - nanopb
     - QBImagePickerController
@@ -683,6 +686,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 8f9897b8e073687f24ca8d3c3a8013dec7d2d1cc
   GoogleDataTransportCCTSupport: 7455d07b98851aa63e4c05a34dad356ca588479e
   GoogleUtilities: 9c2c544202301110b29f7974a82e77fdcf12bf51
+  JitsiMeetSDK: 0db2222f160cb6a9ccbeacc828acd11ff0057ba5
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
@@ -697,7 +701,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 574d597112f9ea3d1b717f6fb62aef764c70dd6f
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
-  react-native-jitsi-meet: 27446bafcf8be0050c1e275cbddd5ea83cae7669
+  react-native-jitsi-meet: 03565e2933f0a7ad9ce6f6483749b128c970e2c5
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
