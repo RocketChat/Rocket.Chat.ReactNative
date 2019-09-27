@@ -42,7 +42,9 @@ allprojects {
             url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven {
-            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+            // We should change it when Jitsi-SDK release v2.4
+            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
+            // url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
