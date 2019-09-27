@@ -157,12 +157,13 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
+		const { numberOfLines } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
 			<View style={styles.block}>
-				<Text>
+				<Text numberOfLines={numberOfLines}>
 					{children}
 				</Text>
 			</View>
@@ -226,15 +227,19 @@ export default class Markdown extends PureComponent {
 
 	renderList = ({
 		children, start, tight, type
-	}) => (
-		<MarkdownList
-			ordered={type !== 'bullet'}
-			start={start}
-			tight={tight}
-		>
-			{children}
-		</MarkdownList>
-	);
+	}) => {
+		const { numberOfLines } = this.props;
+		return (
+			<MarkdownList
+				ordered={type !== 'bullet'}
+				start={start}
+				tight={tight}
+				numberOfLines={numberOfLines}
+			>
+				{children}
+			</MarkdownList>
+		);
+	};
 
 	renderListItem = ({
 		children, context, ...otherProps

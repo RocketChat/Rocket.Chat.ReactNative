@@ -209,7 +209,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -437,7 +439,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -665,7 +669,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -875,7 +881,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -967,7 +975,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -1059,7 +1069,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -1269,7 +1281,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -1379,7 +1393,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -1621,7 +1637,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -1845,7 +1863,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -2073,7 +2093,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -2326,7 +2348,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -2564,7 +2588,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -2603,7 +2629,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -2863,7 +2891,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -2933,7 +2963,9 @@ exports[`Storyshots Message list 1`] = `
                             }
                           }
                         >
-                          <Text>
+                          <Text
+                            numberOfLines={0}
+                          >
                             <Text
                               numberOfLines={0}
                               style={
@@ -3007,7 +3039,9 @@ exports[`Storyshots Message list 1`] = `
                             }
                           }
                         >
-                          <Text>
+                          <Text
+                            numberOfLines={0}
+                          >
                             <Text
                               numberOfLines={0}
                               style={
@@ -3275,7 +3309,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -3347,7 +3383,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -3611,7 +3649,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -3739,7 +3779,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
@@ -3971,7 +4013,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -4199,7 +4243,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -4427,7 +4473,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       onPress={[Function]}
                       style={
@@ -4802,7 +4850,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -5030,7 +5080,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -5258,7 +5310,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <View
                       style={
                         Array [
@@ -5606,7 +5660,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <View
                       style={
                         Array [
@@ -5842,7 +5898,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -6102,7 +6160,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -6386,7 +6446,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -6614,7 +6676,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -7161,7 +7225,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -8119,7 +8185,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -8329,7 +8397,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -8539,7 +8609,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -8749,7 +8821,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -8977,7 +9051,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -9252,7 +9328,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -9391,7 +9469,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -9601,7 +9681,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -9850,7 +9932,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -11501,7 +11585,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -12517,7 +12603,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -12886,7 +12974,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -13305,7 +13395,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -13445,7 +13537,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -13703,7 +13797,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -13865,7 +13961,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -14163,7 +14261,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -14454,7 +14554,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -14775,7 +14877,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -15063,7 +15167,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -15351,7 +15457,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -15639,7 +15747,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -15927,7 +16037,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -16167,7 +16279,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -16612,7 +16726,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -16858,7 +16974,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -17071,7 +17189,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -17471,7 +17591,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -17684,7 +17806,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -17873,7 +17997,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={1}
+                  >
                     <Text
                       numberOfLines={1}
                       style={
@@ -19771,7 +19897,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -20216,7 +20344,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -20765,7 +20895,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -21395,7 +21527,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -21702,7 +21836,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -21961,7 +22097,9 @@ exports[`Storyshots Message list 1`] = `
                   }
                 }
               >
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -22133,7 +22271,9 @@ exports[`Storyshots Message list 1`] = `
                   }
                 }
               >
-                <Text>
+                <Text
+                  numberOfLines={0}
+                >
                   <Text
                     numberOfLines={0}
                     style={
@@ -22366,7 +22506,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -22594,7 +22736,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -25212,7 +25356,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -25440,7 +25586,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -26289,7 +26437,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -26759,7 +26909,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Image
                       source={
                         Object {
@@ -26977,7 +27129,9 @@ exports[`Storyshots Message list 1`] = `
                     }
                   }
                 >
-                  <Text>
+                  <Text
+                    numberOfLines={0}
+                  >
                     <Text
                       numberOfLines={0}
                       style={
@@ -27320,7 +27474,9 @@ exports[`Storyshots Message list 1`] = `
                         }
                       }
                     >
-                      <Text>
+                      <Text
+                        numberOfLines={0}
+                      >
                         <Text
                           numberOfLines={0}
                           style={
