@@ -168,13 +168,13 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
-		const { numberOfLines } = this.props;
+		const { numberOfLines, style } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
 			<View style={styles.block}>
-				<Text numberOfLines={numberOfLines}>
+				<Text style={style} numberOfLines={numberOfLines}>
 					{children}
 				</Text>
 			</View>
@@ -188,24 +188,28 @@ export default class Markdown extends PureComponent {
 	);
 
 	renderHashtag = ({ hashtag }) => {
-		const { channels, navToRoomInfo } = this.props;
+		const { channels, navToRoomInfo, style } = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
+				style={style}
 			/>
 		);
 	}
 
 	renderAtMention = ({ mentionName }) => {
-		const { username, mentions, navToRoomInfo } = this.props;
+		const {
+			username, mentions, navToRoomInfo, style
+		} = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
 				mention={mentionName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
+				style={style}
 			/>
 		);
 	}

@@ -4572,14 +4572,16 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       onPress={[Function]}
                       style={
-                        Object {
-                          "backgroundColor": "#E8F2FF",
-                          "color": "#0072FE",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "padding": 5,
-                        }
+                        Array [
+                          Object {
+                            "backgroundColor": "#E8F2FF",
+                            "color": "#0072FE",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "padding": 5,
+                          },
+                        ]
                       }
                     >
                       @rocket.cat
@@ -4614,14 +4616,16 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       onPress={[Function]}
                       style={
-                        Object {
-                          "backgroundColor": "#1d74f5",
-                          "color": "#fff",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "padding": 5,
-                        }
+                        Array [
+                          Object {
+                            "backgroundColor": "#1d74f5",
+                            "color": "#fff",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "padding": 5,
+                          },
+                        ]
                       }
                     >
                       @diego.mello
@@ -4656,14 +4660,16 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       onPress={[Function]}
                       style={
-                        Object {
-                          "backgroundColor": "#FF5B5A",
-                          "color": "#fff",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "padding": 5,
-                        }
+                        Array [
+                          Object {
+                            "backgroundColor": "#FF5B5A",
+                            "color": "#fff",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "padding": 5,
+                          },
+                        ]
                       }
                     >
                       @all
@@ -4698,14 +4704,16 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       onPress={[Function]}
                       style={
-                        Object {
-                          "backgroundColor": "#FF5B5A",
-                          "color": "#fff",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "padding": 5,
-                        }
+                        Array [
+                          Object {
+                            "backgroundColor": "#FF5B5A",
+                            "color": "#fff",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "padding": 5,
+                          },
+                        ]
                       }
                     >
                       @here
@@ -4740,14 +4748,16 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       onPress={[Function]}
                       style={
-                        Object {
-                          "backgroundColor": "#E8F2FF",
-                          "color": "#0072FE",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "padding": 5,
-                        }
+                        Array [
+                          Object {
+                            "backgroundColor": "#E8F2FF",
+                            "color": "#0072FE",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "padding": 5,
+                          },
+                        ]
                       }
                     >
                       #general
