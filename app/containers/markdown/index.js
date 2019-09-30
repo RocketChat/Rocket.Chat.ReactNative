@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
@@ -173,11 +173,9 @@ export default class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<View style={styles.block}>
-				<Text style={style} numberOfLines={numberOfLines}>
-					{children}
-				</Text>
-			</View>
+			<Text style={style} numberOfLines={numberOfLines}>
+				{children}
+			</Text>
 		);
 	};
 
