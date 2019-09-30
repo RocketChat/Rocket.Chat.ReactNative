@@ -1,7 +1,8 @@
 import React from 'react';
-import {
-	createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, NavigationActions
-} from 'react-navigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createAppContainer, createSwitchNavigator, NavigationActions } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import {
@@ -410,7 +411,9 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<MasterDetailView />
+				<SafeAreaProvider>
+					<MasterDetailView />
+				</SafeAreaProvider>
 			</Provider>
 		);
 	}
