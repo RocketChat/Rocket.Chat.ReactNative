@@ -4,7 +4,7 @@ import {
 	FlatList, View, Text, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -43,12 +43,12 @@ class ThreadMessagesView extends React.Component {
 		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.subscribeData();
 		this.state = {
 			loading: false,
 			end: false,
 			messages: []
 		};
+		this.subscribeData();
 	}
 
 	componentDidMount() {

@@ -76,10 +76,10 @@ class UploadProgress extends Component {
 		super(props);
 		this.mounted = false;
 		this.ranInitialUploadCheck = false;
-		this.init();
 		this.state = {
 			uploads: []
 		};
+		this.init();
 	}
 
 	componentDidMount() {
@@ -122,7 +122,8 @@ class UploadProgress extends Component {
 		uploads.forEach(async(u) => {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
-					await database.database.action(async() => {
+					const db = database.active;
+					await db.action(async() => {
 						await u.update(() => {
 							u.error = true;
 						});

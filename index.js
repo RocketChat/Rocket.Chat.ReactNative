@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry } from 'react-native';
 import joypixels from 'emoji-toolkit';

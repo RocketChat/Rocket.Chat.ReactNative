@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, InteractionManager, LayoutAnimation
-} from 'react-native';
+import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView, HeaderBackButton } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
+import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
@@ -38,6 +37,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
+import { showErrorAlert } from '../../utils/info';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -52,7 +52,7 @@ const stateAttrsUpdate = [
 	'replying',
 	'reacting'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -203,6 +203,9 @@ class RoomView extends React.Component {
 				this.init();
 			});
 		}
+		if (appState === 'background' && appState !== prevProps.appState) {
+			this.unsubscribe();
+		}
 	}
 
 	async componentWillUnmount() {
@@ -234,9 +237,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		if (this.sub && this.sub.stop) {
-			this.sub.stop();
-		}
+		this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -282,6 +283,7 @@ class RoomView extends React.Component {
 							this.setLastOpen(null);
 						}
 						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+						this.unsubscribe();
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -321,6 +323,12 @@ class RoomView extends React.Component {
 					}, 300);
 				}
 			}
+		}
+	}
+
+	unsubscribe = () => {
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
 		}
 	}
 
@@ -482,15 +490,11 @@ class RoomView extends React.Component {
 		if (!this.mounted) {
 			return;
 		}
-		if (isIOS && this.beginAnimating) {
-			LayoutAnimation.easeInEaseOut();
-		}
 		this.setState(...args);
 	}
 
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
-		LayoutAnimation.easeInEaseOut();
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			this.setLastOpen(null);
 		});
@@ -602,6 +606,16 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	callJitsi = () => {
+		const { room } = this.state;
+		const { jitsiTimeout } = room;
+		if (jitsiTimeout < Date.now()) {
+			showErrorAlert(I18n.t('Call_already_ended'));
+		} else {
+			RocketChat.callJitsi(this.rid);
+		}
+	};
+
 	get isReadOnly() {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -657,18 +671,19 @@ class RoomView extends React.Component {
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
+				callJitsi={this.callJitsi}
 			/>
 		);
 
 		if (showUnreadSeparator || dateSeparator) {
 			return (
-				<React.Fragment>
+				<>
 					{message}
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
 					/>
-				</React.Fragment>
+				</>
 			);
 		}
 

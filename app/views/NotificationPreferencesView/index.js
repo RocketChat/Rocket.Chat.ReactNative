@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
@@ -114,7 +114,9 @@ export default class NotificationPreferencesView extends React.Component {
 		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
-
+		this.state = {
+			room: room || {}
+		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
@@ -126,10 +128,6 @@ export default class NotificationPreferencesView extends React.Component {
 					}
 				});
 		}
-
-		this.state = {
-			room: room || {}
-		};
 	}
 
 	componentDidMount() {

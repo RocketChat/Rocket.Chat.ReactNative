@@ -1,5 +1,6 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import logger from '@nozbe/watermelondb/utils/common/logger';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import Subscription from './model/Subscription';
@@ -19,6 +20,8 @@ import Server from './model/Server';
 
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
+
+import migrations from './model/migrations';
 
 import { isIOS } from '../../utils/deviceInfo';
 
@@ -54,7 +57,8 @@ class DB {
 
 		const adapter = new SQLiteAdapter({
 			dbName,
-			schema: appSchema
+			schema: appSchema,
+			migrations
 		});
 
 		this.databases.activeDB = new Database({
@@ -80,3 +84,7 @@ class DB {
 
 const db = new DB();
 export default db;
+
+if (!__DEV__) {
+	logger.silence();
+}

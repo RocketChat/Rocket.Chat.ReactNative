@@ -4,7 +4,7 @@ import {
 	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
@@ -36,26 +36,14 @@ class RoomActionsView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		leaveRoom: PropTypes.func
+		leaveRoom: PropTypes.func,
+		jitsiEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
 		const room = props.navigation.getParam('room');
-
-		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
-		}
-
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
@@ -67,6 +55,17 @@ class RoomActionsView extends React.Component {
 			canAutoTranslate: false,
 			canAddUser: false
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 	}
 
 	async componentDidMount() {
@@ -166,6 +165,7 @@ class RoomActionsView extends React.Component {
 		const {
 			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
+		const { jitsiEnabled } = this.props;
 		const {
 			rid, t, blocker
 		} = room;
@@ -178,6 +178,21 @@ class RoomActionsView extends React.Component {
 			testID: 'room-actions-notifications'
 		};
 
+		const jitsiActions = jitsiEnabled ? [
+			{
+				icon: 'livechat',
+				name: I18n.t('Voice_call'),
+				event: () => RocketChat.callJitsi(rid, true),
+				testID: 'room-actions-voice'
+			},
+			{
+				icon: 'video',
+				name: I18n.t('Video_call'),
+				event: () => RocketChat.callJitsi(rid),
+				testID: 'room-actions-video'
+			}
+		] : [];
+
 		const sections = [{
 			data: [{
 				icon: 'star',
@@ -189,20 +204,7 @@ class RoomActionsView extends React.Component {
 			}],
 			renderItem: this.renderRoomInfo
 		}, {
-			data: [
-				{
-					icon: 'livechat',
-					name: I18n.t('Voice_call'),
-					disabled: true,
-					testID: 'room-actions-voice'
-				},
-				{
-					icon: 'video',
-					name: I18n.t('Video_call'),
-					disabled: true,
-					testID: 'room-actions-video'
-				}
-			],
+			data: jitsiActions,
 			renderItem: this.renderItem
 		}, {
 			data: [
@@ -479,7 +481,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		token: state.login.user && state.login.user.token
 	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 
 const mapDispatchToProps = dispatch => ({
