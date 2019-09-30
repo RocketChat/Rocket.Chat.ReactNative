@@ -239,7 +239,10 @@ const NewMessageStack = createStackNavigator({
 });
 
 const InsideStackModal = createStackNavigator({
-	Main: ChatsStack
+	Main: ChatsStack,
+	JitsiMeetView: {
+		getScreen: () => require('./views/JitsiMeetView').default
+	}
 },
 {
 	mode: 'modal',
@@ -298,7 +301,8 @@ const ListContainer = createAppContainer(ListStackModal);
 
 export class MasterDetailView extends React.Component {
 	state = {
-		inside: false
+		inside: false,
+		inCall: false
 	};
 
 	componentDidMount() {
@@ -314,11 +318,11 @@ export class MasterDetailView extends React.Component {
 				}
 				Navigation.navigate(routeName, params);
 			}
-
 			return defaultDetailsGetStateForAction(action, state);
 		};
 
 		App.router.getStateForAction = (action, state) => {
+			const { inCall } = this.state;
 			if (action.type === NavigationActions.NAVIGATE) {
 				const { routeName } = action;
 				if (routeName === 'InsideStack') {
@@ -327,6 +331,12 @@ export class MasterDetailView extends React.Component {
 				if (routeName === 'OutsideStack') {
 					this.setState({ inside: false });
 				}
+				if (routeName === 'JitsiMeetView') {
+					this.setState({ inCall: true });
+				}
+			}
+			if (action.type === 'Navigation/POP' && inCall) {
+				this.setState({ inCall: false });
 			}
 			return defaultMasterGetStateForAction(action, state);
 		};
@@ -346,10 +356,10 @@ export class MasterDetailView extends React.Component {
 	);
 
 	render() {
-		const { inside } = this.state;
+		const { inside, inCall } = this.state;
 		return (
 			<View style={{ flex: 1, flexDirection: 'row' }}>
-				{ inside ? this.renderSideView() : null }
+				{ inside && !inCall ? this.renderSideView() : null }
 				<View style={{ flex: 8 }}>
 					<App
 						ref={(navigatorRef) => {
