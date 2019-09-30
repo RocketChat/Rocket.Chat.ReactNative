@@ -45,20 +45,12 @@ const formatMsg = ({
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert, baseUrl, customEmojis
+	lastMessage, type, showLastMessage, username, alert
 }) => (
 	<Markdown
 		msg={formatMsg({
 			lastMessage, type, showLastMessage, username
 		})}
-		baseUrl={baseUrl}
-		getCustomEmoji={(name) => {
-			const emoji = customEmojis[name];
-			if (emoji) {
-				return emoji;
-			}
-			return null;
-		}}
 		style={[styles.markdownText, alert && styles.markdownTextAlert]}
 		numberOfLines={2}
 		preview
@@ -70,8 +62,6 @@ LastMessage.propTypes = {
 	type: PropTypes.string,
 	showLastMessage: PropTypes.bool,
 	username: PropTypes.string,
-	baseUrl: PropTypes.string,
-	customEmojis: PropTypes.object,
 	alert: PropTypes.bool
 };
 
