@@ -224,12 +224,34 @@ class MessageBox extends Component {
 
 	componentWillUnmount() {
 		console.countReset(`${ this.constructor.name }.render calls`);
+		if (this.onChangeText && this.onChangeText.stop) {
+			this.onChangeText.stop();
+		}
+		if (this.getUsers && this.getUsers.stop) {
+			this.getUsers.stop();
+		}
+		if (this.getRooms && this.getRooms.stop) {
+			this.getRooms.stop();
+		}
+		if (this.getEmojis && this.getEmojis.stop) {
+			this.getEmojis.stop();
+		}
+		if (this.getSlashCommands && this.getSlashCommands.stop) {
+			this.getSlashCommands.stop();
+		}
 	}
 
-	onChangeText = debounce(async(text) => {
-		const db = database.active;
+	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
+		this.debouncedOnChangeText(text);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedOnChangeText = debounce(async(text) => {
+		const db = database.active;
+		const isTextEmpty = text.length === 0;
+		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
@@ -248,25 +270,29 @@ class MessageBox extends Component {
 		}
 
 		if (!isTextEmpty) {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			const lastNativeText = this.component._lastNativeText;
-			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-			const result = lastNativeText.substr(0, cursor).match(regexp);
-			if (!result) {
-				const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-				if (slash) {
-					return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+			try {
+				const { start, end } = this.component._lastNativeSelection;
+				const cursor = Math.max(start, end);
+				const lastNativeText = this.component._lastNativeText || '';
+				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
+				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+				const result = lastNativeText.substr(0, cursor).match(regexp);
+				if (!result) {
+					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+					if (slash) {
+						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+					}
+					return this.stopTrackingMention();
 				}
-				return this.stopTrackingMention();
+				const [, lastChar, name] = result;
+				this.identifyMentionKeyword(name, lastChar);
+			} catch (e) {
+				log(e);
 			}
-			const [, lastChar, name] = result;
-			this.identifyMentionKeyword(name, lastChar);
 		} else {
 			this.stopTrackingMention();
 		}
-	}, 100, true)
+	}, 100)
 
 	onKeyboardResigned = () => {
 		this.closeEmoji();
@@ -339,10 +365,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ _id: -1, username: 'all' }];
+			result = [{ id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ _id: -2, username: 'here' }, ...result];
+			result = [{ id: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -813,8 +839,9 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
+					extraData={mentions}
 					renderItem={this.renderMentionItem}
-					keyExtractor={item => item._id || item.username || item.command || item}
+					keyExtractor={item => item.id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</ScrollView>
