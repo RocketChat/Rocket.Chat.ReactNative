@@ -10,7 +10,7 @@ import { THREAD } from './constants';
 const Thread = React.memo(({
 	msg, tcount, tlm, customThreadTimeFormat, isThreadRoom
 }) => {
-	if (!tlm || isThreadRoom) {
+	if (!tlm || isThreadRoom || tcount === 0) {
 		return null;
 	}
 

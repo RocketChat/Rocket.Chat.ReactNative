@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -57,8 +57,7 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
-	'isAuthenticated'
+	'appState'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -139,8 +138,7 @@ class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func,
-		isAuthenticated: PropTypes.bool
+		roomsRequest: PropTypes.func
 	};
 
 	constructor(props) {
@@ -167,7 +165,7 @@ class RoomsListView extends React.Component {
 		this.willFocusListener = props.navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
-				animateNextTransition();
+				// animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
@@ -264,8 +262,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
-			roomsRequest,
-			isAuthenticated
+			roomsRequest
 		} = this.props;
 
 		if (
@@ -280,7 +277,6 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
-			&& isAuthenticated
 		) {
 			roomsRequest();
 		}
@@ -608,6 +604,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
+				avatar={item.name}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
@@ -801,7 +798,6 @@ const mapStateToProps = state => ({
 	userId: state.login.user && state.login.user.id,
 	username: state.login.user && state.login.user.username,
 	token: state.login.user && state.login.user.token,
-	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,

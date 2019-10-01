@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -203,6 +203,9 @@ class RoomView extends React.Component {
 				this.init();
 			});
 		}
+		if (appState === 'background' && appState !== prevProps.appState) {
+			this.unsubscribe();
+		}
 	}
 
 	async componentWillUnmount() {
@@ -234,9 +237,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		if (this.sub && this.sub.stop) {
-			this.sub.stop();
-		}
+		this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -282,6 +283,7 @@ class RoomView extends React.Component {
 							this.setLastOpen(null);
 						}
 						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+						this.unsubscribe();
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -321,6 +323,12 @@ class RoomView extends React.Component {
 					}, 300);
 				}
 			}
+		}
+	}
+
+	unsubscribe = () => {
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
 		}
 	}
 
@@ -604,7 +612,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid, {});
+			RocketChat.callJitsi(this.rid);
 		}
 	};
 

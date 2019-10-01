@@ -100,7 +100,7 @@ export default class MessageContainer extends React.Component {
 	onReactionPress = (emoji) => {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
-			onReactionPress(emoji, item._id);
+			onReactionPress(emoji, item.id);
 		}
 	}
 
