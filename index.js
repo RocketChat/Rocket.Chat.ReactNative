@@ -8,6 +8,8 @@ joypixels.ascii = true;
 
 if (__DEV__) {
 	require('./app/ReactotronConfig');
+} else {
+	console.log = () => {};
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
