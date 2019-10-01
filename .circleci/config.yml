@@ -255,7 +255,7 @@ jobs:
             mv app/build/outputs /tmp/build/
 
       - store_artifacts:
-          path: /tmp/build/outputs/play-experimental
+          path: /tmp/build/outputs
 
       - save_cache:
           name: Save NPM cache
