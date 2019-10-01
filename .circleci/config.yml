@@ -99,7 +99,28 @@ jobs:
       - store_artifacts:
           path: /tmp/screenshots
 
-  android-build:
+  android-play-build:
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+    steps:
+      - checkout
+      - run:
+          name: restore files from ENV
+          command: |
+            echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > chat-rocket-android.jks
+            echo $ROCKET_PLAY_JSON | base64 --decode > android/app/rocket-chat.json
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - run:
+          name: Build Play AAB
+          command: ./gradlew bundleRelease
+      - store_artifacts:
+          path: /tmp/build/outputs/play
+
+  android-play-experimental-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -207,7 +228,7 @@ jobs:
             mv app/build/outputs /tmp/build/
 
       - store_artifacts:
-          path: /tmp/build/outputs
+          path: /tmp/build/outputs/play-experimental
 
       - save_cache:
           name: Save NPM cache
@@ -374,6 +395,10 @@ workflows:
           requires:
             - ios-hold-testflight
 
-      - android-build:
+      - android-play-build:
+          requires:
+            - lint-testunit
+
+      - android-play-experimental-build:
           requires:
             - lint-testunit
