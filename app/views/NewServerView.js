@@ -4,7 +4,7 @@ import {
 	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
@@ -256,8 +256,8 @@ class NewServerView extends React.Component {
 				key='login-view'
 			>
 				<StatusBar light />
-				<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-					<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
@@ -279,9 +279,9 @@ class NewServerView extends React.Component {
 							loading={connecting}
 							testID='new-server-view-button'
 						/>
-						{isIOS ? this.renderCertificatePicker() : null}
-					</ScrollView>
-				</SafeAreaView>
+						{ isIOS ? this.renderCertificatePicker() : null }
+					</SafeAreaView>
+				</ScrollView>
 				{this.renderBack()}
 			</KeyboardView>
 		);
