@@ -31,7 +31,7 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
-		if (!hasMigration && isIOS) {
+		if (!hasMigration) {
 			let servers = yield RNUserDefaults.objectForKey(SERVERS);
 			// if not have current
 			if (servers && servers.length !== 0 && (!token || !server)) {
