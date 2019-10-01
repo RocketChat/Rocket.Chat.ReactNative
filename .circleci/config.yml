@@ -101,7 +101,7 @@ jobs:
 
   android-play-build:
     docker:
-      - image: circleci/android:api-29
+      - image: circleci/android:api-28-node
     environment:
       GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
@@ -139,12 +139,12 @@ jobs:
             echo $ROCKET_PLAY_JSON | base64 --decode > android/app/rocket-chat.json
     
       - run:
-          name: Build Play AAB
+          name: Build Play app
           command: 
             cd android && ./gradlew bundlePlayRelease
 
       - store_artifacts:
-          path: app/build/outputs/bundle
+          path: android/app/build/outputs/bundle
           destination: bundle
 
       - save_cache:
@@ -246,7 +246,7 @@ jobs:
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
-          name: Build Android App
+          name: Build Play Experimental app
           command: |
             npx jetify
             cd android
