@@ -107,18 +107,30 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+            echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
+            source ~/.bash_profile
+
       - restore_cache:
           name: Restore NPM cache
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
+          name: Install React Native CLI
+          command: |
+            npm i -g react-native-cli
+
+      - run:
           name: Install NPM modules
           command: |
             yarn
-
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run:
           name: restore files from ENV
@@ -140,12 +152,6 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-
-      - save_cache:
-          name: Save gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
 
   android-play-experimental-build:
     <<: *defaults
