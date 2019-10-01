@@ -82,20 +82,6 @@ public class MainApplication extends Application implements ReactApplication, IN
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    setupContext();
-  }
-
-  private void setupContext() {
-    try {
-      Context context = this.createPackageContext("chat.rocket.android", Context.CONTEXT_INCLUDE_CODE);
-      SharedPreferences pref = context.getSharedPreferences("chat.rocket.android", Context.MODE_PRIVATE);
-      String event = pref.getString("ACCOUNTS_KEY", null);
-      Log.d("ACCOUNTS_KEY", "Pegou ${event}");
-    } catch (Exception e) {
-      String error = e.getMessage();
-      Log.d("ACCOUNTS_KEY", "${error}");
-      return;
-    }
   }
 
   @Override
