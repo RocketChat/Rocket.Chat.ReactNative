@@ -63,6 +63,7 @@ export default class Markdown extends PureComponent {
 		isEdited: PropTypes.bool,
 		numberOfLines: PropTypes.number,
 		useMarkdown: PropTypes.bool,
+		customEmojis: PropTypes.bool,
 		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		navToRoomInfo: PropTypes.func,
@@ -214,16 +215,16 @@ export default class Markdown extends PureComponent {
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
-			getCustomEmoji, baseUrl, preview, style
+			getCustomEmoji, baseUrl, customEmojis = true, preview, style
 		} = this.props;
 		return (
 			<MarkdownEmoji
 				emojiName={emojiName}
 				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji && !preview}
 				getCustomEmoji={getCustomEmoji}
 				baseUrl={baseUrl}
-				preview={preview}
+				customEmojis={customEmojis}
 				style={style}
 			/>
 		);

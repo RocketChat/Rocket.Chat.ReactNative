@@ -8,11 +8,11 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import styles from './styles';
 
 const Emoji = React.memo(({
-	emojiName, literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, preview, style = []
+	emojiName, literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis, style = []
 }) => {
 	const emojiUnicode = shortnameToUnicode(literal);
 	const emoji = getCustomEmoji && getCustomEmoji(emojiName);
-	if (emoji && !preview) {
+	if (emoji && customEmojis) {
 		return (
 			<CustomEmoji
 				baseUrl={baseUrl}
@@ -24,7 +24,7 @@ const Emoji = React.memo(({
 	return (
 		<Text
 			style={[
-				isMessageContainsOnlyEmoji && !preview ? styles.textBig : styles.text,
+				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
 				...style
 			]}
 		>
@@ -39,7 +39,7 @@ Emoji.propTypes = {
 	isMessageContainsOnlyEmoji: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,
 	baseUrl: PropTypes.string,
-	preview: PropTypes.bool,
+	customEmojis: PropTypes.bool,
 	style: PropTypes.array
 };
 

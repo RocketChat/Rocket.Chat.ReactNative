@@ -52,6 +52,7 @@ const LastMessage = React.memo(({
 			lastMessage, type, showLastMessage, username
 		})}
 		style={[styles.markdownText, alert && styles.markdownTextAlert]}
+		customEmojis={false}
 		numberOfLines={2}
 		preview
 	/>
