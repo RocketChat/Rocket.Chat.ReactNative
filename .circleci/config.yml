@@ -106,18 +106,50 @@ jobs:
       GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
       - checkout
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install React Native CLI
+          command: |
+            npm i -g react-native-cli
+
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn
+
+      - restore_cache:
+          name: Restore gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
       - run:
           name: restore files from ENV
           command: |
             echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > chat-rocket-android.jks
             echo $ROCKET_PLAY_JSON | base64 --decode > android/app/rocket-chat.json
+    
       - run:
           name: Build Play AAB
           command: 
             cd android && ./gradlew bundlePlayRelease
+
       - store_artifacts:
           path: app/build/outputs/bundle
           destination: bundle
+
+      - save_cache:
+          name: Save NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
+      - save_cache:
+          name: Save gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          paths:
+            - ~/.gradle
 
   android-play-experimental-build:
     <<: *defaults
