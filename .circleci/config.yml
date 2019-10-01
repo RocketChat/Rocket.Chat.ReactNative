@@ -116,7 +116,7 @@ jobs:
           command: ./gradlew androidDependencies
       - run:
           name: Build Play AAB
-          command: ./gradlew bundleRelease
+          command: ./gradlew bundlePlayRelease
       - store_artifacts:
           path: /tmp/build/outputs/play
 
@@ -218,7 +218,7 @@ jobs:
             npx jetify
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew bundleRelease
+              ./gradlew bundlePlayExperimentalRelease
             else
               ./gradlew assembleDebug
             fi
