@@ -187,7 +187,7 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp google-services.prod.json google-services.json
+            cp src/playExperimental/google-services.prod.json src/playExperimental/google-services.json
           working_directory: android/app
 
       - run:
