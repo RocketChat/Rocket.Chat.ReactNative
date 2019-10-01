@@ -73,18 +73,19 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 				user = { ...user, roles: JSON.parse(user.roles) };
 			} catch (e) {
-				// We only run it if not has user on DB
-				const servers = yield RNUserDefaults.objectForKey(SERVERS);
-				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+				// do nothing?
 			}
 		}
 
-		if (user) {
-			yield RocketChat.connect({ server, user });
-			yield put(setUser(user));
+		const servers = yield RNUserDefaults.objectForKey(SERVERS);
+		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+		const userLogin = userCredentials && {
+			token: userCredentials[TOKEN]
+		};
+
+		if (user || userLogin) {
+			yield RocketChat.connect({ server, user: user || userLogin });
+			yield put(setUser(user || userLogin));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });
