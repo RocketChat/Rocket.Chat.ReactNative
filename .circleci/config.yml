@@ -113,7 +113,9 @@ jobs:
             echo $ROCKET_PLAY_JSON | base64 --decode > android/app/rocket-chat.json
       - run:
           name: Build Play AAB
-          command: ./gradlew bundlePlayRelease
+          command: 
+            cd android
+            ./gradlew bundlePlayRelease
       - store_artifacts:
           path: /tmp/build/outputs/play
 
