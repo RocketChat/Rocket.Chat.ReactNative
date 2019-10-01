@@ -63,6 +63,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			try {
 				user = yield userCollections.find(userId);
 				user = {
+					id: user.id,
 					token: user.token,
 					username: user.username,
 					name: user.name,
