@@ -114,10 +114,10 @@ jobs:
       - run:
           name: Build Play AAB
           command: 
-            cd android
-            ./gradlew bundlePlayRelease
+            cd android && ./gradlew bundlePlayRelease
       - store_artifacts:
-          path: /tmp/build/outputs/play
+          path: app/build/outputs/bundle
+          destination: bundle
 
   android-play-experimental-build:
     <<: *defaults
