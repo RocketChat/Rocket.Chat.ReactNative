@@ -677,14 +677,24 @@ class MessageBox extends Component {
 		if (editing) {
 			let msg = message;
 			const {
-				editingMessage, editRequest, replyCancel
+				editingMessage, editRequest, replyCancel, replyingMessage, threadsEnabled, replyWithMention
 			} = this.props;
 			const { id, subscription: { id: rid } } = editingMessage;
 			if (replying) {
-				msg = await this.generateReplyOrQuote(message);
+				// Thread
+				if (threadsEnabled && replyWithMention) {
+					// We can't edit with reply thread because chat.update not has tmid attribute
+					// https://github.com/RocketChat/Rocket.Chat/blob/af88653152de51ac674f62835ec0bf2d1c0ae3ea/app/api/server/v1/chat.js#L246
+					await RocketChat.updateMessage({ _id: editingMessage.id, tmid: replyingMessage.id, msg });
+					this.editCancel();
+				} else {
+					msg = await this.generateReplyOrQuote(message);
+					editRequest({ id, msg, rid });
+				}
 				replyCancel();
+			} else {
+				editRequest({ id, msg, rid });
 			}
-			editRequest({ id, msg, rid });
 
 		// Reply
 		} else if (replying && !editing) {
