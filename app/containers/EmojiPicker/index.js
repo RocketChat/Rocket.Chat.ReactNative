@@ -1,60 +1,26 @@
-/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Dimensions, View } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+// import { ScrollView, Dimensions, View } from 'react-native';
+// import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import TabViewExample from './TabView';
-import TabBar from './TabBar';
+import TabViewComponent from './TabViewComponent';
+// import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
-import categories from './categories';
+// import categories from './categories';
 import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import log from '../../utils/log';
 
-const scrollProps = {
-	keyboardShouldPersistTaps: 'always',
-	keyboardDismissMode: 'none'
-};
-
-// const FirstRoute = () => (
-//     <View style={{ backgroundColor: '#ff4081',flex:1 }} />
-//   );
-
-//   const SecondRoute = () => (
-//     <View style={{ backgroundColor: '#673ab7',flex:1 }} />
-//   );
-
-
-//   class TabViewExample extends React.Component {
-//     state = {
-//       index: 0,
-//       routes: [
-//         { key: 'first', title: 'First' },
-//         { key: 'second', title: 'Second' },
-//       ],
-//     };
-
-//     render() {
-//       return (
-//         <TabView
-//           navigationState={this.state}
-//           renderScene={SceneMap({
-//             first: FirstRoute,
-//             second: SecondRoute,
-//           })}
-//           onIndexChange={index => this.setState({ index })}
-//           initialLayout={{ width: Dimensions.get('window').width }}
-//         />
-//       );
-//     }
-//   }
+// const scrollProps = {
+// 	keyboardShouldPersistTaps: 'always',
+// 	keyboardDismissMode: 'none'
+// };
 
 
 class EmojiPicker extends Component {
@@ -186,6 +152,7 @@ class EmojiPicker extends Component {
 	}
 
 	render() {
+		// eslint-disable-next-line no-unused-vars
 		const { show, frequentlyUsed } = this.state;
 		const { tabEmojiStyle } = this.props;
 
@@ -193,7 +160,7 @@ class EmojiPicker extends Component {
 			return null;
 		}
 		return (
-			<TabViewExample frequentlyUsed={frequentlyUsed} tabEmojiStyle={tabEmojiStyle} />
+			<TabViewComponent renderCategory={(category, i) => this.renderCategory(category, i)} tabEmojiStyle={tabEmojiStyle} />
 			// <ScrollableTabView
 			// 	renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
 			// 	contentProps={scrollProps}
