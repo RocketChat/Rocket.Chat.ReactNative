@@ -6,10 +6,10 @@ import styles from './styles';
 import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
-	children, link
+	children, link, preview
 }) => {
 	const handlePress = () => {
-		if (!link) {
+		if (!link || preview) {
 			return;
 		}
 		openLink(link);
@@ -30,7 +30,8 @@ const Link = React.memo(({
 
 Link.propTypes = {
 	children: PropTypes.node,
-	link: PropTypes.string
+	link: PropTypes.string,
+	preview: PropTypes.bool
 };
 
 export default Link;
