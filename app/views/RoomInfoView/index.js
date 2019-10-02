@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
