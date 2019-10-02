@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
