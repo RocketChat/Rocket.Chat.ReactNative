@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import I18n from '../../i18n';
 import styles from './styles';
+import Markdown from '../../containers/markdown';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
@@ -47,11 +47,15 @@ const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 const LastMessage = React.memo(({
 	lastMessage, type, showLastMessage, username, alert
 }) => (
-	<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
-		{formatMsg({
+	<Markdown
+		msg={formatMsg({
 			lastMessage, type, showLastMessage, username
 		})}
-	</Text>
+		style={[styles.markdownText, alert && styles.markdownTextAlert]}
+		customEmojis={false}
+		numberOfLines={2}
+		preview
+	/>
 ), arePropsEqual);
 
 LastMessage.propTypes = {

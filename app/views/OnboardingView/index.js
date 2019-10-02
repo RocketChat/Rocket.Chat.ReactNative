@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';

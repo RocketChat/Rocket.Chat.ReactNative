@@ -4,7 +4,7 @@ import {
 	Keyboard, Text, ScrollView, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
 import equal from 'deep-equal';
 

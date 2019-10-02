@@ -9227,18 +9227,6 @@ react-native-responsive-ui@^1.1.1:
   dependencies:
     lodash "^4.17.4"
 
-react-native-safe-area-context@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-0.3.6.tgz#666bf581b59aa49a9685aea4e76dfd6e1c8a8a52"
-  integrity sha512-5wlaJplOlWxBNnjmCtY/FAlsgRDuoKzmLQzbWUw4NDuOa3H2uq1kTdqTWOw78Nzm5FRqGWe1ZSLWU9+nSaN+vA==
-
-react-native-safe-area-view@1.0.0-alpha.2:
-  version "1.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-1.0.0-alpha.2.tgz#fa20befbcc10a274d234a4d89430d81d1be6b4d2"
-  integrity sha512-12IS+yzn4KF3/Tu2LZeph0zEWoAAwT2hYRtFlaXro+xdLUPO2npvZ8i8jw7qWPEhimS8V8Dv798BsNR6pSq9Vg==
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
-
 react-native-safe-area-view@^0.14.1:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"
