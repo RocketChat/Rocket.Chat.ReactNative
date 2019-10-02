@@ -62,6 +62,8 @@ class MessageBox extends Component {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
+		editingMessage: PropTypes.object,
+		replyingMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
@@ -618,6 +620,21 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
+	generateReplyOrQuote = async(message) => {
+		const {
+			user, roomType, replyWithMention, replyingMessage
+		} = this.props;
+		const permalink = await this.getPermalink(replyingMessage);
+		let msg = `[ ](${ permalink }) `;
+
+		// if original message wasn't sent by current user and neither from a direct room
+		if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
+			msg += `@${ replyingMessage.u.username } `;
+		}
+
+		return `${ msg } ${ message }`;
+	}
+
 	submit = async() => {
 		const {
 			onSubmit, rid: roomId
@@ -655,16 +672,24 @@ class MessageBox extends Component {
 				return;
 			}
 		}
+
 		// Edit
 		if (editing) {
-			const { message: editingMessage, editRequest } = this.props;
+			let msg = message;
+			const {
+				editingMessage, editRequest, replyCancel
+			} = this.props;
 			const { id, subscription: { id: rid } } = editingMessage;
-			editRequest({ id, msg: message, rid });
+			if (replying) {
+				msg = await this.generateReplyOrQuote(message);
+				replyCancel();
+			}
+			editRequest({ id, msg, rid });
 
 		// Reply
-		} else if (replying) {
+		} else if (replying && !editing) {
 			const {
-				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+				replyingMessage, replyCancel, threadsEnabled, replyWithMention
 			} = this.props;
 
 			// Thread
@@ -673,16 +698,7 @@ class MessageBox extends Component {
 
 			// Legacy reply or quote (quote is a reply without mention)
 			} else {
-				const { user, roomType } = this.props;
-				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${ permalink }) `;
-
-				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${ replyingMessage.u.username } `;
-				}
-
-				msg = `${ msg } ${ message }`;
+				const msg = await this.generateReplyOrQuote(message);
 				onSubmit(msg);
 			}
 			replyCancel();

@@ -133,6 +133,8 @@ class RoomView extends React.Component {
 			reactionsModalVisible: false,
 			selectedAttachment: {},
 			selectedMessage: selectedMessage || {},
+			editingMessage: {},
+			replyingMessage: {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
@@ -366,15 +368,15 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
-		this.setState({ selectedMessage: message, editing: true, showActions: false });
+		this.setState({ editingMessage: message, editing: true, showActions: false });
 	}
 
 	onEditCancel = () => {
-		this.setState({ selectedMessage: {}, editing: false });
+		this.setState({ editingMessage: {}, editing: false });
 	}
 
 	onEditRequest = async(message) => {
-		this.setState({ selectedMessage: {}, editing: false });
+		this.setState({ editingMessage: {}, editing: false });
 		try {
 			await RocketChat.editMessage(message);
 		} catch (e) {
@@ -384,12 +386,12 @@ class RoomView extends React.Component {
 
 	onReplyInit = (message, mention) => {
 		this.setState({
-			selectedMessage: message, replying: true, showActions: false, replyWithMention: mention
+			replyingMessage: message, replying: true, showActions: false, replyWithMention: mention
 		});
 	}
 
 	onReplyCancel = () => {
-		this.setState({ selectedMessage: {}, replying: false });
+		this.setState({ replyingMessage: {}, replying: false });
 	}
 
 	onReactionInit = (message) => {
@@ -692,7 +694,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention
+			joined, room, selectedMessage, editing, replying, replyWithMention, editingMessage, replyingMessage
 		} = this.state;
 		const { navigation } = this.props;
 
@@ -734,6 +736,8 @@ class RoomView extends React.Component {
 				roomType={room.t}
 				isFocused={navigation.isFocused()}
 				message={selectedMessage}
+				editingMessage={editingMessage}
+				replyingMessage={replyingMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
 				editCancel={this.onEditCancel}
