@@ -682,14 +682,17 @@ class MessageBox extends Component {
 			const { id, subscription: { id: rid } } = editingMessage;
 			if (replying) {
 				// Thread
-				if (threadsEnabled && replyWithMention) {
-					// We can't edit with reply thread because chat.update not has tmid attribute
-					// https://github.com/RocketChat/Rocket.Chat/blob/af88653152de51ac674f62835ec0bf2d1c0ae3ea/app/api/server/v1/chat.js#L246
-					await RocketChat.updateMessage({ _id: editingMessage.id, tmid: replyingMessage.id, msg });
-					this.editCancel();
-				} else {
-					msg = await this.generateReplyOrQuote(message);
-					editRequest({ id, msg, rid });
+				try {
+					if (threadsEnabled && replyWithMention) {
+						// We can't edit with reply thread because chat.update not has tmid attribute
+						await RocketChat.updateMessage({ _id: editingMessage.id, tmid: replyingMessage.id, msg });
+						this.editCancel();
+					} else {
+						msg = await this.generateReplyOrQuote(message);
+						editRequest({ id, msg, rid });
+					}
+				} catch (e) {
+					log(e);
 				}
 				replyCancel();
 			} else {
@@ -697,7 +700,7 @@ class MessageBox extends Component {
 			}
 
 		// Reply
-		} else if (replying && !editing) {
+		} else if (replying) {
 			const {
 				replyingMessage, replyCancel, threadsEnabled, replyWithMention
 			} = this.props;
@@ -708,8 +711,12 @@ class MessageBox extends Component {
 
 			// Legacy reply or quote (quote is a reply without mention)
 			} else {
-				const msg = await this.generateReplyOrQuote(message);
-				onSubmit(msg);
+				try {
+					const msg = await this.generateReplyOrQuote(message);
+					onSubmit(msg);
+				} catch (e) {
+					log(e);
+				}
 			}
 			replyCancel();
 

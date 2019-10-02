@@ -85,6 +85,6 @@ class DB {
 const db = new DB();
 export default db;
 
-if (__DEV__) {
+if (!__DEV__) {
 	logger.silence();
 }
