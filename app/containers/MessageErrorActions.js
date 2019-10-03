@@ -27,8 +27,8 @@ class MessageErrorActions extends React.Component {
 	}
 
 	handleResend = protectedFunction(async() => {
-		const { message } = this.props;
-		await RocketChat.resendMessage(message);
+		const { message, tmid } = this.props;
+		await RocketChat.resendMessage(message, tmid);
 	});
 
 	handleDelete = protectedFunction(async() => {

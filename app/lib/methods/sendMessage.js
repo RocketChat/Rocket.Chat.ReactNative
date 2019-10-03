@@ -5,16 +5,42 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export function sendMessageCall(message) {
+export async function sendMessageCall(message) {
 	const {
 		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
-	// RC 0.60.0
-	return this.sdk.post('chat.sendMessage', {
-		message: {
-			_id, rid, msg, tmid
+	try {
+		// RC 0.60.0
+		await this.sdk.post('chat.sendMessage', {
+			message: {
+				_id, rid, msg, tmid
+			}
+		});
+	} catch (e) {
+		const db = database.active;
+		const msgCollection = db.collections.get('messages');
+		const threadMessagesCollection = db.collections.get('thread_messages');
+		const errorBatch = [];
+		const messageRecord = await msgCollection.find(_id);
+		errorBatch.push(
+			messageRecord.prepareUpdate((m) => {
+				m.status = messagesStatus.ERROR;
+			})
+		);
+
+		if (tmid) {
+			const threadMessageRecord = await threadMessagesCollection.find(_id);
+			errorBatch.push(
+				threadMessageRecord.prepareUpdate((tm) => {
+					tm.status = messagesStatus.ERROR;
+				})
+			);
 		}
-	});
+
+		await db.action(async() => {
+			await db.batch(...errorBatch);
+		});
+	}
 }
 
 export default async function(rid, msg, tmid, user) {
@@ -84,30 +110,7 @@ export default async function(rid, msg, tmid, user) {
 			return;
 		}
 
-		try {
-			await sendMessageCall.call(this, message);
-		} catch (e) {
-			const errorBatch = [];
-			const messageRecord = await msgCollection.find(messageId);
-			errorBatch.push(
-				messageRecord.prepareUpdate((m) => {
-					m.status = messagesStatus.ERROR;
-				})
-			);
-
-			if (tmid) {
-				const threadMessageRecord = await threadMessagesCollection.find(messageId);
-				errorBatch.push(
-					threadMessageRecord.prepareUpdate((tm) => {
-						tm.status = messagesStatus.ERROR;
-					})
-				);
-			}
-
-			await db.action(async() => {
-				await db.batch(...errorBatch);
-			});
-		}
+		await sendMessageCall.call(this, message);
 	} catch (e) {
 		log(e);
 	}

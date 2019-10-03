@@ -431,7 +431,7 @@ const RocketChat = {
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message) {
+	async resendMessage(message, tmid) {
 		const db = database.active;
 		try {
 			await db.action(async() => {
@@ -439,17 +439,21 @@ const RocketChat = {
 					m.status = messagesStatus.TEMP;
 				});
 			});
-			await sendMessageCall.call(this, message);
-		} catch (error) {
-			try {
-				await db.action(async() => {
-					await message.update((m) => {
-						m.status = messagesStatus.ERROR;
-					});
-				});
-			} catch (e) {
-				log(e);
+			let m = {
+				id: message.id,
+				msg: message.msg,
+				subscription: { id: message.rid }
+			};
+			if (tmid) {
+				m = {
+					...m,
+					subscription: { id: message.subscription.id },
+					tmid
+				};
 			}
+			await sendMessageCall.call(this, m);
+		} catch (e) {
+			log(e);
 		}
 	},
 
