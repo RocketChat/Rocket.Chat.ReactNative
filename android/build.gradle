@@ -1,8 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        appNameVersion = '4.0.0'
-        appCodeVersion = 2081
+        playNameVersion = '4.0.0'
+        playCodeVersion = 2081
+        playExperimentalNameVersion = '1.20.0'
+        playExperimentalCodeVersion = 2081
         javaVersion = JavaVersion.VERSION_1_8
         minSdkVersion = 21
         compileSdkVersion = 28

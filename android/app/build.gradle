@@ -137,8 +137,8 @@ android {
         applicationId "chat.rocket.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.appCodeVersion
-        versionName rootProject.ext.appNameVersion
+        versionCode rootProject.ext.playCodeVersion
+        versionName rootProject.ext.playNameVersion
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
     }
@@ -182,6 +182,8 @@ android {
         playExperimental {
             dimension "store"
             applicationId "chat.rocket.reactnative"
+            versionCode rootProject.ext.playExperimentalCodeVersion
+            versionName rootProject.ext.playExperimentalNameVersion
             manifestPlaceholders = [
                     appIcon: "@mipmap/ic_launcher_experimental",
                     appName: "@string/app_name_experimental"
