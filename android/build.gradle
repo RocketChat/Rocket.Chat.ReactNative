@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        appNameVersion = '3.6.0'
+        appNameVersion = '4.0.0'
         appCodeVersion = 2081
         javaVersion = JavaVersion.VERSION_1_8
         minSdkVersion = 21
