@@ -11074,7 +11074,7 @@ exports[`Storyshots Message list 1`] = `
                     
                   </Text>
                 </View>
-                <View
+                <RNCSlider
                   animateTransitions={true}
                   animationConfig={
                     Object {
@@ -11083,111 +11083,38 @@ exports[`Storyshots Message list 1`] = `
                       "easing": [Function],
                     }
                   }
-                  animationType="timing"
-                  onLayout={[Function]}
-                  onValueChange={[Function]}
+                  disabled={false}
+                  enabled={true}
+                  inverted={false}
+                  maximumValue={0}
+                  minimumTrackTintColor="#1d74f5"
+                  minimumValue={0}
+                  onChange={[Function]}
+                  onRNCSliderSlidingComplete={null}
+                  onRNCSliderSlidingStart={null}
+                  onRNCSliderValueChange={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   step={0}
                   style={
                     Array [
                       Object {
                         "height": 40,
-                        "justifyContent": "center",
                       },
                       Object {
                         "flex": 1,
                       },
                     ]
                   }
-                  thumbTouchSize={
+                  thumbImage={
                     Object {
-                      "height": 40,
-                      "width": 40,
+                      "scale": 2,
+                      "uri": "audio_thumb",
                     }
                   }
+                  thumbTintColor={false}
                   value={0}
-                >
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "#b3b3b3",
-                        },
-                        Object {
-                          "borderRadius": 2,
-                          "height": 4,
-                        },
-                        Object {
-                          "height": 2,
-                        },
-                      ]
-                    }
-                  />
-                  <View
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 2,
-                        "height": 2,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "width": 0,
-                      }
-                    }
-                  />
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 10,
-                        "height": 12,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "transform": Array [
-                          Object {
-                            "translateX": 0,
-                          },
-                          Object {
-                            "translateY": 0,
-                          },
-                        ],
-                        "width": 12,
-                      }
-                    }
-                  />
-                  <View
-                    onMoveShouldSetResponder={[Function]}
-                    onMoveShouldSetResponderCapture={[Function]}
-                    onResponderEnd={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderReject={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderStart={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    onStartShouldSetResponderCapture={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "bottom": 0,
-                          "left": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        },
-                        Object {},
-                      ]
-                    }
-                  />
-                </View>
+                />
                 <Text
                   style={
                     Object {
@@ -11472,7 +11399,7 @@ exports[`Storyshots Message list 1`] = `
                     
                   </Text>
                 </View>
-                <View
+                <RNCSlider
                   animateTransitions={true}
                   animationConfig={
                     Object {
@@ -11481,111 +11408,38 @@ exports[`Storyshots Message list 1`] = `
                       "easing": [Function],
                     }
                   }
-                  animationType="timing"
-                  onLayout={[Function]}
-                  onValueChange={[Function]}
+                  disabled={false}
+                  enabled={true}
+                  inverted={false}
+                  maximumValue={0}
+                  minimumTrackTintColor="#1d74f5"
+                  minimumValue={0}
+                  onChange={[Function]}
+                  onRNCSliderSlidingComplete={null}
+                  onRNCSliderSlidingStart={null}
+                  onRNCSliderValueChange={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   step={0}
                   style={
                     Array [
                       Object {
                         "height": 40,
-                        "justifyContent": "center",
                       },
                       Object {
                         "flex": 1,
                       },
                     ]
                   }
-                  thumbTouchSize={
+                  thumbImage={
                     Object {
-                      "height": 40,
-                      "width": 40,
+                      "scale": 2,
+                      "uri": "audio_thumb",
                     }
                   }
+                  thumbTintColor={false}
                   value={0}
-                >
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "#b3b3b3",
-                        },
-                        Object {
-                          "borderRadius": 2,
-                          "height": 4,
-                        },
-                        Object {
-                          "height": 2,
-                        },
-                      ]
-                    }
-                  />
-                  <View
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 2,
-                        "height": 2,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "width": 0,
-                      }
-                    }
-                  />
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 10,
-                        "height": 12,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "transform": Array [
-                          Object {
-                            "translateX": 0,
-                          },
-                          Object {
-                            "translateY": 0,
-                          },
-                        ],
-                        "width": 12,
-                      }
-                    }
-                  />
-                  <View
-                    onMoveShouldSetResponder={[Function]}
-                    onMoveShouldSetResponderCapture={[Function]}
-                    onResponderEnd={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderReject={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderStart={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    onStartShouldSetResponderCapture={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "bottom": 0,
-                          "left": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        },
-                        Object {},
-                      ]
-                    }
-                  />
-                </View>
+                />
                 <Text
                   style={
                     Object {
@@ -11751,7 +11605,7 @@ exports[`Storyshots Message list 1`] = `
                     
                   </Text>
                 </View>
-                <View
+                <RNCSlider
                   animateTransitions={true}
                   animationConfig={
                     Object {
@@ -11760,111 +11614,38 @@ exports[`Storyshots Message list 1`] = `
                       "easing": [Function],
                     }
                   }
-                  animationType="timing"
-                  onLayout={[Function]}
-                  onValueChange={[Function]}
+                  disabled={false}
+                  enabled={true}
+                  inverted={false}
+                  maximumValue={0}
+                  minimumTrackTintColor="#1d74f5"
+                  minimumValue={0}
+                  onChange={[Function]}
+                  onRNCSliderSlidingComplete={null}
+                  onRNCSliderSlidingStart={null}
+                  onRNCSliderValueChange={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   step={0}
                   style={
                     Array [
                       Object {
                         "height": 40,
-                        "justifyContent": "center",
                       },
                       Object {
                         "flex": 1,
                       },
                     ]
                   }
-                  thumbTouchSize={
+                  thumbImage={
                     Object {
-                      "height": 40,
-                      "width": 40,
+                      "scale": 2,
+                      "uri": "audio_thumb",
                     }
                   }
+                  thumbTintColor={false}
                   value={0}
-                >
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "#b3b3b3",
-                        },
-                        Object {
-                          "borderRadius": 2,
-                          "height": 4,
-                        },
-                        Object {
-                          "height": 2,
-                        },
-                      ]
-                    }
-                  />
-                  <View
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 2,
-                        "height": 2,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "width": 0,
-                      }
-                    }
-                  />
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 10,
-                        "height": 12,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "transform": Array [
-                          Object {
-                            "translateX": 0,
-                          },
-                          Object {
-                            "translateY": 0,
-                          },
-                        ],
-                        "width": 12,
-                      }
-                    }
-                  />
-                  <View
-                    onMoveShouldSetResponder={[Function]}
-                    onMoveShouldSetResponderCapture={[Function]}
-                    onResponderEnd={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderReject={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderStart={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    onStartShouldSetResponderCapture={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "bottom": 0,
-                          "left": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        },
-                        Object {},
-                      ]
-                    }
-                  />
-                </View>
+                />
                 <Text
                   style={
                     Object {
@@ -12002,7 +11783,7 @@ exports[`Storyshots Message list 1`] = `
                     
                   </Text>
                 </View>
-                <View
+                <RNCSlider
                   animateTransitions={true}
                   animationConfig={
                     Object {
@@ -12011,111 +11792,38 @@ exports[`Storyshots Message list 1`] = `
                       "easing": [Function],
                     }
                   }
-                  animationType="timing"
-                  onLayout={[Function]}
-                  onValueChange={[Function]}
+                  disabled={false}
+                  enabled={true}
+                  inverted={false}
+                  maximumValue={0}
+                  minimumTrackTintColor="#1d74f5"
+                  minimumValue={0}
+                  onChange={[Function]}
+                  onRNCSliderSlidingComplete={null}
+                  onRNCSliderSlidingStart={null}
+                  onRNCSliderValueChange={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   step={0}
                   style={
                     Array [
                       Object {
                         "height": 40,
-                        "justifyContent": "center",
                       },
                       Object {
                         "flex": 1,
                       },
                     ]
                   }
-                  thumbTouchSize={
+                  thumbImage={
                     Object {
-                      "height": 40,
-                      "width": 40,
+                      "scale": 2,
+                      "uri": "audio_thumb",
                     }
                   }
+                  thumbTintColor={false}
                   value={0}
-                >
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "#b3b3b3",
-                        },
-                        Object {
-                          "borderRadius": 2,
-                          "height": 4,
-                        },
-                        Object {
-                          "height": 2,
-                        },
-                      ]
-                    }
-                  />
-                  <View
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 2,
-                        "height": 2,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "width": 0,
-                      }
-                    }
-                  />
-                  <View
-                    onLayout={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Object {
-                        "backgroundColor": "#1d74f5",
-                        "borderRadius": 10,
-                        "height": 12,
-                        "opacity": 0,
-                        "position": "absolute",
-                        "transform": Array [
-                          Object {
-                            "translateX": 0,
-                          },
-                          Object {
-                            "translateY": 0,
-                          },
-                        ],
-                        "width": 12,
-                      }
-                    }
-                  />
-                  <View
-                    onMoveShouldSetResponder={[Function]}
-                    onMoveShouldSetResponderCapture={[Function]}
-                    onResponderEnd={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderReject={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderStart={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    onStartShouldSetResponderCapture={[Function]}
-                    renderToHardwareTextureAndroid={true}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "bottom": 0,
-                          "left": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        },
-                        Object {},
-                      ]
-                    }
-                  />
-                </View>
+                />
                 <Text
                   style={
                     Object {
