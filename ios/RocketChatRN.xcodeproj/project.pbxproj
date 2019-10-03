@@ -529,8 +529,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RocketChatRN/Pods-RocketChatRN-frameworks.sh",
-				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/JitsiMeet.framework",
-				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/WebRTC.framework",
+				"${PODS_ROOT}/../jitsi-sdk/Frameworks/JitsiMeet.framework",
+				"${PODS_ROOT}/../jitsi-sdk/Frameworks/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -817,7 +817,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -930,7 +930,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

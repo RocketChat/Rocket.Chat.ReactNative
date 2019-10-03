@@ -9132,7 +9132,7 @@ react-native-iphone-x-helper@^1.0.3:
 
 react-native-jitsi-meet@RocketChat/react-native-jitsi-meet#android-sdk:
   version "2.0.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/d030708d9f9cbb744c827760a6dabc2a79c0f366"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/1b64032da9a643f4fa9a2695d397f92deafb912d"
 
 react-native-keyboard-aware-scroll-view@0.8.0:
   version "0.8.0"
