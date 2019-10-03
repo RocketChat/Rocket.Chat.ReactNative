@@ -25,6 +25,7 @@ const Content = React.memo((props) => {
 				username={props.user.username}
 				isEdited={props.isEdited}
 				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
+				preview={props.tmid && !props.isThreadRoom}
 				channels={props.channels}
 				mentions={props.mentions}
 				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
