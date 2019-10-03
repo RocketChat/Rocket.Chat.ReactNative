@@ -148,7 +148,7 @@ jobs:
       - run:
           name: restore files from ENV
           command: |
-            echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > chat-rocket-android.jks
+            echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > android/chat-rocket-android.jks
             echo $ROCKET_PLAY_JSON | base64 --decode > android/app/rocket-chat.json
     
       - run:
