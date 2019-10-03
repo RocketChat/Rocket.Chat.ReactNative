@@ -4,7 +4,7 @@ import {
 	View, StyleSheet, Text, Easing
 } from 'react-native';
 import Video from 'react-native-video';
-import Slider from 'react-native-slider';
+import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
@@ -190,8 +190,9 @@ export default class Audio extends React.Component {
 						thumbTintColor={COLOR_PRIMARY}
 						minimumTrackTintColor={COLOR_PRIMARY}
 						onValueChange={this.onValueChange}
-						thumbStyle={styles.thumbStyle}
-						trackStyle={styles.trackStyle}
+						// thumbStyle={styles.thumbStyle}
+						// trackStyle={styles.trackStyle}
+						// thumbImage={{ uri: 'sort_activity' }}
 					/>
 					<Text style={styles.duration}>{this.duration}</Text>
 				</View>
