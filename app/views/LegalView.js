@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	Text, ScrollView, View, StyleSheet
 } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 

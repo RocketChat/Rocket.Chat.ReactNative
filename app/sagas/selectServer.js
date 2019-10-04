@@ -61,31 +61,29 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		let user = null;
 		if (userId) {
 			try {
-				user = yield userCollections.find(userId);
+				const userRecord = yield userCollections.find(userId);
 				user = {
-					id: user.id,
-					token: user.token,
-					username: user.username,
-					name: user.name,
-					language: user.language,
-					status: user.status,
-					roles: user.roles
+					id: userRecord.id,
+					token: userRecord.token,
+					username: userRecord.username,
+					name: userRecord.name,
+					language: userRecord.language,
+					status: userRecord.status,
+					roles: userRecord.roles
 				};
-				user = { ...user, roles: JSON.parse(user.roles) };
 			} catch (e) {
-				// do nothing?
+				// We only run it if not has user on DB
+				const servers = yield RNUserDefaults.objectForKey(SERVERS);
+				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+				user = userCredentials && {
+					token: userCredentials[TOKEN]
+				};
 			}
 		}
 
-		const servers = yield RNUserDefaults.objectForKey(SERVERS);
-		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-		const userLogin = userCredentials && {
-			token: userCredentials[TOKEN]
-		};
-
-		if (user || userLogin) {
-			yield RocketChat.connect({ server, user: user || userLogin });
-			yield put(setUser(user || userLogin));
+		if (user) {
+			yield RocketChat.connect({ server, user });
+			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });
