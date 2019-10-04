@@ -415,7 +415,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - JitsiMeetSDK (from `./jitsi-sdk`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -532,7 +532,7 @@ EXTERNAL SOURCES:
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   JitsiMeetSDK:
-    :path: "./jitsi-sdk"
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -656,6 +656,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  JitsiMeetSDK:
+    :commit: 0d7b379179ef81965e505677cd10d07956c3a2dc
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
+
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: 2114356c3acac0a71fb4b8962d3d1afdeb35f4d9
@@ -746,6 +751,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
-PODFILE CHECKSUM: 921e68eef265642a2c6636f238113fee2d12246d
+PODFILE CHECKSUM: 18d0b080112c72e9cc76a381c1baba1172c6ca4d
 
 COCOAPODS: 1.6.2

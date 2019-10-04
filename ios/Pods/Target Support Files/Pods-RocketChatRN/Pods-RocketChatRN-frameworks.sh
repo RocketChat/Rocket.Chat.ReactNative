@@ -153,12 +153,12 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${PODS_ROOT}/../jitsi-sdk/Frameworks/JitsiMeet.framework"
-  install_framework "${PODS_ROOT}/../jitsi-sdk/Frameworks/WebRTC.framework"
+  install_framework "${PODS_ROOT}/JitsiMeetSDK/Frameworks/JitsiMeet.framework"
+  install_framework "${PODS_ROOT}/JitsiMeetSDK/Frameworks/WebRTC.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${PODS_ROOT}/../jitsi-sdk/Frameworks/JitsiMeet.framework"
-  install_framework "${PODS_ROOT}/../jitsi-sdk/Frameworks/WebRTC.framework"
+  install_framework "${PODS_ROOT}/JitsiMeetSDK/Frameworks/JitsiMeet.framework"
+  install_framework "${PODS_ROOT}/JitsiMeetSDK/Frameworks/WebRTC.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
