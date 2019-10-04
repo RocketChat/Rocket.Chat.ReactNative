@@ -6,6 +6,7 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 class MessageErrorActions extends React.Component {
 	static propTypes = {
@@ -31,13 +32,39 @@ class MessageErrorActions extends React.Component {
 		await RocketChat.resendMessage(message, tmid);
 	});
 
-	handleDelete = protectedFunction(async() => {
-		const { message } = this.props;
-		const db = database.active;
-		await db.action(async() => {
-			await message.destroyPermanently();
-		});
-	})
+	handleDelete = async() => {
+		try {
+			const { message, tmid } = this.props;
+			const db = database.active;
+			const deleteBatch = [];
+			const msgCollection = db.collections.get('messages');
+			const threadCollection = db.collections.get('threads');
+
+			deleteBatch.push(message.prepareDestroyPermanently());
+
+			// If it's a thread, we find and delete Message and Thread
+			if (tmid) {
+				try {
+					const msg = await msgCollection.find(message.id);
+					deleteBatch.push(msg.prepareDestroyPermanently());
+				} catch (error) {
+					// Do nothing: message not found
+				}
+
+				try {
+					const msg = await threadCollection.find(message.id);
+					deleteBatch.push(msg.prepareDestroyPermanently());
+				} catch (error) {
+					// Do nothing: thread not found
+				}
+			}
+			await db.action(async() => {
+				await db.batch(...deleteBatch);
+			});
+		} catch (e) {
+			log(e);
+		}
+	}
 
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
