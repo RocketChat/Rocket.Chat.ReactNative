@@ -48,45 +48,88 @@ export default async function(rid, msg, tmid, user) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
 		const msgCollection = db.collections.get('messages');
+		const threadCollection = db.collections.get('threads');
 		const threadMessagesCollection = db.collections.get('thread_messages');
 		const messageId = random(17);
 		const batch = [];
 		const message = {
 			id: messageId, subscription: { id: rid }, msg, tmid
 		};
+		const messageDate = new Date();
+		let tMessageRecord;
+
+		// If it's replying to a thread
+		if (tmid) {
+			try {
+				// Find thread message header in Messages collection
+				tMessageRecord = await msgCollection.find(tmid);
+				batch.push(
+					tMessageRecord.prepareUpdate((m) => {
+						m.tlm = messageDate;
+						m.tcount += 1;
+					})
+				);
+
+				try {
+					// Find thread message header in Threads collection
+					await threadCollection.find(tmid);
+				} catch (error) {
+					// If there's no record, create one
+					batch.push(
+						threadCollection.prepareCreate((tm) => {
+							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
+							tm.subscription.id = rid;
+							tm.tmid = tmid;
+							tm.msg = tMessageRecord.msg;
+							tm.ts = tMessageRecord.ts;
+							tm._updatedAt = messageDate;
+							tm.status = messagesStatus.SENT; // Original message was sent already
+							tm.u = tMessageRecord.u;
+						})
+					);
+				}
+
+				// Create the message sent in ThreadMessages collection
+				batch.push(
+					threadMessagesCollection.prepareCreate((tm) => {
+						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
+						tm.subscription.id = rid;
+						tm.rid = tmid;
+						tm.msg = msg;
+						tm.ts = messageDate;
+						tm._updatedAt = messageDate;
+						tm.status = messagesStatus.TEMP;
+						tm.u = {
+							_id: user.id || '1',
+							username: user.username
+						};
+					})
+				);
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		// Create the message sent in Messages collection
 		batch.push(
 			msgCollection.prepareCreate((m) => {
 				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
 				m.subscription.id = rid;
 				m.msg = msg;
-				m.tmid = tmid;
-				m.ts = new Date();
-				m._updatedAt = new Date();
+				m.ts = messageDate;
+				m._updatedAt = messageDate;
 				m.status = messagesStatus.TEMP;
 				m.u = {
 					_id: user.id || '1',
 					username: user.username
 				};
+				if (tmid) {
+					m.tmid = tmid;
+					m.tlm = messageDate;
+					m.tmsg = tMessageRecord.msg;
+				}
 			})
 		);
-
-		if (tmid) {
-			batch.push(
-				threadMessagesCollection.prepareCreate((tm) => {
-					tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
-					tm.subscription.id = rid;
-					tm.rid = tmid;
-					tm.msg = msg;
-					tm.ts = new Date();
-					tm._updatedAt = new Date();
-					tm.status = messagesStatus.TEMP;
-					tm.u = {
-						_id: user.id || '1',
-						username: user.username
-					};
-				})
-			);
-		}
 
 		try {
 			const room = await subsCollection.find(rid);
