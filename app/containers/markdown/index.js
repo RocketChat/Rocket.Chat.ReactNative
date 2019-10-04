@@ -180,19 +180,25 @@ export default class Markdown extends PureComponent {
 		);
 	};
 
-	renderLink = ({ children, href }) => (
-		<MarkdownLink link={href}>
-			{children}
-		</MarkdownLink>
-	);
+	renderLink = ({ children, href }) => {
+		const { preview } = this.props;
+		return (
+			<MarkdownLink link={href} preview={preview}>
+				{children}
+			</MarkdownLink>
+		);
+	}
 
 	renderHashtag = ({ hashtag }) => {
-		const { channels, navToRoomInfo, style } = this.props;
+		const {
+			channels, navToRoomInfo, style, preview
+		} = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
+				preview={preview}
 				style={style}
 			/>
 		);
@@ -200,7 +206,7 @@ export default class Markdown extends PureComponent {
 
 	renderAtMention = ({ mentionName }) => {
 		const {
-			username, mentions, navToRoomInfo, style
+			username, mentions, navToRoomInfo, preview, style
 		} = this.props;
 		return (
 			<MarkdownAtMention
@@ -208,6 +214,7 @@ export default class Markdown extends PureComponent {
 				mention={mentionName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
+				preview={preview}
 				style={style}
 			/>
 		);
@@ -275,11 +282,17 @@ export default class Markdown extends PureComponent {
 		);
 	};
 
-	renderBlockQuote = ({ children }) => (
-		<MarkdownBlockQuote>
-			{children}
-		</MarkdownBlockQuote>
-	);
+	renderBlockQuote = ({ children }) => {
+		const { preview } = this.props;
+		if (preview) {
+			return children;
+		}
+		return (
+			<MarkdownBlockQuote>
+				{children}
+			</MarkdownBlockQuote>
+		);
+	}
 
 	renderTable = ({ children, numColumns }) => (
 		<MarkdownTable numColumns={numColumns}>
