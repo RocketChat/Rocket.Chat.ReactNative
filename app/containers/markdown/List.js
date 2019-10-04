@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const List = React.memo(({
-	children, ordered, start, tight
+	children, ordered, start, tight, numberOfLines = 0
 }) => {
 	let bulletWidth = 15;
 
@@ -11,7 +11,13 @@ const List = React.memo(({
 		bulletWidth = (9 * lastNumber.toString().length) + 7;
 	}
 
-	const _children = React.Children.map(children, (child, index) => React.cloneElement(child, {
+	let items = React.Children.toArray(children);
+
+	if (numberOfLines) {
+		items = items.slice(0, numberOfLines);
+	}
+
+	const _children = items.map((child, index) => React.cloneElement(child, {
 		bulletWidth,
 		ordered,
 		tight,
@@ -29,7 +35,8 @@ List.propTypes = {
 	children: PropTypes.node,
 	ordered: PropTypes.bool,
 	start: PropTypes.number,
-	tight: PropTypes.bool
+	tight: PropTypes.bool,
+	numberOfLines: PropTypes.number
 };
 
 List.defaultProps = {

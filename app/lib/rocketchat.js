@@ -231,11 +231,11 @@ const RocketChat = {
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
 			if (userId) {
-				user = await userCollections.find(userId);
+				const userRecord = await userCollections.find(userId);
 				user = {
-					id: user.id,
-					token: user.token,
-					username: user.username
+					id: userRecord.id,
+					token: userRecord.token,
+					username: userRecord.username
 				};
 			}
 			reduxStore.dispatch(shareSetUser({
