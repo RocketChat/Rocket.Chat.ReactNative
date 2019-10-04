@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, Text, Easing
+	View, StyleSheet, Text, Easing, Dimensions
 } from 'react-native';
 import Video from 'react-native-video';
-import Slider from 'react-native-slider';
+import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
@@ -13,6 +13,7 @@ import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+import { isAndroid, isIOS } from '../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -42,13 +43,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
-	},
-	thumbStyle: {
-		width: 12,
-		height: 12
-	},
-	trackStyle: {
-		height: 2
 	}
 });
 
@@ -187,11 +181,10 @@ export default class Audio extends React.Component {
 						minimumValue={0}
 						animateTransitions
 						animationConfig={sliderAnimationConfig}
-						thumbTintColor={COLOR_PRIMARY}
+						thumbTintColor={isAndroid && COLOR_PRIMARY}
 						minimumTrackTintColor={COLOR_PRIMARY}
 						onValueChange={this.onValueChange}
-						thumbStyle={styles.thumbStyle}
-						trackStyle={styles.trackStyle}
+						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
 					<Text style={styles.duration}>{this.duration}</Text>
 				</View>
