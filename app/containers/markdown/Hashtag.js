@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import styles from './styles';
 
 const Hashtag = React.memo(({
-	hashtag, channels, navToRoomInfo, preview, textStyle, style = []
+	hashtag, channels, navToRoomInfo, preview, style = []
 }) => {
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
@@ -19,8 +19,8 @@ const Hashtag = React.memo(({
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<Text
-				style={[!preview ? styles.mention : textStyle, ...style]}
-				onPress={handlePress}
+				style={[preview ? styles.text : styles.mention, ...style]}
+				onPress={preview ? undefined : handlePress}
 			>
 				{`#${ hashtag }`}
 			</Text>
@@ -32,7 +32,6 @@ const Hashtag = React.memo(({
 Hashtag.propTypes = {
 	hashtag: PropTypes.string,
 	navToRoomInfo: PropTypes.func,
-	textStyle: PropTypes.object,
 	style: PropTypes.array,
 	preview: PropTypes.bool,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])

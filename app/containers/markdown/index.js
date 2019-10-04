@@ -198,7 +198,6 @@ export default class Markdown extends PureComponent {
 				hashtag={hashtag}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
-				textStyle={styles.text}
 				preview={preview}
 				style={style}
 			/>
@@ -215,7 +214,6 @@ export default class Markdown extends PureComponent {
 				mention={mentionName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
-				textStyle={styles.text}
 				preview={preview}
 				style={style}
 			/>

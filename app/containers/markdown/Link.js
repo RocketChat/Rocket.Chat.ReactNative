@@ -9,7 +9,7 @@ const Link = React.memo(({
 	children, link, preview
 }) => {
 	const handlePress = () => {
-		if (!link || preview) {
+		if (!link) {
 			return;
 		}
 		openLink(link);
@@ -20,7 +20,7 @@ const Link = React.memo(({
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
 		<Text
-			onPress={handlePress}
+			onPress={preview ? undefined : handlePress}
 			style={styles.link}
 		>
 			{ childLength !== 0 ? children : link }
