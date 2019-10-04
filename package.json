@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.14.0",
+    "@react-native-community/slider": "^2.0.1",
     "@rocket.chat/sdk": "1.0.0-alpha.31",
     "bugsnag-react-native": "^2.22.3",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
@@ -73,7 +74,6 @@
     "react-native-responsive-ui": "^1.1.1",
     "react-native-screens": "^2.0.0-alpha.3",
     "react-native-scrollable-tab-view": "diegolmello/react-native-scrollable-tab-view",
-    "react-native-slider": "^0.11.0",
     "react-native-slowlog": "^1.0.2",
     "react-native-splash-screen": "^3.2.0",
     "react-native-unimodules": "0.5.3",
