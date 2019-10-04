@@ -163,7 +163,8 @@ export default function subscribeRoom({ rid }) {
 
 			try {
 				await subCollection.find(rid);
-				this.readMessages(rid, lastOpen);
+				const readMessagesAction = await this.readMessages(rid, lastOpen, true);
+				batch.push(readMessagesAction);
 			} catch (e) {
 				console.log('Subscription not found. We probably subscribed to a not joined channel. No need to mark as read.');
 			}
