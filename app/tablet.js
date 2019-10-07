@@ -97,12 +97,7 @@ const ListStack = createStackNavigator({
 		getScreen: () => require('./views/SelectedUsersView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader,
-	transitionConfig: () => ({
-		transitionSpec: {
-			duration: 0
-		}
-	})
+	defaultNavigationOptions: defaultHeader
 });
 
 // Inside
@@ -150,12 +145,7 @@ const ChatsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader,
-	transitionConfig: () => ({
-		transitionSpec: {
-			duration: 0
-		}
-	})
+	defaultNavigationOptions: defaultHeader
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -315,7 +305,6 @@ export class MasterDetailView extends React.Component {
 				const { routeName, params } = action;
 				if (routeName === 'RoomView') {
 					this.listRef.dispatch(NavigationActions.navigate({ routeName: 'RoomsListView' }));
-					Navigation.navigate('Home');
 				}
 				Navigation.navigate(routeName, params);
 			}
