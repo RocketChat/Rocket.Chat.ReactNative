@@ -305,6 +305,10 @@ export class MasterDetailView extends React.Component {
 				const { routeName, params } = action;
 				if (routeName === 'RoomView') {
 					this.listRef.dispatch(NavigationActions.navigate({ routeName: 'RoomsListView' }));
+					Navigation.navigate('Home', params);
+				}
+				if (routeName === 'OnboardingView') {
+					this.setState({ inside: false });
 				}
 				Navigation.navigate(routeName, params);
 			}
