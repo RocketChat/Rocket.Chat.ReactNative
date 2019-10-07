@@ -66,10 +66,10 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			} catch (error) {
 				try {
 					await db.action(async() => {
-						await roomsCollection.create((r) => {
+						await roomsCollection.create(protectedFunction((r) => {
 							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 							Object.assign(r, room);
-						});
+						}));
 					});
 				} catch (e) {
 					// Do nothing
@@ -104,23 +104,17 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			}
 
 			if (sub) {
-				// Subscriptions can be updated in several ways from streams.
-				// They can receive too many messages and overflow Watermelon's queue.
-				if (sub._hasPendingUpdate) {
-					return console.log('createOrUpdateSubscription: Skipped. Subscription is already being updated.');
-				}
-
-				await sub.update((s) => {
+				await sub.update(protectedFunction((s) => {
 					Object.assign(s, tmp);
-				});
+				}));
 			} else {
-				await subCollection.create((s) => {
+				await subCollection.create(protectedFunction((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
 					if (s.roomUpdatedAt) {
 						s.roomUpdatedAt = new Date();
 					}
-				});
+				}));
 			}
 		});
 	} catch (e) {

@@ -113,15 +113,11 @@ export default function subscribeRoom({ rid }) {
 				// Do nothing
 			}
 			if (messageRecord) {
-				if (messageRecord._hasPendingUpdate) {
-					console.log('handleMessageReceived: Skipped. Message is already being updated.');
-				} else {
-					batch.push(
-						messageRecord.prepareUpdate((m) => {
-							Object.assign(m, message);
-						})
-					);
-				}
+				batch.push(
+					messageRecord.prepareUpdate(protectedFunction((m) => {
+						Object.assign(m, message);
+					}))
+				);
 			} else {
 				batch.push(
 					msgCollection.prepareCreate(protectedFunction((m) => {
@@ -141,15 +137,11 @@ export default function subscribeRoom({ rid }) {
 				}
 
 				if (threadRecord) {
-					if (threadRecord._hasPendingUpdate) {
-						console.log('handleMessageReceived: Skipped. Thread is already being updated.');
-					} else {
-						batch.push(
-							threadRecord.prepareUpdate((t) => {
-								Object.assign(t, message);
-							})
-						);
-					}
+					batch.push(
+						threadRecord.prepareUpdate(protectedFunction((t) => {
+							Object.assign(t, message);
+						}))
+					);
 				} else {
 					batch.push(
 						threadsCollection.prepareCreate(protectedFunction((t) => {
@@ -170,17 +162,13 @@ export default function subscribeRoom({ rid }) {
 				}
 
 				if (threadMessageRecord) {
-					if (threadMessageRecord._hasPendingUpdate) {
-						console.log('handleMessageReceived: Skipped. ThreadMessage is already being updated.');
-					} else {
-						batch.push(
-							threadMessageRecord.prepareUpdate((tm) => {
-								Object.assign(tm, message);
-								tm.rid = message.tmid;
-								delete tm.tmid;
-							})
-						);
-					}
+					batch.push(
+						threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
+							Object.assign(tm, message);
+							tm.rid = message.tmid;
+							delete tm.tmid;
+						}))
+					);
 				} else {
 					batch.push(
 						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
