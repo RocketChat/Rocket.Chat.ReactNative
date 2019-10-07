@@ -8,6 +8,7 @@ import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
+import debounce from '../../../utils/debounce';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -85,6 +86,10 @@ export default function subscribeRoom({ rid }) {
 		}
 	});
 
+	const read = debounce((lastOpen) => {
+		this.readMessages(rid, lastOpen);
+	}, 300);
+
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		const lastOpen = new Date();
@@ -94,7 +99,6 @@ export default function subscribeRoom({ rid }) {
 		InteractionManager.runAfterInteractions(async() => {
 			const db = database.active;
 			const batch = [];
-			const subCollection = db.collections.get('subscriptions');
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
@@ -190,13 +194,7 @@ export default function subscribeRoom({ rid }) {
 				}
 			}
 
-			try {
-				const subscription = await subCollection.find(rid);
-				const readMessagesAction = await this.readMessages(rid, lastOpen, true, subscription);
-				batch.push(readMessagesAction);
-			} catch (e) {
-				console.log('Subscription not found. We probably subscribed to a not joined channel. No need to mark as read.');
-			}
+			read(lastOpen);
 
 			try {
 				await db.action(async() => {

@@ -1,48 +1,29 @@
 import database from '../database';
 import log from '../../utils/log';
 
-export default async function readMessages(rid, lastOpen, batch = false, subscription) {
+export default async function readMessages(rid, lastOpen) {
 	try {
-		// RC 0.61.0
-		const data = await this.sdk.post('subscriptions.read', { rid });
 		const db = database.active;
+		const subscription = await db.collections.get('subscriptions').find(rid);
 
-		if (!subscription) {
-			subscription = await db.collections.get('subscriptions').find(rid);
-		}
+		// RC 0.61.0
+		await this.sdk.post('subscriptions.read', { rid });
 
-		if (subscription._hasPendingUpdate) {
-			return console.log('readMessages: Skipped. Subscription is already being updated.');
-		}
-
-		if (batch) {
-			return subscription.prepareUpdate((s) => {
-				s.open = true;
-				s.alert = false;
-				s.unread = 0;
-				s.userMentions = 0;
-				s.groupMentions = 0;
-				s.ls = lastOpen;
-				s.lastOpen = lastOpen;
-			});
-		} else {
-			await db.action(async() => {
-				try {
-					await subscription.update((s) => {
-						s.open = true;
-						s.alert = false;
-						s.unread = 0;
-						s.userMentions = 0;
-						s.groupMentions = 0;
-						s.ls = lastOpen;
-						s.lastOpen = lastOpen;
-					});
-				} catch (e) {
-					// Do nothing
-				}
-			});
-			return data;
-		}
+		await db.action(async() => {
+			try {
+				await subscription.update((s) => {
+					s.open = true;
+					s.alert = false;
+					s.unread = 0;
+					s.userMentions = 0;
+					s.groupMentions = 0;
+					s.ls = lastOpen;
+					s.lastOpen = lastOpen;
+				});
+			} catch (e) {
+				// Do nothing
+			}
+		});
 	} catch (e) {
 		log(e);
 	}
