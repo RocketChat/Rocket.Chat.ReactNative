@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry } from 'react-native';
 import joypixels from 'emoji-toolkit';
+import { isTablet } from './app/utils/deviceInfo';
 import { name as appName, share as shareName } from './app.json';
 
 joypixels.ascii = true;
@@ -20,7 +21,7 @@ if (__DEV__) {
 	console.info = () => {};
 }
 
-AppRegistry.registerComponent(appName, () => require('./app/tablet').default);
+AppRegistry.registerComponent(appName, () => (isTablet ? require('./app/tablet').default : require('./app/index')));
 AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 
 // For storybook, comment everything above and uncomment below
