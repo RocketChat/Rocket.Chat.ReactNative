@@ -210,7 +210,7 @@ dependencies {
     implementation project(':@react-native-community_viewpager')
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.12.0"
 
     implementation "com.google.firebase:firebase-messaging:20.0.0"
