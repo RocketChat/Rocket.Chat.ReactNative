@@ -96,12 +96,18 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		const tmp = merge(subscription, room);
 		await db.action(async() => {
+			let sub;
 			try {
-				const sub = await subCollection.find(tmp.rid);
+				sub = await subCollection.find(tmp.rid);
+			} catch (error) {
+				// Do nothing
+			}
+
+			if (sub) {
 				await sub.update((s) => {
 					Object.assign(s, tmp);
 				});
-			} catch (error) {
+			} else {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
