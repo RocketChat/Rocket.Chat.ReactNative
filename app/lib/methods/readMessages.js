@@ -1,13 +1,15 @@
 import database from '../database';
 import log from '../../utils/log';
 
-export default async function readMessages(rid, lastOpen, batch = false) {
+export default async function readMessages(rid, lastOpen, batch = false, subscription) {
 	try {
 		// RC 0.61.0
 		const data = await this.sdk.post('subscriptions.read', { rid });
 		const db = database.active;
 
-		const subscription = await db.collections.get('subscriptions').find(rid);
+		if (!subscription) {
+			subscription = await db.collections.get('subscriptions').find(rid);
+		}
 
 		if (batch) {
 			return subscription.prepareUpdate((s) => {
