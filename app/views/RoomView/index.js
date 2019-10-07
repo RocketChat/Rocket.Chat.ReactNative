@@ -56,7 +56,7 @@ const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', '
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
-		const rid = navigation.getParam('rid');
+		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
@@ -64,6 +64,7 @@ class RoomView extends React.Component {
 		const room = navigation.getParam('room');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
+		if (!rid) { return null; }
 		return {
 			headerTitle: (
 				<RoomHeaderView
@@ -696,6 +697,7 @@ class RoomView extends React.Component {
 		} = this.state;
 		const { navigation } = this.props;
 
+		if (!this.rid) { return null; }
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>

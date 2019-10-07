@@ -172,10 +172,11 @@ export class List extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
+		const { rid } = this.props;
 		const { messages } = this.state;
 		return (
 			<>
-				<EmptyRoom length={messages.length} mounted={this.mounted} />
+				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}
