@@ -11,6 +11,10 @@ export default async function readMessages(rid, lastOpen, batch = false, subscri
 			subscription = await db.collections.get('subscriptions').find(rid);
 		}
 
+		if (subscription._hasPendingUpdate) {
+			return console.log('readMessages: Skipped. Subscription is already being updated.');
+		}
+
 		if (batch) {
 			return subscription.prepareUpdate((s) => {
 				s.open = true;

@@ -98,16 +98,27 @@ export default function subscribeRoom({ rid }) {
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
+			let messageRecord;
+			let threadRecord;
+			let threadMessageRecord;
 
 			// Create or update message
 			try {
-				const messageRecord = await msgCollection.find(message._id);
-				batch.push(
-					messageRecord.prepareUpdate((m) => {
-						Object.assign(m, message);
-					})
-				);
+				messageRecord = await msgCollection.find(message._id);
 			} catch (error) {
+				// Do nothing
+			}
+			if (messageRecord) {
+				if (messageRecord._hasPendingUpdate) {
+					console.log('handleMessageReceived: Skipped. Message is already being updated.');
+				} else {
+					batch.push(
+						messageRecord.prepareUpdate((m) => {
+							Object.assign(m, message);
+						})
+					);
+				}
+			} else {
 				batch.push(
 					msgCollection.prepareCreate(protectedFunction((m) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
@@ -120,13 +131,22 @@ export default function subscribeRoom({ rid }) {
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					const threadRecord = await threadsCollection.find(message._id);
-					batch.push(
-						threadRecord.prepareUpdate((t) => {
-							Object.assign(t, message);
-						})
-					);
+					threadRecord = await threadsCollection.find(message._id);
 				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadRecord) {
+					if (threadRecord._hasPendingUpdate) {
+						console.log('handleMessageReceived: Skipped. Thread is already being updated.');
+					} else {
+						batch.push(
+							threadRecord.prepareUpdate((t) => {
+								Object.assign(t, message);
+							})
+						);
+					}
+				} else {
 					batch.push(
 						threadsCollection.prepareCreate(protectedFunction((t) => {
 							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
@@ -140,15 +160,24 @@ export default function subscribeRoom({ rid }) {
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					const threadMessageRecord = await threadMessagesCollection.find(message._id);
-					batch.push(
-						threadMessageRecord.prepareUpdate((tm) => {
-							Object.assign(tm, message);
-							tm.rid = message.tmid;
-							delete tm.tmid;
-						})
-					);
+					threadMessageRecord = await threadMessagesCollection.find(message._id);
 				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadMessageRecord) {
+					if (threadMessageRecord._hasPendingUpdate) {
+						console.log('handleMessageReceived: Skipped. ThreadMessage is already being updated.');
+					} else {
+						batch.push(
+							threadMessageRecord.prepareUpdate((tm) => {
+								Object.assign(tm, message);
+								tm.rid = message.tmid;
+								delete tm.tmid;
+							})
+						);
+					}
+				} else {
 					batch.push(
 						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);

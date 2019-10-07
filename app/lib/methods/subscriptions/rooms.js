@@ -104,6 +104,12 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			}
 
 			if (sub) {
+				// Subscriptions can be updated in several ways from streams.
+				// They can receive too many messages and overflow Watermelon's queue.
+				if (sub._hasPendingUpdate) {
+					return console.log('createOrUpdateSubscription: Skipped. Subscription is already being updated.');
+				}
+
 				await sub.update((s) => {
 					Object.assign(s, tmp);
 				});
