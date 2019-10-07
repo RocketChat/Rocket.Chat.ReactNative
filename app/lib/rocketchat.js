@@ -39,7 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
+import sendMessage, { sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -427,7 +427,6 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadThreadMessages,
-	getMessage,
 	sendMessage,
 	getRooms,
 	readMessages,
@@ -442,12 +441,11 @@ const RocketChat = {
 			let m = {
 				id: message.id,
 				msg: message.msg,
-				subscription: { id: message.rid }
+				subscription: { id: message.subscription.id }
 			};
 			if (tmid) {
 				m = {
 					...m,
-					subscription: { id: message.subscription.id },
 					tmid
 				};
 			}
