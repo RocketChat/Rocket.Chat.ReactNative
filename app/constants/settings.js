@@ -23,6 +23,18 @@ export default {
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Jitsi_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_SSL: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_Domain: {
+		type: 'valueAsString'
+	},
+	Jitsi_URL_Room_Prefix: {
+		type: 'valueAsString'
+	},
 	Message_AllowDeleting: {
 		type: 'valueAsBoolean'
 	},
@@ -55,6 +67,9 @@ export default {
 	},
 	Store_Last_Message: {
 		type: 'valueAsBoolean'
+	},
+	uniqueID: {
+		type: 'valueAsString'
 	},
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'

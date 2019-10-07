@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
@@ -13,7 +13,7 @@ const Emoji = React.memo(({
 	if (emoji) {
 		return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
 	}
-	return <Text style={standardEmojiStyle}>{ emojify(content, { output: 'unicode' }) }</Text>;
+	return <Text style={standardEmojiStyle}>{ shortnameToUnicode(content) }</Text>;
 }, () => true);
 
 Emoji.propTypes = {

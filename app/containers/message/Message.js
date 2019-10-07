@@ -16,18 +16,28 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
+import CallButton from './CallButton';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
 		return (
-			<React.Fragment>
+			<>
 				<User {...props} />
 				<Discussion {...props} />
-			</React.Fragment>
+			</>
+		);
+	}
+	if (props.type === 'jitsi_call_started') {
+		return (
+			<>
+				<User {...props} />
+				<Content {...props} isInfo />
+				<CallButton {...props} />
+			</>
 		);
 	}
 	return (
-		<React.Fragment>
+		<>
 			<User {...props} />
 			<Content {...props} />
 			<Attachments {...props} />
@@ -35,7 +45,7 @@ const MessageInner = React.memo((props) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
-		</React.Fragment>
+		</>
 	);
 });
 MessageInner.displayName = 'MessageInner';

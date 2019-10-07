@@ -3,56 +3,26 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Status from './Status';
-import database, { safeAddListener } from '../../lib/realm';
 
 class StatusContainer extends React.PureComponent {
 	static propTypes = {
-		id: PropTypes.string,
 		style: PropTypes.any,
 		size: PropTypes.number,
-		offline: PropTypes.bool
+		status: PropTypes.string
 	};
 
 	static defaultProps = {
 		size: 16
 	}
 
-	constructor(props) {
-		super(props);
-		this.user = database.memoryDatabase.objects('activeUsers').filtered('id == $0', props.id);
-		this.state = {
-			user: this.user[0] || {}
-		};
-		safeAddListener(this.user, this.updateState);
-	}
-
-	componentWillUnmount() {
-		this.user.removeAllListeners();
-	}
-
-	get status() {
-		const { user } = this.state;
-		const { offline } = this.props;
-		if (offline || !user) {
-			return 'offline';
-		}
-		return user.status || 'offline';
-	}
-
-	updateState = () => {
-		if (this.user.length) {
-			this.setState({ user: this.user[0] });
-		}
-	}
-
 	render() {
-		const { style, size } = this.props;
-		return <Status size={size} style={style} status={this.status} />;
+		const { style, size, status } = this.props;
+		return <Status size={size} style={style} status={status} />;
 	}
 }
 
-const mapStateToProps = state => ({
-	offline: !state.meteor.connected
+const mapStateToProps = (state, ownProps) => ({
+	status: state.meteor.connected ? state.activeUsers[ownProps.id] : 'offline'
 });
 
 export default connect(mapStateToProps)(StatusContainer);

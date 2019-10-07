@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
 apply plugin: "io.fabric"
 apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: 'com.bugsnag.android.gradle'
@@ -80,6 +81,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
+    bundleAssetName: "app.bundle",
     iconFontNames: [ 'custom.ttf' ],
     enableHermes: false,  // clean and rebuild if changing
 ]
@@ -136,7 +138,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "1.19.0"
+        versionName "1.20.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
     }
@@ -180,15 +182,6 @@ android {
         }
     }
 
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-        pickFirst '**/x86/libjsc.so'
-        pickFirst '**/armeabi-v7a/libjsc.so'
-    }
-
     bundle {
         language {
             enableSplit = false
@@ -204,8 +197,10 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
+    implementation project(':watermelondb')
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
+    implementation project(':@react-native-community_viewpager')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.google.firebase:firebase-messaging:18.0.0"
@@ -216,7 +211,7 @@ dependencies {
     }
 
     if (enableHermes) {
-      def hermesPath = "../../node_modules/hermesvm/android/";
+      def hermesPath = "../../node_modules/hermes-engine/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
       releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {

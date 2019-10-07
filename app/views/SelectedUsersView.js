@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, StyleSheet, FlatList, LayoutAnimation
-} from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { orderBy } from 'lodash';
+import { Q } from '@nozbe/watermelondb';
 
 import {
 	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
 } from '../actions/selectedUsers';
-import database, { safeAddListener } from '../lib/realm';
+import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
@@ -23,6 +23,7 @@ import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -68,11 +69,11 @@ class SelectedUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = database.objects('subscriptions').filtered('t = $0', 'd').sorted('roomUpdatedAt', true);
+		this.init();
 		this.state = {
-			search: []
+			search: [],
+			chats: []
 		};
-		safeAddListener(this.data, this.updateState);
 	}
 
 	componentDidMount() {
@@ -81,7 +82,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		const { users, loading } = this.props;
 		if (nextProps.loading !== loading) {
 			return true;
@@ -92,14 +93,36 @@ class SelectedUsersView extends React.Component {
 		if (!equal(nextState.search, search)) {
 			return true;
 		}
+		if (!equal(nextState.chats, chats)) {
+			return true;
+		}
 		return false;
 	}
 
 	componentWillUnmount() {
 		const { reset } = this.props;
-		this.updateState.stop();
-		this.data.removeAllListeners();
 		reset();
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	init = async() => {
+		try {
+			const db = database.active;
+			const observable = await db.collections
+				.get('subscriptions')
+				.query(Q.where('t', 'd'))
+				.observeWithColumns(['room_updated_at']);
+
+			this.querySubscription = observable.subscribe((data) => {
+				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
+				this.setState({ chats });
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onSearchChangeText(text) {
@@ -145,7 +168,7 @@ class SelectedUsersView extends React.Component {
 	toggleUser = (user) => {
 		const { addUser, removeUser } = this.props;
 
-		LayoutAnimation.easeInEaseOut();
+		animateNextTransition();
 		if (!this.isChecked(user.name)) {
 			addUser(user);
 		} else {
@@ -208,7 +231,7 @@ class SelectedUsersView extends React.Component {
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
 	renderItem = ({ item, index }) => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		const { baseUrl, user } = this.props;
 
 		const name = item.search ? item.name : item.fname;
@@ -220,7 +243,7 @@ class SelectedUsersView extends React.Component {
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
-		if (search.length === 0 && index === this.data.length - 1) {
+		if (search.length === 0 && index === chats.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
 		return (
@@ -238,10 +261,10 @@ class SelectedUsersView extends React.Component {
 	}
 
 	renderList = () => {
-		const { search } = this.state;
+		const { search, chats } = this.state;
 		return (
 			<FlatList
-				data={search.length > 0 ? search : this.data}
+				data={search.length > 0 ? search : chats}
 				extraData={this.props}
 				keyExtractor={item => item._id}
 				renderItem={this.renderItem}

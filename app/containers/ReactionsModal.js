@@ -7,7 +7,6 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import Emoji from './message/Emoji';
-import { getCustomEmoji } from './message/utils';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
@@ -62,7 +61,9 @@ const styles = StyleSheet.create({
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
 
-const Item = React.memo(({ item, user, baseUrl }) => {
+const Item = React.memo(({
+	item, user, baseUrl, getCustomEmoji
+}) => {
 	const count = item.usernames.length;
 	let usernames = item.usernames.slice(0, 3)
 		.map(username => (username === user.username ? I18n.t('you') : username)).join(', ');
@@ -146,7 +147,8 @@ ModalContent.displayName = 'ReactionsModalContent';
 Item.propTypes = {
 	item: PropTypes.object,
 	user: PropTypes.object,
-	baseUrl: PropTypes.string
+	baseUrl: PropTypes.string,
+	getCustomEmoji: PropTypes.func
 };
 Item.displayName = 'ReactionsModalItem';
 
