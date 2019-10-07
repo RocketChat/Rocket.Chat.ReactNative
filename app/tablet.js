@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createAppContainer, createSwitchNavigator, NavigationActions } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -9,6 +8,7 @@ import {
 	View, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
+import Orientation from 'react-native-orientation-locker';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -302,6 +302,7 @@ const ListContainer = createAppContainer(ListStackModal);
 export class MasterDetailView extends React.Component {
 	state = {
 		inside: false,
+		landscape: Orientation.getInitialOrientation().includes('LANDSCAPE'),
 		inCall: false
 	};
 
@@ -340,27 +341,37 @@ export class MasterDetailView extends React.Component {
 			}
 			return defaultMasterGetStateForAction(action, state);
 		};
+		Orientation.addOrientationListener(this._orientationDidChange);
 	}
 
-	renderSideView = () => (
-		<>
-			<View style={{ flex: 4 }}>
-				<ListContainer
-					ref={(listRef) => {
-						this.listRef = listRef;
-					}}
-				/>
-			</View>
-			<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
-		</>
-	);
+	componentWillUnmount() {
+		Orientation.removeOrientationListener(this._orientationDidChange);
+	}
+
+	_orientationDidChange = orientation => this.setState({ landscape: orientation.includes('LANDSCAPE') });
+
+	renderSideView = () => {
+		const { landscape } = this.state;
+		return (
+			<>
+				<View style={{ flex: landscape ? 4 : 5 }}>
+					<ListContainer
+						ref={(listRef) => {
+							this.listRef = listRef;
+						}}
+					/>
+				</View>
+				<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
+			</>
+		);
+	}
 
 	render() {
-		const { inside, inCall } = this.state;
+		const { inside, inCall, landscape } = this.state;
 		return (
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				{ inside && !inCall ? this.renderSideView() : null }
-				<View style={{ flex: 8 }}>
+				<View style={{ flex: landscape ? 9 : 7 }}>
 					<App
 						ref={(navigatorRef) => {
 							Navigation.setTopLevelNavigator(navigatorRef);
@@ -421,9 +432,7 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<SafeAreaProvider>
-					<MasterDetailView />
-				</SafeAreaProvider>
+				<MasterDetailView />
 			</Provider>
 		);
 	}
