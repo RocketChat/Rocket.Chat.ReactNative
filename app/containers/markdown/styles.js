@@ -21,7 +21,8 @@ export default StyleSheet.create({
 	block: {
 		alignItems: 'flex-start',
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
+		flex: 1
 	},
 	emph: {
 		fontStyle: 'italic'
