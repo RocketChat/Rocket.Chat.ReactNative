@@ -5,7 +5,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import Markdown from '../markdown';
-import { getCustomEmoji } from '../message/utils';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import {
@@ -55,7 +54,8 @@ class ReplyPreview extends Component {
 		Message_TimeFormat: PropTypes.string.isRequired,
 		close: PropTypes.func.isRequired,
 		baseUrl: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired
+		username: PropTypes.string.isRequired,
+		getCustomEmoji: PropTypes.func
 	}
 
 	shouldComponentUpdate() {
@@ -69,7 +69,7 @@ class ReplyPreview extends Component {
 
 	render() {
 		const {
-			message, Message_TimeFormat, baseUrl, username, useMarkdown
+			message, Message_TimeFormat, baseUrl, username, useMarkdown, getCustomEmoji
 		} = this.props;
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
@@ -79,7 +79,7 @@ class ReplyPreview extends Component {
 						<Text style={styles.username}>{message.u.username}</Text>
 						<Text style={styles.time}>{time}</Text>
 					</View>
-					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} />
+					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} preview />
 				</View>
 				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
 			</View>

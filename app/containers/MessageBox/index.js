@@ -4,22 +4,18 @@ import {
 	View, TextInput, FlatList, Text, TouchableOpacity, Alert, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { emojify } from 'react-emojione';
+import { shortnameToUnicode } from 'emoji-toolkit';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
+import { Q } from '@nozbe/watermelondb';
 
 import { userTyping as userTypingAction } from '../../actions/room';
-import {
-	editRequest as editRequestAction,
-	editCancel as editCancelAction,
-	replyCancel as replyCancelAction
-} from '../../actions/messages';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
-import database from '../../lib/realm';
+import database from '../../lib/database';
 import Avatar from '../Avatar';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
@@ -34,15 +30,12 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
+import { canUploadFile } from '../../utils/media';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
 const MENTIONS_COUNT_TO_DISPLAY = 4;
-
-const onlyUnique = function onlyUnique(value, index, self) {
-	return self.indexOf(({ _id }) => value._id === _id) === index;
-};
 
 const imagePickerConfig = {
 	cropping: true,
@@ -69,7 +62,6 @@ class MessageBox extends Component {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
-		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
@@ -81,11 +73,15 @@ class MessageBox extends Component {
 		}),
 		roomType: PropTypes.string,
 		tmid: PropTypes.string,
+		replyWithMention: PropTypes.bool,
+		FileUpload_MediaTypeWhiteList: PropTypes.string,
+		FileUpload_MaxFileSize: PropTypes.number,
+		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
-		closeReply: PropTypes.func
+		replyCancel: PropTypes.func
 	}
 
 	constructor(props) {
@@ -99,14 +95,9 @@ class MessageBox extends Component {
 			file: {
 				isVisible: false
 			},
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		};
-		this.showCommandPreview = false;
-		this.commands = [];
-		this.users = [];
-		this.rooms = [];
-		this.emojis = [];
-		this.customEmojis = [];
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.fileOptions = [
@@ -135,20 +126,34 @@ class MessageBox extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const db = database.active;
 		const { rid, tmid } = this.props;
 		let msg;
-		if (tmid) {
-			const thread = database.objectForPrimaryKey('threads', tmid);
-			if (thread) {
-				msg = thread.draftMessage;
+		try {
+			const threadsCollection = db.collections.get('threads');
+			const subsCollection = db.collections.get('subscriptions');
+			if (tmid) {
+				try {
+					const thread = await threadsCollection.find(tmid);
+					if (thread) {
+						msg = thread.draftMessage;
+					}
+				} catch (error) {
+					console.log('Messagebox.didMount: Thread not found');
+				}
+			} else {
+				try {
+					const room = await subsCollection.find(rid);
+					msg = room.draftMessage;
+				} catch (error) {
+					console.log('Messagebox.didMount: Room not found');
+				}
 			}
-		} else {
-			const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-			if (room) {
-				msg = room.draftMessage;
-			}
+		} catch (e) {
+			log(e);
 		}
+
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
@@ -160,17 +165,16 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { message, replyMessage, isFocused } = this.props;
+		const { isFocused, editing, replying } = this.props;
 		if (!isFocused) {
 			return;
 		}
-		if (!equal(message, nextProps.message) && nextProps.message.msg) {
+		if (editing !== nextProps.editing && nextProps.editing) {
 			this.setInput(nextProps.message.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
-			this.focus();
-		} else if (!equal(replyMessage, nextProps.replyMessage)) {
+		} else if (replying !== nextProps.replying && nextProps.replying) {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
@@ -181,6 +185,7 @@ class MessageBox extends Component {
 		const {
 			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
 		} = this.state;
+
 		const {
 			roomType, replying, editing, isFocused
 		} = this.props;
@@ -217,41 +222,75 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	onChangeText = debounce((text) => {
+	componentWillUnmount() {
+		console.countReset(`${ this.constructor.name }.render calls`);
+		if (this.onChangeText && this.onChangeText.stop) {
+			this.onChangeText.stop();
+		}
+		if (this.getUsers && this.getUsers.stop) {
+			this.getUsers.stop();
+		}
+		if (this.getRooms && this.getRooms.stop) {
+			this.getRooms.stop();
+		}
+		if (this.getEmojis && this.getEmojis.stop) {
+			this.getEmojis.stop();
+		}
+		if (this.getSlashCommands && this.getSlashCommands.stop) {
+			this.getSlashCommands.stop();
+		}
+	}
+
+	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
+		this.debouncedOnChangeText(text);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedOnChangeText = debounce(async(text) => {
+		const db = database.active;
+		const isTextEmpty = text.length === 0;
+		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
 			const [, name, params] = slashCommand;
-			const command = database.objects('slashCommand').filtered('command == $0', name);
-			if (command && command[0] && command[0].providesPreview) {
-				return this.setCommandPreview(name, params);
+			const commandsCollection = db.collections.get('slash_commands');
+			try {
+				const command = await commandsCollection.find(name);
+				if (command.providesPreview) {
+					return this.setCommandPreview(name, params);
+				}
+			} catch (e) {
+				console.log('Slash command not found');
 			}
 		}
 
 		if (!isTextEmpty) {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			const lastNativeText = this.component._lastNativeText;
-			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-			const result = lastNativeText.substr(0, cursor).match(regexp);
-			this.showCommandPreview = false;
-			if (!result) {
-				const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-				if (slash) {
-					return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+			try {
+				const { start, end } = this.component._lastNativeSelection;
+				const cursor = Math.max(start, end);
+				const lastNativeText = this.component._lastNativeText || '';
+				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
+				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+				const result = lastNativeText.substr(0, cursor).match(regexp);
+				if (!result) {
+					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+					if (slash) {
+						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+					}
+					return this.stopTrackingMention();
 				}
-				return this.stopTrackingMention();
+				const [, lastChar, name] = result;
+				this.identifyMentionKeyword(name, lastChar);
+			} catch (e) {
+				log(e);
 			}
-			const [, lastChar, name] = result;
-			this.identifyMentionKeyword(name, lastChar);
 		} else {
 			this.stopTrackingMention();
-			this.showCommandPreview = false;
 		}
 	}, 100)
 
@@ -274,7 +313,7 @@ class MessageBox extends Component {
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
-			this.showCommandPreview = true;
+			this.setState({ showCommandPreview: true });
 		}
 		this.setInput(text);
 		this.focus();
@@ -286,10 +325,10 @@ class MessageBox extends Component {
 		const { text } = this;
 		const command = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.showCommandPreview = false;
-		this.setState({ commandPreview: [] });
+		this.setState({ commandPreview: [], showCommandPreview: false });
 		this.stopTrackingMention();
 		this.clearInput();
+		this.handleTyping(false);
 		try {
 			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
@@ -324,114 +363,49 @@ class MessageBox extends Component {
 	}
 
 	getFixedMentions = (keyword) => {
+		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -1, username: 'all' }, ...this.users];
+			result = [{ id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			this.users = [{ _id: -2, username: 'here' }, ...this.users];
+			result = [{ id: -2, username: 'here' }, ...result];
 		}
+		return result;
 	}
 
-	getUsers = async(keyword) => {
-		this.users = database.objects('users');
+	getUsers = debounce(async(keyword) => {
+		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		res = [...this.getFixedMentions(keyword), ...res];
+		this.setState({ mentions: res });
+	}, 300)
+
+	getRooms = debounce(async(keyword = '') => {
+		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		this.setState({ mentions: res });
+	}, 300)
+
+	getEmojis = debounce(async(keyword) => {
+		const db = database.active;
 		if (keyword) {
-			this.users = this.users.filtered('username CONTAINS[c] $0', keyword);
+			const customEmojisCollection = db.collections.get('custom_emojis');
+			let customEmojis = await customEmojisCollection.query(
+				Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			).fetch();
+			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			this.setState({ mentions: mergedEmojis || [] });
 		}
-		this.getFixedMentions(keyword);
-		this.setState({ mentions: this.users.slice() });
+	}, 300)
 
-		const usernames = [];
-
-		if (keyword && this.users.length > 7) {
-			return;
-		}
-
-		this.users.forEach(user => usernames.push(user.username));
-
-		if (this.oldPromise) {
-			this.oldPromise();
-		}
-		try {
-			const results = await Promise.race([
-				RocketChat.spotlight(keyword, usernames, { users: true }),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]);
-			if (results.users && results.users.length) {
-				database.write(() => {
-					results.users.forEach((user) => {
-						try {
-							database.create('users', user, true);
-						} catch (e) {
-							log(e);
-						}
-					});
-				});
-			}
-		} catch (e) {
-			console.warn('spotlight canceled');
-		} finally {
-			delete this.oldPromise;
-			this.users = database.objects('users').filtered('username CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.getFixedMentions(keyword);
-			this.setState({ mentions: this.users });
-		}
-	}
-
-	getRooms = async(keyword = '') => {
-		this.roomsCache = this.roomsCache || [];
-		this.rooms = database.objects('subscriptions')
-			.filtered('t != $0', 'd');
-		if (keyword) {
-			this.rooms = this.rooms.filtered('name CONTAINS[c] $0', keyword);
-		}
-
-		const rooms = [];
-		this.rooms.forEach(room => rooms.push(room));
-
-		this.roomsCache.forEach((room) => {
-			if (room.name && room.name.toUpperCase().indexOf(keyword.toUpperCase()) !== -1) {
-				rooms.push(room);
-			}
-		});
-
-		if (rooms.length > 3) {
-			this.setState({ mentions: rooms });
-			return;
-		}
-
-		if (this.oldPromise) {
-			this.oldPromise();
-		}
-
-		try {
-			const results = await Promise.race([
-				RocketChat.spotlight(keyword, [...rooms, ...this.roomsCache].map(r => r.name), { rooms: true }),
-				new Promise((resolve, reject) => (this.oldPromise = reject))
-			]);
-			if (results.rooms && results.rooms.length) {
-				this.roomsCache = [...this.roomsCache, ...results.rooms].filter(onlyUnique);
-			}
-			this.setState({ mentions: [...rooms.slice(), ...results.rooms] });
-		} catch (e) {
-			console.warn('spotlight canceled');
-		} finally {
-			delete this.oldPromise;
-		}
-	}
-
-	getEmojis = (keyword) => {
-		if (keyword) {
-			this.customEmojis = database.objects('customEmojis').filtered('name CONTAINS[c] $0', keyword).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.emojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...this.customEmojis, ...this.emojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis });
-		}
-	}
-
-	getSlashCommands = (keyword) => {
-		this.commands = database.objects('slashCommand').filtered('command CONTAINS[c] $0', keyword);
-		this.setState({ mentions: this.commands });
-	}
+	getSlashCommands = debounce(async(keyword) => {
+		const db = database.active;
+		const commandsCollection = db.collections.get('slash_commands');
+		const commands = await commandsCollection.query(
+			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+		).fetch();
+		this.setState({ mentions: commands || [] });
+	}, 300)
 
 	focus = () => {
 		if (this.component && this.component.focus) {
@@ -464,10 +438,9 @@ class MessageBox extends Component {
 		const { rid } = this.props;
 		try	{
 			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
-			this.showCommandPreview = true;
-			this.setState({ commandPreview: preview.items });
+			this.setState({ commandPreview: preview.items, showCommandPreview: true });
 		} catch (e) {
-			this.showCommandPreview = false;
+			this.setState({ commandPreview: [], showCommandPreview: true });
 			log(e);
 		}
 	}
@@ -486,6 +459,16 @@ class MessageBox extends Component {
 	clearInput = () => {
 		this.setInput('');
 		this.setShowSend(false);
+	}
+
+	canUploadFile = (file) => {
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+		const result = canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
+		if (result.success) {
+			return true;
+		}
+		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		return false;
 	}
 
 	sendMediaMessage = async(file) => {
@@ -511,7 +494,9 @@ class MessageBox extends Component {
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -520,7 +505,9 @@ class MessageBox extends Component {
 	takeVideo = async() => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			this.showUploadModal(video);
+			if (this.canUploadFile(video)) {
+				this.showUploadModal(video);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -529,7 +516,9 @@ class MessageBox extends Component {
 	chooseFromLibrary = async() => {
 		try {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -540,12 +529,15 @@ class MessageBox extends Component {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
 			});
-			this.showUploadModal({
+			const file = {
 				filename: res.name,
 				size: res.size,
 				mime: res.type,
 				path: res.uri
-			});
+			};
+			if (this.canUploadFile(file)) {
+				this.showUploadModal(file);
+			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
@@ -613,11 +605,10 @@ class MessageBox extends Component {
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-			} catch (e) {
-				if (e && e.error === 'error-file-too-large') {
-					return Alert.alert(I18n.t(e.error));
+				if (this.canUploadFile(fileInfo)) {
+					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
+			} catch (e) {
 				log(e);
 			}
 		}
@@ -629,7 +620,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			message: editingMessage, editRequest, onSubmit, rid: roomId
+			onSubmit, rid: roomId
 		} = this.props;
 		const message = this.text;
 
@@ -646,13 +637,16 @@ class MessageBox extends Component {
 		} = this.props;
 
 		// Slash command
-
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			const db = database.active;
+			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
-			const slashCommand = database.objects('slashCommand').filtered('command CONTAINS[c] $0', command);
+			const slashCommand = await commandsCollection.query(
+				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+			).fetch();
 			if (slashCommand.length > 0) {
 				try {
-					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
+					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
 					log(e);
@@ -663,32 +657,35 @@ class MessageBox extends Component {
 		}
 		// Edit
 		if (editing) {
-			const { _id, rid } = editingMessage;
-			editRequest({ _id, msg: message, rid });
+			const { message: editingMessage, editRequest } = this.props;
+			const { id, subscription: { id: rid } } = editingMessage;
+			editRequest({ id, msg: message, rid });
 
 		// Reply
 		} else if (replying) {
-			const { replyMessage, closeReply, threadsEnabled } = this.props;
+			const {
+				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+			} = this.props;
 
 			// Thread
-			if (threadsEnabled && replyMessage.mention) {
-				onSubmit(message, replyMessage._id);
+			if (threadsEnabled && replyWithMention) {
+				onSubmit(message, replyingMessage.id);
 
 			// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
-				const permalink = await this.getPermalink(replyMessage);
+				const permalink = await this.getPermalink(replyingMessage);
 				let msg = `[ ](${ permalink }) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyMessage.u.username && roomType !== 'd' && replyMessage.mention) {
-					msg += `@${ replyMessage.u.username } `;
+				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
+					msg += `@${ replyingMessage.u.username } `;
 				}
 
 				msg = `${ msg } ${ message }`;
 				onSubmit(msg);
 			}
-			closeReply();
+			replyCancel();
 
 		// Normal message
 		} else {
@@ -717,20 +714,16 @@ class MessageBox extends Component {
 	}
 
 	stopTrackingMention = () => {
-		const { trackingType } = this.state;
-		if (!trackingType) {
+		const { trackingType, showCommandPreview } = this.state;
+		if (!trackingType && !showCommandPreview) {
 			return;
 		}
 		this.setState({
 			mentions: [],
 			trackingType: '',
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		});
-		this.users = [];
-		this.rooms = [];
-		this.customEmojis = [];
-		this.emojis = [];
-		this.commands = [];
 	}
 
 	renderFixedMentionItem = item => (
@@ -761,7 +754,7 @@ class MessageBox extends Component {
 				key='mention-item-avatar'
 				style={styles.mentionItemEmoji}
 			>
-				{emojify(`:${ item }:`, { output: 'unicode' })}
+				{shortnameToUnicode(`:${ item }:`)}
 			</Text>
 		);
 	}
@@ -797,33 +790,33 @@ class MessageBox extends Component {
 					switch (trackingType) {
 						case MENTIONS_TRACKING_TYPE_EMOJIS:
 							return (
-								<React.Fragment>
+								<>
 									{this.renderMentionEmoji(item)}
 									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-								</React.Fragment>
+								</>
 							);
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
 							return (
-								<React.Fragment>
+								<>
 									<Text key='mention-item-command' style={styles.slash}>/</Text>
 									<Text key='mention-item-param'>{ item.command}</Text>
-								</React.Fragment>
+								</>
 							);
 						default:
 							return (
-								<React.Fragment>
+								<>
 									<Avatar
 										key='mention-item-avatar'
 										style={styles.avatar}
 										text={item.username || item.name}
 										size={30}
-										type={item.username ? 'd' : 'c'}
+										type={item.t}
 										baseUrl={baseUrl}
 										userId={user.id}
 										token={user.token}
 									/>
 									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
-								</React.Fragment>
+								</>
 							);
 					}
 				})()
@@ -846,8 +839,9 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
+					extraData={mentions}
 					renderItem={this.renderMentionItem}
-					keyExtractor={item => item._id || item.username || item.command || item}
+					keyExtractor={item => item.id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</ScrollView>
@@ -859,8 +853,8 @@ class MessageBox extends Component {
 	);
 
 	renderCommandPreview = () => {
-		const { commandPreview } = this.state;
-		if (!this.showCommandPreview) {
+		const { commandPreview, showCommandPreview } = this.state;
+		if (!showCommandPreview) {
 			return null;
 		}
 		return (
@@ -880,12 +874,12 @@ class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			replyMessage, replying, closeReply, user
+			message, replying, replyCancel, user, getCustomEmoji
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={replyMessage} close={closeReply} username={user.username} />;
+		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	};
 
 	renderContent = () => {
@@ -896,7 +890,7 @@ class MessageBox extends Component {
 			return (<Recording onFinish={this.finishAudioMessage} />);
 		}
 		return (
-			<React.Fragment>
+			<>
 				{this.renderCommandPreview()}
 				{this.renderMentions()}
 				<View style={styles.composer} key='messagebox'>
@@ -935,14 +929,15 @@ class MessageBox extends Component {
 						/>
 					</View>
 				</View>
-			</React.Fragment>
+			</>
 		);
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				<KeyboardAccessoryView
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
@@ -960,30 +955,25 @@ class MessageBox extends Component {
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
 				/>
-			</React.Fragment>
+			</>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	message: state.messages.message,
-	replyMessage: state.messages.replyMessage,
-	replying: state.messages.replying,
-	editing: state.messages.editing,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	threadsEnabled: state.settings.Threads_enabled,
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
 const dispatchToProps = ({
-	editCancel: () => editCancelAction(),
-	editRequest: message => editRequestAction(message),
-	typing: (rid, status) => userTypingAction(rid, status),
-	closeReply: () => replyCancelAction()
+	typing: (rid, status) => userTypingAction(rid, status)
 });
 
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);

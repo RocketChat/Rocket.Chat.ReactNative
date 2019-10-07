@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 });
 
 export default React.memo(() => (
-	<React.Fragment>
+	<>
 		<StatusBar />
 		{isAndroid ? <Image source={{ uri: 'launch_screen' }} style={styles.image} /> : null}
-	</React.Fragment>
+	</>
 ));

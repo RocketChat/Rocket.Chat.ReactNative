@@ -3,6 +3,7 @@ import {
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -12,7 +13,7 @@ import {
 } from '../actions/server';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
+import database from '../lib/database';
 import log from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
@@ -29,8 +30,20 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		database.databases.serversDB.write(() => {
-			database.databases.serversDB.create('servers', { id: server, version: serverInfo.version }, true);
+		const serversDB = database.servers;
+		const serversCollection = serversDB.collections.get('servers');
+		yield serversDB.action(async() => {
+			try {
+				const serverRecord = await serversCollection.find(server);
+				await serverRecord.update((record) => {
+					record.version = serverInfo.version;
+				});
+			} catch (e) {
+				await serversCollection.create((record) => {
+					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+					record.version = serverInfo.version;
+				});
+			}
 		});
 
 		return serverInfo;
@@ -41,29 +54,55 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
-		const { serversDB } = database.databases;
-
+		const serversDB = database.servers;
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		const user = userId && serversDB.objectForPrimaryKey('user', userId);
+		const userCollections = serversDB.collections.get('users');
+		let user = null;
+		if (userId) {
+			try {
+				const userRecord = yield userCollections.find(userId);
+				user = {
+					id: userRecord.id,
+					token: userRecord.token,
+					username: userRecord.username,
+					name: userRecord.name,
+					language: userRecord.language,
+					status: userRecord.status,
+					roles: userRecord.roles
+				};
+			} catch (e) {
+				// We only run it if not has user on DB
+				const servers = yield RNUserDefaults.objectForKey(SERVERS);
+				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+				user = userCredentials && {
+					token: userCredentials[TOKEN]
+				};
+			}
+		}
 
-		const servers = yield RNUserDefaults.objectForKey(SERVERS);
-		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-		const userLogin = userCredentials && {
-			token: userCredentials[TOKEN]
-		};
-
-		if (user || userLogin) {
-			yield RocketChat.connect({ server, user: user || userLogin });
-			yield put(setUser(user || userLogin));
+		if (user) {
+			yield RocketChat.connect({ server, user });
+			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));
 		}
 
-		const settings = database.objects('settings');
+		const db = database.active;
+		const serversCollection = db.collections.get('settings');
+		const settingsRecords = yield serversCollection.query().fetch();
+		const settings = Object.values(settingsRecords).map(item => ({
+			_id: item.id,
+			valueAsString: item.valueAsString,
+			valueAsBoolean: item.valueAsBoolean,
+			valueAsNumber: item.valueAsNumber,
+			_updatedAt: item._updatedAt
+		}));
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
+
+		yield RocketChat.setCustomEmojis();
 
 		let serverInfo;
 		if (fetchVersion) {

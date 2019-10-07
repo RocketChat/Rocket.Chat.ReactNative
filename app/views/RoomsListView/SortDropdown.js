@@ -64,10 +64,12 @@ class Sort extends PureComponent {
 
 	sortByName = () => {
 		this.setSortPreference({ sortBy: 'alphabetical' });
+		this.close();
 	}
 
 	sortByActivity = () => {
 		this.setSortPreference({ sortBy: 'activity' });
+		this.close();
 	}
 
 	toggleGroupByType = () => {
@@ -112,7 +114,7 @@ class Sort extends PureComponent {
 		} = this.props;
 
 		return (
-			<React.Fragment>
+			<>
 				<TouchableWithoutFeedback key='sort-backdrop' onPress={this.close}>
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
@@ -167,7 +169,7 @@ class Sort extends PureComponent {
 						</View>
 					</Touch>
 				</Animated.View>
-			</React.Fragment>
+			</>
 		);
 	}
 }

@@ -83,6 +83,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
+    bundleAssetName: "app.bundle",
     iconFontNames: [ 'custom.ttf' ],
     enableHermes: false,  // clean and rebuild if changing
 ]
@@ -183,15 +184,6 @@ android {
         }
     }
 
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-        pickFirst '**/x86/libjsc.so'
-        pickFirst '**/armeabi-v7a/libjsc.so'
-    }
-
     bundle {
         language {
             enableSplit = false
@@ -212,6 +204,10 @@ dependencies {
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
 
+    implementation project(':watermelondb')
+    implementation project(':reactnativenotifications')
+    implementation project(":reactnativekeyboardinput")
+    implementation project(':@react-native-community_viewpager')
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
@@ -229,7 +225,7 @@ dependencies {
     }
 
     if (enableHermes) {
-      def hermesPath = "../../node_modules/hermesvm/android/";
+      def hermesPath = "../../node_modules/hermes-engine/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
       releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
