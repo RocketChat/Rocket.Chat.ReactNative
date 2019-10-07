@@ -101,7 +101,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.3.0):
     - GoogleUtilities/Logger
-  - JitsiMeetSDK (2.3.0)
+  - JitsiMeetSDK (2.4.0)
   - libwebp (1.0.3):
     - libwebp/demux (= 1.0.3)
     - libwebp/mux (= 1.0.3)
@@ -284,8 +284,8 @@ PODS:
     - React
   - react-native-document-picker (3.2.4):
     - React
-  - react-native-jitsi-meet (2.0.1):
-    - JitsiMeetSDK (= 2.3.0)
+  - react-native-jitsi-meet (2.0.3):
+    - JitsiMeetSDK
     - React
   - react-native-keyboard-input (5.3.1):
     - React
@@ -417,6 +417,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -492,7 +493,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - JitsiMeetSDK
     - libwebp
     - nanopb
     - QBImagePickerController
@@ -534,6 +534,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  JitsiMeetSDK:
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -659,6 +661,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  JitsiMeetSDK:
+    :commit: 0d7b379179ef81965e505677cd10d07956c3a2dc
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
+
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: 2114356c3acac0a71fb4b8962d3d1afdeb35f4d9
@@ -686,7 +693,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 8f9897b8e073687f24ca8d3c3a8013dec7d2d1cc
   GoogleDataTransportCCTSupport: 7455d07b98851aa63e4c05a34dad356ca588479e
   GoogleUtilities: 9c2c544202301110b29f7974a82e77fdcf12bf51
-  JitsiMeetSDK: 0db2222f160cb6a9ccbeacc828acd11ff0057ba5
+  JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
@@ -701,7 +708,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 574d597112f9ea3d1b717f6fb62aef764c70dd6f
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
-  react-native-jitsi-meet: 03565e2933f0a7ad9ce6f6483749b128c970e2c5
+  react-native-jitsi-meet: 1ca89538b8ef3158bfd306d60325d7f11ca1451a
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
@@ -750,6 +757,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
-PODFILE CHECKSUM: 5d8093830d053a40863c3d0e436c9704eb2af2f0
+PODFILE CHECKSUM: 18d0b080112c72e9cc76a381c1baba1172c6ca4d
 
 COCOAPODS: 1.6.2
