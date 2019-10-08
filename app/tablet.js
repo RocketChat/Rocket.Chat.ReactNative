@@ -23,6 +23,7 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import { COLOR_BORDER } from './constants/colors';
+import LayoutAnimation from './utils/layoutAnimation';
 
 useScreens();
 
@@ -425,7 +426,9 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<MasterDetailView />
+				<LayoutAnimation>
+					<MasterDetailView />
+				</LayoutAnimation>
 			</Provider>
 		);
 	}
