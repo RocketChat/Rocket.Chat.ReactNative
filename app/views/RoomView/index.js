@@ -58,7 +58,7 @@ class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
-		const title = navigation.getParam('name');
+		const title = navigation.state.params.title || navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const room = navigation.getParam('room');
@@ -159,9 +159,22 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
+		const { room } = this.state;
+		const { navigation } = this.props;
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						navigation.setParams({ title: changes.name });
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { room } = this.state;
-			const { navigation, isAuthenticated } = this.props;
+			const { isAuthenticated } = this.props;
 			if (room.id && !this.tmid) {
 				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
 			}
