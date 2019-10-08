@@ -21,7 +21,7 @@ if (__DEV__) {
 	console.info = () => {};
 }
 
-AppRegistry.registerComponent(appName, () => (isTablet ? require('./app/tablet').default : require('./app/index')));
+AppRegistry.registerComponent(appName, () => (isTablet ? require('./app/tablet').default : require('./app/index').default));
 AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 
 // For storybook, comment everything above and uncomment below
