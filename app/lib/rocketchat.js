@@ -39,7 +39,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
+import sendMessage, { sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -427,11 +427,10 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadThreadMessages,
-	getMessage,
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message) {
+	async resendMessage(message, tmid) {
 		const db = database.active;
 		try {
 			await db.action(async() => {
@@ -439,17 +438,20 @@ const RocketChat = {
 					m.status = messagesStatus.TEMP;
 				});
 			});
-			await sendMessageCall.call(this, message);
-		} catch (error) {
-			try {
-				await db.action(async() => {
-					await message.update((m) => {
-						m.status = messagesStatus.ERROR;
-					});
-				});
-			} catch (e) {
-				log(e);
+			let m = {
+				id: message.id,
+				msg: message.msg,
+				subscription: { id: message.subscription.id }
+			};
+			if (tmid) {
+				m = {
+					...m,
+					tmid
+				};
 			}
+			await sendMessageCall.call(this, m);
+		} catch (e) {
+			log(e);
 		}
 	},
 

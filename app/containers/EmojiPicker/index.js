@@ -91,22 +91,24 @@ class EmojiPicker extends Component {
 	_addFrequentlyUsed = protectedFunction(async(emoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+		let freqEmojiRecord;
+		try {
+			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
+		} catch (error) {
+			// Do nothing
+		}
+
 		await db.action(async() => {
-			try {
-				const freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
+			if (freqEmojiRecord) {
 				await freqEmojiRecord.update((f) => {
 					f.count += 1;
 				});
-			} catch (error) {
-				try {
-					await freqEmojiCollection.create((f) => {
-						f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
-						Object.assign(f, emoji);
-						f.count = 1;
-					});
-				} catch (e) {
-					// Do nothing
-				}
+			} else {
+				await freqEmojiCollection.create((f) => {
+					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
+					Object.assign(f, emoji);
+					f.count = 1;
+				});
 			}
 		});
 	})

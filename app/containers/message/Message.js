@@ -52,7 +52,7 @@ MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
-		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
+		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
