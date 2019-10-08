@@ -775,6 +775,7 @@ class RoomView extends React.Component {
 				}
 				{showErrorActions ? (
 					<MessageErrorActions
+						tmid={this.tmid}
 						message={selectedMessage}
 						actionsHide={this.onErrorActionsHide}
 					/>
