@@ -33,44 +33,52 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
-		let servers = yield RNUserDefaults.objectForKey(SERVERS);
-		// if not have current
-		if (servers && servers.length !== 0 && (!token || !server)) {
-			server = servers[0][SERVER_URL];
-			token = servers[0][TOKEN];
-		}
+		if (!hasMigration && isIOS) {
+			let servers = yield RNUserDefaults.objectForKey(SERVERS);
+			// if not have current
+			if (servers && servers.length !== 0 && (!token || !server)) {
+				server = servers[0][SERVER_URL];
+				token = servers[0][TOKEN];
+			}
 
-		// get native credentials
-		if (servers && !hasMigration) {
-			// parse servers
-			servers = yield Promise.all(servers.map(async(s) => {
-				await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
-				return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
-			}));
+			// get native credentials
+			if (servers) {
+				try {
+					// parse servers
+					servers = yield Promise.all(servers.map(async(s) => {
+						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
+						return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
+					}));
+					const serversDB = database.servers;
+					yield serversDB.action(async() => {
+						const serversCollection = serversDB.collections.get('servers');
+						const allServerRecords = await serversCollection.query().fetch();
+
+						// filter servers
+						let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
+
+						// Create
+						serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
+							s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
+							Object.assign(s, record);
+						})));
+
+						const allRecords = serversToCreate;
+
+						try {
+							await serversDB.batch(...allRecords);
+						} catch (e) {
+							log(e);
+						}
+						return allRecords.length;
+					});
+				} catch (e) {
+					log(e);
+				}
+			}
+
 			try {
-				const serversDB = database.servers;
-				yield serversDB.action(async() => {
-					const serversCollection = serversDB.collections.get('servers');
-					const allServerRecords = await serversCollection.query().fetch();
-
-					// filter servers
-					let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
-
-					// Create
-					serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
-						s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
-						Object.assign(s, record);
-					})));
-
-					const allRecords = serversToCreate;
-
-					try {
-						await serversDB.batch(...allRecords);
-					} catch (e) {
-						log(e);
-					}
-					return allRecords.length;
-				});
+				yield AsyncStorage.setItem('hasMigration', '1');
 			} catch (e) {
 				log(e);
 			}
@@ -91,7 +99,7 @@ const restore = function* restore() {
 				RNUserDefaults.clear('currentServer')
 			]);
 			yield put(actions.appStart('outside'));
-		} else if (server) {
+		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 			const serverObj = yield serverCollections.find(server);

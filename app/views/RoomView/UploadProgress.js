@@ -122,7 +122,8 @@ class UploadProgress extends Component {
 		uploads.forEach(async(u) => {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
-					await database.database.action(async() => {
+					const db = database.active;
+					await db.action(async() => {
 						await u.update(() => {
 							u.error = true;
 						});

@@ -200,13 +200,13 @@ class NotificationBadge extends React.Component {
 					hitSlop={BUTTON_HIT_SLOP}
 					background={Touchable.SelectableBackgroundBorderless()}
 				>
-					<React.Fragment>
+					<>
 						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 						<View>
 							<Text style={styles.roomName}>{name}</Text>
 							<Text style={[styles.message, { maxWidth: maxWidthMessage }]} numberOfLines={1}>{message}</Text>
 						</View>
-					</React.Fragment>
+					</>
 				</Touchable>
 				<TouchableOpacity onPress={this.hide}>
 					<CustomIcon name='circle-cross' style={styles.close} size={20} />

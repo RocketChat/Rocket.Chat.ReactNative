@@ -105,7 +105,7 @@ class AuthenticationWebView extends React.PureComponent {
 		const { loading } = this.state;
 		const uri = navigation.getParam('url');
 		return (
-			<React.Fragment>
+			<>
 				<StatusBar />
 				<WebView
 					useWebKit
@@ -120,7 +120,7 @@ class AuthenticationWebView extends React.PureComponent {
 					}}
 				/>
 				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
-			</React.Fragment>
+			</>
 		);
 	}
 }

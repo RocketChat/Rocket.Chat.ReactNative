@@ -66,10 +66,10 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			} catch (error) {
 				try {
 					await db.action(async() => {
-						await roomsCollection.create((r) => {
+						await roomsCollection.create(protectedFunction((r) => {
 							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 							Object.assign(r, room);
-						});
+						}));
 					});
 				} catch (e) {
 					// Do nothing
@@ -96,19 +96,25 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		const tmp = merge(subscription, room);
 		await db.action(async() => {
+			let sub;
 			try {
-				const sub = await subCollection.find(tmp.rid);
-				await sub.update((s) => {
-					Object.assign(s, tmp);
-				});
+				sub = await subCollection.find(tmp.rid);
 			} catch (error) {
-				await subCollection.create((s) => {
+				// Do nothing
+			}
+
+			if (sub) {
+				await sub.update(protectedFunction((s) => {
+					Object.assign(s, tmp);
+				}));
+			} else {
+				await subCollection.create(protectedFunction((s) => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
 					if (s.roomUpdatedAt) {
 						s.roomUpdatedAt = new Date();
 					}
-				});
+				}));
 			}
 		});
 	} catch (e) {

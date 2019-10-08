@@ -85,7 +85,7 @@ export default class DirectoryOptions extends PureComponent {
 		});
 		const { globalUsers, toggleWorkspace, isFederationEnabled } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<TouchableWithoutFeedback onPress={this.close}>
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
@@ -103,7 +103,7 @@ export default class DirectoryOptions extends PureComponent {
 					{this.renderItem('users')}
 					{isFederationEnabled
 						? (
-							<React.Fragment>
+							<>
 								<View style={styles.dropdownSeparator} />
 								<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 									<View style={styles.globalUsersTextContainer}>
@@ -112,11 +112,11 @@ export default class DirectoryOptions extends PureComponent {
 									</View>
 									<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
 								</View>
-							</React.Fragment>
+							</>
 						)
 						: null}
 				</Animated.View>
-			</React.Fragment>
+			</>
 		);
 	}
 }

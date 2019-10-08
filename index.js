@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry } from 'react-native';
 import joypixels from 'emoji-toolkit';
@@ -7,6 +8,16 @@ joypixels.ascii = true;
 
 if (__DEV__) {
 	require('./app/ReactotronConfig');
+} else {
+	console.log = () => {};
+	console.time = () => {};
+	console.timeLog = () => {};
+	console.timeEnd = () => {};
+	console.warn = () => {};
+	console.count = () => {};
+	console.countReset = () => {};
+	console.error = () => {};
+	console.info = () => {};
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
