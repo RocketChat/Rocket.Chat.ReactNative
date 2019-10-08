@@ -168,8 +168,6 @@ class RoomView extends React.Component {
 					if (this.mounted) {
 						navigation.setParams({ title: changes.name });
 						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
 					}
 				});
 		}
