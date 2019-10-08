@@ -141,6 +141,19 @@ index a134d2e..a88c099 100644
      [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
    });
  }
+diff --git a/node_modules/react-native/ReactAndroid/gradle.properties b/node_modules/react-native/ReactAndroid/gradle.properties
+index fb8fc9d..3059b0f 100644
+--- a/node_modules/react-native/ReactAndroid/gradle.properties
++++ b/node_modules/react-native/ReactAndroid/gradle.properties
+@@ -14,7 +14,7 @@ FEST_ASSERT_CORE_VERSION=2.0M10
+ ANDROID_SUPPORT_TEST_VERSION=1.0.2
+ FRESCO_VERSION=2.0.0
+ OKHTTP_VERSION=3.12.1
+-SO_LOADER_VERSION=0.6.0
++SO_LOADER_VERSION=0.8.0
+ 
+ BOOST_VERSION=1_63_0
+ DOUBLE_CONVERSION_VERSION=1.1.6
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
@@ -154,21 +167,16 @@ index ef2ae93..2795802 100644
        return true;
      } catch (ClassNotFoundException ignored) {
        return false;
-diff --git a/node_modules/react-native/react.gradle b/node_modules/react-native/react.gradle
-index 5a2259a..bc3be3e 100644
---- a/node_modules/react-native/react.gradle
-+++ b/node_modules/react-native/react.gradle
-@@ -148,7 +148,12 @@ afterEvaluate {
-                             hermesFlags = config.hermesFlagsDebug
-                             if (hermesFlags == null) hermesFlags = []
-                         }
--                        commandLine(getHermesCommand(), "-emit-binary", "-out", jsBundleFile, jsBundleFile, *hermesFlags)
-+                        // commandLine(getHermesCommand(), "-emit-binary", "-out", jsBundleFile, jsBundleFile, *hermesFlags)
-+                        ant.move(
-+                            file: jsBundleFile,
-+                            tofile: "${jsBundleFile}_temp"
-+                        );
-+                        commandLine(getHermesCommand(), "-emit-binary", "-out", jsBundleFile, "${jsBundleFile}_temp", *hermesFlags)
-                     }
-                     if (hermesFlags.contains("-output-source-map")) {
-                         ant.move(
+diff --git a/node_modules/react-native/ReactAndroid/src/main/libraries/soloader/java/com/facebook/soloader/BUCK b/node_modules/react-native/ReactAndroid/src/main/libraries/soloader/java/com/facebook/soloader/BUCK
+index 29ea3d9..a35d8da 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/libraries/soloader/java/com/facebook/soloader/BUCK
++++ b/node_modules/react-native/ReactAndroid/src/main/libraries/soloader/java/com/facebook/soloader/BUCK
+@@ -8,6 +8,6 @@ fb_native.android_prebuilt_aar(
+ 
+ fb_native.remote_file(
+     name = "soloader-binary-aar",
+-    sha1 = "4de8f64830aff60beb52fb27dffb2fcbe54c39df",
+-    url = "mvn:com.facebook.soloader:soloader:aar:0.6.0",
++    sha1 = "71378622ece36680b9bab7863c3d0259b442305e",
++    url = "mvn:com.facebook.soloader:soloader:aar:0.8.0",
+ )
