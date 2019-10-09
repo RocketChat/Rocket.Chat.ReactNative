@@ -7,6 +7,7 @@ import {
 	State
 } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
+import { ThemeContext } from 'react-navigation';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
@@ -21,6 +22,7 @@ import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
 import { LeftActions, RightActions } from './Actions';
+import { themes } from '../../constants/colors';
 
 export { ROW_HEIGHT };
 
@@ -239,101 +241,111 @@ class RoomItem extends React.Component {
 		}
 
 		return (
-			<PanGestureHandler
-				minDeltaX={20}
-				onGestureEvent={this._onGestureEvent}
-				onHandlerStateChange={this._onHandlerStateChange}
-			>
-				<Animated.View>
-					<LeftActions
-						transX={this.transX}
-						isRead={isRead}
-						width={width}
-						onToggleReadPress={this.onToggleReadPress}
-					/>
-					<RightActions
-						transX={this.transX}
-						favorite={favorite}
-						width={width}
-						toggleFav={this.toggleFav}
-						onHidePress={this.onHidePress}
-					/>
-					<Animated.View
-						style={{
-							transform: [{ translateX: this.transX }]
-						}}
+			<ThemeContext.Consumer>
+				{theme => (
+					<PanGestureHandler
+						minDeltaX={20}
+						onGestureEvent={this._onGestureEvent}
+						onHandlerStateChange={this._onHandlerStateChange}
 					>
-						<RectButton
-							onPress={this.onPress}
-							activeOpacity={0.8}
-							underlayColor='#e1e5e8'
-							testID={testID}
-							style={styles.button}
-						>
-							<View
-								style={styles.container}
-								accessibilityLabel={accessibilityLabel}
+						<Animated.View>
+							<LeftActions
+								theme={theme}
+								transX={this.transX}
+								isRead={isRead}
+								width={width}
+								onToggleReadPress={this.onToggleReadPress}
+							/>
+							<RightActions
+								transX={this.transX}
+								favorite={favorite}
+								width={width}
+								toggleFav={this.toggleFav}
+								onHidePress={this.onHidePress}
+							/>
+							<Animated.View
+								style={{
+									transform: [{ translateX: this.transX }]
+								}}
 							>
-								<Avatar
-									text={avatar}
-									size={avatarSize}
-									type={type}
-									baseUrl={baseUrl}
-									style={styles.avatar}
-									userId={userId}
-									token={token}
-								/>
-								<View style={styles.centerContainer}>
-									<View style={styles.titleContainer}>
-										<TypeIcon
+								<RectButton
+									onPress={this.onPress}
+									activeOpacity={1}
+									underlayColor={themes[theme].bannerBackground}
+									testID={testID}
+									style={{ backgroundColor: themes[theme].backgroundColor }}
+								>
+									<View
+										style={styles.container}
+										accessibilityLabel={accessibilityLabel}
+									>
+										<Avatar
+											text={avatar}
+											size={avatarSize}
 											type={type}
-											id={id}
-											prid={prid}
-											status={status}
+											baseUrl={baseUrl}
+											style={styles.avatar}
+											userId={userId}
+											token={token}
 										/>
-										<Text
-											style={[
-												styles.title,
-												alert && styles.alert
-											]}
-											ellipsizeMode='tail'
-											numberOfLines={1}
-										>
-											{name}
-										</Text>
-										{_updatedAt ? (
-											<Text
-												style={[
-													styles.date,
-													alert && styles.updateAlert
-												]}
-												ellipsizeMode='tail'
-												numberOfLines={1}
-											>
-												{capitalize(date)}
-											</Text>
-										) : null}
+										<View style={[styles.centerContainer, { borderColor: themes[theme].separatorColor }]}>
+											<View style={styles.titleContainer}>
+												<TypeIcon
+													theme={theme}
+													type={type}
+													id={id}
+													prid={prid}
+													status={status}
+												/>
+												<Text
+													style={[
+														styles.title,
+														alert && styles.alert,
+														{ color: themes[theme].titleText }
+													]}
+													ellipsizeMode='tail'
+													numberOfLines={1}
+												>
+													{name}
+												</Text>
+												{_updatedAt ? (
+													<Text
+														style={[
+															styles.date,
+															{ color: themes[theme].auxiliaryText },
+															alert && [styles.updateAlert, { color: themes[theme].tintColor }]
+														]}
+														ellipsizeMode='tail'
+														numberOfLines={1}
+													>
+														{capitalize(date)}
+													</Text>
+												) : null}
+											</View>
+											<View style={styles.row}>
+												<LastMessage
+													theme={theme}
+													lastMessage={lastMessage}
+													type={type}
+													showLastMessage={showLastMessage}
+													username={username}
+													alert={alert}
+												/>
+												<UnreadBadge
+													theme={theme}
+													unread={unread}
+													userMentions={userMentions}
+													type={type}
+												/>
+											</View>
+										</View>
 									</View>
-									<View style={styles.row}>
-										<LastMessage
-											lastMessage={lastMessage}
-											type={type}
-											showLastMessage={showLastMessage}
-											username={username}
-											alert={alert}
-										/>
-										<UnreadBadge
-											unread={unread}
-											userMentions={userMentions}
-											type={type}
-										/>
-									</View>
-								</View>
-							</View>
-						</RectButton>
-					</Animated.View>
-				</Animated.View>
-			</PanGestureHandler>
+								</RectButton>
+							</Animated.View>
+						</Animated.View>
+					</PanGestureHandler>
+				)}
+			</ThemeContext.Consumer>
 		);
 	}
 }

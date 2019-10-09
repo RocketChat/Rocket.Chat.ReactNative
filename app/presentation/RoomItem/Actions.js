@@ -6,9 +6,13 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
+import { themes, COLOR_WHITE } from '../../constants/colors';
+
+const FAV_COLOR = '#ffbb00';
+const HIDE_COLOR = '#54585e';
 
 export const LeftActions = React.memo(({
-	transX, isRead, width, onToggleReadPress
+	theme, transX, isRead, width, onToggleReadPress
 }) => {
 	const translateX = transX.interpolate({
 		inputRange: [0, ACTION_WIDTH],
@@ -30,7 +34,8 @@ export const LeftActions = React.memo(({
 					{
 						right: width - ACTION_WIDTH,
 						width,
-						transform: [{ translateX }]
+						transform: [{ translateX }],
+						backgroundColor: themes[theme].tintColor
 					}
 				]}
 			>
@@ -82,13 +87,14 @@ export const RightActions = React.memo(({
 					styles.actionRightButtonContainer,
 					{
 						width,
-						transform: [{ translateX: translateXFav }]
+						transform: [{ translateX: translateXFav }],
+						backgroundColor: HIDE_COLOR
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: '#ffbb00' }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: FAV_COLOR }]} onPress={toggleFav}>
 					<>
-						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color='white' />
+						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={COLOR_WHITE} />
 						<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
 					</>
 				</RectButton>
@@ -102,9 +108,9 @@ export const RightActions = React.memo(({
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: '#54585e' }]} onPress={onHidePress}>
+				<RectButton style={[styles.actionButton, { backgroundColor: HIDE_COLOR }]} onPress={onHidePress}>
 					<>
-						<CustomIcon size={20} name='eye-off' color='white' />
+						<CustomIcon size={20} name='eye-off' color={COLOR_WHITE} />
 						<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
 					</>
 				</RectButton>
@@ -114,6 +120,7 @@ export const RightActions = React.memo(({
 });
 
 LeftActions.propTypes = {
+	theme: PropTypes.string,
 	transX: PropTypes.object,
 	isRead: PropTypes.bool,
 	width: PropTypes.number,

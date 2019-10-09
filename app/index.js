@@ -318,6 +318,7 @@ export default class Root extends React.Component {
 						ref={(navigatorRef) => {
 							Navigation.setTopLevelNavigator(navigatorRef);
 						}}
+						theme='light'
 						onNavigationStateChange={onNavigationStateChange}
 					/>
 				</LayoutAnimation>
