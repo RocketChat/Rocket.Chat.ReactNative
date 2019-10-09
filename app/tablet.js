@@ -5,7 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import {
-	View, Linking, Modal, TouchableOpacity
+	View, Linking, Modal
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
@@ -214,20 +214,6 @@ const ChatsDrawer = createDrawerNavigator({
 	contentComponent: () => null
 });
 
-const NewMessageStack = createStackNavigator({
-	NewMessageView: {
-		getScreen: () => require('./views/NewMessageView').default
-	},
-	SelectedUsersViewCreateChannel: {
-		getScreen: () => require('./views/SelectedUsersView').default
-	},
-	CreateChannelView: {
-		getScreen: () => require('./views/CreateChannelView').default
-	}
-}, {
-	defaultNavigationOptions: defaultHeader
-});
-
 const InsideStackModal = createStackNavigator({
 	Main: ChatsStack,
 	JitsiMeetView: {
@@ -240,12 +226,25 @@ const InsideStackModal = createStackNavigator({
 });
 
 const ListStackModal = createStackNavigator({
-	Main: ChatsDrawer,
-	NewMessageStack
+	Main: ChatsDrawer
 },
 {
 	mode: 'modal',
 	headerMode: 'none'
+});
+
+const ModalStack = createStackNavigator({
+	NewMessageView: {
+		getScreen: () => require('./views/NewMessageView').default
+	},
+	SelectedUsersViewCreateChannel: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	CreateChannelView: {
+		getScreen: () => require('./views/CreateChannelView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
 });
 
 const SetUsernameStack = createStackNavigator({
@@ -289,18 +288,34 @@ const App = createAppContainer(createSwitchNavigator(
 
 const ListContainer = createAppContainer(ListStackModal);
 
+const ModalContainer = createAppContainer(ModalStack);
+
 export class MasterDetailView extends React.Component {
 	state = {
 		inside: false,
 		landscape: Orientation.getInitialOrientation().includes('LANDSCAPE'),
 		inCall: false,
-		showModal: false,
-		modalName: null
+		showModal: false
 	};
 
 	componentDidMount() {
+		const defaultModalGetStateForAction = ModalContainer.router.getStateForAction;
 		const defaultDetailsGetStateForAction = ListContainer.router.getStateForAction;
 		const defaultMasterGetStateForAction = App.router.getStateForAction;
+
+		ModalContainer.router.getStateForAction = (action, state) => {
+			if (action.type === 'Navigation/POP') {
+				this.setState({ showModal: false });
+			}
+			action.params = this.params;
+			if (action.type === NavigationActions.NAVIGATE) {
+				const { routeName } = action;
+				if (routeName === 'RoomView') {
+					this.setState({ showModal: false });
+				}
+			}
+			return defaultModalGetStateForAction(action, state);
+		};
 
 		ListContainer.router.getStateForAction = (action, state) => {
 			if (action.type === NavigationActions.NAVIGATE) {
@@ -313,17 +328,18 @@ export class MasterDetailView extends React.Component {
 					this.setState({ inside: false });
 				}
 				if (routeName === 'NewMessageView') {
-					this.setState({ showModal: true, modalName: 'NewMessageView' });
+					this.setState({ showModal: true });
+					this.params = params;
 					return null;
 				}
 				if (routeName === 'DirectoryView') {
-					this.setState({ showModal: true, modalName: 'DirectoryView' });
+					this.setState({ showModal: true });
 					return null;
 				}
 				Navigation.navigate(routeName, params);
 			}
 			if (action.type === 'Navigation/TOGGLE_DRAWER') {
-				this.setState({ showModal: true, modalName: 'SidebarView' });
+				this.setState({ showModal: true });
 				return null;
 			}
 			return defaultDetailsGetStateForAction(action, state);
@@ -361,10 +377,10 @@ export class MasterDetailView extends React.Component {
 	_orientationDidChange = orientation => this.setState({ landscape: orientation.includes('LANDSCAPE') });
 
 	renderModal = () => {
-		const { showModal, modalName } = this.state;
-		const NewMessageView = require('./views/NewMessageView').default;
-		const SidebarView = require('./views/SidebarView').default;
-		const DirectoryView = require('./views/DirectoryView').default;
+		const { showModal } = this.state;
+		// const NewMessageView = require('./views/NewMessageView').default;
+		// const SidebarView = require('./views/SidebarView').default;
+		// const DirectoryView = require('./views/DirectoryView').default;
 		return (
 			<Modal
 				presentationStyle='formSheet'
@@ -372,10 +388,11 @@ export class MasterDetailView extends React.Component {
 				visible={showModal}
 			>
 				<View style={{ flex: 1 }}>
-					<TouchableOpacity onPress={() => this.setState({ showModal: false })} style={{ height: 50, width: 50, backgroundColor: 'green' }} />
-					{ modalName === 'NewMessageView' ? <NewMessageView navigation={Navigation} /> : null }
-					{ modalName === 'SidebarView' ? <SidebarView navigation={Navigation} /> : null }
-					{ modalName === 'DirectoryView' ? <DirectoryView navigation={Navigation} /> : null }
+					<ModalContainer
+						ref={(modalRef) => {
+							this.modalRef = modalRef;
+						}}
+					/>
 				</View>
 			</Modal>
 		);
