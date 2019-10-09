@@ -5,7 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import {
-	View, Linking, Modal
+	View, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
@@ -89,12 +89,6 @@ const OutsideStackModal = createStackNavigator({
 const ListStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
-	},
-	DirectoryView: {
-		getScreen: () => require('./views/DirectoryView').default
-	},
-	SelectedUsersView: {
-		getScreen: () => require('./views/SelectedUsersView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -233,7 +227,7 @@ const ListStackModal = createStackNavigator({
 	headerMode: 'none'
 });
 
-const ModalStack = createStackNavigator({
+const MessagesStack = createStackNavigator({
 	NewMessageView: {
 		getScreen: () => require('./views/NewMessageView').default
 	},
@@ -245,6 +239,46 @@ const ModalStack = createStackNavigator({
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
+});
+
+const DirectoryStack = createStackNavigator({
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const SidebarStack = createStackNavigator({
+	SidebarView: {
+		getScreen: () => require('./views/SidebarView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const RoomActionsStack = createStackNavigator({
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const ModalSwitch = createSwitchNavigator({
+	MessagesStack,
+	DirectoryStack,
+	SidebarStack,
+	RoomActionsStack,
+	AuthLoading: {
+		getScreen: () => require('./views/AuthLoadingView').default
+	}
+},
+{
+	initialRouteName: 'AuthLoading'
 });
 
 const SetUsernameStack = createStackNavigator({
@@ -288,7 +322,7 @@ const App = createAppContainer(createSwitchNavigator(
 
 const ListContainer = createAppContainer(ListStackModal);
 
-const ModalContainer = createAppContainer(ModalStack);
+const ModalContainer = createAppContainer(ModalSwitch);
 
 export class MasterDetailView extends React.Component {
 	state = {
@@ -307,11 +341,14 @@ export class MasterDetailView extends React.Component {
 			if (action.type === 'Navigation/POP') {
 				this.setState({ showModal: false });
 			}
-			action.params = this.params;
+			action.params = action.params || this.params;
 			if (action.type === NavigationActions.NAVIGATE) {
 				const { routeName } = action;
 				if (routeName === 'RoomView') {
 					this.setState({ showModal: false });
+				}
+				if (routeName === 'JitsiMeetView') {
+					this.setState({ inCall: true, showModal: false });
 				}
 			}
 			return defaultModalGetStateForAction(action, state);
@@ -328,17 +365,20 @@ export class MasterDetailView extends React.Component {
 					this.setState({ inside: false });
 				}
 				if (routeName === 'NewMessageView') {
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
 					this.setState({ showModal: true });
 					this.params = params;
 					return null;
 				}
 				if (routeName === 'DirectoryView') {
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
 					this.setState({ showModal: true });
 					return null;
 				}
 				Navigation.navigate(routeName, params);
 			}
 			if (action.type === 'Navigation/TOGGLE_DRAWER') {
+				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SidebarView' }));
 				this.setState({ showModal: true });
 				return null;
 			}
@@ -348,7 +388,7 @@ export class MasterDetailView extends React.Component {
 		App.router.getStateForAction = (action, state) => {
 			const { inCall } = this.state;
 			if (action.type === NavigationActions.NAVIGATE) {
-				const { routeName } = action;
+				const { routeName, params } = action;
 				if (routeName === 'InsideStack') {
 					this.setState({ inside: true });
 				}
@@ -360,6 +400,11 @@ export class MasterDetailView extends React.Component {
 				}
 				if (routeName === 'RoomView') {
 					this.setState({ showModal: false });
+				}
+				if (routeName === 'RoomActionsView') {
+					this.setState({ showModal: true });
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					return null;
 				}
 			}
 			if (action.type === 'Navigation/POP' && inCall) {
@@ -378,23 +423,28 @@ export class MasterDetailView extends React.Component {
 
 	renderModal = () => {
 		const { showModal } = this.state;
-		// const NewMessageView = require('./views/NewMessageView').default;
-		// const SidebarView = require('./views/SidebarView').default;
-		// const DirectoryView = require('./views/DirectoryView').default;
+		// https://github.com/react-navigation/react-navigation/issues/5458
 		return (
-			<Modal
-				presentationStyle='formSheet'
-				animationType='slide'
-				visible={showModal}
+			<View
+				style={{
+					width: showModal ? '70%' : 1,
+					height: showModal ? '70%' : 1,
+					position: 'absolute',
+					overflow: 'hidden',
+					borderRadius: 16,
+					shadowColor: '#000',
+					shadowOffset: { width: 0, height: 2 },
+					shadowOpacity: 0.8,
+					shadowRadius: 2,
+					elevation: 1
+				}}
 			>
-				<View style={{ flex: 1 }}>
-					<ModalContainer
-						ref={(modalRef) => {
-							this.modalRef = modalRef;
-						}}
-					/>
-				</View>
-			</Modal>
+				<ModalContainer
+					ref={(modalRef) => {
+						this.modalRef = modalRef;
+					}}
+				/>
+			</View>
 		);
 	}
 
@@ -420,10 +470,11 @@ export class MasterDetailView extends React.Component {
 			<View
 				style={{
 					flex: 1,
-					flexDirection: 'row'
+					flexDirection: 'row',
+					justifyContent: 'center',
+					alignItems: 'center'
 				}}
 			>
-				{ this.renderModal() }
 				{ inside && !inCall ? this.renderSideView() : null }
 				<View style={{ flex: landscape ? 9 : 7 }}>
 					<App
@@ -433,6 +484,7 @@ export class MasterDetailView extends React.Component {
 						onNavigationStateChange={onNavigationStateChange}
 					/>
 				</View>
+				{ this.renderModal() }
 			</View>
 		);
 	}
