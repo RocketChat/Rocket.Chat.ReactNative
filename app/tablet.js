@@ -5,7 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import {
-	View, Linking
+	View, Linking, Modal, TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
@@ -13,7 +13,6 @@ import Orientation from 'react-native-orientation-locker';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
-import Sidebar from './views/SidebarView';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
@@ -212,7 +211,7 @@ const ChatsDrawer = createDrawerNavigator({
 	SettingsStack,
 	AdminPanelStack
 }, {
-	contentComponent: Sidebar
+	contentComponent: () => null
 });
 
 const NewMessageStack = createStackNavigator({
@@ -294,7 +293,9 @@ export class MasterDetailView extends React.Component {
 	state = {
 		inside: false,
 		landscape: Orientation.getInitialOrientation().includes('LANDSCAPE'),
-		inCall: false
+		inCall: false,
+		showModal: false,
+		modalName: null
 	};
 
 	componentDidMount() {
@@ -306,12 +307,24 @@ export class MasterDetailView extends React.Component {
 				const { routeName, params } = action;
 				if (routeName === 'RoomView') {
 					this.listRef.dispatch(NavigationActions.navigate({ routeName: 'RoomsListView' }));
-					Navigation.navigate('Home', params);
+					Navigation.navigate('Home');
 				}
 				if (routeName === 'OnboardingView') {
 					this.setState({ inside: false });
 				}
+				if (routeName === 'NewMessageView') {
+					this.setState({ showModal: true, modalName: 'NewMessageView' });
+					return null;
+				}
+				if (routeName === 'DirectoryView') {
+					this.setState({ showModal: true, modalName: 'DirectoryView' });
+					return null;
+				}
 				Navigation.navigate(routeName, params);
+			}
+			if (action.type === 'Navigation/TOGGLE_DRAWER') {
+				this.setState({ showModal: true, modalName: 'SidebarView' });
+				return null;
 			}
 			return defaultDetailsGetStateForAction(action, state);
 		};
@@ -329,6 +342,9 @@ export class MasterDetailView extends React.Component {
 				if (routeName === 'JitsiMeetView') {
 					this.setState({ inCall: true });
 				}
+				if (routeName === 'RoomView') {
+					this.setState({ showModal: false });
+				}
 			}
 			if (action.type === 'Navigation/POP' && inCall) {
 				this.setState({ inCall: false });
@@ -343,6 +359,27 @@ export class MasterDetailView extends React.Component {
 	}
 
 	_orientationDidChange = orientation => this.setState({ landscape: orientation.includes('LANDSCAPE') });
+
+	renderModal = () => {
+		const { showModal, modalName } = this.state;
+		const NewMessageView = require('./views/NewMessageView').default;
+		const SidebarView = require('./views/SidebarView').default;
+		const DirectoryView = require('./views/DirectoryView').default;
+		return (
+			<Modal
+				presentationStyle='formSheet'
+				animationType='slide'
+				visible={showModal}
+			>
+				<View style={{ flex: 1 }}>
+					<TouchableOpacity onPress={() => this.setState({ showModal: false })} style={{ height: 50, width: 50, backgroundColor: 'green' }} />
+					{ modalName === 'NewMessageView' ? <NewMessageView navigation={Navigation} /> : null }
+					{ modalName === 'SidebarView' ? <SidebarView navigation={Navigation} /> : null }
+					{ modalName === 'DirectoryView' ? <DirectoryView navigation={Navigation} /> : null }
+				</View>
+			</Modal>
+		);
+	}
 
 	renderSideView = () => {
 		const { landscape } = this.state;
@@ -363,7 +400,13 @@ export class MasterDetailView extends React.Component {
 	render() {
 		const { inside, inCall, landscape } = this.state;
 		return (
-			<View style={{ flex: 1, flexDirection: 'row' }}>
+			<View
+				style={{
+					flex: 1,
+					flexDirection: 'row'
+				}}
+			>
+				{ this.renderModal() }
 				{ inside && !inCall ? this.renderSideView() : null }
 				<View style={{ flex: landscape ? 9 : 7 }}>
 					<App
