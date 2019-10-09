@@ -33,6 +33,13 @@ class JitsiMeetView extends React.Component {
 		}, 1000);
 	}
 
+	componentWillUnmount() {
+		if (this.jitsiTimeout) {
+			BackgroundTimer.clearInterval(this.jitsiTimeout);
+		}
+		JitsiMeet.endCall();
+	}
+
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
