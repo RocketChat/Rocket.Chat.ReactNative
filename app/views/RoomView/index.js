@@ -86,7 +86,7 @@ class RoomView extends React.Component {
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
-			headerLeft: !isTablet ? (
+			headerLeft: !isTablet || tmid ? (
 				<HeaderBackButton
 					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 					backTitleVisible={isIOS}
