@@ -102,41 +102,8 @@ const ChatsStack = createStackNavigator({
 	RoomView: {
 		getScreen: () => require('./views/RoomView').default
 	},
-	RoomActionsView: {
-		getScreen: () => require('./views/RoomActionsView').default
-	},
-	RoomInfoView: {
-		getScreen: () => require('./views/RoomInfoView').default
-	},
-	RoomInfoEditView: {
-		getScreen: () => require('./views/RoomInfoEditView').default
-	},
-	RoomMembersView: {
-		getScreen: () => require('./views/RoomMembersView').default
-	},
-	SearchMessagesView: {
-		getScreen: () => require('./views/SearchMessagesView').default
-	},
-	SelectedUsersView: {
-		getScreen: () => require('./views/SelectedUsersView').default
-	},
-	ThreadMessagesView: {
-		getScreen: () => require('./views/ThreadMessagesView').default
-	},
-	MessagesView: {
-		getScreen: () => require('./views/MessagesView').default
-	},
-	AutoTranslateView: {
-		getScreen: () => require('./views/AutoTranslateView').default
-	},
-	ReadReceiptsView: {
-		getScreen: () => require('./views/ReadReceiptView').default
-	},
 	TableView: {
 		getScreen: () => require('./views/TableView').default
-	},
-	NotificationPrefView: {
-		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
