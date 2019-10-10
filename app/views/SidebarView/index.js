@@ -276,7 +276,7 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted]} />
 					</RectButton>
 
-					<Separator key='separator-header' />
+					{!isTablet || showStatus ? <Separator key='separator-header' /> : null}
 
 					{!showStatus && !isTablet ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}

@@ -26,6 +26,7 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import SidebarView from '../SidebarView';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const ItemInfo = React.memo(({ info }) => (
@@ -116,6 +117,7 @@ class SettingsView extends React.Component {
 				title={I18n.t('Logout')}
 				testID='settings-logout'
 				onPress={this.logout}
+				right={this.renderDisclosure}
 				color={COLOR_DANGER}
 			/>
 			<Separator />
@@ -156,14 +158,21 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					<ListItem
-						title={I18n.t('Profile')}
-						onPress={() => this.navigateToRoom('ProfileView')}
-						showActionIndicator
-						testID='settings-profile'
-						right={this.renderDisclosure}
-					/>
-					<Separator />
+					{isTablet ? (
+						<>
+							<SidebarView />
+							<SectionSeparator />
+							<ListItem
+								title={I18n.t('Profile')}
+								onPress={() => this.navigateToRoom('ProfileView')}
+								showActionIndicator
+								testID='settings-profile'
+								right={this.renderDisclosure}
+							/>
+							<Separator />
+						</>
+					) : null}
+
 					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
