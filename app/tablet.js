@@ -26,6 +26,8 @@ import LayoutAnimation from './utils/layoutAnimation';
 
 useScreens();
 
+let showModal = false;
+
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
@@ -267,13 +269,53 @@ const ModalSwitch = createSwitchNavigator({
 	DirectoryStack,
 	SidebarStack,
 	RoomActionsStack,
-	AuthLoading: {
-		getScreen: () => require('./views/AuthLoadingView').default
-	}
+	AuthLoading: () => null
 },
 {
 	initialRouteName: 'AuthLoading'
 });
+
+class CustomModalStack extends React.Component {
+	static router = ModalSwitch.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		if (!showModal) { return null; }
+		return (
+			<View
+				style={{
+					flex: 1,
+					width: '100%',
+					height: '100%',
+					backgroundColor: '#00000030',
+					position: 'absolute',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
+			>
+				<View
+					style={{
+						width: '70%',
+						height: '70%',
+						overflow: 'hidden',
+						borderRadius: 16,
+						shadowColor: '#000',
+						shadowOffset: { width: 0, height: 2 },
+						shadowOpacity: 0.8,
+						shadowRadius: 2,
+						elevation: 1
+					}}
+				>
+					<ModalSwitch navigation={navigation} />
+				</View>
+			</View>
+		);
+	}
+}
 
 const SetUsernameStack = createStackNavigator({
 	SetUsernameView: {
@@ -316,14 +358,13 @@ const App = createAppContainer(createSwitchNavigator(
 
 const ListContainer = createAppContainer(ListStackModal);
 
-const ModalContainer = createAppContainer(ModalSwitch);
+const ModalContainer = createAppContainer(CustomModalStack);
 
 export class MasterDetailView extends React.Component {
 	state = {
 		inside: false,
 		landscape: Orientation.getInitialOrientation().includes('LANDSCAPE'),
-		inCall: false,
-		showModal: false
+		inCall: false
 	};
 
 	componentDidMount() {
@@ -333,16 +374,14 @@ export class MasterDetailView extends React.Component {
 
 		ModalContainer.router.getStateForAction = (action, state) => {
 			if (action.type === 'Navigation/POP') {
-				this.setState({ showModal: false });
+				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
+				showModal = false;
 			}
 			action.params = action.params || this.params;
 			if (action.type === NavigationActions.NAVIGATE) {
 				const { routeName } = action;
-				if (routeName === 'RoomView') {
-					this.setState({ showModal: false });
-				}
 				if (routeName === 'JitsiMeetView') {
-					this.setState({ inCall: true, showModal: false });
+					this.setState({ inCall: true });
 				}
 			}
 			return defaultModalGetStateForAction(action, state);
@@ -360,20 +399,20 @@ export class MasterDetailView extends React.Component {
 				}
 				if (routeName === 'NewMessageView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
-					this.setState({ showModal: true });
+					showModal = true;
 					this.params = params;
 					return null;
 				}
 				if (routeName === 'DirectoryView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
-					this.setState({ showModal: true });
+					showModal = true;
 					return null;
 				}
 				Navigation.navigate(routeName, params);
 			}
 			if (action.type === 'Navigation/TOGGLE_DRAWER') {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SidebarView' }));
-				this.setState({ showModal: true });
+				showModal = true;
 				return null;
 			}
 			return defaultDetailsGetStateForAction(action, state);
@@ -392,12 +431,9 @@ export class MasterDetailView extends React.Component {
 				if (routeName === 'JitsiMeetView') {
 					this.setState({ inCall: true });
 				}
-				if (routeName === 'RoomView') {
-					this.setState({ showModal: false });
-				}
 				if (routeName === 'RoomActionsView') {
-					this.setState({ showModal: true });
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					showModal = true;
 					return null;
 				}
 			}
@@ -415,32 +451,13 @@ export class MasterDetailView extends React.Component {
 
 	_orientationDidChange = orientation => this.setState({ landscape: orientation.includes('LANDSCAPE') });
 
-	renderModal = () => {
-		const { showModal } = this.state;
-		// https://github.com/react-navigation/react-navigation/issues/5458
-		return (
-			<View
-				style={{
-					width: showModal ? '70%' : 1,
-					height: showModal ? '70%' : 1,
-					position: 'absolute',
-					overflow: 'hidden',
-					borderRadius: 16,
-					shadowColor: '#000',
-					shadowOffset: { width: 0, height: 2 },
-					shadowOpacity: 0.8,
-					shadowRadius: 2,
-					elevation: 1
-				}}
-			>
-				<ModalContainer
-					ref={(modalRef) => {
-						this.modalRef = modalRef;
-					}}
-				/>
-			</View>
-		);
-	}
+	renderModal = () => (
+		<ModalContainer
+			ref={(modalRef) => {
+				this.modalRef = modalRef;
+			}}
+		/>
+	);
 
 	renderSideView = () => {
 		const { landscape } = this.state;
