@@ -255,6 +255,7 @@ export default {
 	pinned: 'fixada',
 	Pinned: 'Mensagens Fixadas',
 	Please_enter_your_password: 'Por favor, digite sua senha',
+	Preferences: 'Preferências',
 	Preferences_saved: 'Preferências salvas!',
 	Privacy_Policy: ' Política de Privacidade',
 	Private_Channel: 'Canal Privado',

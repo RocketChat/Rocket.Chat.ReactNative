@@ -277,6 +277,7 @@ export default {
 	pinned: 'pinned',
 	Pinned: 'Pinned',
 	Please_enter_your_password: 'Please enter your password',
+	Preferences: 'Preferences',
 	Preferences_saved: 'Preferences saved!',
 	Privacy_Policy: ' Privacy Policy',
 	Private_Channel: 'Private Channel',
