@@ -5,81 +5,155 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export const getMessage = async(rid, msg = '', tmid, user) => {
-	const _id = random(17);
-	const { id, username } = user;
-	try {
-		const db = database.active;
-		const msgCollection = db.collections.get('messages');
-		let message;
-		await db.action(async() => {
-			message = await msgCollection.create((m) => {
-				m._raw = sanitizedRaw({ id: _id }, msgCollection.schema);
-				m.subscription.id = rid;
-				m.msg = msg;
-				m.tmid = tmid;
-				m.ts = new Date();
-				m._updatedAt = new Date();
-				m.status = messagesStatus.TEMP;
-				m.u = {
-					_id: id || '1',
-					username
-				};
-			});
-		});
-		return message;
-	} catch (error) {
-		console.warn('getMessage', error);
-	}
-};
-
 export async function sendMessageCall(message) {
 	const {
 		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
-	// RC 0.60.0
-	const data = await this.sdk.post('chat.sendMessage', {
-		message: {
-			_id, rid, msg, tmid
+	try {
+		// RC 0.60.0
+		await this.sdk.post('chat.sendMessage', {
+			message: {
+				_id, rid, msg, tmid
+			}
+		});
+	} catch (e) {
+		const db = database.active;
+		const msgCollection = db.collections.get('messages');
+		const threadMessagesCollection = db.collections.get('thread_messages');
+		const errorBatch = [];
+		const messageRecord = await msgCollection.find(_id);
+		errorBatch.push(
+			messageRecord.prepareUpdate((m) => {
+				m.status = messagesStatus.ERROR;
+			})
+		);
+
+		if (tmid) {
+			const threadMessageRecord = await threadMessagesCollection.find(_id);
+			errorBatch.push(
+				threadMessageRecord.prepareUpdate((tm) => {
+					tm.status = messagesStatus.ERROR;
+				})
+			);
 		}
-	});
-	return data;
+
+		await db.action(async() => {
+			await db.batch(...errorBatch);
+		});
+	}
 }
 
 export default async function(rid, msg, tmid, user) {
 	try {
 		const db = database.active;
-		const subsCollections = db.collections.get('subscriptions');
-		const message = await getMessage(rid, msg, tmid, user);
-		if (!message) {
-			return;
+		const subsCollection = db.collections.get('subscriptions');
+		const msgCollection = db.collections.get('messages');
+		const threadCollection = db.collections.get('threads');
+		const threadMessagesCollection = db.collections.get('thread_messages');
+		const messageId = random(17);
+		const batch = [];
+		const message = {
+			id: messageId, subscription: { id: rid }, msg, tmid
+		};
+		const messageDate = new Date();
+		let tMessageRecord;
+
+		// If it's replying to a thread
+		if (tmid) {
+			try {
+				// Find thread message header in Messages collection
+				tMessageRecord = await msgCollection.find(tmid);
+				batch.push(
+					tMessageRecord.prepareUpdate((m) => {
+						m.tlm = messageDate;
+						m.tcount += 1;
+					})
+				);
+
+				try {
+					// Find thread message header in Threads collection
+					await threadCollection.find(tmid);
+				} catch (error) {
+					// If there's no record, create one
+					batch.push(
+						threadCollection.prepareCreate((tm) => {
+							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
+							tm.subscription.id = rid;
+							tm.tmid = tmid;
+							tm.msg = tMessageRecord.msg;
+							tm.ts = tMessageRecord.ts;
+							tm._updatedAt = messageDate;
+							tm.status = messagesStatus.SENT; // Original message was sent already
+							tm.u = tMessageRecord.u;
+						})
+					);
+				}
+
+				// Create the message sent in ThreadMessages collection
+				batch.push(
+					threadMessagesCollection.prepareCreate((tm) => {
+						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
+						tm.subscription.id = rid;
+						tm.rid = tmid;
+						tm.msg = msg;
+						tm.ts = messageDate;
+						tm._updatedAt = messageDate;
+						tm.status = messagesStatus.TEMP;
+						tm.u = {
+							_id: user.id || '1',
+							username: user.username
+						};
+					})
+				);
+			} catch (e) {
+				log(e);
+			}
 		}
 
+		// Create the message sent in Messages collection
+		batch.push(
+			msgCollection.prepareCreate((m) => {
+				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
+				m.subscription.id = rid;
+				m.msg = msg;
+				m.ts = messageDate;
+				m._updatedAt = messageDate;
+				m.status = messagesStatus.TEMP;
+				m.u = {
+					_id: user.id || '1',
+					username: user.username
+				};
+				if (tmid) {
+					m.tmid = tmid;
+					m.tlm = messageDate;
+					m.tmsg = tMessageRecord.msg;
+				}
+			})
+		);
+
 		try {
-			const room = await subsCollections.find(rid);
-			await db.action(async() => {
-				await room.update((r) => {
-					r.draftMessage = null;
-				});
-			});
+			const room = await subsCollection.find(rid);
+			if (room.draftMessage) {
+				batch.push(
+					room.prepareUpdate((r) => {
+						r.draftMessage = null;
+					})
+				);
+			}
 		} catch (e) {
 			// Do nothing
 		}
 
 		try {
-			await sendMessageCall.call(this, message);
 			await db.action(async() => {
-				await message.update((m) => {
-					m.status = messagesStatus.SENT;
-				});
+				await db.batch(...batch);
 			});
 		} catch (e) {
-			await db.action(async() => {
-				await message.update((m) => {
-					m.status = messagesStatus.ERROR;
-				});
-			});
+			log(e);
+			return;
 		}
+
+		await sendMessageCall.call(this, message);
 	} catch (e) {
 		log(e);
 	}

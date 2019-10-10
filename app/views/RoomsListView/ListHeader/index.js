@@ -8,11 +8,11 @@ import Sort from './Sort';
 const ListHeader = React.memo(({
 	searchLength, sortBy, onChangeSearchText, toggleSort, goDirectory
 }) => (
-	<React.Fragment>
+	<>
 		<SearchBar onChangeSearchText={onChangeSearchText} />
 		<Directory goDirectory={goDirectory} />
 		<Sort searchLength={searchLength} sortBy={sortBy} toggleSort={toggleSort} />
-	</React.Fragment>
+	</>
 ));
 
 ListHeader.propTypes = {

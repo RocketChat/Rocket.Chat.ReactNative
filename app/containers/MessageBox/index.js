@@ -30,6 +30,7 @@ import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
+import { canUploadFile } from '../../utils/media';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -73,6 +74,8 @@ class MessageBox extends Component {
 		roomType: PropTypes.string,
 		tmid: PropTypes.string,
 		replyWithMention: PropTypes.bool,
+		FileUpload_MediaTypeWhiteList: PropTypes.string,
+		FileUpload_MaxFileSize: PropTypes.number,
 		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
@@ -92,9 +95,9 @@ class MessageBox extends Component {
 			file: {
 				isVisible: false
 			},
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		};
-		this.showCommandPreview = false;
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.fileOptions = [
@@ -221,12 +224,34 @@ class MessageBox extends Component {
 
 	componentWillUnmount() {
 		console.countReset(`${ this.constructor.name }.render calls`);
+		if (this.onChangeText && this.onChangeText.stop) {
+			this.onChangeText.stop();
+		}
+		if (this.getUsers && this.getUsers.stop) {
+			this.getUsers.stop();
+		}
+		if (this.getRooms && this.getRooms.stop) {
+			this.getRooms.stop();
+		}
+		if (this.getEmojis && this.getEmojis.stop) {
+			this.getEmojis.stop();
+		}
+		if (this.getSlashCommands && this.getSlashCommands.stop) {
+			this.getSlashCommands.stop();
+		}
 	}
 
-	onChangeText = debounce(async(text) => {
-		const db = database.active;
+	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
+		this.debouncedOnChangeText(text);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedOnChangeText = debounce(async(text) => {
+		const db = database.active;
+		const isTextEmpty = text.length === 0;
+		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
 		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
@@ -245,25 +270,27 @@ class MessageBox extends Component {
 		}
 
 		if (!isTextEmpty) {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			const lastNativeText = this.component._lastNativeText;
-			// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-			const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-			const result = lastNativeText.substr(0, cursor).match(regexp);
-			this.showCommandPreview = false;
-			if (!result) {
-				const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-				if (slash) {
-					return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+			try {
+				const { start, end } = this.component._lastNativeSelection;
+				const cursor = Math.max(start, end);
+				const lastNativeText = this.component._lastNativeText || '';
+				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
+				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+				const result = lastNativeText.substr(0, cursor).match(regexp);
+				if (!result) {
+					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+					if (slash) {
+						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+					}
+					return this.stopTrackingMention();
 				}
-				return this.stopTrackingMention();
+				const [, lastChar, name] = result;
+				this.identifyMentionKeyword(name, lastChar);
+			} catch (e) {
+				log(e);
 			}
-			const [, lastChar, name] = result;
-			this.identifyMentionKeyword(name, lastChar);
 		} else {
 			this.stopTrackingMention();
-			this.showCommandPreview = false;
 		}
 	}, 100)
 
@@ -286,7 +313,7 @@ class MessageBox extends Component {
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
-			this.showCommandPreview = true;
+			this.setState({ showCommandPreview: true });
 		}
 		this.setInput(text);
 		this.focus();
@@ -298,10 +325,10 @@ class MessageBox extends Component {
 		const { text } = this;
 		const command = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.showCommandPreview = false;
-		this.setState({ commandPreview: [] });
+		this.setState({ commandPreview: [], showCommandPreview: false });
 		this.stopTrackingMention();
 		this.clearInput();
+		this.handleTyping(false);
 		try {
 			RocketChat.executeCommandPreview(command, params, rid, item);
 		} catch (e) {
@@ -338,10 +365,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ _id: -1, username: 'all' }];
+			result = [{ id: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ _id: -2, username: 'here' }, ...result];
+			result = [{ id: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -411,10 +438,9 @@ class MessageBox extends Component {
 		const { rid } = this.props;
 		try	{
 			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
-			this.showCommandPreview = true;
-			this.setState({ commandPreview: preview.items });
+			this.setState({ commandPreview: preview.items, showCommandPreview: true });
 		} catch (e) {
-			this.showCommandPreview = false;
+			this.setState({ commandPreview: [], showCommandPreview: true });
 			log(e);
 		}
 	}
@@ -433,6 +459,16 @@ class MessageBox extends Component {
 	clearInput = () => {
 		this.setInput('');
 		this.setShowSend(false);
+	}
+
+	canUploadFile = (file) => {
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+		const result = canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
+		if (result.success) {
+			return true;
+		}
+		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		return false;
 	}
 
 	sendMediaMessage = async(file) => {
@@ -458,7 +494,9 @@ class MessageBox extends Component {
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -467,7 +505,9 @@ class MessageBox extends Component {
 	takeVideo = async() => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			this.showUploadModal(video);
+			if (this.canUploadFile(video)) {
+				this.showUploadModal(video);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -476,7 +516,9 @@ class MessageBox extends Component {
 	chooseFromLibrary = async() => {
 		try {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
-			this.showUploadModal(image);
+			if (this.canUploadFile(image)) {
+				this.showUploadModal(image);
+			}
 		} catch (e) {
 			log(e);
 		}
@@ -487,12 +529,15 @@ class MessageBox extends Component {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
 			});
-			this.showUploadModal({
+			const file = {
 				filename: res.name,
 				size: res.size,
 				mime: res.type,
 				path: res.uri
-			});
+			};
+			if (this.canUploadFile(file)) {
+				this.showUploadModal(file);
+			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
@@ -560,11 +605,10 @@ class MessageBox extends Component {
 		});
 		if (fileInfo) {
 			try {
-				await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-			} catch (e) {
-				if (e && e.error === 'error-file-too-large') {
-					return Alert.alert(I18n.t(e.error));
+				if (this.canUploadFile(fileInfo)) {
+					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
+			} catch (e) {
 				log(e);
 			}
 		}
@@ -602,7 +646,7 @@ class MessageBox extends Component {
 			).fetch();
 			if (slashCommand.length > 0) {
 				try {
-					const messageWithoutCommand = message.substr(message.indexOf(' ') + 1);
+					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
 				} catch (e) {
 					log(e);
@@ -670,14 +714,15 @@ class MessageBox extends Component {
 	}
 
 	stopTrackingMention = () => {
-		const { trackingType } = this.state;
-		if (!trackingType) {
+		const { trackingType, showCommandPreview } = this.state;
+		if (!trackingType && !showCommandPreview) {
 			return;
 		}
 		this.setState({
 			mentions: [],
 			trackingType: '',
-			commandPreview: []
+			commandPreview: [],
+			showCommandPreview: false
 		});
 	}
 
@@ -794,8 +839,9 @@ class MessageBox extends Component {
 				<FlatList
 					style={styles.mentionList}
 					data={mentions}
+					extraData={mentions}
 					renderItem={this.renderMentionItem}
-					keyExtractor={item => item._id || item.username || item.command || item}
+					keyExtractor={item => item.id || item.username || item.command || item}
 					keyboardShouldPersistTaps='always'
 				/>
 			</ScrollView>
@@ -807,8 +853,8 @@ class MessageBox extends Component {
 	);
 
 	renderCommandPreview = () => {
-		const { commandPreview } = this.state;
-		if (!this.showCommandPreview) {
+		const { commandPreview, showCommandPreview } = this.state;
+		if (!showCommandPreview) {
 			return null;
 		}
 		return (
@@ -921,7 +967,9 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
 const dispatchToProps = ({

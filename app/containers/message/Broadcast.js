@@ -21,10 +21,10 @@ const Broadcast = React.memo(({
 					style={styles.button}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
-					<React.Fragment>
+					<>
 						<CustomIcon name='back' size={20} style={styles.buttonIcon} />
 						<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
-					</React.Fragment>
+					</>
 				</Touchable>
 			</View>
 		);

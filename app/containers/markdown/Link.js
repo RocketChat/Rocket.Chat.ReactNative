@@ -6,7 +6,7 @@ import styles from './styles';
 import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
-	children, link
+	children, link, preview
 }) => {
 	const handlePress = () => {
 		if (!link) {
@@ -20,7 +20,7 @@ const Link = React.memo(({
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
 		<Text
-			onPress={handlePress}
+			onPress={preview ? undefined : handlePress}
 			style={styles.link}
 		>
 			{ childLength !== 0 ? children : link }
@@ -30,7 +30,8 @@ const Link = React.memo(({
 
 Link.propTypes = {
 	children: PropTypes.node,
-	link: PropTypes.string
+	link: PropTypes.string,
+	preview: PropTypes.bool
 };
 
 export default Link;
