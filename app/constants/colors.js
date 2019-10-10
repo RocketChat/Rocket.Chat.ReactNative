@@ -35,7 +35,7 @@ export const SWITCH_TRACK_COLOR = {
 export const themes = {
 	light: {
 		backgroundColor: '#ffffff',
-		focusedBackground: '#f8f8f8',
+		focusedBackground: isIOS ? '#f8f8f8' : '#2f343d',
 		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#eeeef4',
 		bannerBackground: '#f1f2f4',

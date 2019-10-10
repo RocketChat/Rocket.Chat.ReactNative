@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { COLOR_PRIMARY } from '../../../constants/colors';
+import { COLOR_PRIMARY, themes } from '../../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 14,
-		...sharedStyles.textColorTitle,
+		// ...sharedStyles.textColorTitle,
 		...sharedStyles.textRegular
 	},
 	server: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const HeaderTitle = React.memo(({ connecting, isFetching }) => {
+const HeaderTitle = React.memo(({ connecting, isFetching, theme }) => {
 	let title = I18n.t('Messages');
 	if (connecting) {
 		title = I18n.t('Connecting');
@@ -47,11 +47,11 @@ const HeaderTitle = React.memo(({ connecting, isFetching }) => {
 	if (isFetching) {
 		title = I18n.t('Updating');
 	}
-	return <Text style={styles.title}>{title}</Text>;
+	return <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>;
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, onPress
+	connecting, isFetching, serverName, showServerDropdown, onPress, theme
 }) => (
 	<View style={styles.container}>
 		<TouchableOpacity
@@ -60,7 +60,7 @@ const Header = React.memo(({
 			style={styles.container}
 			disabled={connecting || isFetching}
 		>
-			<HeaderTitle connecting={connecting} isFetching={isFetching} />
+			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
 				<Text style={styles.server}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
@@ -73,6 +73,7 @@ Header.propTypes = {
 	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string,
+	theme: PropTypes.string,
 	showServerDropdown: PropTypes.bool.isRequired,
 	onPress: PropTypes.func.isRequired
 };
@@ -83,7 +84,8 @@ Header.defaultProps = {
 
 HeaderTitle.propTypes = {
 	connecting: PropTypes.bool,
-	isFetching: PropTypes.bool
+	isFetching: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 export default Header;

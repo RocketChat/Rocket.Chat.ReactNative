@@ -6,6 +6,7 @@ import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
+import { withTheme } from '../../../theme';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -15,6 +16,7 @@ class RoomsListHeaderView extends PureComponent {
 		serverName: PropTypes.string,
 		connecting: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		theme: PropTypes.string,
 		open: PropTypes.func,
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
@@ -44,11 +46,12 @@ class RoomsListHeaderView extends PureComponent {
 
 	render() {
 		const {
-			serverName, showServerDropdown, showSearchHeader, connecting, isFetching
+			serverName, showServerDropdown, showSearchHeader, connecting, isFetching, theme
 		} = this.props;
 
 		return (
 			<Header
+				theme={theme}
 				serverName={serverName}
 				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
@@ -77,4 +80,4 @@ const mapDispatchtoProps = dispatch => ({
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 });
 
-export default connect(mapStateToProps, mapDispatchtoProps)(RoomsListHeaderView);
+export default connect(mapStateToProps, mapDispatchtoProps)(withTheme(RoomsListHeaderView));

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { withTheme } from '../theme';
@@ -14,14 +13,12 @@ import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
-		// backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
 		flexDirection: 'row',
 		alignItems: 'center',
 		flex: 1
 	},
 	searchBox: {
 		alignItems: 'center',
-		backgroundColor: '#E1E5E8',
 		borderRadius: 10,
 		color: '#8E8E93',
 		flexDirection: 'row',
@@ -61,20 +58,22 @@ const SearchBox = ({
 	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, theme, ...props
 }) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-		<View style={styles.searchBox}>
-			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
+		<View style={[styles.searchBox, { backgroundColor: themes[theme].borderColor }]}>
+			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
 				clearButtonMode='while-editing'
 				placeholder={I18n.t('Search')}
+				placeholderTextColor={themes[theme].auxiliaryText}
 				returnKeyType='search'
-				style={styles.input}
+				style={[styles.input, { color: themes[theme].controlText }]}
 				testID={testID}
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
 				onSubmitEditing={onSubmitEditing}
+				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 				{...props}
 			/>
 		</View>
@@ -87,7 +86,8 @@ SearchBox.propTypes = {
 	onSubmitEditing: PropTypes.func,
 	hasCancel: PropTypes.bool,
 	onCancelPress: PropTypes.func,
-	testID: PropTypes.string
+	testID: PropTypes.string,
+	theme: PropTypes.string
 };
 
 export default withTheme(SearchBox);
