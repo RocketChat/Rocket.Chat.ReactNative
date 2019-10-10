@@ -9,11 +9,11 @@ import sharedStyles from '../Styles';
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		// backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
 	},
 	list: {
 		width: '100%',
-		backgroundColor: COLOR_WHITE
+		// backgroundColor: COLOR_WHITE
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -25,10 +25,9 @@ export default StyleSheet.create({
 	},
 	dropdownContainerHeader: {
 		height: 41,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
+		// borderBottomWidth: StyleSheet.hairlineWidth,
+		// borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -82,8 +81,7 @@ export default StyleSheet.create({
 	groupTitleContainer: {
 		paddingHorizontal: 15,
 		paddingTop: 17,
-		paddingBottom: 10,
-		backgroundColor: isIOS ? COLOR_WHITE : '#9ea2a8'
+		paddingBottom: 10
 	},
 	groupTitle: {
 		color: isIOS ? COLOR_TEXT : '#54585E',

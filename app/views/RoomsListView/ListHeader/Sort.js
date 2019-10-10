@@ -1,28 +1,37 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../../../lib/Icons';
 import I18n from '../../../i18n';
-import Touch from '../../../utils/touch';
 import styles from '../styles';
+import { themes } from '../../../constants/colors';
+import { withTheme } from '../../../theme';
 
 
-const Sort = React.memo(({ searchLength, sortBy, toggleSort }) => {
+const Sort = React.memo(({
+	searchLength, sortBy, toggleSort, theme
+}) => {
 	if (searchLength > 0) {
 		return null;
 	}
 	return (
-		<Touch
-			key='rooms-list-view-sort'
+		<RectButton
 			onPress={toggleSort}
-			style={styles.dropdownContainerHeader}
+			activeOpacity={1}
+			underlayColor={themes[theme].bannerBackground}
 		>
-			<View style={styles.sortItemContainer}>
+			<View
+				style={[
+					styles.dropdownContainerHeader,
+					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
+				]}
+			>
 				<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 				<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 			</View>
-		</Touch>
+		</RectButton>
 	);
 });
 
@@ -32,4 +41,4 @@ Sort.propTypes = {
 	toggleSort: PropTypes.func
 };
 
-export default Sort;
+export default withTheme(Sort);

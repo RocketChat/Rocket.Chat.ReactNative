@@ -1,13 +1,14 @@
 import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 export const ThemeContext = React.createContext(null);
 
 export function withTheme(Component) {
-	return function ThemeComponent(props) {
-		return (
-			<ThemeContext.Consumer>
-				{contexts => <Component {...props} {...contexts} />}
-			</ThemeContext.Consumer>
-		);
-	};
+	const ThemedComponent = props => (
+		<ThemeContext.Consumer>
+			{contexts => <Component {...props} {...contexts} />}
+		</ThemeContext.Consumer>
+	);
+	hoistNonReactStatics(ThemedComponent, Component);
+	return ThemedComponent;
 }

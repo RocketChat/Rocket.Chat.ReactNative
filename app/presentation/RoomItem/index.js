@@ -317,8 +317,7 @@ class RoomItem extends React.Component {
 									style={[
 										styles.centerContainer,
 										{
-											borderColor:
-												themes[theme].separatorColor
+											borderColor: themes[theme].separatorColor
 										}
 									]}
 								>

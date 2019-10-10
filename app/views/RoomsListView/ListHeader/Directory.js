@@ -1,30 +1,37 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../../../lib/Icons';
 import I18n from '../../../i18n';
-import Touch from '../../../utils/touch';
 import styles from '../styles';
 import DisclosureIndicator from '../../../containers/DisclosureIndicator';
+import { themes } from '../../../constants/colors';
+import { withTheme } from '../../../theme';
 
 
-const Directory = React.memo(({ goDirectory }) => (
-	<Touch
-		key='rooms-list-view-sort'
+const Directory = React.memo(({ goDirectory, theme }) => (
+	<RectButton
 		onPress={goDirectory}
-		style={styles.dropdownContainerHeader}
+		underlayColor={themes[theme].bannerBackground}
+		activeOpacity={1}
 	>
-		<View style={styles.sortItemContainer}>
+		<View
+			style={[
+				styles.dropdownContainerHeader,
+				{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
+			]}
+		>
 			<CustomIcon style={styles.directoryIcon} size={22} name='discover' />
 			<Text style={styles.directoryText}>{I18n.t('Directory')}</Text>
 			<DisclosureIndicator />
 		</View>
-	</Touch>
+	</RectButton>
 ));
 
 Directory.propTypes = {
 	goDirectory: PropTypes.func
 };
 
-export default Directory;
+export default withTheme(Directory);

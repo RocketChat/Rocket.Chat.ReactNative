@@ -9,10 +9,12 @@ import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
+		// backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
 		flexDirection: 'row',
 		alignItems: 'center',
 		flex: 1
@@ -56,9 +58,9 @@ const CancelButton = onCancelPress => (
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, ...props
+	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, theme, ...props
 }) => (
-	<View style={styles.container}>
+	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 		<View style={styles.searchBox}>
 			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
 			<TextInput
@@ -88,4 +90,4 @@ SearchBox.propTypes = {
 	testID: PropTypes.string
 };
 
-export default SearchBox;
+export default withTheme(SearchBox);

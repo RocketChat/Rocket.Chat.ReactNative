@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import DeviceInfo from 'react-native-device-info';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -63,7 +64,7 @@ const OutsideStack = createStackNavigator({
 		getScreen: () => require('./views/LegalView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 const AuthenticationWebViewStack = createStackNavigator({
@@ -71,7 +72,7 @@ const AuthenticationWebViewStack = createStackNavigator({
 		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 const OutsideStackModal = createStackNavigator({
@@ -131,7 +132,7 @@ const ChatsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -149,7 +150,7 @@ const ProfileStack = createStackNavigator({
 		getScreen: () => require('./views/ProfileView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 ProfileStack.navigationOptions = ({ navigation }) => {
@@ -170,7 +171,7 @@ const SettingsStack = createStackNavigator({
 		getScreen: () => require('./views/LanguageView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 const AdminPanelStack = createStackNavigator({
@@ -178,7 +179,7 @@ const AdminPanelStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 SettingsStack.navigationOptions = ({ navigation }) => {
@@ -212,7 +213,7 @@ const NewMessageStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	// defaultNavigationOptions: defaultHeader
 });
 
 const InsideStackModal = createStackNavigator({
@@ -241,10 +242,10 @@ class CustomInsideStack extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, screenProps } = this.props;
 		return (
 			<>
-				<InsideStackModal navigation={navigation} />
+				<InsideStackModal navigation={navigation} screenProps={screenProps} />
 				<NotificationBadge navigation={navigation} />
 				<Toast />
 			</>
@@ -269,7 +270,14 @@ const App = createAppContainer(createSwitchNavigator(
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { theme: 'dark' };
+		const deviceName = DeviceInfo.getDeviceName();
+		let theme = 'light';
+		if (deviceName === 'iPhone 11 Pro Max') {
+			theme = 'dark';
+		} else if (deviceName === 'iPhone 11 Pro') {
+			theme = 'black';
+		}
+		this.state = { theme };
 		this.init();
 		this.initCrashReport();
 	}
@@ -328,6 +336,7 @@ export default class Root extends React.Component {
 							ref={(navigatorRef) => {
 								Navigation.setTopLevelNavigator(navigatorRef);
 							}}
+							screenProps={{ theme }}
 							onNavigationStateChange={onNavigationStateChange}
 						/>
 					</LayoutAnimation>

@@ -43,7 +43,8 @@ import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
-import { ThemeContext } from '../../theme';
+import { withTheme } from '../../theme';
+import { themes } from '../../constants/colors';
 
 const SCROLL_OFFSET = 56;
 
@@ -68,7 +69,7 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam(
 			'cancelSearchingAndroid'
@@ -80,6 +81,7 @@ class RoomsListView extends React.Component {
 		);
 
 		return {
+			headerStyle: { backgroundColor: themes[screenProps.theme].backgroundColor },
 			headerLeft: searching ? (
 				<CustomHeaderButtons left>
 					<Item
@@ -594,54 +596,56 @@ class RoomsListView extends React.Component {
 			username,
 			token,
 			baseUrl,
-			StoreLastMessage
+			StoreLastMessage,
+			theme
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
 		return (
-			<ThemeContext.Consumer>
-				{({ theme }) => (
-					<RoomItem
-						theme={theme}
-						alert={item.alert}
-						unread={item.unread}
-						userMentions={item.userMentions}
-						isRead={this.getIsRead(item)}
-						favorite={item.f}
-						avatar={item.name}
-						lastMessage={item.lastMessage}
-						name={this.getRoomTitle(item)}
-						_updatedAt={item.roomUpdatedAt}
-						key={item._id}
-						id={id}
-						userId={userId}
-						username={username}
-						token={token}
-						rid={item.rid}
-						type={item.t}
-						baseUrl={baseUrl}
-						prid={item.prid}
-						showLastMessage={StoreLastMessage}
-						onPress={() => this._onPressItem(item)}
-						testID={`rooms-list-view-item-${ item.name }`}
-						width={width}
-						toggleFav={this.toggleFav}
-						toggleRead={this.toggleRead}
-						hideChannel={this.hideChannel}
-					/>
-				)}
-			</ThemeContext.Consumer>
+			<RoomItem
+				theme={theme}
+				alert={item.alert}
+				unread={item.unread}
+				userMentions={item.userMentions}
+				isRead={this.getIsRead(item)}
+				favorite={item.f}
+				avatar={item.name}
+				lastMessage={item.lastMessage}
+				name={this.getRoomTitle(item)}
+				_updatedAt={item.roomUpdatedAt}
+				key={item._id}
+				id={id}
+				userId={userId}
+				username={username}
+				token={token}
+				rid={item.rid}
+				type={item.t}
+				baseUrl={baseUrl}
+				prid={item.prid}
+				showLastMessage={StoreLastMessage}
+				onPress={() => this._onPressItem(item)}
+				testID={`rooms-list-view-item-${ item.name }`}
+				width={width}
+				toggleFav={this.toggleFav}
+				toggleRead={this.toggleRead}
+				hideChannel={this.hideChannel}
+			/>
 		);
 	};
 
-	renderSectionHeader = header => (
-		<View style={styles.groupTitleContainer}>
-			<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
-		</View>
-	);
+	renderSectionHeader = (header) => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
+			</View>
+		);
+	}
 
 	renderSection = (data, header) => {
-		const { showUnread, showFavorites, groupByType } = this.props;
+		const {
+			showUnread, showFavorites, groupByType, theme
+		} = this.props;
 
 		if (header === 'Unread' && !showUnread) {
 			return null;
@@ -666,7 +670,7 @@ class RoomsListView extends React.Component {
 					data={data}
 					extraData={data}
 					keyExtractor={keyExtractor}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					renderItem={this.renderItem}
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
@@ -690,7 +694,8 @@ class RoomsListView extends React.Component {
 			discussions,
 			channels,
 			direct,
-			privateGroup
+			privateGroup,
+			theme
 		} = this.state;
 
 		if (search.length > 0) {
@@ -699,7 +704,7 @@ class RoomsListView extends React.Component {
 					data={search}
 					extraData={search}
 					keyExtractor={keyExtractor}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					enableEmptySections
@@ -726,6 +731,7 @@ class RoomsListView extends React.Component {
 
 	renderScroll = () => {
 		const { loading } = this.state;
+		const { theme } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
@@ -741,7 +747,7 @@ class RoomsListView extends React.Component {
 					extraData={search.length ? search : chats}
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
@@ -774,12 +780,13 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			showServerDropdown,
-			showSortDropdown
+			showSortDropdown,
+			theme
 		} = this.props;
 
 		return (
 			<SafeAreaView
-				style={styles.container}
+				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				testID='rooms-list-view'
 				forceInset={{ vertical: 'never' }}
 			>
@@ -828,4 +835,4 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomsListView));
