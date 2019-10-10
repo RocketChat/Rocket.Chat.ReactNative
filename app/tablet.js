@@ -172,10 +172,7 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 };
 
 const ChatsDrawer = createDrawerNavigator({
-	ListStack,
-	ProfileStack,
-	SettingsStack,
-	AdminPanelStack
+	ListStack
 }, {
 	contentComponent: () => null
 });
@@ -269,6 +266,9 @@ const ModalSwitch = createSwitchNavigator({
 	DirectoryStack,
 	SidebarStack,
 	RoomActionsStack,
+	ProfileStack,
+	SettingsStack,
+	AdminPanelStack,
 	AuthLoading: () => null
 },
 {
