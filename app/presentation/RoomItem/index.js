@@ -7,7 +7,6 @@ import {
 	State
 } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { ThemeContext } from 'react-navigation';
 
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
@@ -36,7 +35,8 @@ const attrs = [
 	'width',
 	'isRead',
 	'favorite',
-	'status'
+	'status',
+	'theme'
 ];
 
 class RoomItem extends React.Component {
@@ -77,22 +77,23 @@ class RoomItem extends React.Component {
 		super(props);
 		this.dragX = new Animated.Value(0);
 		this.rowOffSet = new Animated.Value(0);
-		this.transX = Animated.add(
-			this.rowOffSet,
-			this.dragX
-		);
+		this.transX = Animated.add(this.rowOffSet, this.dragX);
 		this.state = {
 			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
-		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: this.dragX } }]
-		);
+		this._onGestureEvent = Animated.event([
+			{ nativeEvent: { translationX: this.dragX } }
+		]);
 		this._value = 0;
 	}
 
 	shouldComponentUpdate(nextProps) {
 		const { _updatedAt } = this.props;
-		if (_updatedAt && nextProps._updatedAt && nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()) {
+		if (
+			_updatedAt
+			&& nextProps._updatedAt
+			&& nextProps._updatedAt.toISOString() !== _updatedAt.toISOString()
+		) {
 			return true;
 		}
 		// eslint-disable-next-line react/destructuring-assignment
@@ -111,7 +112,8 @@ class RoomItem extends React.Component {
 		this._value = this._value + translationX;
 
 		let toValue = 0;
-		if (rowState === 0) { // if no option is opened
+		if (rowState === 0) {
+			// if no option is opened
 			if (translationX > 0 && translationX < LONG_SWIPE) {
 				toValue = ACTION_WIDTH; // open left option if he swipe right but not enough to trigger action
 				this.setState({ rowState: -1 });
@@ -130,7 +132,8 @@ class RoomItem extends React.Component {
 			}
 		}
 
-		if (rowState === -1) { // if left option is opened
+		if (rowState === -1) {
+			// if left option is opened
 			if (this._value < SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
@@ -143,7 +146,8 @@ class RoomItem extends React.Component {
 			}
 		}
 
-		if (rowState === 1) { // if right option is opened
+		if (rowState === 1) {
+			// if right option is opened
 			if (this._value > -2 * SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
@@ -220,7 +224,28 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status, avatar
+			unread,
+			userMentions,
+			name,
+			_updatedAt,
+			alert,
+			testID,
+			type,
+			avatarSize,
+			baseUrl,
+			userId,
+			username,
+			token,
+			id,
+			prid,
+			showLastMessage,
+			lastMessage,
+			isRead,
+			width,
+			favorite,
+			status,
+			avatar,
+			theme
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -241,117 +266,140 @@ class RoomItem extends React.Component {
 		}
 
 		return (
-			<ThemeContext.Consumer>
-				{theme => (
-					<PanGestureHandler
-						minDeltaX={20}
-						onGestureEvent={this._onGestureEvent}
-						onHandlerStateChange={this._onHandlerStateChange}
+			<PanGestureHandler
+				minDeltaX={20}
+				onGestureEvent={this._onGestureEvent}
+				onHandlerStateChange={this._onHandlerStateChange}
+			>
+				<Animated.View>
+					<LeftActions
+						theme={theme}
+						transX={this.transX}
+						isRead={isRead}
+						width={width}
+						onToggleReadPress={this.onToggleReadPress}
+					/>
+					<RightActions
+						transX={this.transX}
+						favorite={favorite}
+						width={width}
+						toggleFav={this.toggleFav}
+						onHidePress={this.onHidePress}
+					/>
+					<Animated.View
+						style={{
+							transform: [{ translateX: this.transX }]
+						}}
 					>
-						<Animated.View>
-							<LeftActions
-								theme={theme}
-								transX={this.transX}
-								isRead={isRead}
-								width={width}
-								onToggleReadPress={this.onToggleReadPress}
-							/>
-							<RightActions
-								transX={this.transX}
-								favorite={favorite}
-								width={width}
-								toggleFav={this.toggleFav}
-								onHidePress={this.onHidePress}
-							/>
-							<Animated.View
-								style={{
-									transform: [{ translateX: this.transX }]
-								}}
+						<RectButton
+							onPress={this.onPress}
+							activeOpacity={1}
+							underlayColor={themes[theme].bannerBackground}
+							testID={testID}
+							style={{
+								backgroundColor: themes[theme].backgroundColor
+							}}
+						>
+							<View
+								style={styles.container}
+								accessibilityLabel={accessibilityLabel}
 							>
-								<RectButton
-									onPress={this.onPress}
-									activeOpacity={1}
-									underlayColor={themes[theme].bannerBackground}
-									testID={testID}
-									style={{ backgroundColor: themes[theme].backgroundColor }}
+								<Avatar
+									text={avatar}
+									size={avatarSize}
+									type={type}
+									baseUrl={baseUrl}
+									style={styles.avatar}
+									userId={userId}
+									token={token}
+								/>
+								<View
+									style={[
+										styles.centerContainer,
+										{
+											borderColor:
+												themes[theme].separatorColor
+										}
+									]}
 								>
-									<View
-										style={styles.container}
-										accessibilityLabel={accessibilityLabel}
-									>
-										<Avatar
-											text={avatar}
-											size={avatarSize}
+									<View style={styles.titleContainer}>
+										<TypeIcon
+											theme={theme}
 											type={type}
-											baseUrl={baseUrl}
-											style={styles.avatar}
-											userId={userId}
-											token={token}
+											id={id}
+											prid={prid}
+											status={status}
 										/>
-										<View style={[styles.centerContainer, { borderColor: themes[theme].separatorColor }]}>
-											<View style={styles.titleContainer}>
-												<TypeIcon
-													theme={theme}
-													type={type}
-													id={id}
-													prid={prid}
-													status={status}
-												/>
-												<Text
-													style={[
-														styles.title,
-														alert && styles.alert,
-														{ color: themes[theme].titleText }
-													]}
-													ellipsizeMode='tail'
-													numberOfLines={1}
-												>
-													{name}
-												</Text>
-												{_updatedAt ? (
-													<Text
-														style={[
-															styles.date,
-															{ color: themes[theme].auxiliaryText },
-															alert && [styles.updateAlert, { color: themes[theme].tintColor }]
-														]}
-														ellipsizeMode='tail'
-														numberOfLines={1}
-													>
-														{capitalize(date)}
-													</Text>
-												) : null}
-											</View>
-											<View style={styles.row}>
-												<LastMessage
-													theme={theme}
-													lastMessage={lastMessage}
-													type={type}
-													showLastMessage={showLastMessage}
-													username={username}
-													alert={alert}
-												/>
-												<UnreadBadge
-													theme={theme}
-													unread={unread}
-													userMentions={userMentions}
-													type={type}
-												/>
-											</View>
-										</View>
+										<Text
+											style={[
+												styles.title,
+												alert && styles.alert,
+												{
+													color:
+														themes[theme].titleText
+												}
+											]}
+											ellipsizeMode='tail'
+											numberOfLines={1}
+										>
+											{name}
+										</Text>
+										{_updatedAt ? (
+											<Text
+												style={[
+													styles.date,
+													{
+														color:
+															themes[theme]
+																.auxiliaryText
+													},
+													alert && [
+														styles.updateAlert,
+														{
+															color:
+																themes[theme]
+																	.tintColor
+														}
+													]
+												]}
+												ellipsizeMode='tail'
+												numberOfLines={1}
+											>
+												{capitalize(date)}
+											</Text>
+										) : null}
 									</View>
-								</RectButton>
-							</Animated.View>
-						</Animated.View>
-					</PanGestureHandler>
-				)}
-			</ThemeContext.Consumer>
+									<View style={styles.row}>
+										<LastMessage
+											theme={theme}
+											lastMessage={lastMessage}
+											type={type}
+											showLastMessage={showLastMessage}
+											username={username}
+											alert={alert}
+										/>
+										<UnreadBadge
+											theme={theme}
+											unread={unread}
+											userMentions={userMentions}
+											type={type}
+										/>
+									</View>
+								</View>
+							</View>
+						</RectButton>
+					</Animated.View>
+				</Animated.View>
+			</PanGestureHandler>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline'
+	status:
+		state.meteor.connected && ownProps.type === 'd'
+			? state.activeUsers[ownProps.id]
+			: 'offline'
 });
 
 export default connect(mapStateToProps)(RoomItem);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 
 const UnreadBadge = React.memo(({
 	theme, unread, userMentions, type

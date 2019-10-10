@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 
 const FAV_COLOR = '#ffbb00';
 const HIDE_COLOR = '#54585e';

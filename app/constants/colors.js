@@ -31,26 +31,63 @@ export const SWITCH_TRACK_COLOR = {
 	true: COLOR_SUCCESS
 };
 
+
 export const themes = {
 	light: {
 		backgroundColor: '#ffffff',
 		focusedBackground: '#f8f8f8',
-		chatComponentBackground: '#f3f4f5', // Don't exist on native
+		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#eeeef4',
 		bannerBackground: '#f1f2f4',
-		titleText: '#0d0300',
+		titleText: '#0d0e12',
 		bodyText: '#2f343d',
-		borderColor: '#e1e5e8', // Don't exist on native
+		borderColor: '#e1e5e8',
 		controlText: '#54585e',
 		auxiliaryText: '#9ca2a8',
 		tintColor: '#1d74f5',
 		auxiliaryTintColor: '#0a4469',
-		hyperlink: '', // ???
+		actionTintColor: '#1d74f5',
+		actionBackgroundColor: '#e8f2ff',
 		mutedAccent: '#cbcbcc',
 		strongAccent: '', // ???
 		separatorColor: '#A7A7AA'
 	},
 	dark: {
-		titleText: '#ffffff'
+		backgroundColor: '#030b1b',
+		focusedBackground: '#0b182c',
+		chatComponentBackground: '#192132',
+		auxiliaryBackground: '#07101e',
+		bannerBackground: '#0e1f38',
+		titleText: '#FFFFFF',
+		bodyText: '#e8ebed',
+		borderColor: '#0f213d',
+		controlText: '#dadde6',
+		auxiliaryText: '#9297a2',
+		tintColor: '#1d74f5',
+		auxiliaryTintColor: '#cdcdcd',
+		actionTintColor: '#1d74f5',
+		actionBackgroundColor: '#e8f2ff',
+		mutedAccent: '#2a2a2d',
+		strongAccent: '', // ???
+		separatorColor: '#A7A7AA'
+	},
+	black: {
+		backgroundColor: '#000000',
+		focusedBackground: '#0d0d0d',
+		chatComponentBackground: '#16181a',
+		auxiliaryBackground: '#080808',
+		bannerBackground: '#1f2329',
+		titleText: '#f9f9f9',
+		bodyText: '#e8ebed',
+		borderColor: '#1f2329',
+		controlText: '#dadde6',
+		auxiliaryText: '#b2b8c6',
+		tintColor: '#1e9bfe',
+		auxiliaryTintColor: '#cdcdcd',
+		actionTintColor: '#1ea1fe',
+		actionBackgroundColor: '#e8f2ff',
+		mutedAccent: '#282828',
+		strongAccent: '', // ???
+		separatorColor: '#A7A7AA'
 	}
 };
