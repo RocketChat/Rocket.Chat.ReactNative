@@ -4,6 +4,7 @@ export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#2de0a5';
 export const COLOR_PRIMARY = '#1d74f5';
 export const COLOR_WHITE = '#fff'; // KEEP
+export const COLOR_BLACK = '#000000'; // KEEP
 export const COLOR_BUTTON_PRIMARY = COLOR_PRIMARY;
 export const COLOR_TITLE = '#0C0D0F';
 export const COLOR_TEXT = '#2F343D';

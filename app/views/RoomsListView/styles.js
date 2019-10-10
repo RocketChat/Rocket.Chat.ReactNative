@@ -1,19 +1,17 @@
 import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import {
-	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
+	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION, COLOR_BLACK
 } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		// backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		flex: 1
 	},
 	list: {
-		width: '100%',
-		// backgroundColor: COLOR_WHITE
+		width: '100%'
 	},
 	actionButtonIcon: {
 		fontSize: 20,
@@ -25,8 +23,7 @@ export default StyleSheet.create({
 	},
 	dropdownContainerHeader: {
 		height: 41,
-		// borderBottomWidth: StyleSheet.hairlineWidth,
-		// borderColor: COLOR_SEPARATOR,
+		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -39,11 +36,9 @@ export default StyleSheet.create({
 		fontSize: 15,
 		flex: 1,
 		marginLeft: 15,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
-		backgroundColor: COLOR_WHITE,
 		width: '100%',
 		position: 'absolute',
 		top: 0
@@ -64,11 +59,10 @@ export default StyleSheet.create({
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill,
-		backgroundColor: '#000000'
+		backgroundColor: COLOR_BLACK
 	},
 	sortSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
 		marginHorizontal: 15,
 		flex: 1
 	},
