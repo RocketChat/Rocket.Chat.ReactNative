@@ -8,14 +8,16 @@ import { connect } from 'react-redux';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
-import { DrawerButton } from '../../containers/HeaderButton';
+import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+import {
+	getReadableVersion, getDeviceModel, isAndroid, isTablet
+} from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
@@ -36,7 +38,11 @@ ItemInfo.propTypes = {
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
+		headerLeft: isTablet ? (
+			<CloseModalButton navigation={navigation} testID='settings-view-close' />
+		) : (
+			<DrawerButton navigation={navigation} />
+		),
 		title: I18n.t('Settings')
 	});
 

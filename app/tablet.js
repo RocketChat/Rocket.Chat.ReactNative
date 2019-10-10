@@ -411,7 +411,7 @@ export class MasterDetailView extends React.Component {
 				Navigation.navigate(routeName, params);
 			}
 			if (action.type === 'Navigation/TOGGLE_DRAWER') {
-				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SidebarView' }));
+				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
 				showModal = true;
 				return null;
 			}
