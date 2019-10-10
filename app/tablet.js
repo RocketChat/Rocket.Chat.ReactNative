@@ -102,6 +102,9 @@ const ChatsStack = createStackNavigator({
 	RoomView: {
 		getScreen: () => require('./views/RoomView').default
 	},
+	ThreadMessagesView: {
+		getScreen: () => require('./views/ThreadMessagesView').default
+	},
 	TableView: {
 		getScreen: () => require('./views/TableView').default
 	}
