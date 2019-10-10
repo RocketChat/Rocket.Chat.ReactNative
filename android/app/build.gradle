@@ -193,9 +193,16 @@ android {
             enableSplit = true
         }
     }
+
+
+    packagingOptions {
+        // Make sure libjsc.so does not packed in APK
+        exclude "**/libjsc.so"
+    }
 }
 
 dependencies {
+	implementation 'org.chromium:v8-android:+'
     addUnimodulesDependencies()
     implementation project(':watermelondb')
     implementation project(':reactnativenotifications')
