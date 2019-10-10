@@ -5,9 +5,10 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { logout as logoutAction } from '../../actions/login';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, COLOR_DANGER } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
@@ -52,7 +53,13 @@ class SettingsView extends React.Component {
 		useMarkdown: PropTypes.bool,
 		allowCrashReport: PropTypes.bool,
 		toggleMarkdown: PropTypes.func,
-		toggleCrashReport: PropTypes.func
+		toggleCrashReport: PropTypes.func,
+		logout: PropTypes.func.isRequired
+	}
+
+	logout = () => {
+		const { logout } = this.props;
+		logout();
 	}
 
 	toggleMarkdown = (value) => {
@@ -102,6 +109,20 @@ class SettingsView extends React.Component {
 
 	renderDisclosure = () => <DisclosureImage />
 
+	renderLogout = () => (
+		<>
+			<Separator />
+			<ListItem
+				title={I18n.t('Logout')}
+				testID='settings-logout'
+				onPress={this.logout}
+				color={COLOR_DANGER}
+			/>
+			<Separator />
+			<ItemInfo />
+		</>
+	);
+
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
 		return (
@@ -135,6 +156,14 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
+					<ListItem
+						title={I18n.t('Profile')}
+						onPress={() => this.navigateToRoom('ProfileView')}
+						showActionIndicator
+						testID='settings-profile'
+						right={this.renderDisclosure}
+					/>
+					<Separator />
 					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
@@ -204,6 +233,8 @@ class SettingsView extends React.Component {
 					<ItemInfo
 						info={I18n.t('Crash_report_disclaimer')}
 					/>
+
+					{ isTablet ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -217,6 +248,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+	logout: () => dispatch(logoutAction()),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 });

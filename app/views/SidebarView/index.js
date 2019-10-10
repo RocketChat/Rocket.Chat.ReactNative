@@ -21,6 +21,7 @@ import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { isTablet } from '../../utils/deviceInfo';
 
 const keyExtractor = item => item.id;
 
@@ -277,7 +278,7 @@ class Sidebar extends Component {
 
 					<Separator key='separator-header' />
 
-					{!showStatus ? this.renderNavigation() : null}
+					{!showStatus && !isTablet ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 			</SafeAreaView>
