@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
 import styles, {
@@ -12,7 +11,7 @@ import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
-import withTouchableComponent from './withTouchableComponent';
+import Touchable from './Touchable';
 
 export { ROW_HEIGHT };
 
@@ -42,11 +41,20 @@ class RoomItem extends React.Component {
 		userMentions: PropTypes.number,
 		id: PropTypes.string,
 		prid: PropTypes.string,
+		onPress: PropTypes.func,
 		userId: PropTypes.string,
 		username: PropTypes.string,
 		token: PropTypes.string,
 		avatarSize: PropTypes.number,
+		testID: PropTypes.string,
+		width: PropTypes.number,
+		favorite: PropTypes.bool,
+		isRead: PropTypes.bool,
+		rid: PropTypes.string,
 		status: PropTypes.string,
+		toggleFav: PropTypes.func,
+		toggleRead: PropTypes.func,
+		hideChannel: PropTypes.func,
 		avatar: PropTypes.bool
 	}
 
@@ -66,7 +74,7 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, status, avatar
+			onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, status, avatar
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -87,68 +95,79 @@ class RoomItem extends React.Component {
 		}
 
 		return (
-
-			<View
-				style={styles.container}
-				accessibilityLabel={accessibilityLabel}
+			<Touchable
+				onPress={onPress}
+				width={width}
+				favorite={favorite}
+				toggleFav={toggleFav}
+				isRead={isRead}
+				rid={rid}
+				toggleRead={toggleRead}
+				hideChannel={hideChannel}
+				testID={testID}
+				type={type}
 			>
-				<Avatar
-					text={avatar}
-					size={avatarSize}
-					type={type}
-					baseUrl={baseUrl}
-					style={styles.avatar}
-					userId={userId}
-					token={token}
-				/>
-				<View style={styles.centerContainer}>
-					<View style={styles.titleContainer}>
-						<TypeIcon
-							type={type}
-							id={id}
-							prid={prid}
-							status={status}
-						/>
-						<Text
-							style={[
-								styles.title,
-								alert && styles.alert
-							]}
-							ellipsizeMode='tail'
-							numberOfLines={1}
-						>
-							{name}
-						</Text>
-						{_updatedAt ? (
+				<View
+					style={styles.container}
+					accessibilityLabel={accessibilityLabel}
+				>
+					<Avatar
+						text={avatar}
+						size={avatarSize}
+						type={type}
+						baseUrl={baseUrl}
+						style={styles.avatar}
+						userId={userId}
+						token={token}
+					/>
+					<View style={styles.centerContainer}>
+						<View style={styles.titleContainer}>
+							<TypeIcon
+								type={type}
+								id={id}
+								prid={prid}
+								status={status}
+							/>
 							<Text
 								style={[
-									styles.date,
-									alert && styles.updateAlert
+									styles.title,
+									alert && styles.alert
 								]}
 								ellipsizeMode='tail'
 								numberOfLines={1}
 							>
-								{capitalize(date)}
+								{name}
 							</Text>
-						) : null}
-					</View>
-					<View style={styles.row}>
-						<LastMessage
-							lastMessage={lastMessage}
-							type={type}
-							showLastMessage={showLastMessage}
-							username={username}
-							alert={alert}
-						/>
-						<UnreadBadge
-							unread={unread}
-							userMentions={userMentions}
-							type={type}
-						/>
+							{_updatedAt ? (
+								<Text
+									style={[
+										styles.date,
+										alert && styles.updateAlert
+									]}
+									ellipsizeMode='tail'
+									numberOfLines={1}
+								>
+									{capitalize(date)}
+								</Text>
+							) : null}
+						</View>
+						<View style={styles.row}>
+							<LastMessage
+								lastMessage={lastMessage}
+								type={type}
+								showLastMessage={showLastMessage}
+								username={username}
+								alert={alert}
+							/>
+							<UnreadBadge
+								unread={unread}
+								userMentions={userMentions}
+								type={type}
+							/>
+						</View>
 					</View>
 				</View>
-			</View>
-
+			</Touchable>
 		);
 	}
 }
@@ -157,4 +176,4 @@ const mapStateToProps = (state, ownProps) => ({
 	status: state.meteor.connected && ownProps.type === 'd' ? state.activeUsers[ownProps.id] : 'offline'
 });
 
-export default compose(connect(mapStateToProps), withTouchableComponent)(RoomItem);
+export default connect(mapStateToProps)(RoomItem);

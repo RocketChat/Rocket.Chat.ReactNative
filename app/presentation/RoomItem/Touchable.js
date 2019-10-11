@@ -13,35 +13,19 @@ import styles, {
 } from './styles';
 import { LeftActions, RightActions } from './Actions';
 
-const withTouchableComponent = (WrappedComponent) => {
-	class WithTouchableComponent extends React.Component {
+class Touchable extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		showLastMessage: PropTypes.bool,
-		_updatedAt: PropTypes.string,
-		lastMessage: PropTypes.object,
-		alert: PropTypes.bool,
-		unread: PropTypes.number,
-		userMentions: PropTypes.number,
-		id: PropTypes.string,
-		prid: PropTypes.string,
 		onPress: PropTypes.func,
-		userId: PropTypes.string,
-		username: PropTypes.string,
-		token: PropTypes.string,
-		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		width: PropTypes.number,
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
-		status: PropTypes.string,
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
-		avatar: PropTypes.bool
+		children: PropTypes.element
 	}
 
 	constructor(props) {
@@ -181,7 +165,7 @@ const withTouchableComponent = (WrappedComponent) => {
 
 		render() {
 			const {
-				testID, isRead, width, favorite
+				testID, isRead, width, favorite, children
 			} = this.props;
 
 			return (
@@ -217,7 +201,7 @@ const withTouchableComponent = (WrappedComponent) => {
 								testID={testID}
 								style={styles.button}
 							>
-								<WrappedComponent {...this.props} />
+								{children}
 							</RectButton>
 						</Animated.View>
 					</Animated.View>
@@ -225,8 +209,6 @@ const withTouchableComponent = (WrappedComponent) => {
 				</PanGestureHandler>
 			);
 		}
-	}
+}
 
-	return WithTouchableComponent;
-};
-export default withTouchableComponent;
+export default Touchable;
