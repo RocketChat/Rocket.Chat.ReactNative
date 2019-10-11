@@ -1,5 +1,7 @@
 import React from 'react';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import {
+	createAppContainer, createSwitchNavigator, NavigationActions, StackActions
+} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
@@ -7,7 +9,7 @@ import { useScreens } from 'react-native-screens'; // eslint-disable-line import
 import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import SplitViewApp from './tablet';
+// import SplitViewApp from './tablet';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -21,9 +23,13 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation from './utils/layoutAnimation';
+import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
+// import { isTablet } from './utils/deviceInfo';
 
 useScreens();
+
+let showModal = false;
 
 const parseDeepLinking = (url) => {
 	if (url) {
@@ -130,6 +136,21 @@ const ChatsStack = createStackNavigator({
 	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+// Inside
+const RoomStack = createStackNavigator({
+	RoomView: {
+		getScreen: () => require('./views/RoomView').default
+	},
+	ThreadMessagesView: {
+		getScreen: () => require('./views/ThreadMessagesView').default
+	},
+	TableView: {
+		getScreen: () => require('./views/TableView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -253,6 +274,128 @@ class CustomInsideStack extends React.Component {
 	}
 }
 
+const MessagesStack = createStackNavigator({
+	NewMessageView: {
+		getScreen: () => require('./views/NewMessageView').default
+	},
+	SelectedUsersViewCreateChannel: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	CreateChannelView: {
+		getScreen: () => require('./views/CreateChannelView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const DirectoryStack = createStackNavigator({
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const SidebarStack = createStackNavigator({
+	SidebarView: {
+		getScreen: () => require('./views/SidebarView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+const RoomActionsStack = createStackNavigator({
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	},
+	RoomInfoEditView: {
+		getScreen: () => require('./views/RoomInfoEditView').default
+	},
+	RoomMembersView: {
+		getScreen: () => require('./views/RoomMembersView').default
+	},
+	SearchMessagesView: {
+		getScreen: () => require('./views/SearchMessagesView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	MessagesView: {
+		getScreen: () => require('./views/MessagesView').default
+	},
+	AutoTranslateView: {
+		getScreen: () => require('./views/AutoTranslateView').default
+	},
+	ReadReceiptsView: {
+		getScreen: () => require('./views/ReadReceiptView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPreferencesView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader
+});
+
+
+const ModalSwitch = createSwitchNavigator({
+	MessagesStack,
+	DirectoryStack,
+	SidebarStack,
+	RoomActionsStack,
+	ProfileStack,
+	SettingsStack,
+	AdminPanelStack,
+	AuthLoading: () => null
+},
+{
+	initialRouteName: 'AuthLoading'
+});
+
+class CustomModalStack extends React.Component {
+	static router = ModalSwitch.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		if (!showModal) { return null; }
+		return (
+			<View
+				style={{
+					flex: 1,
+					width: '100%',
+					height: '100%',
+					backgroundColor: '#00000030',
+					position: 'absolute',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
+			>
+				<View
+					style={{
+						width: '70%',
+						height: '70%',
+						overflow: 'hidden',
+						borderRadius: 16,
+						shadowColor: '#000',
+						shadowOffset: { width: 0, height: 2 },
+						shadowOpacity: 0.8,
+						shadowRadius: 2,
+						elevation: 1
+					}}
+				>
+					<ModalSwitch navigation={navigation} />
+				</View>
+			</View>
+		);
+	}
+}
+
 const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
@@ -267,12 +410,15 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
+const RoomContainer = createAppContainer(RoomStack);
+
+const ModalContainer = createAppContainer(CustomModalStack);
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		this.state = { tablet: false };
 	}
 
 	componentDidMount() {
@@ -284,6 +430,63 @@ export default class Root extends React.Component {
 				}
 			});
 		}, 5000);
+
+		const defaultApp = App.router.getStateForAction;
+		const defaultModal = ModalContainer.router.getStateForAction;
+		const defaultRoom = RoomContainer.router.getStateForAction;
+
+		RoomContainer.router.getStateForAction = (action, state) => {
+			if (action.type === NavigationActions.NAVIGATE && isTablet) {
+				const { routeName, params } = action;
+				if (routeName === 'RoomActionsView') {
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					showModal = true;
+					return null;
+				}
+			}
+			return defaultRoom(action, state);
+		};
+
+		ModalContainer.router.getStateForAction = (action, state) => {
+			if (action.type === 'Navigation/POP' && isTablet) {
+				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
+				showModal = false;
+				action.params = action.params || this.params;
+			}
+			return defaultModal(action, state);
+		};
+
+		App.router.getStateForAction = (action, state) => {
+			if (action.type === NavigationActions.NAVIGATE && isTablet) {
+				const { routeName, params } = action;
+				if (routeName === 'RoomView') {
+					const resetAction = StackActions.reset({
+						index: 0,
+						actions: [NavigationActions.navigate({ routeName, params })]
+					});
+					this.roomRef.dispatch(resetAction);
+					return null;
+				}
+
+				if (routeName === 'NewMessageView') {
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
+					showModal = true;
+					this.params = params;
+					return null;
+				}
+				if (routeName === 'DirectoryView') {
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
+					showModal = true;
+					return null;
+				}
+			}
+			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet) {
+				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
+				showModal = true;
+				return null;
+			}
+			return defaultApp(action, state);
+		};
 	}
 
 	componentWillUnmount() {
@@ -313,26 +516,40 @@ export default class Root extends React.Component {
 			});
 	}
 
+	renderRight = () => (
+		<>
+			<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
+			<View style={{ flex: 17 }}>
+				<RoomContainer
+					ref={(roomRef) => {
+						this.roomRef = roomRef;
+					}}
+				/>
+			</View>
+		</>
+	)
+
 	render() {
-		const { tablet } = this.state;
 		return (
 			<Provider store={store}>
-				<View style={{ flex: 1 }} onLayout={() => this.setState({ tablet: isTablet })}>
-					<LayoutAnimation>
-						{
-							tablet
-								? <SplitViewApp />
-								: (
-									<App
-										ref={(navigatorRef) => {
-											Navigation.setTopLevelNavigator(navigatorRef);
-										}}
-										onNavigationStateChange={onNavigationStateChange}
-									/>
-								)
-						}
-					</LayoutAnimation>
-				</View>
+				<LayoutAnimation>
+					<View style={{ flex: 1, flexDirection: 'row' }}>
+						<View style={{ flex: 8 }}>
+							<App
+								ref={(navigatorRef) => {
+									Navigation.setTopLevelNavigator(navigatorRef);
+								}}
+								onNavigationStateChange={onNavigationStateChange}
+							/>
+						</View>
+						{ isTablet ? this.renderRight() : null }
+						<ModalContainer
+							ref={(modalRef) => {
+								this.modalRef = modalRef;
+							}}
+						/>
+					</View>
+				</LayoutAnimation>
 			</Provider>
 		);
 	}
