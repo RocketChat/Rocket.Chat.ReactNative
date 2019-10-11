@@ -110,7 +110,7 @@ class Sort extends PureComponent {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.3]
+			outputRange: [0, 0.6]
 		});
 		const {
 			sortBy, groupByType, showFavorites, showUnread, theme
@@ -124,7 +124,11 @@ class Sort extends PureComponent {
 				<Animated.View
 					style={[
 						styles.dropdownContainer,
-						{ transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }
+						{
+							transform: [{ translateY }],
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
 					]}
 				>
 					<RectButton

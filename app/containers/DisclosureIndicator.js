@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import { COLOR_SEPARATOR } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	disclosureContainer: {
@@ -10,7 +11,8 @@ const styles = StyleSheet.create({
 	},
 	disclosureIndicator: {
 		width: 20,
-		height: 20
+		height: 20,
+		tintColor: COLOR_SEPARATOR
 	}
 });
 

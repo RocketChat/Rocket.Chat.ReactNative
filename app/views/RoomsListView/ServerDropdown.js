@@ -7,17 +7,19 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
-import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -27,6 +29,7 @@ class ServerDropdown extends Component {
 		navigation: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
+		theme: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
 		appStart: PropTypes.func
@@ -133,13 +136,18 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	renderSeparator = () => <View style={styles.serverSeparator} />;
+	renderSeparator = theme => <View style={[styles.serverSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
 
 	renderServer = ({ item }) => {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 
 		return (
-			<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
+			<RectButton
+				onPress={() => this.select(item.id)}
+				testID={`rooms-list-header-server-${ item.id }`}
+				activeOpacity={1}
+				underlayColor={themes[theme].bannerBackground}
+			>
 				<View style={styles.serverItemContainer}>
 					{item.iconURL
 						? (
@@ -158,17 +166,18 @@ class ServerDropdown extends Component {
 						)
 					}
 					<View style={styles.serverTextContainer}>
-						<Text style={styles.serverName}>{item.name || item.id}</Text>
-						<Text style={styles.serverUrl}>{item.id}</Text>
+						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
 					</View>
 					{item.id === server ? <Check /> : null}
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 
 	render() {
 		const { servers } = this.state;
+		const { theme } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
 		const translateY = this.animatedValue.interpolate({
@@ -177,22 +186,34 @@ class ServerDropdown extends Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.3]
+			outputRange: [0, 0.6]
 		});
 		return (
-			[
-				<TouchableWithoutFeedback key='sort-backdrop' onPress={this.close}>
+			<>
+				<TouchableWithoutFeedback onPress={this.close}>
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
-				</TouchableWithoutFeedback>,
+				</TouchableWithoutFeedback>
 				<Animated.View
-					key='sort-container'
-					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
+					style={[
+						styles.dropdownContainer,
+						{
+							transform: [{ translateY }],
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
+					]}
 					testID='rooms-list-header-server-dropdown'
 				>
-					<View style={[styles.dropdownContainerHeader, styles.serverHeader]}>
-						<Text style={styles.serverHeaderText}>{I18n.t('Server')}</Text>
+					<View
+						style={[
+							styles.dropdownContainerHeader,
+							styles.serverHeader,
+							{ borderColor: themes[theme].separatorColor }
+						]}
+					>
+						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
-							<Text style={styles.serverHeaderAdd}>{I18n.t('Add_Server')}</Text>
+							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
 					<FlatList
@@ -200,10 +221,10 @@ class ServerDropdown extends Component {
 						data={servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
-						ItemSeparatorComponent={this.renderSeparator}
+						ItemSeparatorComponent={() => this.renderSeparator(theme)}
 					/>
 				</Animated.View>
-			]
+			</>
 		);
 	}
 }
@@ -219,4 +240,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: () => dispatch(appStartAction('outside'))
 });
 
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(ServerDropdown));
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(ServerDropdown)));

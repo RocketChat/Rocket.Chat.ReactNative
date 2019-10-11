@@ -333,10 +333,7 @@ class RoomItem extends React.Component {
 											style={[
 												styles.title,
 												alert && styles.alert,
-												{
-													color:
-														themes[theme].titleText
-												}
+												{ color: themes[theme].titleText }
 											]}
 											ellipsizeMode='tail'
 											numberOfLines={1}
