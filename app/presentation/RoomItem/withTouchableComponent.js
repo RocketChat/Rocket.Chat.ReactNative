@@ -1,5 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
@@ -16,59 +14,57 @@ import styles, {
 import { LeftActions, RightActions } from './Actions';
 
 const withTouchableComponent = (WrappedComponent) => {
-	class Test extends React.Component {
-        static propTypes = {
-        	type: PropTypes.string.isRequired,
-        	name: PropTypes.string.isRequired,
-        	baseUrl: PropTypes.string.isRequired,
-        	showLastMessage: PropTypes.bool,
-        	_updatedAt: PropTypes.string,
-        	lastMessage: PropTypes.object,
-        	alert: PropTypes.bool,
-        	unread: PropTypes.number,
-        	userMentions: PropTypes.number,
-        	id: PropTypes.string,
-        	prid: PropTypes.string,
-        	// eslint-disable-next-line no-mixed-spaces-and-tabs
-        	onPress: PropTypes.func,
-        	userId: PropTypes.string,
-        	username: PropTypes.string,
-        	token: PropTypes.string,
-        	avatarSize: PropTypes.number,
-        	testID: PropTypes.string,
-        	width: PropTypes.number,
-        	favorite: PropTypes.bool,
-        	isRead: PropTypes.bool,
-        	rid: PropTypes.string,
-        	status: PropTypes.string,
-        	toggleFav: PropTypes.func,
-        	toggleRead: PropTypes.func,
-        	hideChannel: PropTypes.func,
-        	avatar: PropTypes.bool
-        }
+	class WithTouchableComponent extends React.Component {
+	static propTypes = {
+		type: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		baseUrl: PropTypes.string.isRequired,
+		showLastMessage: PropTypes.bool,
+		_updatedAt: PropTypes.string,
+		lastMessage: PropTypes.object,
+		alert: PropTypes.bool,
+		unread: PropTypes.number,
+		userMentions: PropTypes.number,
+		id: PropTypes.string,
+		prid: PropTypes.string,
+		onPress: PropTypes.func,
+		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
+		avatarSize: PropTypes.number,
+		testID: PropTypes.string,
+		width: PropTypes.number,
+		favorite: PropTypes.bool,
+		isRead: PropTypes.bool,
+		rid: PropTypes.string,
+		status: PropTypes.string,
+		toggleFav: PropTypes.func,
+		toggleRead: PropTypes.func,
+		hideChannel: PropTypes.func,
+		avatar: PropTypes.bool
+	}
 
-        constructor(props) {
-        	super(props);
-        	this.dragX = new Animated.Value(0);
-        	this.rowOffSet = new Animated.Value(0);
-        	this.transX = Animated.add(
-        		this.rowOffSet,
-        		this.dragX
-        	);
-        	this.state = {
-        		rowState: 0 // 0: closed, 1: right opened, -1: left opened
-        	};
-        	this._onGestureEvent = Animated.event(
-        		[{ nativeEvent: { translationX: this.dragX } }]
-        	);
-        	this._value = 0;
-        }
+	constructor(props) {
+		super(props);
+		this.dragX = new Animated.Value(0);
+		this.rowOffSet = new Animated.Value(0);
+		this.transX = Animated.add(
+			this.rowOffSet,
+			this.dragX
+		);
+		this.state = {
+			rowState: 0 // 0: closed, 1: right opened, -1: left opened
+		};
+		this._onGestureEvent = Animated.event(
+			[{ nativeEvent: { translationX: this.dragX } }]
+		);
+		this._value = 0;
+	}
 
-        _onHandlerStateChange = ({ nativeEvent }) => {
- 			if (nativeEvent.oldState === State.ACTIVE) {
-				 this._handleRelease(nativeEvent);
-        	}
-        };
+		_onHandlerStateChange = ({ nativeEvent }) => {
+			if (nativeEvent.oldState === State.ACTIVE) { this._handleRelease(nativeEvent); }
+		}
+
 
 		_handleRelease = (nativeEvent) => {
 			const { translationX } = nativeEvent;
@@ -185,7 +181,6 @@ const withTouchableComponent = (WrappedComponent) => {
 
 		render() {
 			const {
-				// eslint-disable-next-line no-unused-vars
 				testID, isRead, width, favorite
 			} = this.props;
 
@@ -232,7 +227,6 @@ const withTouchableComponent = (WrappedComponent) => {
 		}
 	}
 
-	return Test;
+	return WithTouchableComponent;
 };
-
 export default withTouchableComponent;
