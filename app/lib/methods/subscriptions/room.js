@@ -8,6 +8,7 @@ import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
+import debounce from '../../../utils/debounce';
 
 const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 const removeListener = listener => listener.stop();
@@ -85,6 +86,10 @@ export default function subscribeRoom({ rid }) {
 		}
 	});
 
+	const read = debounce((lastOpen) => {
+		this.readMessages(rid, lastOpen);
+	}, 300);
+
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		const lastOpen = new Date();
@@ -94,20 +99,26 @@ export default function subscribeRoom({ rid }) {
 		InteractionManager.runAfterInteractions(async() => {
 			const db = database.active;
 			const batch = [];
-			const subCollection = db.collections.get('subscriptions');
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
+			let messageRecord;
+			let threadRecord;
+			let threadMessageRecord;
 
 			// Create or update message
 			try {
-				const messageRecord = await msgCollection.find(message._id);
-				batch.push(
-					messageRecord.prepareUpdate((m) => {
-						Object.assign(m, message);
-					})
-				);
+				messageRecord = await msgCollection.find(message._id);
 			} catch (error) {
+				// Do nothing
+			}
+			if (messageRecord) {
+				batch.push(
+					messageRecord.prepareUpdate(protectedFunction((m) => {
+						Object.assign(m, message);
+					}))
+				);
+			} else {
 				batch.push(
 					msgCollection.prepareCreate(protectedFunction((m) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
@@ -120,13 +131,18 @@ export default function subscribeRoom({ rid }) {
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					const threadRecord = await threadsCollection.find(message._id);
-					batch.push(
-						threadRecord.prepareUpdate((t) => {
-							Object.assign(t, message);
-						})
-					);
+					threadRecord = await threadsCollection.find(message._id);
 				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadRecord) {
+					batch.push(
+						threadRecord.prepareUpdate(protectedFunction((t) => {
+							Object.assign(t, message);
+						}))
+					);
+				} else {
 					batch.push(
 						threadsCollection.prepareCreate(protectedFunction((t) => {
 							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
@@ -140,15 +156,20 @@ export default function subscribeRoom({ rid }) {
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					const threadMessageRecord = await threadMessagesCollection.find(message._id);
+					threadMessageRecord = await threadMessagesCollection.find(message._id);
+				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadMessageRecord) {
 					batch.push(
-						threadMessageRecord.prepareUpdate((tm) => {
+						threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
 							Object.assign(tm, message);
 							tm.rid = message.tmid;
 							delete tm.tmid;
-						})
+						}))
 					);
-				} catch (error) {
+				} else {
 					batch.push(
 						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
@@ -161,12 +182,7 @@ export default function subscribeRoom({ rid }) {
 				}
 			}
 
-			try {
-				await subCollection.find(rid);
-				this.readMessages(rid, lastOpen);
-			} catch (e) {
-				console.log('Subscription not found. We probably subscribed to a not joined channel. No need to mark as read.');
-			}
+			read(lastOpen);
 
 			try {
 				await db.action(async() => {
