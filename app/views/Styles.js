@@ -16,6 +16,12 @@ export default StyleSheet.create({
 		padding: 15,
 		paddingBottom: 30
 	},
+	containerSplitView: {
+		flex: 1,
+		flexDirection: 'row'
+		// justifyContent: 'center',
+		// alignItems: 'center'
+	},
 	buttonContainerLastChild: {
 		marginBottom: 40
 	},

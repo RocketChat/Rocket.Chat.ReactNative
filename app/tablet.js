@@ -2,45 +2,21 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator, NavigationActions } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import {
-	View, Linking
-} from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
 
-import { appInit } from './actions';
-import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
-import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './notifications/push';
-import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
-import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
-import RocketChat from './lib/rocketchat';
 import { COLOR_BORDER } from './constants/colors';
-import LayoutAnimation from './utils/layoutAnimation';
+import sharedStyles from './views/Styles';
 
 useScreens();
 
 let showModal = false;
-
-const parseDeepLinking = (url) => {
-	if (url) {
-		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
-		if (url.match(regex)) {
-			url = url.replace(regex, '').trim();
-			if (url) {
-				return parseQuery(url);
-			}
-		}
-	}
-	return null;
-};
 
 // Outside
 const OutsideStack = createStackNavigator({
@@ -360,7 +336,7 @@ const ListContainer = createAppContainer(ListStackModal);
 
 const ModalContainer = createAppContainer(CustomModalStack);
 
-export class MasterDetailView extends React.Component {
+export default class SplitViewApp extends React.Component {
 	state = {
 		inside: false,
 		landscape: Orientation.getInitialOrientation().includes('LANDSCAPE'),
@@ -478,14 +454,7 @@ export class MasterDetailView extends React.Component {
 	render() {
 		const { inside, inCall, landscape } = this.state;
 		return (
-			<View
-				style={{
-					flex: 1,
-					flexDirection: 'row',
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}
-			>
+			<View style={sharedStyles.containerSplitView}>
 				{ inside && !inCall ? this.renderSideView() : null }
 				<View style={{ flex: landscape ? 9 : 7 }}>
 					<App
@@ -497,62 +466,6 @@ export class MasterDetailView extends React.Component {
 				</View>
 				{ this.renderModal() }
 			</View>
-		);
-	}
-}
-
-export default class Root extends React.Component {
-	constructor(props) {
-		super(props);
-		this.init();
-		this.initCrashReport();
-	}
-
-	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
-	}
-
-	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
-	}
-
-	init = async() => {
-		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
-		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
-		if (notification) {
-			onNotification(notification);
-		} else if (parsedDeepLinkingURL) {
-			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-		} else {
-			store.dispatch(appInit());
-		}
-	}
-
-	initCrashReport = () => {
-		RocketChat.getAllowCrashReport()
-			.then((allowCrashReport) => {
-				if (!allowCrashReport) {
-					loggerConfig.autoNotify = false;
-					loggerConfig.registerBeforeSendCallback(() => false);
-					analytics().setAnalyticsCollectionEnabled(false);
-				}
-			});
-	}
-
-	render() {
-		return (
-			<Provider store={store}>
-				<LayoutAnimation>
-					<MasterDetailView />
-				</LayoutAnimation>
-			</Provider>
 		);
 	}
 }

@@ -4,9 +4,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking } from 'react-native';
+import { Linking, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
+import SplitViewApp from './tablet';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -270,6 +271,9 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
+		this.state = {
+			isTablet: false
+		};
 	}
 
 	componentDidMount() {
@@ -311,16 +315,21 @@ export default class Root extends React.Component {
 	}
 
 	render() {
+		const { isTablet } = this.state;
 		return (
 			<Provider store={store}>
-				<LayoutAnimation>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
-				</LayoutAnimation>
+				<View style={{ flex: 1 }} onLayout={() => this.setState({ isTablet: Dimensions.get('window').width > 600 })}>
+					<LayoutAnimation>
+						{isTablet ? <SplitViewApp /> : (
+							<App
+								ref={(navigatorRef) => {
+									Navigation.setTopLevelNavigator(navigatorRef);
+								}}
+								onNavigationStateChange={onNavigationStateChange}
+							/>
+						)}
+					</LayoutAnimation>
+				</View>
 			</Provider>
 		);
 	}
