@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking, View, Dimensions } from 'react-native';
+import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import SplitViewApp from './tablet';
@@ -21,6 +21,7 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation from './utils/layoutAnimation';
+import { isTablet } from './utils/deviceInfo';
 
 useScreens();
 
@@ -271,9 +272,7 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		this.state = {
-			isTablet: false
-		};
+		this.state = { tablet: false };
 	}
 
 	componentDidMount() {
@@ -315,19 +314,23 @@ export default class Root extends React.Component {
 	}
 
 	render() {
-		const { isTablet } = this.state;
+		const { tablet } = this.state;
 		return (
 			<Provider store={store}>
-				<View style={{ flex: 1 }} onLayout={() => this.setState({ isTablet: Dimensions.get('window').width > 600 })}>
+				<View style={{ flex: 1 }} onLayout={() => this.setState({ tablet: isTablet })}>
 					<LayoutAnimation>
-						{isTablet ? <SplitViewApp /> : (
-							<App
-								ref={(navigatorRef) => {
-									Navigation.setTopLevelNavigator(navigatorRef);
-								}}
-								onNavigationStateChange={onNavigationStateChange}
-							/>
-						)}
+						{
+							tablet
+								? <SplitViewApp />
+								: (
+									<App
+										ref={(navigatorRef) => {
+											Navigation.setTopLevelNavigator(navigatorRef);
+										}}
+										onNavigationStateChange={onNavigationStateChange}
+									/>
+								)
+						}
 					</LayoutAnimation>
 				</View>
 			</Provider>
