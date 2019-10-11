@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
+import log from '../../utils/log';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -133,13 +134,52 @@ class ServerDropdown extends Component {
 		}
 	}
 
+	deleteServer = (server) => {
+		try {
+			const serversDB = database.servers;
+			serversDB.action(async() => {
+				await server.destroyPermanently();
+			});
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	longPress = (server) => {
+		const {
+			server: currentServer
+		} = this.props;
+
+		if (currentServer !== server) {
+			Alert.alert(
+				I18n.t('Caution'),
+				I18n.t('Delete_Server'),
+				[
+					{
+						text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+						onPress: () => {
+							this.close();
+							this.deleteServer(server);
+						}
+					},
+					{
+						text: I18n.t('Cancel'),
+						onPress: () => this.close(),
+						style: 'cancel'
+					}
+				],
+				{ cancelable: true },
+			);
+		}
+	}
+
 	renderSeparator = () => <View style={styles.serverSeparator} />;
 
 	renderServer = ({ item }) => {
 		const { server } = this.props;
 
 		return (
-			<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
+			<Touch onPress={() => this.select(item.id)} onLongPress={() => this.longPress(item)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
 				<View style={styles.serverItemContainer}>
 					{item.iconURL
 						? (
