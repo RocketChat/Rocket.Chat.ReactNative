@@ -40,7 +40,7 @@ ItemInfo.propTypes = {
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: isTablet ? (
+		headerLeft: isTablet() ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
@@ -158,7 +158,7 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					{isTablet ? (
+					{isTablet() ? (
 						<>
 							<SidebarView />
 							<SectionSeparator />
@@ -243,7 +243,7 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 					/>
 
-					{ isTablet ? this.renderLogout() : null }
+					{ isTablet() ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
 		);

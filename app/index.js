@@ -9,7 +9,6 @@ import { useScreens } from 'react-native-screens'; // eslint-disable-line import
 import { Linking, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-// import SplitViewApp from './tablet';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -25,7 +24,6 @@ import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
-// import { isTablet } from './utils/deviceInfo';
 
 useScreens();
 
@@ -438,7 +436,7 @@ export default class Root extends React.Component {
 
 		RoomContainer.router.getStateForAction = (action, state) => {
 			const { tablet } = this.state;
-			if (action.type === NavigationActions.NAVIGATE && isTablet && tablet) {
+			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
 				const { routeName, params } = action;
 				if (routeName === 'RoomActionsView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
@@ -451,7 +449,7 @@ export default class Root extends React.Component {
 
 		ModalContainer.router.getStateForAction = (action, state) => {
 			const { tablet } = this.state;
-			if (action.type === 'Navigation/POP' && isTablet && tablet) {
+			if (action.type === 'Navigation/POP' && isTablet() && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
 				showModal = false;
 				action.params = action.params || this.params;
@@ -461,7 +459,7 @@ export default class Root extends React.Component {
 
 		App.router.getStateForAction = (action, state) => {
 			const { tablet } = this.state;
-			if (action.type === NavigationActions.NAVIGATE && isTablet && tablet) {
+			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
 				const { routeName, params } = action;
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
@@ -484,7 +482,7 @@ export default class Root extends React.Component {
 					return null;
 				}
 			}
-			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet && tablet) {
+			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet() && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
 				showModal = true;
 				return null;
@@ -542,7 +540,7 @@ export default class Root extends React.Component {
 						style={{ flex: 1, flexDirection: 'row' }}
 						onLayout={() => {
 							animateNextTransition();
-							this.setState({ tablet: isTablet && Dimensions.get('window').width > 600 });
+							this.setState({ tablet: isTablet() });
 						}}
 					>
 						<View style={[{ flex: 1 }, tablet && { maxWidth: 320 }]}>
@@ -553,7 +551,7 @@ export default class Root extends React.Component {
 								onNavigationStateChange={onNavigationStateChange}
 							/>
 						</View>
-						{ isTablet && tablet ? (
+						{ isTablet() && tablet ? (
 							<>
 								{ this.renderRight() }
 								<ModalContainer

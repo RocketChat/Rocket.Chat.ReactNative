@@ -31,7 +31,7 @@ class RoomActionsView extends React.Component {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		if (isTablet) {
+		if (isTablet()) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;

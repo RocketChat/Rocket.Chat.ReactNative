@@ -27,7 +27,7 @@ class DirectoryView extends React.Component {
 		const options = {
 			title: I18n.t('Directory')
 		};
-		if (isTablet) {
+		if (isTablet()) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;

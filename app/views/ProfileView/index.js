@@ -33,7 +33,7 @@ import { isTablet } from '../../utils/deviceInfo';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: isTablet ? (
+		headerLeft: isTablet() ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
 				tintColor={HEADER_BACK}
