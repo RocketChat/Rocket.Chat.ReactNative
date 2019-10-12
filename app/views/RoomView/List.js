@@ -67,7 +67,7 @@ export class List extends React.Component {
 					Q.where('rid', tmid)
 				)
 				.observeWithColumns(['_updated_at']);
-		} else {
+		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
 				.query(
@@ -76,21 +76,23 @@ export class List extends React.Component {
 				.observeWithColumns(['_updated_at']);
 		}
 
-		this.messagesSubscription = this.messagesObservable
-			.subscribe((data) => {
-				this.interaction = InteractionManager.runAfterInteractions(() => {
-					if (tmid) {
-						data = [this.thread, ...data];
-					}
-					const messages = orderBy(data, ['ts'], ['desc']);
-					if (this.mounted) {
-						animateNextTransition();
-						this.setState({ messages });
-					} else {
-						this.state.messages = messages;
-					}
+		if (rid) {
+			this.messagesSubscription = this.messagesObservable
+				.subscribe((data) => {
+					this.interaction = InteractionManager.runAfterInteractions(() => {
+						if (tmid) {
+							data = [this.thread, ...data];
+						}
+						const messages = orderBy(data, ['ts'], ['desc']);
+						if (this.mounted) {
+							animateNextTransition();
+							this.setState({ messages });
+						} else {
+							this.state.messages = messages;
+						}
+					});
 				});
-			});
+		}
 	}
 
 	// this.state.loading works for this.onEndReached and RoomView.init

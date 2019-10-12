@@ -146,7 +146,7 @@ class RoomView extends React.Component {
 
 		if (room && room.observe) {
 			this.observeRoom(room);
-		} else {
+		} else if (this.rid) {
 			this.findAndObserveRoom(this.rid);
 		}
 
@@ -169,12 +169,12 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
 			}
-			if (isAuthenticated) {
+			if (isAuthenticated && this.rid) {
 				this.init();
-			} else {
+			} else if (this.rid) {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
-			if (isIOS) {
+			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
 		});
@@ -199,7 +199,7 @@ class RoomView extends React.Component {
 	componentDidUpdate(prevProps) {
 		const { appState } = this.props;
 
-		if (appState === 'foreground' && appState !== prevProps.appState) {
+		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
 				this.init();
 			});
@@ -313,7 +313,7 @@ class RoomView extends React.Component {
 			if (this.t !== 'd') {
 				console.log('Room not found');
 				this.internalSetState({ joined: false });
-			} else {
+			} else if (this.rid) {
 				// We navigate to RoomView before the DM is inserted to the local db
 				// So we retry just to make sure we have the right content
 				this.retryFindCount = this.retryFindCount + 1 || 1;

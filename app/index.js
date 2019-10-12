@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking, View, Dimensions } from 'react-native';
+import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
