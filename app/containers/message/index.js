@@ -42,7 +42,8 @@ export default class MessageContainer extends React.Component {
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
-		callJitsi: PropTypes.func
+		callJitsi: PropTypes.func,
+		runSlashCommand: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -203,6 +204,13 @@ export default class MessageContainer extends React.Component {
 		}
 	}
 
+	runSlashCommand = (msg) => {
+		const { runSlashCommand } = this.props;
+		if (runSlashCommand) {
+			runSlashCommand(msg);
+		}
+	}
+
 	render() {
 		const {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi
@@ -272,6 +280,7 @@ export default class MessageContainer extends React.Component {
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				callJitsi={callJitsi}
+				runSlashCommand={this.runSlashCommand}
 			/>
 		);
 	}

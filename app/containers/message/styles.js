@@ -181,5 +181,12 @@ export default StyleSheet.create({
 	},
 	readReceipt: {
 		lineHeight: 20
+	},
+	actions: {
+		flex: 1,
+		flexDirection: 'row'
+	},
+	actionButton: {
+		margin: 2
 	}
 });

@@ -1,14 +1,23 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
-
+import { View, StyleSheet } from 'react-native';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
+import Action from './Action';
+
+
+const styles = StyleSheet.create({
+	actions: {
+		flex: 1,
+		flexDirection: 'row'
+	}
+});
 
 const Attachments = React.memo(({
-	attachments, timeFormat, user, baseUrl, useMarkdown, onOpenFileModal, getCustomEmoji
+	attachments, timeFormat, user, baseUrl, useMarkdown, onOpenFileModal, getCustomEmoji, runSlashCommand
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
@@ -24,6 +33,13 @@ const Attachments = React.memo(({
 		if (file.video_url) {
 			return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} onOpenFileModal={onOpenFileModal} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />;
 		}
+		if (file.actions) {
+			return (
+				<View style={styles.actions}>
+					{file.actions.map(action => <Action runSlashCommand={runSlashCommand} {...action} />)}
+				</View>
+			);
+		}
 
 		// eslint-disable-next-line react/no-array-index-key
 		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />;
@@ -37,7 +53,8 @@ Attachments.propTypes = {
 	baseUrl: PropTypes.string,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	runSlashCommand: PropTypes.func
 };
 Attachments.displayName = 'MessageAttachments';
 

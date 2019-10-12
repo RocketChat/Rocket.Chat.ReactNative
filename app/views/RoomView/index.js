@@ -614,6 +614,12 @@ class RoomView extends React.Component {
 		return isReadOnly(room, user);
 	}
 
+	runSlashCommand = (msg) => {
+		const messageWithoutCommand = msg.substr(msg.indexOf(' ') + 1);
+		const command = msg.replace(/ .*/, '').slice(1);
+		RocketChat.runSlashCommand(command, this.rid, messageWithoutCommand);
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -664,6 +670,7 @@ class RoomView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
+				runSlashCommand={this.runSlashCommand}
 			/>
 		);
 
