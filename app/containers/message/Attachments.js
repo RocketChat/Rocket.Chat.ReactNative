@@ -1,20 +1,13 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
 import Action from './Action';
-
-
-const styles = StyleSheet.create({
-	actions: {
-		flex: 1,
-		flexDirection: 'row'
-	}
-});
+import styles from './styles';
 
 const Attachments = React.memo(({
 	attachments, timeFormat, user, baseUrl, useMarkdown, onOpenFileModal, getCustomEmoji, runSlashCommand

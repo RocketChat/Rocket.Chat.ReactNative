@@ -7,7 +7,7 @@ const Action = React.memo(({
 	text, type, msg, runSlashCommand
 }) => {
 	if (type === 'button') {
-		return <Button style={styles.button} title={text} onPress={() => runSlashCommand(msg)} />;
+		return <Button style={styles.actionButton} title={text} onPress={() => runSlashCommand(msg)} />;
 	}
 	return null;
 }, () => true);
