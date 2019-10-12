@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking, View } from 'react-native';
+import { Linking, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
 // import SplitViewApp from './tablet';
@@ -22,7 +22,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import LayoutAnimation from './utils/layoutAnimation';
+import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
 // import { isTablet } from './utils/deviceInfo';
@@ -419,6 +419,7 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
+		this.state = { tablet: false };
 	}
 
 	componentDidMount() {
@@ -436,7 +437,8 @@ export default class Root extends React.Component {
 		const defaultRoom = RoomContainer.router.getStateForAction;
 
 		RoomContainer.router.getStateForAction = (action, state) => {
-			if (action.type === NavigationActions.NAVIGATE && isTablet) {
+			const { tablet } = this.state;
+			if (action.type === NavigationActions.NAVIGATE && isTablet && tablet) {
 				const { routeName, params } = action;
 				if (routeName === 'RoomActionsView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
@@ -448,7 +450,8 @@ export default class Root extends React.Component {
 		};
 
 		ModalContainer.router.getStateForAction = (action, state) => {
-			if (action.type === 'Navigation/POP' && isTablet) {
+			const { tablet } = this.state;
+			if (action.type === 'Navigation/POP' && isTablet && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
 				showModal = false;
 				action.params = action.params || this.params;
@@ -457,7 +460,8 @@ export default class Root extends React.Component {
 		};
 
 		App.router.getStateForAction = (action, state) => {
-			if (action.type === NavigationActions.NAVIGATE && isTablet) {
+			const { tablet } = this.state;
+			if (action.type === NavigationActions.NAVIGATE && isTablet && tablet) {
 				const { routeName, params } = action;
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
@@ -480,7 +484,7 @@ export default class Root extends React.Component {
 					return null;
 				}
 			}
-			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet) {
+			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
 				showModal = true;
 				return null;
@@ -519,7 +523,7 @@ export default class Root extends React.Component {
 	renderRight = () => (
 		<>
 			<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
-			<View style={{ flex: 17 }}>
+			<View style={{ flex: 1 }}>
 				<RoomContainer
 					ref={(roomRef) => {
 						this.roomRef = roomRef;
@@ -530,11 +534,18 @@ export default class Root extends React.Component {
 	)
 
 	render() {
+		const { tablet } = this.state;
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<View style={{ flex: 1, flexDirection: 'row' }}>
-						<View style={{ flex: 8 }}>
+					<View
+						style={{ flex: 1, flexDirection: 'row' }}
+						onLayout={() => {
+							animateNextTransition();
+							this.setState({ tablet: isTablet && Dimensions.get('window').width > 600 });
+						}}
+					>
+						<View style={[{ flex: 1 }, tablet && { maxWidth: 320 }]}>
 							<App
 								ref={(navigatorRef) => {
 									Navigation.setTopLevelNavigator(navigatorRef);
@@ -542,12 +553,16 @@ export default class Root extends React.Component {
 								onNavigationStateChange={onNavigationStateChange}
 							/>
 						</View>
-						{ isTablet ? this.renderRight() : null }
-						<ModalContainer
-							ref={(modalRef) => {
-								this.modalRef = modalRef;
-							}}
-						/>
+						{ isTablet && tablet ? (
+							<>
+								{ this.renderRight() }
+								<ModalContainer
+									ref={(modalRef) => {
+										this.modalRef = modalRef;
+									}}
+								/>
+							</>
+						) : null }
 					</View>
 				</LayoutAnimation>
 			</Provider>

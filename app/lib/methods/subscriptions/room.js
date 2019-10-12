@@ -14,6 +14,8 @@ const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscrib
 const removeListener = listener => listener.stop();
 
 export default function subscribeRoom({ rid }) {
+	if (!rid) { return; }
+
 	console.log(`[RCRN] Subscribed to room ${ rid }`);
 	let promises;
 	let connectedListener;
