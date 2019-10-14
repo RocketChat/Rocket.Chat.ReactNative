@@ -17,14 +17,11 @@ const RoomItem = ({
 	name, baseUrl, user, member, route, params, testID, navigation
 }) => {
 	const { room } = params;
-
-	const navigate = () => {
-		navigation.navigate(route, params);
-	};
+	const { navigate } = navigation;
 
 	return (
 		<Touch
-			onPress={navigate}
+			onPress={() => navigate(route, params)}
 			underlayColor={COLOR_WHITE}
 			activeOpacity={0.5}
 			accessibilityLabel={name}

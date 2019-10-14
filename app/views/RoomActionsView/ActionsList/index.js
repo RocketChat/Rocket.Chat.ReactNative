@@ -12,16 +12,6 @@ import RoomItem from './RoomItem';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 import styles from './styles';
 
-const areEqual = (prev, next) => isEqual(prev.room, next.room)
-	&& prev.baseUrl === next.baseUrl
-	&& prev.member._id === next.member._id
-	&& prev.membersCount === next.membersCount
-	&& prev.canViewMembers === next.canViewMembers
-	&& prev.canAddUser === next.canAddUser
-	&& prev.canAutoTranslate === next.canAutoTranslate
-	&& prev.joined === next.joined
-	&& prev.jitsiEnabled === next.jitsiEnabled;
-
 const ActionsList = memo(({
 	room,
 	baseUrl,
@@ -42,6 +32,8 @@ const ActionsList = memo(({
 	const {
 		rid, t, blocker
 	} = room;
+
+	const isPublicOrPrivate = t === 'c' || t === 'p';
 
 	return (
 		<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.container}>
@@ -76,7 +68,7 @@ const ActionsList = memo(({
 			</>
 			)}
 
-			{(t === 'c' || t === 'p') && canViewMembers && (
+			{isPublicOrPrivate && canViewMembers && (
 			<>
 				<ActionItem
 					icon='team'
@@ -88,7 +80,7 @@ const ActionsList = memo(({
 				<View style={styles.separator} />
 			</>
 			)}
-			{(t === 'c' || t === 'p') && canAddUser && (
+			{isPublicOrPrivate && canAddUser && (
 			<>
 				<ActionItem
 					icon='user-plus'
@@ -160,7 +152,7 @@ const ActionsList = memo(({
 					testID='room-actions-notifications'
 				/>
 			)}
-			{(t === 'c' || t === 'p') && joined && (
+			{isPublicOrPrivate && joined && (
 				<ActionItem
 					icon='bell'
 					name={I18n.t('Notifications')}
@@ -183,7 +175,7 @@ const ActionsList = memo(({
 			</>
 			)}
 
-			{(t === 'c' || t === 'p') && joined && (
+			{isPublicOrPrivate && joined && (
 			<>
 				<ActionItem
 					icon='sign-out'
@@ -198,7 +190,7 @@ const ActionsList = memo(({
 
 		</ScrollView>
 	);
-}, areEqual);
+}, isEqual);
 
 ActionsList.propTypes = {
 	room: PropTypes.object.isRequired,
