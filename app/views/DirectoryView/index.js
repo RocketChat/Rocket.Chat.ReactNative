@@ -64,16 +64,6 @@ class DirectoryView extends React.Component {
 		this.setState({ text });
 	}
 
-	onPressItem = (item) => {
-		const { navigation } = this.props;
-		try {
-			const onPressItem = navigation.getParam('onPressItem', () => {});
-			onPressItem(item);
-		} catch (error) {
-			console.log('DirectoryView -> onPressItem -> error', error);
-		}
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
 		if (newSearch) {

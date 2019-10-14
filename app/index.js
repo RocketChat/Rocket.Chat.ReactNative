@@ -414,8 +414,7 @@ export default class Root extends React.Component {
 		this.initCrashReport();
 		this.state = {
 			tablet: false,
-			inside: false,
-			inCall: false
+			inside: false
 		};
 	}
 
@@ -461,13 +460,18 @@ export default class Root extends React.Component {
 			if (action.type === 'Navigation/POP' && isTablet() && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
 				this.setState({ showModal: false });
-				action.params = action.params || this.params;
+			}
+			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
+				const { routeName, params } = action;
+				if (routeName === 'RoomView') {
+					Navigation.navigate(routeName, params);
+				}
 			}
 			return defaultModal(action, state);
 		};
 
 		App.router.getStateForAction = (action, state) => {
-			const { tablet, inCall } = this.state;
+			const { tablet } = this.state;
 			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
 				const { routeName, params } = action;
 
@@ -478,7 +482,8 @@ export default class Root extends React.Component {
 					this.setState({ inside: false });
 				}
 				if (routeName === 'JitsiMeetView') {
-					this.setState({ inCall: true, inside: false });
+					this.inCall = true;
+					this.setState({ inside: false });
 				}
 
 				if (routeName === 'RoomView') {
@@ -487,13 +492,13 @@ export default class Root extends React.Component {
 						actions: [NavigationActions.navigate({ routeName, params })]
 					});
 					this.roomRef.dispatch(resetAction);
+					this.setState({ showModal: false });
 					return null;
 				}
 
 				if (routeName === 'NewMessageView') {
-					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
+					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
 					this.setState({ showModal: true });
-					this.params = params;
 					return null;
 				}
 				if (routeName === 'DirectoryView') {
@@ -507,7 +512,7 @@ export default class Root extends React.Component {
 				this.setState({ showModal: true });
 				return null;
 			}
-			if (action.type === 'Navigation/POP' && inCall) {
+			if (action.type === 'Navigation/POP' && this.inCall) {
 				this.setState({ inside: true, showModal: false });
 			}
 			return defaultApp(action, state);
