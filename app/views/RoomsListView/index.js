@@ -8,6 +8,7 @@ import {
 	Text,
 	ScrollView,
 	Keyboard,
+	TouchableOpacity,
 	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -15,6 +16,7 @@ import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
+import NotificationsIOS from 'react-native-notifications';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -778,6 +780,19 @@ class RoomsListView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
+				<TouchableOpacity
+					style={{ height: 50, width: 50, backgroundColor: 'red' }}
+					onPress={() => {
+						const fireDate = new Date(Date.now() + 30 * 1000).getTime();
+						NotificationsIOS.localNotification({
+							fireDate,
+							body: 'Local notificiation!',
+							title: 'Local Notification Title',
+							category: 'MESSAGE',
+							userInfo: { link: 'localNotificationLink' }
+						});
+					}}
+				/>
 				{this.renderScroll()}
 				{showSortDropdown ? (
 					<SortDropdown
