@@ -32,7 +32,7 @@ import {
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { isIOS, isAndroid, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
@@ -620,7 +620,7 @@ class RoomsListView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
-				width={width}
+				width={isTablet() ? 320 : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
