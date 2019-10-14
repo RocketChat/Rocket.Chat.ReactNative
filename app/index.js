@@ -87,14 +87,24 @@ const OutsideStackModal = createStackNavigator({
 	headerMode: 'none'
 });
 
+const ChatsRoutes = {
+	RoomView: {
+		getScreen: () => require('./views/RoomView').default
+	},
+	ThreadMessagesView: {
+		getScreen: () => require('./views/ThreadMessagesView').default
+	},
+	TableView: {
+		getScreen: () => require('./views/TableView').default
+	}
+};
+
 // Inside
 const ChatsStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
 	},
-	RoomView: {
-		getScreen: () => require('./views/RoomView').default
-	},
+	...ChatsRoutes,
 	RoomActionsView: {
 		getScreen: () => require('./views/RoomActionsView').default
 	},
@@ -113,9 +123,6 @@ const ChatsStack = createStackNavigator({
 	SelectedUsersView: {
 		getScreen: () => require('./views/SelectedUsersView').default
 	},
-	ThreadMessagesView: {
-		getScreen: () => require('./views/ThreadMessagesView').default
-	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
 	},
@@ -128,9 +135,6 @@ const ChatsStack = createStackNavigator({
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
 	},
-	TableView: {
-		getScreen: () => require('./views/TableView').default
-	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
@@ -140,15 +144,7 @@ const ChatsStack = createStackNavigator({
 
 // Inside
 const RoomStack = createStackNavigator({
-	RoomView: {
-		getScreen: () => require('./views/RoomView').default
-	},
-	ThreadMessagesView: {
-		getScreen: () => require('./views/ThreadMessagesView').default
-	},
-	TableView: {
-		getScreen: () => require('./views/TableView').default
-	}
+	...ChatsRoutes
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -264,8 +260,12 @@ class CustomInsideStack extends React.Component {
 		return (
 			<>
 				<InsideStackModal navigation={navigation} />
-				<NotificationBadge navigation={navigation} />
-				<Toast />
+				{ !isTablet() ? (
+					<>
+						<NotificationBadge navigation={navigation} />
+						<Toast />
+					</>
+				) : null }
 			</>
 		);
 	}

@@ -160,7 +160,8 @@ export class List extends React.Component {
 
 	renderFooter = () => {
 		const { loading } = this.state;
-		if (loading) {
+		const { rid } = this.props;
+		if (loading && rid) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return null;
