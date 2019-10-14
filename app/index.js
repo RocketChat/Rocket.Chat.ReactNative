@@ -27,8 +27,6 @@ import { isTablet } from './utils/deviceInfo';
 
 useScreens();
 
-let showModal = false;
-
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
@@ -356,11 +354,12 @@ class CustomModalStack extends React.Component {
 	static router = ModalSwitch.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		showModal: PropTypes.bool
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, showModal } = this.props;
 		if (!showModal) { return null; }
 		return (
 			<View
@@ -417,7 +416,11 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		this.state = { tablet: false };
+		this.state = {
+			tablet: false,
+			inside: false,
+			inCall: false
+		};
 	}
 
 	componentDidMount() {
@@ -440,7 +443,7 @@ export default class Root extends React.Component {
 				const { routeName, params } = action;
 				if (routeName === 'RoomActionsView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-					showModal = true;
+					this.setState({ showModal: true });
 					return null;
 				}
 			}
@@ -451,16 +454,27 @@ export default class Root extends React.Component {
 			const { tablet } = this.state;
 			if (action.type === 'Navigation/POP' && isTablet() && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
-				showModal = false;
+				this.setState({ showModal: false });
 				action.params = action.params || this.params;
 			}
 			return defaultModal(action, state);
 		};
 
 		App.router.getStateForAction = (action, state) => {
-			const { tablet } = this.state;
+			const { tablet, inCall } = this.state;
 			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
 				const { routeName, params } = action;
+
+				if (routeName === 'InsideStack') {
+					this.setState({ inside: true });
+				}
+				if (routeName === 'OutsideStack') {
+					this.setState({ inside: false });
+				}
+				if (routeName === 'JitsiMeetView') {
+					this.setState({ inCall: true, inside: false });
+				}
+
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
 						index: 0,
@@ -472,20 +486,23 @@ export default class Root extends React.Component {
 
 				if (routeName === 'NewMessageView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
-					showModal = true;
+					this.setState({ showModal: true });
 					this.params = params;
 					return null;
 				}
 				if (routeName === 'DirectoryView') {
 					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
-					showModal = true;
+					this.setState({ showModal: true });
 					return null;
 				}
 			}
 			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet() && tablet) {
 				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
-				showModal = true;
+				this.setState({ showModal: true });
 				return null;
+			}
+			if (action.type === 'Navigation/POP' && inCall) {
+				this.setState({ inside: true, showModal: false });
 			}
 			return defaultApp(action, state);
 		};
@@ -532,7 +549,7 @@ export default class Root extends React.Component {
 	)
 
 	render() {
-		const { tablet } = this.state;
+		const { tablet, inside, showModal } = this.state;
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
@@ -543,7 +560,7 @@ export default class Root extends React.Component {
 							this.setState({ tablet: isTablet() });
 						}}
 					>
-						<View style={[{ flex: 1 }, tablet && { maxWidth: 320 }]}>
+						<View style={[{ flex: 1 }, tablet && inside && { maxWidth: 320 }]}>
 							<App
 								ref={(navigatorRef) => {
 									Navigation.setTopLevelNavigator(navigatorRef);
@@ -551,10 +568,11 @@ export default class Root extends React.Component {
 								onNavigationStateChange={onNavigationStateChange}
 							/>
 						</View>
-						{ isTablet() && tablet ? (
+						{ isTablet() && tablet && inside ? (
 							<>
 								{ this.renderRight() }
 								<ModalContainer
+									showModal={showModal}
 									ref={(modalRef) => {
 										this.modalRef = modalRef;
 									}}
