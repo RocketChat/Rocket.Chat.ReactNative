@@ -24,6 +24,7 @@ import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
+import Modal from './presentation/Modal';
 
 useScreens();
 
@@ -362,33 +363,9 @@ class CustomModalStack extends React.Component {
 		const { navigation, showModal } = this.props;
 		if (!showModal) { return null; }
 		return (
-			<View
-				style={{
-					flex: 1,
-					width: '100%',
-					height: '100%',
-					backgroundColor: '#00000030',
-					position: 'absolute',
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}
-			>
-				<View
-					style={{
-						width: '70%',
-						height: '70%',
-						overflow: 'hidden',
-						borderRadius: 16,
-						shadowColor: '#000',
-						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: 0.8,
-						shadowRadius: 2,
-						elevation: 1
-					}}
-				>
-					<ModalSwitch navigation={navigation} />
-				</View>
-			</View>
+			<Modal>
+				<ModalSwitch navigation={navigation} />
+			</Modal>
 		);
 	}
 }
