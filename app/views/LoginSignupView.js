@@ -104,6 +104,7 @@ class LoginSignupView extends React.Component {
 		Site_Name: PropTypes.string,
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
+		Accounts_ShowFormLogin: PropTypes.bool,
 		CAS_login_url: PropTypes.string
 	}
 
@@ -405,13 +406,8 @@ class LoginSignupView extends React.Component {
 		);
 	}
 
-	render() {
-		return (
-			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
-				<StatusBar />
-				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
-					{this.renderServices()}
-					{this.renderServicesSeparator()}
+	renderFormLogin = () => (
+		<>
 					<Button
 						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
 						type='primary'
@@ -424,6 +420,22 @@ class LoginSignupView extends React.Component {
 						onPress={() => this.register()}
 						testID='welcome-view-register'
 					/>
+		</>
+	)
+
+	render() {
+		const { Accounts_ShowFormLogin } = this.props;
+		return (
+			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
+				<StatusBar />
+				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
+					{this.renderServices()}
+					{ Accounts_ShowFormLogin ? (
+						<>
+							{this.renderServicesSeparator()}
+							{this.renderFormLogin()}
+						</>
+					) : null }
 				</SafeAreaView>
 			</ScrollView>
 		);
@@ -436,6 +448,7 @@ const mapStateToProps = state => ({
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
+	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
 	services: state.login.services
 });
 
