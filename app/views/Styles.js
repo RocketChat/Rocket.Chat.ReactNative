@@ -121,6 +121,10 @@ export default StyleSheet.create({
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
+	separatorLeft: {
+		borderColor: COLOR_SEPARATOR,
+		borderLeftWidth: StyleSheet.hairlineWidth
+	},
 	textRegular: {
 		backgroundColor: 'transparent',
 		...Platform.select({

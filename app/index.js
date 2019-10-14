@@ -22,7 +22,6 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
-import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
 import sharedStyles from './views/Styles';
@@ -534,8 +533,7 @@ export default class Root extends React.Component {
 
 	renderRight = () => (
 		<>
-			<View style={{ height: '100%', width: 1, backgroundColor: COLOR_BORDER }} />
-			<View style={{ flex: 1 }}>
+			<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
 				<RoomContainer
 					ref={(roomRef) => {
 						this.roomRef = roomRef;
@@ -557,7 +555,7 @@ export default class Root extends React.Component {
 							this.setState({ tablet: isTablet() });
 						}}
 					>
-						<View style={[{ flex: 1 }, tablet && inside && { maxWidth: 320 }]}>
+						<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
 							<App
 								ref={(navigatorRef) => {
 									Navigation.setTopLevelNavigator(navigatorRef);
