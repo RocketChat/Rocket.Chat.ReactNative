@@ -429,6 +429,16 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 
+		if (isTablet(false)) {
+			this.initTabletNav();
+		}
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.listenerTimeout);
+	}
+
+	initTabletNav = () => {
 		const defaultApp = App.router.getStateForAction;
 		const defaultModal = ModalContainer.router.getStateForAction;
 		const defaultRoom = RoomContainer.router.getStateForAction;
@@ -504,10 +514,6 @@ export default class Root extends React.Component {
 		};
 	}
 
-	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
-	}
-
 	init = async() => {
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
@@ -543,18 +549,19 @@ export default class Root extends React.Component {
 		</>
 	)
 
+	changeTablet = () => {
+		if (isTablet(false)) {
+			animateNextTransition();
+			this.setState({ tablet: isTablet() });
+		}
+	};
+
 	render() {
 		const { tablet, inside, showModal } = this.state;
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<View
-						style={sharedStyles.containerSplitView}
-						onLayout={() => {
-							animateNextTransition();
-							this.setState({ tablet: isTablet() });
-						}}
-					>
+					<View style={sharedStyles.containerSplitView} onLayout={this.changeTablet}>
 						<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
 							<App
 								ref={(navigatorRef) => {
