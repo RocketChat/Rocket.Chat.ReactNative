@@ -25,6 +25,7 @@ import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation'
 import { COLOR_BORDER } from './constants/colors';
 import { isTablet } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
+import sharedStyles from './views/Styles';
 
 useScreens();
 
@@ -271,6 +272,25 @@ class CustomInsideStack extends React.Component {
 	}
 }
 
+class CustomRoomStack extends React.Component {
+	static router = RoomStack.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return (
+			<>
+				<RoomStack navigation={navigation} />
+				<NotificationBadge navigation={navigation} />
+				<Toast />
+			</>
+		);
+	}
+}
+
 const MessagesStack = createStackNavigator({
 	NewMessageView: {
 		getScreen: () => require('./views/NewMessageView').default
@@ -384,7 +404,7 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-const RoomContainer = createAppContainer(RoomStack);
+const RoomContainer = createAppContainer(CustomRoomStack);
 
 const ModalContainer = createAppContainer(CustomModalStack);
 
@@ -531,7 +551,7 @@ export default class Root extends React.Component {
 			<Provider store={store}>
 				<LayoutAnimation>
 					<View
-						style={{ flex: 1, flexDirection: 'row' }}
+						style={sharedStyles.containerSplitView}
 						onLayout={() => {
 							animateNextTransition();
 							this.setState({ tablet: isTablet() });
