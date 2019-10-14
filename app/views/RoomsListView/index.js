@@ -783,13 +783,13 @@ class RoomsListView extends React.Component {
 				<TouchableOpacity
 					style={{ height: 50, width: 50, backgroundColor: 'red' }}
 					onPress={() => {
-						const fireDate = new Date(Date.now() + 30 * 1000).getTime();
+						const fireDate = new Date(Date.now() + 10 * 1000).getTime();
 						NotificationsIOS.localNotification({
 							fireDate,
 							body: 'Local notificiation!',
 							title: 'Local Notification Title',
 							category: 'MESSAGE',
-							userInfo: { link: 'localNotificationLink' }
+							userInfo: { rid: '' }
 						});
 					}}
 				/>

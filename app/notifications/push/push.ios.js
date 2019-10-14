@@ -5,7 +5,6 @@ import reduxStore from '../../lib/createStore';
 const replyAction = new NotificationAction({
 	activationMode: 'background',
 	title: 'Reply',
-	authenticationRequired: true,
 	textInput: {
 		buttonTitle: 'Reply now',
 		placeholder: 'Insert message'
@@ -23,10 +22,10 @@ class PushNotification {
 			this.deviceToken = deviceToken;
 		});
 
-		NotificationsIOS.addEventListener('notificationOpened', (notification, completion) => {
+		NotificationsIOS.addEventListener('notificationOpened', (notification, completion, action) => {
 			const { background } = reduxStore.getState().app;
 			if (background) {
-				this.onNotification(notification);
+				this.onNotification(notification, action);
 			}
 			completion();
 		});
@@ -36,7 +35,7 @@ class PushNotification {
 			identifier: 'MESSAGE',
 			actions: [replyAction]
 		}));
-		NotificationsIOS.requestPermissions([actions]);
+		NotificationsIOS.requestPermissions(actions);
 	}
 
 	getDeviceToken() {
