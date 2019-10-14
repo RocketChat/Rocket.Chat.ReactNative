@@ -104,7 +104,6 @@ const ChatsStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
 	},
-	...ChatsRoutes,
 	RoomActionsView: {
 		getScreen: () => require('./views/RoomActionsView').default
 	},
@@ -137,7 +136,8 @@ const ChatsStack = createStackNavigator({
 	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
-	}
+	},
+	...ChatsRoutes
 }, {
 	defaultNavigationOptions: defaultHeader
 });
@@ -479,11 +479,11 @@ export default class Root extends React.Component {
 					this.setState({ inside: true });
 				}
 				if (routeName === 'OutsideStack') {
-					this.setState({ inside: false });
+					this.setState({ inside: false, showModal: false });
 				}
 				if (routeName === 'JitsiMeetView') {
 					this.inCall = true;
-					this.setState({ inside: false });
+					this.setState({ inside: false, showModal: false });
 				}
 
 				if (routeName === 'RoomView') {
