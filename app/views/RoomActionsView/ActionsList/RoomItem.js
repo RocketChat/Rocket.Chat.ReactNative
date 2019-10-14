@@ -3,28 +3,28 @@ import { View, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 
-import Avatar from '../Avatar';
-import Status from '../Status';
-import DisclosureIndicator from '../DisclosureIndicator';
-import Touch from '../../utils/touch';
-import RoomTypeIcon from '../RoomTypeIcon';
+import Avatar from '../../../containers/Avatar';
+import Status from '../../../containers/Status';
+import DisclosureIndicator from '../../../containers/DisclosureIndicator';
+import Touch from '../../../utils/touch';
+import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 
-import { COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE } from '../../../constants/colors';
 import styles from './styles';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '../../Styles';
 
 const RoomItem = ({
 	name, baseUrl, user, member, route, params, testID, navigation
 }) => {
 	const { room } = params;
 
-	const onPressTouchable = () => {
+	const navigate = () => {
 		navigation.navigate(route, params);
 	};
 
 	return (
 		<Touch
-			onPress={onPressTouchable}
+			onPress={navigate}
 			underlayColor={COLOR_WHITE}
 			activeOpacity={0.5}
 			accessibilityLabel={name}

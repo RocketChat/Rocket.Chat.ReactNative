@@ -9,7 +9,9 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import ActionsList from '../../containers/ActionsList';
+import ActionsList from './ActionsList';
+
+import styles from './styles';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = {
@@ -209,14 +211,13 @@ class RoomActionsView extends React.Component {
 		const {
 			room, member, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
 		} = this.state;
-		const { baseUrl, jitsiEnabled, user } = this.props;
+		const {
+			baseUrl, jitsiEnabled, user, navigation
+		} = this.props;
 
 		return (
 			<SafeAreaView
-				style={{
-					flex: 1,
-					backgroundColor: '#F6F7F9'
-				}}
+				style={styles.container}
 				testID='room-actions-view'
 				forceInset={{ vertical: 'never' }}
 			>
@@ -235,6 +236,7 @@ class RoomActionsView extends React.Component {
 					handleShare={this.handleShare}
 					toggleBlockUser={this.toggleBlockUser}
 					leaveChannel={this.leaveChannel}
+					navigation={navigation}
 				/>
 			</SafeAreaView>
 		);

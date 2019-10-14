@@ -1,11 +1,15 @@
 import { StyleSheet } from 'react-native';
 import {
 	COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE
-} from '../../constants/colors';
+} from '../../../constants/colors';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '../../Styles';
 
 export default StyleSheet.create({
+	container: {
+		paddingTop: 10,
+		paddingBottom: 30
+	},
 	sectionItem: {
 		backgroundColor: COLOR_WHITE,
 		paddingVertical: 16,
