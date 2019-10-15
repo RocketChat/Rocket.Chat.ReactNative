@@ -6,6 +6,7 @@ import Avatar from '../../containers/Avatar';
 import Touch from '../../utils/touch';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
+import { themes } from '../../constants/colors';
 
 export { ROW_HEIGHT };
 
@@ -17,9 +18,9 @@ const DirectoryItemLabel = React.memo(({ text }) => {
 });
 
 const DirectoryItem = ({
-	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type
+	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme
 }) => (
-	<Touch onPress={onPress} style={styles.directoryItemButton} testID={testID}>
+	<Touch onPress={onPress} style={[styles.directoryItemButton, { backgroundColor: themes[theme].backgroundColor }]} testID={testID}>
 		<View style={[styles.directoryItemContainer, style]}>
 			<Avatar
 				text={avatar}
@@ -32,10 +33,10 @@ const DirectoryItem = ({
 			/>
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>
-					<RoomTypeIcon type={type} />
-					<Text style={styles.directoryItemName} numberOfLines={1}>{title}</Text>
+					<RoomTypeIcon type={type} theme={theme} />
+					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 				</View>
-				{ description ? <Text style={styles.directoryItemUsername} numberOfLines={1}>{description}</Text> : null }
+				{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{description}</Text> : null }
 			</View>
 			<DirectoryItemLabel text={rightLabel} />
 		</View>
@@ -55,7 +56,8 @@ DirectoryItem.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	style: PropTypes.any,
-	rightLabel: PropTypes.string
+	rightLabel: PropTypes.string,
+	theme: PropTypes.string
 };
 
 DirectoryItemLabel.propTypes = {

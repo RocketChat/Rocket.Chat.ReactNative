@@ -83,6 +83,7 @@ class RoomsListView extends React.Component {
 		return {
 			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
 			headerTintColor: themes[screenProps.theme].tintColor,
+			headerBackTitle: null,
 			headerLeft: searching ? (
 				<CustomHeaderButtons left>
 					<Item

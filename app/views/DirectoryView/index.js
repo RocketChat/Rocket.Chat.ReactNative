@@ -5,12 +5,12 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import { RectButton } from 'react-native-gesture-handler';
 
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import Touch from '../../utils/touch';
 import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
@@ -18,10 +18,15 @@ import RCActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
+import { withTheme } from '../../theme';
+import { themes } from '../../constants/colors';
 import styles from './styles';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = () => ({
+	static navigationOptions = ({ screenProps }) => ({
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText },
 		title: I18n.t('Directory')
 	})
 
@@ -32,7 +37,8 @@ class DirectoryView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -141,6 +147,7 @@ class DirectoryView extends React.Component {
 
 	renderHeader = () => {
 		const { type } = this.state;
+		const { theme } = this.props;
 		return (
 			<>
 				<SearchBox
@@ -148,22 +155,31 @@ class DirectoryView extends React.Component {
 					onSubmitEditing={this.search}
 					testID='federation-view-search'
 				/>
-				<Touch onPress={this.toggleDropdown} testID='federation-view-create-channel'>
-					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer]}>
-						<CustomIcon style={styles.toggleDropdownIcon} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
-						<Text style={styles.toggleDropdownText}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
-						<CustomIcon name='arrow-down' size={20} style={styles.toggleDropdownArrow} />
+				<RectButton
+					onPress={this.toggleDropdown}
+					activeOpacity={1}
+					underlayColor={themes[theme].bannerBackground}
+					style={styles.dropdownItemButton}
+					testID='federation-view-create-channel'
+				>
+					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
+						<CustomIcon name='arrow-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>
-				</Touch>
+				</RectButton>
 			</>
 		);
 	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].borderColor }]} />;
+	}
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		let style;
 		if (index === data.length - 1) {
@@ -176,7 +192,8 @@ class DirectoryView extends React.Component {
 			baseUrl,
 			testID: `federation-view-item-${ item.name }`,
 			style,
-			user
+			user,
+			theme
 		};
 
 		if (type === 'users') {
@@ -205,9 +222,9 @@ class DirectoryView extends React.Component {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
-		const { isFederationEnabled } = this.props;
+		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='directory-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].backgroundColor }]} testID='directory-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -225,6 +242,7 @@ class DirectoryView extends React.Component {
 				{showOptionsDropdown
 					? (
 						<Options
+							theme={theme}
 							type={type}
 							globalUsers={globalUsers}
 							close={this.toggleDropdown}
@@ -248,4 +266,4 @@ const mapStateToProps = state => ({
 	isFederationEnabled: state.settings.FEDERATION_Enabled
 });
 
-export default connect(mapStateToProps)(DirectoryView);
+export default connect(mapStateToProps)(withTheme(DirectoryView));

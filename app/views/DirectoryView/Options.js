@@ -3,13 +3,13 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, Switch
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { RectButton } from 'react-native-gesture-handler';
 
-import Touch from '../../utils/touch';
 import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -25,7 +25,8 @@ export default class DirectoryOptions extends PureComponent {
 		isFederationEnabled: PropTypes.bool,
 		close: PropTypes.func,
 		changeType: PropTypes.func,
-		toggleWorkspace: PropTypes.func
+		toggleWorkspace: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -55,7 +56,7 @@ export default class DirectoryOptions extends PureComponent {
 	}
 
 	renderItem = (itemType) => {
-		const { changeType, type: propType } = this.props;
+		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
 		let icon = 'user';
 		if (itemType === 'channels') {
@@ -64,13 +65,18 @@ export default class DirectoryOptions extends PureComponent {
 		}
 
 		return (
-			<Touch style={styles.dropdownItemButton} onPress={() => changeType(itemType)}>
+			<RectButton
+				onPress={() => changeType(itemType)}
+				activeOpacity={1}
+				underlayColor={themes[theme].bannerBackground}
+				style={styles.dropdownItemButton}
+			>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon style={styles.dropdownItemIcon} size={22} name={icon} />
-					<Text style={styles.dropdownItemText}>{I18n.t(text)}</Text>
+					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
+					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 
@@ -83,22 +89,25 @@ export default class DirectoryOptions extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [0, 0.3]
 		});
-		const { globalUsers, toggleWorkspace, isFederationEnabled } = this.props;
+		const {
+			globalUsers, toggleWorkspace, isFederationEnabled, theme
+		} = this.props;
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
-				<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }] }]}>
-					<Touch
+				<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
+					<RectButton
 						onPress={this.close}
-						style={styles.dropdownContainerHeader}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
 					>
-						<View style={styles.dropdownItemContainer}>
-							<Text style={styles.dropdownToggleText}>{I18n.t('Search_by')}</Text>
-							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted]} size={22} name='arrow-down' />
+						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
+							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].bodyText }]} size={22} name='arrow-down' />
 						</View>
-					</Touch>
+					</RectButton>
 					{this.renderItem('channels')}
 					{this.renderItem('users')}
 					{isFederationEnabled
