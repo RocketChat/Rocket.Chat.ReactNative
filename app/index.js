@@ -196,7 +196,8 @@ const ChatsDrawer = createDrawerNavigator({
 	SettingsStack,
 	AdminPanelStack
 }, {
-	contentComponent: Sidebar
+	contentComponent: Sidebar,
+	overlayColor: '#00000090'
 });
 
 const NewMessageStack = createStackNavigator({
@@ -215,7 +216,10 @@ const NewMessageStack = createStackNavigator({
 
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
-	NewMessageStack
+	NewMessageStack,
+	JitsiMeetView: {
+		getScreen: () => require('./views/JitsiMeetView').default
+	}
 },
 {
 	mode: 'modal',
@@ -238,11 +242,11 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<React.Fragment>
+			<>
 				<InsideStackModal navigation={navigation} />
 				<NotificationBadge navigation={navigation} />
 				<Toast />
-			</React.Fragment>
+			</>
 		);
 	}
 }

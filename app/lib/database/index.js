@@ -1,5 +1,6 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import logger from '@nozbe/watermelondb/utils/common/logger';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import Subscription from './model/Subscription';
@@ -83,3 +84,7 @@ class DB {
 
 const db = new DB();
 export default db;
+
+if (!__DEV__) {
+	logger.silence();
+}

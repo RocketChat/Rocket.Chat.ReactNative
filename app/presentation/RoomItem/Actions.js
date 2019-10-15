@@ -44,10 +44,10 @@ export const LeftActions = React.memo(({
 					]}
 				>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
-						<React.Fragment>
+						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
 							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
-						</React.Fragment>
+						</>
 					</RectButton>
 				</Animated.View>
 			</Animated.View>
@@ -87,10 +87,10 @@ export const RightActions = React.memo(({
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: '#ffbb00' }]} onPress={toggleFav}>
-					<React.Fragment>
+					<>
 						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color='white' />
 						<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
-					</React.Fragment>
+					</>
 				</RectButton>
 			</Animated.View>
 			<Animated.View
@@ -103,10 +103,10 @@ export const RightActions = React.memo(({
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: '#54585e' }]} onPress={onHidePress}>
-					<React.Fragment>
+					<>
 						<CustomIcon size={20} name='eye-off' color='white' />
 						<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
-					</React.Fragment>
+					</>
 				</RectButton>
 			</Animated.View>
 		</View>

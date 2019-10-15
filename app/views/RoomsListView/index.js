@@ -57,8 +57,7 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
-	'isAuthenticated'
+	'appState'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -139,8 +138,7 @@ class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func,
-		isAuthenticated: PropTypes.bool
+		roomsRequest: PropTypes.func
 	};
 
 	constructor(props) {
@@ -164,12 +162,19 @@ class RoomsListView extends React.Component {
 			width
 		};
 		Orientation.unlockAllOrientations();
+		this.willFocusListener = props.navigation.addListener('willFocus', () => {
+			// Check if there were changes while not focused (it's set on sCU)
+			if (this.shouldUpdate) {
+				// animateNextTransition();
+				this.forceUpdate();
+				this.shouldUpdate = false;
+			}
+		});
 		this.didFocusListener = props.navigation.addListener('didFocus', () => {
 			BackHandler.addEventListener(
 				'hardwareBackPress',
 				this.handleBackPress
 			);
-			this.forceUpdate();
 		});
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
 			'hardwareBackPress',
@@ -204,12 +209,22 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		const { allChats } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
 		}
 
+		// Compare changes only once
+		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+
+		// If they aren't equal, set to update if focused
+		if (chatsNotEqual) {
+			this.shouldUpdate = true;
+		}
+
+		// Abort if it's not focused
 		if (!nextProps.navigation.isFocused()) {
 			return false;
 		}
@@ -218,7 +233,6 @@ class RoomsListView extends React.Component {
 			loading,
 			searching,
 			width,
-			allChats,
 			search
 		} = this.state;
 		if (nextState.loading !== loading) {
@@ -233,7 +247,9 @@ class RoomsListView extends React.Component {
 		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextState.allChats, allChats)) {
+		// If it's focused and there are changes, update
+		if (chatsNotEqual) {
+			this.shouldUpdate = false;
 			return true;
 		}
 		return false;
@@ -246,8 +262,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
-			roomsRequest,
-			isAuthenticated
+			roomsRequest
 		} = this.props;
 
 		if (
@@ -262,7 +277,6 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
-			&& isAuthenticated
 		) {
 			roomsRequest();
 		}
@@ -274,6 +288,9 @@ class RoomsListView extends React.Component {
 		}
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
+		}
+		if (this.willFocusListener && this.willFocusListener.remove) {
+			this.willFocusListener.remove();
 		}
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
@@ -587,6 +604,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
+				avatar={item.name}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
@@ -780,7 +798,6 @@ const mapStateToProps = state => ({
 	userId: state.login.user && state.login.user.id,
 	username: state.login.user && state.login.user.username,
 	token: state.login.user && state.login.user.token,
-	isAuthenticated: state.login.isAuthenticated,
 	server: state.server.server,
 	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
