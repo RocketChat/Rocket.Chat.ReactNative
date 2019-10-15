@@ -2,28 +2,25 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 
-export default class CustomEmoji extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
-		emoji: PropTypes.object.isRequired,
-		style: PropTypes.any
-	}
+const CustomEmoji = React.memo(({ baseUrl, emoji, style }) => (
+	<FastImage
+		style={style}
+		source={{
+			uri: `${ baseUrl }/emoji-custom/${ encodeURIComponent(emoji.content || emoji.name) }.${ emoji.extension }`,
+			priority: FastImage.priority.high
+		}}
+		resizeMode={FastImage.resizeMode.contain}
+	/>
+), (prevProps, nextProps) => {
+	const prevEmoji = prevProps.emoji.content || prevProps.emoji.name;
+	const nextEmoji = nextProps.emoji.content || nextProps.emoji.name;
+	return prevEmoji === nextEmoji;
+});
 
-	shouldComponentUpdate() {
-		return false;
-	}
+CustomEmoji.propTypes = {
+	baseUrl: PropTypes.string.isRequired,
+	emoji: PropTypes.object.isRequired,
+	style: PropTypes.any
+};
 
-	render() {
-		const { baseUrl, emoji, style } = this.props;
-		return (
-			<FastImage
-				style={style}
-				source={{
-					uri: `${ baseUrl }/emoji-custom/${ encodeURIComponent(emoji.content || emoji.name) }.${ emoji.extension }`,
-					priority: FastImage.priority.high
-				}}
-				resizeMode={FastImage.resizeMode.contain}
-			/>
-		);
-	}
-}
+export default CustomEmoji;

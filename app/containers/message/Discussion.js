@@ -15,7 +15,7 @@ const Discussion = React.memo(({
 	const time = formatLastMessage(dlm);
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	return (
-		<React.Fragment>
+		<>
 			<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
 			<Text style={styles.text}>{msg}</Text>
 			<View style={styles.buttonContainer}>
@@ -25,14 +25,14 @@ const Discussion = React.memo(({
 					style={[styles.button, styles.smallButton]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
-					<React.Fragment>
+					<>
 						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
 						<Text style={styles.buttonText}>{buttonText}</Text>
-					</React.Fragment>
+					</>
 				</Touchable>
 				<Text style={styles.time}>{time}</Text>
 			</View>
-		</React.Fragment>
+		</>
 	);
 }, (prevProps, nextProps) => {
 	if (prevProps.msg !== nextProps.msg) {

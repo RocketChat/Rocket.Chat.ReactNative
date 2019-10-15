@@ -203,6 +203,9 @@ class RoomView extends React.Component {
 				this.init();
 			});
 		}
+		if (appState === 'background' && appState !== prevProps.appState) {
+			this.unsubscribe();
+		}
 	}
 
 	async componentWillUnmount() {
@@ -234,9 +237,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		if (this.sub && this.sub.stop) {
-			this.sub.stop();
-		}
+		this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -282,6 +283,7 @@ class RoomView extends React.Component {
 							this.setLastOpen(null);
 						}
 						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+						this.unsubscribe();
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -321,6 +323,12 @@ class RoomView extends React.Component {
 					}, 300);
 				}
 			}
+		}
+	}
+
+	unsubscribe = () => {
+		if (this.sub && this.sub.stop) {
+			this.sub.stop();
 		}
 	}
 
@@ -604,7 +612,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid, {});
+			RocketChat.callJitsi(this.rid);
 		}
 	};
 
@@ -669,13 +677,13 @@ class RoomView extends React.Component {
 
 		if (showUnreadSeparator || dateSeparator) {
 			return (
-				<React.Fragment>
+				<>
 					{message}
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
 					/>
-				</React.Fragment>
+				</>
 			);
 		}
 
@@ -767,6 +775,7 @@ class RoomView extends React.Component {
 				}
 				{showErrorActions ? (
 					<MessageErrorActions
+						tmid={this.tmid}
 						message={selectedMessage}
 						actionsHide={this.onErrorActionsHide}
 					/>
