@@ -18,9 +18,10 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
-import { COLOR_TEXT } from '../../constants/colors';
+import { COLOR_TEXT, themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
 
 const keyExtractor = item => item.id;
 
@@ -41,6 +42,7 @@ class Sidebar extends Component {
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
+		theme: PropTypes.string,
 		loadingServer: PropTypes.bool
 	}
 
@@ -182,26 +184,26 @@ class Sidebar extends Component {
 
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey } = this.props;
+		const { activeItemKey, theme } = this.props;
 		return (
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('RoomsListView')}
 					testID='sidebar-chats'
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileView')}
 					testID='sidebar-profile'
 					current={activeItemKey === 'ProfileStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsView')}
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
@@ -209,7 +211,7 @@ class Sidebar extends Component {
 				{isAdmin ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='shield-alt' size={20} color={COLOR_TEXT} />}
+						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
 						onPress={() => this.sidebarNavigate('AdminPanelView')}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
@@ -218,7 +220,7 @@ class Sidebar extends Component {
 				<Separator key='separator-logout' />
 				<SidebarItem
 					text={I18n.t('Logout')}
-					left={<CustomIcon name='sign-out' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
 					onPress={this.logout}
 					testID='sidebar-logout'
 				/>
@@ -242,14 +244,16 @@ class Sidebar extends Component {
 
 	render() {
 		const { showStatus } = this.state;
-		const { user, Site_Name, baseUrl } = this.props;
+		const {
+			user, Site_Name, baseUrl, theme
+		} = this.props;
 
 		if (!user) {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={styles.container}>
-				<ScrollView style={styles.container} {...scrollPersistTaps}>
+			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+				<ScrollView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} {...scrollPersistTaps}>
 					<RectButton
 						onPress={this.toggleStatus}
 						underlayColor={COLOR_TEXT}
@@ -268,11 +272,11 @@ class Sidebar extends Component {
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
 								<Status style={styles.status} size={12} status={user && user.status} />
-								<Text numberOfLines={1} style={styles.username}>{user.username}</Text>
+								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{user.username}</Text>
 							</View>
-							<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
+							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
-						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted]} />
+						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</RectButton>
 
 					<Separator key='separator-header' />
@@ -303,4 +307,4 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sidebar));
