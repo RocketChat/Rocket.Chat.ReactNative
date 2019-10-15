@@ -12,6 +12,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 3,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'hide_unread_status', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

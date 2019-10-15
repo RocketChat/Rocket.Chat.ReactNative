@@ -367,7 +367,7 @@ class RoomsListView extends React.Component {
 
 			// unread
 			if (showUnread) {
-				unread = chats.filter(s => s.unread > 0 || s.alert);
+				unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
 			} else {
 				unread = [];
 			}
@@ -601,6 +601,7 @@ class RoomsListView extends React.Component {
 			<RoomItem
 				alert={item.alert}
 				unread={item.unread}
+				hideUnreadStatus={item.hideUnreadStatus}
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
