@@ -8,13 +8,13 @@ import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE, themes
 } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		marginTop: 10,
+		paddingTop: 10,
 		backgroundColor: COLOR_WHITE
 	},
 	messageContainer: {
@@ -55,6 +55,7 @@ class ReplyPreview extends Component {
 		close: PropTypes.func.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		username: PropTypes.string.isRequired,
+		theme: PropTypes.string,
 		getCustomEmoji: PropTypes.func
 	}
 
@@ -69,15 +70,15 @@ class ReplyPreview extends Component {
 
 	render() {
 		const {
-			message, Message_TimeFormat, baseUrl, username, useMarkdown, getCustomEmoji
+			message, Message_TimeFormat, baseUrl, username, useMarkdown, getCustomEmoji, theme
 		} = this.props;
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
-			<View style={styles.container}>
-				<View style={styles.messageContainer}>
+			<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+				<View style={[styles.messageContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 					<View style={styles.header}>
-						<Text style={styles.username}>{message.u.username}</Text>
-						<Text style={styles.time}>{time}</Text>
+						<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u.username}</Text>
+						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} preview />
 				</View>

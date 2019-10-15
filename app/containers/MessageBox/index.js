@@ -25,12 +25,13 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
 import { canUploadFile } from '../../utils/media';
+import { withTheme } from '../../theme';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -81,6 +82,7 @@ class MessageBox extends Component {
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
+		theme: PropTypes.string,
 		replyCancel: PropTypes.func
 	}
 
@@ -726,15 +728,18 @@ class MessageBox extends Component {
 		});
 	}
 
-	renderFixedMentionItem = item => (
-		<TouchableOpacity
-			style={styles.mentionItem}
-			onPress={() => this.onPressMention(item)}
-		>
-			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
-			<Text style={styles.mentionText}>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
-		</TouchableOpacity>
-	)
+	renderFixedMentionItem = (item) => {
+		const { theme } = this.props;
+		return (
+			<TouchableOpacity
+				style={[styles.mentionItem, { backgroundColor: themes[theme].backgroundColor, borderTopColor: themes[theme].borderColor }]}
+				onPress={() => this.onPressMention(item)}
+			>
+				<Text style={[styles.fixedMentionAvatar, { color: themes[theme].titleText }]}>{item.username}</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].auxiliaryText }]}>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
+			</TouchableOpacity>
+		);
+	}
 
 	renderMentionEmoji = (item) => {
 		const { baseUrl } = this.props;
@@ -761,7 +766,7 @@ class MessageBox extends Component {
 
 	renderMentionItem = ({ item }) => {
 		const { trackingType } = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		if (item.username === 'all' || item.username === 'here') {
 			return this.renderFixedMentionItem(item);
@@ -781,7 +786,7 @@ class MessageBox extends Component {
 
 		return (
 			<TouchableOpacity
-				style={styles.mentionItem}
+				style={[styles.mentionItem, { backgroundColor: themes[theme].backgroundColor, borderTopColor: themes[theme].borderColor }]}
 				onPress={() => this.onPressMention(item)}
 				testID={testID}
 			>
@@ -792,14 +797,14 @@ class MessageBox extends Component {
 							return (
 								<>
 									{this.renderMentionEmoji(item)}
-									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
+									<Text key='mention-item-name' style={[styles.mentionText, { color: themes[theme].titleText }]}>:{ item.name || item }:</Text>
 								</>
 							);
 						case MENTIONS_TRACKING_TYPE_COMMANDS:
 							return (
 								<>
-									<Text key='mention-item-command' style={styles.slash}>/</Text>
-									<Text key='mention-item-param'>{ item.command}</Text>
+									<Text key='mention-item-command' style={[styles.slash, { backgroundColor: themes[theme].auxiliaryBackground }]}>/</Text>
+									<Text key='mention-item-param' style={{ color: themes[theme].titleText }}>{ item.command}</Text>
 								</>
 							);
 						default:
@@ -815,7 +820,7 @@ class MessageBox extends Component {
 										userId={user.id}
 										token={user.token}
 									/>
-									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
+									<Text key='mention-item-name' style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.username || item.name || item }</Text>
 								</>
 							);
 					}
@@ -827,6 +832,7 @@ class MessageBox extends Component {
 
 	renderMentions = () => {
 		const { mentions, trackingType } = this.state;
+		const { theme } = this.props;
 		if (!trackingType) {
 			return null;
 		}
@@ -837,7 +843,7 @@ class MessageBox extends Component {
 				keyboardShouldPersistTaps='always'
 			>
 				<FlatList
-					style={styles.mentionList}
+					style={[styles.mentionList, { backgroundColor: themes[theme].focusedBackground }]}
 					data={mentions}
 					extraData={mentions}
 					renderItem={this.renderMentionItem}
@@ -854,13 +860,14 @@ class MessageBox extends Component {
 
 	renderCommandPreview = () => {
 		const { commandPreview, showCommandPreview } = this.state;
+		const { theme } = this.props;
 		if (!showCommandPreview) {
 			return null;
 		}
 		return (
 			<View key='commandbox-container' testID='commandbox-container'>
 				<FlatList
-					style={styles.mentionList}
+					style={[styles.mentionList, { backgroundColor: themes[theme].focusedBackground }]}
 					data={commandPreview}
 					renderItem={this.renderCommandPreviewItem}
 					keyExtractor={item => item.id}
@@ -874,17 +881,17 @@ class MessageBox extends Component {
 
 	renderReplyPreview = () => {
 		const {
-			message, replying, replyCancel, user, getCustomEmoji
+			message, replying, replyCancel, user, getCustomEmoji, theme
 		} = this.props;
 		if (!replying) {
 			return null;
 		}
-		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />;
 	};
 
 	renderContent = () => {
 		const { recording, showEmojiKeyboard, showSend } = this.state;
-		const { editing } = this.props;
+		const { editing, theme } = this.props;
 
 		if (recording) {
 			return (<Recording onFinish={this.finishAudioMessage} />);
@@ -896,7 +903,7 @@ class MessageBox extends Component {
 				<View style={styles.composer} key='messagebox'>
 					{this.renderReplyPreview()}
 					<View
-						style={[styles.textArea, editing && styles.editing]}
+						style={[styles.textArea, editing && styles.editing, { backgroundColor: themes[theme].focusedBackground }]}
 						testID='messagebox'
 					>
 						<LeftButtons
@@ -909,7 +916,7 @@ class MessageBox extends Component {
 						/>
 						<TextInput
 							ref={component => this.component = component}
-							style={styles.textBoxInput}
+							style={[styles.textBoxInput, { color: themes[theme].titleText }]}
 							returnKeyType='default'
 							keyboardType='twitter'
 							blurOnSubmit={false}
@@ -918,7 +925,7 @@ class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+							placeholderTextColor={themes[theme].auxiliaryText}
 							testID='messagebox-input'
 						/>
 						<RightButtons
@@ -947,7 +954,7 @@ class MessageBox extends Component {
 					trackInteractive
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
-					addBottomView
+					// addBottomView -> https://github.com/wix/react-native-keyboard-tracking-view/blob/master/lib/KeyboardTrackingViewManager.m#L450
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}
@@ -976,4 +983,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withTheme(MessageBox));

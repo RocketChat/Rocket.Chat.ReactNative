@@ -21,12 +21,12 @@ const RoomTypeIcon = React.memo(({
 		return null;
 	}
 
+	const color = themes[theme].auxiliaryText;
+
 	if (type === 'discussion') {
 		// FIXME: These are temporary only. We should have all room icons on <Customicon />, but our design team is still working on this.
-		return <CustomIcon name='chat' size={13} style={[styles.style, styles.iconColor, styles.discussion]} />;
+		return <CustomIcon name='chat' size={13} style={[styles.style, styles.iconColor, styles.discussion, { color }]} />;
 	}
-
-	const color = themes[theme].auxiliaryText;
 
 	if (type === 'c') {
 		return <Image source={{ uri: 'hashtag' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;

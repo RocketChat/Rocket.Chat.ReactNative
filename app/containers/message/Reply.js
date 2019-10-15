@@ -8,7 +8,8 @@ import isEqual from 'deep-equal';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
+import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -70,15 +71,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = React.memo(({ attachment, timeFormat }) => {
+const Title = React.memo(({ attachment, timeFormat, theme }) => {
 	if (!attachment.author_name) {
 		return null;
 	}
 	const time = attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
-			{attachment.author_name ? <Text style={styles.author}>{attachment.author_name}</Text> : null}
-			{time ? <Text style={styles.time}>{ time }</Text> : null}
+			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].titleText }]}>{attachment.author_name}</Text> : null}
+			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{ time }</Text> : null}
 		</View>
 	);
 }, () => true);
@@ -109,7 +110,7 @@ const Description = React.memo(({
 	return true;
 });
 
-const Fields = React.memo(({ attachment }) => {
+const Fields = React.memo(({ attachment, theme }) => {
 	if (!attachment.fields) {
 		return null;
 	}
@@ -117,8 +118,8 @@ const Fields = React.memo(({ attachment }) => {
 		<View style={styles.fieldsContainer}>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<Text style={styles.fieldTitle}>{field.title}</Text>
-					<Text style={styles.fieldValue}>{field.value}</Text>
+					<Text style={[styles.fieldTitle, { color: themes[theme].titleText }]}>{field.title}</Text>
+					<Text style={[styles.fieldValue, { color: themes[theme].titleText }]}>{field.value}</Text>
 				</View>
 			))}
 		</View>
@@ -126,7 +127,7 @@ const Fields = React.memo(({ attachment }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields));
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown
+	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, theme
 }) => {
 	if (!attachment) {
 		return null;
@@ -146,11 +147,18 @@ const Reply = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop]}
+			style={[
+				styles.button,
+				index > 0 && styles.marginTop,
+				{
+					backgroundColor: themes[theme].focusedBackground,
+					borderColor: themes[theme].borderColor
+				}
+			]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<View style={styles.attachmentContainer}>
-				<Title attachment={attachment} timeFormat={timeFormat} />
+				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 				<Description
 					attachment={attachment}
 					timeFormat={timeFormat}
@@ -159,7 +167,7 @@ const Reply = React.memo(({
 					getCustomEmoji={getCustomEmoji}
 					useMarkdown={useMarkdown}
 				/>
-				<Fields attachment={attachment} />
+				<Fields attachment={attachment} theme={theme} />
 			</View>
 		</Touchable>
 	);
@@ -172,13 +180,15 @@ Reply.propTypes = {
 	user: PropTypes.object,
 	index: PropTypes.number,
 	useMarkdown: PropTypes.bool,
+	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func
 };
 Reply.displayName = 'MessageReply';
 
 Title.propTypes = {
 	attachment: PropTypes.object,
-	timeFormat: PropTypes.string
+	timeFormat: PropTypes.string,
+	theme: PropTypes.string
 };
 Title.displayName = 'MessageReplyTitle';
 
@@ -192,8 +202,9 @@ Description.propTypes = {
 Description.displayName = 'MessageReplyDescription';
 
 Fields.propTypes = {
-	attachment: PropTypes.object
+	attachment: PropTypes.object,
+	theme: PropTypes.string
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default Reply;
+export default withTheme(Reply);

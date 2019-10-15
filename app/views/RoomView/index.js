@@ -30,7 +30,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE, HEADER_BACK } from '../../constants/colors';
+import { COLOR_WHITE, HEADER_BACK, themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
@@ -38,6 +38,7 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
+import { withTheme } from '../../theme';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -55,7 +56,7 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
@@ -65,6 +66,9 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerBackTitle: null,
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}
@@ -112,6 +116,7 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		useMarkdown: PropTypes.bool,
+		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
 
@@ -789,11 +794,18 @@ class RoomView extends React.Component {
 		const {
 			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='room-view'
+				forceInset={{ vertical: 'never' }}
+			>
 				<StatusBar />
 				<List
 					rid={rid}
@@ -854,4 +866,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));

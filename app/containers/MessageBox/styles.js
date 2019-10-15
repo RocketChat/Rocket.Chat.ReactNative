@@ -19,7 +19,6 @@ export default StyleSheet.create({
 		zIndex: 2
 	},
 	composer: {
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column',
 		borderTopColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth

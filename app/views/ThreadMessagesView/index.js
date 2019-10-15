@@ -21,20 +21,26 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = ({ screenProps }) => ({
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText },
 		title: I18n.t('Threads')
-	}
+	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
+		theme: PropTypes.string,
 		customEmojis: PropTypes.object
 	}
 
@@ -251,11 +257,14 @@ class ThreadMessagesView extends React.Component {
 
 	renderSeparator = () => <Separator />
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID='thread-messages-view'>
-			<Text style={styles.noDataFound}>{I18n.t('No_thread_messages')}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID='thread-messages-view'>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_thread_messages')}</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => {
 		const {
@@ -282,6 +291,7 @@ class ThreadMessagesView extends React.Component {
 
 	render() {
 		const { loading, messages } = this.state;
+		const { theme } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -294,7 +304,7 @@ class ThreadMessagesView extends React.Component {
 					data={messages}
 					extraData={this.state}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					contentContainerStyle={styles.contentContainer}
 					keyExtractor={item => item.id}
 					onEndReached={this.load}
@@ -320,4 +330,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(ThreadMessagesView);
+export default connect(mapStateToProps)(withTheme(ThreadMessagesView));

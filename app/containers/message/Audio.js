@@ -12,8 +12,11 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
+import {
+	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, themes
+} from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -73,12 +76,13 @@ Button.propTypes = {
 };
 Button.displayName = 'MessageAudioButton';
 
-export default class Audio extends React.Component {
+class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired,
 		useMarkdown: PropTypes.bool,
+		theme: PropTypes.string,
 		getCustomEmoji: PropTypes.func
 	}
 
@@ -153,7 +157,7 @@ export default class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji, useMarkdown
+			user, baseUrl, file, getCustomEmoji, useMarkdown, theme
 		} = this.props;
 		const { description } = file;
 
@@ -163,7 +167,7 @@ export default class Audio extends React.Component {
 
 		return (
 			<>
-				<View style={styles.audioContainer}>
+				<View style={[styles.audioContainer, { backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }]}>
 					<Video
 						ref={this.setRef}
 						source={{ uri }}
@@ -183,13 +187,16 @@ export default class Audio extends React.Component {
 						animationConfig={sliderAnimationConfig}
 						thumbTintColor={isAndroid && COLOR_PRIMARY}
 						minimumTrackTintColor={COLOR_PRIMARY}
+						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
-					<Text style={styles.duration}>{this.duration}</Text>
+					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
 			</>
 		);
 	}
 }
+
+export default withTheme(Audio);
