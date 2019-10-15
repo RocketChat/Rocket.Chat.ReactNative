@@ -15,7 +15,7 @@ export default {
 		type: 'valueAsBoolean'
 	},
 	Accounts_ShowFormLogin: {
-	type: 'valueAsBoolean'
+		type: 'valueAsBoolean'
 	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'

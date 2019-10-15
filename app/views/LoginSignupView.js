@@ -408,18 +408,18 @@ class LoginSignupView extends React.Component {
 
 	renderFormLogin = () => (
 		<>
-					<Button
-						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
-						type='primary'
-						onPress={() => this.login()}
-						testID='welcome-view-login'
-					/>
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						onPress={() => this.register()}
-						testID='welcome-view-register'
-					/>
+			<Button
+				title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
+				type='primary'
+				onPress={() => this.login()}
+				testID='welcome-view-login'
+			/>
+			<Button
+				title={I18n.t('Create_account')}
+				type='secondary'
+				onPress={() => this.register()}
+				testID='welcome-view-register'
+			/>
 		</>
 	)
 
