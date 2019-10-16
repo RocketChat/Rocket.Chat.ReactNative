@@ -141,6 +141,19 @@ index a134d2e..a88c099 100644
      [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
    });
  }
+diff --git a/node_modules/react-native/Libraries/WebSocket/WebSocket.js b/node_modules/react-native/Libraries/WebSocket/WebSocket.js
+index 35f0757..405e957 100644
+--- a/node_modules/react-native/Libraries/WebSocket/WebSocket.js
++++ b/node_modules/react-native/Libraries/WebSocket/WebSocket.js
+@@ -129,7 +129,7 @@ class WebSocket extends (EventTarget(...WEBSOCKET_EVENTS): any) {
+     this._eventEmitter = new NativeEventEmitter(NativeWebSocketModule);
+     this._socketId = nextWebSocketId++;
+     this._registerEvents();
+-    NativeWebSocketModule.connect(url, protocols, {headers}, this._socketId);
++    NativeWebSocketModule.connect(url, protocols, { headers: { 'User-Agent': 'RC Mobile', ...headers } }, this._socketId);
+   }
+ 
+   get binaryType(): ?BinaryType {
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java

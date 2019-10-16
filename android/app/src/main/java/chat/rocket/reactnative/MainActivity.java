@@ -1,7 +1,10 @@
 package chat.rocket.reactnative;
 
+import okhttp3.OkHttpClient;
+
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.os.Bundle;
 import com.facebook.react.ReactFragmentActivity;
@@ -15,6 +18,8 @@ public class MainActivity extends ReactFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(null);
+
+        OkHttpClientProvider.setOkHttpClientFactory(new UserAgentClientFactory());
     }
 
     /**
