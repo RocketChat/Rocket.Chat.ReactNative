@@ -6,7 +6,7 @@ import Avatar from '../containers/Avatar';
 import Touch from '../utils/touch';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
 });
 
 const UserItem = ({
-	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user
+	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user, theme
 }) => (
-	<Touch onPress={onPress} onLongPress={onLongPress} style={styles.button} testID={testID}>
+	<Touch onPress={onPress} onLongPress={onLongPress} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]} testID={testID}>
 		<View style={[styles.container, style]}>
 			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
-				<Text style={styles.name}>{name}</Text>
-				<Text style={styles.username}>@{username}</Text>
+				<Text style={[styles.name, { color: themes[theme].titleText }]}>{name}</Text>
+				<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>@{username}</Text>
 			</View>
 			{icon ? <CustomIcon name={icon} size={22} style={styles.icon} /> : null}
 		</View>
@@ -69,7 +69,8 @@ UserItem.propTypes = {
 	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func,
 	style: PropTypes.any,
-	icon: PropTypes.string
+	icon: PropTypes.string,
+	theme: PropTypes.string
 };
 
 export default UserItem;

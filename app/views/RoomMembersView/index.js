@@ -20,6 +20,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import { withTheme } from '../../theme';
 
 const PAGE_SIZE = 25;
 
@@ -47,7 +48,8 @@ class RoomMembersView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -229,7 +231,7 @@ class RoomMembersView extends React.Component {
 	renderSeparator = () => <View style={styles.separator} />;
 
 	renderItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<UserItem
@@ -240,6 +242,7 @@ class RoomMembersView extends React.Component {
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -286,4 +289,4 @@ const mapStateToProps = state => ({
 	}
 });
 
-export default connect(mapStateToProps)(RoomMembersView);
+export default connect(mapStateToProps)(withTheme(RoomMembersView));

@@ -21,7 +21,8 @@ import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -53,7 +54,10 @@ const styles = StyleSheet.create({
 });
 
 class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText },
 		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
@@ -64,7 +68,8 @@ class NewMessageView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -138,23 +143,29 @@ class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
-	renderHeader = () => (
-		<View>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-			<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
-				<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
-					<CustomIcon style={styles.createChannelIcon} size={24} name='plus' />
-					<Text style={styles.createChannelText}>{I18n.t('Create_Channel')}</Text>
-				</View>
-			</Touch>
-		</View>
-	)
+	renderHeader = () => {
+		const { theme } = this.props;
+		return (
+			<View>
+				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
+				<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
+					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
+						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
+					</View>
+				</Touch>
+			</View>
+		);
+	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].borderColor }]} />;
+	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		let style = {};
 		if (index === 0) {
@@ -175,6 +186,7 @@ class NewMessageView extends React.Component {
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -194,12 +206,15 @@ class NewMessageView extends React.Component {
 		);
 	}
 
-	render = () => (
-		<SafeAreaView style={styles.safeAreaView} testID='new-message-view' forceInset={{ vertical: 'never' }}>
-			<StatusBar />
-			{this.renderList()}
-		</SafeAreaView>
-	);
+	render = () => {
+		const { theme } = this.props;
+		return (
+			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]} testID='new-message-view' forceInset={{ vertical: 'never' }}>
+				<StatusBar />
+				{this.renderList()}
+			</SafeAreaView>
+		);
+	}
 }
 
 const mapStateToProps = state => ({
@@ -210,4 +225,4 @@ const mapStateToProps = state => ({
 	}
 });
 
-export default connect(mapStateToProps)(NewMessageView);
+export default connect(mapStateToProps)(withTheme(NewMessageView));

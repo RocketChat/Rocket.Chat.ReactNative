@@ -19,6 +19,7 @@ import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE, SWITCH_TRACK_COLOR } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -107,7 +108,8 @@ class CreateChannelView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	state = {
@@ -267,7 +269,7 @@ class CreateChannelView extends React.Component {
 	renderFormSeparator = () => <View style={[sharedStyles.separator, styles.formSeparator]} />
 
 	renderItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<UserItem
@@ -277,6 +279,7 @@ class CreateChannelView extends React.Component {
 				testID={`create-channel-view-item-${ item.name }`}
 				baseUrl={baseUrl}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -364,4 +367,4 @@ const mapDispatchToProps = dispatch => ({
 	removeUser: user => dispatch(removeUserAction(user))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateChannelView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));

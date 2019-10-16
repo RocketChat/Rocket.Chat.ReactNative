@@ -24,6 +24,7 @@ import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -64,7 +65,8 @@ class SelectedUsersView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -214,7 +216,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	renderSelectedItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 		return (
 			<UserItem
 				name={item.fname}
@@ -224,6 +226,7 @@ class SelectedUsersView extends React.Component {
 				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -232,7 +235,7 @@ class SelectedUsersView extends React.Component {
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
@@ -256,6 +259,7 @@ class SelectedUsersView extends React.Component {
 				baseUrl={baseUrl}
 				style={style}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -305,4 +309,4 @@ const mapDispatchToProps = dispatch => ({
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedUsersView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));
