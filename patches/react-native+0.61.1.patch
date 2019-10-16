@@ -83,6 +83,22 @@ index e72e943..ec0a0ba 100644
 +}
 +
  @end
+diff --git a/node_modules/react-native/Libraries/Network/RCTNetworking.mm b/node_modules/react-native/Libraries/Network/RCTNetworking.mm
+index 193e3c5..e4e57e6 100644
+--- a/node_modules/react-native/Libraries/Network/RCTNetworking.mm
++++ b/node_modules/react-native/Libraries/Network/RCTNetworking.mm
+@@ -287,6 +287,11 @@ - (RCTURLRequestCancellationBlock)buildRequest:(NSDictionary<NSString *, id> *)q
+     }
+   }];
+ 
++  NSString *osVersion = [[UIDevice currentDevice] systemVersion];
++  NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
++  NSString *code = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
++  [request addValue:[NSString stringWithFormat:@"RC-RN Mobile/%@ (build: %@; OS: iOS %@)", version, code, osVersion] forHTTPHeaderField:@"User-Agent"];
++
+   request.timeoutInterval = [RCTConvert NSTimeInterval:query[@"timeout"]];
+   NSDictionary<NSString *, id> *data = [RCTConvert NSDictionary:RCTNilIfNull(query[@"data"])];
+   NSString *trackingName = data[@"trackingName"];
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 index a134d2e..a88c099 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
@@ -141,19 +157,22 @@ index a134d2e..a88c099 100644
      [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
    });
  }
-diff --git a/node_modules/react-native/Libraries/WebSocket/WebSocket.js b/node_modules/react-native/Libraries/WebSocket/WebSocket.js
-index 35f0757..405e957 100644
---- a/node_modules/react-native/Libraries/WebSocket/WebSocket.js
-+++ b/node_modules/react-native/Libraries/WebSocket/WebSocket.js
-@@ -129,7 +129,7 @@ class WebSocket extends (EventTarget(...WEBSOCKET_EVENTS): any) {
-     this._eventEmitter = new NativeEventEmitter(NativeWebSocketModule);
-     this._socketId = nextWebSocketId++;
-     this._registerEvents();
--    NativeWebSocketModule.connect(url, protocols, {headers}, this._socketId);
-+    NativeWebSocketModule.connect(url, protocols, { headers: { 'User-Agent': 'RC Mobile', ...headers } }, this._socketId);
-   }
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
+index d9387c4..3995989 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTWebSocketModule.m
+@@ -81,6 +81,11 @@ - (void)invalidate
+     [request addValue:[RCTConvert NSString:value] forHTTPHeaderField:key];
+   }];
  
-   get binaryType(): ?BinaryType {
++  NSString *osVersion = [[UIDevice currentDevice] systemVersion];
++  NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
++  NSString *code = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
++  [request addValue:[NSString stringWithFormat:@"RC-RN Mobile/%@ (build: %@; OS: iOS %@)", version, code, osVersion] forHTTPHeaderField:@"User-Agent"];
++
+   RCTSRWebSocket *webSocket = [[RCTSRWebSocket alloc] initWithURLRequest:request protocols:protocols];
+   [webSocket setDelegateDispatchQueue:_methodQueue];
+   webSocket.delegate = self;
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
@@ -167,3 +186,23 @@ index ef2ae93..2795802 100644
        return true;
      } catch (ClassNotFoundException ignored) {
        return false;
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+index bfc83f6..4507ccf 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+@@ -6,6 +6,7 @@
+  */
+ package com.facebook.react.modules.websocket;
+ 
++import android.os.Build;
+ import androidx.annotation.Nullable;
+ import com.facebook.common.logging.FLog;
+ import com.facebook.react.bridge.Arguments;
+@@ -86,6 +87,7 @@ public final class WebSocketModule extends ReactContextBaseJavaModule {
+       final int id) {
+     OkHttpClient client =
+         new OkHttpClient.Builder()
++            .header("User-Agent", "RC-RN Mobile/" + BuildConfig.VERSION_NAME + " (build: " + BuildConfig.VERSION_CODE + "; OS: Android " + Build.VERSION.RELEASE + ")")
+             .connectTimeout(10, TimeUnit.SECONDS)
+             .writeTimeout(10, TimeUnit.SECONDS)
+             .readTimeout(0, TimeUnit.MINUTES) // Disable timeouts for read

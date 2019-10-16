@@ -1,5 +1,7 @@
 package chat.rocket.reactnative;
 
+import android.os.Build;
+
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,7 +17,7 @@ public class CustomInterceptor implements Interceptor {
         Request originalRequest = chain.request();
         Request requestWithUserAgent = originalRequest.newBuilder()
             .removeHeader("User-Agent")
-            .addHeader("User-Agent", "RC Mobile")
+            .addHeader("User-Agent", "RC-RN Mobile/" + BuildConfig.VERSION_NAME + " (build: " + BuildConfig.VERSION_CODE + "; OS: Android " + Build.VERSION.RELEASE + ")")
             .build();
 
         return chain.proceed(requestWithUserAgent);
