@@ -87,7 +87,7 @@ const RocketChat = {
 	},
 	async getServerInfo(server) {
 		try {
-			const result = await fetch(`${ server }/api/info`).then(response => response.json());
+			const result = await fetch(`${ server }/api/info`, { headers: { 'User-Agent': 'MY-UA-STRING' } }).then(response => response.json());
 			if (result.success) {
 				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
@@ -814,7 +814,7 @@ const RocketChat = {
 	async getLoginServices(server) {
 		try {
 			let loginServices = [];
-			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
+			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`, { headers: { 'User-Agent': 'MY-UA-STRING' } }).then(response => response.json());
 
 			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
 				const { services } = loginServicesResult;

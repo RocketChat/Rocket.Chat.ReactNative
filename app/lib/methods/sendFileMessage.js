@@ -78,6 +78,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
+			xhr.setRequestHeader('User-Agent', 'MY-UA-STRING');
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {

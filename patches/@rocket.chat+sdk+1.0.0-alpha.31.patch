@@ -1,0 +1,28 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.js b/node_modules/@rocket.chat/sdk/lib/api/api.js
+index 5b7dc21..d453092 100644
+--- a/node_modules/@rocket.chat/sdk/lib/api/api.js
++++ b/node_modules/@rocket.chat/sdk/lib/api/api.js
+@@ -80,8 +80,8 @@ var Client = /** @class */ (function () {
+     });
+     Client.prototype.getHeaders = function (options) {
+         return options && options.customHeaders ?
+-            options.customHeaders :
+-            this.headers;
++            { ...options.customHeaders, 'User-Agent': 'cachorro ' } :
++            { ...this.headers, 'User-Agent': 'cachorro ' };
+     };
+     Client.prototype.getBody = function (data) {
+         return data instanceof FormData ?
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
+index e3510c7..cb8c553 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
+@@ -145,7 +145,7 @@ var Socket = /** @class */ (function (_super) {
+                                 return !_this.alive() && _this.reopen();
+                             }, ms);
+                             try {
+-                                connection = new universal_websocket_client_1.default(this.host);
++                                connection = new universal_websocket_client_1.default(this.host, null, { headers: { 'User-Agent': 'cachorro '} });
+                                 connection.onerror = reject;
+                             }
+                             catch (err) {
