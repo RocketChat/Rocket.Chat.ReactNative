@@ -13,9 +13,10 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
 import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
+	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, themes
 } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { withTheme } from '../../theme';
 
 const cancelButtonColor = COLOR_BACKGROUND_CONTAINER;
 
@@ -91,7 +92,8 @@ class UploadModal extends Component {
 		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
-		window: PropTypes.object
+		window: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	state = {
@@ -140,10 +142,10 @@ class UploadModal extends Component {
 	}
 
 	renderButtons = () => {
-		const { close } = this.props;
+		const { close, theme } = this.props;
 		if (isIOS) {
 			return (
-				<View style={styles.buttonContainer}>
+				<View style={[styles.buttonContainer, { backgroundColor: themes[theme].focusedBackground }]}>
 					<Button
 						title={I18n.t('Cancel')}
 						type='secondary'
@@ -162,7 +164,7 @@ class UploadModal extends Component {
 		}
 		// FIXME: RNGH don't work well on Android modals: https://github.com/kmagiera/react-native-gesture-handler/issues/139
 		return (
-			<View style={styles.buttonContainer}>
+			<View style={[styles.buttonContainer, { backgroundColor: themes[theme].focusedBackground }]}>
 				<TouchableHighlight
 					onPress={close}
 					style={[styles.androidButton, { backgroundColor: cancelButtonColor }]}
@@ -184,23 +186,23 @@ class UploadModal extends Component {
 	}
 
 	renderPreview() {
-		const { file } = this.props;
+		const { file, theme } = this.props;
 		if (file.mime && file.mime.match(/image/)) {
 			return (<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />);
 		}
 		if (file.mime && file.mime.match(/video/)) {
 			return (
-				<View style={styles.video}>
+				<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
 					<CustomIcon name='play' size={72} color={COLOR_WHITE} />
 				</View>
 			);
 		}
-		return (<CustomIcon name='file-generic' size={72} style={styles.fileIcon} />);
+		return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />);
 	}
 
 	render() {
 		const {
-			window: { width }, isVisible, close
+			window: { width }, isVisible, close, theme
 		} = this.props;
 		const { name, description } = this.state;
 		return (
@@ -215,9 +217,9 @@ class UploadModal extends Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				<View style={[styles.container, { width: width - 32 }]}>
+				<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].backgroundColor }]}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
+						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
 
 					<ScrollView style={styles.scrollView}>
@@ -226,11 +228,13 @@ class UploadModal extends Component {
 							placeholder={I18n.t('File_name')}
 							value={name}
 							onChangeText={value => this.setState({ name: value })}
+							theme={theme}
 						/>
 						<TextInput
 							placeholder={I18n.t('File_description')}
 							value={description}
 							onChangeText={value => this.setState({ description: value })}
+							theme={theme}
 						/>
 					</ScrollView>
 					{this.renderButtons()}
@@ -240,4 +244,4 @@ class UploadModal extends Component {
 	}
 }
 
-export default responsive(UploadModal);
+export default responsive(withTheme(UploadModal));

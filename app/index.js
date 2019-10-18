@@ -273,7 +273,7 @@ export default class Root extends React.Component {
 		const deviceName = DeviceInfo.getDeviceName();
 		let theme = 'light';
 		if (deviceName === 'iPhone 8') {
-			theme = 'light';
+			theme = 'dark';
 		} else if (deviceName === 'iPhone 11 Pro') {
 			theme = 'black';
 		}
