@@ -15,6 +15,8 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const LANGUAGES = [
 	{
@@ -42,14 +44,18 @@ const LANGUAGES = [
 ];
 
 class LanguageView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Change_Language')
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Change_Language'),
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText }
 	})
 
 	static propTypes = {
 		userLanguage: PropTypes.string,
 		navigation: PropTypes.object,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -114,13 +120,20 @@ class LanguageView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => <Separator />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <Separator theme={theme} />;
+	}
 
-	renderIcon = () => <CustomIcon name='check' size={20} style={sharedStyles.colorPrimary} />
+	renderIcon = () => {
+		const { theme } = this.props;
+		return <CustomIcon name='check' size={20} style={[sharedStyles.colorPrimary, { color: themes[theme].tintColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
 		const { value, label } = item;
 		const { language } = this.state;
+		const { theme } = this.props;
 		const isSelected = language === value;
 
 		return (
@@ -129,19 +142,21 @@ class LanguageView extends React.Component {
 				onPress={() => this.submit(value)}
 				testID={`language-view-${ value }`}
 				right={isSelected ? this.renderIcon : null}
+				theme={theme}
 			/>
 		);
 	}
 
 	render() {
 		const { saving } = this.state;
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='language-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={LANGUAGES}
 					keyExtractor={item => item.value}
-					contentContainerStyle={sharedStyles.listContentContainer}
+					contentContainerStyle={[sharedStyles.listContentContainer, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
@@ -159,4 +174,4 @@ const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));
