@@ -77,6 +77,7 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-unimodules": "0.5.3",
     "react-native-vector-icons": "6.6.0",
+    "react-native-version-number": "^0.3.6",
     "react-native-video": "^5.0.0",
     "react-native-webview": "6.8.0",
     "react-navigation": "^4.0.5",
