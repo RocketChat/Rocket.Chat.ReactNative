@@ -18,7 +18,7 @@ import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE, SWITCH_TRACK_COLOR } from '../constants/colors';
+import { COLOR_WHITE, SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -78,11 +78,14 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const submit = navigation.getParam('submit', () => {});
 		const showSubmit = navigation.getParam('showSubmit');
 		return {
 			title: I18n.t('Create_Channel'),
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: (
 				showSubmit
 					? (
@@ -215,18 +218,21 @@ class CreateChannelView extends React.Component {
 
 	renderSwitch = ({
 		id, value, label, onValueChange, disabled = false
-	}) => (
-		<View style={styles.swithContainer}>
-			<Text style={styles.label}>{I18n.t(label)}</Text>
-			<Switch
-				value={value}
-				onValueChange={onValueChange}
-				testID={`create-channel-${ id }`}
-				trackColor={SWITCH_TRACK_COLOR}
-				disabled={disabled}
-			/>
-		</View>
-	)
+	}) => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.swithContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+				<Switch
+					value={value}
+					onValueChange={onValueChange}
+					testID={`create-channel-${ id }`}
+					trackColor={SWITCH_TRACK_COLOR}
+					disabled={disabled}
+				/>
+			</View>
+		);
+	}
 
 	renderType() {
 		const { type } = this.state;
@@ -266,7 +272,10 @@ class CreateChannelView extends React.Component {
 
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
-	renderFormSeparator = () => <View style={[sharedStyles.separator, styles.formSeparator]} />
+	renderFormSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].borderColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
@@ -285,14 +294,14 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderInvitedList = () => {
-		const { users } = this.props;
+		const { users, theme } = this.props;
 
 		return (
 			<FlatList
 				data={users}
 				extraData={users}
 				keyExtractor={item => item._id}
-				style={[styles.list, sharedStyles.separatorVertical]}
+				style={[styles.list, sharedStyles.separatorVertical, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				enableEmptySections
@@ -303,26 +312,26 @@ class CreateChannelView extends React.Component {
 
 	render() {
 		const { channelName } = this.state;
-		const { users, isFetching } = this.props;
+		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
 
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, styles.container]}
+				contentContainerStyle={[sharedStyles.container, styles.container, { backgroundColor: themes[theme].focusedBackground }]}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-channel-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} forceInset={{ vertical: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput
 								autoFocus
-								style={styles.input}
+								style={[styles.input, { backgroundColor: themes[theme].backgroundColor, color: themes[theme].titleText }]}
 								label={I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
 								placeholder={I18n.t('Channel_Name')}
-								placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+								placeholderTextColor={themes[theme].auxiliaryText}
 								returnKeyType='done'
 								testID='create-channel-name'
 								autoCorrect={false}
@@ -337,8 +346,8 @@ class CreateChannelView extends React.Component {
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
-							<Text style={styles.invitedTitle}>{I18n.t('Invite')}</Text>
-							<Text style={styles.invitedCount}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
+							<Text style={[styles.invitedTitle, { color: themes[theme].titleText }]}>{I18n.t('Invite')}</Text>
+							<Text style={[styles.invitedCount, { color: themes[theme].auxiliaryText }]}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
 						</View>
 						{this.renderInvitedList()}
 						<Loading visible={isFetching} />

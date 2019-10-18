@@ -194,7 +194,7 @@ class SelectedUsersView extends React.Component {
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.header, { backgroundColor: themes[theme].focusedBackground }]}>
+			<View style={[styles.header, { backgroundColor: themes[theme].backgroundColor }]}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
 				{this.renderSelected()}
 			</View>
