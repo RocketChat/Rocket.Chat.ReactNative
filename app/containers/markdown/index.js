@@ -165,7 +165,12 @@ class Markdown extends PureComponent {
 			<Text
 				style={[
 					!preview
-						? { ...styles.codeInline, color: themes[theme].titleText, backgroundColor: themes[theme].focusedBackground }
+						? {
+							...styles.codeInline,
+							color: themes[theme].titleText,
+							backgroundColor: themes[theme].focusedBackground,
+							borderColor: themes[theme].borderColor
+						}
 						: { ...styles.text, color: themes[theme].titleText },
 					...style
 				]}
@@ -181,7 +186,12 @@ class Markdown extends PureComponent {
 			<Text
 				style={[
 					!preview
-						? { ...styles.codeBlock, color: themes[theme].titleText, backgroundColor: themes[theme].focusedBackground }
+						? {
+							...styles.codeBlock,
+							color: themes[theme].titleText,
+							backgroundColor: themes[theme].focusedBackground,
+							borderColor: themes[theme].borderColor
+						}
 						: { ...styles.text, color: themes[theme].titleText },
 					...style
 				]}
@@ -256,7 +266,7 @@ class Markdown extends PureComponent {
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
-			getCustomEmoji, baseUrl, customEmojis = true, preview, style
+			getCustomEmoji, baseUrl, customEmojis = true, preview, style, theme
 		} = this.props;
 		return (
 			<MarkdownEmoji
@@ -267,6 +277,7 @@ class Markdown extends PureComponent {
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
+				theme={theme}
 			/>
 		);
 	}
@@ -322,26 +333,35 @@ class Markdown extends PureComponent {
 	};
 
 	renderBlockQuote = ({ children }) => {
-		const { preview } = this.props;
+		const { preview, theme } = this.props;
 		if (preview) {
 			return children;
 		}
 		return (
-			<MarkdownBlockQuote>
+			<MarkdownBlockQuote theme={theme}>
 				{children}
 			</MarkdownBlockQuote>
 		);
 	}
 
-	renderTable = ({ children, numColumns }) => (
-		<MarkdownTable numColumns={numColumns}>
-			{children}
-		</MarkdownTable>
-	);
+	renderTable = ({ children, numColumns }) => {
+		const { theme } = this.props;
+		return (
+			<MarkdownTable numColumns={numColumns} theme={theme}>
+				{children}
+			</MarkdownTable>
+		);
+	}
 
-	renderTableRow = args => <MarkdownTableRow {...args} />;
+	renderTableRow = (args) => {
+		const { theme } = this.props;
+		return <MarkdownTableRow {...args} theme={theme} />;
+	}
 
-	renderTableCell = args => <MarkdownTableCell {...args} />;
+	renderTableCell = (args) => {
+		const { theme } = this.props;
+		return <MarkdownTableCell {...args} theme={theme} />;
+	}
 
 	render() {
 		const {

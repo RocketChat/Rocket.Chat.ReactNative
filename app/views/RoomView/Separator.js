@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
-import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { COLOR_DANGER, themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,14 +16,12 @@ const styles = StyleSheet.create({
 		marginHorizontal: 14
 	},
 	line: {
-		backgroundColor: COLOR_TEXT_DESCRIPTION,
 		height: 1,
 		flex: 1
 	},
 	text: {
 		fontSize: 14,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textMedium
 	},
 	unreadLine: {
 		backgroundColor: COLOR_DANGER
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = React.memo(({ ts, unread }) => {
+const DateSeparator = React.memo(({ ts, unread, theme }) => {
 	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
 	if (ts && unread) {
 		return (
@@ -56,8 +54,8 @@ const DateSeparator = React.memo(({ ts, unread }) => {
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={styles.line} />
-				<Text style={[styles.text, styles.marginLeft]}>{date}</Text>
+				<View style={[styles.line, { backgroundColor: themes[theme].auxiliaryText }]} />
+				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginLeft]}>{date}</Text>
 			</View>
 		);
 	}
@@ -71,7 +69,8 @@ const DateSeparator = React.memo(({ ts, unread }) => {
 
 DateSeparator.propTypes = {
 	ts: PropTypes.instanceOf(Date),
-	unread: PropTypes.bool
+	unread: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 export default DateSeparator;

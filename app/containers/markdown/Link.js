@@ -22,7 +22,7 @@ const Link = React.memo(({
 	return (
 		<Text
 			onPress={preview ? undefined : handlePress}
-			style={!preview ? styles.link : { color: themes[theme].titleText }}
+			style={!preview ? { ...styles.link } : { color: themes[theme].titleText }}
 		>
 			{ childLength !== 0 ? children : link }
 		</Text>

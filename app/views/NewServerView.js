@@ -21,9 +21,10 @@ import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY } from '../constants/colors';
+import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	image: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal,
+		// ...sharedStyles.textColorNormal,
 		fontSize: moderateScale(22),
 		letterSpacing: 0,
 		alignSelf: 'center'
@@ -56,13 +57,12 @@ const styles = StyleSheet.create({
 	},
 	chooseCertificateTitle: {
 		fontSize: 15,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
+		// ...sharedStyles.textColorDescription
 	},
 	chooseCertificate: {
 		fontSize: 15,
-		...sharedStyles.textSemibold,
-		...sharedStyles.textColorHeaderBack
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -76,6 +76,7 @@ class NewServerView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
+		theme: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired
 	}
@@ -213,7 +214,7 @@ class NewServerView extends React.Component {
 	}
 
 	renderBack = () => {
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 
 		let top = 15;
 		if (isIOS) {
@@ -228,7 +229,7 @@ class NewServerView extends React.Component {
 				<CustomIcon
 					name='back'
 					size={30}
-					color={COLOR_PRIMARY}
+					color={themes[theme].tintColor}
 				/>
 			</TouchableOpacity>
 		);
@@ -236,30 +237,31 @@ class NewServerView extends React.Component {
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
+		const { theme } = this.props;
 		return (
 			<View style={styles.certificatePicker}>
-				<Text style={styles.chooseCertificateTitle}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
+				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].titleText }]}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
 				<TouchableOpacity onPress={certificate ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
-					<Text style={styles.chooseCertificate}>{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}</Text>
+					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor }]}>{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 
 	render() {
-		const { connecting } = this.props;
+		const { connecting, theme } = this.props;
 		const { text, autoFocus } = this.state;
 		return (
 			<KeyboardView
-				contentContainerStyle={sharedStyles.container}
+				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
 				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
+					<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
-						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
+						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput
 							autoFocus={autoFocus}
 							containerStyle={styles.inputContainer}
@@ -270,6 +272,7 @@ class NewServerView extends React.Component {
 							testID='new-server-view-input'
 							onSubmitEditing={this.submit}
 							clearButtonMode='while-editing'
+							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Connect')}
@@ -278,6 +281,7 @@ class NewServerView extends React.Component {
 							disabled={!text}
 							loading={connecting}
 							testID='new-server-view-button'
+							theme={theme}
 						/>
 						{ isIOS ? this.renderCertificatePicker() : null }
 					</SafeAreaView>
@@ -296,4 +300,4 @@ const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewServerView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 	time: {
 		fontSize: 12,
 		marginLeft: 10,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
 	},

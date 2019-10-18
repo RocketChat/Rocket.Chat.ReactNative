@@ -6,10 +6,11 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
+import { themes } from '../../constants/colors';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
-		return <Text style={styles.textInfo}>{getInfoMessage({ ...props })}</Text>;
+		return <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{getInfoMessage({ ...props })}</Text>;
 	}
 
 	let content = null;
@@ -48,6 +49,7 @@ Content.propTypes = {
 	tmid: PropTypes.string,
 	isThreadRoom: PropTypes.bool,
 	msg: PropTypes.string,
+	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
 	useMarkdown: PropTypes.bool,
 	baseUrl: PropTypes.string,

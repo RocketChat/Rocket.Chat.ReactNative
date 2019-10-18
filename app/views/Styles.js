@@ -173,21 +173,18 @@ export default StyleSheet.create({
 			}
 		})
 	},
-	// textColorTitle: {
-	// 	color: COLOR_TITLE
-	// },
-	// textColorNormal: {
-	// 	color: COLOR_TEXT
-	// },
-	// textColorDescription: {
-	// 	color: COLOR_TEXT_DESCRIPTION
-	// },
-	// textColorHeaderBack: {
-	// 	color: HEADER_BACK
-	// },
-	// colorPrimary: {
-	// 	color: COLOR_PRIMARY
-	// },
+	textColorTitle: {
+		color: 'green'
+	},
+	textColorNormal: {
+		color: 'yellow'
+	},
+	textColorDescription: {
+		color: 'red'
+	},
+	colorPrimary: {
+		color: 'purple'
+	},
 	inputLastChild: {
 		marginBottom: 15
 	},

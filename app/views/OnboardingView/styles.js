@@ -2,18 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
 import sharedStyles from '../Styles';
-import { COLOR_PRIMARY, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
-
-const colors = {
-	backgroundPrimary: COLOR_PRIMARY,
-	backgroundSecondary: 'white',
-
-	textColorPrimary: 'white',
-	textColorSecondary: COLOR_PRIMARY,
-
-	borderColorPrimary: COLOR_PRIMARY,
-	borderColorSecondary: COLOR_BORDER
-};
+import { COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -83,20 +72,6 @@ export default StyleSheet.create({
 	},
 	buttonActive: {
 		opacity: 0.5
-	},
-	button_container_primary: {
-		backgroundColor: colors.backgroundPrimary,
-		borderColor: colors.borderColorPrimary
-	},
-	button_container_secondary: {
-		backgroundColor: colors.backgroundSecondary,
-		borderColor: colors.borderColorSecondary
-	},
-	button_text_primary: {
-		color: colors.textColorPrimary
-	},
-	button_text_secondary: {
-		color: colors.textColorSecondary
 	},
 	closeModal: {
 		position: 'absolute',

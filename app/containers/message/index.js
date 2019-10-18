@@ -6,8 +6,9 @@ import Message from './Message';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
+import { withTheme } from '../../theme';
 
-export default class MessageContainer extends React.Component {
+class MessageContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
 		user: PropTypes.shape({
@@ -42,7 +43,8 @@ export default class MessageContainer extends React.Component {
 		onOpenFileModal: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
-		callJitsi: PropTypes.func
+		callJitsi: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -205,7 +207,7 @@ export default class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, theme
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -272,7 +274,10 @@ export default class MessageContainer extends React.Component {
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				callJitsi={callJitsi}
+				theme={theme}
 			/>
 		);
 	}
 }
+
+export default withTheme(MessageContainer);

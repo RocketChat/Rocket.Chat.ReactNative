@@ -39,7 +39,7 @@ const User = React.memo(({
 }) => {
 	if (isHeader || hasError) {
 		const username = (useRealName && author.name) || author.username;
-		const aliasUsername = alias ? (<Text style={styles.alias}> @{username}</Text>) : null;
+		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
 		return (
