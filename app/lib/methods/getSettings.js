@@ -8,6 +8,7 @@ import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
+import fetch from '../../utils/fetch';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
@@ -55,7 +56,7 @@ export default async function() {
 		const db = database.active;
 		const settingsParams = JSON.stringify(Object.keys(settings));
 		// RC 0.60.0
-		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`, { headers: { 'User-Agent': 'MY-UA-STRING' } }).then(response => response.json());
+		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
 		if (!result.success) {
 			return;
