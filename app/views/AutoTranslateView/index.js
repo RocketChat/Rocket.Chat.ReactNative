@@ -14,9 +14,10 @@ import sharedStyles from '../Styles';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
 import {
-	SWITCH_TRACK_COLOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR
+	SWITCH_TRACK_COLOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR, themes
 } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -34,15 +35,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SectionSeparator = React.memo(() => <View style={styles.sectionSeparator} />);
+const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparator, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]} />);
 
-export default class AutoTranslateView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Auto_Translate')
+SectionSeparator.propTypes = {
+	theme: PropTypes.string
+};
+
+class AutoTranslateView extends React.Component {
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Auto_Translate'),
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText }
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -107,9 +116,15 @@ export default class AutoTranslateView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => <Separator />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <Separator theme={theme} />;
+	}
 
-	renderIcon = () => <CustomIcon name='check' size={20} style={sharedStyles.colorPrimary} />
+	renderIcon = () => {
+		const { theme } = this.props;
+		return <CustomIcon name='check' size={20} style={[sharedStyles.colorPrimary, { color: themes[theme].tintColor }]} />;
+	}
 
 	renderSwitch = () => {
 		const { enableAutoTranslate } = this.state;
@@ -124,6 +139,7 @@ export default class AutoTranslateView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { selectedLanguage } = this.state;
+		const { theme } = this.props;
 		const { language, name } = item;
 		const isSelected = selectedLanguage === language;
 
@@ -133,26 +149,29 @@ export default class AutoTranslateView extends React.Component {
 				onPress={() => this.saveAutoTranslateLanguage(language)}
 				testID={`auto-translate-view-${ language }`}
 				right={isSelected ? this.renderIcon : null}
+				theme={theme}
 			/>
 		);
 	}
 
 	render() {
 		const { languages } = this.state;
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='auto-translate-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='auto-translate-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={styles.contentContainerStyle}
+					contentContainerStyle={[styles.contentContainerStyle, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
 					testID='auto-translate-view-list'
 				>
 					<ListItem
 						title={I18n.t('Enable_Auto_Translate')}
 						testID='auto-translate-view-switch'
 						right={() => this.renderSwitch()}
+						theme={theme}
 					/>
-					<SectionSeparator />
+					<SectionSeparator theme={theme} />
 					<FlatList
 						data={languages}
 						extraData={this.state}
@@ -165,3 +184,5 @@ export default class AutoTranslateView extends React.Component {
 		);
 	}
 }
+
+export default withTheme(AutoTranslateView);
