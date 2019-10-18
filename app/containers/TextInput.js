@@ -7,7 +7,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
 import {
-	COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_TEXT, COLOR_BORDER
+	COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_TEXT, COLOR_BORDER, themes
 } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
@@ -78,11 +78,13 @@ export default class RCTextInput extends React.PureComponent {
 		inputRef: PropTypes.func,
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
-		placeholder: PropTypes.string
+		placeholder: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	static defaultProps = {
-		error: {}
+		error: {},
+		theme: 'light'
 	}
 
 	state = {
@@ -90,12 +92,12 @@ export default class RCTextInput extends React.PureComponent {
 	}
 
 	get iconLeft() {
-		const { testID, iconLeft } = this.props;
+		const { testID, iconLeft, theme } = this.props;
 		return (
 			<CustomIcon
 				name={iconLeft}
 				testID={testID ? `${ testID }-icon-left` : null}
-				style={[styles.iconContainer, styles.iconLeft, styles.icon]}
+				style={[styles.iconContainer, styles.iconLeft, styles.icon, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
 		);
@@ -103,13 +105,13 @@ export default class RCTextInput extends React.PureComponent {
 
 	get iconPassword() {
 		const { showPassword } = this.state;
-		const { testID } = this.props;
+		const { testID, theme } = this.props;
 		return (
 			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'Eye' : 'eye-off'}
 					testID={testID ? `${ testID }-icon-right` : null}
-					style={[styles.icon, styles.password]}
+					style={[styles.icon, styles.password, { color: themes[theme].auxiliaryText }]}
 					size={20}
 				/>
 			</BorderlessButton>
@@ -123,11 +125,11 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, error.error && styles.labelError]}>{label}</Text> : null}
+				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, { color: themes[theme].titleText }, error.error && styles.labelError]}>{label}</Text> : null}
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
@@ -135,7 +137,8 @@ export default class RCTextInput extends React.PureComponent {
 							error.error && styles.inputError,
 							inputStyle,
 							iconLeft && styles.inputIconLeft,
-							secureTextEntry && styles.inputIconRight
+							secureTextEntry && styles.inputIconRight,
+							{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor, color: themes[theme].titleText }
 						]}
 						ref={inputRef}
 						autoCorrect={false}
@@ -145,7 +148,7 @@ export default class RCTextInput extends React.PureComponent {
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+						placeholderTextColor={themes[theme].auxiliaryText}
 						contentDescription={placeholder}
 						{...inputProps}
 					/>
