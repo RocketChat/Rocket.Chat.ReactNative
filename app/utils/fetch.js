@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
-import VersionNumber from 'react-native-version-number';
+import DeviceInfo from 'react-native-device-info';
 
-export const headers = { 'User-Agent': `RC-RN Mobile/${ VersionNumber.appVersion } (build: ${ VersionNumber.buildVersion }; os: ${ Platform.OS } ${ Platform.Version })` };
+export const headers = { 'User-Agent': `RC-RN Mobile/${ DeviceInfo.getVersion() } (build: ${ DeviceInfo.getBuildNumber() }; os: ${ Platform.OS } ${ DeviceInfo.getSystemVersion() })` };
 
 export default (url, options = {}) => {
 	let customOptions = { ...options, headers };
