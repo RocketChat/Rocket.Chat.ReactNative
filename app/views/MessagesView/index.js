@@ -14,20 +14,26 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import FileModal from '../../containers/FileModal';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		title: navigation.state.params.name
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		title: navigation.state.params.name,
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText }
 	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -247,11 +253,14 @@ class MessagesView extends React.Component {
 		this.setState({ fileLoading });
 	}
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID={this.content.testID}>
-			<Text style={styles.noDataFound}>{this.content.noDataMsg}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].focusedBackground }]} testID={this.content.testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => this.content.renderItem(item)
 
@@ -259,19 +268,19 @@ class MessagesView extends React.Component {
 		const {
 			messages, loading, selectedAttachment, photoModalVisible, fileLoading
 		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[styles.list, { backgroundColor: themes[theme].focusedBackground }]} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].focusedBackground }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
@@ -300,4 +309,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(MessagesView);
+export default connect(mapStateToProps)(withTheme(MessagesView));
