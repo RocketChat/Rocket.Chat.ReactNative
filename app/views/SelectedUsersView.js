@@ -22,7 +22,7 @@ import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_WHITE } from '../constants/colors';
+import { COLOR_WHITE, themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 
@@ -40,11 +40,14 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title');
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
 			title,
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
@@ -188,12 +191,15 @@ class SelectedUsersView extends React.Component {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	renderHeader = () => (
-		<View style={styles.header}>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
-			{this.renderSelected()}
-		</View>
-	)
+	renderHeader = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.header, { backgroundColor: themes[theme].focusedBackground }]}>
+				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
+				{this.renderSelected()}
+			</View>
+		);
+	}
 
 	renderSelected = () => {
 		const { users } = this.props;
@@ -205,7 +211,7 @@ class SelectedUsersView extends React.Component {
 			<FlatList
 				data={users}
 				keyExtractor={item => item._id}
-				style={[styles.list, sharedStyles.separatorTop]}
+				style={sharedStyles.separatorTop}
 				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
 				enableEmptySections
@@ -231,7 +237,10 @@ class SelectedUsersView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].borderColor }]} />;
+	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
@@ -281,9 +290,9 @@ class SelectedUsersView extends React.Component {
 	}
 
 	render = () => {
-		const { loading } = this.props;
+		const { loading, theme } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]} testID='select-users-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
