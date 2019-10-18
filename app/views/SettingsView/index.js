@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
@@ -23,19 +23,27 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import { withTheme } from '../../theme';
 
-const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
-const ItemInfo = React.memo(({ info }) => (
-	<View style={styles.infoContainer}>
-		<Text style={styles.infoText}>{info}</Text>
+const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparatorBorder, { borderColor: themes[theme].borderColor, backgroundColor: themes[theme].focusedBackground }]} />);
+SectionSeparator.propTypes = {
+	theme: PropTypes.string
+};
+const ItemInfo = React.memo(({ info, theme }) => (
+	<View style={[styles.infoContainer, { backgroundColor: themes[theme].focusedBackground }]}>
+		<Text style={[styles.infoText, { color: themes[theme].titleText }]}>{info}</Text>
 	</View>
 ));
 ItemInfo.propTypes = {
-	info: PropTypes.string
+	info: PropTypes.string,
+	theme: PropTypes.string
 };
 
 class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText },
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
 	});
@@ -46,7 +54,8 @@ class SettingsView extends React.Component {
 		useMarkdown: PropTypes.bool,
 		allowCrashReport: PropTypes.bool,
 		toggleMarkdown: PropTypes.func,
-		toggleCrashReport: PropTypes.func
+		toggleCrashReport: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	toggleMarkdown = (value) => {
@@ -119,13 +128,13 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='settings-view'>
+			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='settings-view'>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[sharedStyles.listContentContainer, styles.listWithoutBorderBottom]}
+					contentContainerStyle={[sharedStyles.listContentContainer, styles.listWithoutBorderBottom, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
@@ -135,33 +144,37 @@ class SettingsView extends React.Component {
 						showActionIndicator
 						testID='settings-view-contact'
 						right={this.renderDisclosure}
+						theme={theme}
 					/>
-					<Separator />
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Language')}
 						onPress={() => this.navigateToRoom('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
 						right={this.renderDisclosure}
+						theme={theme}
 					/>
-					<Separator />
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
 						showActionIndicator
 						onPress={this.shareApp}
 						testID='settings-view-share-app'
 						right={this.renderDisclosure}
+						theme={theme}
 					/>
-					<Separator />
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
 						disabled
 						testID='settings-view-theme'
+						theme={theme}
 					/>
-					<Separator />
+					<Separator theme={theme} />
 
-					<SectionSeparator />
+					<SectionSeparator theme={theme} />
 
 					<ListItem
 						title={I18n.t('License')}
@@ -169,34 +182,39 @@ class SettingsView extends React.Component {
 						showActionIndicator
 						testID='settings-view-license'
 						right={this.renderDisclosure}
+						theme={theme}
 					/>
-					<Separator />
-					<ListItem title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
-					<Separator />
+					<Separator theme={theme} />
+					<ListItem title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' theme={theme} />
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
 						subtitle={`${ server.server.split('//')[1] }`}
 						testID='settings-view-server-version'
+						theme={theme}
 					/>
 
-					<SectionSeparator />
+					<SectionSeparator theme={theme} />
 
 					<ListItem
 						title={I18n.t('Enable_markdown')}
 						testID='settings-view-markdown'
 						right={() => this.renderMarkdownSwitch()}
+						theme={theme}
 					/>
 
-					<SectionSeparator />
+					<SectionSeparator theme={theme} />
 
 					<ListItem
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
 						right={() => this.renderCrashReportSwitch()}
+						theme={theme}
 					/>
-					<Separator />
+					<Separator theme={theme} />
 					<ItemInfo
 						info={I18n.t('Crash_report_disclaimer')}
+						theme={theme}
 					/>
 				</ScrollView>
 			</SafeAreaView>
@@ -215,4 +233,4 @@ const mapDispatchToProps = dispatch => ({
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));
