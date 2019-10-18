@@ -8,6 +8,7 @@ import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
+import fetch from '../../utils/fetch';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
