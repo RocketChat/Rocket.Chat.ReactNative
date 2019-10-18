@@ -16,26 +16,31 @@ import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name) => (type === 'd'
-	? <Text testID='room-info-view-name' style={styles.roomTitle}>{name}</Text>
+const getRoomTitle = (room, type, name, theme) => (type === 'd'
+	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
-			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
 		</View>
 	)
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
 		return {
 			title: I18n.t('Room_Info'),
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
@@ -53,7 +58,8 @@ class RoomInfoView extends React.Component {
 			token: PropTypes.string
 		}),
 		baseUrl: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -138,16 +144,19 @@ class RoomInfoView extends React.Component {
 
 	isDirect = () => this.t === 'd'
 
-	renderItem = (key, room) => (
-		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{I18n.t(camelize(key))}</Text>
-			<Text
-				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
-				testID={`room-info-view-${ key }`}
-			>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
-			</Text>
-		</View>
-	);
+	renderItem = (key, room) => {
+		const { theme } = this.props;
+		return (
+			<View style={styles.item}>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
+				<Text
+					style={[styles.itemContent, !room[key] && styles.itemContent__empty, { color: themes[theme].auxiliaryText }]}
+					testID={`room-info-view-${ key }`}
+				>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
+				</Text>
+			</View>
+		);
+	}
 
 	renderRole = (description) => {
 		if (description) {
@@ -177,7 +186,7 @@ class RoomInfoView extends React.Component {
 
 	renderTimezone = () => {
 		const { roomUser } = this.state;
-		const { Message_TimeFormat } = this.props;
+		const { Message_TimeFormat, theme } = this.props;
 
 		if (roomUser) {
 			const { utcOffset } = roomUser;
@@ -187,8 +196,8 @@ class RoomInfoView extends React.Component {
 			}
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>{I18n.t('Timezone')}</Text>
-					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
+					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Timezone')}</Text>
+					<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
 				</View>
 			);
 		}
@@ -275,16 +284,17 @@ class RoomInfoView extends React.Component {
 
 	render() {
 		const { room, roomUser } = this.state;
+		const { theme } = this.props;
 		if (!room) {
 			return <View />;
 		}
 		return (
-			<ScrollView style={styles.scroll}>
+			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
-				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='room-info-view' forceInset={{ vertical: 'never' }}>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
 					</View>
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
@@ -302,4 +312,4 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
-export default connect(mapStateToProps)(RoomInfoView);
+export default connect(mapStateToProps)(withTheme(RoomInfoView));

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_TEXT } from '../constants/colors';
+import { COLOR_TEXT, themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, right
+	title, subtitle, disabled, testID, right, theme
 }) => (
-	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
+	<View style={[styles.container, disabled && styles.disabled, { backgroundColor: themes[theme].backgroundColor }]} testID={testID}>
 		<View style={styles.textContainer}>
-			<Text style={styles.title}>{title}</Text>
+			<Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>
 			{subtitle
-				? <Text style={styles.subtitle}>{subtitle}</Text>
+				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text>
 				: null
 			}
 		</View>
@@ -78,7 +78,8 @@ Content.propTypes = {
 	subtitle: PropTypes.string,
 	right: PropTypes.func,
 	disabled: PropTypes.bool,
-	testID: PropTypes.string
+	testID: PropTypes.string,
+	theme: PropTypes.string
 };
 
 Button.propTypes = {
