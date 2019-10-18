@@ -27,19 +27,24 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_TEXT } from '../../constants/colors';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+	static navigationOptions = ({ navigation, screenProps }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
-		title: I18n.t('Profile')
+		title: I18n.t('Profile'),
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText }
 	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	state = {
@@ -249,26 +254,29 @@ class ProfileView extends React.Component {
 
 	renderAvatarButton = ({
 		key, child, onPress, disabled = false
-	}) => (
-		<Touch
-			key={key}
-			testID={key}
-			onPress={onPress}
-			underlayColor='rgba(255, 255, 255, 0.5)'
-			activeOpacity={0.3}
-			disabled={disabled}
-		>
-			<View
-				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }]}
+	}) => {
+		const { theme } = this.props;
+		return (
+			<Touch
+				key={key}
+				testID={key}
+				onPress={onPress}
+				underlayColor='rgba(255, 255, 255, 0.5)'
+				activeOpacity={0.3}
+				disabled={disabled}
 			>
-				{child}
-			</View>
-		</Touch>
-	)
+				<View
+					style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1, backgroundColor: themes[theme].borderColors }]}
+				>
+					{child}
+				</View>
+			</Touch>
+		);
+	}
 
 	renderAvatarButtons = () => {
 		const { avatarUrl, avatarSuggestions } = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 
 		return (
 			<View style={styles.avatarButtons}>
@@ -278,12 +286,12 @@ class ProfileView extends React.Component {
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='upload' size={30} color={COLOR_TEXT} />,
+					child: <CustomIcon name='upload' size={30} color={themes[theme].bodyText} />,
 					onPress: () => this.pickImage(),
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} color={COLOR_TEXT} />,
+					child: <CustomIcon name='permalink' size={30} color={themes[theme].bodyText} />,
 					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
@@ -304,7 +312,7 @@ class ProfileView extends React.Component {
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		const { Accounts_CustomFields } = this.props;
+		const { Accounts_CustomFields, theme } = this.props;
 
 		if (!Accounts_CustomFields) {
 			return null;
@@ -331,6 +339,7 @@ class ProfileView extends React.Component {
 								placeholder={key}
 								value={customFields[key]}
 								testID='settings-view-language'
+								theme={theme}
 							/>
 						</RNPickerSelect>
 					);
@@ -354,6 +363,7 @@ class ProfileView extends React.Component {
 							}
 							this.avatarUrl.focus();
 						}}
+						theme={theme}
 					/>
 				);
 			});
@@ -366,20 +376,20 @@ class ProfileView extends React.Component {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<KeyboardView
-				contentContainerStyle={sharedStyles.container}
+				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
 				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
+					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].focusedBackground }]}
 					testID='profile-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='profile-view' forceInset={{ vertical: 'never' }}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
@@ -398,6 +408,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ name: value })}
 							onSubmitEditing={() => { this.username.focus(); }}
 							testID='profile-view-name'
+							theme={theme}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.username = e; }}
@@ -407,6 +418,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ username: value })}
 							onSubmitEditing={() => { this.email.focus(); }}
 							testID='profile-view-username'
+							theme={theme}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.email = e; }}
@@ -416,6 +428,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ email: value })}
 							onSubmitEditing={() => { this.newPassword.focus(); }}
 							testID='profile-view-email'
+							theme={theme}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.newPassword = e; }}
@@ -431,6 +444,7 @@ class ProfileView extends React.Component {
 							}}
 							secureTextEntry
 							testID='profile-view-new-password'
+							theme={theme}
 						/>
 						{this.renderCustomFields()}
 						<RCTextInput
@@ -441,6 +455,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
+							theme={theme}
 						/>
 						{this.renderAvatarButtons()}
 						<Button
@@ -491,4 +506,4 @@ const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
