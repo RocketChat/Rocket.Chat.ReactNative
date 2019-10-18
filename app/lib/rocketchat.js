@@ -1,6 +1,6 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient, settings as RCSettings } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
@@ -12,7 +12,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
-import fetch from '../utils/fetch';
+import fetch, { headers } from '../utils/fetch';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -57,6 +57,8 @@ const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
+
+RocketChatSettings.customHeaders = headers;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -148,8 +150,6 @@ const RocketChat = {
 				this.sdk.disconnect();
 				this.sdk = null;
 			}
-
-			RCSettings.customHeaders = { 'User-Agent': 'cachorro' };
 
 			// Use useSsl: false only if server url starts with http://
 			const useSsl = !/http:\/\//.test(server);
@@ -817,7 +817,7 @@ const RocketChat = {
 	async getLoginServices(server) {
 		try {
 			let loginServices = [];
-			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`, { headers: { 'User-Agent': 'MY-UA-STRING' } }).then(response => response.json());
+			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
 
 			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
 				const { services } = loginServicesResult;
