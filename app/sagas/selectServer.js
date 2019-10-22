@@ -81,14 +81,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
-		if (user) {
-			yield RocketChat.connect({ server, user });
-			yield put(setUser(user));
-			yield put(actions.appStart('inside'));
-		} else {
-			yield RocketChat.connect({ server });
-			yield put(actions.appStart('outside'));
-		}
+		database.setActiveDB(server);
 
 		const db = database.active;
 		const serversCollection = db.collections.get('settings');
@@ -103,6 +96,15 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
 
 		yield RocketChat.setCustomEmojis();
+
+		if (user) {
+			yield RocketChat.connect({ server, user });
+			yield put(setUser(user));
+			yield put(actions.appStart('inside'));
+		} else {
+			yield RocketChat.connect({ server });
+			yield put(actions.appStart('outside'));
+		}
 
 		let serverInfo;
 		if (fetchVersion) {
