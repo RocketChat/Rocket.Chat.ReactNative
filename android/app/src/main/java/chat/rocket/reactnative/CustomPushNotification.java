@@ -44,6 +44,7 @@ public class CustomPushNotification extends PushNotification {
             .setContentIntent(intent)
             .setContentTitle(title)
             .setContentText(message)
+            .setGroup(title)
             .setStyle(new Notification.BigTextStyle().bigText(message))
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
