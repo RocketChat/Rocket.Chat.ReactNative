@@ -81,22 +81,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
-		database.setActiveDB(server);
-
-		const db = database.active;
-		const serversCollection = db.collections.get('settings');
-		const settingsRecords = yield serversCollection.query().fetch();
-		const settings = Object.values(settingsRecords).map(item => ({
-			_id: item.id,
-			valueAsString: item.valueAsString,
-			valueAsBoolean: item.valueAsBoolean,
-			valueAsNumber: item.valueAsNumber,
-			_updatedAt: item._updatedAt
-		}));
-		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-
-		yield RocketChat.setCustomEmojis();
-
 		if (user) {
 			yield RocketChat.connect({ server, user });
 			yield put(setUser(user));
@@ -105,6 +89,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));
 		}
+
+		// We can't use yield here because fetch of Settings & Custom Emojis is slower
+		// and block the selectServerSuccess raising multiples errors
+		RocketChat.setSettings();
+		RocketChat.setCustomEmojis();
 
 		let serverInfo;
 		if (fetchVersion) {
