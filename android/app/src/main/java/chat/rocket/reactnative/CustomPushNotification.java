@@ -15,7 +15,9 @@ import android.os.Bundle;
 import android.provider.Settings.System;
 import android.media.RingtoneManager;
 
+import android.util.Log;
 import java.util.Random;
+import com.google.gson.*;
 import androidx.core.app.NotificationCompat;
 
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
@@ -34,6 +36,8 @@ public class CustomPushNotification extends PushNotification {
     private String notificationId;
     private String title;
     private String message;
+    private String group;
+    private Ejson ejson;
 
     @Override
     protected Notification buildNotification(PendingIntent intent) {
@@ -44,13 +48,17 @@ public class CustomPushNotification extends PushNotification {
         this.notificationId = bundle.getString("notId");
         this.notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        this.groupBuilder = new NotificationCompat.Builder(mContext, "rocketchatrn_channel_01")
-            .setContentTitle(title)
-            .setContentText(message)
-            .setSmallIcon(smallIconResId)
+        Gson gson = new Gson();
+        this.ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        this.group = this.ejson.host + this.ejson.rid;
+
+        this.groupBuilder = new NotificationCompat.Builder(mContext, this.ejson.host)
+            .setContentTitle(this.title)
+            .setContentText(this.message)
+            .setSmallIcon(this.smallIconResId)
             // .setStyle(NotificationCompat.InboxStyle().setSummaryText(title))
             .setContentIntent(intent)
-            .setGroup("abc")
+            .setGroup(this.group)
             .setGroupSummary(true);
 
         return getNotificationBuilder(intent).build();
@@ -58,36 +66,22 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
-        final Resources res = mContext.getResources();
-        String packageName = mContext.getPackageName();
-
-        Bundle bundle = mNotificationProps.asBundle();
-        int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
-        int largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
-        String title = bundle.getString("title");
-        String message = bundle.getString("message");
-
-        String CHANNEL_ID = "rocketchatrn_channel_01";
-        String CHANNEL_NAME = "All";
-
         final Notification.Builder notification = new Notification.Builder(mContext)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setSmallIcon(smallIconResId)
+            .setContentTitle(this.title)
+            .setContentText(this.message)
+            .setSmallIcon(this.smallIconResId)
             .setContentIntent(intent)
-            .setGroup("abc");
+            .setGroup(this.group);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             notification.setColor(mContext.getColor(R.color.notification_text));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                                                                  CHANNEL_ID,
-                                                                  NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(this.ejson.host, this.ejson.host, NotificationManager.IMPORTANCE_DEFAULT);
             this.notificationManager.createNotificationChannel(channel);
 
-            notification.setChannelId(CHANNEL_ID);
+            notification.setChannelId(this.ejson.host);
         }
 
         return notification;
