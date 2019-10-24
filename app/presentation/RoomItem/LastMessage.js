@@ -35,7 +35,7 @@ const formatMsg = ({
 		prefix = `${ lastMessage.u.username }: `;
 	}
 
-	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '').trim() }`;
 	if (msg) {
 		msg = shortnameToUnicode(msg);
 	}

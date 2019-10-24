@@ -151,7 +151,7 @@ export default class Markdown extends PureComponent {
 				{literal}
 			</Text>
 		);
-	}
+	};
 
 	renderCodeInline = ({ literal }) => {
 		const { preview } = this.props;
@@ -166,7 +166,7 @@ export default class Markdown extends PureComponent {
 	renderBreak = () => {
 		const { tmid } = this.props;
 		return <Text>{tmid ? ' ' : '\n'}</Text>;
-	}
+	};
 
 	renderParagraph = ({ children }) => {
 		const { numberOfLines, style } = this.props;
@@ -187,7 +187,7 @@ export default class Markdown extends PureComponent {
 				{children}
 			</MarkdownLink>
 		);
-	}
+	};
 
 	renderHashtag = ({ hashtag }) => {
 		const {
@@ -202,7 +202,7 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	}
+	};
 
 	renderAtMention = ({ mentionName }) => {
 		const {
@@ -218,7 +218,7 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	}
+	};
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
@@ -235,9 +235,16 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	}
+	};
 
-	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
+	renderImage = ({ src }) => {
+		const { preview } = this.props;
+		if (preview) {
+			return src;
+		} else {
+			return <Image style={styles.inlineImage} source={{ uri: src }} />;
+		}
+	};
 
 	renderEditedIndicator = () => <Text style={styles.edited}> ({I18n.t('edited')})</Text>;
 
@@ -317,7 +324,7 @@ export default class Markdown extends PureComponent {
 
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
-		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = m.replace(/(\s)\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 		m = shortnameToUnicode(m);
 
 		if (preview) {
