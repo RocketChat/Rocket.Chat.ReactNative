@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.provider.Settings.System;
 import android.media.RingtoneManager;
 
+import java.util.Random;
+import androidx.core.app.NotificationCompat;
+
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
@@ -23,6 +26,34 @@ import com.wix.reactnativenotifications.core.notification.PushNotification;
 public class CustomPushNotification extends PushNotification {
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
+    }
+
+    private int smallIconResId = mContext.getResources().getIdentifier("ic_notification", "mipmap", mContext.getPackageName());
+    private NotificationManager notificationManager;
+    private NotificationCompat.Builder groupBuilder;
+    private String notificationId;
+    private String title;
+    private String message;
+
+    @Override
+    protected Notification buildNotification(PendingIntent intent) {
+        Bundle bundle = mNotificationProps.asBundle();
+
+        this.title = bundle.getString("title");
+        this.message = bundle.getString("message");
+        this.notificationId = bundle.getString("notId");
+        this.notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        this.groupBuilder = new NotificationCompat.Builder(mContext, "rocketchatrn_channel_01")
+            .setContentTitle(title)
+            .setContentText(message)
+            .setSmallIcon(smallIconResId)
+            // .setStyle(NotificationCompat.InboxStyle().setSummaryText(title))
+            .setContentIntent(intent)
+            .setGroup("abc")
+            .setGroupSummary(true);
+
+        return getNotificationBuilder(intent).build();
     }
 
     @Override
@@ -40,15 +71,11 @@ public class CustomPushNotification extends PushNotification {
         String CHANNEL_NAME = "All";
 
         final Notification.Builder notification = new Notification.Builder(mContext)
-            .setSmallIcon(smallIconResId)
-            .setContentIntent(intent)
             .setContentTitle(title)
             .setContentText(message)
-            .setGroup(title)
-            .setStyle(new Notification.BigTextStyle().bigText(message))
-            .setPriority(Notification.PRIORITY_HIGH)
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setAutoCancel(true);
+            .setSmallIcon(smallIconResId)
+            .setContentIntent(intent)
+            .setGroup("abc");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             notification.setColor(mContext.getColor(R.color.notification_text));
@@ -56,18 +83,19 @@ public class CustomPushNotification extends PushNotification {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                                                                  CHANNEL_NAME,
+                                                                  CHANNEL_ID,
                                                                   NotificationManager.IMPORTANCE_DEFAULT);
-
-            final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+            this.notificationManager.createNotificationChannel(channel);
 
             notification.setChannelId(CHANNEL_ID);
         }
 
-        Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
-        notification.setLargeIcon(largeIconBitmap);
-
         return notification;
+    }
+
+    @Override
+    protected void postNotification(int id, Notification notification) {
+        this.notificationManager.notify(new Random().nextInt(), notification);
+        this.notificationManager.notify(Integer.parseInt(notificationId), groupBuilder.build());
     }
 }
