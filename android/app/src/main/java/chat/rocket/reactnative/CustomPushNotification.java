@@ -15,10 +15,14 @@ import android.os.Bundle;
 import android.provider.Settings.System;
 import android.media.RingtoneManager;
 
-import android.util.Log;
 import java.util.Random;
 import com.google.gson.*;
 import androidx.core.app.NotificationCompat;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import java.util.concurrent.ExecutionException;
+import java.lang.InterruptedException;
 
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
@@ -50,7 +54,6 @@ public class CustomPushNotification extends PushNotification {
 
         Gson gson = new Gson();
         this.ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
-        this.group = this.ejson.host + this.ejson.rid;
 
         this.groupBuilder = new NotificationCompat.Builder(mContext, this.ejson.host)
             .setContentTitle(this.title)
@@ -58,10 +61,23 @@ public class CustomPushNotification extends PushNotification {
             .setSmallIcon(this.smallIconResId)
             // .setStyle(NotificationCompat.InboxStyle().setSummaryText(title))
             .setContentIntent(intent)
-            .setGroup(this.group)
+            .setGroup(this.ejson.getGroupIdentifier())
             .setGroupSummary(true);
 
         return getNotificationBuilder(intent).build();
+    }
+
+    private Bitmap getAvatar() {
+        try {
+            return Glide.with(mContext)
+                .asBitmap()
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                .load(this.ejson.getAvatarUri())
+                .submit(100, 100)
+                .get();
+        } catch (final ExecutionException | InterruptedException e) {
+            return null;
+        }
     }
 
     @Override
@@ -70,8 +86,9 @@ public class CustomPushNotification extends PushNotification {
             .setContentTitle(this.title)
             .setContentText(this.message)
             .setSmallIcon(this.smallIconResId)
+            .setLargeIcon(this.getAvatar())
             .setContentIntent(intent)
-            .setGroup(this.group);
+            .setGroup(this.ejson.getGroupIdentifier());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             notification.setColor(mContext.getColor(R.color.notification_text));

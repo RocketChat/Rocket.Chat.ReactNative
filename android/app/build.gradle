@@ -206,7 +206,6 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-core:16.0.9"
     implementation "com.google.firebase:firebase-perf:17.0.2"
-    implementation "com.google.code.gson:gson:2.8.5"
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
     }
@@ -218,6 +217,10 @@ dependencies {
     } else {
       implementation jscFlavor
     }
+
+    implementation "com.google.code.gson:gson:2.8.5"
+    implementation "com.github.bumptech.glide:glide:4.9.0"
+    annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
 }
 
 // Run this once to be able to run the application with BUCK
