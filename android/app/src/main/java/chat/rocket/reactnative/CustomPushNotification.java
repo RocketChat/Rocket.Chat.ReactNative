@@ -59,7 +59,7 @@ public class CustomPushNotification extends PushNotification {
             .setContentTitle(this.title)
             .setContentText(this.message)
             .setSmallIcon(this.smallIconResId)
-            // .setStyle(NotificationCompat.InboxStyle().setSummaryText(title))
+            .setStyle(new NotificationCompat.InboxStyle().setSummaryText(title))
             .setContentIntent(intent)
             .setGroup(this.ejson.getGroupIdentifier())
             .setGroupSummary(true);
