@@ -17,8 +17,9 @@ import I18n from '../i18n';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -33,7 +34,6 @@ const styles = StyleSheet.create({
 	},
 	createAccount: {
 		...sharedStyles.textSemibold,
-		color: COLOR_PRIMARY,
 		fontSize: 13
 	},
 	loginTitle: {
@@ -43,11 +43,14 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
 			title,
-			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />
+			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />,
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].titleText }
 		};
 	}
 
@@ -60,7 +63,8 @@ class LoginView extends React.Component {
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_PasswordReset: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		failure: PropTypes.bool
+		failure: PropTypes.bool,
+		theme: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -201,11 +205,11 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching, theme
 		} = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
+			<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='login-view' forceInset={{ vertical: 'never' }}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
 					autoFocus
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
@@ -215,6 +219,7 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
+					theme={theme}
 				/>
 				<TextInput
 					inputRef={(e) => { this.passwordInput = e; }}
@@ -226,6 +231,7 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ password: value })}
 					testID='login-view-password'
 					containerStyle={sharedStyles.inputLastChild}
+					theme={theme}
 				/>
 				<Button
 					title={I18n.t('Login')}
@@ -244,9 +250,9 @@ class LoginView extends React.Component {
 					/>
 				)}
 				<View style={styles.bottomContainer}>
-					<Text style={styles.dontHaveAccount}>{I18n.t('Dont_Have_An_Account')}</Text>
+					<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
-						style={styles.createAccount}
+						style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
 						onPress={this.register}
 						testID='login-view-register'
 					>{I18n.t('Create_account')}
@@ -258,9 +264,10 @@ class LoginView extends React.Component {
 
 	render() {
 		const { showTOTP } = this.state;
+		const { theme } = this.props;
 		return (
 			<KeyboardView
-				contentContainerStyle={sharedStyles.container}
+				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
@@ -288,4 +295,4 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));
