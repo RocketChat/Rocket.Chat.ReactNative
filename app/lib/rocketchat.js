@@ -27,7 +27,7 @@ import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings from './methods/getSettings';
+import getSettings, { setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -532,6 +532,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
+	setSettings,
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
