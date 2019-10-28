@@ -25,6 +25,7 @@ export class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
+		listRef: PropTypes.func,
 		animated: PropTypes.bool
 	};
 
@@ -175,14 +176,17 @@ export class List extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { rid } = this.props;
+		const { rid, listRef } = this.props;
 		const { messages } = this.state;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<FlatList
 					testID='room-view-messages'
-					ref={ref => this.list = ref}
+					ref={(ref) => {
+						this.list = ref;
+						listRef(ref);
+					}}
 					keyExtractor={item => item.id}
 					data={messages}
 					extraData={this.state}

@@ -302,6 +302,7 @@ class RoomsListView extends React.Component {
 			this.willBlurListener.remove();
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
+		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 

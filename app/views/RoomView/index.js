@@ -120,6 +120,7 @@ class RoomView extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
+		this.offset = 0;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid', null);
@@ -178,7 +179,7 @@ class RoomView extends React.Component {
 				this.updateUnreadCount();
 			}
 		});
-
+		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -261,6 +262,7 @@ class RoomView extends React.Component {
 			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
+		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -786,6 +788,17 @@ class RoomView extends React.Component {
 		);
 	}
 
+	handleKeys = ({ event }) => {
+		const { input } = event.nativeEvent;
+		if (input === 'UIKeyInputUpArrow') {
+			this.offset += 100;
+			this.flatList.scrollToOffset({ offset: this.offset });
+		} else if (input === 'UIKeyInputDownArrow') {
+			this.offset -= 100;
+			this.flatList.scrollToOffset({ offset: this.offset });
+		}
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -798,6 +811,7 @@ class RoomView extends React.Component {
 			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<List
+					listRef={(flatList) => { this.flatList = flatList; }}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}

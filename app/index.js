@@ -595,6 +595,28 @@ export default class Root extends React.Component {
 								discoverabilityTitle: 'shortcuts.room_selection'
 							},
 							{
+								input: 'n',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.new_room'
+							},
+							{
+								input: 'u',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.room_actions'
+							},
+							{
+								input: constants.keyInputUpArrow,
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.scroll_messages'
+							},
+							{
+								input: constants.keyInputDownArrow,
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.scroll_messages'
+							},
+							{
 								input: ']',
 								modifierFlags: constants.keyModifierCommand,
 								discoverabilityTitle: 'shortcuts.next_room'
