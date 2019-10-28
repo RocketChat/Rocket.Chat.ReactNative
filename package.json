@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@envoy/react-native-key-commands": "^0.0.5",
     "@nozbe/watermelondb": "^0.14.0",
     "@react-native-community/slider": "^2.0.1",
     "@rocket.chat/sdk": "1.0.0-alpha.31",

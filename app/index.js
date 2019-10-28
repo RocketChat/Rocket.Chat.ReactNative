@@ -8,7 +8,9 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
+import KeyCommands, { constants } from '@envoy/react-native-key-commands';
 
+import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -561,32 +563,72 @@ export default class Root extends React.Component {
 		}
 	};
 
+	onKeyCommand = event => EventEmitter.emit('KeyCommands', { event });
+
 	render() {
 		const { tablet, inside, showModal } = this.state;
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<View style={sharedStyles.containerSplitView} onLayout={this.changeTablet}>
-						<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
-							<App
-								ref={(navigatorRef) => {
-									Navigation.setTopLevelNavigator(navigatorRef);
-								}}
-								onNavigationStateChange={onNavigationStateChange}
-							/>
-						</View>
-						{ isTablet() && tablet && inside ? (
-							<>
-								{ this.renderRight() }
-								<ModalContainer
-									showModal={showModal}
-									ref={(modalRef) => {
-										this.modalRef = modalRef;
+					<KeyCommands
+						style={{ flex: 1 }}
+						keyCommands={[
+							{
+								input: '\t',
+								modifierFlags: 0,
+								discoverabilityTitle: 'shortcuts.type_message'
+							},
+							{
+								input: 'p',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.preferences'
+							},
+							{
+								input: 'f',
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.room_search'
+							},
+							{
+								input: '1',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.room_selection'
+							},
+							{
+								input: ']',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.next_room'
+							},
+							{
+								input: '[',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.previous_room'
+							}
+						]}
+						onKeyCommand={this.onKeyCommand}
+					>
+						<View style={sharedStyles.containerSplitView} onLayout={this.changeTablet}>
+							<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
+								<App
+									ref={(navigatorRef) => {
+										Navigation.setTopLevelNavigator(navigatorRef);
 									}}
+									onNavigationStateChange={onNavigationStateChange}
 								/>
-							</>
-						) : null }
-					</View>
+							</View>
+							{ isTablet() && tablet && inside ? (
+								<>
+									{ this.renderRight() }
+									<ModalContainer
+										showModal={showModal}
+										ref={(modalRef) => {
+											this.modalRef = modalRef;
+										}}
+									/>
+								</>
+							) : null }
+						</View>
+					</KeyCommands>
 				</LayoutAnimation>
 			</Provider>
 		);

@@ -1139,6 +1139,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.4.tgz#622a72bebd1e3f48d921563b4b60a762295a81fc"
   integrity sha512-6PYY5DVdAY1ifaQW6XYTnOMihmBVT27elqSjEoodchsGjzYlEsTQMcEhSud99kVawatyTZRTiVkJ/c6lwbQ7nA==
 
+"@envoy/react-native-key-commands@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@envoy/react-native-key-commands/-/react-native-key-commands-0.0.5.tgz#dc7ea8aafdb7790377cf21d2877710536332d108"
+  integrity sha512-NNHhqH0ouEUrIqzGZnW4/JLtjaQBF0TInn0QqTtOwMjuqdlTn8zAdIp/0e3IhCkdSX3pAGaXw5vZJtU/J5QD1Q==
+
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"

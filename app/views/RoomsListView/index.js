@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
+import EventEmitter from '../../utils/events';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -146,6 +147,7 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
+		this.index = 0;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -191,6 +193,7 @@ class RoomsListView extends React.Component {
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
+		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -447,7 +450,9 @@ class RoomsListView extends React.Component {
 
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
+		const { chats } = this.state;
 		const { navigation } = this.props;
+		this.index = chats.findIndex(c => c.rid === item.rid);
 		navigation.navigate('RoomView', {
 			rid: item.rid,
 			name: this.getRoomTitle(item),
@@ -571,6 +576,7 @@ class RoomsListView extends React.Component {
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
+				inputRef={(ref) => { this.inputRef = ref; }}
 				searchLength={search.length}
 				sortBy={sortBy}
 				onChangeSearchText={this.search}
@@ -759,6 +765,21 @@ class RoomsListView extends React.Component {
 			</ScrollView>
 		);
 	};
+
+	handleKeys = ({ event }) => {
+		const { chats } = this.state;
+		const { navigation } = this.props;
+		const { input } = event.nativeEvent;
+		if (input === '[' && this.index - 1 >= 0) {
+			this.goRoom(chats[this.index - 1]);
+		} else if (input === ']' && this.index + 1 < chats.length) {
+			this.goRoom(chats[this.index + 1]);
+		} else if (input === 'f') {
+			this.inputRef.focus();
+		} else if (input === 'p') {
+			navigation.toggleDrawer();
+		}
+	}
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);

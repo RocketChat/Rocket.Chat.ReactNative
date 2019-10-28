@@ -56,12 +56,13 @@ const CancelButton = onCancelPress => (
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, ...props
+	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, ...props
 }) => (
 	<View style={styles.container}>
 		<View style={styles.searchBox}>
 			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
 			<TextInput
+				ref={inputRef}
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
@@ -85,6 +86,7 @@ SearchBox.propTypes = {
 	onSubmitEditing: PropTypes.func,
 	hasCancel: PropTypes.bool,
 	onCancelPress: PropTypes.func,
+	inputRef: PropTypes.func,
 	testID: PropTypes.string
 };
 
