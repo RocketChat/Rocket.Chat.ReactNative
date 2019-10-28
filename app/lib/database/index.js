@@ -52,7 +52,7 @@ class DB {
 	}
 
 	setActiveDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '');
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({

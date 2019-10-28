@@ -2,6 +2,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
 import log from '../../utils/log';
+import { headers } from '../../utils/fetch';
 
 const uploadQueue = {};
 
@@ -78,6 +79,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
+			xhr.setRequestHeader('User-Agent', headers['User-Agent']);
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {

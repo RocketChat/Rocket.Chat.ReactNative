@@ -190,7 +190,7 @@ class NewServerView extends React.Component {
 			}
 		}
 
-		return url.replace(/\/+$/, '');
+		return url.replace(/\/+$/, '').replace(/\\/g, '/');
 	}
 
 	uriToPath = uri => uri.replace('file://', '');
