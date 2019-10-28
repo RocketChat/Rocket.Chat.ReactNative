@@ -64,7 +64,8 @@ class RoomItem extends React.Component {
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
-		avatar: PropTypes.bool
+		avatar: PropTypes.bool,
+		hideUnreadStatus: PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -218,7 +219,7 @@ class RoomItem extends React.Component {
 
 	render() {
 		const {
-			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status, avatar
+			unread, userMentions, name, _updatedAt, alert, testID, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, lastMessage, isRead, width, favorite, status, avatar, hideUnreadStatus
 		} = this.props;
 
 		const date = formatDate(_updatedAt);
@@ -294,7 +295,7 @@ class RoomItem extends React.Component {
 										<Text
 											style={[
 												styles.title,
-												alert && styles.alert
+												alert && !hideUnreadStatus && styles.alert
 											]}
 											ellipsizeMode='tail'
 											numberOfLines={1}
@@ -305,7 +306,7 @@ class RoomItem extends React.Component {
 											<Text
 												style={[
 													styles.date,
-													alert && styles.updateAlert
+													alert && !hideUnreadStatus && styles.updateAlert
 												]}
 												ellipsizeMode='tail'
 												numberOfLines={1}
@@ -320,7 +321,7 @@ class RoomItem extends React.Component {
 											type={type}
 											showLastMessage={showLastMessage}
 											username={username}
-											alert={alert}
+											alert={alert && !hideUnreadStatus}
 										/>
 										<UnreadBadge
 											unread={unread}
