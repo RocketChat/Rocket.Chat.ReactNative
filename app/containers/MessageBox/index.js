@@ -65,7 +65,7 @@ class MessageBox extends Component {
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
-		isFocused: PropTypes.bool,
+		isFocused: PropTypes.func,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -166,7 +166,7 @@ class MessageBox extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { isFocused, editing, replying } = this.props;
-		if (!isFocused) {
+		if (!isFocused()) {
 			return;
 		}
 		if (editing !== nextProps.editing && nextProps.editing) {
@@ -189,7 +189,7 @@ class MessageBox extends Component {
 		const {
 			roomType, replying, editing, isFocused
 		} = this.props;
-		if (!isFocused) {
+		if (!isFocused()) {
 			return false;
 		}
 		if (nextProps.roomType !== roomType) {
