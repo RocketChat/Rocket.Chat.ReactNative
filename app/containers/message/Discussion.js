@@ -8,16 +8,17 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
+import { themes } from '../../constants/colors';
 
 const Discussion = React.memo(({
-	msg, dcount, dlm, onDiscussionPress
+	msg, dcount, dlm, onDiscussionPress, theme
 }) => {
 	const time = formatLastMessage(dlm);
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	return (
 		<>
-			<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
-			<Text style={styles.text}>{msg}</Text>
+			<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
+			<Text style={[styles.text, { color: themes[theme].titleText }]}>{msg}</Text>
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={onDiscussionPress}
@@ -30,7 +31,7 @@ const Discussion = React.memo(({
 						<Text style={styles.buttonText}>{buttonText}</Text>
 					</>
 				</Touchable>
-				<Text style={styles.time}>{time}</Text>
+				<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 			</View>
 		</>
 	);
@@ -51,6 +52,7 @@ Discussion.propTypes = {
 	msg: PropTypes.string,
 	dcount: PropTypes.number,
 	dlm: PropTypes.string,
+	theme: PropTypes.string,
 	onDiscussionPress: PropTypes.func
 };
 Discussion.displayName = 'MessageDiscussion';

@@ -56,6 +56,7 @@ const LastMessage = React.memo(({
 		customEmojis={false}
 		numberOfLines={2}
 		preview
+		theme={theme}
 	/>
 ), arePropsEqual);
 

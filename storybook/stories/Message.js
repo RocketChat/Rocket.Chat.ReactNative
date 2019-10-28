@@ -7,6 +7,10 @@ import StoriesSeparator from './StoriesSeparator';
 import messagesStatus from '../../app/constants/messagesStatus';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 
+import { themes } from '../../app/constants/colors';
+
+const theme = 'dark';
+
 const styles = StyleSheet.create({
 	separator: {
 		marginTop: 30,
@@ -45,15 +49,16 @@ const Message = props => (
 		timeFormat='LT'
 		isHeader
 		getCustomEmoji={getCustomEmoji}
+		theme={theme}
 		{...props}
 	/>
 );
 
 // eslint-disable-next-line react/prop-types
-const Separator = ({ title }) => <StoriesSeparator title={title} style={styles.separator} />;
+const Separator = ({ title }) => <StoriesSeparator title={title} style={[styles.separator, { color: themes[theme].titleText }]} />;
 
 export default (
-	<ScrollView style={{ flex: 1 }} contentContainerStyle={{ marginVertical: 30 }}>
+	<ScrollView style={{ flex: 1 }} contentContainerStyle={{ marginVertical: 30, backgroundColor: themes[theme].backgroundColor }}>
 
 		<Separator title='Simple' />
 		<Message msg='Message' />
@@ -233,9 +238,9 @@ export default (
 				username: 'rocket.cat'
 			}}
 		/>
-		<MessageSeparator ts={date} unread />
+		<MessageSeparator ts={date} unread theme={theme} />
 		<Message msg='Third message' />
-		<MessageSeparator unread />
+		<MessageSeparator unread theme={theme} />
 		<Message
 			msg='Second message'
 			author={{
@@ -251,7 +256,7 @@ export default (
 				username: 'rocket.cat'
 			}}
 		/>
-		<MessageSeparator ts={date} />
+		<MessageSeparator ts={date} theme={theme} />
 		<Message msg='First message' />
 
 		<Separator title='With image' />

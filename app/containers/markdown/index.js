@@ -7,7 +7,6 @@ import { toShort, shortnameToUnicode } from 'emoji-toolkit';
 
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
 
 import MarkdownLink from './Link';
 import MarkdownList from './List';
@@ -397,4 +396,4 @@ class Markdown extends PureComponent {
 	}
 }
 
-export default withTheme(Markdown);
+export default Markdown;

@@ -9,7 +9,6 @@ import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
@@ -44,7 +43,7 @@ const ImageContainer = React.memo(({
 			<Button onPress={onPress}>
 				<View>
 					<Image img={img} theme={theme} />
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
+					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 				</View>
 			</Button>
 		);
@@ -80,4 +79,4 @@ Button.propTypes = {
 };
 ImageContainer.displayName = 'MessageButton';
 
-export default withTheme(ImageContainer);
+export default ImageContainer;

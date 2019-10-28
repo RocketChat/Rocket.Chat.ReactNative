@@ -9,7 +9,6 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -84,7 +83,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 }, () => true);
 
 const Description = React.memo(({
-	attachment, baseUrl, user, getCustomEmoji, useMarkdown
+	attachment, baseUrl, user, getCustomEmoji, useMarkdown, theme
 }) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
@@ -97,6 +96,7 @@ const Description = React.memo(({
 			username={user.username}
 			getCustomEmoji={getCustomEmoji}
 			useMarkdown={useMarkdown}
+			theme={theme}
 		/>
 	);
 }, (prevProps, nextProps) => {
@@ -165,6 +165,7 @@ const Reply = React.memo(({
 					user={user}
 					getCustomEmoji={getCustomEmoji}
 					useMarkdown={useMarkdown}
+					theme={theme}
 				/>
 				<Fields attachment={attachment} theme={theme} />
 			</View>
@@ -196,7 +197,8 @@ Description.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	theme: PropTypes.string
 };
 Description.displayName = 'MessageReplyDescription';
 
@@ -206,4 +208,4 @@ Fields.propTypes = {
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default withTheme(Reply);
+export default Reply;

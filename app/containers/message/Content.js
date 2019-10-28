@@ -16,7 +16,7 @@ const Content = React.memo((props) => {
 	let content = null;
 
 	if (props.tmid && !props.msg) {
-		content = <Text style={styles.text}>{I18n.t('Sent_an_attachment')}</Text>;
+		content = <Text style={[styles.text, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 	} else {
 		content = (
 			<Markdown
@@ -32,6 +32,7 @@ const Content = React.memo((props) => {
 				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
+				theme={props.theme}
 			/>
 		);
 	}

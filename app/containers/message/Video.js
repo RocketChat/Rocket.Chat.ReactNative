@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const Video = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, theme
 }) => {
 	if (!baseUrl) {
 		return null;
@@ -60,7 +60,7 @@ const Video = React.memo(({
 					style={styles.image}
 				/>
 			</Touchable>
-			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
+			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 		</>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file));
@@ -71,7 +71,8 @@ Video.propTypes = {
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default Video;

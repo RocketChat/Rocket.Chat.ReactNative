@@ -150,7 +150,6 @@ export default StyleSheet.create({
 		fontStyle: 'italic',
 		fontSize: 16,
 		marginBottom: 6,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	time: {
