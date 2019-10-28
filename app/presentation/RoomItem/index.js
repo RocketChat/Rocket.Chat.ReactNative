@@ -321,7 +321,7 @@ class RoomItem extends React.Component {
 											type={type}
 											showLastMessage={showLastMessage}
 											username={username}
-											alert={alert}
+											alert={alert && !hideUnreadStatus}
 										/>
 										<UnreadBadge
 											unread={unread}
