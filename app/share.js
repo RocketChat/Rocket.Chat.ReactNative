@@ -12,6 +12,7 @@ import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation from './utils/layoutAnimation';
+import { ThemeContext } from './theme';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -85,14 +86,19 @@ class Root extends React.Component {
 				onLayout={this.handleLayout}
 			>
 				<Provider store={store}>
-					<LayoutAnimation>
-						<AppContainer
-							ref={(navigatorRef) => {
-								Navigation.setTopLevelNavigator(navigatorRef);
-							}}
-							onNavigationStateChange={onNavigationStateChange}
-						/>
-					</LayoutAnimation>
+					<ThemeContext.Provider
+						value={{ theme: 'dark', setTheme: theme => console.log(theme) }}
+					>
+						<LayoutAnimation>
+							<AppContainer
+								ref={(navigatorRef) => {
+									Navigation.setTopLevelNavigator(navigatorRef);
+								}}
+								onNavigationStateChange={onNavigationStateChange}
+								screenProps={{ theme: 'dark' }}
+							/>
+						</LayoutAnimation>
+					</ThemeContext.Provider>
 				</Provider>
 			</View>
 		);

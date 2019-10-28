@@ -6,9 +6,7 @@ import {
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
-import {
-	COLOR_TEXT_DESCRIPTION
-} from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import { CustomIcon } from '../../lib/Icons';
@@ -17,6 +15,7 @@ import styles from './styles';
 import Loading from './Loading';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
+import { withTheme } from '../../theme';
 
 class ShareView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -42,6 +41,7 @@ class ShareView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -133,6 +133,7 @@ class ShareView extends React.Component {
 
 	renderPreview = () => {
 		const { fileInfo } = this.state;
+		const { theme } = this.props;
 
 		const icon = fileInfo.mime.match(/image/)
 			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaImage} />
@@ -143,11 +144,11 @@ class ShareView extends React.Component {
 			);
 
 		return (
-			<View style={styles.mediaContent}>
+			<View style={[styles.mediaContent, { backgroundColor: themes[theme].focusedBackground }]}>
 				{icon}
 				<View style={styles.mediaInfo}>
-					<Text style={styles.mediaText} numberOfLines={1}>{fileInfo.name}</Text>
-					<Text style={styles.mediaText}>{this.bytesToSize(fileInfo.size)}</Text>
+					<Text style={[styles.mediaText, { color: themes[theme].titleText }]} numberOfLines={1}>{fileInfo.name}</Text>
+					<Text style={[styles.mediaText, { color: themes[theme].titleText }]}>{this.bytesToSize(fileInfo.size)}</Text>
 				</View>
 			</View>
 		);
@@ -155,6 +156,7 @@ class ShareView extends React.Component {
 
 	renderMediaContent = () => {
 		const { fileInfo, file } = this.state;
+		const { theme } = this.props;
 		return fileInfo ? (
 			<View style={styles.mediaContainer}>
 				{this.renderPreview()}
@@ -165,7 +167,7 @@ class ShareView extends React.Component {
 						onChangeText={name => this.setState({ file: { ...file, name } })}
 						underlineColorAndroid='transparent'
 						defaultValue={file.name}
-						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+						placeholderTextColor={themes[theme].auxiliaryText}
 					/>
 					<TextInput
 						style={[styles.mediaDescriptionInput, styles.input]}
@@ -175,7 +177,7 @@ class ShareView extends React.Component {
 						defaultValue={file.description}
 						multiline
 						textAlignVertical='top'
-						placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+						placeholderTextColor={themes[theme].auxiliaryText}
 						autoFocus
 					/>
 				</View>
@@ -185,6 +187,7 @@ class ShareView extends React.Component {
 
 	renderInput = () => {
 		const { value } = this.state;
+		const { theme } = this.props;
 		return (
 			<TextInput
 				style={[styles.input, styles.textInput]}
@@ -194,7 +197,7 @@ class ShareView extends React.Component {
 				defaultValue={value}
 				multiline
 				textAlignVertical='top'
-				placeholderTextColor={COLOR_TEXT_DESCRIPTION}
+				placeholderTextColor={themes[theme].auxiliaryText}
 				autoFocus
 			/>
 		);
@@ -214,7 +217,7 @@ class ShareView extends React.Component {
 	}
 
 	render() {
-		const { user } = this.props;
+		const { user, theme } = this.props;
 		const { username } = user;
 		const {
 			name, loading, isMedia, room
@@ -225,14 +228,14 @@ class ShareView extends React.Component {
 		}
 
 		return (
-			<View style={styles.container}>
-				<View style={isMedia ? styles.toContent : styles.toContentText}>
+			<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+				<View style={[isMedia ? styles.toContent : styles.toContentText, { backgroundColor: isMedia ? themes[theme].backgroundColor : themes[theme].focusedBackground }]}>
 					<Text style={styles.text} numberOfLines={1}>
-						<Text style={styles.to}>{`${ I18n.t('To') }: `}</Text>
-						<Text style={styles.name}>{`${ name }`}</Text>
+						<Text style={[styles.to, { color: themes[theme].auxiliaryText }]}>{`${ I18n.t('To') }: `}</Text>
+						<Text style={[styles.name, { color: themes[theme].titleText }]}>{`${ name }`}</Text>
 					</Text>
 				</View>
-				<View style={styles.content}>
+				<View style={[styles.content, { backgroundColor: themes[theme].focusedBackground }]}>
 					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
 				{ loading ? <Loading /> : null }
@@ -250,4 +253,4 @@ const mapStateToProps = (({ share }) => ({
 	baseUrl: share ? share.server : ''
 }));
 
-export default connect(mapStateToProps)(ShareView);
+export default connect(mapStateToProps)(withTheme(ShareView));

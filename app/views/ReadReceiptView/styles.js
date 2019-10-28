@@ -20,7 +20,6 @@ export default StyleSheet.create({
 	},
 	name: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorTitle,
 		fontSize: 17
 	},
 	username: {

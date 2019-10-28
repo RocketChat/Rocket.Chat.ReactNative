@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CancelButton = onCancelPress => (
+const CancelButton = (onCancelPress, theme) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
-		<Text style={styles.cancelText}>{I18n.t('Cancel')}</Text>
+		<Text style={[styles.cancelText, { color: themes[theme].actionTintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
 
@@ -77,7 +77,7 @@ const SearchBox = ({
 				{...props}
 			/>
 		</View>
-		{ hasCancel ? CancelButton(onCancelPress) : null }
+		{ hasCancel ? CancelButton(onCancelPress, theme) : null }
 	</View>
 );
 

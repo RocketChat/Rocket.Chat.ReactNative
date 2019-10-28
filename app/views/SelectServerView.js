@@ -8,19 +8,19 @@ import { SafeAreaView } from 'react-navigation';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_BACKGROUND_CONTAINER } from '../constants/colors';
+import { themes } from '../constants/colors';
 import Navigation from '../lib/ShareNavigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
+import { withTheme } from '../theme';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		flex: 1
 	},
 	list: {
 		marginVertical: 32,
@@ -33,13 +33,17 @@ const styles = StyleSheet.create({
 });
 
 class SelectServerView extends React.Component {
-	static navigationOptions = () => ({
+	static navigationOptions = ({ screenProps }) => ({
+		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+		headerTintColor: themes[screenProps.theme].tintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].titleText },
 		title: I18n.t('Select_Server')
 	})
 
 	static propTypes = {
 		server: PropTypes.string,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -64,13 +68,14 @@ class SelectServerView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		return (
 			<ServerItem
 				server={server}
 				onPress={() => this.select(item.id)}
 				item={item}
 				hasCheck
+				theme={theme}
 			/>
 		);
 	}
@@ -79,9 +84,10 @@ class SelectServerView extends React.Component {
 
 	render() {
 		const { servers } = this.state;
+		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={styles.container}
+				style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
@@ -108,4 +114,4 @@ const mapStateToProps = (({ share }) => ({
 	server: share.server
 }));
 
-export default connect(mapStateToProps)(SelectServerView);
+export default connect(mapStateToProps)(withTheme(SelectServerView));

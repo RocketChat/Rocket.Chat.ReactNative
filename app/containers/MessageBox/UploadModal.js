@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 14,
-		...sharedStyles.textColorTitle,
 		...sharedStyles.textBold
 	},
 	container: {

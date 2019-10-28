@@ -173,9 +173,6 @@ export default StyleSheet.create({
 			}
 		})
 	},
-	textColorTitle: {
-		color: 'green'
-	},
 	textColorNormal: {
 		color: 'yellow'
 	},

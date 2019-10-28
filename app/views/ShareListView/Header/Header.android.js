@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
-import { COLOR_WHITE, HEADER_TITLE } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
@@ -15,24 +15,22 @@ const styles = StyleSheet.create({
 	},
 	search: {
 		fontSize: 20,
-		color: COLOR_WHITE,
 		...sharedStyles.textRegular,
 		marginHorizontal: 14
 	},
 	title: {
 		fontSize: 20,
 		...sharedStyles.textBold,
-		color: HEADER_TITLE,
 		marginHorizontal: 16
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText }) => {
+const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 	if (searching) {
 		return (
 			<View style={styles.container}>
 				<TextInput
-					style={styles.search}
+					style={[styles.search, { color: themes[theme].titleText }]}
 					placeholder={I18n.t('Search')}
 					placeholderTextColor='rgba(255, 255, 255, 0.5)'
 					onChangeText={onChangeSearchText}
@@ -41,12 +39,13 @@ const Header = React.memo(({ searching, onChangeSearchText }) => {
 			</View>
 		);
 	}
-	return <Text style={styles.title}>{I18n.t('Send_to')}</Text>;
+	return <Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Send_to')}</Text>;
 });
 
 Header.propTypes = {
 	searching: PropTypes.bool,
-	onChangeSearchText: PropTypes.func
+	onChangeSearchText: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default Header;
