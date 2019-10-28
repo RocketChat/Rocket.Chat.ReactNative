@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 2,
+	version: 3,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -38,7 +38,8 @@ export default appSchema({
 				{ name: 'last_thread_sync', type: 'number', isOptional: true },
 				{ name: 'jitsi_timeout', type: 'number', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
-				{ name: 'auto_translate_language', type: 'string' }
+				{ name: 'auto_translate_language', type: 'string' },
+				{ name: 'hide_unread_status', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
