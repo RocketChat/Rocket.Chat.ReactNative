@@ -66,7 +66,8 @@ class RoomItem extends React.Component {
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
-		avatar: PropTypes.bool
+		avatar: PropTypes.bool,
+		theme: PropTypes.string
 	}
 
 	static defaultProps = {

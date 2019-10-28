@@ -8,6 +8,8 @@ import { COLOR_SEPARATOR, HEADER_BACKGROUND } from '../../app/constants/colors';
 import StoriesSeparator from './StoriesSeparator';
 import { isIOS } from '../../app/utils/deviceInfo';
 
+const theme = 'dark';
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -29,6 +31,7 @@ const Header = props => (
 			type='d'
 			width={375}
 			height={480}
+			theme={theme}
 			{...props}
 		/>
 		<CustomHeaderButtons>
