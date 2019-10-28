@@ -61,49 +61,39 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		let user = null;
 		if (userId) {
 			try {
-				user = yield userCollections.find(userId);
+				const userRecord = yield userCollections.find(userId);
 				user = {
-					token: user.token,
-					username: user.username,
-					name: user.name,
-					language: user.language,
-					status: user.status,
-					roles: user.roles
+					id: userRecord.id,
+					token: userRecord.token,
+					username: userRecord.username,
+					name: userRecord.name,
+					language: userRecord.language,
+					status: userRecord.status,
+					roles: userRecord.roles
 				};
-				user = { ...user, roles: JSON.parse(user.roles) };
 			} catch (e) {
-				// do nothing?
+				// We only run it if not has user on DB
+				const servers = yield RNUserDefaults.objectForKey(SERVERS);
+				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+				user = userCredentials && {
+					token: userCredentials[TOKEN]
+				};
 			}
 		}
 
-		const servers = yield RNUserDefaults.objectForKey(SERVERS);
-		const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-		const userLogin = userCredentials && {
-			token: userCredentials[TOKEN]
-		};
-
-		if (user || userLogin) {
-			yield RocketChat.connect({ server, user: user || userLogin });
-			yield put(setUser(user || userLogin));
+		if (user) {
+			yield RocketChat.connect({ server, user });
+			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {
 			yield RocketChat.connect({ server });
 			yield put(actions.appStart('outside'));
 		}
 
-		const db = database.active;
-		const serversCollection = db.collections.get('settings');
-		const settingsRecords = yield serversCollection.query().fetch();
-		const settings = Object.values(settingsRecords).map(item => ({
-			_id: item.id,
-			valueAsString: item.valueAsString,
-			valueAsBoolean: item.valueAsBoolean,
-			valueAsNumber: item.valueAsNumber,
-			_updatedAt: item._updatedAt
-		}));
-		yield put(actions.setAllSettings(RocketChat.parseSettings(settings.slice(0, settings.length))));
-
-		yield RocketChat.setCustomEmojis();
+		// We can't use yield here because fetch of Settings & Custom Emojis is slower
+		// and block the selectServerSuccess raising multiples errors
+		RocketChat.setSettings();
+		RocketChat.setCustomEmojis();
 
 		let serverInfo;
 		if (fetchVersion) {

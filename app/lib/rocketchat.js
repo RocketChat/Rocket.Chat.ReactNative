@@ -1,6 +1,6 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
@@ -12,6 +12,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
+import fetch, { headers } from '../utils/fetch';
 
 import {
 	setUser, setLoginServices, loginRequest, loginFailure, logout
@@ -26,7 +27,7 @@ import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings from './methods/getSettings';
+import getSettings, { setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -39,7 +40,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { getMessage, sendMessageCall } from './methods/sendMessage';
+import sendMessage, { sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -56,6 +57,8 @@ const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
+
+RocketChatSettings.customHeaders = headers;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -231,11 +234,11 @@ const RocketChat = {
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
 			if (userId) {
-				user = await userCollections.find(userId);
+				const userRecord = await userCollections.find(userId);
 				user = {
-					id: user.id,
-					token: user.token,
-					username: user.username
+					id: userRecord.id,
+					token: userRecord.token,
+					username: userRecord.username
 				};
 			}
 			reduxStore.dispatch(shareSetUser({
@@ -427,11 +430,10 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadThreadMessages,
-	getMessage,
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message) {
+	async resendMessage(message, tmid) {
 		const db = database.active;
 		try {
 			await db.action(async() => {
@@ -439,17 +441,20 @@ const RocketChat = {
 					m.status = messagesStatus.TEMP;
 				});
 			});
-			await sendMessageCall.call(this, message);
-		} catch (error) {
-			try {
-				await db.action(async() => {
-					await message.update((m) => {
-						m.status = messagesStatus.ERROR;
-					});
-				});
-			} catch (e) {
-				log(e);
+			let m = {
+				id: message.id,
+				msg: message.msg,
+				subscription: { id: message.subscription.id }
+			};
+			if (tmid) {
+				m = {
+					...m,
+					tmid
+				};
 			}
+			await sendMessageCall.call(this, m);
+		} catch (e) {
+			log(e);
 		}
 	},
 
@@ -527,6 +532,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
+	setSettings,
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,

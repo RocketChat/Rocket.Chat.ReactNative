@@ -2,6 +2,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
 import log from '../../utils/log';
+import { headers } from '../../utils/fetch';
 
 const uploadQueue = {};
 
@@ -14,7 +15,7 @@ export async function cancelUpload(item) {
 		uploadQueue[item.path].abort();
 		try {
 			const db = database.active;
-			await db.database.action(async() => {
+			await db.action(async() => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -30,13 +31,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.collections.get('servers');
 			const serverInfo = await serversCollection.find(server);
-			const { FileUpload_MaxFileSize, id: Site_Url } = serverInfo;
+			const { id: Site_Url } = serverInfo;
 			const { id, token } = user;
-
-			// -1 maxFileSize means there is no limit
-			if (FileUpload_MaxFileSize > -1 && fileInfo.size > FileUpload_MaxFileSize) {
-				return reject({ error: 'error-file-too-large' }); // eslint-disable-line
-			}
 
 			const uploadUrl = `${ Site_Url }/api/v1/rooms.upload/${ rid }`;
 
@@ -83,6 +79,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
+			xhr.setRequestHeader('User-Agent', headers['User-Agent']);
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {
@@ -117,8 +114,12 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					} catch (e) {
 						log(e);
 					}
-					const response = JSON.parse(xhr.response);
-					reject(response);
+					try {
+						const response = JSON.parse(xhr.response);
+						reject(response);
+					} catch (e) {
+						reject(e);
+					}
 				}
 			};
 

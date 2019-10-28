@@ -237,7 +237,7 @@ class MessageActions extends React.Component {
 					style: 'destructive',
 					onPress: async() => {
 						try {
-							await RocketChat.deleteMessage(message.id, message.rid);
+							await RocketChat.deleteMessage(message.id, message.subscription.id);
 						} catch (e) {
 							log(e);
 						}

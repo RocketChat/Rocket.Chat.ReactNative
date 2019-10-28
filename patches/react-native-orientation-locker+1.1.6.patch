@@ -1,0 +1,44 @@
+diff --git a/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java b/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
+index af1d952..e5215b8 100644
+--- a/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
++++ b/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
+@@ -44,6 +44,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
+     final BroadcastReceiver mReceiver;
+     final OrientationEventListener mOrientationListener;
+     final ReactApplicationContext ctx;
++    private boolean registered = false;
+     private boolean isLocked = false;
+     private String lastOrientationValue = "";
+     private String lastDeviceOrientationValue = "";
+@@ -346,6 +347,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
+         final Activity activity = getCurrentActivity();
+         if (activity == null) return;
+         activity.registerReceiver(mReceiver, new IntentFilter("onConfigurationChanged"));
++        registered = true;
+     }
+     @Override
+     public void onHostPause() {
+@@ -356,7 +358,10 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
+         if (activity == null) return;
+         try
+         {
+-            activity.unregisterReceiver(mReceiver);
++            if (registered) {
++                activity.unregisterReceiver(mReceiver);
++                registered = false;
++            }
+         }
+         catch (java.lang.IllegalArgumentException e) {
+             FLog.w(ReactConstants.TAG, "Receiver already unregistered", e);
+@@ -372,7 +377,10 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
+         if (activity == null) return;
+         try
+         {
+-            activity.unregisterReceiver(mReceiver);
++            if (registered) {
++                activity.unregisterReceiver(mReceiver);
++                registered = false;
++            }
+         }
+         catch (java.lang.IllegalArgumentException e) {
+             FLog.w(ReactConstants.TAG, "Receiver already unregistered", e);
