@@ -28,7 +28,8 @@ import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction,
-	roomsRequest as roomsRequestAction
+	roomsRequest as roomsRequestAction,
+	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
@@ -138,7 +139,8 @@ class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func
+		roomsRequest: PropTypes.func,
+		closeServerDropdown: PropTypes.func
 	};
 
 	constructor(props) {
@@ -176,10 +178,13 @@ class RoomsListView extends React.Component {
 				this.handleBackPress
 			);
 		});
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
-			'hardwareBackPress',
-			this.handleBackPress
-		));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => {
+			props.closeServerDropdown();
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+		});
 	}
 
 	componentDidMount() {
@@ -819,7 +824,8 @@ const mapDispatchToProps = dispatch => ({
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
 	roomsRequest: () => dispatch(roomsRequestAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
