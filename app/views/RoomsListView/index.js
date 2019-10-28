@@ -386,7 +386,7 @@ class RoomsListView extends React.Component {
 				privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				direct = chats.filter(s => s.t === 'd' && !s.prid);
 			} else if (showUnread) {
-				chats = chats.filter(s => !s.unread && !s.alert);
+				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
 			}
 
 			this.internalSetState({
