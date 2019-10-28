@@ -150,13 +150,14 @@ class ServerDropdown extends Component {
 			server: currentServer
 		} = this.props;
 
-		if (currentServer !== server) {
+		if (currentServer !== server.id) {
 			Alert.alert(
-				I18n.t('Caution'),
-				I18n.t('Delete_Server'),
+				I18n.t('Are_you_sure_question_mark'),
+				I18n.t('Delete_Server_Warning'),
 				[
 					{
 						text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+						style: 'destructive',
 						onPress: () => {
 							this.close();
 							this.deleteServer(server);

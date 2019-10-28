@@ -148,6 +148,7 @@ export default {
 	Create_a_new_workspace: 'Criar nova área de trabalho',
 	Create: 'Criar',
 	Delete_Room_Warning: 'A exclusão de uma sala irá apagar todas as mensagens postadas na sala. Isso não pode ser desfeito.',
+	Delete_Server_Warning: 'Você quer realmente deletar esse servidor?',
 	delete: 'excluir',
 	Delete: 'Excluir',
 	DELETE: 'EXCLUIR',
@@ -392,7 +393,5 @@ export default {
 	you: 'você',
 	You: 'Você',
 	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Você precisa acessar ao menos um servidor Rocket.Chat para compartilhar.',
-	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!',
-	Caution: 'Cuidado!',
-	Delete_Server: 'Você tem certeza que quer deletar esse servidor?'
+	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!'
 };
