@@ -584,20 +584,42 @@ export default class Root extends React.Component {
 								discoverabilityTitle: 'shortcuts.preferences'
 							},
 							{
+								input: 't',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.new_room'
+							},
+							{
+								input: '{',
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.new_room'
+							},
+							{
 								input: 'f',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 								discoverabilityTitle: 'shortcuts.room_search'
 							},
-							{
-								input: '1',
+							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+								input: `${ value }`,
 								modifierFlags: constants.keyModifierCommand,
 								discoverabilityTitle: 'shortcuts.room_selection'
+							}))),
+							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+								input: `${ value }`,
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.serverSelection'
+							}))),
+							{
+								input: '\r',
+								modifierFlags: 0,
+								discoverabilityTitle: 'shortcuts.send'
 							},
 							{
-								input: 'n',
+								input: 'o',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.new_room'
+								discoverabilityTitle: 'shortcuts.file_messsage'
 							},
 							{
 								input: 'u',

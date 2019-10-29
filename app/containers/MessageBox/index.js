@@ -24,6 +24,7 @@ import UploadModal from './UploadModal';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
+import EventEmitter from '../../utils/events';
 import debounce from '../../utils/debounce';
 import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
@@ -162,6 +163,7 @@ class MessageBox extends Component {
 		if (isAndroid) {
 			require('./EmojiKeyboard');
 		}
+		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -239,6 +241,7 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
+		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 	}
 
 	onChangeText = (text) => {
@@ -931,6 +934,15 @@ class MessageBox extends Component {
 				</View>
 			</>
 		);
+	}
+
+	handleKeys = ({ event }) => {
+		const { input } = event.nativeEvent;
+		if (input === '\r') {
+			this.submit();
+		} else if (input === 'o') {
+			this.showFileActions();
+		}
 	}
 
 	render() {

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import EventEmitter from '../../../utils/events';
 import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
@@ -19,6 +20,21 @@ class RoomsListHeaderView extends PureComponent {
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
+	}
+
+	componentDidMount() {
+		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
+	}
+
+	componentWillUnmount() {
+		EventEmitter.removeListener('KeyCommands', this.handleKeys);
+	}
+
+	handleKeys = ({ event }) => {
+		const { input } = event.nativeEvent;
+		if (input === '{') {
+			this.onPress();
+		}
 	}
 
 	onSearchChangeText = (text) => {

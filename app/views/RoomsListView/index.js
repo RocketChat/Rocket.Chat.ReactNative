@@ -779,6 +779,8 @@ class RoomsListView extends React.Component {
 			this.inputRef.focus();
 		} else if (input === 'p') {
 			navigation.toggleDrawer();
+		} else if (input === 't') {
+			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		}
 	}
 
