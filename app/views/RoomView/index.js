@@ -58,7 +58,7 @@ class RoomView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const rid = navigation.getParam('rid');
 		const prid = navigation.getParam('prid');
-		const title = navigation.getParam('name');
+		const title = navigation.state.params.title || navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const room = navigation.getParam('room');
@@ -336,6 +336,10 @@ class RoomView extends React.Component {
 		const observable = room.observe();
 		this.subSubscription = observable
 			.subscribe((changes) => {
+				const { navigation } = this.props;
+				if (changes.name !== navigation.state.params.title) {
+					navigation.setParams({ title: changes.name });
+				}
 				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
 					ret[attr] = changes[attr];
 					return ret;
