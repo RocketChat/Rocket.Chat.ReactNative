@@ -8,9 +8,7 @@ import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
 import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
-import KeyCommands, { constants } from '@envoy/react-native-key-commands';
 
-import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -27,7 +25,7 @@ import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation'
 import { isTablet } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
 import sharedStyles from './views/Styles';
-import I18n from './i18n';
+import KeyCommands from './commands';
 
 useScreens();
 
@@ -567,125 +565,12 @@ export default class Root extends React.Component {
 		}
 	};
 
-	onKeyCommand = event => EventEmitter.emit('KeyCommands', { event });
-
 	render() {
 		const { tablet, inside, showModal } = this.state;
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<KeyCommands
-						style={{ flex: 1 }}
-						keyCommands={[
-							{
-								input: '\t',
-								modifierFlags: 0,
-								discoverabilityTitle: I18n.t('Type_message')
-							},
-							{
-								input: 'p',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Preferences')
-							},
-							{
-								input: 'f',
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('Room_search')
-							},
-							{
-								input: '1...9',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Room_selection')
-							},
-							{
-								input: ']',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Next_room')
-							},
-							{
-								input: '[',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Previous_room')
-							},
-							{
-								input: 'n',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('New_room')
-							},
-							{
-								input: 'i',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Room_actions')
-							},
-							{
-								input: 'u',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Upload_room')
-							},
-							{
-								input: 'f',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Search_messages')
-							},
-							{
-								input: '↑ ↓',
-								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('Scroll_messages')
-							},
-							{
-								input: constants.keyInputUpArrow,
-								modifierFlags: constants.keyModifierAlternate
-							},
-							{
-								input: constants.keyInputDownArrow,
-								modifierFlags: constants.keyModifierAlternate
-							},
-							{
-								input: 'r',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: I18n.t('Reply_latest')
-							},
-							{
-								input: '`',
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('Server_selection')
-							},
-							{
-								input: '1...9',
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('Server_selection_numbers')
-							},
-							{
-								input: 'n',
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('Add_server')
-							},
-							{
-								input: '\r',
-								modifierFlags: 0,
-								discoverabilityTitle: I18n.t('Send')
-							},
-							{
-								input: '\r',
-								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: I18n.t('New_line')
-							},
-							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-								input: `${ value }`,
-								modifierFlags: constants.keyModifierCommand
-							}))),
-							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-								input: `${ value }`,
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate
-							})))
-						]}
-						onKeyCommand={this.onKeyCommand}
-					>
+					<KeyCommands>
 						<View style={sharedStyles.containerSplitView} onLayout={this.changeTablet}>
 							<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
 								<App

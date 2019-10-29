@@ -179,7 +179,6 @@ class RoomView extends React.Component {
 				this.updateUnreadCount();
 			}
 		});
-		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -262,7 +261,6 @@ class RoomView extends React.Component {
 			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
-		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -786,17 +784,6 @@ class RoomView extends React.Component {
 				) : null}
 			</>
 		);
-	}
-
-	handleKeys = ({ event }) => {
-		const { input } = event.nativeEvent;
-		if (input === 'UIKeyInputUpArrow') {
-			this.offset += 100;
-			this.flatList.scrollToOffset({ offset: this.offset });
-		} else if (input === 'UIKeyInputDownArrow') {
-			this.offset -= 100;
-			this.flatList.scrollToOffset({ offset: this.offset });
-		}
 	}
 
 	render() {

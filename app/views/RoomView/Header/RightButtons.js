@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
-import EventEmitter from '../../../utils/events';
 
 const styles = StyleSheet.create({
 	more: {
@@ -50,14 +49,12 @@ class RightButtonsContainer extends React.PureComponent {
 				});
 			});
 		}
-		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 	}
 
 	componentWillUnmount() {
 		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
 			this.threadSubscription.unsubscribe();
 		}
-		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 	}
 
 	updateThread = () => {
@@ -84,13 +81,6 @@ class RightButtonsContainer extends React.PureComponent {
 		const { toggleFollowThread } = this.props;
 		if (toggleFollowThread) {
 			toggleFollowThread(isFollowingThread);
-		}
-	}
-
-	handleKeys = ({ event }) => {
-		const { input } = event.nativeEvent;
-		if (input === 'u') {
-			this.goRoomActionsView();
 		}
 	}
 

@@ -58,7 +58,6 @@ class ServerDropdown extends Component {
 				useNativeDriver: true
 			},
 		).start();
-		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -90,17 +89,6 @@ class ServerDropdown extends Component {
 		}
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
-		}
-		EventEmitter.removeListener('KeyCommands', this.handleKeys);
-	}
-
-	handleKeys = ({ event }) => {
-		const { input } = event.nativeEvent;
-		const { servers } = this.state;
-		if (input === '{') {
-			this.onPress();
-		} else if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(input) && servers[input - 1]) {
-			this.select(servers[input - 1].id);
 		}
 	}
 

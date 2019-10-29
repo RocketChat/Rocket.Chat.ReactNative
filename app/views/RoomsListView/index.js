@@ -16,7 +16,6 @@ import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
-import EventEmitter from '../../utils/events';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -198,7 +197,6 @@ class RoomsListView extends React.Component {
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-		EventEmitter.addEventListener('KeyCommands', this.handleKeys);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -307,7 +305,6 @@ class RoomsListView extends React.Component {
 			this.willBlurListener.remove();
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
-		EventEmitter.removeListener('KeyCommands', this.handleKeys);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -772,23 +769,6 @@ class RoomsListView extends React.Component {
 			</ScrollView>
 		);
 	};
-
-	handleKeys = ({ event }) => {
-		const { chats } = this.state;
-		const { navigation } = this.props;
-		const { input } = event.nativeEvent;
-		if (input === '[' && this.index - 1 >= 0) {
-			this.goRoom(chats[this.index - 1]);
-		} else if (input === ']' && this.index + 1 < chats.length) {
-			this.goRoom(chats[this.index + 1]);
-		} else if (input === 'f') {
-			this.inputRef.focus();
-		} else if (input === 'p') {
-			navigation.toggleDrawer();
-		} else if (input === 't') {
-			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
-		}
-	}
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
