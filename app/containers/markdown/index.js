@@ -151,7 +151,7 @@ export default class Markdown extends PureComponent {
 				{literal}
 			</Text>
 		);
-	};
+	}
 
 	renderCodeInline = ({ literal }) => {
 		const { preview } = this.props;
@@ -166,7 +166,7 @@ export default class Markdown extends PureComponent {
 	renderBreak = () => {
 		const { tmid } = this.props;
 		return <Text>{tmid ? ' ' : '\n'}</Text>;
-	};
+	}
 
 	renderParagraph = ({ children }) => {
 		const { numberOfLines, style } = this.props;
@@ -187,7 +187,7 @@ export default class Markdown extends PureComponent {
 				{children}
 			</MarkdownLink>
 		);
-	};
+	}
 
 	renderHashtag = ({ hashtag }) => {
 		const {
@@ -202,7 +202,7 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	};
+	}
 
 	renderAtMention = ({ mentionName }) => {
 		const {
@@ -218,7 +218,7 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	};
+	}
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
@@ -235,7 +235,7 @@ export default class Markdown extends PureComponent {
 				style={style}
 			/>
 		);
-	};
+	}
 
 	renderImage = ({ src }) => {
 		const { preview } = this.props;
@@ -244,7 +244,7 @@ export default class Markdown extends PureComponent {
 		} else {
 			return <Image style={styles.inlineImage} source={{ uri: src }} />;
 		}
-	};
+	}
 
 	renderEditedIndicator = () => <Text style={styles.edited}> ({I18n.t('edited')})</Text>;
 
