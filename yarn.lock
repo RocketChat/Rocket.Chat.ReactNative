@@ -9378,17 +9378,17 @@ react-navigation-header-buttons@3.0.1:
   dependencies:
     react-native-platform-touchable "^1.1.1"
 
-react-navigation-stack@^1.7.3:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.8.0.tgz#52cb159371b64d20780a72ce43e9620adec2f2a0"
-  integrity sha512-J8ezJlZRxoXuxVH7Y9EOBBluoOpjgrFN0HBKMJyi8ctFEVDsEjjbsffhk6ihOeZ2um7dPYErzeD7sLjx8YQDzw==
+react-navigation-stack@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.10.3.tgz#e714e442b20427f0d2d3c18fce1f9e8cfe69be0b"
+  integrity sha512-1gksFi/g/Lg9sBhgLlD0OiEB5xnatHb4C0eNMA5tli9cTVlhq375XNPIqOiTyftibBmjdApAsZFj5srUCoOu/w==
   dependencies:
     prop-types "^15.7.2"
 
-react-navigation@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-4.0.5.tgz#d4e16d9884cfd6bb2cda4d16e001227e2c859b46"
-  integrity sha512-VidRiSA2RvrgPlKs/7FNKV6pXEYXREtxiEl6m/Dmfb8x27amG6JRibzJC2mpWt4w0SAIGMUjHallRi3h9sIk0A==
+react-navigation@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-4.0.10.tgz#ddf41134600689d6ba99e35dd22ba1f664f91e5c"
+  integrity sha512-7PqvmsdQ7HIyxPUMYbd9Uq//VoMdniEOLAOSvIhb/ExtbAt/1INSjUF+RiMWOMCWLTCNvNPRvTz7xy7qwWureg==
   dependencies:
     "@react-navigation/core" "^3.5.1"
     "@react-navigation/native" "^3.6.2"
