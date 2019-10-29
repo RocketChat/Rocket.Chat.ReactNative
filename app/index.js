@@ -27,6 +27,7 @@ import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation'
 import { isTablet } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
 import sharedStyles from './views/Styles';
+import I18n from './i18n';
 
 useScreens();
 
@@ -579,58 +580,58 @@ export default class Root extends React.Component {
 							{
 								input: '\t',
 								modifierFlags: 0,
-								discoverabilityTitle: 'shortcuts.type_message'
+								discoverabilityTitle: I18n.t('Type_message')
 							},
 							{
 								input: 'p',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.preferences'
+								discoverabilityTitle: I18n.t('Preferences')
 							},
 							{
 								input: 'f',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.room_search'
+								discoverabilityTitle: I18n.t('Room_search')
 							},
 							{
 								input: '1...9',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.room_selection'
+								discoverabilityTitle: I18n.t('Room_selection')
 							},
 							{
 								input: ']',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.next_room'
+								discoverabilityTitle: I18n.t('Next_room')
 							},
 							{
 								input: '[',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.previous_room'
+								discoverabilityTitle: I18n.t('Previous_room')
 							},
 							{
 								input: 'n',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.new_room'
+								discoverabilityTitle: I18n.t('New_room')
 							},
 							{
 								input: 'i',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.room_actions'
+								discoverabilityTitle: I18n.t('Room_actions')
 							},
 							{
 								input: 'u',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.upload_room'
+								discoverabilityTitle: I18n.t('Upload_room')
 							},
 							{
 								input: 'f',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.search_messages'
+								discoverabilityTitle: I18n.t('Search_messages')
 							},
 							{
 								input: '↑ ↓',
 								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.scroll_messages'
+								discoverabilityTitle: I18n.t('Scroll_messages')
 							},
 							{
 								input: constants.keyInputUpArrow,
@@ -643,35 +644,35 @@ export default class Root extends React.Component {
 							{
 								input: 'r',
 								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.reply_latest'
+								discoverabilityTitle: I18n.t('Reply_latest')
 							},
 							{
 								input: '`',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.server_selection'
+								discoverabilityTitle: I18n.t('Server_selection')
 							},
 							{
 								input: '1...9',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.server_selection_numbers'
+								discoverabilityTitle: I18n.t('Server_selection_numbers')
 							},
 							{
 								input: 'n',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.add_server'
+								discoverabilityTitle: I18n.t('Add_server')
 							},
 							{
 								input: '\r',
 								modifierFlags: 0,
-								discoverabilityTitle: 'shortcuts.send'
+								discoverabilityTitle: I18n.t('Send')
 							},
 							{
 								input: '\r',
 								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.new_line'
+								discoverabilityTitle: I18n.t('New_line')
 							},
 							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
 								input: `${ value }`,
