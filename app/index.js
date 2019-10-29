@@ -487,6 +487,9 @@ export default class Root extends React.Component {
 					this.inCall = true;
 					this.setState({ inside: false, showModal: false });
 				}
+				if (routeName === 'OnboardingView') {
+					this.setState({ inside: false, showModal: false });
+				}
 
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
@@ -584,59 +587,15 @@ export default class Root extends React.Component {
 								discoverabilityTitle: 'shortcuts.preferences'
 							},
 							{
-								input: 't',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.new_room'
-							},
-							{
-								input: '{',
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.new_room'
-							},
-							{
 								input: 'f',
 								// eslint-disable-next-line no-bitwise
 								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 								discoverabilityTitle: 'shortcuts.room_search'
 							},
-							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-								input: `${ value }`,
+							{
+								input: '1...9',
 								modifierFlags: constants.keyModifierCommand,
 								discoverabilityTitle: 'shortcuts.room_selection'
-							}))),
-							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-								input: `${ value }`,
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.serverSelection'
-							}))),
-							{
-								input: '\r',
-								modifierFlags: 0,
-								discoverabilityTitle: 'shortcuts.send'
-							},
-							{
-								input: 'o',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.file_messsage'
-							},
-							{
-								input: 'u',
-								modifierFlags: constants.keyModifierCommand,
-								discoverabilityTitle: 'shortcuts.room_actions'
-							},
-							{
-								input: constants.keyInputUpArrow,
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.scroll_messages'
-							},
-							{
-								input: constants.keyInputDownArrow,
-								// eslint-disable-next-line no-bitwise
-								modifierFlags: constants.keyModifierAlternate,
-								discoverabilityTitle: 'shortcuts.scroll_messages'
 							},
 							{
 								input: ']',
@@ -647,7 +606,82 @@ export default class Root extends React.Component {
 								input: '[',
 								modifierFlags: constants.keyModifierCommand,
 								discoverabilityTitle: 'shortcuts.previous_room'
-							}
+							},
+							{
+								input: 'n',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.new_room'
+							},
+							{
+								input: 'i',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.room_actions'
+							},
+							{
+								input: 'u',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.upload_room'
+							},
+							{
+								input: 'f',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.search_messages'
+							},
+							{
+								input: '↑ ↓',
+								modifierFlags: constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.scroll_messages'
+							},
+							{
+								input: constants.keyInputUpArrow,
+								modifierFlags: constants.keyModifierAlternate
+							},
+							{
+								input: constants.keyInputDownArrow,
+								modifierFlags: constants.keyModifierAlternate
+							},
+							{
+								input: 'r',
+								modifierFlags: constants.keyModifierCommand,
+								discoverabilityTitle: 'shortcuts.reply_latest'
+							},
+							{
+								input: '`',
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.server_selection'
+							},
+							{
+								input: '1...9',
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.server_selection_numbers'
+							},
+							{
+								input: 'n',
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.add_server'
+							},
+							{
+								input: '\r',
+								modifierFlags: 0,
+								discoverabilityTitle: 'shortcuts.send'
+							},
+							{
+								input: '\r',
+								modifierFlags: constants.keyModifierAlternate,
+								discoverabilityTitle: 'shortcuts.new_line'
+							},
+							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+								input: `${ value }`,
+								modifierFlags: constants.keyModifierCommand
+							}))),
+							...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+								input: `${ value }`,
+								// eslint-disable-next-line no-bitwise
+								modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate
+							})))
 						]}
 						onKeyCommand={this.onKeyCommand}
 					>
