@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
-import { constants } from '@envoy/react-native-key-commands';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -19,7 +18,7 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
-import { KEY_COMMAND } from '../../commands';
+import { KEY_COMMAND, commandHandle } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 
 const ROW_HEIGHT = 68;
@@ -144,9 +143,8 @@ class ServerDropdown extends Component {
 
 	handleCommands = ({ event }) => {
 		const { servers } = this.state;
-		const { input, modifierFlags } = event;
-		// eslint-disable-next-line no-bitwise
-		if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(input) && modifierFlags === constants.keyModifierAlternate | constants.keyModifierCommand) {
+		const { input } = event;
+		if (commandHandle(event, '123456789', ['command', 'alternate'])) {
 			if (servers[input - 1]) {
 				this.select(servers[input - 1].id);
 			}

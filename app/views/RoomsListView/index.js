@@ -15,7 +15,6 @@ import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
-import { constants } from '@envoy/react-native-key-commands';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -46,7 +45,7 @@ import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import EventEmitter from '../../utils/events';
-import { KEY_COMMAND } from '../../commands';
+import { KEY_COMMAND, commandHandle } from '../../commands';
 
 const SCROLL_OFFSET = 56;
 
@@ -584,20 +583,22 @@ class RoomsListView extends React.Component {
 	handleCommands = ({ event }) => {
 		const { chats } = this.state;
 		const { navigation } = this.props;
-		const { input, modifierFlags } = event;
-		if (input === 'p' && modifierFlags === constants.keyModifierCommand) {
+		const { input } = event;
+		if (commandHandle(event, 'p', ['command'])) {
 			navigation.toggleDrawer();
-		// eslint-disable-next-line no-bitwise
-		} else if (input === 'f' && modifierFlags === constants.keyModifierCommand | constants.keyModifierAlternate) {
+		} else if (commandHandle(event, 'f', ['command', 'alternate'])) {
 			this.inputRef.focus();
-		} else if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(input) && chats[input - 1] && modifierFlags === constants.keyModifierCommand) {
+		} else if (commandHandle(event, '123456789', ['command']) && chats[input - 1]) {
 			this.goRoom(chats[input - 1]);
-		} else if ((input === '[' || input === ']') && modifierFlags === constants.keyModifierCommand) {
-			const t = input === '[' ? -1 : 1;
-			if (chats[this.idx + t]) {
-				this.goRoom(chats[this.idx + t]);
+		} else if (commandHandle(event, '[', ['command'])) {
+			if (chats[this.idx - 1]) {
+				this.goRoom(chats[this.idx - 1]);
 			}
-		} else if (input === 'e' && modifierFlags === constants.keyModifierCommand) {
+		} else if (commandHandle(event, ']', ['command'])) {
+			if (chats[this.idx + 1]) {
+				this.goRoom(chats[this.idx + 1]);
+			}
+		} else if (commandHandle(event, 'e', ['command'])) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		}
 	};

@@ -116,6 +116,20 @@ const keyCommands = [
 
 export const KEY_COMMAND = 'KEY_COMMAND';
 
+export const commandHandle = (event, key, flags = []) => {
+	const { input, modifierFlags } = event;
+	let _flags = 0;
+	if (flags.includes('command') && flags.includes('alternate')) {
+		// eslint-disable-next-line no-bitwise
+		_flags = constants.keyModifierCommand | constants.keyModifierAlternate;
+	} else if (flags.includes('command')) {
+		_flags = constants.keyModifierCommand;
+	} else if (flags.includes('alternate')) {
+		_flags = constants.keyModifierAlternate;
+	}
+	return key.includes(input) && modifierFlags === _flags;
+};
+
 export default ({ children }) => {
 	const onKeyCommand = (event) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });

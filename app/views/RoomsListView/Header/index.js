@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { constants } from '@envoy/react-native-key-commands';
 
 import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
 import EventEmitter from '../../../utils/events';
-import { KEY_COMMAND } from '../../../commands';
+import { KEY_COMMAND, commandHandle } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
 
 class RoomsListHeaderView extends PureComponent {
@@ -38,9 +37,7 @@ class RoomsListHeaderView extends PureComponent {
 	}
 
 	handleCommands = ({ event }) => {
-		const { input, modifierFlags } = event;
-		// eslint-disable-next-line no-bitwise
-		if (input === 'o' && modifierFlags === constants.keyModifierCommand | constants.keyModifierAlternate) {
+		if (commandHandle(event, 'o', ['command', 'alternate'])) {
 			this.onPress();
 		}
 	}

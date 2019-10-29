@@ -11,7 +11,6 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
-import { constants } from '@envoy/react-native-key-commands';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -33,7 +32,7 @@ import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
-import { KEY_COMMAND } from '../../commands';
+import { KEY_COMMAND, commandHandle } from '../../commands';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -737,12 +736,11 @@ class MessageBox extends Component {
 	}
 
 	handleCommands = ({ event }) => {
-		const { input, modifierFlags } = event;
-		if (input === '\t') {
+		if (commandHandle(event, '\t')) {
 			this.component.focus();
-		} else if (input === '\r') {
+		} else if (commandHandle(event, '\r')) {
 			this.submit();
-		} else if (input === 'u' && modifierFlags === constants.keyModifierCommand) {
+		} else if (commandHandle(event, 'u', ['command'])) {
 			this.showFileActions();
 		}
 	}
