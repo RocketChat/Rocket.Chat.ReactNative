@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Alert
+	View, TextInput, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -26,7 +26,6 @@ import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
-import CommandPreview from './CommandPreview';
 import { canUploadFile } from '../../utils/media';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
@@ -36,6 +35,7 @@ import {
 	MENTIONS_COUNT_TO_DISPLAY,
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
+import CommandsPreview from './CommandsPreview';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -725,56 +725,29 @@ class MessageBox extends Component {
 		});
 	}
 
-	renderCommandPreviewItem = ({ item }) => (
-		<CommandPreview item={item} onPress={this.onPressCommandPreview} />
-	);
-
-	renderCommandPreview = () => {
-		console.log('RENDER command PREVIEW')
-		const { commandPreview, showCommandPreview } = this.state;
-		if (!showCommandPreview) {
-			return null;
-		}
-		return (
-			<View key='commandbox-container' testID='commandbox-container'>
-				<FlatList
-					style={styles.mentionList}
-					data={commandPreview}
-					renderItem={this.renderCommandPreviewItem}
-					keyExtractor={item => item.id}
-					keyboardShouldPersistTaps='always'
-					horizontal
-					showsHorizontalScrollIndicator={false}
-				/>
-			</View>
-		);
-	}
-
-	renderReplyPreview = () => {
-		const {
-			message, replying, replyCancel, user, getCustomEmoji
-		} = this.props;
-		if (!replying) {
-			return null;
-		}
-		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
-	};
-
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
-		const { editing } = this.props;
+		const {
+			editing, message, replying, replyCancel, user, getCustomEmoji
+		} = this.props;
 
 		if (recording) {
-			return (<Recording onFinish={this.finishAudioMessage} />);
+			return <Recording onFinish={this.finishAudioMessage} />;
 		}
 		return (
 			<>
-				{/* {this.renderCommandPreview()} */}
+				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} />
 				<View style={styles.composer}>
-					{this.renderReplyPreview()}
+					<ReplyPreview
+						message={message}
+						close={replyCancel}
+						username={user.username}
+						replying={replying}
+						getCustomEmoji={getCustomEmoji}
+					/>
 					<View
 						style={[styles.textArea, editing && styles.editing]}
 						testID='messagebox'
@@ -820,9 +793,10 @@ class MessageBox extends Component {
 		return (
 			<MessageboxContext.Provider
 				value={{
-					onPressMention: this.onPressMention,
 					user,
-					baseUrl
+					baseUrl,
+					onPressMention: this.onPressMention,
+					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
 				<KeyboardAccessoryView
