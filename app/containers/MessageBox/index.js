@@ -739,6 +739,8 @@ class MessageBox extends Component {
 		const { input } = event;
 		if (input === '\t') {
 			this.component.focus();
+		} else if (input === '\r') {
+			this.submit();
 		}
 	}
 

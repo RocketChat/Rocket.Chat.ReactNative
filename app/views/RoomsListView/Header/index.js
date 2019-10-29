@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { constants } from '@envoy/react-native-key-commands';
 
 import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
+import EventEmitter from '../../../utils/events';
+import { KEY_COMMAND } from '../../../commands';
+import { isTablet } from '../../../utils/deviceInfo';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -19,6 +23,26 @@ class RoomsListHeaderView extends PureComponent {
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
+	}
+
+	componentDidMount() {
+		if (isTablet()) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	componentWillUnmount() {
+		if (isTablet()) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		const { input, modifierFlags } = event;
+		// eslint-disable-next-line no-bitwise
+		if (input === 'o' && modifierFlags === constants.keyModifierCommand | constants.keyModifierAlternate) {
+			this.onPress();
+		}
 	}
 
 	onSearchChangeText = (text) => {

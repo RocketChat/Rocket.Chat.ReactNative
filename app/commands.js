@@ -7,38 +7,38 @@ import EventEmitter from './utils/events';
 
 const keyCommands = [
 	{
-		input: '\t',
+		input: '\t', // done
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Type_message')
 	},
 	{
-		input: 'p',
+		input: 'p', // done
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Preferences')
 	},
 	{
-		input: 'f',
+		input: 'f', // done
 		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Room_search')
 	},
 	{
-		input: '1...9',
+		input: '1...9', // done
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_selection')
 	},
 	{
-		input: ']',
+		input: ']', // done
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Next_room')
 	},
 	{
-		input: '[',
+		input: '[', // done
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Previous_room')
 	},
 	{
-		input: 'n',
+		input: 'e', // it should be n
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('New_room')
 	},
@@ -53,7 +53,7 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
 	{
-		input: 'f',
+		input: 'f', // It's harder
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Search_messages')
 	},
@@ -76,7 +76,7 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Reply_latest')
 	},
 	{
-		input: '`',
+		input: 'o', // (`) done
 		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection')
@@ -94,16 +94,16 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Add_server')
 	},
 	{
-		input: '\r',
+		input: '\r', // done
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Send')
 	},
 	{
-		input: '\r',
+		input: '\r', // i dont know if we need it, we have shift + enter
 		modifierFlags: constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('New_line')
 	},
-	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({ // done
 		input: `${ value }`,
 		modifierFlags: constants.keyModifierCommand
 	}))),

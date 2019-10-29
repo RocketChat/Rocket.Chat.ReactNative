@@ -151,7 +151,7 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
-		this.index = 0;
+		this.idx = 0;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -464,7 +464,7 @@ class RoomsListView extends React.Component {
 		this.cancelSearchingAndroid();
 		const { chats } = this.state;
 		const { navigation } = this.props;
-		this.index = chats.findIndex(c => c.rid === item.rid);
+		this.idx = chats.findIndex(c => c.rid === item.rid);
 		navigation.navigate('RoomView', {
 			rid: item.rid,
 			name: this.getRoomTitle(item),
@@ -597,6 +597,8 @@ class RoomsListView extends React.Component {
 			if (chats[this.idx + t]) {
 				this.goRoom(chats[this.idx + t]);
 			}
+		} else if (input === 'e' && modifierFlags === constants.keyModifierCommand) {
+			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		}
 	};
 
