@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
+import { constants } from '@envoy/react-native-key-commands';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -18,6 +19,8 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
+import { KEY_COMMAND } from '../../commands';
+import { isTablet } from '../../utils/deviceInfo';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -58,6 +61,9 @@ class ServerDropdown extends Component {
 				useNativeDriver: true
 			},
 		).start();
+		if (isTablet()) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -89,6 +95,9 @@ class ServerDropdown extends Component {
 		}
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (isTablet()) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
@@ -129,6 +138,17 @@ class ServerDropdown extends Component {
 				}, 1000);
 			} else {
 				selectServerRequest(server);
+			}
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		const { servers } = this.state;
+		const { input, modifierFlags } = event;
+		// eslint-disable-next-line no-bitwise
+		if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(input) && modifierFlags === constants.keyModifierAlternate | constants.keyModifierCommand) {
+			if (servers[input - 1]) {
+				this.select(servers[input - 1].id);
 			}
 		}
 	}

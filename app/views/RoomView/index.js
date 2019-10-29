@@ -10,6 +10,7 @@ import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
+import { constants } from '@envoy/react-native-key-commands';
 
 import {
 	replyBroadcast as replyBroadcastAction
@@ -38,6 +39,7 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
+import { KEY_COMMAND } from '../../commands';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -120,7 +122,6 @@ class RoomView extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.offset = 0;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.tmid = props.navigation.getParam('tmid', null);
@@ -161,6 +162,7 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
+		this.offset = 0;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
 			const { navigation, isAuthenticated } = this.props;
@@ -179,6 +181,9 @@ class RoomView extends React.Component {
 				this.updateUnreadCount();
 			}
 		});
+		if (isTablet()) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -261,6 +266,9 @@ class RoomView extends React.Component {
 			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
+		if (isTablet()) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -616,6 +624,19 @@ class RoomView extends React.Component {
 			RocketChat.callJitsi(this.rid);
 		}
 	};
+
+	handleCommands = ({ event }) => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+		const { input, modifierFlags } = event;
+		if ((input === 'UIKeyInputUpArrow' || input === 'UIKeyInputDownArrow') && modifierFlags === constants.keyModifierAlternate) {
+			const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
+			this.offset += offset;
+			this.flatList.scrollToOffset({ offset: this.offset });
+		} else if (input === 'b' && modifierFlags === constants.keyModifierCommand) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+		}
+	}
 
 	get isReadOnly() {
 		const { room } = this.state;

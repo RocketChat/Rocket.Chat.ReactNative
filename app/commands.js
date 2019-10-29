@@ -43,12 +43,12 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('New_room')
 	},
 	{
-		input: 'i',
+		input: 'b', // it should be i
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_actions')
 	},
 	{
-		input: 'u',
+		input: 'u', // done
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
@@ -58,16 +58,16 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Search_messages')
 	},
 	{
-		input: '↑ ↓',
+		input: '↑ ↓', // done
 		modifierFlags: constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Scroll_messages')
 	},
 	{
-		input: constants.keyInputUpArrow,
+		input: constants.keyInputUpArrow, // done
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
-		input: constants.keyInputDownArrow,
+		input: constants.keyInputDownArrow, // done
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
@@ -82,13 +82,13 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Server_selection')
 	},
 	{
-		input: '1...9',
+		input: '1...9', // done
 		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection_numbers')
 	},
 	{
-		input: 'n',
+		input: 'n', // it should be n
 		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
@@ -107,7 +107,7 @@ const keyCommands = [
 		input: `${ value }`,
 		modifierFlags: constants.keyModifierCommand
 	}))),
-	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
+	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({ // done
 		input: `${ value }`,
 		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate

@@ -11,6 +11,7 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
+import { constants } from '@envoy/react-native-key-commands';
 
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -736,11 +737,13 @@ class MessageBox extends Component {
 	}
 
 	handleCommands = ({ event }) => {
-		const { input } = event;
+		const { input, modifierFlags } = event;
 		if (input === '\t') {
 			this.component.focus();
 		} else if (input === '\r') {
 			this.submit();
+		} else if (input === 'u' && modifierFlags === constants.keyModifierCommand) {
+			this.showFileActions();
 		}
 	}
 
