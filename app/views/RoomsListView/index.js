@@ -15,6 +15,7 @@ import { isEqual, orderBy } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
+import { constants } from '@envoy/react-native-key-commands';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -44,6 +45,8 @@ import StatusBar from '../../containers/StatusBar';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import EventEmitter from '../../utils/events';
+import { KEY_COMMAND } from '../../commands';
 
 const SCROLL_OFFSET = 56;
 
@@ -196,6 +199,9 @@ class RoomsListView extends React.Component {
 			initSearchingAndroid: this.initSearchingAndroid,
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
+		if (isTablet()) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
@@ -303,6 +309,9 @@ class RoomsListView extends React.Component {
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
+		}
+		if (isTablet()) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
@@ -570,6 +579,25 @@ class RoomsListView extends React.Component {
 	goDirectory = () => {
 		const { navigation } = this.props;
 		navigation.navigate('DirectoryView');
+	};
+
+	handleCommands = ({ event }) => {
+		const { chats } = this.state;
+		const { navigation } = this.props;
+		const { input, modifierFlags } = event;
+		if (input === 'p' && modifierFlags === constants.keyModifierCommand) {
+			navigation.toggleDrawer();
+		// eslint-disable-next-line no-bitwise
+		} else if (input === 'f' && modifierFlags === constants.keyModifierCommand | constants.keyModifierAlternate) {
+			this.inputRef.focus();
+		} else if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(input) && chats[input - 1] && modifierFlags === constants.keyModifierCommand) {
+			this.goRoom(chats[input - 1]);
+		} else if ((input === '[' || input === ']') && modifierFlags === constants.keyModifierCommand) {
+			const t = input === '[' ? -1 : 1;
+			if (chats[this.idx + t]) {
+				this.goRoom(chats[this.idx + t]);
+			}
+		}
 	};
 
 	getScrollRef = ref => (this.scroll = ref);

@@ -28,9 +28,11 @@ import debounce from '../../utils/debounce';
 import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import CommandPreview from './CommandPreview';
 import { canUploadFile } from '../../utils/media';
+import EventEmiter from '../../utils/events';
+import { KEY_COMMAND } from '../../commands';
 
 const MENTIONS_TRACKING_TYPE_USERS = '@';
 const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
@@ -162,6 +164,10 @@ class MessageBox extends Component {
 		if (isAndroid) {
 			require('./EmojiKeyboard');
 		}
+
+		if (isTablet()) {
+			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -238,6 +244,9 @@ class MessageBox extends Component {
 		}
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
+		}
+		if (isTablet()) {
+			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
@@ -724,6 +733,13 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false
 		});
+	}
+
+	handleCommands = ({ event }) => {
+		const { input } = event;
+		if (input === '\t') {
+			this.component.focus();
+		}
 	}
 
 	renderFixedMentionItem = item => (
