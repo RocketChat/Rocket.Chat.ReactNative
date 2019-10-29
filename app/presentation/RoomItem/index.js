@@ -164,7 +164,8 @@ RoomItem.propTypes = {
 };
 
 RoomItem.defaultProps = {
-	avatarSize: 48
+	avatarSize: 48,
+	status: 'offline'
 };
 
 const mapStateToProps = (state, ownProps) => ({
