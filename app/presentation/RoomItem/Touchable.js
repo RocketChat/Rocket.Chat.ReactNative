@@ -46,7 +46,9 @@ class Touchable extends React.Component {
 	}
 
 		_onHandlerStateChange = ({ nativeEvent }) => {
-			if (nativeEvent.oldState === State.ACTIVE) { this._handleRelease(nativeEvent); }
+			if (nativeEvent.oldState === State.ACTIVE) {
+				this._handleRelease(nativeEvent);
+			}
 		}
 
 
