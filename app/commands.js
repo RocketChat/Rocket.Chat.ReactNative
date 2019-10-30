@@ -133,7 +133,7 @@ export default ({ children, style }) => {
 		return (
 			<KeyCommands
 				style={style || { flex: 1 }}
-				keyCommands={keyCommands}
+				keyCommands={isTablet() ? keyCommands : []}
 				onKeyCommand={onKeyCommand}
 			>
 				{children}

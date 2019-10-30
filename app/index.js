@@ -469,9 +469,10 @@ export default class Root extends React.Component {
 			});
 	}
 
-	onLayout = () => {
+	onLayout = ({ nativeEvent }) => {
 		if (isTablet(false)) {
-			this.setState({ tablet: isTablet() });
+			const { width } = nativeEvent.layout;
+			this.setState({ tablet: isTablet(false) && width > 700 });
 		}
 	};
 
