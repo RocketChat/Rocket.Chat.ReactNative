@@ -19,7 +19,6 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { isTablet } from './utils/deviceInfo';
 import { Modal } from './presentation/Modal';
 import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
@@ -472,7 +471,6 @@ export default class Root extends React.Component {
 
 	onLayout = () => {
 		if (isTablet(false)) {
-			animateNextTransition();
 			this.setState({ tablet: isTablet() });
 		}
 	};
@@ -481,21 +479,19 @@ export default class Root extends React.Component {
 		const { tablet, inside, showModal } = this.state;
 		return (
 			<Provider store={store}>
-				<LayoutAnimation>
-					<Tablet
-						tablet={tablet}
-						inside={inside}
-						showModal={showModal}
-						onLayout={this.onLayout}
-					>
-						<App
-							ref={(navigatorRef) => {
-								Navigation.setTopLevelNavigator(navigatorRef);
-							}}
-							onNavigationStateChange={onNavigationStateChange}
-						/>
-					</Tablet>
-				</LayoutAnimation>
+				<Tablet
+					tablet={tablet}
+					inside={inside}
+					showModal={showModal}
+					onLayout={this.onLayout}
+				>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
+				</Tablet>
 			</Provider>
 		);
 	}
