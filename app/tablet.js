@@ -112,9 +112,11 @@ const Tablet = ({
 		if (split) {
 			return (
 				<>
-					<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-						<RoomContainer ref={ref => roomRef = ref} />
-					</View>
+					<KeyCommands>
+						<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
+							<RoomContainer ref={ref => roomRef = ref} />
+						</View>
+					</KeyCommands>
 					<ModalContainer showModal={showModal} ref={setModalRef} />
 				</>
 			);
@@ -125,14 +127,12 @@ const Tablet = ({
 	if (DeviceInfo.isTablet()) {
 		const split = tablet && inside;
 		return (
-			<KeyCommands>
-				<View style={sharedStyles.containerSplitView} onLayout={onLayout}>
-					<View style={[sharedStyles.container, split && { maxWidth: SIDEBAR_WIDTH }]}>
-						{children}
-					</View>
-					{renderSplit(split)}
+			<View style={sharedStyles.containerSplitView} onLayout={onLayout}>
+				<View style={[sharedStyles.container, split && { maxWidth: SIDEBAR_WIDTH }]}>
+					{children}
 				</View>
-			</KeyCommands>
+				{renderSplit(split)}
+			</View>
 		);
 	}
 	return children;

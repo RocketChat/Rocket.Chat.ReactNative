@@ -3,6 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 
+import KeyCommands from '../commands';
+
 let _navigatorModal;
 
 function setTopLevelNavigator(navigatorRef) {
@@ -46,11 +48,11 @@ const styles = StyleSheet.create({
 });
 
 export const Modal = ({ children }) => (
-	<View style={styles.container}>
+	<KeyCommands style={styles.container}>
 		<View style={styles.modal}>
 			{children}
 		</View>
-	</View>
+	</KeyCommands>
 );
 
 Modal.propTypes = {

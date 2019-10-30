@@ -22,7 +22,7 @@ import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { isTablet } from './utils/deviceInfo';
 import { Modal } from './presentation/Modal';
-import { commandHandle, KEY_COMMAND } from './commands';
+import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
 import Tablet, { initTabletNav } from './tablet';
 
@@ -258,7 +258,7 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<>
+			<KeyCommands>
 				<InsideStackModal navigation={navigation} />
 				{ !isTablet() ? (
 					<>
@@ -266,7 +266,7 @@ class CustomInsideStack extends React.Component {
 						<Toast />
 					</>
 				) : null }
-			</>
+			</KeyCommands>
 		);
 	}
 }

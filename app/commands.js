@@ -124,7 +124,7 @@ export const commandHandle = (event, key, flags = []) => {
 	return key.includes(input) && modifierFlags === _flags;
 };
 
-export default ({ children }) => {
+export default ({ children, style }) => {
 	const onKeyCommand = (event) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
 	};
@@ -132,7 +132,7 @@ export default ({ children }) => {
 	if (DeviceInfo.isTablet()) {
 		return (
 			<KeyCommands
-				style={{ flex: 1 }}
+				style={style || { flex: 1 }}
 				keyCommands={keyCommands}
 				onKeyCommand={onKeyCommand}
 			>
