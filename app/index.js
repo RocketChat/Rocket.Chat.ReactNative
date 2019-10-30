@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	createAppContainer, createSwitchNavigator, NavigationActions, StackActions
-} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
@@ -23,10 +21,10 @@ import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { isTablet } from './utils/deviceInfo';
-import ModalNav, { Modal } from './presentation/Modal';
+import { Modal } from './presentation/Modal';
 import { commandHandle, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
-import Tablet from './tablet';
+import Tablet, { initTabletNav } from './tablet';
 
 useScreens();
 
@@ -391,7 +389,7 @@ class CustomModalStack extends React.Component {
 	}
 }
 
-const App = createAppContainer(createSwitchNavigator(
+export const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
 		InsideStack: CustomInsideStack,
@@ -430,10 +428,8 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 
-		if (isTablet(false)) {
-			this.initTabletNav();
-		}
 		if (isTablet()) {
+			initTabletNav(args => this.setState(args));
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
@@ -449,91 +445,6 @@ export default class Root extends React.Component {
 		if (commandHandle(event, 'UIKeyInputEscape')) {
 			this.setState({ showModal: false });
 		}
-	}
-
-	initTabletNav = () => {
-		const defaultApp = App.router.getStateForAction;
-		const defaultModal = ModalContainer.router.getStateForAction;
-		const defaultRoom = RoomContainer.router.getStateForAction;
-
-		RoomContainer.router.getStateForAction = (action, state) => {
-			const { tablet } = this.state;
-			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
-				const { routeName, params } = action;
-				if (routeName === 'RoomActionsView') {
-					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-					this.setState({ showModal: true });
-					return null;
-				}
-			}
-			return defaultRoom(action, state);
-		};
-
-		ModalContainer.router.getStateForAction = (action, state) => {
-			const { tablet } = this.state;
-			if (action.type === 'Navigation/POP' && isTablet() && tablet) {
-				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
-				this.setState({ showModal: false });
-			}
-			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
-				const { routeName, params } = action;
-				if (routeName === 'RoomView') {
-					Navigation.navigate(routeName, params);
-				}
-			}
-			return defaultModal(action, state);
-		};
-
-		App.router.getStateForAction = (action, state) => {
-			const { tablet } = this.state;
-			if (action.type === NavigationActions.NAVIGATE && isTablet() && tablet) {
-				const { routeName, params } = action;
-
-				if (routeName === 'InsideStack') {
-					this.setState({ inside: true });
-				}
-				if (routeName === 'OutsideStack') {
-					this.setState({ inside: false, showModal: false });
-				}
-				if (routeName === 'JitsiMeetView') {
-					this.inCall = true;
-					this.setState({ inside: false, showModal: false });
-				}
-				if (routeName === 'OnboardingView') {
-					this.setState({ inside: false, showModal: false });
-				}
-
-				if (routeName === 'RoomView') {
-					const resetAction = StackActions.reset({
-						index: 0,
-						actions: [NavigationActions.navigate({ routeName, params })]
-					});
-					this.roomRef.dispatch(resetAction);
-					this.setState({ showModal: false });
-					return null;
-				}
-
-				if (routeName === 'NewMessageView') {
-					this.modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-					this.setState({ showModal: true });
-					return null;
-				}
-				if (routeName === 'DirectoryView') {
-					this.modalRef.dispatch(NavigationActions.navigate({ routeName }));
-					this.setState({ showModal: true });
-					return null;
-				}
-			}
-			if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet() && tablet) {
-				this.modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
-				this.setState({ showModal: true });
-				return null;
-			}
-			if (action.type === 'Navigation/POP' && this.inCall) {
-				this.setState({ inside: true, showModal: false });
-			}
-			return defaultApp(action, state);
-		};
 	}
 
 	init = async() => {
@@ -576,11 +487,6 @@ export default class Root extends React.Component {
 						inside={inside}
 						showModal={showModal}
 						onLayout={this.onLayout}
-						roomRef={roomRef => this.roomRef = roomRef}
-						modalRef={(modalRef) => {
-							this.modalRef = modalRef;
-							ModalNav.setTopLevelNavigator(modalRef);
-						}}
 					>
 						<App
 							ref={(navigatorRef) => {
