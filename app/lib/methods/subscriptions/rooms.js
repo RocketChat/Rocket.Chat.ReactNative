@@ -9,6 +9,7 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
+import buildMessage from '../helpers/buildMessage';
 
 const removeListener = listener => listener.stop();
 
@@ -103,19 +104,53 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// Do nothing
 			}
 
+			const batch = [];
 			if (sub) {
-				await sub.update(protectedFunction((s) => {
-					Object.assign(s, tmp);
-				}));
+				batch.push(
+					sub.prepareUpdate(protectedFunction((s) => {
+						Object.assign(s, tmp);
+					}))
+				);
 			} else {
-				await subCollection.create(protectedFunction((s) => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				}));
+				batch.push(
+					subCollection.prepareCreate(protectedFunction((s) => {
+						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+						Object.assign(s, tmp);
+						if (s.roomUpdatedAt) {
+							s.roomUpdatedAt = new Date();
+						}
+					}))
+				);
 			}
+
+			if (sub.lastMessage) {
+				const lastMessage = buildMessage(sub.lastMessage);
+				const messagesCollection = db.collections.get('messages');
+				let messageRecord;
+				try {
+					messageRecord = await messagesCollection.find(lastMessage._id);
+				} catch (error) {
+					// Do nothing
+				}
+
+				if (messageRecord) {
+					batch.push(
+						messageRecord.prepareUpdate(() => {
+							Object.assign(messageRecord, lastMessage);
+						})
+					);
+				} else {
+					batch.push(
+						messagesCollection.prepareCreate((m) => {
+							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+							m.subscription.id = lastMessage.rid;
+							return Object.assign(m, lastMessage);
+						})
+					);
+				}
+			}
+
+			await db.batch(...batch);
 		});
 	} catch (e) {
 		log(e);
