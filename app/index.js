@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking, View } from 'react-native';
+import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { appInit } from './actions';
@@ -24,9 +24,9 @@ import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { isTablet } from './utils/deviceInfo';
 import ModalNav, { Modal } from './presentation/Modal';
-import sharedStyles from './views/Styles';
-import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
+import { commandHandle, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
+import Tablet from './tablet';
 
 useScreens();
 
@@ -405,9 +405,9 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
-const RoomContainer = createAppContainer(CustomRoomStack);
+export const RoomContainer = createAppContainer(CustomRoomStack);
 
-const ModalContainer = createAppContainer(CustomModalStack);
+export const ModalContainer = createAppContainer(CustomModalStack);
 
 export default class Root extends React.Component {
 	constructor(props) {
@@ -559,19 +559,7 @@ export default class Root extends React.Component {
 			});
 	}
 
-	renderRight = () => (
-		<>
-			<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-				<RoomContainer
-					ref={(roomRef) => {
-						this.roomRef = roomRef;
-					}}
-				/>
-			</View>
-		</>
-	)
-
-	changeTablet = () => {
+	onLayout = () => {
 		if (isTablet(false)) {
 			animateNextTransition();
 			this.setState({ tablet: isTablet() });
@@ -583,30 +571,24 @@ export default class Root extends React.Component {
 		return (
 			<Provider store={store}>
 				<LayoutAnimation>
-					<KeyCommands>
-						<View style={sharedStyles.containerSplitView} onLayout={this.changeTablet}>
-							<View style={[sharedStyles.container, tablet && inside && { maxWidth: 320 }]}>
-								<App
-									ref={(navigatorRef) => {
-										Navigation.setTopLevelNavigator(navigatorRef);
-									}}
-									onNavigationStateChange={onNavigationStateChange}
-								/>
-							</View>
-							{ tablet && inside ? (
-								<>
-									{ this.renderRight() }
-									<ModalContainer
-										showModal={showModal}
-										ref={(modalRef) => {
-											this.modalRef = modalRef;
-											ModalNav.setTopLevelNavigator(modalRef);
-										}}
-									/>
-								</>
-							) : null }
-						</View>
-					</KeyCommands>
+					<Tablet
+						tablet={tablet}
+						inside={inside}
+						showModal={showModal}
+						onLayout={this.onLayout}
+						roomRef={roomRef => this.roomRef = roomRef}
+						modalRef={(modalRef) => {
+							this.modalRef = modalRef;
+							ModalNav.setTopLevelNavigator(modalRef);
+						}}
+					>
+						<App
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							onNavigationStateChange={onNavigationStateChange}
+						/>
+					</Tablet>
 				</LayoutAnimation>
 			</Provider>
 		);
