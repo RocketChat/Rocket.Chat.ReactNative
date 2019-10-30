@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import DeviceInfo from 'react-native-device-info';
 import { NavigationActions, StackActions } from 'react-navigation';
 
 import KeyCommands from './commands';
@@ -9,7 +8,7 @@ import Navigation from './lib/Navigation';
 import { isTablet } from './utils/deviceInfo';
 import { App, RoomContainer, ModalContainer } from './index';
 import { SIDEBAR_WIDTH } from './constants/tablet';
-import ModalNav from './presentation/Modal';
+import ModalNavigation from './lib/ModalNavigation';
 
 import sharedStyles from './views/Styles';
 
@@ -105,7 +104,7 @@ const Tablet = ({
 }) => {
 	const setModalRef = (ref) => {
 		modalRef = ref;
-		ModalNav.setTopLevelNavigator(modalRef);
+		ModalNavigation.setTopLevelNavigator(modalRef);
 	};
 
 	const renderSplit = (split) => {
@@ -124,7 +123,7 @@ const Tablet = ({
 		return null;
 	};
 
-	if (DeviceInfo.isTablet()) {
+	if (isTablet(false)) {
 		const split = tablet && inside;
 		return (
 			<View style={sharedStyles.containerSplitView} onLayout={onLayout}>

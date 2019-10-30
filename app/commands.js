@@ -1,10 +1,10 @@
 /* eslint-disable no-bitwise */
 import React from 'react';
-import DeviceInfo from 'react-native-device-info';
 import KeyCommands, { constants } from '@envoy/react-native-key-commands';
 
 import I18n from './i18n';
 import EventEmitter from './utils/events';
+import { isTablet } from './utils/deviceInfo';
 
 const keyCommands = [
 	{
@@ -129,7 +129,7 @@ export default ({ children, style }) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
 	};
 
-	if (DeviceInfo.isTablet()) {
+	if (isTablet(false)) {
 		return (
 			<KeyCommands
 				style={style || { flex: 1 }}

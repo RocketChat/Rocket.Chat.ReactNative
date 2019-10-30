@@ -39,7 +39,7 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { KEY_COMMAND, commandHandle } from '../../commands';
-import ModalNav from '../../presentation/Modal';
+import ModalNavigation from '../../lib/ModalNavigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -637,7 +637,7 @@ class RoomView extends React.Component {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 		} else if (commandHandle(event, 'f', ['command'])) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-			ModalNav.navigate('SearchMessagesView', { rid: this.rid });
+			ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
 		} else if (commandHandle(event, ';', ['command'])) {
 			this.onReplyInit(this.lastItem, false);
 		}
