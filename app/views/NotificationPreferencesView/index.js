@@ -141,9 +141,6 @@ export default class NotificationPreferencesView extends React.Component {
 	}
 
 	onValueChangeSwitch = async(key, value) => {
-		const { room: newRoom } = this.state;
-		newRoom[key] = value;
-		this.setState({ room: newRoom });
 		const params = {
 			[key]: value ? '1' : '0'
 		};
@@ -155,9 +152,6 @@ export default class NotificationPreferencesView extends React.Component {
 	}
 
 	onValueChangePicker = async(key, value) => {
-		const { room: newRoom } = this.state;
-		newRoom[key] = value;
-		this.setState({ room: newRoom });
 		const params = {
 			[key]: value.toString()
 		};
