@@ -75,7 +75,7 @@ const keyCommands = [
 		modifierFlags: 0
 	},
 	{
-		input: 'r',
+		input: ';',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Reply_latest')
 	},

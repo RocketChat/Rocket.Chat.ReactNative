@@ -26,6 +26,7 @@ export class List extends React.Component {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		listRef: PropTypes.func,
+		setLastItem: PropTypes.func,
 		animated: PropTypes.bool
 	};
 
@@ -176,8 +177,11 @@ export class List extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { rid, listRef } = this.props;
+		const { rid, listRef, setLastItem } = this.props;
 		const { messages } = this.state;
+		if (messages.length > 0) {
+			setLastItem(messages[0]);
+		}
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
