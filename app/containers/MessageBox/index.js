@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, FlatList, Text, TouchableOpacity, Alert, ScrollView
+	View, TextInput, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shortnameToUnicode } from 'emoji-toolkit';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
@@ -16,8 +15,6 @@ import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
-import Avatar from '../Avatar';
-import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import UploadModal from './UploadModal';
@@ -29,13 +26,16 @@ import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { isAndroid } from '../../utils/deviceInfo';
-import CommandPreview from './CommandPreview';
 import { canUploadFile } from '../../utils/media';
-
-const MENTIONS_TRACKING_TYPE_USERS = '@';
-const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
-const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
-const MENTIONS_COUNT_TO_DISPLAY = 4;
+import Mentions from './Mentions';
+import MessageboxContext from './Context';
+import {
+	MENTIONS_TRACKING_TYPE_EMOJIS,
+	MENTIONS_TRACKING_TYPE_COMMANDS,
+	MENTIONS_COUNT_TO_DISPLAY,
+	MENTIONS_TRACKING_TYPE_USERS
+} from './constants';
+import CommandsPreview from './CommandsPreview';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -545,7 +545,6 @@ class MessageBox extends Component {
 		}
 	}
 
-
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
 	}
@@ -726,175 +725,29 @@ class MessageBox extends Component {
 		});
 	}
 
-	renderFixedMentionItem = item => (
-		<TouchableOpacity
-			style={styles.mentionItem}
-			onPress={() => this.onPressMention(item)}
-		>
-			<Text style={styles.fixedMentionAvatar}>{item.username}</Text>
-			<Text style={styles.mentionText}>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
-		</TouchableOpacity>
-	)
-
-	renderMentionEmoji = (item) => {
-		const { baseUrl } = this.props;
-
-		if (item.name) {
-			return (
-				<CustomEmoji
-					key='mention-item-avatar'
-					style={styles.mentionItemCustomEmoji}
-					emoji={item}
-					baseUrl={baseUrl}
-				/>
-			);
-		}
-		return (
-			<Text
-				key='mention-item-avatar'
-				style={styles.mentionItemEmoji}
-			>
-				{shortnameToUnicode(`:${ item }:`)}
-			</Text>
-		);
-	}
-
-	renderMentionItem = ({ item }) => {
-		const { trackingType } = this.state;
-		const { baseUrl, user } = this.props;
-
-		if (item.username === 'all' || item.username === 'here') {
-			return this.renderFixedMentionItem(item);
-		}
-		const defineTestID = (type) => {
-			switch (type) {
-				case MENTIONS_TRACKING_TYPE_EMOJIS:
-					return `mention-item-${ item.name || item }`;
-				case MENTIONS_TRACKING_TYPE_COMMANDS:
-					return `mention-item-${ item.command || item }`;
-				default:
-					return `mention-item-${ item.username || item.name || item }`;
-			}
-		};
-
-		const testID = defineTestID(trackingType);
-
-		return (
-			<TouchableOpacity
-				style={styles.mentionItem}
-				onPress={() => this.onPressMention(item)}
-				testID={testID}
-			>
-
-				{(() => {
-					switch (trackingType) {
-						case MENTIONS_TRACKING_TYPE_EMOJIS:
-							return (
-								<>
-									{this.renderMentionEmoji(item)}
-									<Text key='mention-item-name' style={styles.mentionText}>:{ item.name || item }:</Text>
-								</>
-							);
-						case MENTIONS_TRACKING_TYPE_COMMANDS:
-							return (
-								<>
-									<Text key='mention-item-command' style={styles.slash}>/</Text>
-									<Text key='mention-item-param'>{ item.command}</Text>
-								</>
-							);
-						default:
-							return (
-								<>
-									<Avatar
-										key='mention-item-avatar'
-										style={styles.avatar}
-										text={item.username || item.name}
-										size={30}
-										type={item.t}
-										baseUrl={baseUrl}
-										userId={user.id}
-										token={user.token}
-									/>
-									<Text key='mention-item-name' style={styles.mentionText}>{ item.username || item.name || item }</Text>
-								</>
-							);
-					}
-				})()
-				}
-			</TouchableOpacity>
-		);
-	}
-
-	renderMentions = () => {
-		const { mentions, trackingType } = this.state;
-		if (!trackingType) {
-			return null;
-		}
-		return (
-			<ScrollView
-				testID='messagebox-container'
-				style={styles.scrollViewMention}
-				keyboardShouldPersistTaps='always'
-			>
-				<FlatList
-					style={styles.mentionList}
-					data={mentions}
-					extraData={mentions}
-					renderItem={this.renderMentionItem}
-					keyExtractor={item => item.id || item.username || item.command || item}
-					keyboardShouldPersistTaps='always'
-				/>
-			</ScrollView>
-		);
-	};
-
-	renderCommandPreviewItem = ({ item }) => (
-		<CommandPreview item={item} onPress={this.onPressCommandPreview} />
-	);
-
-	renderCommandPreview = () => {
-		const { commandPreview, showCommandPreview } = this.state;
-		if (!showCommandPreview) {
-			return null;
-		}
-		return (
-			<View key='commandbox-container' testID='commandbox-container'>
-				<FlatList
-					style={styles.mentionList}
-					data={commandPreview}
-					renderItem={this.renderCommandPreviewItem}
-					keyExtractor={item => item.id}
-					keyboardShouldPersistTaps='always'
-					horizontal
-					showsHorizontalScrollIndicator={false}
-				/>
-			</View>
-		);
-	}
-
-	renderReplyPreview = () => {
-		const {
-			message, replying, replyCancel, user, getCustomEmoji
-		} = this.props;
-		if (!replying) {
-			return null;
-		}
-		return <ReplyPreview key='reply-preview' message={message} close={replyCancel} username={user.username} getCustomEmoji={getCustomEmoji} />;
-	};
-
 	renderContent = () => {
-		const { recording, showEmojiKeyboard, showSend } = this.state;
-		const { editing } = this.props;
+		const {
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+		} = this.state;
+		const {
+			editing, message, replying, replyCancel, user, getCustomEmoji
+		} = this.props;
 
 		if (recording) {
-			return (<Recording onFinish={this.finishAudioMessage} />);
+			return <Recording onFinish={this.finishAudioMessage} />;
 		}
 		return (
 			<>
-				{this.renderCommandPreview()}
-				{this.renderMentions()}
-				<View style={styles.composer} key='messagebox'>
-					{this.renderReplyPreview()}
+				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+				<Mentions mentions={mentions} trackingType={trackingType} />
+				<View style={styles.composer}>
+					<ReplyPreview
+						message={message}
+						close={replyCancel}
+						username={user.username}
+						replying={replying}
+						getCustomEmoji={getCustomEmoji}
+					/>
 					<View
 						style={[styles.textArea, editing && styles.editing]}
 						testID='messagebox'
@@ -936,8 +789,16 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
+		const { user, baseUrl } = this.props;
 		return (
-			<>
+			<MessageboxContext.Provider
+				value={{
+					user,
+					baseUrl,
+					onPressMention: this.onPressMention,
+					onPressCommandPreview: this.onPressCommandPreview
+				}}
+			>
 				<KeyboardAccessoryView
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
@@ -955,7 +816,7 @@ class MessageBox extends Component {
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
 				/>
-			</>
+			</MessageboxContext.Provider>
 		);
 	}
 }
