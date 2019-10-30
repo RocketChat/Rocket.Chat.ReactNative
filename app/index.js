@@ -19,7 +19,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import { isTablet } from './utils/deviceInfo';
+import { isTablet, setWidth } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
 import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
@@ -472,7 +472,8 @@ export default class Root extends React.Component {
 	onLayout = ({ nativeEvent }) => {
 		if (isTablet(false)) {
 			const { width } = nativeEvent.layout;
-			this.setState({ tablet: isTablet(false) && width > 700 });
+			setWidth(width);
+			this.setState({ tablet: isTablet() });
 		}
 	};
 
