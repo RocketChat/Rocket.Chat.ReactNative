@@ -25,7 +25,8 @@ import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation'
 import { isTablet } from './utils/deviceInfo';
 import ModalNav, { Modal } from './presentation/Modal';
 import sharedStyles from './views/Styles';
-import KeyCommands from './commands';
+import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
+import EventEmitter from './utils/events';
 
 useScreens();
 
@@ -432,10 +433,22 @@ export default class Root extends React.Component {
 		if (isTablet(false)) {
 			this.initTabletNav();
 		}
+		if (isTablet()) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+		if (isTablet()) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		if (commandHandle(event, 'UIKeyInputEscape')) {
+			this.setState({ showModal: false });
+		}
 	}
 
 	initTabletNav = () => {

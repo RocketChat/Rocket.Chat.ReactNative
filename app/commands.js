@@ -71,6 +71,10 @@ const keyCommands = [
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
+		input: constants.keyInputEscape,
+		modifierFlags: 0
+	},
+	{
 		input: 'r',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Reply_latest')
