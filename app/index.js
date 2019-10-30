@@ -23,7 +23,7 @@ import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import LayoutAnimation, { animateNextTransition } from './utils/layoutAnimation';
 import { isTablet } from './utils/deviceInfo';
-import Modal from './presentation/Modal';
+import ModalNav, { Modal } from './presentation/Modal';
 import sharedStyles from './views/Styles';
 import KeyCommands from './commands';
 
@@ -587,6 +587,7 @@ export default class Root extends React.Component {
 										showModal={showModal}
 										ref={(modalRef) => {
 											this.modalRef = modalRef;
+											ModalNav.setTopLevelNavigator(modalRef);
 										}}
 									/>
 								</>

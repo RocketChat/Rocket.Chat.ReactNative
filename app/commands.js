@@ -52,11 +52,11 @@ const keyCommands = [
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
-	// {
-	// 	input: 'f', // It's harder
-	// 	modifierFlags: constants.keyModifierCommand,
-	// 	discoverabilityTitle: I18n.t('Search_messages')
-	// },
+	{
+		input: 'f',
+		modifierFlags: constants.keyModifierCommand,
+		discoverabilityTitle: I18n.t('Search_messages')
+	},
 	{
 		input: '↑ ↓',
 		modifierFlags: constants.keyModifierAlternate,

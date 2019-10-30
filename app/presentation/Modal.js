@@ -1,6 +1,27 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
+
+let _navigatorModal;
+
+function setTopLevelNavigator(navigatorRef) {
+	_navigatorModal = navigatorRef;
+}
+
+function navigate(routeName, params) {
+	_navigatorModal.dispatch(
+		NavigationActions.navigate({
+			routeName,
+			params
+		})
+	);
+}
+
+export default {
+	navigate,
+	setTopLevelNavigator
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,7 +45,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Modal = ({ children }) => (
+export const Modal = ({ children }) => (
 	<View style={styles.container}>
 		<View style={styles.modal}>
 			{children}
@@ -35,5 +56,3 @@ const Modal = ({ children }) => (
 Modal.propTypes = {
 	children: PropTypes.node
 };
-
-export default Modal;
