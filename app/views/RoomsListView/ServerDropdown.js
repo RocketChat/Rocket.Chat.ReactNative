@@ -143,10 +143,12 @@ class ServerDropdown extends Component {
 
 	handleCommands = ({ event }) => {
 		const { servers } = this.state;
+		const { navigation } = this.props;
 		const { input } = event;
 		if (commandHandle(event, '123456789', ['command', 'alternate'])) {
 			if (servers[input - 1]) {
 				this.select(servers[input - 1].id);
+				navigation.navigate('RoomView');
 			}
 		}
 	}
