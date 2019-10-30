@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import React from 'react';
 import DeviceInfo from 'react-native-device-info';
 import KeyCommands, { constants } from '@envoy/react-native-key-commands';
@@ -7,33 +8,32 @@ import EventEmitter from './utils/events';
 
 const keyCommands = [
 	{
-		input: '\t', // done
+		input: '\t',
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Type_message')
 	},
 	{
-		input: 'p', // done
+		input: 'p',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Preferences')
 	},
 	{
-		input: 'f', // done
-		// eslint-disable-next-line no-bitwise
+		input: 'f',
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Room_search')
 	},
 	{
-		input: '1...9', // done
+		input: '1...9',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_selection')
 	},
 	{
-		input: ']', // done
+		input: ']',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Next_room')
 	},
 	{
-		input: '[', // done
+		input: '[',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Previous_room')
 	},
@@ -48,26 +48,26 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Room_actions')
 	},
 	{
-		input: 'u', // done
+		input: 'u',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
+	// {
+	// 	input: 'f', // It's harder
+	// 	modifierFlags: constants.keyModifierCommand,
+	// 	discoverabilityTitle: I18n.t('Search_messages')
+	// },
 	{
-		input: 'f', // It's harder
-		modifierFlags: constants.keyModifierCommand,
-		discoverabilityTitle: I18n.t('Search_messages')
-	},
-	{
-		input: '↑ ↓', // done
+		input: '↑ ↓',
 		modifierFlags: constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Scroll_messages')
 	},
 	{
-		input: constants.keyInputUpArrow, // done
+		input: constants.keyInputUpArrow,
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
-		input: constants.keyInputDownArrow, // done
+		input: constants.keyInputDownArrow,
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
@@ -76,40 +76,31 @@ const keyCommands = [
 		discoverabilityTitle: I18n.t('Reply_latest')
 	},
 	{
-		input: 'o', // (`) done
-		// eslint-disable-next-line no-bitwise
+		input: 'o', // it should be (`)
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection')
 	},
 	{
-		input: '1...9', // done
-		// eslint-disable-next-line no-bitwise
+		input: '1...9',
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection_numbers')
 	},
 	{
-		input: 'n', // it should be n
-		// eslint-disable-next-line no-bitwise
+		input: 'l', // it should be n
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
 	},
 	{
-		input: '\r', // done
+		input: '\r',
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Send')
 	},
-	{
-		input: '\r', // i dont know if we need it, we have shift + enter
-		modifierFlags: constants.keyModifierAlternate,
-		discoverabilityTitle: I18n.t('New_line')
-	},
-	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({ // done
+	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
 		input: `${ value }`,
 		modifierFlags: constants.keyModifierCommand
 	}))),
-	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({ // done
+	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
 		input: `${ value }`,
-		// eslint-disable-next-line no-bitwise
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate
 	})))
 ];
@@ -120,7 +111,6 @@ export const commandHandle = (event, key, flags = []) => {
 	const { input, modifierFlags } = event;
 	let _flags = 0;
 	if (flags.includes('command') && flags.includes('alternate')) {
-		// eslint-disable-next-line no-bitwise
 		_flags = constants.keyModifierCommand | constants.keyModifierAlternate;
 	} else if (flags.includes('command')) {
 		_flags = constants.keyModifierCommand;

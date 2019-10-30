@@ -582,7 +582,7 @@ class RoomsListView extends React.Component {
 
 	handleCommands = ({ event }) => {
 		const { chats } = this.state;
-		const { navigation } = this.props;
+		const { navigation, server } = this.props;
 		const { input } = event;
 		if (commandHandle(event, 'p', ['command'])) {
 			navigation.toggleDrawer();
@@ -600,6 +600,8 @@ class RoomsListView extends React.Component {
 			}
 		} else if (commandHandle(event, 'e', ['command'])) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
+		} else if (commandHandle(event, 'l', ['command', 'alternate'])) {
+			navigation.navigate('OnboardingView', { previousServer: server });
 		}
 	};
 

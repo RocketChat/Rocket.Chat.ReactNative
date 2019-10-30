@@ -580,7 +580,7 @@ export default class Root extends React.Component {
 									onNavigationStateChange={onNavigationStateChange}
 								/>
 							</View>
-							{ isTablet() && tablet && inside ? (
+							{ tablet && inside ? (
 								<>
 									{ this.renderRight() }
 									<ModalContainer
