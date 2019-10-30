@@ -155,7 +155,7 @@ export default function subscribeRooms() {
 							sub.prepareDestroyPermanently(),
 							...messagesToDelete,
 							...threadsToDelete,
-							...threadMessagesToDelete,
+							...threadMessagesToDelete
 						);
 					});
 				} catch (e) {

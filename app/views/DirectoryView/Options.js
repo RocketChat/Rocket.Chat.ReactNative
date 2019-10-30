@@ -39,7 +39,7 @@ export default class DirectoryOptions extends PureComponent {
 			{
 				toValue: 1,
 				...ANIMATION_PROPS
-			},
+			}
 		).start();
 	}
 
@@ -50,7 +50,7 @@ export default class DirectoryOptions extends PureComponent {
 			{
 				toValue: 0,
 				...ANIMATION_PROPS
-			},
+			}
 		).start(() => close());
 	}
 
