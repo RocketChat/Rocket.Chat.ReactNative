@@ -19,7 +19,6 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import LayoutAnimation from './utils/layoutAnimation';
 
 useScreens();
 
@@ -313,14 +312,12 @@ export default class Root extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<LayoutAnimation>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
-				</LayoutAnimation>
+				<App
+					ref={(navigatorRef) => {
+						Navigation.setTopLevelNavigator(navigatorRef);
+					}}
+					onNavigationStateChange={onNavigationStateChange}
+				/>
 			</Provider>
 		);
 	}
