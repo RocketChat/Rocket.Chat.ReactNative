@@ -374,7 +374,13 @@ class LoginSignupView extends React.Component {
 			);
 		}
 		return (
-			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
+			<RectButton
+				key={service.name}
+				onPress={onPress}
+				style={styles.serviceButton}
+				underlayColor={themes[theme].bannerBackground}
+				activeOpacity={1}
+			>
 				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>

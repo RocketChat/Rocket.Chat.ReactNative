@@ -256,8 +256,8 @@ class Sidebar extends Component {
 				<ScrollView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} {...scrollPersistTaps}>
 					<RectButton
 						onPress={this.toggleStatus}
-						underlayColor={COLOR_TEXT}
-						activeOpacity={0.1}
+						underlayColor={themes[theme].bannerBackground}
+						activeOpacity={1}
 						testID='sidebar-toggle-status'
 						style={styles.header}
 					>

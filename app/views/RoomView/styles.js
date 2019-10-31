@@ -62,7 +62,6 @@ export default StyleSheet.create({
 	},
 	previewMode: {
 		fontSize: 16,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textMedium
 	}
 });

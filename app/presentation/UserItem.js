@@ -1,17 +1,16 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '../containers/Avatar';
-import Touch from '../utils/touch';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../constants/colors';
+import { COLOR_PRIMARY, themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
-		height: 54,
-		backgroundColor: COLOR_WHITE
+		height: 54
 	},
 	container: {
 		flexDirection: 'row'
@@ -45,8 +44,15 @@ const styles = StyleSheet.create({
 const UserItem = ({
 	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user, theme
 }) => (
-	<Touch onPress={onPress} onLongPress={onLongPress} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]} testID={testID}>
-		<View style={[styles.container, style]}>
+	<RectButton
+		onPress={onPress}
+		onLongPress={onLongPress} // TODO
+		underlayColor={themes[theme].bannerBackground}
+		style={{ backgroundColor: themes[theme].backgroundColor }}
+		activeOpacity={1}
+		testID={testID}
+	>
+		<View style={[styles.container, styles.button, style]}>
 			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 			<View style={styles.textContainer}>
 				<Text style={[styles.name, { color: themes[theme].titleText }]}>{name}</Text>
@@ -54,7 +60,7 @@ const UserItem = ({
 			</View>
 			{icon ? <CustomIcon name={icon} size={22} style={styles.icon} /> : null}
 		</View>
-	</Touch>
+	</RectButton>
 );
 
 UserItem.propTypes = {

@@ -699,17 +699,17 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<RectButton
 						onPress={this.joinRoom}
 						style={styles.joinRoomButton}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
 					>
 						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
@@ -719,14 +719,14 @@ class RoomView extends React.Component {
 		if (this.isReadOnly) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}

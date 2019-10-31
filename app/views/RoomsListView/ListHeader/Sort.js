@@ -38,6 +38,7 @@ const Sort = React.memo(({
 Sort.propTypes = {
 	searchLength: PropTypes.number,
 	sortBy: PropTypes.string,
+	theme: PropTypes.string,
 	toggleSort: PropTypes.func
 };
 

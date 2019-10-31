@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
+import { RectButton } from 'react-native-gesture-handler';
 
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -15,7 +16,6 @@ import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import log from '../utils/log';
-import Touch from '../utils/touch';
 import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
@@ -148,12 +148,18 @@ class NewMessageView extends React.Component {
 		return (
 			<View>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-				<Touch onPress={this.createChannel} style={styles.createChannelButton} testID='new-message-view-create-channel'>
+				<RectButton
+					onPress={this.createChannel}
+					style={styles.createChannelButton}
+					underlayColor={themes[theme].bannerBackground}
+					activeOpacity={1}
+					testID='new-message-view-create-channel'
+				>
 					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
 					</View>
-				</Touch>
+				</RectButton>
 			</View>
 		);
 	}

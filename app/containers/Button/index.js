@@ -72,7 +72,7 @@ export default class Button extends React.PureComponent {
 		return (
 			<RectButton
 				onPress={onPress}
-				enabled={!(disabled || loading)}
+				enabled={!(disabled || loading)} // TODO
 				style={[
 					styles.container,
 					backgroundColor ? { backgroundColor } : styles[`background_${ type }`],

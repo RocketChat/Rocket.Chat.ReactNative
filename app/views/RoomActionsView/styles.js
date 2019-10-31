@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
-import {
-	COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER, COLOR_WHITE
-} from '../../constants/colors';
+import { COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -14,7 +12,6 @@ export default StyleSheet.create({
 		backgroundColor: '#F6F7F9'
 	},
 	sectionItem: {
-		backgroundColor: COLOR_WHITE,
 		paddingVertical: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -24,18 +21,15 @@ export default StyleSheet.create({
 	},
 	sectionItemIcon: {
 		width: 56,
-		textAlign: 'center',
-		...sharedStyles.textColorNormal
+		textAlign: 'center'
 	},
 	sectionItemName: {
 		flex: 1,
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	sectionItemDescription: {
 		fontSize: 14,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	separator: {
@@ -61,12 +55,10 @@ export default StyleSheet.create({
 	},
 	roomTitle: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	roomDescription: {
 		fontSize: 13,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {

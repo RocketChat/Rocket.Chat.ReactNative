@@ -74,7 +74,13 @@ class LegalView extends React.Component {
 	renderItem = ({ text, route, testID }) => {
 		const { theme } = this.props;
 		return (
-			<RectButton style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]} onPress={() => this.onPressItem({ route })} testID={testID}>
+			<RectButton
+				style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
+				underlayColor={themes[theme].bannerBackground}
+				onPress={() => this.onPressItem({ route })}
+				activeOpacity={1}
+				testID={testID}
+			>
 				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
 				<DisclosureIndicator />
 			</RectButton>

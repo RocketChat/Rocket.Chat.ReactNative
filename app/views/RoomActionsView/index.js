@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
@@ -429,18 +430,19 @@ class RoomActionsView extends React.Component {
 	renderTouchableItem = (subview, item) => {
 		const { theme } = this.props;
 		return (
-			<Touch
+			<RectButton
 				onPress={() => this.onPressTouchable(item)}
-				underlayColor={COLOR_WHITE}
-				activeOpacity={0.5}
+				underlayColor={themes[theme].bannerBackground}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				activeOpacity={1}
 				accessibilityLabel={item.name}
 				accessibilityTraits='button'
 				testID={item.testID}
 			>
-				<View style={[styles.sectionItem, { backgroundColor: themes[theme].backgroundColor }, item.disabled && styles.sectionItemDisabled]}>
+				<View style={[styles.sectionItem, item.disabled && styles.sectionItemDisabled]}>
 					{subview}
 				</View>
-			</Touch>
+			</RectButton>
 		);
 	}
 

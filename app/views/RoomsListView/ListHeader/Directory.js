@@ -31,7 +31,8 @@ const Directory = React.memo(({ goDirectory, theme }) => (
 ));
 
 Directory.propTypes = {
-	goDirectory: PropTypes.func
+	goDirectory: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default withTheme(Directory);

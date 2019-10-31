@@ -103,7 +103,7 @@ export default class DirectoryOptions extends PureComponent {
 						activeOpacity={1}
 						underlayColor={themes[theme].bannerBackground}
 					>
-						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].bodyText }]} size={22} name='arrow-down' />
 						</View>

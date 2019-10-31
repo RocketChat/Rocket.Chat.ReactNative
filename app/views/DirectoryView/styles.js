@@ -20,7 +20,6 @@ export default StyleSheet.create({
 	},
 	toggleDropdownContainer: {
 		height: 47,
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -54,11 +53,12 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
+		// backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	dropdownItemButton: {
-		height: 57,
+		height: 47,
+		marginVertical: 5,
 		justifyContent: 'center'
 	},
 	dropdownItemContainer: {

@@ -56,7 +56,7 @@ const Button = React.memo(({
 		onPress={onPress}
 		activeOpacity={0.1}
 		underlayColor={COLOR_TEXT}
-		enabled={!props.disabled}
+		enabled={!props.disabled} // TODO
 	>
 		<Content {...props} />
 	</RectButton>

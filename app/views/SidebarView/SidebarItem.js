@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
-import { COLOR_TEXT, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const Item = React.memo(({
@@ -14,8 +14,8 @@ const Item = React.memo(({
 		key={testID}
 		testID={testID}
 		onPress={onPress}
-		underlayColor={COLOR_TEXT}
-		activeOpacity={0.1}
+		underlayColor={themes[theme].bannerBackground}
+		activeOpacity={1}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
 	>
 		<View style={styles.itemLeft}>

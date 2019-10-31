@@ -13,7 +13,13 @@ export { ROW_HEIGHT };
 const ServerItem = React.memo(({
 	server, item, onPress, hasCheck, theme
 }) => (
-	<RectButton onPress={onPress} style={[styles.serverItem, { backgroundColor: themes[theme].backgroundColor }]} testID={`rooms-list-header-server-${ item.id }`}>
+	<RectButton
+		onPress={onPress}
+		underlayColor={themes[theme].bannerBackground}
+		style={[styles.serverItem, { backgroundColor: themes[theme].backgroundColor }]}
+		activeOpacity={1}
+		testID={`rooms-list-header-server-${ item.id }`}
+	>
 		<View style={styles.serverItemContainer}>
 			{item.iconURL
 				? (
