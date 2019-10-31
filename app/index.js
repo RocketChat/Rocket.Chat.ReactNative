@@ -21,7 +21,7 @@ import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import { isTablet, setWidth } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
-import KeyCommands, { commandHandle, KEY_COMMAND } from './commands';
+import KeyCommands, { handleCommandCloseModal, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
 import Tablet, { initTabletNav } from './tablet';
 
@@ -441,7 +441,7 @@ export default class Root extends React.Component {
 	}
 
 	handleCommands = ({ event }) => {
-		if (commandHandle(event, 'UIKeyInputEscape')) {
+		if (handleCommandCloseModal(event)) {
 			this.setState({ showModal: false });
 		}
 	}

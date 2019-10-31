@@ -175,6 +175,8 @@ export const handleCommandShowNewMessage = event => commandHandle(event, 'e', ['
 
 export const handleCommandAddNewServer = event => commandHandle(event, 'l', ['command', 'alternate']);
 
+export const handleCommandCloseModal = event => commandHandle(event, 'UIKeyInputEscape');
+
 export default ({ children, style }) => {
 	const onKeyCommand = (event) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
