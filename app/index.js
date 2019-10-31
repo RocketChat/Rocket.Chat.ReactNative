@@ -427,7 +427,7 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 
-		if (isTablet()) {
+		if (isTablet(false)) {
 			initTabletNav(args => this.setState(args));
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -435,7 +435,7 @@ export default class Root extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		if (isTablet()) {
+		if (isTablet(false)) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
