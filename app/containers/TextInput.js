@@ -18,12 +18,10 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textSemibold
 	},
 	input: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal,
 		height: 48,
 		fontSize: 16,
 		paddingLeft: 14,

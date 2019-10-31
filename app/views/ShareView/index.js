@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, TextInput, Image
-} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
@@ -13,16 +11,20 @@ import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
 import Loading from './Loading';
+import TextInput from '../../containers/TextInput';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { withTheme } from '../../theme';
 
 class ShareView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const canSend = navigation.getParam('canSend', true);
 
 		return ({
 			title: I18n.t('Share'),
+			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
+			headerTintColor: themes[screenProps.theme].tintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight:
 				canSend
 					? (
@@ -160,25 +162,25 @@ class ShareView extends React.Component {
 		return fileInfo ? (
 			<View style={styles.mediaContainer}>
 				{this.renderPreview()}
-				<View style={styles.mediaInputContent}>
+				<View style={[styles.mediaInputContent, { borderColor: themes[theme].borderColor }]}>
 					<TextInput
-						style={[styles.mediaNameInput, styles.input]}
+						inputStyle={[styles.mediaNameInput, styles.input]}
 						placeholder={I18n.t('File_name')}
 						onChangeText={name => this.setState({ file: { ...file, name } })}
-						underlineColorAndroid='transparent'
 						defaultValue={file.name}
-						placeholderTextColor={themes[theme].auxiliaryText}
+						containerStyle={styles.inputContainer}
+						theme={theme}
 					/>
 					<TextInput
-						style={[styles.mediaDescriptionInput, styles.input]}
+						inputStyle={[styles.mediaDescriptionInput, styles.input]}
 						placeholder={I18n.t('File_description')}
 						onChangeText={description => this.setState({ file: { ...file, description } })}
-						underlineColorAndroid='transparent'
 						defaultValue={file.description}
 						multiline
 						textAlignVertical='top'
-						placeholderTextColor={themes[theme].auxiliaryText}
 						autoFocus
+						containerStyle={styles.inputContainer}
+						theme={theme}
 					/>
 				</View>
 			</View>
@@ -190,15 +192,15 @@ class ShareView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<TextInput
-				style={[styles.input, styles.textInput]}
+				containerStyle={[styles.content, styles.inputContainer]}
+				inputStyle={[styles.input, styles.textInput]}
 				placeholder=''
 				onChangeText={handleText => this.setState({ value: handleText })}
-				underlineColorAndroid='transparent'
 				defaultValue={value}
 				multiline
 				textAlignVertical='top'
-				placeholderTextColor={themes[theme].auxiliaryText}
 				autoFocus
+				theme={theme}
 			/>
 		);
 	}

@@ -71,18 +71,20 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
+	inputContainer: {
+		marginBottom: 0
+	},
 	textInput: {
-		flex: 1,
-		paddingHorizontal: 16
+		height: '100%'
 	},
 	mediaNameInput: {
-		marginLeft: 16,
+		paddingLeft: 16,
 		paddingRight: 16,
 		paddingVertical: 8,
 		...sharedStyles.separatorBottom
 	},
 	mediaDescriptionInput: {
-		marginLeft: 16,
+		paddingLeft: 16,
 		paddingRight: 16,
 		paddingVertical: 8,
 		height: 100
