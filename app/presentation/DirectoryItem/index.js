@@ -10,11 +10,11 @@ import { themes } from '../../constants/colors';
 
 export { ROW_HEIGHT };
 
-const DirectoryItemLabel = React.memo(({ text }) => {
+const DirectoryItemLabel = React.memo(({ text, theme }) => {
 	if (!text) {
 		return null;
 	}
-	return <Text style={styles.directoryItemLabel}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme].auxiliaryText }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -38,7 +38,7 @@ const DirectoryItem = ({
 				</View>
 				{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{description}</Text> : null }
 			</View>
-			<DirectoryItemLabel text={rightLabel} />
+			<DirectoryItemLabel text={rightLabel} theme={theme} />
 		</View>
 	</Touch>
 );
@@ -61,7 +61,8 @@ DirectoryItem.propTypes = {
 };
 
 DirectoryItemLabel.propTypes = {
-	text: PropTypes.string
+	text: PropTypes.string,
+	theme: PropTypes.string
 };
 
 export default DirectoryItem;
