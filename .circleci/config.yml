@@ -257,6 +257,8 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
+            rm -rf /Users/distiller/.rubies/ruby-2.6.4/bin/bundle
+            sudo gem install bundler
             sudo bundle install
           working_directory: ios
 
