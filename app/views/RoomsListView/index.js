@@ -45,7 +45,16 @@ import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import EventEmitter from '../../utils/events';
-import { KEY_COMMAND, commandHandle } from '../../commands';
+import {
+	KEY_COMMAND,
+	handleCommandShowPreferences,
+	handleCommandSearching,
+	handleCommandSelectRoom,
+	handleCommandPreviousRoom,
+	handleCommandNextRoom,
+	handleCommandShowNewMessage,
+	handleCommandAddNewServer
+} from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 
 const SCROLL_OFFSET = 56;
@@ -585,23 +594,25 @@ class RoomsListView extends React.Component {
 		const { chats } = this.state;
 		const { navigation, server } = this.props;
 		const { input } = event;
-		if (commandHandle(event, 'p', ['command'])) {
+		if (handleCommandShowPreferences(event)) {
 			navigation.toggleDrawer();
-		} else if (commandHandle(event, 'f', ['command', 'alternate'])) {
+		} else if (handleCommandSearching(event)) {
 			this.inputRef.focus();
-		} else if (commandHandle(event, '123456789', ['command']) && chats[input - 1]) {
-			this.goRoom(chats[input - 1]);
-		} else if (commandHandle(event, '[', ['command'])) {
+		} else if (handleCommandSelectRoom(event)) {
+			if (chats[input - 1]) {
+				this.goRoom(chats[input - 1]);
+			}
+		} else if (handleCommandPreviousRoom(event)) {
 			if (chats[this.idx - 1]) {
 				this.goRoom(chats[this.idx - 1]);
 			}
-		} else if (commandHandle(event, ']', ['command'])) {
+		} else if (handleCommandNextRoom(event)) {
 			if (chats[this.idx + 1]) {
 				this.goRoom(chats[this.idx + 1]);
 			}
-		} else if (commandHandle(event, 'e', ['command'])) {
+		} else if (handleCommandShowNewMessage(event)) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
-		} else if (commandHandle(event, 'l', ['command', 'alternate'])) {
+		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('OnboardingView', { previousServer: server });
 		}
 	};

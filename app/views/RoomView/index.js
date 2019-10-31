@@ -38,7 +38,13 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
-import { KEY_COMMAND, commandHandle } from '../../commands';
+import {
+	KEY_COMMAND,
+	handleCommandScroll,
+	handleCommandRoomActions,
+	handleCommandSearchMessages,
+	handleCommandReplyLatest
+} from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
 
 const stateAttrsUpdate = [
@@ -629,16 +635,16 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		const { navigation } = this.props;
 		const { input } = event;
-		if (commandHandle(event, ['UIKeyInputUpArrow', 'UIKeyInputDownArrow'], ['alternate'])) {
+		if (handleCommandScroll(event)) {
 			const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 			this.offset += offset;
 			this.flatList.scrollToOffset({ offset: this.offset });
-		} else if (commandHandle(event, 'b', ['command'])) {
+		} else if (handleCommandRoomActions(event)) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-		} else if (commandHandle(event, 'f', ['command'])) {
+		} else if (handleCommandSearchMessages(event)) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
-		} else if (commandHandle(event, ';', ['command'])) {
+		} else if (handleCommandReplyLatest(event)) {
 			this.onReplyInit(this.lastItem, false);
 		}
 	}

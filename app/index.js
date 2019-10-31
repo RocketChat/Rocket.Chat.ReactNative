@@ -86,7 +86,7 @@ const OutsideStackModal = createStackNavigator({
 	headerMode: 'none'
 });
 
-const ChatsRoutes = {
+const RoomRoutes = {
 	RoomView: {
 		getScreen: () => require('./views/RoomView').default
 	},
@@ -136,14 +136,14 @@ const ChatsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
-	...ChatsRoutes
+	...RoomRoutes
 }, {
 	defaultNavigationOptions: defaultHeader
 });
 
 // Inside
 const RoomStack = createStackNavigator({
-	...ChatsRoutes
+	...RoomRoutes
 }, {
 	defaultNavigationOptions: defaultHeader
 });

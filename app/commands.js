@@ -145,6 +145,36 @@ export const commandHandle = (event, key, flags = []) => {
 	return key.includes(input) && modifierFlags === _flags;
 };
 
+export const handleCommandTyping = event => commandHandle(event, '\t');
+
+export const handleCommandSubmit = event => commandHandle(event, '\r');
+
+export const handleCommandShowUpload = event => commandHandle(event, 'u', ['command']);
+
+export const handleCommandScroll = event => commandHandle(event, ['UIKeyInputUpArrow', 'UIKeyInputDownArrow'], ['alternate']);
+
+export const handleCommandRoomActions = event => commandHandle(event, 'b', ['command']);
+
+export const handleCommandSearchMessages = event => commandHandle(event, 'f', ['command']);
+
+export const handleCommandReplyLatest = event => commandHandle(event, ';', ['command']);
+
+export const handleCommandSelectServer = event => commandHandle(event, '123456789', ['command', 'alternate']);
+
+export const handleCommandShowPreferences = event => commandHandle(event, 'p', ['command']);
+
+export const handleCommandSearching = event => commandHandle(event, 'f', ['command', 'alternate']);
+
+export const handleCommandSelectRoom = event => commandHandle(event, '123456789', ['command']);
+
+export const handleCommandPreviousRoom = event => commandHandle(event, '[', ['command']);
+
+export const handleCommandNextRoom = event => commandHandle(event, ']', ['command']);
+
+export const handleCommandShowNewMessage = event => commandHandle(event, 'e', ['command']);
+
+export const handleCommandAddNewServer = event => commandHandle(event, 'l', ['command', 'alternate']);
+
 export default ({ children, style }) => {
 	const onKeyCommand = (event) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });

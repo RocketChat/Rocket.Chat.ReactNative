@@ -28,7 +28,12 @@ import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
-import { KEY_COMMAND, commandHandle } from '../../commands';
+import {
+	KEY_COMMAND,
+	handleCommandTyping,
+	handleCommandSubmit,
+	handleCommandShowUpload
+} from '../../commands';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -735,11 +740,11 @@ class MessageBox extends Component {
 	}
 
 	handleCommands = ({ event }) => {
-		if (commandHandle(event, '\t')) {
+		if (handleCommandTyping(event)) {
 			this.component.focus();
-		} else if (commandHandle(event, '\r')) {
+		} else if (handleCommandSubmit(event)) {
 			this.submit();
-		} else if (commandHandle(event, 'u', ['command'])) {
+		} else if (handleCommandShowUpload(event)) {
 			this.showFileActions();
 		}
 	}

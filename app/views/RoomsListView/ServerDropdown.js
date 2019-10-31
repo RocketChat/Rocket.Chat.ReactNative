@@ -18,7 +18,7 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
-import { KEY_COMMAND, commandHandle } from '../../commands';
+import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 
 const ROW_HEIGHT = 68;
@@ -145,7 +145,7 @@ class ServerDropdown extends Component {
 		const { servers } = this.state;
 		const { navigation } = this.props;
 		const { input } = event;
-		if (commandHandle(event, '123456789', ['command', 'alternate'])) {
+		if (handleCommandSelectServer(event)) {
 			if (servers[input - 1]) {
 				this.select(servers[input - 1].id);
 				navigation.navigate('RoomView');
