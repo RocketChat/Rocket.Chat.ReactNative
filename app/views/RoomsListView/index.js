@@ -46,7 +46,7 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import EventEmitter from '../../utils/events';
 import { KEY_COMMAND, commandHandle } from '../../commands';
-import { SIDEBAR_WIDTH } from '../../constants/tablet';
+import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 
 const SCROLL_OFFSET = 56;
 
@@ -664,7 +664,7 @@ class RoomsListView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
-				width={isTablet() ? SIDEBAR_WIDTH : width}
+				width={isTablet() ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}

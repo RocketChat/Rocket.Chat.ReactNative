@@ -8,101 +8,122 @@ import { isTablet } from './utils/deviceInfo';
 
 const keyCommands = [
 	{
+		// Focus messageBox
 		input: '\t',
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Type_message')
 	},
 	{
+		// Open Preferences Modal
 		input: 'p',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Preferences')
 	},
 	{
+		// Focus Room Search
 		input: 'f',
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Room_search')
 	},
 	{
+		// Select a room by order using 1-9
 		input: '1...9',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_selection')
 	},
 	{
+		// Change room to next on Rooms List
 		input: ']',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Next_room')
 	},
 	{
+		// Change room to previous on Rooms List
 		input: '[',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Previous_room')
 	},
 	{
+		// Open New Room Modal
 		input: 'e', // it should be n
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('New_room')
 	},
 	{
+		// Open Room Actions
 		input: 'b', // it should be i
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_actions')
 	},
 	{
+		// Upload a file to room
 		input: 'u',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
 	{
+		// Search Messages on current room
 		input: 'f',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Search_messages')
 	},
 	{
+		// Scroll messages on current room
 		input: '↑ ↓',
 		modifierFlags: constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Scroll_messages')
 	},
 	{
+		// Scroll up messages on current room
 		input: constants.keyInputUpArrow,
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
+		// Scroll down messages on current room
 		input: constants.keyInputDownArrow,
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
+		// Close modal
 		input: constants.keyInputEscape,
 		modifierFlags: 0
 	},
 	{
+		// Reply latest message with Quote
 		input: ';',
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Reply_latest')
 	},
 	{
+		// Open server dropdown
 		input: 'o', // it should be (`)
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection')
 	},
 	{
+		// Select a server by order using 1-9
 		input: '1...9',
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection_numbers')
 	},
 	{
+		// Navigate to add new server
 		input: 'l', // it should be n
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
 	},
 	{
+		// Send message on textInput to current room
 		input: '\r',
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Send')
 	},
+	// Refers to select rooms on list
 	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
 		input: `${ value }`,
 		modifierFlags: constants.keyModifierCommand
 	}))),
+	// Refers to select servers on list
 	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
 		input: `${ value }`,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate

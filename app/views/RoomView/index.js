@@ -723,7 +723,9 @@ class RoomView extends React.Component {
 		} = this.state;
 		const { navigation } = this.props;
 
-		if (!this.rid) { return null; }
+		if (!this.rid) {
+			return null;
+		}
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>

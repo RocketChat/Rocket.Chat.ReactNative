@@ -7,7 +7,7 @@ import KeyCommands from './commands';
 import Navigation from './lib/Navigation';
 import { isTablet } from './utils/deviceInfo';
 import { App, RoomContainer, ModalContainer } from './index';
-import { SIDEBAR_WIDTH } from './constants/tablet';
+import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 
 import sharedStyles from './views/Styles';
@@ -127,7 +127,7 @@ const Tablet = ({
 		const split = tablet && inside;
 		return (
 			<View style={sharedStyles.containerSplitView} onLayout={onLayout}>
-				<View style={[sharedStyles.container, split && { maxWidth: SIDEBAR_WIDTH }]}>
+				<View style={[sharedStyles.container, split && { maxWidth: MAX_SIDEBAR_WIDTH }]}>
 					{children}
 				</View>
 				{renderSplit(split)}
