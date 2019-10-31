@@ -56,7 +56,6 @@ class ShareListView extends React.Component {
 		}
 
 		return {
-			headerBackTitle: null,
 			headerStyle: { backgroundColor: themes[screenProps.theme].backgroundColor },
 			headerLeft: searching
 				? (

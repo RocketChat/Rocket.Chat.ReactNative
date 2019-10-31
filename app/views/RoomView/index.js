@@ -68,7 +68,6 @@ class RoomView extends React.Component {
 		return {
 			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
 			headerTintColor: themes[screenProps.theme].tintColor,
-			headerBackTitle: null,
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}

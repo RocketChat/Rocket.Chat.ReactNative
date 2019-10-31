@@ -64,7 +64,7 @@ const OutsideStack = createStackNavigator({
 		getScreen: () => require('./views/LegalView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 const AuthenticationWebViewStack = createStackNavigator({
@@ -72,7 +72,7 @@ const AuthenticationWebViewStack = createStackNavigator({
 		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 const OutsideStackModal = createStackNavigator({
@@ -132,7 +132,7 @@ const ChatsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -150,7 +150,7 @@ const ProfileStack = createStackNavigator({
 		getScreen: () => require('./views/ProfileView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 ProfileStack.navigationOptions = ({ navigation }) => {
@@ -171,7 +171,7 @@ const SettingsStack = createStackNavigator({
 		getScreen: () => require('./views/LanguageView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 const AdminPanelStack = createStackNavigator({
@@ -179,7 +179,7 @@ const AdminPanelStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 SettingsStack.navigationOptions = ({ navigation }) => {
@@ -213,7 +213,7 @@ const NewMessageStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	// defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader
 });
 
 const InsideStackModal = createStackNavigator({
@@ -238,7 +238,8 @@ class CustomInsideStack extends React.Component {
 	static router = InsideStackModal.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {

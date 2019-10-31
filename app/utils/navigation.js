@@ -3,14 +3,14 @@ import { analytics, leaveBreadcrumb } from './log';
 import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
 
 export const defaultHeader = {
-	headerStyle: {
-		backgroundColor: HEADER_BACKGROUND
-	},
-	headerTitleStyle: {
-		color: HEADER_TITLE
-	},
-	headerBackTitle: null,
-	headerTintColor: HEADER_BACK
+	// headerStyle: {
+	// 	backgroundColor: HEADER_BACKGROUND
+	// },
+	// headerTitleStyle: {
+	// 	color: HEADER_TITLE
+	// },
+	headerBackTitle: null
+	// headerTintColor: HEADER_BACK
 };
 
 // gets the current screen from navigation state
