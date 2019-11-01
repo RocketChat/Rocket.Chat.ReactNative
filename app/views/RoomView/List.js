@@ -187,11 +187,11 @@ export class List extends React.Component {
 					style={styles.list}
 					inverted
 					removeClippedSubviews={isIOS}
-					// initialNumToRender={7}
+					initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					// onEndReachedThreshold={5}
-					// maxToRenderPerBatch={5}
-					// windowSize={10}
+					onEndReachedThreshold={5}
+					maxToRenderPerBatch={5}
+					windowSize={10}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
