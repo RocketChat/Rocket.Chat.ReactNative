@@ -30,7 +30,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE, HEADER_BACK, themes } from '../../constants/colors';
+import { HEADER_BACK, themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';

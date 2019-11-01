@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { RectButton } from 'react-native-gesture-handler';
 
-import Touch from '../../utils/touch';
 import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
 import { setPreference } from '../../actions/sortPreferences';
@@ -13,6 +13,8 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
+import { withTheme } from '../../theme';
+import { themes } from '../../constants/colors';
 
 const ANIMATION_DURATION = 200;
 
@@ -24,7 +26,8 @@ class Sort extends PureComponent {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		setSortPreference: PropTypes.func
+		setSortPreference: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -110,7 +113,7 @@ class Sort extends PureComponent {
 			outputRange: [0, 0.3]
 		});
 		const {
-			sortBy, groupByType, showFavorites, showUnread
+			sortBy, groupByType, showFavorites, showUnread, theme
 		} = this.props;
 
 		return (
@@ -120,54 +123,93 @@ class Sort extends PureComponent {
 				</TouchableWithoutFeedback>
 				<Animated.View
 					key='sort-container'
-					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
+					style={[
+						styles.dropdownContainer,
+						{
+							transform: [{ translateY }],
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
+					]}
 				>
-					<Touch
-						key='sort-toggle'
+					<RectButton
 						onPress={this.close}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
 						style={styles.dropdownContainerHeader}
+						key='sort-toggle'
 					>
 						<View style={styles.sortItemContainer}>
 							<Text style={styles.sortToggleText}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 							<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 						</View>
-					</Touch>
-					<Touch key='sort-alphabetical' style={styles.sortItemButton} onPress={this.sortByName}>
+					</RectButton>
+					<RectButton
+						onPress={this.sortByName}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
+						style={styles.sortItemButton}
+						key='sort-alphabetical'
+					>
 						<View style={styles.sortItemContainer}>
 							<CustomIcon style={styles.sortIcon} size={22} name='sort' />
 							<Text style={styles.sortItemText}>{I18n.t('Alphabetical')}</Text>
 							{sortBy === 'alphabetical' ? <Check /> : null}
 						</View>
-					</Touch>
-					<Touch key='sort-activity' style={styles.sortItemButton} onPress={this.sortByActivity}>
+					</RectButton>
+					<RectButton
+						onPress={this.sortByActivity}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
+						style={styles.sortItemButton}
+						key='sort-activity'
+					>
 						<View style={styles.sortItemContainer}>
 							<Image style={styles.sortIcon} source={{ uri: 'sort_activity' }} />
 							<Text style={styles.sortItemText}>{I18n.t('Activity')}</Text>
 							{sortBy === 'activity' ? <Check /> : null}
 						</View>
-					</Touch>
+					</RectButton>
 					<View style={styles.sortSeparator} />
-					<Touch key='group-type' style={styles.sortItemButton} onPress={this.toggleGroupByType}>
+					<RectButton
+						onPress={this.toggleGroupByType}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
+						style={styles.sortItemButton}
+						key='group-type'
+					>
 						<View style={styles.sortItemContainer}>
 							<CustomIcon style={styles.sortIcon} size={22} name='sort1' />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_type')}</Text>
 							{groupByType ? <Check /> : null}
 						</View>
-					</Touch>
-					<Touch key='group-favorites' style={styles.sortItemButton} onPress={this.toggleGroupByFavorites}>
+					</RectButton>
+					<RectButton
+						onPress={this.toggleGroupByFavorites}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
+						style={styles.sortItemButton}
+						key='group-favorites'
+					>
 						<View style={styles.sortItemContainer}>
 							<CustomIcon style={styles.sortIcon} size={22} name='star' />
 							<Text style={styles.sortItemText}>{I18n.t('Group_by_favorites')}</Text>
 							{showFavorites ? <Check /> : null}
 						</View>
-					</Touch>
-					<Touch key='group-unread' style={styles.sortItemButton} onPress={this.toggleUnread}>
+					</RectButton>
+					<RectButton
+						onPress={this.toggleUnread}
+						activeOpacity={1}
+						underlayColor={themes[theme].bannerBackground}
+						style={styles.sortItemButton}
+						key='group-unread'
+					>
 						<View style={styles.sortItemContainer}>
 							<CustomIcon style={styles.sortIcon} size={22} name='eye-off' />
 							<Text style={styles.sortItemText}>{I18n.t('Unread_on_top')}</Text>
 							{showUnread ? <Check /> : null}
 						</View>
-					</Touch>
+					</RectButton>
 				</Animated.View>
 			</>
 		);
@@ -182,4 +224,4 @@ const mapDispatchToProps = dispatch => ({
 	setSortPreference: preference => dispatch(setPreference(preference))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sort);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sort));
