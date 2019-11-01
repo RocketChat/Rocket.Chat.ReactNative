@@ -33,7 +33,9 @@ import {
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
-import { isIOS, isAndroid, isTablet, isSplited } from '../../utils/deviceInfo';
+import {
+	isIOS, isAndroid, isTablet, isSplited
+} from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
