@@ -28,7 +28,8 @@ import {
 	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction,
-	roomsRequest as roomsRequestAction
+	roomsRequest as roomsRequestAction,
+	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
@@ -143,7 +144,8 @@ class RoomsListView extends React.Component {
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func
+		roomsRequest: PropTypes.func,
+		closeServerDropdown: PropTypes.func
 	};
 
 	constructor(props) {
@@ -181,10 +183,13 @@ class RoomsListView extends React.Component {
 				this.handleBackPress
 			);
 		});
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener(
-			'hardwareBackPress',
-			this.handleBackPress
-		));
+		this.willBlurListener = props.navigation.addListener('willBlur', () => {
+			props.closeServerDropdown();
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+		});
 	}
 
 	componentDidMount() {
@@ -372,7 +377,7 @@ class RoomsListView extends React.Component {
 
 			// unread
 			if (showUnread) {
-				unread = chats.filter(s => s.unread > 0 || s.alert);
+				unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
 			} else {
 				unread = [];
 			}
@@ -391,7 +396,7 @@ class RoomsListView extends React.Component {
 				privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				direct = chats.filter(s => s.t === 'd' && !s.prid);
 			} else if (showUnread) {
-				chats = chats.filter(s => !s.unread && !s.alert);
+				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
 			}
 
 			this.internalSetState({
@@ -608,6 +613,7 @@ class RoomsListView extends React.Component {
 				theme={theme}
 				alert={item.alert}
 				unread={item.unread}
+				hideUnreadStatus={item.hideUnreadStatus}
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
@@ -834,7 +840,8 @@ const mapDispatchToProps = dispatch => ({
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
 	roomsRequest: () => dispatch(roomsRequestAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomsListView));

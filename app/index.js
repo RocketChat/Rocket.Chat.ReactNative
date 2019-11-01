@@ -20,7 +20,6 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import LayoutAnimation from './utils/layoutAnimation';
 import { ThemeContext } from './theme';
 
 useScreens();
@@ -332,15 +331,13 @@ export default class Root extends React.Component {
 				<ThemeContext.Provider
 					value={{ theme, setTheme: this.setTheme }}
 				>
-					<LayoutAnimation>
-						<App
-							ref={(navigatorRef) => {
-								Navigation.setTopLevelNavigator(navigatorRef);
-							}}
-							screenProps={{ theme }}
-							onNavigationStateChange={onNavigationStateChange}
-						/>
-					</LayoutAnimation>
+					<App
+						ref={(navigatorRef) => {
+							Navigation.setTopLevelNavigator(navigatorRef);
+						}}
+						screenProps={{ theme }}
+						onNavigationStateChange={onNavigationStateChange}
+					/>
 				</ThemeContext.Provider>
 			</Provider>
 		);

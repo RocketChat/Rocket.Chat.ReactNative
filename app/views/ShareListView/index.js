@@ -299,7 +299,7 @@ class ShareListView extends React.Component {
 		return (
 			<DirectoryItem
 				user={{
-					userId,
+					id: userId,
 					token
 				}}
 				title={this.getRoomTitle(item)}

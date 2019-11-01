@@ -11,7 +11,6 @@ import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
-import LayoutAnimation from './utils/layoutAnimation';
 import { ThemeContext } from './theme';
 
 const InsideNavigator = createStackNavigator({
@@ -89,15 +88,13 @@ class Root extends React.Component {
 					<ThemeContext.Provider
 						value={{ theme: 'dark', setTheme: theme => console.log(theme) }}
 					>
-						<LayoutAnimation>
-							<AppContainer
-								ref={(navigatorRef) => {
-									Navigation.setTopLevelNavigator(navigatorRef);
-								}}
-								onNavigationStateChange={onNavigationStateChange}
-								screenProps={{ theme: 'dark' }}
-							/>
-						</LayoutAnimation>
+						<AppContainer
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							onNavigationStateChange={onNavigationStateChange}
+							screenProps={{ theme: 'dark' }}
+						/>
 					</ThemeContext.Provider>
 				</Provider>
 			</View>

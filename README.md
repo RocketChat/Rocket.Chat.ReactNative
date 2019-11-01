@@ -68,7 +68,7 @@ Readme will guide you on how to config.
 ## Features
 | Feature                                                   	    | Status 	|
 |---------------------------------------------------------------	|--------	|
-| Jitsi Integration                                             	| ❌    	|
+| Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
 | Discussions                                                     | ❌    	|
 | Threads                                                       	| ✅    	|
@@ -98,11 +98,11 @@ Readme will guide you on how to config.
 | Unread counter banner on message list                         	| ✅    	|
 | E2E Encryption                                                 	| ❌    	|
 | Join a Protected Room                                         	| ❌    	|
-| Optional Analytics                                            	| ❌    	|
+| Optional Analytics                                            	| ✅    	|
 | Settings -> About us                                          	| ❌    	|
 | Settings -> Contact us                                        	| ✅    	|
 | Settings -> Update App Icon                                   	| ❌    	|
-| Settings -> Share                                             	| ❌    	|
+| Settings -> Share                                             	| ✅    	|
 | Accessibility (Medium)                                        	| ❌    	|
 | Accessibility (Advanced)                                      	| ❌    	|
 | Authentication via Meteor                                     	| ❌    	|

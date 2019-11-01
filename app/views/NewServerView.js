@@ -166,7 +166,7 @@ class NewServerView extends React.Component {
 						onPress: password => this.saveCertificate({ path, name, password })
 					}
 				],
-				'secure-text',
+				'secure-text'
 			);
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
@@ -191,7 +191,7 @@ class NewServerView extends React.Component {
 			}
 		}
 
-		return url.replace(/\/+$/, '');
+		return url.replace(/\/+$/, '').replace(/\\/g, '/');
 	}
 
 	uriToPath = uri => uri.replace('file://', '');

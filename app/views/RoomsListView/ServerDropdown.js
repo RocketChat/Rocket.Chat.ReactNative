@@ -59,7 +59,7 @@ class ServerDropdown extends Component {
 				duration: ANIMATION_DURATION,
 				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
-			},
+			}
 		).start();
 	}
 

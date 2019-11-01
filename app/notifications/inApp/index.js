@@ -117,7 +117,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 1,
 				...ANIMATION_PROPS
-			},
+			}
 		).start(() => {
 			this.clearTimeout();
 			this.timeout = setTimeout(() => {
@@ -133,7 +133,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 0,
 				...ANIMATION_PROPS
-			},
+			}
 		).start();
 		setTimeout(removeNotification, ANIMATION_DURATION);
 	}
