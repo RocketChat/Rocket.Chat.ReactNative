@@ -741,7 +741,7 @@ class MessageBox extends Component {
 		return (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} />
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 				<View style={styles.composer}>
 					<ReplyPreview
 						message={message}
@@ -752,7 +752,7 @@ class MessageBox extends Component {
 						theme={theme}
 					/>
 					<View
-						style={[styles.textArea, editing && styles.editing, { backgroundColor: themes[theme].focusedBackground }]}
+						style={[styles.textArea, editing && styles.editing, { backgroundColor: themes[theme].backgroundColor }]}
 						testID='messagebox'
 					>
 						<LeftButtons

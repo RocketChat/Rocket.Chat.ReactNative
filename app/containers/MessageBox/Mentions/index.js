@@ -6,7 +6,7 @@ import equal from 'deep-equal';
 import styles from '../styles';
 import MentionItem from './MentionItem';
 
-const Mentions = React.memo(({ mentions, trackingType }) => {
+const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 	if (!trackingType) {
 		return null;
 	}
@@ -16,7 +16,7 @@ const Mentions = React.memo(({ mentions, trackingType }) => {
 			style={styles.mentionList}
 			data={mentions}
 			extraData={mentions}
-			renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} />}
+			renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
 			keyExtractor={item => item.id || item.username || item.command || item}
 			keyboardShouldPersistTaps='always'
 		/>
@@ -33,7 +33,8 @@ const Mentions = React.memo(({ mentions, trackingType }) => {
 
 Mentions.propTypes = {
 	mentions: PropTypes.array,
-	trackingType: PropTypes.string
+	trackingType: PropTypes.string,
+	theme: PropTypes.string
 };
 
 export default Mentions;

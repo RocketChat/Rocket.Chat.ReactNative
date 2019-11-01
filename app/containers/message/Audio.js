@@ -16,7 +16,6 @@ import {
 	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, themes
 } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
-import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	audioContainer: {

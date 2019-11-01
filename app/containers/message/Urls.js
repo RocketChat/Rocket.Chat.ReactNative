@@ -92,7 +92,7 @@ const Url = React.memo(({
 				index > 0 && styles.marginTop,
 				styles.container,
 				{
-					backgroundColor: themes[theme].focusedBackground,
+					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].borderColor
 				}
 			]}

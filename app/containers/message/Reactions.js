@@ -15,7 +15,7 @@ const AddReaction = React.memo(({ reactionInit, theme }) => (
 		onPress={reactionInit}
 		key='message-add-reaction'
 		testID='message-add-reaction'
-		style={[styles.reactionButton, { backgroundColor: themes[theme].focusedBackground }]}
+		style={[styles.reactionButton, { backgroundColor: themes[theme].backgroundColor }]}
 		background={Touchable.Ripple('#fff')}
 		hitSlop={BUTTON_HIT_SLOP}
 	>
@@ -35,7 +35,7 @@ const Reaction = React.memo(({
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${ reaction.emoji }`}
-			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].focusedBackground }]}
+			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
 			background={Touchable.Ripple('#fff')}
 			hitSlop={BUTTON_HIT_SLOP}
 		>

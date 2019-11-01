@@ -150,7 +150,7 @@ const Reply = React.memo(({
 				styles.button,
 				index > 0 && styles.marginTop,
 				{
-					backgroundColor: themes[theme].focusedBackground,
+					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].borderColor
 				}
 			]}

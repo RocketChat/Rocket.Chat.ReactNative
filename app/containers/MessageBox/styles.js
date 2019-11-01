@@ -60,7 +60,6 @@ export default StyleSheet.create({
 		height: MENTION_HEIGHT,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderTopWidth: 1,
-		borderTopColor: COLOR_BORDER,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
