@@ -12,7 +12,6 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
-import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -21,14 +20,15 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { isAndroid } from '../../utils/deviceInfo';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		headerTintColor: !(isAndroid && screenProps.theme === 'light') ? themes[screenProps.theme].tintColor : COLOR_WHITE,
+		headerTitleStyle: { color: !(isAndroid && screenProps.theme === 'light') ? themes[screenProps.theme].titleText : COLOR_WHITE },
 		title: I18n.t('Actions')
 	})
 
@@ -463,10 +463,10 @@ class RoomActionsView extends React.Component {
 	renderSectionSeparator = (data) => {
 		const { theme } = this.props;
 		if (data.trailingItem) {
-			return <View style={[styles.sectionSeparator, data.leadingSection && styles.sectionSeparatorBorder, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]} />;
+			return <View style={[styles.sectionSeparator, data.leadingSection && styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].borderColor }]} />;
 		}
 		if (!data.trailingSection) {
-			return <View style={[styles.sectionSeparatorBorder, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]} />;
+			return <View style={[styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].borderColor }]} />;
 		}
 		return null;
 	}
@@ -477,8 +477,8 @@ class RoomActionsView extends React.Component {
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<SectionList
-					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].focusedBackground }]}
-					style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}
+					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 					stickySectionHeadersEnabled={false}
 					sections={this.sections}
 					SectionSeparatorComponent={this.renderSectionSeparator}
