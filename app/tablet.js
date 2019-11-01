@@ -5,7 +5,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 
 import KeyCommands from './commands';
 import Navigation from './lib/Navigation';
-import { isTablet } from './utils/deviceInfo';
+import { isSplited } from './utils/deviceInfo';
 import { App, RoomContainer, ModalContainer } from './index';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
@@ -23,7 +23,7 @@ export const initTabletNav = (setState) => {
 	const defaultRoom = RoomContainer.router.getStateForAction;
 
 	RoomContainer.router.getStateForAction = (action, state) => {
-		if (action.type === NavigationActions.NAVIGATE && isTablet()) {
+		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
 			const { routeName, params } = action;
 			if (routeName === 'RoomActionsView') {
 				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
@@ -35,11 +35,11 @@ export const initTabletNav = (setState) => {
 	};
 
 	ModalContainer.router.getStateForAction = (action, state) => {
-		if (action.type === 'Navigation/POP' && isTablet()) {
+		if (action.type === 'Navigation/POP' && isSplited()) {
 			modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
 			setState({ showModal: false });
 		}
-		if (action.type === NavigationActions.NAVIGATE && isTablet()) {
+		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
 			const { routeName, params } = action;
 			if (routeName === 'RoomView') {
 				Navigation.navigate(routeName, params);
@@ -49,7 +49,7 @@ export const initTabletNav = (setState) => {
 	};
 
 	App.router.getStateForAction = (action, state) => {
-		if (action.type === NavigationActions.NAVIGATE && isTablet()) {
+		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
@@ -87,7 +87,7 @@ export const initTabletNav = (setState) => {
 				return null;
 			}
 		}
-		if (action.type === 'Navigation/TOGGLE_DRAWER' && isTablet()) {
+		if (action.type === 'Navigation/TOGGLE_DRAWER' && isSplited()) {
 			modalRef.dispatch(NavigationActions.navigate({ routeName: 'SettingsView' }));
 			setState({ showModal: true });
 			return null;
@@ -123,18 +123,15 @@ const Tablet = ({
 		return null;
 	};
 
-	if (isTablet(false)) {
-		const split = tablet && inside;
-		return (
-			<View style={sharedStyles.containerSplitView} onLayout={onLayout}>
-				<View style={[sharedStyles.container, split && { maxWidth: MAX_SIDEBAR_WIDTH }]}>
-					{children}
-				</View>
-				{renderSplit(split)}
+	const split = tablet && inside;
+	return (
+		<View style={sharedStyles.containerSplitView} onLayout={onLayout}>
+			<View style={[sharedStyles.container, split && { maxWidth: MAX_SIDEBAR_WIDTH }]}>
+				{children}
 			</View>
-		);
-	}
-	return children;
+			{renderSplit(split)}
+		</View>
+	);
 };
 
 Tablet.propTypes = {

@@ -36,7 +36,7 @@ import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet, isSplited } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import {
 	KEY_COMMAND,
@@ -94,7 +94,7 @@ class RoomView extends React.Component {
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
-			headerLeft: !isTablet() || tmid ? (
+			headerLeft: !isSplited() || tmid ? (
 				<HeaderBackButton
 					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 					backTitleVisible={isIOS}

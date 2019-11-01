@@ -21,7 +21,7 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
-import { isTablet } from '../../utils/deviceInfo';
+import { isSplited } from '../../utils/deviceInfo';
 import { CloseModalButton } from '../../containers/HeaderButton';
 
 const renderSeparator = () => <View style={styles.separator} />;
@@ -31,7 +31,7 @@ class RoomActionsView extends React.Component {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		if (isTablet()) {
+		if (isSplited()) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;

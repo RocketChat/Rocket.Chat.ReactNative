@@ -20,14 +20,14 @@ import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
 import styles from './styles';
-import { isTablet } from '../../utils/deviceInfo';
+import { isSplited } from '../../utils/deviceInfo';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const options = {
 			title: I18n.t('Directory')
 		};
-		if (isTablet()) {
+		if (isSplited()) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;

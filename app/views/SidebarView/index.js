@@ -21,7 +21,7 @@ import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
-import { isTablet } from '../../utils/deviceInfo';
+import { isSplited } from '../../utils/deviceInfo';
 
 const keyExtractor = item => item.id;
 
@@ -276,9 +276,9 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted]} />
 					</RectButton>
 
-					{!isTablet() || showStatus ? <Separator key='separator-header' /> : null}
+					{!isSplited() || showStatus ? <Separator key='separator-header' /> : null}
 
-					{!showStatus && !isTablet() ? this.renderNavigation() : null}
+					{!showStatus && !isSplited() ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 			</SafeAreaView>

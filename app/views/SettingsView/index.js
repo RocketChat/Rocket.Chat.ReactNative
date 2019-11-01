@@ -17,7 +17,7 @@ import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
-	getReadableVersion, getDeviceModel, isAndroid, isTablet
+	getReadableVersion, getDeviceModel, isAndroid, isTablet, isSplited
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -40,7 +40,7 @@ ItemInfo.propTypes = {
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: isTablet() ? (
+		headerLeft: isSplited() ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
@@ -158,7 +158,7 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					{isTablet() ? (
+					{isSplited() ? (
 						<>
 							<SidebarView />
 							<SectionSeparator />
@@ -243,7 +243,7 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 					/>
 
-					{ isTablet() ? this.renderLogout() : null }
+					{ isSplited() ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
 		);

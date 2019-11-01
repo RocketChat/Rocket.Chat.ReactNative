@@ -4,7 +4,6 @@ import KeyCommands, { constants } from '@envoy/react-native-key-commands';
 
 import I18n from './i18n';
 import EventEmitter from './utils/events';
-import { isTablet } from './utils/deviceInfo';
 
 const keyCommands = [
 	{
@@ -182,16 +181,13 @@ export default ({ children, style }) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
 	};
 
-	if (isTablet(false)) {
-		return (
-			<KeyCommands
-				style={style || { flex: 1 }}
-				keyCommands={keyCommands}
-				onKeyCommand={onKeyCommand}
-			>
-				{children}
-			</KeyCommands>
-		);
-	}
-	return children;
+	return (
+		<KeyCommands
+			style={style || { flex: 1 }}
+			keyCommands={keyCommands}
+			onKeyCommand={onKeyCommand}
+		>
+			{children}
+		</KeyCommands>
+	);
 };

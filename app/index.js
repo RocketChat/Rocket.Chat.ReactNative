@@ -19,7 +19,7 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
-import { isTablet, setWidth } from './utils/deviceInfo';
+import { isTablet, setWidth, isSplited } from './utils/deviceInfo';
 import Modal from './presentation/Modal';
 import KeyCommands, { handleCommandCloseModal, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
@@ -427,7 +427,7 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 
-		if (isTablet(false)) {
+		if (isTablet()) {
 			initTabletNav(args => this.setState(args));
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -435,7 +435,7 @@ export default class Root extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		if (isTablet(false)) {
+		if (isTablet()) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
@@ -470,30 +470,39 @@ export default class Root extends React.Component {
 	}
 
 	onLayout = ({ nativeEvent }) => {
-		if (isTablet(false)) {
+		if (isTablet()) {
 			const { width } = nativeEvent.layout;
 			setWidth(width);
-			this.setState({ tablet: isTablet() });
+			this.setState({ tablet: isSplited() });
 		}
 	};
 
 	render() {
-		const { tablet, inside, showModal } = this.state;
-		return (
-			<Provider store={store}>
+		let content = (
+			<App
+				ref={(navigatorRef) => {
+					Navigation.setTopLevelNavigator(navigatorRef);
+				}}
+				onNavigationStateChange={onNavigationStateChange}
+			/>
+		);
+
+		if (isTablet()) {
+			const { tablet, inside, showModal } = this.state;
+			content = (
 				<Tablet
 					tablet={tablet}
 					inside={inside}
 					showModal={showModal}
 					onLayout={this.onLayout}
 				>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
+					{content}
 				</Tablet>
+			);
+		}
+		return (
+			<Provider store={store}>
+				{content}
 			</Provider>
 		);
 	}
