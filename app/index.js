@@ -3,7 +3,6 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
-// import { enableScreens } from 'react-native-screens';
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -19,8 +18,12 @@ import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
+import { isIOS } from './utils/deviceInfo';
 
-// enableScreens();
+if (isIOS) {
+	const RNScreens = require('react-native-screens');
+	RNScreens.useScreens();
+}
 
 const parseDeepLinking = (url) => {
 	if (url) {
