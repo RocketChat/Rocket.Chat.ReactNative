@@ -165,7 +165,7 @@ class NewServerView extends React.Component {
 						onPress: password => this.saveCertificate({ path, name, password })
 					}
 				],
-				'secure-text',
+				'secure-text'
 			);
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
