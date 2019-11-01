@@ -123,8 +123,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				);
 			}
 
-			if (sub.lastMessage) {
-				const lastMessage = buildMessage(sub.lastMessage);
+			if (tmp.lastMessage) {
+				const lastMessage = buildMessage(tmp.lastMessage);
 				const messagesCollection = db.collections.get('messages');
 				let messageRecord;
 				try {
