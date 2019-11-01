@@ -1,5 +1,6 @@
 /* eslint-disable no-bitwise */
 import React from 'react';
+import PropTypes from 'prop-types';
 import KeyCommands, { constants } from '@envoy/react-native-key-commands';
 
 import I18n from './i18n';
@@ -176,7 +177,7 @@ export const handleCommandAddNewServer = event => commandHandle(event, 'l', ['co
 
 export const handleCommandCloseModal = event => commandHandle(event, 'UIKeyInputEscape');
 
-export default ({ children, style }) => {
+const Commands = ({ children, style }) => {
 	const onKeyCommand = (event) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
 	};
@@ -191,3 +192,10 @@ export default ({ children, style }) => {
 		</KeyCommands>
 	);
 };
+
+Commands.propTypes = {
+	children: PropTypes.node,
+	style: PropTypes.any
+};
+
+export default Commands;
