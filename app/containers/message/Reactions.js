@@ -35,11 +35,11 @@ const Reaction = React.memo(({
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${ reaction.emoji }`}
-			style={[styles.reactionButton, reacted && styles.reactionButtonReacted, { backgroundColor: themes[theme].focusedBackground }]}
+			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].focusedBackground }]}
 			background={Touchable.Ripple('#fff')}
 			hitSlop={BUTTON_HIT_SLOP}
 		>
-			<View style={[styles.reactionContainer, reacted && styles.reactedContainer, { borderColor: themes[theme].borderColor }]}>
+			<View style={[styles.reactionContainer, { borderColor: reacted ? themes[theme].tintColor : themes[theme].borderColor }]}>
 				<Emoji
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}
