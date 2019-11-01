@@ -249,7 +249,7 @@ class LoginSignupView extends React.Component {
 	onPressCas = () => {
 		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
-		const url = `${ CAS_login_url }/?service=${ server }/_cas/${ ssoToken }`;
+		const url = `${ CAS_login_url }?service=${ server }/_cas/${ ssoToken }`;
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
 	}
 
