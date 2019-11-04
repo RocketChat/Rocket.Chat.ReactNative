@@ -60,7 +60,7 @@ class ServerDropdown extends Component {
 				useNativeDriver: true
 			}
 		).start();
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
@@ -95,7 +95,7 @@ class ServerDropdown extends Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}

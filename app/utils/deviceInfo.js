@@ -11,11 +11,11 @@ export const getBundleId = DeviceInfo.getBundleId();
 export const getDeviceModel = DeviceInfo.getModel();
 
 // Tablet info
-export const isTablet = () => DeviceInfo.isTablet();
+export const isTablet = DeviceInfo.isTablet();
 
 // We need to use this when app is used on splitview with another app
 // to handle cases on app view not-larger sufficient to show splited views (room list/room)
 // https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1300#discussion_r341405245
 let _width = null;
 export const setWidth = width => _width = width;
-export const isSplited = () => isTablet() && _width > 700;
+export const isSplited = () => isTablet && _width > 700;

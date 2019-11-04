@@ -9,6 +9,8 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
+import { MAX_CONTENT_WIDTH } from '../../constants/tablet';
+import { isTablet } from '../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	button: {
@@ -16,7 +18,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 6,
-		alignSelf: 'flex-end',
+		alignSelf: 'flex-start',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderColor: COLOR_BORDER,
 		borderWidth: 1,
@@ -146,7 +148,7 @@ const Reply = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop]}
+			style={[styles.button, index > 0 && styles.marginTop, isTablet && { maxWidth: MAX_CONTENT_WIDTH }]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<View style={styles.attachmentContainer}>

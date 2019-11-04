@@ -171,7 +171,7 @@ class MessageBox extends Component {
 			require('./EmojiKeyboard');
 		}
 
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
@@ -251,7 +251,7 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}

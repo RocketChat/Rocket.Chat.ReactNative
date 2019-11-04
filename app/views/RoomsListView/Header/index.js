@@ -25,13 +25,13 @@ class RoomsListHeaderView extends PureComponent {
 	}
 
 	componentDidMount() {
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
 	componentWillUnmount() {
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}

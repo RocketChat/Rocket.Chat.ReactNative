@@ -209,7 +209,7 @@ class RoomView extends React.Component {
 				this.updateUnreadCount();
 			}
 		});
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -294,7 +294,7 @@ class RoomView extends React.Component {
 			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);

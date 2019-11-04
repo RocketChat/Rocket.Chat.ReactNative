@@ -259,7 +259,7 @@ class CustomInsideStack extends React.Component {
 		return (
 			<KeyCommands>
 				<InsideStackModal navigation={navigation} />
-				{ !isTablet() ? (
+				{ !isTablet ? (
 					<>
 						<NotificationBadge navigation={navigation} />
 						<Toast />
@@ -427,7 +427,7 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 
-		if (isTablet()) {
+		if (isTablet) {
 			initTabletNav(args => this.setState(args));
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -435,7 +435,7 @@ export default class Root extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
@@ -470,7 +470,7 @@ export default class Root extends React.Component {
 	}
 
 	onLayout = ({ nativeEvent }) => {
-		if (isTablet()) {
+		if (isTablet) {
 			const { width } = nativeEvent.layout;
 			setWidth(width);
 			this.setState({ tablet: isSplited() });
@@ -487,7 +487,7 @@ export default class Root extends React.Component {
 			/>
 		);
 
-		if (isTablet()) {
+		if (isTablet) {
 			const { tablet, inside, showModal } = this.state;
 			content = (
 				<Tablet

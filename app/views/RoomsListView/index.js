@@ -210,7 +210,7 @@ class RoomsListView extends React.Component {
 			initSearchingAndroid: this.initSearchingAndroid,
 			cancelSearchingAndroid: this.cancelSearchingAndroid
 		});
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
@@ -321,7 +321,7 @@ class RoomsListView extends React.Component {
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
-		if (isTablet()) {
+		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.removeEventListener('change', this.onDimensionsChange);

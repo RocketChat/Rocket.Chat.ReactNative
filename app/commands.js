@@ -183,7 +183,7 @@ const Commands = ({ children, style }) => {
 		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
 	};
 
-	if (isTablet()) {
+	if (isTablet) {
 		return (
 			<KeyCommands
 				style={style || { flex: 1 }}
