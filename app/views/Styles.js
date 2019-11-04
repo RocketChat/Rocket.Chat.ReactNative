@@ -3,6 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 import {
 	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY, HEADER_BACK
 } from '../constants/colors';
+import { MAX_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
 	root: {
@@ -19,6 +20,10 @@ export default StyleSheet.create({
 	containerSplitView: {
 		flex: 1,
 		flexDirection: 'row'
+	},
+	tabletContent: {
+		alignSelf: 'center',
+		width: MAX_CONTENT_WIDTH
 	},
 	buttonContainerLastChild: {
 		marginBottom: 40
