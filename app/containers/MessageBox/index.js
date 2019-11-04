@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, Alert
+	View, TextInput, Alert, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -107,6 +107,7 @@ class MessageBox extends Component {
 		};
 		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.focused = false;
 		this.fileOptions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
@@ -741,7 +742,12 @@ class MessageBox extends Component {
 
 	handleCommands = ({ event }) => {
 		if (handleCommandTyping(event)) {
-			this.component.focus();
+			if (this.focused) {
+				Keyboard.dismiss();
+			} else {
+				this.component.focus();
+			}
+			this.focused = !this.focused;
 		} else if (handleCommandSubmit(event)) {
 			this.submit();
 		} else if (handleCommandShowUpload(event)) {
