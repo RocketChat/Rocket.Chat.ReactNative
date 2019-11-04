@@ -16,6 +16,7 @@ import sharedStyles from './views/Styles';
 
 let modalRef;
 let roomRef;
+let notificationRef;
 
 export const initTabletNav = (setState) => {
 	let inCall = false;
@@ -89,6 +90,7 @@ export const initTabletNav = (setState) => {
 					actions: [NavigationActions.navigate({ routeName, params })]
 				});
 				roomRef.dispatch(resetAction);
+				notificationRef.dispatch(resetAction);
 				setState({ showModal: false });
 				return null;
 			}
@@ -147,7 +149,7 @@ const Tablet = ({
 				{children}
 			</View>
 			{renderSplit(split)}
-			<NotificationContainer />
+			<NotificationContainer ref={ref => notificationRef = ref} />
 		</View>
 	);
 };
