@@ -21,6 +21,7 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
+import Avatar from '../../containers/Avatar';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
@@ -70,6 +71,9 @@ class RoomView extends React.Component {
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const room = navigation.getParam('room');
+		const baseUrl = navigation.getParam('baseUrl');
+		const userId = navigation.getParam('userId');
+		const token = navigation.getParam('token');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		if (!rid) { return null; }
@@ -101,7 +105,17 @@ class RoomView extends React.Component {
 					onPress={() => navigation.goBack()}
 					tintColor={HEADER_BACK}
 				/>
-			) : null
+			) : (
+				<Avatar
+					text={title}
+					size={30}
+					type={t}
+					baseUrl={baseUrl}
+					style={styles.avatar}
+					userId={userId}
+					token={token}
+				/>
+			)
 		};
 	}
 
@@ -171,9 +185,17 @@ class RoomView extends React.Component {
 		this.offset = 0;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
-			const { navigation, isAuthenticated } = this.props;
+			const {
+				navigation, isAuthenticated, user, baseUrl
+			} = this.props;
 			if (room.id && !this.tmid) {
-				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+				navigation.setParams({
+					name: this.getRoomTitle(room),
+					t: room.t,
+					token: user.token,
+					userId: user.id,
+					baseUrl
+				});
 			}
 			if (this.tmid) {
 				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
