@@ -7,9 +7,10 @@ import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isSplited } from '../../utils/deviceInfo';
 
 const margin = isAndroid ? 40 : 20;
+const maxSize = value => (isSplited() ? 400 : value);
 const tabEmojiStyle = { fontSize: 15 };
 
 class ReactionPicker extends React.Component {
@@ -51,12 +52,12 @@ class ReactionPicker extends React.Component {
 					animationOut='fadeOut'
 				>
 					<View
-						style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+						style={[styles.reactionPickerContainer, { width: maxSize(width - margin), height: maxSize(Math.min(width, height) - (margin * 2)) }]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
 							tabEmojiStyle={tabEmojiStyle}
-							width={Math.min(width, height) - margin}
+							width={maxSize(Math.min(width, height) - margin)}
 							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 							baseUrl={baseUrl}
 						/>
