@@ -6,7 +6,9 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import KeyCommands from './commands';
 import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';
-import { App, RoomContainer, ModalContainer } from './index';
+import {
+	App, RoomContainer, ModalContainer, NotificationContainer
+} from './index';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 
@@ -21,6 +23,21 @@ export const initTabletNav = (setState) => {
 	const defaultApp = App.router.getStateForAction;
 	const defaultModal = ModalContainer.router.getStateForAction;
 	const defaultRoom = RoomContainer.router.getStateForAction;
+	const defaultNotification = NotificationContainer.router.getStateForAction;
+
+	NotificationContainer.router.getStateForAction = (action, state) => {
+		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
+			const { routeName, params } = action;
+			if (routeName === 'RoomView') {
+				const resetAction = StackActions.reset({
+					index: 0,
+					actions: [NavigationActions.navigate({ routeName, params })]
+				});
+				roomRef.dispatch(resetAction);
+			}
+		}
+		return defaultNotification(action, state);
+	};
 
 	RoomContainer.router.getStateForAction = (action, state) => {
 		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
@@ -130,6 +147,7 @@ const Tablet = ({
 				{children}
 			</View>
 			{renderSplit(split)}
+			<NotificationContainer />
 		</View>
 	);
 };

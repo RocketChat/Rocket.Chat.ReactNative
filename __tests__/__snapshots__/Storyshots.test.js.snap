@@ -12130,7 +12130,7 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#f3f4f5",
                     "borderColor": "#e1e5e8",
                     "borderRadius": 4,
@@ -12493,7 +12493,7 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#f3f4f5",
                     "borderColor": "#e1e5e8",
                     "borderRadius": 4,
@@ -19491,7 +19491,7 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#f3f4f5",
                     "borderColor": "#e1e5e8",
                     "borderRadius": 4,
@@ -20028,7 +20028,7 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#f3f4f5",
                     "borderColor": "#e1e5e8",
                     "borderRadius": 4,
@@ -20222,7 +20222,7 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#f3f4f5",
                     "borderColor": "#e1e5e8",
                     "borderRadius": 4,

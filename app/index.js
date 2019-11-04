@@ -259,12 +259,8 @@ class CustomInsideStack extends React.Component {
 		return (
 			<KeyCommands>
 				<InsideStackModal navigation={navigation} />
-				{ !isTablet ? (
-					<>
-						<NotificationBadge navigation={navigation} />
-						<Toast />
-					</>
-				) : null }
+				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
+				{ !isTablet ? <Toast /> : null }
 			</KeyCommands>
 		);
 	}
@@ -282,7 +278,6 @@ class CustomRoomStack extends React.Component {
 		return (
 			<>
 				<RoomStack navigation={navigation} />
-				<NotificationBadge navigation={navigation} />
 				<Toast />
 			</>
 		);
@@ -379,12 +374,27 @@ class CustomModalStack extends React.Component {
 
 	render() {
 		const { navigation, showModal } = this.props;
-		if (!showModal) { return null; }
+		if (!showModal) {
+			return null;
+		}
 		return (
 			<Modal>
 				<ModalSwitch navigation={navigation} />
 			</Modal>
 		);
+	}
+}
+
+class CustomNotificationStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object
+	}
+
+	render() {
+		const { navigation } = this.props;
+		return <NotificationBadge navigation={navigation} />;
 	}
 }
 
@@ -405,6 +415,8 @@ export const App = createAppContainer(createSwitchNavigator(
 export const RoomContainer = createAppContainer(CustomRoomStack);
 
 export const ModalContainer = createAppContainer(CustomModalStack);
+
+export const NotificationContainer = createAppContainer(CustomNotificationStack);
 
 export default class Root extends React.Component {
 	constructor(props) {
