@@ -257,7 +257,8 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            sudo bundle install
+            echo "ruby-2.4" > ~/.ruby-version
+            bundle install
           working_directory: ios
 
       - run:
@@ -334,7 +335,7 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            sudo bundle install
+            bundle install
           working_directory: ios
 
       - run:
