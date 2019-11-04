@@ -58,7 +58,7 @@ class ServerDropdown extends Component {
 				duration: ANIMATION_DURATION,
 				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
-			},
+			}
 		).start();
 		if (isTablet()) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
