@@ -49,12 +49,12 @@ const Item = ({
 };
 
 Item.propTypes = {
-	icon: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
+	icon: PropTypes.string,
+	name: PropTypes.string,
 	description: PropTypes.string,
 	type: PropTypes.string,
 	onPress: PropTypes.func,
-	testID: PropTypes.string.isRequired,
+	testID: PropTypes.string,
 	disabled: PropTypes.bool
 };
 
