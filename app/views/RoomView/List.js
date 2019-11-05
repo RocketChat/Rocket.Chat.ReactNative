@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	ActivityIndicator, FlatList, InteractionManager
-} from 'react-native';
+import { FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
@@ -16,8 +14,10 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 
-export class List extends React.Component {
+class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -25,7 +25,8 @@ export class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool
+		animated: PropTypes.bool,
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -158,8 +159,9 @@ export class List extends React.Component {
 
 	renderFooter = () => {
 		const { loading } = this.state;
+		const { theme } = this.props;
 		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
 	}
@@ -199,3 +201,5 @@ export class List extends React.Component {
 		);
 	}
 }
+
+export default withTheme(List);

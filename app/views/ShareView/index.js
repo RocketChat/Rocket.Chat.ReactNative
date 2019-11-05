@@ -10,8 +10,8 @@ import RocketChat from '../../lib/rocketchat';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
 import styles from './styles';
-import Loading from './Loading';
 import TextInput from '../../containers/TextInput';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { withTheme } from '../../theme';
@@ -240,7 +240,7 @@ class ShareView extends React.Component {
 				<View style={[styles.content, { backgroundColor: themes[theme].focusedBackground }]}>
 					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
-				{ loading ? <Loading /> : null }
+				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }
 			</View>
 		);
 	}

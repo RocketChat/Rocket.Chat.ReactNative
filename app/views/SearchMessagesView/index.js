@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import RCTextInput from '../../containers/TextInput';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
@@ -133,7 +133,7 @@ class SearchMessagesView extends React.Component {
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.load}
-				ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				{...scrollPersistTaps}
 			/>
 		);

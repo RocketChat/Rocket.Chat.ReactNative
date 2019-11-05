@@ -47,9 +47,6 @@ export default StyleSheet.create({
 		...sharedStyles.separatorBottom,
 		marginLeft: 48
 	},
-	loading: {
-		flex: 1
-	},
 	errorIcon: {
 		color: COLOR_DANGER
 	},

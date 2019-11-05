@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
@@ -236,7 +236,7 @@ class DirectoryView extends React.Component {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
-					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown

@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import {
-	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
+	COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
 } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	safeAreaView: {
 		flex: 1
@@ -18,15 +17,6 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		paddingTop: 10
-	},
-	separator: {
-		height: 1,
-		backgroundColor: COLOR_SEPARATOR
-	},
-	loading: {
-		flex: 1,
-		padding: 15,
-		color: COLOR_TEXT_DESCRIPTION
 	},
 	readOnly: {
 		justifyContent: 'flex-end',

@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, ActivityIndicator } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import styles from '../styles';
 import { CustomIcon } from '../../../lib/Icons';
 import { COLOR_PRIMARY } from '../../../constants/colors';
 import MessageboxContext from '../Context';
+import ActivityIndicator from '../../ActivityIndicator';
+import { withTheme } from '../../../theme';
 
-const Item = ({ item }) => {
+const Item = ({ item, theme }) => {
 	const context = useContext(MessageboxContext);
 	const { onPressCommandPreview } = context;
 	const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ const Item = ({ item }) => {
 						onLoadStart={() => setLoading(true)}
 						onLoad={() => setLoading(false)}
 					>
-						{ loading ? <ActivityIndicator /> : null }
+						{ loading ? <ActivityIndicator theme={theme} /> : null }
 					</FastImage>
 				)
 				: <CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
@@ -38,7 +40,8 @@ const Item = ({ item }) => {
 };
 
 Item.propTypes = {
-	item: PropTypes.object
+	item: PropTypes.object,
+	theme: PropTypes.string
 };
 
-export default Item;
+export default withTheme(Item);

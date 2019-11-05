@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -20,6 +20,7 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
 
 const PAGE_SIZE = 25;
@@ -251,9 +252,7 @@ class RoomMembersView extends React.Component {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
-		// if (isLoading) {
-		// 	return <ActivityIndicator style={styles.loading} />;
-		// }
+		const { theme } = this.props;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
@@ -266,7 +265,7 @@ class RoomMembersView extends React.Component {
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator style={styles.loading} />;
+							return <ActivityIndicator theme={theme} />;
 						}
 						return null;
 					}}

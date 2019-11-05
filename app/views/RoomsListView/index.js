@@ -4,7 +4,6 @@ import {
 	View,
 	FlatList,
 	BackHandler,
-	ActivityIndicator,
 	Text,
 	ScrollView,
 	Keyboard,
@@ -41,6 +40,7 @@ import {
 	Item
 } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
@@ -742,7 +742,7 @@ class RoomsListView extends React.Component {
 		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		const { showUnread, showFavorites, groupByType } = this.props;

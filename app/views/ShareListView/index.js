@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, FlatList, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -22,6 +22,7 @@ import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
@@ -374,7 +375,7 @@ class ShareListView extends React.Component {
 		const { theme } = this.props;
 
 		if (mediaLoading || loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		return (
@@ -405,7 +406,7 @@ class ShareListView extends React.Component {
 		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		return (

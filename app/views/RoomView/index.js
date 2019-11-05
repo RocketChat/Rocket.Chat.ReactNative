@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import { List } from './List';
+import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';

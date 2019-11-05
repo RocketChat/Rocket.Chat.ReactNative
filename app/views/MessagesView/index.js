@@ -8,7 +8,7 @@ import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message/Message';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
@@ -283,7 +283,7 @@ class MessagesView extends React.Component {
 					style={[styles.list, { backgroundColor: themes[theme].focusedBackground }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
-					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
 				<FileModal
 					attachment={selectedAttachment}

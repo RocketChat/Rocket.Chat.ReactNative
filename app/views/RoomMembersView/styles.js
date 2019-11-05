@@ -19,8 +19,5 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth,
 		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 60
-	},
-	loading: {
-		flex: 1
 	}
 });

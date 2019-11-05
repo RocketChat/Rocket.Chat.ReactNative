@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
+import { withTheme } from '../../theme';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = {
@@ -23,7 +24,8 @@ class ReadReceiptView extends React.Component {
 		Message_TimeFormat: PropTypes.string,
 		baseUrl: PropTypes.string,
 		userId: PropTypes.string,
-		token: PropTypes.string
+		token: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -113,6 +115,7 @@ class ReadReceiptView extends React.Component {
 
 	render() {
 		const { receipts, loading } = this.state;
+		const { theme } = this.props;
 
 		if (!loading && receipts.length === 0) {
 			return this.renderEmpty();
@@ -123,7 +126,7 @@ class ReadReceiptView extends React.Component {
 				<StatusBar />
 				<View>
 					{loading
-						? <RCActivityIndicator />
+						? <ActivityIndicator theme={theme} />
 						: (
 							<FlatList
 								data={receipts}
@@ -146,4 +149,4 @@ const mapStateToProps = state => ({
 	token: state.login.user && state.login.user.token
 });
 
-export default connect(mapStateToProps)(ReadReceiptView);
+export default connect(mapStateToProps)(withTheme(ReadReceiptView));

@@ -12,7 +12,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import styles from './styles';
 import Message from '../../containers/message';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
@@ -312,7 +312,7 @@ class ThreadMessagesView extends React.Component {
 					maxToRenderPerBatch={5}
 					initialNumToRender={1}
 					ItemSeparatorComponent={this.renderSeparator}
-					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
 			</SafeAreaView>
 		);

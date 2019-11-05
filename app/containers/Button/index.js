@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { COLOR_BUTTON_PRIMARY } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+import ActivityIndicator from '../ActivityIndicator';
 
 const colors = {
 	background_primary: COLOR_BUTTON_PRIMARY,

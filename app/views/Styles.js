@@ -45,13 +45,6 @@ export default StyleSheet.create({
 		color: COLOR_DANGER,
 		paddingTop: 5
 	},
-	loading: {
-		flex: 1,
-		position: 'absolute',
-		backgroundColor: 'rgba(255,255,255,.2)',
-		left: 0,
-		top: 0
-	},
 	status: {
 		position: 'absolute',
 		bottom: -3,
