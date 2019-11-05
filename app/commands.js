@@ -12,12 +12,12 @@ const KEY_PREFERENCES = 'p';
 const KEY_SEARCH = 'f';
 const KEY_PREVIOUS_ROOM = '[';
 const KEY_NEXT_ROOM = ']';
-const KEY_NEW_ROOM = 'e';
-const KEY_ROOM_ACTIONS = 'b';
+const KEY_NEW_ROOM = __DEV__ ? 'e' : 'n';
+const KEY_ROOM_ACTIONS = __DEV__ ? 'b' : 'i';
 const KEY_UPLOAD = 'u';
 const KEY_REPLY = ';';
-const KEY_SERVER_SELECTION = 'o';
-const KEY_ADD_SERVER = 'l';
+const KEY_SERVER_SELECTION = __DEV__ ? 'o' : '`';
+const KEY_ADD_SERVER = __DEV__ ? 'l' : 'n';
 const KEY_SEND_MESSAGE = '\r';
 const KEY_SELECT = '123456789';
 
@@ -60,13 +60,13 @@ const keyCommands = [
 	},
 	{
 		// Open New Room Modal
-		input: KEY_NEW_ROOM, // it should be n
+		input: KEY_NEW_ROOM,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('New_room')
 	},
 	{
 		// Open Room Actions
-		input: KEY_ROOM_ACTIONS, // it should be i
+		input: KEY_ROOM_ACTIONS,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_actions')
 	},
@@ -111,7 +111,7 @@ const keyCommands = [
 	},
 	{
 		// Open server dropdown
-		input: KEY_SERVER_SELECTION, // it should be (`)
+		input: KEY_SERVER_SELECTION,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection')
 	},
@@ -123,7 +123,7 @@ const keyCommands = [
 	},
 	{
 		// Navigate to add new server
-		input: KEY_ADD_SERVER, // it should be n
+		input: KEY_ADD_SERVER,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
 	},
