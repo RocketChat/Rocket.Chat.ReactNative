@@ -46,7 +46,7 @@ const Header = memo(({
 						</View>
 					)
 				}
-				<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{room.t === 'd' ? `@${ name }` : room.topic}</Text>
+				<Text style={styles.roomDescription} ellipsizeMode='tail' numberOfLines={1}>{room.t === 'd' ? `@${ room.name }` : room.topic}</Text>
 			</View>
 			<DisclosureIndicator key='disclosure-indicator' />
 		</View>
@@ -54,8 +54,8 @@ const Header = memo(({
 ), isEqual);
 
 Header.propTypes = {
-	name: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
+	name: PropTypes.string,
+	baseUrl: PropTypes.string,
 	room: PropTypes.shape({
 		name: PropTypes.string,
 		fname: PropTypes.string,
@@ -66,12 +66,12 @@ Header.propTypes = {
 	user: PropTypes.shape({
 		id: PropTypes.string,
 		token: PropTypes.string
-	}).isRequired,
+	}),
 	member: PropTypes.shape({
 		_id: PropTypes.string
-	}).isRequired,
-	onPress: PropTypes.func.isRequired,
-	testID: PropTypes.string.isRequired
+	}),
+	onPress: PropTypes.func,
+	testID: PropTypes.string
 };
 
 export default Header;

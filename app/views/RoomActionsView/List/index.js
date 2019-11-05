@@ -193,20 +193,20 @@ const List = memo(({
 }, isEqual);
 
 List.propTypes = {
-	room: PropTypes.object.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	user: PropTypes.shape.isRequired,
-	member: PropTypes.object.isRequired,
-	membersCount: PropTypes.number.isRequired,
-	jitsiEnabled: PropTypes.bool.isRequired,
-	joined: PropTypes.bool.isRequired,
-	canViewMembers: PropTypes.bool.isRequired,
-	canAutoTranslate: PropTypes.bool.isRequired,
-	canAddUser: PropTypes.bool.isRequired,
-	handleShare: PropTypes.func.isRequired,
-	toggleBlockUser: PropTypes.func.isRequired,
-	leaveChannel: PropTypes.func.isRequired,
-	navigation: PropTypes.object.isRequired
+	room: PropTypes.object,
+	baseUrl: PropTypes.string,
+	user: PropTypes.shape,
+	member: PropTypes.object,
+	membersCount: PropTypes.number,
+	jitsiEnabled: PropTypes.bool,
+	joined: PropTypes.bool,
+	canViewMembers: PropTypes.bool,
+	canAutoTranslate: PropTypes.bool,
+	canAddUser: PropTypes.bool,
+	handleShare: PropTypes.func,
+	toggleBlockUser: PropTypes.func,
+	leaveChannel: PropTypes.func,
+	navigation: PropTypes.object
 };
 
 export default List;

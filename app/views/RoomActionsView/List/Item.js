@@ -12,7 +12,7 @@ import styles from './styles';
 const Item = ({
 	icon, name, description, type, onPress, testID, disabled
 }) => {
-	const renderItem = () => {
+	const ItemContent = () => {
 		if (type === 'danger') {
 			return (
 				<>
@@ -42,7 +42,7 @@ const Item = ({
 			testID={testID}
 		>
 			<View style={[styles.sectionItem, disabled && styles.sectionItemDisabled]}>
-				{renderItem()}
+				<ItemContent />
 			</View>
 		</Touch>
 	);
