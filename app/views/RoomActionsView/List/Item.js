@@ -55,10 +55,7 @@ Item.propTypes = {
 	type: PropTypes.string,
 	onPress: PropTypes.func,
 	testID: PropTypes.string.isRequired,
-	disabled: PropTypes.bool,
-	navigation: PropTypes.shape({
-		navigate: PropTypes.func
-	}).isRequired
+	disabled: PropTypes.bool
 };
 
 Item.defaultProps = {
