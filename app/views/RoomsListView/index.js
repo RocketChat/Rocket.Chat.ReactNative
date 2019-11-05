@@ -486,6 +486,7 @@ class RoomsListView extends React.Component {
 	};
 
 	_onPressItem = async(item = {}) => {
+		Keyboard.dismiss();
 		if (!item.search) {
 			return this.goRoom(item);
 		}
