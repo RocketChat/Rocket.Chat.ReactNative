@@ -443,8 +443,8 @@ class RoomsListView extends React.Component {
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
 			this.internalSetState({ search: [] });
-			Keyboard.dismiss();
 		}
+		Keyboard.dismiss();
 	};
 
 	handleBackPress = () => {
@@ -486,7 +486,6 @@ class RoomsListView extends React.Component {
 	};
 
 	_onPressItem = async(item = {}) => {
-		Keyboard.dismiss();
 		if (!item.search) {
 			return this.goRoom(item);
 		}

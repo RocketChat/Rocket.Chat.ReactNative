@@ -141,6 +141,55 @@ index a134d2e..a88c099 100644
      [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
    });
  }
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.h b/node_modules/react-native/React/Base/RCTKeyCommands.h
+index 4c9c1fe..8c0ebc3 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.h
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.h
+@@ -14,10 +14,15 @@
+ /**
+  * Register a single-press keyboard command.
+  */
+-- (void)registerKeyCommandWithInput:(NSString *)input
++ - (void)registerKeyCommandWithInput:(NSString *)input
+                       modifierFlags:(UIKeyModifierFlags)flags
+                              action:(void (^)(UIKeyCommand *command))block;
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block;
++
+ /**
+  * Unregister a single-press keyboard command.
+  */
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.m b/node_modules/react-native/React/Base/RCTKeyCommands.m
+index 8f8f19b..14808f2 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.m
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.m
+@@ -228,6 +228,23 @@ - (void)registerKeyCommandWithInput:(NSString *)input
+   [_commands addObject:keyCommand];
+ }
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block
++{
++  RCTAssertMainQueue();
++
++  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:input
++                                              modifierFlags:flags
++                                                     action:@selector(RCT_handleKeyCommand:)
++                                       discoverabilityTitle:discoverabilityTitle];
++
++  RCTKeyCommand *keyCommand = [[RCTKeyCommand alloc] initWithKeyCommand:command block:block];
++  [_commands removeObject:keyCommand];
++  [_commands addObject:keyCommand];
++}
++
+ - (void)unregisterKeyCommandWithInput:(NSString *)input
+                         modifierFlags:(UIKeyModifierFlags)flags
+ {
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java

@@ -78,6 +78,34 @@ index 97acefa..9abe59a 100644
          return (<RCTKeyCommands {...Object.assign({}, props, { style: [defaultStyles.main, style] })}/>);
      }
  }
+diff --git a/node_modules/@envoy/react-native-key-commands/ios/KeyCommands/RCTKeyCommandsView.m b/node_modules/@envoy/react-native-key-commands/ios/KeyCommands/RCTKeyCommandsView.m
+index a0927e1..1bc4a62 100644
+--- a/node_modules/@envoy/react-native-key-commands/ios/KeyCommands/RCTKeyCommandsView.m
++++ b/node_modules/@envoy/react-native-key-commands/ios/KeyCommands/RCTKeyCommandsView.m
+@@ -7,6 +7,8 @@
+ //
+ 
+ #import "RCTKeyCommandsView.h"
++#import <React/RCTKeyCommands.h>
++#import <React/RCTLog.h>
+ 
+ @implementation RCTKeyCommandsView {
+     NSArray<UIKeyCommand *> *currentKeyCommands;
+@@ -52,7 +54,13 @@ - (void) setKeyCommandsWithJSON:(id)json {
+                                           modifierFlags:[flags integerValue]
+                                                  action:@selector(onKeyCommand:)];
+         }
+-        [keyCommands addObject:command];
++        [[RCTKeyCommands sharedInstance]
++            registerKeyCommand:input
++            modifierFlags:[flags integerValue]
++            discoverabilityTitle:discoverabilityTitle
++            action:^(__unused UIKeyCommand *command) {
++                [self onKeyCommand:command];
++            }];
+     }
+     currentKeyCommands = keyCommands;
+ }
 diff --git a/node_modules/@envoy/react-native-key-commands/src/index.tsx b/node_modules/@envoy/react-native-key-commands/src/index.tsx
 index 0f287e4..de78d70 100644
 --- a/node_modules/@envoy/react-native-key-commands/src/index.tsx
