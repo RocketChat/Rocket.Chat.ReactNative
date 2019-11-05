@@ -185,7 +185,6 @@ export class List extends React.Component {
 					ref={ref => this.list = ref}
 					keyExtractor={item => item.id}
 					data={messages}
-					extraData={this.state}
 					renderItem={this.renderItem}
 					contentContainerStyle={styles.contentContainer}
 					style={styles.list}
