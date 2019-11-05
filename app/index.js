@@ -374,17 +374,18 @@ class CustomModalStack extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		showModal: PropTypes.bool
+		showModal: PropTypes.bool,
+		close: PropTypes.func
 	}
 
 	render() {
-		const { navigation, showModal } = this.props;
+		const { navigation, showModal, close } = this.props;
 		return (
 			<Modal
-				// Setting coverScreen to false we don't use
-				// React Native Modal, because it doesn't work with navigation
+				useNativeDriver
 				coverScreen={false}
 				isVisible={showModal}
+				onBackdropPress={close}
 			>
 				<KeyCommands style={sharedStyles.modal}>
 					<ModalSwitch navigation={navigation} />
@@ -516,6 +517,7 @@ export default class Root extends React.Component {
 					inside={inside}
 					showModal={showModal}
 					onLayout={this.onLayout}
+					close={() => this.setState({ showModal: false })}
 				>
 					{content}
 				</Tablet>

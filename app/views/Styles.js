@@ -29,8 +29,8 @@ export default StyleSheet.create({
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},
 	modal: {
-		width: '95%',
-		height: '95%',
+		width: '70%',
+		height: '70%',
 		alignSelf: 'center',
 		borderRadius: 10,
 		overflow: 'hidden'

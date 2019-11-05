@@ -126,7 +126,7 @@ export const initTabletNav = (setState) => {
 };
 
 const Tablet = ({
-	children, tablet, inside, showModal, onLayout
+	children, tablet, inside, showModal, onLayout, close
 }) => {
 	const setModalRef = (ref) => {
 		modalRef = ref;
@@ -142,7 +142,7 @@ const Tablet = ({
 							<RoomContainer ref={ref => roomRef = ref} />
 						</View>
 					</KeyCommands>
-					<ModalContainer showModal={showModal} ref={setModalRef} />
+					<ModalContainer showModal={showModal} close={close} ref={setModalRef} />
 				</>
 			);
 		}
@@ -166,7 +166,8 @@ Tablet.propTypes = {
 	tablet: PropTypes.bool,
 	inside: PropTypes.bool,
 	showModal: PropTypes.bool,
-	onLayout: PropTypes.func
+	onLayout: PropTypes.func,
+	close: PropTypes.func
 };
 
 export default Tablet;
