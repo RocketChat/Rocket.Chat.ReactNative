@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -85,7 +84,7 @@ export class List extends React.Component {
 					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
 						animateNextTransition();
-						this.setState({ messages });
+						this.setState({ messages }, () => this.update());
 					} else {
 						this.state.messages = messages;
 					}
@@ -104,16 +103,16 @@ export class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { messages, loading, end } = this.state;
+		const { loading, end } = this.state;
 		if (loading !== nextState.loading) {
 			return true;
 		}
 		if (end !== nextState.end) {
 			return true;
 		}
-		if (!isEqual(messages, nextState.messages)) {
-			return true;
-		}
+		// if (!isEqual(messages, nextState.messages)) {
+		// 	return true;
+		// }
 		return false;
 	}
 
@@ -129,6 +128,11 @@ export class List extends React.Component {
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
+
+	// eslint-disable-next-line react/sort-comp
+	update = debounce(() => {
+		this.forceUpdate();
+	}, 200)
 
 	onEndReached = debounce(async() => {
 		const {
