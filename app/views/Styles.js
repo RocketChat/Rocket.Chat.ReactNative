@@ -25,6 +25,13 @@ export default StyleSheet.create({
 		alignSelf: 'center',
 		width: MAX_CONTENT_WIDTH
 	},
+	modal: {
+		width: '95%',
+		height: '95%',
+		alignSelf: 'center',
+		borderRadius: 10,
+		overflow: 'hidden'
+	},
 	buttonContainerLastChild: {
 		marginBottom: 40
 	},

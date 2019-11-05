@@ -5,6 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import Modal from 'react-native-modal';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -21,10 +22,10 @@ import RocketChat from './lib/rocketchat';
 import {
 	isTablet, setWidth, isSplited, isIOS
 } from './utils/deviceInfo';
-import Modal from './presentation/Modal';
 import KeyCommands, { handleCommandCloseModal, KEY_COMMAND } from './commands';
 import EventEmitter from './utils/events';
 import Tablet, { initTabletNav } from './tablet';
+import sharedStyles from './views/Styles';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -378,12 +379,16 @@ class CustomModalStack extends React.Component {
 
 	render() {
 		const { navigation, showModal } = this.props;
-		if (!showModal) {
-			return null;
-		}
 		return (
-			<Modal>
-				<ModalSwitch navigation={navigation} />
+			<Modal
+				// Setting coverScreen to false we don't use
+				// React Native Modal, because it doesn't work with navigation
+				coverScreen={false}
+				isVisible={showModal}
+			>
+				<KeyCommands style={sharedStyles.modal}>
+					<ModalSwitch navigation={navigation} />
+				</KeyCommands>
 			</Modal>
 		);
 	}
