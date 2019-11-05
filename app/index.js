@@ -98,8 +98,8 @@ const RoomRoutes = {
 	ThreadMessagesView: {
 		getScreen: () => require('./views/ThreadMessagesView').default
 	},
-	TableView: {
-		getScreen: () => require('./views/TableView').default
+	MarkdownTableView: {
+		getScreen: () => require('./views/MarkdownTableView').default
 	}
 };
 

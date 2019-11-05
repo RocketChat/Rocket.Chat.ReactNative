@@ -7,7 +7,7 @@ import {
 } from '../../../actions/rooms';
 import Header from './Header';
 import EventEmitter from '../../../utils/events';
-import { KEY_COMMAND, commandHandle } from '../../../commands';
+import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
 
 class RoomsListHeaderView extends PureComponent {
@@ -37,7 +37,7 @@ class RoomsListHeaderView extends PureComponent {
 	}
 
 	handleCommands = ({ event }) => {
-		if (commandHandle(event, 'o', ['command', 'alternate'])) {
+		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
 		}
 	}

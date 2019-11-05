@@ -7,22 +7,36 @@ import I18n from './i18n';
 import EventEmitter from './utils/events';
 import { isTablet } from './utils/deviceInfo';
 
+const KEY_TYPING = '\t';
+const KEY_PREFERENCES = 'p';
+const KEY_SEARCH = 'f';
+const KEY_PREVIOUS_ROOM = '[';
+const KEY_NEXT_ROOM = ']';
+const KEY_NEW_ROOM = 'e';
+const KEY_ROOM_ACTIONS = 'b';
+const KEY_UPLOAD = 'u';
+const KEY_REPLY = ';';
+const KEY_SERVER_SELECTION = 'o';
+const KEY_ADD_SERVER = 'l';
+const KEY_SEND_MESSAGE = '\r';
+const KEY_SELECT = '123456789';
+
 const keyCommands = [
 	{
 		// Focus messageBox
-		input: '\t',
+		input: KEY_TYPING,
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Type_message')
 	},
 	{
 		// Open Preferences Modal
-		input: 'p',
+		input: KEY_PREFERENCES,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Preferences')
 	},
 	{
 		// Focus Room Search
-		input: 'f',
+		input: KEY_SEARCH,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Room_search')
 	},
@@ -34,37 +48,37 @@ const keyCommands = [
 	},
 	{
 		// Change room to next on Rooms List
-		input: ']',
+		input: KEY_NEXT_ROOM,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Next_room')
 	},
 	{
 		// Change room to previous on Rooms List
-		input: '[',
+		input: KEY_PREVIOUS_ROOM,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Previous_room')
 	},
 	{
 		// Open New Room Modal
-		input: 'e', // it should be n
+		input: KEY_NEW_ROOM, // it should be n
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('New_room')
 	},
 	{
 		// Open Room Actions
-		input: 'b', // it should be i
+		input: KEY_ROOM_ACTIONS, // it should be i
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Room_actions')
 	},
 	{
 		// Upload a file to room
-		input: 'u',
+		input: KEY_UPLOAD,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Upload_room')
 	},
 	{
 		// Search Messages on current room
-		input: 'f',
+		input: KEY_SEARCH,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Search_messages')
 	},
@@ -91,13 +105,13 @@ const keyCommands = [
 	},
 	{
 		// Reply latest message with Quote
-		input: ';',
+		input: KEY_REPLY,
 		modifierFlags: constants.keyModifierCommand,
 		discoverabilityTitle: I18n.t('Reply_latest')
 	},
 	{
 		// Open server dropdown
-		input: 'o', // it should be (`)
+		input: KEY_SERVER_SELECTION, // it should be (`)
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Server_selection')
 	},
@@ -109,13 +123,13 @@ const keyCommands = [
 	},
 	{
 		// Navigate to add new server
-		input: 'l', // it should be n
+		input: KEY_ADD_SERVER, // it should be n
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
 	},
 	{
 		// Send message on textInput to current room
-		input: '\r',
+		input: KEY_SEND_MESSAGE,
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Send')
 	},
@@ -146,37 +160,39 @@ export const commandHandle = (event, key, flags = []) => {
 	return key.includes(input) && modifierFlags === _flags;
 };
 
-export const handleCommandTyping = event => commandHandle(event, '\t');
+export const handleCommandTyping = event => commandHandle(event, KEY_TYPING);
 
-export const handleCommandSubmit = event => commandHandle(event, '\r');
+export const handleCommandSubmit = event => commandHandle(event, KEY_SEND_MESSAGE);
 
-export const handleCommandShowUpload = event => commandHandle(event, 'u', ['command']);
+export const handleCommandShowUpload = event => commandHandle(event, KEY_UPLOAD, ['command']);
 
-export const handleCommandScroll = event => commandHandle(event, ['UIKeyInputUpArrow', 'UIKeyInputDownArrow'], ['alternate']);
+export const handleCommandScroll = event => commandHandle(event, [constants.keyInputUpArrow, constants.keyInputDownArrow], ['alternate']);
 
-export const handleCommandRoomActions = event => commandHandle(event, 'b', ['command']);
+export const handleCommandRoomActions = event => commandHandle(event, KEY_ROOM_ACTIONS, ['command']);
 
-export const handleCommandSearchMessages = event => commandHandle(event, 'f', ['command']);
+export const handleCommandSearchMessages = event => commandHandle(event, KEY_SEARCH, ['command']);
 
-export const handleCommandReplyLatest = event => commandHandle(event, ';', ['command']);
+export const handleCommandReplyLatest = event => commandHandle(event, KEY_REPLY, ['command']);
 
-export const handleCommandSelectServer = event => commandHandle(event, '123456789', ['command', 'alternate']);
+export const handleCommandSelectServer = event => commandHandle(event, KEY_SELECT, ['command', 'alternate']);
 
-export const handleCommandShowPreferences = event => commandHandle(event, 'p', ['command']);
+export const handleCommandShowPreferences = event => commandHandle(event, KEY_PREFERENCES, ['command']);
 
-export const handleCommandSearching = event => commandHandle(event, 'f', ['command', 'alternate']);
+export const handleCommandSearching = event => commandHandle(event, KEY_SEARCH, ['command', 'alternate']);
 
-export const handleCommandSelectRoom = event => commandHandle(event, '123456789', ['command']);
+export const handleCommandSelectRoom = event => commandHandle(event, KEY_SELECT, ['command']);
 
-export const handleCommandPreviousRoom = event => commandHandle(event, '[', ['command']);
+export const handleCommandPreviousRoom = event => commandHandle(event, KEY_PREVIOUS_ROOM, ['command']);
 
-export const handleCommandNextRoom = event => commandHandle(event, ']', ['command']);
+export const handleCommandNextRoom = event => commandHandle(event, KEY_NEXT_ROOM, ['command']);
 
-export const handleCommandShowNewMessage = event => commandHandle(event, 'e', ['command']);
+export const handleCommandShowNewMessage = event => commandHandle(event, KEY_NEW_ROOM, ['command']);
 
-export const handleCommandAddNewServer = event => commandHandle(event, 'l', ['command', 'alternate']);
+export const handleCommandAddNewServer = event => commandHandle(event, KEY_ADD_SERVER, ['command', 'alternate']);
 
-export const handleCommandCloseModal = event => commandHandle(event, 'UIKeyInputEscape');
+export const handleCommandCloseModal = event => commandHandle(event, constants.keyInputEscape);
+
+export const handleCommandOpenServerDropdown = event => commandHandle(event, KEY_SERVER_SELECTION, ['command', 'alternate']);
 
 const Commands = ({ children, style }) => {
 	const onKeyCommand = (event) => {
