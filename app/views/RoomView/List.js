@@ -83,7 +83,6 @@ export class List extends React.Component {
 					}
 					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
-						animateNextTransition();
 						this.setState({ messages }, () => this.update());
 					} else {
 						this.state.messages = messages;
@@ -131,6 +130,7 @@ export class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	update = debounce(() => {
+		animateNextTransition();
 		this.forceUpdate();
 	}, 200)
 
