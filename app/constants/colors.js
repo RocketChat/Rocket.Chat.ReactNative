@@ -40,7 +40,7 @@ export const themes = {
 		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#eeeef4',
 		bannerBackground: '#f1f2f4',
-		titleText: '#0d0e12',
+		titleText: '#0d0e12', // TODO: is this still being used?
 		bodyText: '#2f343d',
 		borderColor: '#e1e5e8',
 		controlText: '#54585e',
@@ -51,7 +51,9 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff',
 		mutedAccent: '#cbcbcc',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA'
+		separatorColor: '#A7A7AA',
+		headerTintColor: isAndroid ? COLOR_WHITE : '#1d74f5',
+		headerTitleColor: isAndroid ? COLOR_WHITE : '#0d0e12'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -70,7 +72,9 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff',
 		mutedAccent: '#2a2a2d',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA'
+		separatorColor: '#A7A7AA',
+		headerTintColor: '#1d74f5',
+		headerTitleColor: '#FFFFFF'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -89,6 +93,8 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff',
 		mutedAccent: '#282828',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA'
+		separatorColor: '#A7A7AA',
+		headerTintColor: '#1e9bfe',
+		headerTitleColor: '#f9f9f9'
 	}
 };

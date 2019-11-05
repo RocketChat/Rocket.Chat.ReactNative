@@ -27,8 +27,8 @@ import { isAndroid } from '../../utils/deviceInfo';
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: !(isAndroid && screenProps.theme === 'light') ? themes[screenProps.theme].tintColor : COLOR_WHITE,
-		headerTitleStyle: { color: !(isAndroid && screenProps.theme === 'light') ? themes[screenProps.theme].titleText : COLOR_WHITE },
+		headerTintColor: themes[screenProps.theme].headerTintColor,
+		headerTitleStyle: { color: themes[screenProps.theme].headerTitleColor },
 		title: I18n.t('Actions')
 	})
 

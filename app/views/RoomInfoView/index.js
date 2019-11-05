@@ -39,8 +39,8 @@ class RoomInfoView extends React.Component {
 		return {
 			title: I18n.t('Room_Info'),
 			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
+			headerTintColor: themes[screenProps.theme].headerTintColor,
+			headerTitleStyle: { color: themes[screenProps.theme].headerTitleColor },
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
