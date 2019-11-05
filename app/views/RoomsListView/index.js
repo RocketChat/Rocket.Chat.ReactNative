@@ -372,7 +372,7 @@ class RoomsListView extends React.Component {
 
 			// unread
 			if (showUnread) {
-				unread = chats.filter(s => s.unread > 0 || s.alert);
+				unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
 			} else {
 				unread = [];
 			}
@@ -391,7 +391,7 @@ class RoomsListView extends React.Component {
 				privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				direct = chats.filter(s => s.t === 'd' && !s.prid);
 			} else if (showUnread) {
-				chats = chats.filter(s => !s.unread && !s.alert);
+				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
 			}
 
 			this.internalSetState({
@@ -606,6 +606,7 @@ class RoomsListView extends React.Component {
 			<RoomItem
 				alert={item.alert}
 				unread={item.unread}
+				hideUnreadStatus={item.hideUnreadStatus}
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
