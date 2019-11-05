@@ -131,7 +131,7 @@ class OnboardingView extends React.Component {
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>
-				<View style={[styles.buttonsContainer, isTablet && sharedStyles.tabletContent]}>
+				<View style={[styles.buttonsContainer, isTablet && sharedStyles.tabletScreenContent]}>
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}

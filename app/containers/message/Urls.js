@@ -11,7 +11,6 @@ import {
 	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY
 } from '../../constants/colors';
 import { isTablet } from '../../utils/deviceInfo';
-import { MAX_CONTENT_WIDTH } from '../../constants/tablet';
 
 const styles = StyleSheet.create({
 	button: {
@@ -88,7 +87,7 @@ const Url = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop, styles.container, isTablet && { maxWidth: MAX_CONTENT_WIDTH }]}
+			style={[styles.button, index > 0 && styles.marginTop, styles.container, isTablet && sharedStyles.tabletContent]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<>

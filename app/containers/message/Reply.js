@@ -9,7 +9,6 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
-import { MAX_CONTENT_WIDTH } from '../../constants/tablet';
 import { isTablet } from '../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
@@ -148,7 +147,7 @@ const Reply = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop, isTablet && { maxWidth: MAX_CONTENT_WIDTH }]}
+			style={[styles.button, index > 0 && styles.marginTop, isTablet && sharedStyles.tabletContent]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<View style={styles.attachmentContainer}>

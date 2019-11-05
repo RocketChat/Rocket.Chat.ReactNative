@@ -187,7 +187,7 @@ class RegisterView extends React.Component {
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							autoFocus

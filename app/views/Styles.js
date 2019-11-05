@@ -3,7 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 import {
 	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY, HEADER_BACK
 } from '../constants/colors';
-import { MAX_CONTENT_WIDTH } from '../constants/tablet';
+import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
 	root: {
@@ -22,8 +22,11 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	tabletContent: {
+		maxWidth: MAX_CONTENT_WIDTH
+	},
+	tabletScreenContent: {
 		alignSelf: 'center',
-		width: MAX_CONTENT_WIDTH
+		width: MAX_SCREEN_CONTENT_WIDTH
 	},
 	modal: {
 		width: '95%',

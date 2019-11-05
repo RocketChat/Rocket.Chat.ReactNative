@@ -174,7 +174,7 @@ class LoginView extends React.Component {
 	renderTOTP = () => {
 		const { isFetching } = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
 				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
@@ -205,7 +205,7 @@ class LoginView extends React.Component {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching
 		} = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
 				<TextInput
 					autoFocus

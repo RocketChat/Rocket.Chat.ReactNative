@@ -260,7 +260,7 @@ class NewServerView extends React.Component {
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={styles.title}>{I18n.t('Sign_in_your_server')}</Text>
-						<View style={isTablet && sharedStyles.tabletContent}>
+						<View style={isTablet && sharedStyles.tabletScreenContent}>
 							<TextInput
 								autoFocus={autoFocus}
 								containerStyle={styles.inputContainer}
