@@ -49,6 +49,13 @@ export const initTabletNav = (setState) => {
 				return null;
 			}
 		}
+		if (action.type === 'Navigation/RESET' && isSplited()) {
+			const { params } = action.actions[action.index];
+			const routes = state.routes[state.index] && state.routes[state.index].params;
+			if (params && params.rid && routes && routes.rid && params.rid === routes.rid) {
+				return null;
+			}
+		}
 		return defaultRoom(action, state);
 	};
 
