@@ -9,43 +9,46 @@ import { CustomIcon } from '../../../lib/Icons';
 import { COLOR_WHITE } from '../../../constants/colors';
 import styles from './styles';
 
-const ActionItem = ({
+const Item = ({
 	icon, name, description, type, onPress, testID, disabled
-}) => (
-	<Touch
-		onPress={onPress}
-		underlayColor={COLOR_WHITE}
-		activeOpacity={0.5}
-		accessibilityLabel={name}
-		accessibilityTraits='button'
-		testID={testID}
-	>
-		<View style={[styles.sectionItem, disabled && styles.sectionItemDisabled]}>
-			{type === 'danger' ? (
+}) => {
+	const renderItem = () => {
+		if (type === 'danger') {
+			return (
 				<>
 					<CustomIcon key='icon' name={icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />
 					<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ name }</Text>
 				</>
-			) : (
-				<>
-					<CustomIcon key='left-icon' name={icon} size={24} style={styles.sectionItemIcon} />
-					<Text key='name' style={styles.sectionItemName}>{ name }</Text>
-					{description ? <Text key='description' style={styles.sectionItemDescription}>{ description }</Text> : null}
-					<DisclosureIndicator key='disclosure-indicator' />
-				</>
-			)}
-		</View>
-	</Touch>
-);
+			);
+		}
 
-ActionItem.defaultProps = {
-	description: null,
-	type: null,
-	onPress: () => {},
-	disabled: false
+		return (
+			<>
+				<CustomIcon key='left-icon' name={icon} size={24} style={styles.sectionItemIcon} />
+				<Text key='name' style={styles.sectionItemName}>{ name }</Text>
+				{description ? <Text key='description' style={styles.sectionItemDescription}>{ description }</Text> : null}
+				<DisclosureIndicator key='disclosure-indicator' />
+			</>
+		);
+	};
+
+	return (
+		<Touch
+			onPress={onPress}
+			underlayColor={COLOR_WHITE}
+			activeOpacity={0.5}
+			accessibilityLabel={name}
+			accessibilityTraits='button'
+			testID={testID}
+		>
+			<View style={[styles.sectionItem, disabled && styles.sectionItemDisabled]}>
+				{renderItem()}
+			</View>
+		</Touch>
+	);
 };
 
-ActionItem.propTypes = {
+Item.propTypes = {
 	icon: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string,
@@ -58,4 +61,11 @@ ActionItem.propTypes = {
 	}).isRequired
 };
 
-export default ActionItem;
+Item.defaultProps = {
+	description: null,
+	type: null,
+	onPress: () => {},
+	disabled: false
+};
+
+export default Item;

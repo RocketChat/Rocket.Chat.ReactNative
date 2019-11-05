@@ -9,7 +9,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import ActionsList from './ActionsList';
+import List from './List';
 
 import styles from './styles';
 
@@ -222,7 +222,7 @@ class RoomActionsView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
-				<ActionsList
+				<List
 					room={room}
 					baseUrl={baseUrl}
 					user={user}
