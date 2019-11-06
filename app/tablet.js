@@ -2,8 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationActions, StackActions } from 'react-navigation';
+import KeyCommands from 'react-native-keycommands';
 
-import KeyCommands from './commands';
 import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';
 import {
@@ -11,6 +11,7 @@ import {
 } from './index';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
+import { keyCommands } from './commands';
 
 import sharedStyles from './views/Styles';
 
@@ -78,16 +79,20 @@ export const initTabletNav = (setState) => {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
+				KeyCommands.setKeyCommands(keyCommands);
 				setState({ inside: true });
 			}
 			if (routeName === 'OutsideStack') {
+				KeyCommands.deleteKeyCommands(keyCommands);
 				setState({ inside: false, showModal: false });
 			}
 			if (routeName === 'JitsiMeetView') {
 				inCall = true;
+				KeyCommands.deleteKeyCommands(keyCommands);
 				setState({ inside: false, showModal: false });
 			}
 			if (routeName === 'OnboardingView') {
+				KeyCommands.deleteKeyCommands(keyCommands);
 				setState({ inside: false, showModal: false });
 			}
 
@@ -119,6 +124,7 @@ export const initTabletNav = (setState) => {
 			return null;
 		}
 		if (action.type === 'Navigation/POP' && inCall) {
+			KeyCommands.setKeyCommands(keyCommands);
 			setState({ inside: true, showModal: false });
 		}
 		return defaultApp(action, state);
@@ -137,11 +143,9 @@ const Tablet = ({
 		if (split) {
 			return (
 				<>
-					<KeyCommands>
-						<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-							<RoomContainer ref={ref => roomRef = ref} />
-						</View>
-					</KeyCommands>
+					<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
+						<RoomContainer ref={ref => roomRef = ref} />
+					</View>
 					<ModalContainer showModal={showModal} close={close} ref={setModalRef} />
 				</>
 			);

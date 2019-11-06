@@ -6,7 +6,9 @@ import { Provider } from 'react-redux';
 import { View, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
+import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
+import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
@@ -22,7 +24,7 @@ import RocketChat from './lib/rocketchat';
 import {
 	isTablet, setWidth, isSplited, isIOS
 } from './utils/deviceInfo';
-import KeyCommands from './commands';
+import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 
@@ -261,11 +263,11 @@ class CustomInsideStack extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<KeyCommands>
+			<>
 				<InsideStackModal navigation={navigation} />
 				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
 				{ !isTablet ? <Toast /> : null }
-			</KeyCommands>
+			</>
 		);
 	}
 }
@@ -449,12 +451,15 @@ export default class Root extends React.Component {
 		}, 5000);
 
 		if (isTablet) {
-			initTabletNav(args => this.setState(args));
+			this.initTablet();
 		}
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+		if (this.onKeyCommands && this.onKeyCommands.remove) {
+			this.onKeyCommands.remove();
+		}
 	}
 
 	init = async() => {
@@ -467,6 +472,15 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	initTablet = async() => {
+		initTabletNav(args => this.setState(args));
+		await KeyCommands.setKeyCommands([]);
+		this.onKeyCommands = KeyCommandsEmitter.addListener(
+			'onKeyCommand',
+			command => EventEmitter.emit(KEY_COMMAND, { event: command })
+		);
 	}
 
 	initCrashReport = () => {

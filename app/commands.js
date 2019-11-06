@@ -1,11 +1,7 @@
 /* eslint-disable no-bitwise */
-import React from 'react';
-import PropTypes from 'prop-types';
-import KeyCommands, { constants } from 'react-native-keycommands';
+import { constants } from 'react-native-keycommands';
 
 import I18n from './i18n';
-import EventEmitter from './utils/events';
-import { isTablet } from './utils/deviceInfo';
 
 const KEY_TYPING = '\t';
 const KEY_PREFERENCES = 'p';
@@ -21,7 +17,7 @@ const KEY_ADD_SERVER = __DEV__ ? 'l' : 'n';
 const KEY_SEND_MESSAGE = '\r';
 const KEY_SELECT = '123456789';
 
-const keyCommands = [
+export const keyCommands = [
 	{
 		// Focus messageBox
 		input: KEY_TYPING,
@@ -186,29 +182,3 @@ export const handleCommandShowNewMessage = event => commandHandle(event, KEY_NEW
 export const handleCommandAddNewServer = event => commandHandle(event, KEY_ADD_SERVER, ['command', 'alternate']);
 
 export const handleCommandOpenServerDropdown = event => commandHandle(event, KEY_SERVER_SELECTION, ['command', 'alternate']);
-
-const Commands = ({ children, style }) => {
-	const onKeyCommand = (event) => {
-		EventEmitter.emit(KEY_COMMAND, { event: event.nativeEvent });
-	};
-
-	if (isTablet) {
-		return (
-			<KeyCommands
-				style={style || { flex: 1 }}
-				keyCommands={keyCommands}
-				onKeyCommand={onKeyCommand}
-			>
-				{children}
-			</KeyCommands>
-		);
-	}
-	return children;
-};
-
-Commands.propTypes = {
-	children: PropTypes.node,
-	style: PropTypes.any
-};
-
-export default Commands;
