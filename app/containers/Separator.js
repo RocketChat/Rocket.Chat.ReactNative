@@ -2,12 +2,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { COLOR_SEPARATOR, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
+		height: StyleSheet.hairlineWidth
 	}
 });
 
