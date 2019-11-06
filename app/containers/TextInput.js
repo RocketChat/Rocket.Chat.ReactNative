@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
-import {
-	COLOR_DANGER, COLOR_TEXT_DESCRIPTION, COLOR_TEXT, COLOR_BORDER, themes
-} from '../constants/colors';
+import { COLOR_DANGER, themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
@@ -27,9 +25,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 14,
 		paddingRight: 14,
 		borderWidth: 1,
-		borderRadius: 2,
-		backgroundColor: 'white',
-		borderColor: COLOR_BORDER
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -56,12 +52,6 @@ const styles = StyleSheet.create({
 	},
 	iconRight: {
 		right: 15
-	},
-	icon: {
-		color: COLOR_TEXT
-	},
-	password: {
-		color: COLOR_TEXT_DESCRIPTION
 	}
 });
 
@@ -95,7 +85,7 @@ export default class RCTextInput extends React.PureComponent {
 			<CustomIcon
 				name={iconLeft}
 				testID={testID ? `${ testID }-icon-left` : null}
-				style={[styles.iconContainer, styles.iconLeft, styles.icon, { color: themes[theme].bodyText }]}
+				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
 		);
@@ -109,7 +99,7 @@ export default class RCTextInput extends React.PureComponent {
 				<CustomIcon
 					name={showPassword ? 'Eye' : 'eye-off'}
 					testID={testID ? `${ testID }-icon-right` : null}
-					style={[styles.icon, styles.password, { color: themes[theme].auxiliaryText }]}
+					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
 				/>
 			</BorderlessButton>
@@ -136,7 +126,11 @@ export default class RCTextInput extends React.PureComponent {
 							inputStyle,
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight,
-							{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor, color: themes[theme].titleText }
+							{
+								backgroundColor: themes[theme].backgroundColor,
+								borderColor: themes[theme].borderColor,
+								color: themes[theme].titleText
+							}
 						]}
 						ref={inputRef}
 						autoCorrect={false}
