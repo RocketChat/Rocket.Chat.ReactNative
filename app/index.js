@@ -3,7 +3,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
-import { Linking } from 'react-native';
+import { View, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 
@@ -386,9 +386,9 @@ class CustomModalStack extends React.Component {
 				isVisible={showModal}
 				onBackdropPress={close}
 			>
-				<KeyCommands style={sharedStyles.modal}>
+				<View style={sharedStyles.modal}>
 					<ModalSwitch navigation={navigation} />
-				</KeyCommands>
+				</View>
 			</Modal>
 		);
 	}
