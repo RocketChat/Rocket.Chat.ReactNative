@@ -40,7 +40,7 @@ export const themes = {
 		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#eeeef4',
 		bannerBackground: '#f1f2f4',
-		titleText: '#0d0e12', // TODO: is this still being used?
+		titleText: '#0d0e12',
 		bodyText: '#2f343d',
 		borderColor: '#e1e5e8',
 		controlText: '#54585e',

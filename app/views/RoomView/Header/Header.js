@@ -8,11 +8,9 @@ import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isIOS, isAndroid } from '../../../utils/deviceInfo';
+import { isAndroid } from '../../../utils/deviceInfo';
 import Icon from './Icon';
-import {
-	COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE, themes
-} from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textSemibold,
-		color: HEADER_TITLE,
 		fontSize: TITLE_SIZE
 	},
 	scroll: {
@@ -39,7 +36,6 @@ const styles = StyleSheet.create({
 	},
 	typing: {
 		...sharedStyles.textRegular,
-		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE,
 		fontSize: 12,
 		flex: 4
 	},
@@ -58,7 +54,7 @@ const Typing = React.memo(({ usersTyping, theme }) => {
 		usersText = usersTyping.join(', ');
 	}
 	return (
-		<Text style={[styles.typing, { color: themes[theme].titleText }]} numberOfLines={1}>
+		<Text style={[styles.typing, { color: themes[theme].headerTitleColor }]} numberOfLines={1}>
 			<Text style={styles.typingUsers}>{usersText} </Text>
 			{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
 		</Text>
@@ -78,7 +74,7 @@ const HeaderTitle = React.memo(({
 	}
 	return (
 		<Text
-			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].titleText }]}
+			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
 			numberOfLines={1}
 			testID={`room-view-title-${ title }`}
 		>{title}
@@ -120,7 +116,7 @@ const Header = React.memo(({
 					bounces={false}
 					contentContainerStyle={styles.scroll}
 				>
-					<Icon type={prid ? 'discussion' : type} status={status} />
+					<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
 					<HeaderTitle
 						prid={prid}
 						type={type}

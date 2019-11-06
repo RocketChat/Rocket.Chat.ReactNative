@@ -7,7 +7,7 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { COLOR_WHITE } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		fontSize: 20,
-		color: COLOR_WHITE,
 		...sharedStyles.textRegular
 	},
 	serverSmall: {
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
 	},
 	updating: {
 		fontSize: 14,
-		color: COLOR_WHITE,
 		...sharedStyles.textRegular
 	},
 	disclosure: {
@@ -43,16 +41,17 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, onSearchChangeText, onPress
+	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
+	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={styles.server}
+					style={[styles.server, titleColorStyle]}
 					placeholder='Search'
-					placeholderTextColor='rgba(255, 255, 255, 0.5)'
+					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={onSearchChangeText}
 				/>
 			</View>
@@ -65,11 +64,11 @@ const Header = React.memo(({
 				testID='rooms-list-header-server-dropdown-button'
 				disabled={connecting || isFetching}
 			>
-				{connecting ? <Text style={styles.updating}>{I18n.t('Connecting')}</Text> : null}
-				{isFetching ? <Text style={styles.updating}>{I18n.t('Updating')}</Text> : null}
+				{connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
+				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
-					<Text style={[styles.server, isFetching && styles.serverSmall]}>{serverName}</Text>
-					<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
+					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]}>{serverName}</Text>
+					<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown, titleColorStyle]} source={{ uri: 'disclosure_indicator_server' }} />
 				</View>
 			</TouchableOpacity>
 		</View>
@@ -83,7 +82,8 @@ Header.propTypes = {
 	onSearchChangeText: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
-	serverName: PropTypes.string
+	serverName: PropTypes.string,
+	theme: PropTypes.string
 };
 
 Header.defaultProps = {

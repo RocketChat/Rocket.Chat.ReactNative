@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { COLOR_PRIMARY, themes } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		fontSize: 12,
-		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
 	disclosure: {
@@ -46,7 +45,7 @@ const HeaderTitle = React.memo(({ connecting, isFetching, theme }) => {
 	if (isFetching) {
 		title = I18n.t('Updating');
 	}
-	return <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>;
+	return <Text style={[styles.title, { color: themes[theme].headerTitleColor }]}>{title}</Text>;
 });
 
 const Header = React.memo(({
@@ -61,7 +60,7 @@ const Header = React.memo(({
 		>
 			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
-				<Text style={styles.server}>{serverName}</Text>
+				<Text style={[styles.server, { color: themes[theme].tintColor }]}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
 			</View>
 		</TouchableOpacity>
