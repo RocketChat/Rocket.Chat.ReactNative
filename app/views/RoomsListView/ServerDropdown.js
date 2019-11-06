@@ -169,7 +169,7 @@ class ServerDropdown extends Component {
 						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
 					</View>
-					{item.id === server ? <Check /> : null}
+					{item.id === server ? <Check theme={theme} /> : null}
 				</View>
 			</RectButton>
 		);

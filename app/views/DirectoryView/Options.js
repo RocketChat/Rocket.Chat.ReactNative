@@ -74,7 +74,7 @@ export default class DirectoryOptions extends PureComponent {
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
+					{propType === itemType ? <Check theme={theme} /> : null}
 				</View>
 			</RectButton>
 		);

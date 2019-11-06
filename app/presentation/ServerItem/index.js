@@ -44,7 +44,7 @@ const ServerItem = React.memo(({
 				<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
 				<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
 			</View>
-			{item.id === server && hasCheck ? <Check /> : null}
+			{item.id === server && hasCheck ? <Check theme={theme} /> : null}
 		</View>
 	</RectButton>
 ));

@@ -34,7 +34,7 @@ export const SortItemContent = ({
 		{icon && <CustomIcon style={[styles.sortIcon, { color: themes[theme].controlText }]} size={22} name={icon} />}
 		{imageUri && <Image style={[styles.sortIcon, { tintColor: themes[theme].controlText }]} source={{ uri: imageUri }} />}
 		<Text style={[styles.sortItemText, { color: themes[theme].controlText }]}>{I18n.t(label)}</Text>
-		{checked ? <Check /> : null}
+		{checked ? <Check theme={theme} /> : null}
 	</View>
 );
 
