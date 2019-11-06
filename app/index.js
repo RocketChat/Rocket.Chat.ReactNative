@@ -22,8 +22,7 @@ import RocketChat from './lib/rocketchat';
 import {
 	isTablet, setWidth, isSplited, isIOS
 } from './utils/deviceInfo';
-import KeyCommands, { handleCommandCloseModal, KEY_COMMAND } from './commands';
-import EventEmitter from './utils/events';
+import KeyCommands from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 
@@ -451,21 +450,11 @@ export default class Root extends React.Component {
 
 		if (isTablet) {
 			initTabletNav(args => this.setState(args));
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
-		}
-	}
-
-	handleCommands = ({ event }) => {
-		if (handleCommandCloseModal(event)) {
-			this.setState({ showModal: false });
-		}
 	}
 
 	init = async() => {

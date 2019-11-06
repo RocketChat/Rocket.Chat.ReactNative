@@ -99,11 +99,6 @@ const keyCommands = [
 		modifierFlags: constants.keyModifierAlternate
 	},
 	{
-		// Close modal
-		input: constants.keyInputEscape,
-		modifierFlags: 0
-	},
-	{
 		// Reply latest message with Quote
 		input: KEY_REPLY,
 		modifierFlags: constants.keyModifierCommand,
@@ -189,8 +184,6 @@ export const handleCommandNextRoom = event => commandHandle(event, KEY_NEXT_ROOM
 export const handleCommandShowNewMessage = event => commandHandle(event, KEY_NEW_ROOM, ['command']);
 
 export const handleCommandAddNewServer = event => commandHandle(event, KEY_ADD_SERVER, ['command', 'alternate']);
-
-export const handleCommandCloseModal = event => commandHandle(event, constants.keyInputEscape);
 
 export const handleCommandOpenServerDropdown = event => commandHandle(event, KEY_SERVER_SELECTION, ['command', 'alternate']);
 
