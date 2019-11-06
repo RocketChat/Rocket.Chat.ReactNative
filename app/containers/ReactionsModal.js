@@ -18,18 +18,15 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	reactCount: {
-		color: COLOR_WHITE,
 		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {
-		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -84,10 +81,10 @@ const Item = React.memo(({
 				/>
 			</View>
 			<View style={styles.peopleItemContainer}>
-				<Text style={styles.reactCount}>
+				<Text style={[styles.reactCount, { color: COLOR_WHITE }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={styles.peopleReacted}>{ usernames }</Text>
+				<Text style={[styles.peopleReacted, { color: COLOR_WHITE }]}>{ usernames }</Text>
 			</View>
 		</View>
 	);
@@ -100,11 +97,11 @@ const ModalContent = React.memo(({ message, onClose, ...props }) => {
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<CustomIcon
-							style={styles.closeButton}
+							style={[styles.closeButton, { color: COLOR_WHITE }]}
 							name='cross'
 							size={20}
 						/>
-						<Text style={styles.title}>{I18n.t('Reactions')}</Text>
+						<Text style={[styles.title, { color: COLOR_WHITE }]}>{I18n.t('Reactions')}</Text>
 					</View>
 				</Touchable>
 				<FlatList
