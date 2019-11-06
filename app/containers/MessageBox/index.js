@@ -736,13 +736,13 @@ class MessageBox extends Component {
 		} = this.props;
 
 		if (recording) {
-			return <Recording onFinish={this.finishAudioMessage} />;
+			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
 		}
 		return (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={styles.composer}>
+				<View style={[styles.composer, { borderTopColor: themes[theme].borderColor }]}>
 					<ReplyPreview
 						message={message}
 						close={replyCancel}
@@ -752,10 +752,14 @@ class MessageBox extends Component {
 						theme={theme}
 					/>
 					<View
-						style={[styles.textArea, editing && styles.editing, { backgroundColor: themes[theme].backgroundColor }]}
+						style={[
+							styles.textArea,
+							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+						]}
 						testID='messagebox'
 					>
 						<LeftButtons
+							theme={theme}
 							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
 							showFileActions={this.showFileActions}
@@ -775,9 +779,11 @@ class MessageBox extends Component {
 							defaultValue=''
 							multiline
 							placeholderTextColor={themes[theme].auxiliaryText}
+							keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 							testID='messagebox-input'
 						/>
 						<RightButtons
+							theme={theme}
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}

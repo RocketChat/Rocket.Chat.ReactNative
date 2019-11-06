@@ -63,7 +63,7 @@ const MentionItem = ({
 	if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) {
 		content = (
 			<>
-				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor }]}>/</Text>
+				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
 				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.command}</Text>
 			</>
 		);
@@ -71,7 +71,7 @@ const MentionItem = ({
 
 	return (
 		<TouchableOpacity
-			style={[styles.mentionItem, { backgroundColor: themes[theme].auxiliaryBackground, borderTopColor: themes[theme].borderColor }]}
+			style={[styles.mentionItem, { backgroundColor: themes[theme].messageboxBackground, borderTopColor: themes[theme].borderColor }]}
 			onPress={() => onPressMention(item)}
 			testID={testID}
 		>

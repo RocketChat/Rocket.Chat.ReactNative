@@ -7,20 +7,16 @@ import { connect } from 'react-redux';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_WHITE, themes
-} from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		paddingTop: 10,
-		backgroundColor: COLOR_WHITE
+		paddingTop: 10
 	},
 	messageContainer: {
 		flex: 1,
 		marginHorizontal: 10,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		borderRadius: 4
@@ -30,7 +26,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		color: COLOR_PRIMARY,
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
@@ -56,8 +51,13 @@ const ReplyPreview = React.memo(({
 
 	const time = moment(message.ts).format(Message_TimeFormat);
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
-			<View style={[styles.messageContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+		<View
+			style={[
+				styles.container,
+				{ backgroundColor: themes[theme].messageboxBackground }
+			]}
+		>
+			<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 				<View style={styles.header}>
 					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
@@ -73,7 +73,7 @@ const ReplyPreview = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={close} />
+			<CustomIcon name='cross' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
 }, (prevProps, nextProps) => prevProps.replying === nextProps.replying);

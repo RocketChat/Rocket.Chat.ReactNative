@@ -8,7 +8,6 @@ import { CustomIcon } from '../../../lib/Icons';
 import { COLOR_PRIMARY } from '../../../constants/colors';
 import MessageboxContext from '../Context';
 import ActivityIndicator from '../../ActivityIndicator';
-import { withTheme } from '../../../theme';
 
 const Item = ({ item, theme }) => {
 	const context = useContext(MessageboxContext);
@@ -17,7 +16,7 @@ const Item = ({ item, theme }) => {
 
 	return (
 		<TouchableOpacity
-			style={styles.commandPreview}
+			style={[styles.commandPreview]}
 			onPress={() => onPressCommandPreview(item)}
 			testID={`command-preview-item${ item.id }`}
 		>
@@ -44,4 +43,4 @@ Item.propTypes = {
 	theme: PropTypes.string
 };
 
-export default withTheme(Item);
+export default Item;

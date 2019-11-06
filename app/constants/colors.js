@@ -55,7 +55,8 @@ export const themes = {
 		headerTintColor: isAndroid ? COLOR_WHITE : '#1d74f5',
 		headerTitleColor: isAndroid ? COLOR_WHITE : '#0d0e12',
 		toastBackground: '#0C0D0F',
-		videoBackground: '#1f2329'
+		videoBackground: '#1f2329',
+		messageboxBackground: isIOS ? '#f8f8f8' : '#ffffff'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -78,7 +79,8 @@ export const themes = {
 		headerTintColor: '#1d74f5',
 		headerTitleColor: '#FFFFFF',
 		toastBackground: '#0C0D0F',
-		videoBackground: '#1f2329'
+		videoBackground: '#1f2329',
+		messageboxBackground: '#0b182c'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -101,6 +103,7 @@ export const themes = {
 		headerTintColor: '#1e9bfe',
 		headerTitleColor: '#f9f9f9',
 		toastBackground: '#0C0D0F',
-		videoBackground: '#1f2329'
+		videoBackground: '#1f2329',
+		messageboxBackground: '#0d0d0d'
 	}
 };
