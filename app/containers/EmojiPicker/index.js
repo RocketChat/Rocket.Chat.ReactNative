@@ -16,7 +16,7 @@ import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import log from '../../utils/log';
-import { COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const scrollProps = {
@@ -166,7 +166,7 @@ class EmojiPicker extends Component {
 			<ScrollableTabView
 				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
 				contentProps={scrollProps}
-				style={{ backgroundColor: COLOR_WHITE }}
+				style={{ backgroundColor: themes[theme].focusedBackground }}
 			>
 				{
 					categories.tabs.map((tab, i) => (
@@ -175,7 +175,7 @@ class EmojiPicker extends Component {
 								<ScrollView
 									key={tab.category}
 									tabLabel={tab.tabLabel}
-									style={{ backgroundColor: COLOR_WHITE }}
+									style={{ backgroundColor: themes[theme].chatComponentBackground }}
 									{...scrollProps}
 								>
 									{this.renderCategory(tab.category, i)}
