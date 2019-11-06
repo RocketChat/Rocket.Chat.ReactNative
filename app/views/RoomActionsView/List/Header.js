@@ -36,7 +36,7 @@ const Header = memo(({
 			>
 				{room.t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 			</Avatar>
-			<View key='name' style={styles.roomTitleContainer}>
+			<View style={styles.roomTitleContainer}>
 				{room.t === 'd'
 					? <Text style={styles.roomTitle}>{room.fname}</Text>
 					: (

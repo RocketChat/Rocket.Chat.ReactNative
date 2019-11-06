@@ -12,22 +12,22 @@ import styles from './styles';
 const Item = ({
 	icon, name, description, type, onPress, testID, disabled
 }) => {
-	const ItemContent = () => {
+	const Content = () => {
 		if (type === 'danger') {
 			return (
 				<>
-					<CustomIcon key='icon' name={icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />
-					<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ name }</Text>
+					<CustomIcon name={icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />
+					<Text style={[styles.sectionItemName, styles.textColorDanger]}>{ name }</Text>
 				</>
 			);
 		}
 
 		return (
 			<>
-				<CustomIcon key='left-icon' name={icon} size={24} style={styles.sectionItemIcon} />
-				<Text key='name' style={styles.sectionItemName}>{ name }</Text>
-				{description ? <Text key='description' style={styles.sectionItemDescription}>{ description }</Text> : null}
-				<DisclosureIndicator key='disclosure-indicator' />
+				<CustomIcon name={icon} size={24} style={styles.sectionItemIcon} />
+				<Text style={styles.sectionItemName}>{ name }</Text>
+				{description ? <Text style={styles.sectionItemDescription}>{ description }</Text> : null}
+				<DisclosureIndicator />
 			</>
 		);
 	};
@@ -42,7 +42,7 @@ const Item = ({
 			testID={testID}
 		>
 			<View style={[styles.sectionItem, disabled && styles.sectionItemDisabled]}>
-				<ItemContent />
+				<Content />
 			</View>
 		</Touch>
 	);
