@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 import React from 'react';
 import PropTypes from 'prop-types';
-import KeyCommands, { constants } from '@envoy/react-native-key-commands';
+import KeyCommands, { constants } from 'react-native-keycommands';
 
 import I18n from './i18n';
 import EventEmitter from './utils/events';

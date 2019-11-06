@@ -1,15 +1,16 @@
 {
   "name": "KeyCommands",
-  "version": "0.0.5",
-  "summary": "iOS UIKeyCommand native component for React Native",
+  "version": "1.0.5",
+  "summary": "iOS UIKeyCommands.",
+  "description": "iOS UIKeyCommands.",
   "license": "MIT",
-  "authors": "Fang-Pen Lin <hello@fangpenlin.com> (https://fangpenlin.com)",
-  "homepage": "https://github.com/envoy/react-native-key-commands#readme",
+  "authors": "djorkaeffalexandre",
+  "homepage": "https://github.com/RocketChat/react-native-keycommands",
+  "source": {
+    "git": "https://github.com/RocketChat/react-native-keycommands.git"
+  },
   "platforms": {
     "ios": "7.0"
-  },
-  "source": {
-    "git": "https://github.com/envoy/react-native-key-commands.git"
   },
   "source_files": "ios/**/*.{h,m}",
   "dependencies": {

@@ -1,1 +1,1 @@
-../../../../../node_modules/@envoy/react-native-key-commands/ios/KeyCommands/RCTKeyCommandsView.h
+../../../../../node_modules/react-native-keycommands/ios/KeyCommands/RCTKeyCommandsView.h
