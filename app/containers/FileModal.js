@@ -27,13 +27,11 @@ const styles = StyleSheet.create({
 		marginVertical: 10
 	},
 	title: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	description: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 14,
 		...sharedStyles.textMedium
@@ -52,8 +50,8 @@ const ModalContent = React.memo(({
 			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>{attachment.title}</Text>
-						{attachment.description ? <Text style={styles.description}>{attachment.description}</Text> : null}
+						<Text style={[styles.title, { color: COLOR_WHITE }]}>{attachment.title}</Text>
+						{attachment.description ? <Text style={[styles.description, { color: COLOR_WHITE }]}>{attachment.description}</Text> : null}
 					</View>
 				</TouchableWithoutFeedback>
 				<ImageViewer

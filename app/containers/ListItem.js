@@ -24,12 +24,10 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	}
 });
