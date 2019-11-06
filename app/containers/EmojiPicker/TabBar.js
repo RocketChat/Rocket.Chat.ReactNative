@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
+import { themes } from '../../constants/colors';
 
 export default class TabBar extends React.Component {
 	static propTypes = {
 		goToPage: PropTypes.func,
 		activeTab: PropTypes.number,
 		tabs: PropTypes.array,
-		tabEmojiStyle: PropTypes.object
+		tabEmojiStyle: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -21,7 +23,7 @@ export default class TabBar extends React.Component {
 
 	render() {
 		const {
-			tabs, goToPage, tabEmojiStyle, activeTab
+			tabs, goToPage, tabEmojiStyle, activeTab, theme
 		} = this.props;
 
 		return (
@@ -35,7 +37,7 @@ export default class TabBar extends React.Component {
 						testID={`reaction-picker-${ tab }`}
 					>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
-						{activeTab === i ? <View style={styles.activeTabLine} /> : <View style={styles.tabLine} />}
+						{activeTab === i ? <View style={[styles.activeTabLine, { backgroundColor: themes[theme].tintColor }]} /> : <View style={styles.tabLine} />}
 					</TouchableOpacity>
 				))}
 			</View>

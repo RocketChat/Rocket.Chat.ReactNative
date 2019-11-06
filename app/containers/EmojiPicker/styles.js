@@ -1,10 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_PRIMARY } from '../../constants/colors';
 
 export default StyleSheet.create({
-	background: {
-		backgroundColor: COLOR_WHITE
-	},
 	container: {
 		flex: 1
 	},
@@ -28,7 +25,6 @@ export default StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: 2,
-		backgroundColor: COLOR_PRIMARY,
 		bottom: 0
 	},
 	tabLine: {
@@ -51,7 +47,6 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	categoryEmoji: {
-		color: 'black',
 		backgroundColor: 'transparent',
 		textAlign: 'center'
 	},
