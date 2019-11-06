@@ -8,7 +8,7 @@ import isEqual from 'deep-equal';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, themes } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -17,8 +17,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 6,
 		alignSelf: 'flex-end',
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		borderColor: COLOR_BORDER,
 		borderWidth: 1,
 		borderRadius: 4
 	},
@@ -36,7 +34,6 @@ const styles = StyleSheet.create({
 	author: {
 		flex: 1,
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	time: {
@@ -56,12 +53,10 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	fieldValue: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -154,7 +149,7 @@ const Reply = React.memo(({
 					borderColor: themes[theme].borderColor
 				}
 			]}
-			background={Touchable.Ripple('#fff')}
+			background={Touchable.Ripple(COLOR_WHITE)}
 		>
 			<View style={styles.attachmentContainer}>
 				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />

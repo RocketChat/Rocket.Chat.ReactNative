@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
 	username: {
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
 	},
 	alias: {
 		fontSize: 14,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	}
 });

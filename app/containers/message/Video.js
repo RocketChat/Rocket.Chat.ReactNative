@@ -9,6 +9,7 @@ import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -18,17 +19,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 4,
 		height: 150,
-		backgroundColor: '#1f2329',
 		marginBottom: 6,
 		alignItems: 'center',
 		justifyContent: 'center'
-	},
-	modal: {
-		margin: 0,
-		backgroundColor: '#000'
-	},
-	image: {
-		color: 'white'
 	}
 });
 
@@ -51,13 +44,13 @@ const Video = React.memo(({
 		<>
 			<Touchable
 				onPress={onPress}
-				style={styles.button}
-				background={Touchable.Ripple('#fff')}
+				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
+				background={Touchable.Ripple(COLOR_WHITE)}
 			>
 				<CustomIcon
 					name='play'
 					size={54}
-					style={styles.image}
+					color={COLOR_WHITE}
 				/>
 			</Touchable>
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />

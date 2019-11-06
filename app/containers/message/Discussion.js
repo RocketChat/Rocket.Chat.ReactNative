@@ -8,7 +8,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
-import { themes } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 
 const Discussion = React.memo(({
 	msg, dcount, dlm, onDiscussionPress, theme
@@ -22,13 +22,13 @@ const Discussion = React.memo(({
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={onDiscussionPress}
-					background={Touchable.Ripple('#fff')}
-					style={[styles.button, styles.smallButton]}
+					background={Touchable.Ripple(COLOR_WHITE)}
+					style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{buttonText}</Text>
+						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={COLOR_WHITE} />
+						<Text style={[styles.buttonText, { color: themes[theme].auxiliaryText }]}>{buttonText}</Text>
 					</>
 				</Touchable>
 				<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>

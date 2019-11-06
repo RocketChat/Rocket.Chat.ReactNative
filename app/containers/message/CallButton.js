@@ -7,31 +7,33 @@ import { formatLastMessage, BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 
 const CallButton = React.memo(({
-	dlm, callJitsi
+	dlm, theme, callJitsi
 }) => {
 	const time = formatLastMessage(dlm);
 	return (
 		<View style={styles.buttonContainer}>
 			<Touchable
 				onPress={callJitsi}
-				background={Touchable.Ripple('#fff')}
-				style={[styles.button, styles.smallButton]}
+				background={Touchable.Ripple(COLOR_WHITE)}
+				style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
 				hitSlop={BUTTON_HIT_SLOP}
 			>
 				<>
-					<CustomIcon name='video' size={20} style={styles.buttonIcon} />
-					<Text style={styles.buttonText}>{I18n.t('Click_to_join')}</Text>
+					<CustomIcon name='video' size={20} style={styles.buttonIcon} color={COLOR_WHITE} />
+					<Text style={[styles.buttonText, { color: COLOR_WHITE }]}>{I18n.t('Click_to_join')}</Text>
 				</>
 			</Touchable>
-			<Text style={styles.time}>{time}</Text>
+			<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 		</View>
 	);
 });
 
 CallButton.propTypes = {
 	dlm: PropTypes.string,
+	theme: PropTypes.string,
 	callJitsi: PropTypes.func
 };
 CallButton.displayName = 'CallButton';

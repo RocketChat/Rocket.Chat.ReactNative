@@ -8,13 +8,13 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
 		onPress={onPress}
 		style={styles.imageContainer}
-		background={Touchable.Ripple('#fff')}
+		background={Touchable.Ripple(COLOR_WHITE)}
 	>
 		{children}
 	</Touchable>

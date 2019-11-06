@@ -7,7 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const AddReaction = React.memo(({ reactionInit, theme }) => (
@@ -16,11 +16,11 @@ const AddReaction = React.memo(({ reactionInit, theme }) => (
 		key='message-add-reaction'
 		testID='message-add-reaction'
 		style={[styles.reactionButton, { backgroundColor: themes[theme].backgroundColor }]}
-		background={Touchable.Ripple('#fff')}
+		background={Touchable.Ripple(COLOR_WHITE)}
 		hitSlop={BUTTON_HIT_SLOP}
 	>
 		<View style={[styles.reactionContainer, { borderColor: themes[theme].borderColor }]}>
-			<CustomIcon name='add-reaction' size={21} style={styles.addReaction} />
+			<CustomIcon name='add-reaction' size={21} color={themes[theme].tintColor} />
 		</View>
 	</Touchable>
 ));
@@ -36,7 +36,7 @@ const Reaction = React.memo(({
 			key={reaction.emoji}
 			testID={`message-reaction-${ reaction.emoji }`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
-			background={Touchable.Ripple('#fff')}
+			background={Touchable.Ripple(COLOR_WHITE)}
 			hitSlop={BUTTON_HIT_SLOP}
 		>
 			<View style={[styles.reactionContainer, { borderColor: reacted ? themes[theme].tintColor : themes[theme].borderColor }]}>
@@ -47,7 +47,7 @@ const Reaction = React.memo(({
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={styles.reactionCount}>{ reaction.usernames.length }</Text>
+				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{ reaction.usernames.length }</Text>
 			</View>
 		</Touchable>
 	);

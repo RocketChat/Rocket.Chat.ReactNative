@@ -7,9 +7,10 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 
 const Broadcast = React.memo(({
-	author, user, broadcast, replyBroadcast
+	author, user, broadcast, replyBroadcast, theme
 }) => {
 	const isOwn = author._id === user.id;
 	if (broadcast && !isOwn) {
@@ -17,13 +18,13 @@ const Broadcast = React.memo(({
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={replyBroadcast}
-					background={Touchable.Ripple('#fff')}
-					style={styles.button}
+					background={Touchable.Ripple(COLOR_WHITE)}
+					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='back' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{I18n.t('Reply')}</Text>
+						<CustomIcon name='back' size={20} style={styles.buttonIcon} color={COLOR_WHITE} />
+						<Text style={[styles.buttonText, { color: COLOR_WHITE }]}>{I18n.t('Reply')}</Text>
 					</>
 				</Touchable>
 			</View>
@@ -36,6 +37,7 @@ Broadcast.propTypes = {
 	author: PropTypes.object,
 	user: PropTypes.object,
 	broadcast: PropTypes.bool,
+	theme: PropTypes.string,
 	replyBroadcast: PropTypes.func
 };
 Broadcast.displayName = 'MessageBroadcast';

@@ -7,9 +7,7 @@ import isEqual from 'lodash/isEqual';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY, themes
-} from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -20,8 +18,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		borderColor: COLOR_BORDER,
 		borderWidth: 1
 	},
 	textContainer: {
@@ -32,13 +28,11 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		color: COLOR_PRIMARY,
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	description: {
 		fontSize: 16,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -63,7 +57,7 @@ const UrlImage = React.memo(({ image, user, baseUrl }) => {
 const UrlContent = React.memo(({ title, description, theme }) => (
 	<View style={styles.textContainer}>
 		{title ? <Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>{title}</Text> : null}
-		{description ? <Text style={[styles.description, { color: themes[theme].titleText }]} numberOfLines={2}>{description}</Text> : null}
+		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]} numberOfLines={2}>{description}</Text> : null}
 	</View>
 ), (prevProps, nextProps) => {
 	if (prevProps.title !== nextProps.title) {
@@ -96,7 +90,7 @@ const Url = React.memo(({
 					borderColor: themes[theme].borderColor
 				}
 			]}
-			background={Touchable.Ripple('#fff')}
+			background={Touchable.Ripple(COLOR_WHITE)}
 		>
 			<>
 				<UrlImage image={url.image} user={user} baseUrl={baseUrl} />
