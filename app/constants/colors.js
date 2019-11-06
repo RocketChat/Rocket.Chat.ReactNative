@@ -3,7 +3,7 @@ import { isIOS, isAndroid } from '../utils/deviceInfo';
 export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#2de0a5';
 export const COLOR_PRIMARY = '#1d74f5';
-export const COLOR_WHITE = '#fff'; // KEEP
+export const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
 export const COLOR_BLACK = '#000000'; // KEEP
 export const COLOR_BUTTON_PRIMARY = COLOR_PRIMARY;
 export const COLOR_TITLE = '#0C0D0F';
@@ -48,7 +48,7 @@ export const themes = {
 		tintColor: '#1d74f5',
 		auxiliaryTintColor: '#0a4469',
 		actionTintColor: '#1d74f5',
-		actionBackgroundColor: '#e8f2ff',
+		actionBackgroundColor: '#e8f2ff', // weird color
 		mutedAccent: '#cbcbcc',
 		strongAccent: '', // ???
 		separatorColor: '#A7A7AA',

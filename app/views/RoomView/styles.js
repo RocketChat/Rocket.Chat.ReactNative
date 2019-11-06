@@ -1,8 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import {
-	COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
-} from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -42,11 +39,9 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: COLOR_PRIMARY,
 		borderRadius: 2
 	},
 	joinRoomText: {
-		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},

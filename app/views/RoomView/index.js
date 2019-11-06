@@ -30,7 +30,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { HEADER_BACK, themes } from '../../constants/colors';
+import { HEADER_BACK, themes, COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
@@ -707,11 +707,11 @@ class RoomView extends React.Component {
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<RectButton
 						onPress={this.joinRoom}
-						style={styles.joinRoomButton}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						activeOpacity={1}
 						underlayColor={themes[theme].bannerBackground}
 					>
-						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: COLOR_WHITE }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
 					</RectButton>
 				</View>
 			);

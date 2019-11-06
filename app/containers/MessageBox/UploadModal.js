@@ -12,13 +12,9 @@ import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
-import {
-	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, themes
-} from '../../constants/colors';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
-
-const cancelButtonColor = COLOR_BACKGROUND_CONTAINER;
 
 const styles = StyleSheet.create({
 	modal: {
@@ -35,7 +31,6 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		height: 430,
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column'
 	},
 	scrollView: {
@@ -51,8 +46,7 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		padding: 16,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		padding: 16
 	},
 	button: {
 		marginBottom: 0
@@ -68,7 +62,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	fileIcon: {
-		color: COLOR_PRIMARY,
 		margin: 20,
 		flex: 1,
 		textAlign: 'center'
@@ -144,11 +137,11 @@ class UploadModal extends Component {
 		const { close, theme } = this.props;
 		if (isIOS) {
 			return (
-				<View style={[styles.buttonContainer, { backgroundColor: themes[theme].focusedBackground }]}>
+				<View style={[styles.buttonContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 					<Button
 						title={I18n.t('Cancel')}
 						type='secondary'
-						backgroundColor={cancelButtonColor}
+						backgroundColor={themes[theme].chatComponentBackground}
 						style={styles.button}
 						onPress={close}
 					/>
@@ -163,19 +156,19 @@ class UploadModal extends Component {
 		}
 		// FIXME: RNGH don't work well on Android modals: https://github.com/kmagiera/react-native-gesture-handler/issues/139
 		return (
-			<View style={[styles.buttonContainer, { backgroundColor: themes[theme].focusedBackground }]}>
+			<View style={[styles.buttonContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<TouchableHighlight
 					onPress={close}
-					style={[styles.androidButton, { backgroundColor: cancelButtonColor }]}
-					underlayColor={cancelButtonColor}
+					style={[styles.androidButton, { backgroundColor: themes[theme].chatComponentBackground }]}
+					underlayColor={themes[theme].chatComponentBackground}
 					activeOpacity={0.5}
 				>
-					<Text style={[styles.androidButtonText, { ...sharedStyles.textBold, color: COLOR_PRIMARY }]}>{I18n.t('Cancel')}</Text>
+					<Text style={[styles.androidButtonText, { ...sharedStyles.textBold, color: themes[theme].tintColor }]}>{I18n.t('Cancel')}</Text>
 				</TouchableHighlight>
 				<TouchableHighlight
 					onPress={this.submit}
-					style={[styles.androidButton, { backgroundColor: COLOR_PRIMARY }]}
-					underlayColor={COLOR_PRIMARY}
+					style={[styles.androidButton, { backgroundColor: themes[theme].tintColor }]}
+					underlayColor={themes[theme].tintColor}
 					activeOpacity={0.5}
 				>
 					<Text style={[styles.androidButtonText, { ...sharedStyles.textMedium, color: COLOR_WHITE }]}>{I18n.t('Send')}</Text>
@@ -216,7 +209,7 @@ class UploadModal extends Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].chatComponentBackground }]}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
