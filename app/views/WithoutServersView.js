@@ -8,6 +8,7 @@ import { CloseShareExtensionButton } from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { COLOR_WHITE } from '../constants/colors';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +32,8 @@ const styles = StyleSheet.create({
 });
 
 export default class WithoutServerView extends React.Component {
-	static navigationOptions = () => ({
+	static navigationOptions = ({ screenProps }) => ({
+		...themedHeader(screenProps.theme),
 		headerLeft: (
 			<CloseShareExtensionButton
 				onPress={ShareExtension.close}

@@ -18,6 +18,7 @@ import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -90,10 +91,8 @@ class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
+			...themedHeader(screenProps.theme),
 			title,
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
 		};
 	}

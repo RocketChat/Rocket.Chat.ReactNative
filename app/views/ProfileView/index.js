@@ -29,14 +29,13 @@ import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile'),
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText }
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {
@@ -380,16 +379,16 @@ class ProfileView extends React.Component {
 
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<ScrollView
-					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].focusedBackground }]}
-					testID='profile-view-list'
-					{...scrollPersistTaps}
-				>
-					<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='profile-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]} testID='profile-view' forceInset={{ vertical: 'never' }}>
+					<ScrollView
+						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].focusedBackground }]}
+						testID='profile-view-list'
+						{...scrollPersistTaps}
+					>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
@@ -482,8 +481,8 @@ class ProfileView extends React.Component {
 							<Dialog.Button label={I18n.t('Cancel')} onPress={this.closePasswordAlert} />
 							<Dialog.Button label={I18n.t('Save')} onPress={this.submit} />
 						</Dialog.Container>
-					</SafeAreaView>
-				</ScrollView>
+					</ScrollView>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}

@@ -167,8 +167,8 @@ class Markdown extends PureComponent {
 						? {
 							...styles.codeInline,
 							color: themes[theme].titleText,
-							backgroundColor: themes[theme].focusedBackground,
-							borderColor: themes[theme].borderColor
+							backgroundColor: themes[theme].bannerBackground,
+							borderColor: themes[theme].bannerBackground
 						}
 						: { ...styles.text, color: themes[theme].titleText },
 					...style
@@ -188,8 +188,8 @@ class Markdown extends PureComponent {
 						? {
 							...styles.codeBlock,
 							color: themes[theme].titleText,
-							backgroundColor: themes[theme].focusedBackground,
-							borderColor: themes[theme].borderColor
+							backgroundColor: themes[theme].bannerBackground,
+							borderColor: themes[theme].bannerBackground
 						}
 						: { ...styles.text, color: themes[theme].titleText },
 					...style

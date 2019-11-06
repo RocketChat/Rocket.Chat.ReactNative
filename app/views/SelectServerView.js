@@ -14,6 +14,7 @@ import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
@@ -34,9 +35,7 @@ const styles = StyleSheet.create({
 
 class SelectServerView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Select_Server')
 	})
 

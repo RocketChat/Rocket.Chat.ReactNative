@@ -25,6 +25,7 @@ import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE, themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -44,10 +45,8 @@ class SelectedUsersView extends React.Component {
 		const title = navigation.getParam('title');
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
+			...themedHeader(screenProps.theme),
 			title,
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />

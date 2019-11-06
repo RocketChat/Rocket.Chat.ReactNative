@@ -16,6 +16,7 @@ import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessa
 import FileModal from '../../containers/FileModal';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -23,9 +24,7 @@ const CANCEL_INDEX = 1;
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		title: navigation.state.params.name,
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText }
+		...themedHeader(screenProps.theme)
 	});
 
 	static propTypes = {

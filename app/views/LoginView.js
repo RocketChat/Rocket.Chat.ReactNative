@@ -20,6 +20,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -48,9 +49,7 @@ class LoginView extends React.Component {
 		return {
 			title,
 			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />,
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText }
+			...themedHeader(screenProps.theme)
 		};
 	}
 

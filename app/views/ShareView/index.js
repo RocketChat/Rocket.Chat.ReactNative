@@ -15,6 +15,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 class ShareView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -22,9 +23,7 @@ class ShareView extends React.Component {
 
 		return ({
 			title: I18n.t('Share'),
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
+			...themedHeader(screenProps.theme),
 			headerRight:
 				canSend
 					? (

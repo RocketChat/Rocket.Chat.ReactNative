@@ -29,6 +29,7 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -57,7 +58,7 @@ class ShareListView extends React.Component {
 		}
 
 		return {
-			headerStyle: { backgroundColor: themes[screenProps.theme].backgroundColor },
+			...themedHeader(screenProps.theme),
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>

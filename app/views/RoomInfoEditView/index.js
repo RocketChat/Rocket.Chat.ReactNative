@@ -24,6 +24,7 @@ import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
+import { themedHeader } from '../../utils/navigation';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -41,9 +42,10 @@ const PERMISSIONS_ARRAY = [
 ];
 
 class RoomInfoEditView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Room_Info_Edit')
-	}
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Room_Info_Edit'),
+		...themedHeader(screenProps.theme)
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

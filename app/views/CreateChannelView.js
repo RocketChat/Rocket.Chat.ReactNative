@@ -20,6 +20,7 @@ import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_WHITE, SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -82,10 +83,8 @@ class CreateChannelView extends React.Component {
 		const submit = navigation.getParam('submit', () => {});
 		const showSubmit = navigation.getParam('showSubmit');
 		return {
+			...themedHeader(screenProps.theme),
 			title: I18n.t('Create_Channel'),
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: (
 				showSubmit
 					? (

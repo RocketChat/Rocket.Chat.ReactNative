@@ -24,6 +24,7 @@ import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparatorBorder, { borderColor: themes[theme].borderColor, backgroundColor: themes[theme].focusedBackground }]} />);
 SectionSeparator.propTypes = {
@@ -41,9 +42,7 @@ ItemInfo.propTypes = {
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		...themedHeader(screenProps.theme),
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Settings')
 	});

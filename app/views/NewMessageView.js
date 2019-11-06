@@ -23,6 +23,7 @@ import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -55,9 +56,7 @@ const styles = StyleSheet.create({
 
 class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		...themedHeader(screenProps.theme),
 		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})

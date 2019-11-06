@@ -23,15 +23,14 @@ import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Threads')
 	});
 

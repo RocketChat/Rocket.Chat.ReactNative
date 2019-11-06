@@ -18,6 +18,7 @@ import {
 } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -44,9 +45,7 @@ SectionSeparator.propTypes = {
 class AutoTranslateView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		title: I18n.t('Auto_Translate'),
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText }
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {

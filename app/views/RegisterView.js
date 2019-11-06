@@ -22,6 +22,7 @@ import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
+import { themedHeader } from '../utils/navigation';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -29,10 +30,8 @@ class RegisterView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
+			...themedHeader(screenProps.theme),
 			title,
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].titleText },
 			headerRight: <LegalButton testID='register-view-more' navigation={navigation} />
 		};
 	}

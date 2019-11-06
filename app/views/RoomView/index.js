@@ -39,6 +39,7 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -66,8 +67,7 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		return {
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
+			...themedHeader(screenProps.theme),
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}

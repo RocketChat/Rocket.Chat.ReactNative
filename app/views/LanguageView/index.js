@@ -17,6 +17,7 @@ import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const LANGUAGES = [
 	{
@@ -46,9 +47,7 @@ const LANGUAGES = [
 class LanguageView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		title: I18n.t('Change_Language'),
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText }
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {

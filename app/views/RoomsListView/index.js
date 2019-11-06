@@ -46,6 +46,7 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
+import { themedHeader } from '../../utils/navigation';
 
 const SCROLL_OFFSET = 56;
 
@@ -82,8 +83,7 @@ class RoomsListView extends React.Component {
 		);
 
 		return {
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].tintColor,
+			...themedHeader(screenProps.theme),
 			headerLeft: searching ? (
 				<CustomHeaderButtons left>
 					<Item

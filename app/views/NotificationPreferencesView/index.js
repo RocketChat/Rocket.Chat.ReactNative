@@ -17,6 +17,7 @@ import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const SectionTitle = React.memo(({ title, theme }) => <Text style={[styles.sectionTitle, { backgroundColor: themes[theme].focusedBackground, color: themes[theme].titleText }]}>{title}</Text>);
 
@@ -110,9 +111,7 @@ const OPTIONS = {
 class NotificationPreferencesView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		title: I18n.t('Notification_Preferences'),
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText }
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {

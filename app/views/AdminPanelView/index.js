@@ -8,9 +8,11 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { DrawerButton } from '../../containers/HeaderButton';
 import styles from '../Styles';
+import { themedHeader } from '../../utils/navigation';
 
 class AdminPanelView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		...themedHeader(screenProps.theme),
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})

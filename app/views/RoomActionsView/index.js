@@ -20,15 +20,13 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { isAndroid } from '../../utils/deviceInfo';
+import { themedHeader } from '../../utils/navigation';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].headerTintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].headerTitleColor },
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Actions')
 	})
 

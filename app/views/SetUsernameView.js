@@ -17,6 +17,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -26,9 +27,10 @@ const styles = StyleSheet.create({
 });
 
 class SetUsernameView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title');
 		return {
+			...themedHeader(screenProps.theme),
 			title
 		};
 	}

@@ -1,16 +1,16 @@
 import { analytics, leaveBreadcrumb } from './log';
-
-import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
+import { themes } from '../constants/colors';
 
 export const defaultHeader = {
-	// headerStyle: {
-	// 	backgroundColor: HEADER_BACKGROUND
-	// },
-	// headerTitleStyle: {
-	// 	color: HEADER_TITLE
-	// },
 	headerBackTitle: null
-	// headerTintColor: HEADER_BACK
+};
+
+export const themedHeader = (theme) => {
+	return {
+		headerStyle: { backgroundColor: themes[theme].headerBackground },
+		headerTintColor: themes[theme].headerTintColor,
+		headerTitleStyle: { color: themes[theme].headerTitleColor }
+	};
 };
 
 // gets the current screen from navigation state

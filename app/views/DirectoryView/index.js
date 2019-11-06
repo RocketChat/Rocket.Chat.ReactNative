@@ -21,12 +21,11 @@ import Options from './Options';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
+import { themedHeader } from '../../utils/navigation';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
-		headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-		headerTintColor: themes[screenProps.theme].tintColor,
-		headerTitleStyle: { color: themes[screenProps.theme].titleText },
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Directory')
 	})
 

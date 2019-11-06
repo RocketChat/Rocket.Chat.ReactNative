@@ -18,6 +18,7 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -38,9 +39,7 @@ class RoomInfoView extends React.Component {
 		const rid = navigation.getParam('rid');
 		return {
 			title: I18n.t('Room_Info'),
-			headerStyle: { backgroundColor: themes[screenProps.theme].focusedBackground },
-			headerTintColor: themes[screenProps.theme].headerTintColor,
-			headerTitleStyle: { color: themes[screenProps.theme].headerTitleColor },
+			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>

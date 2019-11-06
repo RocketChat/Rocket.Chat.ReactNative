@@ -13,11 +13,13 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 class ReadReceiptView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Read_Receipt')
-	}
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Read_Receipt'),
+		...themedHeader(screenProps.theme)
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

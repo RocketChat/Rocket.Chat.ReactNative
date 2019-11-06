@@ -36,7 +36,7 @@ export const SWITCH_TRACK_COLOR = {
 export const themes = {
 	light: {
 		backgroundColor: '#ffffff',
-		focusedBackground: isIOS ? '#f8f8f8' : '#2f343d',
+		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#eeeef4',
 		bannerBackground: '#f1f2f4',
@@ -51,7 +51,8 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff', // weird color
 		mutedAccent: '#cbcbcc',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA',
+		separatorColor: '#A7A7AA', // TODO: use it on separators
+		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
 		headerTintColor: isAndroid ? COLOR_WHITE : '#1d74f5',
 		headerTitleColor: isAndroid ? COLOR_WHITE : '#0d0e12',
 		toastBackground: '#0C0D0F',
@@ -76,6 +77,7 @@ export const themes = {
 		mutedAccent: '#2a2a2d',
 		strongAccent: '', // ???
 		separatorColor: '#A7A7AA',
+		headerBackground: '#0b182c',
 		headerTintColor: '#1d74f5',
 		headerTitleColor: '#FFFFFF',
 		toastBackground: '#0C0D0F',
@@ -100,6 +102,7 @@ export const themes = {
 		mutedAccent: '#282828',
 		strongAccent: '', // ???
 		separatorColor: '#A7A7AA',
+		headerBackground: '#0d0d0d',
 		headerTintColor: '#1e9bfe',
 		headerTitleColor: '#f9f9f9',
 		toastBackground: '#0C0D0F',
