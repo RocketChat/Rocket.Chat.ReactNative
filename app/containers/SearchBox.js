@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 	searchBox: {
 		alignItems: 'center',
 		borderRadius: 10,
-		color: '#8E8E93',
 		flexDirection: 'row',
 		fontSize: 17,
 		height: 36,
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	input: {
-		color: '#8E8E93',
 		flex: 1,
 		fontSize: 17,
 		marginLeft: 8,
@@ -43,14 +41,13 @@ const styles = StyleSheet.create({
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorHeaderBack,
 		fontSize: 17
 	}
 });
 
 const CancelButton = (onCancelPress, theme) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
-		<Text style={[styles.cancelText, { color: themes[theme].actionTintColor }]}>{I18n.t('Cancel')}</Text>
+		<Text style={[styles.cancelText, { color: themes[theme].tintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
 
