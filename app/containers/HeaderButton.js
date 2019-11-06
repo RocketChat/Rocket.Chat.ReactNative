@@ -4,15 +4,15 @@ import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-butto
 
 import { CustomIcon } from '../lib/Icons';
 import { isIOS } from '../utils/deviceInfo';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../constants/colors';
+import { themes } from '../constants/colors';
 import I18n from '../i18n';
+import { withTheme } from '../theme';
 
-const color = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
 export const headerIconSize = 23;
 
-const CustomHeaderButton = React.memo(props => (
-	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={headerIconSize} color={color} />
-));
+const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
+	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={headerIconSize} color={themes[theme].headerTintColor} />
+)));
 
 export const CustomHeaderButtons = React.memo(props => (
 	<HeaderButtons
@@ -52,6 +52,9 @@ export const LegalButton = React.memo(({ navigation, testID }) => (
 	<MoreButton onPress={() => navigation.navigate('LegalView')} testID={testID} />
 ));
 
+CustomHeaderButton.propTypes = {
+	theme: PropTypes.string
+};
 DrawerButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	testID: PropTypes.string.isRequired
