@@ -156,7 +156,7 @@ const RoomStack = createStackNavigator({
 
 ChatsStack.navigationOptions = ({ navigation }) => {
 	let drawerLockMode = 'unlocked';
-	if (navigation.state.index > 0) {
+	if (navigation.state.index > 0 || isSplited()) {
 		drawerLockMode = 'locked-closed';
 	}
 	return {
