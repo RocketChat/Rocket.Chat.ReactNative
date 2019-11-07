@@ -11,7 +11,7 @@ import TextInput from '../TextInput';
 import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isSplited } from '../../utils/deviceInfo';
 import {
 	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
 } from '../../constants/colors';
@@ -21,8 +21,13 @@ const cancelButtonColor = COLOR_BACKGROUND_CONTAINER;
 
 const styles = StyleSheet.create({
 	modal: {
+		width: '100%',
 		alignItems: 'center',
-		width: '100%'
+		margin: 0
+	},
+	tabletModal: {
+		width: '100%',
+		height: '100%'
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -215,8 +220,9 @@ class UploadModal extends Component {
 				useNativeDriver
 				hideModalContentWhileAnimating
 				avoidKeyboard
+				presentationStyle={isSplited() ? 'pageSheet' : 'overFullScreen'}
 			>
-				<View style={[styles.container, { width: width - 32 }, isTablet && sharedStyles.modal]}>
+				<View style={[styles.container, { width: width - 32 }, isSplited() && styles.tabletModal]}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>

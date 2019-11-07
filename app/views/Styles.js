@@ -29,8 +29,10 @@ export default StyleSheet.create({
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},
 	modal: {
-		width: '70%',
-		height: '70%',
+		// Following UIModalPresentationFormSheet size
+		// this not change on different iPad sizes
+		width: 540,
+		height: 620,
 		alignSelf: 'center',
 		borderRadius: 10,
 		overflow: 'hidden'
