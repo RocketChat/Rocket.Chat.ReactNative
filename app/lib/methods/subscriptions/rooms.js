@@ -111,7 +111,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					});
 					batch.push(update);
 				} catch (e) {
-					log(e);
+					console.log(e);
 				}
 			} else {
 				try {
@@ -124,7 +124,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					});
 					batch.push(create);
 				} catch (e) {
-					log(e);
+					console.log(e);
 				}
 			}
 

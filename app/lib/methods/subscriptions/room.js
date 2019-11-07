@@ -119,7 +119,7 @@ export default function subscribeRoom({ rid }) {
 					});
 					batch.push(update);
 				} catch (e) {
-					log(e);
+					console.log(e);
 				}
 			} else {
 				batch.push(
