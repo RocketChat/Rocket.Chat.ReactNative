@@ -6,6 +6,7 @@ import {
 import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
+import Touch from '../../../utils/touch';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isIOS, isAndroid } from '../../../utils/deviceInfo';
@@ -90,7 +91,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -108,27 +109,29 @@ const Header = React.memo(({
 	}
 
 	return (
-		<View style={[styles.container, { width: width - widthOffset }]}>
-			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
-				<ScrollView
-					showsHorizontalScrollIndicator={false}
-					horizontal
-					bounces={false}
-					contentContainerStyle={styles.scroll}
-				>
-					<Icon type={prid ? 'discussion' : type} status={status} />
-					<HeaderTitle
-						prid={prid}
-						type={type}
-						status={status}
-						title={title}
-						scale={scale}
-						connecting={connecting}
-					/>
-				</ScrollView>
-			</View>
-			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
-		</View>
+		<Touch onPress={goRoomActionsView} style={[styles.container, { width: width - widthOffset }]}>
+			<>
+				<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
+					<ScrollView
+						showsHorizontalScrollIndicator={false}
+						horizontal
+						bounces={false}
+						contentContainerStyle={styles.scroll}
+					>
+						<Icon type={prid ? 'discussion' : type} status={status} />
+						<HeaderTitle
+							prid={prid}
+							type={type}
+							status={status}
+							title={title}
+							scale={scale}
+							connecting={connecting}
+						/>
+					</ScrollView>
+				</View>
+				{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
+			</>
+		</Touch>
 	);
 });
 
@@ -142,7 +145,8 @@ Header.propTypes = {
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
 	widthOffset: PropTypes.number,
-	connecting: PropTypes.bool
+	connecting: PropTypes.bool,
+	goRoomActionsView: PropTypes.func
 };
 
 Header.defaultProps = {

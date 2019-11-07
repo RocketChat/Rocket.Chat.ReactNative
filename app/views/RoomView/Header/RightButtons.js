@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
+import { isTablet } from '../../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	more: {
@@ -113,13 +114,15 @@ class RightButtonsContainer extends React.PureComponent {
 						buttonStyle={styles.thread}
 					/>
 				) : null}
-				<Item
-					title='more'
-					iconName='menu'
-					onPress={this.goRoomActionsView}
-					testID='room-view-header-actions'
-					buttonStyle={styles.more}
-				/>
+				{!isTablet ? (
+					<Item
+						title='more'
+						iconName='menu'
+						onPress={this.goRoomActionsView}
+						testID='room-view-header-actions'
+						buttonStyle={styles.more}
+					/>
+				) : null}
 			</CustomHeaderButtons>
 		);
 	}

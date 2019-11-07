@@ -8,8 +8,6 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
-import { isTablet } from '../../utils/deviceInfo';
-import sharedStyles from '../../views/Styles';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
@@ -23,7 +21,7 @@ const Button = React.memo(({ children, onPress }) => (
 
 const Image = React.memo(({ img }) => (
 	<FastImage
-		style={[styles.image, isTablet && sharedStyles.tabletContent]}
+		style={styles.image}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
 	/>

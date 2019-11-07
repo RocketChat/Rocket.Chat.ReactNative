@@ -67,6 +67,6 @@ export default StyleSheet.create({
 	},
 	avatar: {
 		borderRadius: 10,
-		marginHorizontal: 25
+		marginLeft: 20
 	}
 });

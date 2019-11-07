@@ -75,6 +75,7 @@ class RoomView extends React.Component {
 		const userId = navigation.getParam('userId');
 		const token = navigation.getParam('token');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
+		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		if (!rid) { return null; }
 		return {
@@ -86,6 +87,7 @@ class RoomView extends React.Component {
 					title={title}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
+					goRoomActionsView={goRoomActionsView}
 				/>
 			),
 			headerRight: (
@@ -114,6 +116,7 @@ class RoomView extends React.Component {
 					style={styles.avatar}
 					userId={userId}
 					token={token}
+					onPress={goRoomActionsView}
 				/>
 			)
 		};
@@ -194,11 +197,12 @@ class RoomView extends React.Component {
 					t: room.t,
 					token: user.token,
 					userId: user.id,
+					goRoomActionsView: this.goRoomActionsView,
 					baseUrl
 				});
 			}
 			if (this.tmid) {
-				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread, goRoomActionsView: this.goRoomActionsView });
 			}
 			if (isAuthenticated && this.rid) {
 				this.init();
@@ -298,6 +302,13 @@ class RoomView extends React.Component {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	goRoomActionsView = () => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
 	// eslint-disable-next-line react/sort-comp

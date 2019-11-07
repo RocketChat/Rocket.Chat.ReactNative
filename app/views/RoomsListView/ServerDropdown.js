@@ -19,7 +19,7 @@ import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet, isSplited } from '../../utils/deviceInfo';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -124,11 +124,14 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart
+			server: currentServer, selectServerRequest, appStart, navigation
 		} = this.props;
 
 		this.close();
 		if (currentServer !== server) {
+			if (isSplited()) { // reset room view if is tablet
+				await navigation.navigate('RoomView');
+			}
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (!userId) {
 				appStart();
@@ -221,6 +224,7 @@ class ServerDropdown extends Component {
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={this.renderSeparator}
+						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>
 			]

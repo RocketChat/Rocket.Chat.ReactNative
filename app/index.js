@@ -387,6 +387,7 @@ class CustomModalStack extends React.Component {
 				coverScreen={false}
 				isVisible={showModal}
 				onBackdropPress={close}
+				hideModalContentWhileAnimating
 			>
 				<View style={sharedStyles.modal}>
 					<ModalSwitch navigation={navigation} />

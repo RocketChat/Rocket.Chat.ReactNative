@@ -60,6 +60,7 @@ import {
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 
 const SCROLL_OFFSET = 56;
+const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const shouldUpdateProps = [
 	'searchText',
@@ -724,7 +725,7 @@ class RoomsListView extends React.Component {
 					enableEmptySections
 					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
+					initialNumToRender={INITIAL_NUM_TO_RENDER}
 					windowSize={7}
 				/>
 			);
@@ -756,7 +757,7 @@ class RoomsListView extends React.Component {
 					enableEmptySections
 					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
+					initialNumToRender={INITIAL_NUM_TO_RENDER}
 					windowSize={7}
 				/>
 			);
@@ -798,7 +799,7 @@ class RoomsListView extends React.Component {
 					getItemLayout={getItemLayout}
 					removeClippedSubviews={isIOS}
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={9}
+					initialNumToRender={INITIAL_NUM_TO_RENDER}
 					windowSize={9}
 				/>
 			);

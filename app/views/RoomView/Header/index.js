@@ -17,13 +17,13 @@ class RoomHeaderView extends Component {
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
-		widthOffset: PropTypes.number
+		widthOffset: PropTypes.number,
+		goRoomActionsView: PropTypes.func
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { usersTyping } = this.props;
 		const {
-			type, title, status, window, connecting
+			type, title, status, window, connecting, goRoomActionsView, usersTyping
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -46,12 +46,15 @@ class RoomHeaderView extends Component {
 		if (!equal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
+		if (nextProps.goRoomActionsView !== goRoomActionsView) {
+			return true;
+		}
 		return false;
 	}
 
 	render() {
 		const {
-			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping
+			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView
 		} = this.props;
 
 		return (
@@ -65,6 +68,7 @@ class RoomHeaderView extends Component {
 				height={window.height}
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
+				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 			/>
 		);
