@@ -25,10 +25,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		margin: 0
 	},
-	tabletModal: {
-		width: '100%',
-		height: '100%'
-	},
 	titleContainer: {
 		flexDirection: 'row',
 		paddingHorizontal: 16,
@@ -53,6 +49,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginBottom: 16,
 		resizeMode: 'contain'
+	},
+	bigPreview: {
+		height: 250
 	},
 	buttonContainer: {
 		flexDirection: 'row',
@@ -192,7 +191,7 @@ class UploadModal extends Component {
 	renderPreview() {
 		const { file } = this.props;
 		if (file.mime && file.mime.match(/image/)) {
-			return (<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />);
+			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, isSplited() && styles.bigPreview]} />);
 		}
 		if (file.mime && file.mime.match(/video/)) {
 			return (
@@ -220,9 +219,8 @@ class UploadModal extends Component {
 				useNativeDriver
 				hideModalContentWhileAnimating
 				avoidKeyboard
-				presentationStyle={isSplited() ? 'pageSheet' : 'overFullScreen'}
 			>
-				<View style={[styles.container, { width: width - 32 }, isSplited() && styles.tabletModal]}>
+				<View style={[styles.container, { width: width - 32 }, isSplited() && sharedStyles.modal]}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
