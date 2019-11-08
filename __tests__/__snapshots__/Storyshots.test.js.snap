@@ -9949,17 +9949,13 @@ exports[`Storyshots Message list 1`] = `
                         Object {
                           "overflow": "hidden",
                         },
-                        Array [
-                          Object {
-                            "borderColor": "#e1e5e8",
-                            "borderRadius": 4,
-                            "borderWidth": 1,
-                            "maxWidth": 400,
-                            "minHeight": 200,
-                            "width": "100%",
-                          },
-                          false,
-                        ],
+                        Object {
+                          "borderColor": "#e1e5e8",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "minHeight": 200,
+                          "width": "100%",
+                        },
                       ]
                     }
                   >
@@ -10210,17 +10206,13 @@ exports[`Storyshots Message list 1`] = `
                         Object {
                           "overflow": "hidden",
                         },
-                        Array [
-                          Object {
-                            "borderColor": "#e1e5e8",
-                            "borderRadius": 4,
-                            "borderWidth": 1,
-                            "maxWidth": 400,
-                            "minHeight": 200,
-                            "width": "100%",
-                          },
-                          false,
-                        ],
+                        Object {
+                          "borderColor": "#e1e5e8",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "minHeight": 200,
+                          "width": "100%",
+                        },
                       ]
                     }
                   >
