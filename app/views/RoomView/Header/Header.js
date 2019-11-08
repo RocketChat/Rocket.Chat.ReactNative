@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, ScrollView
+	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
-import Touch from '../../../utils/touch';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isIOS, isAndroid } from '../../../utils/deviceInfo';
@@ -96,7 +95,7 @@ const Header = React.memo(({
 	const portrait = height > width;
 	let scale = 1;
 
-	if (!portrait) {
+	if (!portrait && !tmid) {
 		if (usersTyping.length > 0) {
 			scale = 0.8;
 		}
@@ -108,30 +107,31 @@ const Header = React.memo(({
 		}
 	}
 
+	const onPress = () => {
+		if (!tmid) {
+			goRoomActionsView();
+		}
+	};
+
 	return (
-		<Touch onPress={goRoomActionsView} style={[styles.container, { width: width - widthOffset }]}>
-			<>
-				<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
-					<ScrollView
-						showsHorizontalScrollIndicator={false}
-						horizontal
-						bounces={false}
-						contentContainerStyle={styles.scroll}
-					>
-						<Icon type={prid ? 'discussion' : type} status={status} />
-						<HeaderTitle
-							prid={prid}
-							type={type}
-							status={status}
-							title={title}
-							scale={scale}
-							connecting={connecting}
-						/>
-					</ScrollView>
-				</View>
-				{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
-			</>
-		</Touch>
+		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
+			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
+				<ScrollView
+					showsHorizontalScrollIndicator={false}
+					horizontal
+					bounces={false}
+					contentContainerStyle={styles.scroll}
+				>
+					<Icon type={prid ? 'discussion' : type} status={status} />
+					<HeaderTitle
+						title={title}
+						scale={scale}
+						connecting={connecting}
+					/>
+				</ScrollView>
+			</View>
+			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
+		</TouchableOpacity>
 	);
 });
 
