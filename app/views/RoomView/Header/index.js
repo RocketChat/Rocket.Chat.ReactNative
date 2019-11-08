@@ -6,6 +6,7 @@ import equal from 'deep-equal';
 
 import Header from './Header';
 import RightButtons from './RightButtons';
+import RoomHeaderLeft from './RoomHeaderLeft';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -95,4 +96,4 @@ const mapStateToProps = (state, ownProps) => {
 
 export default responsive(connect(mapStateToProps)(RoomHeaderView));
 
-export { RightButtons };
+export { RightButtons, RoomHeaderLeft };

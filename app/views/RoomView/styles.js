@@ -64,9 +64,5 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textColorNormal
-	},
-	avatar: {
-		borderRadius: 10,
-		marginLeft: 20
 	}
 });

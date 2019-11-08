@@ -4,7 +4,7 @@ import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
-import { HeaderBackButton } from 'react-navigation-stack';
+
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
@@ -21,23 +21,22 @@ import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import Avatar from '../../containers/Avatar';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
 import log from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons } from './Header';
+import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE, HEADER_BACK } from '../../constants/colors';
+import { COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
-import { isIOS, isTablet, isSplited } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import {
 	KEY_COMMAND,
@@ -100,23 +99,17 @@ class RoomView extends React.Component {
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
-			headerLeft: !isSplited() || tmid ? (
-				<HeaderBackButton
-					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-					backTitleVisible={isIOS}
-					onPress={() => navigation.goBack()}
-					tintColor={HEADER_BACK}
-				/>
-			) : (
-				<Avatar
-					text={title}
-					size={30}
-					type={t}
+			headerLeft: (
+				<RoomHeaderLeft
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
 					baseUrl={baseUrl}
-					style={styles.avatar}
 					userId={userId}
 					token={token}
-					onPress={goRoomActionsView}
+					title={title}
+					t={t}
+					goRoomActionsView={goRoomActionsView}
 				/>
 			)
 		};
