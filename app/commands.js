@@ -17,13 +17,22 @@ const KEY_ADD_SERVER = __DEV__ ? 'l' : 'n';
 const KEY_SEND_MESSAGE = '\r';
 const KEY_SELECT = '123456789';
 
-export const keyCommands = [
+export const defaultCommands = [
 	{
 		// Focus messageBox
 		input: KEY_TYPING,
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Type_message')
 	},
+	{
+		// Send message on textInput to current room
+		input: KEY_SEND_MESSAGE,
+		modifierFlags: 0,
+		discoverabilityTitle: I18n.t('Send')
+	}
+];
+
+export const keyCommands = [
 	{
 		// Open Preferences Modal
 		input: KEY_PREFERENCES,
@@ -117,12 +126,6 @@ export const keyCommands = [
 		input: KEY_ADD_SERVER,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate,
 		discoverabilityTitle: I18n.t('Add_server')
-	},
-	{
-		// Send message on textInput to current room
-		input: KEY_SEND_MESSAGE,
-		modifierFlags: 0,
-		discoverabilityTitle: I18n.t('Send')
 	},
 	// Refers to select rooms on list
 	...([1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({

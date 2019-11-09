@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: '100%',
 		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? 10 : 0
+		marginLeft: isAndroid ? 10 : -12
 	},
 	titleContainer: {
 		flex: 6,

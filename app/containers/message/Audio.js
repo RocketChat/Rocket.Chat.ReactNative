@@ -13,7 +13,7 @@ import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY } from '../../constants/colors';
-import { isAndroid, isIOS, isTablet } from '../../utils/deviceInfo';
+import { isAndroid, isIOS, isSplited } from '../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -163,7 +163,7 @@ export default class Audio extends React.Component {
 
 		return (
 			<>
-				<View style={[styles.audioContainer, isTablet && sharedStyles.tabletContent]}>
+				<View style={[styles.audioContainer, isSplited() && sharedStyles.tabletContent]}>
 					<Video
 						ref={this.setRef}
 						source={{ uri }}

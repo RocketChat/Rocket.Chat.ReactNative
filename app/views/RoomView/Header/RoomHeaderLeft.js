@@ -10,7 +10,7 @@ import Avatar from '../../../containers/Avatar';
 const styles = StyleSheet.create({
 	avatar: {
 		borderRadius: 10,
-		marginLeft: 20
+		marginHorizontal: 16
 	}
 });
 
@@ -27,18 +27,21 @@ const RoomHeaderLeft = ({
 			/>
 		);
 	}
-	return (
-		<Avatar
-			text={title}
-			size={30}
-			type={t}
-			baseUrl={baseUrl}
-			style={styles.avatar}
-			userId={userId}
-			token={token}
-			onPress={goRoomActionsView}
-		/>
-	);
+	if (baseUrl && userId && token) {
+		return (
+			<Avatar
+				text={title}
+				size={30}
+				type={t}
+				baseUrl={baseUrl}
+				style={styles.avatar}
+				userId={userId}
+				token={token}
+				onPress={goRoomActionsView}
+			/>
+		);
+	}
+	return null;
 };
 
 RoomHeaderLeft.propTypes = {

@@ -11,7 +11,7 @@ import {
 } from './index';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
-import { keyCommands } from './commands';
+import { keyCommands, defaultCommands } from './commands';
 
 import sharedStyles from './views/Styles';
 
@@ -75,47 +75,59 @@ export const initTabletNav = (setState) => {
 	};
 
 	App.router.getStateForAction = (action, state) => {
-		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
+		if (action.type === NavigationActions.NAVIGATE) {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
-				KeyCommands.setKeyCommands(keyCommands);
 				setState({ inside: true });
 			}
-			if (routeName === 'OutsideStack') {
-				KeyCommands.deleteKeyCommands(keyCommands);
-				setState({ inside: false, showModal: false });
-			}
-			if (routeName === 'JitsiMeetView') {
-				inCall = true;
-				KeyCommands.deleteKeyCommands(keyCommands);
-				setState({ inside: false, showModal: false });
-			}
-			if (routeName === 'OnboardingView') {
-				KeyCommands.deleteKeyCommands(keyCommands);
-				setState({ inside: false, showModal: false });
-			}
+			if (isSplited()) {
+				if (routeName === 'InsideStack') {
+					KeyCommands.setKeyCommands([...defaultCommands, ...keyCommands]);
+					setState({ inside: true });
+					const resetAction = StackActions.reset({
+						index: 0,
+						actions: [NavigationActions.navigate({ routeName: 'RoomView' })]
+					});
+					if (roomRef) {
+						roomRef.dispatch(resetAction);
+					}
+				}
+				if (routeName === 'OutsideStack') {
+					KeyCommands.deleteKeyCommands(keyCommands);
+					setState({ inside: false, showModal: false });
+				}
+				if (routeName === 'JitsiMeetView') {
+					inCall = true;
+					KeyCommands.deleteKeyCommands(keyCommands);
+					setState({ inside: false, showModal: false });
+				}
+				if (routeName === 'OnboardingView') {
+					KeyCommands.deleteKeyCommands(keyCommands);
+					setState({ inside: false, showModal: false });
+				}
 
-			if (routeName === 'RoomView') {
-				const resetAction = StackActions.reset({
-					index: 0,
-					actions: [NavigationActions.navigate({ routeName, params })]
-				});
-				roomRef.dispatch(resetAction);
-				notificationRef.dispatch(resetAction);
-				setState({ showModal: false });
-				return null;
-			}
+				if (routeName === 'RoomView') {
+					const resetAction = StackActions.reset({
+						index: 0,
+						actions: [NavigationActions.navigate({ routeName, params })]
+					});
+					roomRef.dispatch(resetAction);
+					notificationRef.dispatch(resetAction);
+					setState({ showModal: false });
+					return null;
+				}
 
-			if (routeName === 'NewMessageView') {
-				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-				setState({ showModal: true });
-				return null;
-			}
-			if (routeName === 'DirectoryView') {
-				modalRef.dispatch(NavigationActions.navigate({ routeName }));
-				setState({ showModal: true });
-				return null;
+				if (routeName === 'NewMessageView') {
+					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					setState({ showModal: true });
+					return null;
+				}
+				if (routeName === 'DirectoryView') {
+					modalRef.dispatch(NavigationActions.navigate({ routeName }));
+					setState({ showModal: true });
+					return null;
+				}
 			}
 		}
 		if (action.type === 'Navigation/TOGGLE_DRAWER' && isSplited()) {
@@ -124,7 +136,7 @@ export const initTabletNav = (setState) => {
 			return null;
 		}
 		if (action.type === 'Navigation/POP' && inCall) {
-			KeyCommands.setKeyCommands(keyCommands);
+			KeyCommands.setKeyCommands([...defaultCommands, ...keyCommands]);
 			setState({ inside: true, showModal: false });
 		}
 		return defaultApp(action, state);

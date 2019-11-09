@@ -8,11 +8,13 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { isSplited } from '../../utils/deviceInfo';
+import sharedStyles from '../../views/Styles';
 
 const Button = React.memo(({ children, onPress }) => (
 	<Touchable
 		onPress={onPress}
-		style={styles.imageContainer}
+		style={[styles.imageContainer, isSplited() && sharedStyles.tabletContent]}
 		background={Touchable.Ripple('#fff')}
 	>
 		{children}
