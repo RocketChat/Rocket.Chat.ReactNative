@@ -79,12 +79,12 @@ export const initTabletNav = (setState) => {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
+				KeyCommands.setKeyCommands(defaultCommands);
 				setState({ inside: true });
 			}
 			if (isSplited()) {
 				if (routeName === 'InsideStack') {
-					KeyCommands.setKeyCommands([...defaultCommands, ...keyCommands]);
-					setState({ inside: true });
+					KeyCommands.setKeyCommands(keyCommands);
 					const resetAction = StackActions.reset({
 						index: 0,
 						actions: [NavigationActions.navigate({ routeName: 'RoomView' })]
@@ -94,16 +94,16 @@ export const initTabletNav = (setState) => {
 					}
 				}
 				if (routeName === 'OutsideStack') {
-					KeyCommands.deleteKeyCommands(keyCommands);
+					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
 				if (routeName === 'JitsiMeetView') {
 					inCall = true;
-					KeyCommands.deleteKeyCommands(keyCommands);
+					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
 				if (routeName === 'OnboardingView') {
-					KeyCommands.deleteKeyCommands(keyCommands);
+					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
 

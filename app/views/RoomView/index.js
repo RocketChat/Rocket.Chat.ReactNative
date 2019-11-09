@@ -662,20 +662,22 @@ class RoomView extends React.Component {
 	};
 
 	handleCommands = ({ event }) => {
-		const { room } = this.state;
-		const { navigation } = this.props;
-		const { input } = event;
-		if (handleCommandScroll(event)) {
-			const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
-			this.offset += offset;
-			this.flatList.scrollToOffset({ offset: this.offset });
-		} else if (handleCommandRoomActions(event)) {
-			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-		} else if (handleCommandSearchMessages(event)) {
-			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-			ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
-		} else if (handleCommandReplyLatest(event)) {
-			this.onReplyInit(this.lastItem, false);
+		if (this.rid) {
+			const { room } = this.state;
+			const { navigation } = this.props;
+			const { input } = event;
+			if (handleCommandScroll(event)) {
+				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
+				this.offset += offset;
+				this.flatList.scrollToOffset({ offset: this.offset });
+			} else if (handleCommandRoomActions(event)) {
+				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+			} else if (handleCommandSearchMessages(event)) {
+				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+				ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
+			} else if (handleCommandReplyLatest(event)) {
+				this.onReplyInit(this.lastItem, false);
+			}
 		}
 	}
 

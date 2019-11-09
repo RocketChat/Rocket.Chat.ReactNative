@@ -456,6 +456,14 @@ export default class Root extends React.Component {
 		}
 	}
 
+	// eslint-disable-next-line no-unused-vars
+	componentDidUpdate(_, prevState) {
+		const { tablet } = this.state;
+		if (tablet !== prevState.tablet) {
+			Navigation.navigate('RoomsListView');
+		}
+	}
+
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 		if (this.onKeyCommands && this.onKeyCommands.remove) {
