@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from 'react-navigation-stack';
 
-import { isIOS, isSplited } from '../../../utils/deviceInfo';
+import { isIOS } from '../../../utils/deviceInfo';
 import { HEADER_BACK } from '../../../constants/colors';
 import Avatar from '../../../containers/Avatar';
 
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
 });
 
 const RoomHeaderLeft = ({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, goRoomActionsView
+	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, goRoomActionsView, split
 }) => {
-	if (!isSplited() || tmid) {
+	if (!split || tmid) {
 		return (
 			<HeaderBackButton
 				title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
@@ -53,7 +53,8 @@ RoomHeaderLeft.propTypes = {
 	token: PropTypes.string,
 	title: PropTypes.string,
 	t: PropTypes.string,
-	goRoomActionsView: PropTypes.func
+	goRoomActionsView: PropTypes.func,
+	split: PropTypes.bool
 };
 
 export default RoomHeaderLeft;

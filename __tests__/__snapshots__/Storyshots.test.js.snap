@@ -11019,7 +11019,7 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-                    false,
+                    undefined,
                   ]
                 }
               >
@@ -11347,7 +11347,7 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-                    false,
+                    undefined,
                   ]
                 }
               >
@@ -11556,7 +11556,7 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-                    false,
+                    undefined,
                   ]
                 }
               >
@@ -11737,7 +11737,7 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-                    false,
+                    undefined,
                   ]
                 }
               >

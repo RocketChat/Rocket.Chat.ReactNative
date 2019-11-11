@@ -17,7 +17,7 @@ import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
-	getReadableVersion, getDeviceModel, isAndroid, isSplited
+	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -27,6 +27,7 @@ import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import SidebarView from '../SidebarView';
+import { withSplit } from '../../split';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const ItemInfo = React.memo(({ info }) => (
@@ -39,8 +40,8 @@ ItemInfo.propTypes = {
 };
 
 class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: isSplited() ? (
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		headerLeft: screenProps.split ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
@@ -55,6 +56,7 @@ class SettingsView extends React.Component {
 		allowCrashReport: PropTypes.bool,
 		toggleMarkdown: PropTypes.func,
 		toggleCrashReport: PropTypes.func,
+		split: PropTypes.bool,
 		logout: PropTypes.func.isRequired
 	}
 
@@ -148,7 +150,7 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server } = this.props;
+		const { server, split } = this.props;
 		return (
 			<SafeAreaView style={sharedStyles.listSafeArea} testID='settings-view'>
 				<StatusBar />
@@ -158,7 +160,7 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					{isSplited() ? (
+					{split ? (
 						<>
 							<SidebarView />
 							<SectionSeparator />
@@ -243,7 +245,7 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 					/>
 
-					{ isSplited() ? this.renderLogout() : null }
+					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -262,4 +264,4 @@ const mapDispatchToProps = dispatch => ({
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);
+export default connect(mapStateToProps, mapDispatchToProps)(withSplit(SettingsView));

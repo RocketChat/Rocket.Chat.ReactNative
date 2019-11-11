@@ -11,11 +11,12 @@ import TextInput from '../TextInput';
 import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
-import { isIOS, isSplited } from '../../utils/deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 import {
 	COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
 } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { withSplit } from '../../split';
 
 const cancelButtonColor = COLOR_BACKGROUND_CONTAINER;
 
@@ -96,7 +97,8 @@ class UploadModal extends Component {
 		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
-		window: PropTypes.object
+		window: PropTypes.object,
+		split: PropTypes.bool
 	}
 
 	state = {
@@ -118,9 +120,12 @@ class UploadModal extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { name, description, file } = this.state;
-		const { window, isVisible } = this.props;
+		const { window, isVisible, split } = this.props;
 
 		if (nextState.name !== name) {
+			return true;
+		}
+		if (nextProps.split !== split) {
 			return true;
 		}
 		if (nextState.description !== description) {
@@ -189,9 +194,9 @@ class UploadModal extends Component {
 	}
 
 	renderPreview() {
-		const { file } = this.props;
+		const { file, split } = this.props;
 		if (file.mime && file.mime.match(/image/)) {
-			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, isSplited() && styles.bigPreview]} />);
+			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />);
 		}
 		if (file.mime && file.mime.match(/video/)) {
 			return (
@@ -205,7 +210,7 @@ class UploadModal extends Component {
 
 	render() {
 		const {
-			window: { width }, isVisible, close
+			window: { width }, isVisible, close, split
 		} = this.props;
 		const { name, description } = this.state;
 		return (
@@ -220,7 +225,7 @@ class UploadModal extends Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				<View style={[styles.container, { width: width - 32 }, isSplited() && sharedStyles.modal]}>
+				<View style={[styles.container, { width: width - 32 }, split && sharedStyles.modal]}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
@@ -245,4 +250,4 @@ class UploadModal extends Component {
 	}
 }
 
-export default responsive(UploadModal);
+export default responsive(withSplit(UploadModal));

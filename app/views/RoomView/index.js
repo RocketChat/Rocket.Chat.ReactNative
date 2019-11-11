@@ -63,7 +63,7 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
@@ -76,7 +76,9 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
-		if (!rid) { return null; }
+		if (!rid) {
+			return null;
+		}
 		return {
 			headerTitle: (
 				<RoomHeaderView
@@ -110,6 +112,7 @@ class RoomView extends React.Component {
 					title={title}
 					t={t}
 					goRoomActionsView={goRoomActionsView}
+					split={screenProps.split}
 				/>
 			)
 		};

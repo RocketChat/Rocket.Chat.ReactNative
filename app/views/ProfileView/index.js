@@ -29,11 +29,10 @@ import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_TEXT, HEADER_BACK } from '../../constants/colors';
-import { isSplited } from '../../utils/deviceInfo';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: isSplited() ? (
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		headerLeft: screenProps.split ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
 				tintColor={HEADER_BACK}

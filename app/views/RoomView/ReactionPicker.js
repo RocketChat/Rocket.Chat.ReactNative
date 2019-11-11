@@ -7,10 +7,11 @@ import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
-import { isAndroid, isSplited } from '../../utils/deviceInfo';
+import { isAndroid } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
-const maxSize = value => (isSplited() ? 400 : value);
+const maxSize = 400;
 const tabEmojiStyle = { fontSize: 15 };
 
 class ReactionPicker extends React.Component {
@@ -20,12 +21,13 @@ class ReactionPicker extends React.Component {
 		message: PropTypes.object,
 		show: PropTypes.bool,
 		reactionClose: PropTypes.func,
-		onEmojiSelected: PropTypes.func
+		onEmojiSelected: PropTypes.func,
+		split: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { show, window } = this.props;
-		return nextProps.show !== show || window.width !== nextProps.window.width;
+		const { show, window, split } = this.props;
+		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
 	}
 
 	onEmojiSelected(emoji, shortname) {
@@ -38,7 +40,7 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			window: { width, height }, show, baseUrl, reactionClose
+			window: { width, height }, show, baseUrl, reactionClose, split
 		} = this.props;
 
 		return (show
@@ -52,7 +54,11 @@ class ReactionPicker extends React.Component {
 					animationOut='fadeOut'
 				>
 					<View
-						style={[styles.reactionPickerContainer, { width: maxSize(width - margin), height: maxSize(Math.min(width, height) - (margin * 2)) }]}
+						style={[
+							styles.reactionPickerContainer,
+							{ width: width - margin, height: Math.min(width, height) - (margin * 2) },
+							split && { width: maxSize, height: maxSize }
+						]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
@@ -73,4 +79,4 @@ const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 
-export default responsive(connect(mapStateToProps)(ReactionPicker));
+export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));

@@ -22,11 +22,12 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import {
-	isTablet, setWidth, isSplited, isIOS
+	isTablet, isSplited, isIOS, setWidth
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
+import { SplitContext } from './split';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -257,14 +258,15 @@ class CustomInsideStack extends React.Component {
 	static router = InsideStackModal.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, screenProps } = this.props;
 		return (
 			<>
-				<InsideStackModal navigation={navigation} />
+				<InsideStackModal navigation={navigation} screenProps={screenProps} />
 				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
 				{ !isTablet ? <Toast /> : null }
 			</>
@@ -276,14 +278,15 @@ class CustomRoomStack extends React.Component {
 	static router = RoomStack.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, screenProps } = this.props;
 		return (
 			<>
-				<RoomStack navigation={navigation} />
+				<RoomStack navigation={navigation} screenProps={screenProps} />
 				<Toast />
 			</>
 		);
@@ -376,11 +379,14 @@ class CustomModalStack extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		showModal: PropTypes.bool,
-		close: PropTypes.func
+		close: PropTypes.func,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation, showModal, close } = this.props;
+		const {
+			navigation, showModal, close, screenProps
+		} = this.props;
 		return (
 			<Modal
 				useNativeDriver
@@ -390,7 +396,7 @@ class CustomModalStack extends React.Component {
 				hideModalContentWhileAnimating
 			>
 				<View style={sharedStyles.modal}>
-					<ModalSwitch navigation={navigation} />
+					<ModalSwitch navigation={navigation} screenProps={screenProps} />
 				</View>
 			</Modal>
 		);
@@ -436,7 +442,7 @@ export default class Root extends React.Component {
 		this.init();
 		this.initCrashReport();
 		this.state = {
-			tablet: false,
+			split: false,
 			inside: false
 		};
 	}
@@ -457,9 +463,9 @@ export default class Root extends React.Component {
 	}
 
 	// eslint-disable-next-line no-unused-vars
-	componentDidUpdate(_, prevState) {
-		const { tablet } = this.state;
-		if (tablet !== prevState.tablet) {
+	componentDidUpdate(_, prevState) { // reset rooms list
+		const { split } = this.state;
+		if (split !== prevState.split) {
 			Navigation.navigate('RoomsListView');
 		}
 	}
@@ -503,29 +509,31 @@ export default class Root extends React.Component {
 			});
 	}
 
-	onLayout = ({ nativeEvent }) => {
-		if (isTablet) {
-			const { width } = nativeEvent.layout;
-			setWidth(width);
-			this.setState({ tablet: isSplited() });
-		}
-	};
+	onLayout = ({ nativeEvent: { layout: { width } } }) => (isTablet ? this.setSplit(width) : null);
+
+	setSplit = (width) => {
+		this.setState({ split: width > 700 });
+		setWidth(width);
+	}
 
 	render() {
+		const { split } = this.state;
+
 		let content = (
 			<App
 				ref={(navigatorRef) => {
 					Navigation.setTopLevelNavigator(navigatorRef);
 				}}
+				screenProps={{ split }}
 				onNavigationStateChange={onNavigationStateChange}
 			/>
 		);
 
 		if (isTablet) {
-			const { tablet, inside, showModal } = this.state;
+			const { inside, showModal } = this.state;
 			content = (
 				<Tablet
-					tablet={tablet}
+					tablet={split}
 					inside={inside}
 					showModal={showModal}
 					onLayout={this.onLayout}
@@ -537,7 +545,9 @@ export default class Root extends React.Component {
 		}
 		return (
 			<Provider store={store}>
-				{content}
+				<SplitContext.Provider value={{ split }}>
+					{content}
+				</SplitContext.Provider>
 			</Provider>
 		);
 	}

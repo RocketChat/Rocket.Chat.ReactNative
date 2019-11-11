@@ -33,9 +33,7 @@ import {
 } from '../../actions/rooms';
 import { appStart as appStartAction } from '../../actions';
 import debounce from '../../utils/debounce';
-import {
-	isIOS, isAndroid, isTablet, isSplited
-} from '../../utils/deviceInfo';
+import { isIOS, isAndroid, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
@@ -58,6 +56,7 @@ import {
 	handleCommandAddNewServer
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
+import { withSplit } from '../../split';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -73,7 +72,8 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState'
+	'appState',
+	'split'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -155,7 +155,8 @@ class RoomsListView extends React.Component {
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
-		closeServerDropdown: PropTypes.func
+		closeServerDropdown: PropTypes.func,
+		split: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -651,7 +652,8 @@ class RoomsListView extends React.Component {
 			username,
 			token,
 			baseUrl,
-			StoreLastMessage
+			StoreLastMessage,
+			split
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
@@ -679,7 +681,7 @@ class RoomsListView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
-				width={isSplited() ? MAX_SIDEBAR_WIDTH : width}
+				width={split ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
@@ -882,4 +884,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomsListView);
+export default connect(mapStateToProps, mapDispatchToProps)(withSplit(RoomsListView));

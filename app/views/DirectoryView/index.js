@@ -20,14 +20,13 @@ import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
 import styles from './styles';
-import { isSplited } from '../../utils/deviceInfo';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const options = {
 			title: I18n.t('Directory')
 		};
-		if (isSplited()) {
+		if (screenProps.split) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;

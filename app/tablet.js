@@ -156,9 +156,9 @@ const Tablet = ({
 			return (
 				<>
 					<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-						<RoomContainer ref={ref => roomRef = ref} />
+						<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet }} />
 					</View>
-					<ModalContainer showModal={showModal} close={close} ref={setModalRef} />
+					<ModalContainer showModal={showModal} close={close} ref={setModalRef} screenProps={{ split: tablet }} />
 				</>
 			);
 		}
