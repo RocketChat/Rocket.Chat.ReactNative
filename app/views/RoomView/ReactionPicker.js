@@ -63,7 +63,7 @@ class ReactionPicker extends React.Component {
 					>
 						<EmojiPicker
 							tabEmojiStyle={tabEmojiStyle}
-							width={maxSize(Math.min(width, height) - margin)}
+							width={split ? maxSize : Math.min(width, height) - margin}
 							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 							baseUrl={baseUrl}
 						/>
