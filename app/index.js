@@ -463,10 +463,12 @@ export default class Root extends React.Component {
 	}
 
 	// eslint-disable-next-line no-unused-vars
-	componentDidUpdate(_, prevState) { // reset rooms list
+	componentDidUpdate(_, prevState) {
 		const { split } = this.state;
 		if (split !== prevState.split) {
+			// Reset app on split mode changes
 			Navigation.navigate('RoomsListView');
+			this.closeModals();
 		}
 	}
 
@@ -516,6 +518,8 @@ export default class Root extends React.Component {
 		setWidth(width);
 	}
 
+	closeModals = () => this.setState({ showModal: false });
+
 	render() {
 		const { split } = this.state;
 
@@ -537,7 +541,7 @@ export default class Root extends React.Component {
 					inside={inside}
 					showModal={showModal}
 					onLayout={this.onLayout}
-					close={() => this.setState({ showModal: false })}
+					close={this.closeModals}
 				>
 					{content}
 				</Tablet>
