@@ -14,6 +14,6 @@ const styles = StyleSheet.create({
 export default React.memo(() => (
 	<>
 		<StatusBar />
-		{isAndroid ? <Image source={{ uri: 'launch_screen' }} style={styles.image} /> : null}
+		{isAndroid ? <Image source={{ uri: 'launch_screen' }} style={styles.image} resizeMode='contain' /> : null}
 	</>
 ));
