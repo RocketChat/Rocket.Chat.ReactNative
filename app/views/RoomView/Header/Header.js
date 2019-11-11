@@ -8,9 +8,11 @@ import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isIOS, isAndroid } from '../../../utils/deviceInfo';
+import { isIOS, isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
+
+const androidMarginLeft = isTablet ? 0 : 10;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: '100%',
 		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? 10 : -12
+		marginLeft: isAndroid ? androidMarginLeft : -12
 	},
 	titleContainer: {
 		flex: 6,

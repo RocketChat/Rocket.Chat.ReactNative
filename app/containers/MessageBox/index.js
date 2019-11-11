@@ -763,6 +763,11 @@ class MessageBox extends Component {
 			editing, message, replying, replyCancel, user, getCustomEmoji
 		} = this.props;
 
+		const isAndroidTablet = isTablet && isAndroid ? {
+			multiline: false,
+			onSubmitEditing: this.submit
+		} : {};
+
 		if (recording) {
 			return <Recording onFinish={this.finishAudioMessage} />;
 		}
@@ -801,6 +806,7 @@ class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
+							{...isAndroidTablet}
 							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
 						/>
