@@ -88,37 +88,22 @@ const RocketChat = {
 			console.warn(`RNUserDefaults error: ${ error.message }`);
 		}
 	},
-	async enabledWebsocket(server) {
-		try {
-			// Use useSsl: false only if server url starts with http://
-			const useSsl = !/http:\/\//.test(server);
-			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
-			await sdk.connect();
-			return true;
-		} catch (e) {
-			if (e.message && e.message.includes('400')) {
-				return false;
-			}
-		}
-		return true;
-	},
 	async getServerInfo(server) {
 		try {
 			let result = await fetch(`${ server }/api/info`)
 				.then(response => response.text());
 			try {
 				result = JSON.parse(result);
-			} catch (e) {
+				if (!{}.hasOwnProperty.call(result, 'success')) {
+					return {
+						success: false,
+						message: 'Not_is_rc'
+					};
+				}
+			} catch (e) { // if returns html on body
 				return {
 					success: false,
 					message: 'Not_is_rc'
-				};
-			}
-			const websocket = await this.enabledWebsocket(server);
-			if (!websocket) {
-				return {
-					success: false,
-					message: 'Websocket_disabled'
 				};
 			}
 			if (result.success) {
