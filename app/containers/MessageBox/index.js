@@ -105,7 +105,6 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false
 		};
-		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.focused = false;
 		this.fileOptions = [

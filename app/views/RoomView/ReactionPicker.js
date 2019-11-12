@@ -30,7 +30,7 @@ class ReactionPicker extends React.Component {
 		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
 	}
 
-	onEmojiSelected(emoji, shortname) {
+	onEmojiSelected = (emoji, shortname) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
@@ -73,7 +73,7 @@ class ReactionPicker extends React.Component {
 						<EmojiPicker
 							tabEmojiStyle={tabEmojiStyle}
 							width={widthStyle}
-							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+							onEmojiSelected={this.onEmojiSelected}
 							baseUrl={baseUrl}
 						/>
 					</View>
