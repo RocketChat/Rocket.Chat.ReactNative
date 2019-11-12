@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, FlatList } from 'react-native';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import { responsive } from 'react-native-responsive-ui';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
@@ -64,13 +63,12 @@ class EmojiCategory extends React.Component {
 		const { emojis } = this.props;
 
 		return (
-			<OptimizedFlatList
+			<FlatList
 				keyExtractor={item => (item.isCustom && item.content) || item}
 				data={emojis}
 				renderItem={({ item }) => this.renderItem(item, this.size)}
 				numColumns={EMOJIS_PER_ROW}
 				initialNumToRender={45}
-				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
 				removeClippedSubviews
 				{...scrollPersistTaps}
 			/>

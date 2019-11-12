@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
@@ -126,7 +125,7 @@ class EmojiPicker extends Component {
 		this.setState({ frequentlyUsed });
 	}
 
-	renderCategory(category, i) {
+	renderCategory(category, i, label) {
 		const { frequentlyUsed, customEmojis } = this.state;
 		const {
 			emojisPerRow, width, baseUrl
@@ -148,6 +147,7 @@ class EmojiPicker extends Component {
 				size={emojisPerRow}
 				width={width}
 				baseUrl={baseUrl}
+				tabLabel={label}
 			/>
 		);
 	}
@@ -169,14 +169,7 @@ class EmojiPicker extends Component {
 					categories.tabs.map((tab, i) => (
 						(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
 							: (
-								<ScrollView
-									key={tab.category}
-									tabLabel={tab.tabLabel}
-									style={styles.background}
-									{...scrollProps}
-								>
-									{this.renderCategory(tab.category, i)}
-								</ScrollView>
+								this.renderCategory(tab.category, i, tab.tabLabel)
 							)))
 				}
 			</ScrollableTabView>
