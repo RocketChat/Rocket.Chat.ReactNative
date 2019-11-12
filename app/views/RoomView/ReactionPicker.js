@@ -43,6 +43,13 @@ class ReactionPicker extends React.Component {
 			window: { width, height }, show, baseUrl, reactionClose, split
 		} = this.props;
 
+		let widthStyle = width - margin;
+		let heightStyle = Math.min(width, height) - (margin * 2);
+		if (split) {
+			widthStyle = maxSize;
+			heightStyle = maxSize;
+		}
+
 		return (show
 			? (
 				<Modal
@@ -56,14 +63,16 @@ class ReactionPicker extends React.Component {
 					<View
 						style={[
 							styles.reactionPickerContainer,
-							{ width: width - margin, height: Math.min(width, height) - (margin * 2) },
-							split && { width: maxSize, height: maxSize }
+							{
+								width: widthStyle,
+								height: heightStyle
+							}
 						]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
 							tabEmojiStyle={tabEmojiStyle}
-							width={split ? maxSize : Math.min(width, height) - margin}
+							width={widthStyle}
 							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
 							baseUrl={baseUrl}
 						/>
