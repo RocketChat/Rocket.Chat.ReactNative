@@ -130,16 +130,9 @@ const handleLogout = function* handleLogout() {
 			const serversDB = database.servers;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
-
-			// filter logging out server and delete it
-			yield serversDB.action(async() => {
-				const serverRecord = await serversCollection.find(server);
-				await serverRecord.destroyPermanently();
-			});
-
 			const servers = yield serversCollection.query().fetch();
 
-			// see if there's other logged in servers and selects first one
+			// see if there're other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
 				const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
