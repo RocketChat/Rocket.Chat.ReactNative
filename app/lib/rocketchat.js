@@ -1,4 +1,4 @@
-import { AsyncStorage, InteractionManager } from 'react-native';
+import { AsyncStorage, InteractionManager, Alert } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
@@ -48,6 +48,8 @@ import callJitsi from './methods/callJitsi';
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
+import Navigation from './Navigation';
+import I18n from '../i18n';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -181,10 +183,15 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					// when `connect` raises an error, we try again in 10 seconds
-					this.connectTimeout = setTimeout(() => {
-						this.connect({ server, user });
-					}, 10000);
+					if (err.message && err.message.includes('400')) {
+						Navigation.navigate('NewServerView');
+						Alert.alert(I18n.t('Oops'), I18n.t('Websocket_disabled'));
+					} else {
+						// when `connect` raises an error, we try again in 10 seconds
+						this.connectTimeout = setTimeout(() => {
+							this.connect({ server, user });
+						}, 10000);
+					}
 				});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
