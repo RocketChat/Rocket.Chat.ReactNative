@@ -48,6 +48,7 @@ import callJitsi from './methods/callJitsi';
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
+import I18n from '../i18n';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -88,9 +89,53 @@ const RocketChat = {
 			console.warn(`RNUserDefaults error: ${ error.message }`);
 		}
 	},
-	async getServerInfo(server) {
+	async getWebsocketInfo({ server }) {
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
 		try {
-			const result = await fetch(`${ server }/api/info`).then(response => response.json());
+			await sdk.connect();
+		} catch (err) {
+			if (err.message && err.message.includes('400')) {
+				return {
+					success: false,
+					message: 'Websocket_disabled',
+					messageOptions: {
+						contact: I18n.t('Contact_your_server_admin')
+					}
+				};
+			}
+		}
+
+		sdk.disconnect();
+
+		return {
+			success: true
+		};
+	},
+	async getServerInfo(server) {
+		const notRCServer = {
+			success: false,
+			message: 'Not_RC_Server',
+			messageOptions: {
+				contact: I18n.t('Contact_your_server_admin')
+			}
+		};
+		try {
+			const result = await fetch(`${ server }/api/info`).then(async(response) => {
+				let res = notRCServer;
+				try {
+					res = await response.json();
+					if (!(res && res.success)) {
+						return notRCServer;
+					}
+				} catch (e) {
+					// do nothing
+				}
+				return res;
+			});
 			if (result.success) {
 				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
@@ -102,14 +147,17 @@ const RocketChat = {
 						}
 					};
 				}
-				return result;
 			}
+			return result;
 		} catch (e) {
 			log(e);
 		}
 		return {
 			success: false,
-			message: 'The_URL_is_invalid'
+			message: 'The_URL_is_invalid',
+			messageOptions: {
+				contact: I18n.t('Contact_your_server_admin')
+			}
 		};
 	},
 	stopListener(listener) {
