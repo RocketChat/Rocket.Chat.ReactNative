@@ -306,7 +306,8 @@ const RocketChat = {
 			};
 		} else if (state.settings.CROWD_Enable) {
 			params = {
-				...params,
+				username: user,
+				crowdPassword: password,
 				crowd: true
 			};
 		}
