@@ -430,8 +430,13 @@ const RocketChat = {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
 				const usersCollection = serversDB.collections.get('users');
-				const user = await usersCollection.find(userId);
-				await user.destroyPermanently();
+				const userRecord = await usersCollection.find(userId);
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+				await serversDB.batch(
+					userRecord.prepareDestroyPermanently(),
+					serverRecord.prepareDestroyPermanently()
+				);
 			});
 		} catch (error) {
 			// Do nothing
