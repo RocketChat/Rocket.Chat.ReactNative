@@ -98,7 +98,6 @@ const RocketChat = {
 		try {
 			await sdk.connect();
 		} catch (err) {
-			console.log(err);
 			if (err.message && err.message.includes('400')) {
 				return {
 					success: false,
