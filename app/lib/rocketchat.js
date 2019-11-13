@@ -89,6 +89,33 @@ const RocketChat = {
 			console.warn(`RNUserDefaults error: ${ error.message }`);
 		}
 	},
+	async getWebsocketInfo({ server }) {
+		// Use useSsl: false only if server url starts with http://
+		const useSsl = !/http:\/\//.test(server);
+
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		try {
+			await sdk.connect();
+		} catch (err) {
+			console.log(err);
+			if (err.message && err.message.includes('400')) {
+				return {
+					success: false,
+					message: 'Websocket_disabled',
+					messageOptions: {
+						contact: I18n.t('Contact_your_server_admin')
+					}
+				};
+			}
+		}
+
+		sdk.disconnect();
+
+		return {
+			success: true
+		};
+	},
 	async getServerInfo(server) {
 		const notRCServer = {
 			success: false,
