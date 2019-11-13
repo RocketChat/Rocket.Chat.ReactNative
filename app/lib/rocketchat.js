@@ -1,4 +1,4 @@
-import { AsyncStorage, InteractionManager, Alert } from 'react-native';
+import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
@@ -48,7 +48,6 @@ import callJitsi from './methods/callJitsi';
 import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
-import Navigation from './Navigation';
 import I18n from '../i18n';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -91,23 +90,26 @@ const RocketChat = {
 		}
 	},
 	async getServerInfo(server) {
-		try {
-			let result = await fetch(`${ server }/api/info`)
-				.then(response => response.text());
-			try {
-				result = JSON.parse(result);
-				if (!{}.hasOwnProperty.call(result, 'success')) {
-					return {
-						success: false,
-						message: 'Not_is_rc'
-					};
-				}
-			} catch (e) { // if returns html on body
-				return {
-					success: false,
-					message: 'Not_is_rc'
-				};
+		const notRCServer = {
+			success: false,
+			message: 'Not_RC_Server',
+			messageOptions: {
+				contact: I18n.t('Contact_your_server_admin')
 			}
+		};
+		try {
+			const result = await fetch(`${ server }/api/info`).then(async(response) => {
+				let res = notRCServer;
+				try {
+					res = await response.json();
+					if (!(res && res.success)) {
+						return notRCServer;
+					}
+				} catch (e) {
+					// do nothing
+				}
+				return res;
+			});
 			if (result.success) {
 				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
@@ -119,14 +121,17 @@ const RocketChat = {
 						}
 					};
 				}
-				return result;
 			}
+			return result;
 		} catch (e) {
 			log(e);
 		}
 		return {
 			success: false,
-			message: 'The_URL_is_invalid'
+			message: 'The_URL_is_invalid',
+			messageOptions: {
+				contact: I18n.t('Contact_your_server_admin')
+			}
 		};
 	},
 	stopListener(listener) {
@@ -183,15 +188,10 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					if (err.message && err.message.includes('400')) {
-						Navigation.navigate('NewServerView');
-						Alert.alert(I18n.t('Oops'), I18n.t('Websocket_disabled'));
-					} else {
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
-							this.connect({ server, user });
-						}, 10000);
-					}
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						this.connect({ server, user });
+					}, 10000);
 				});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
