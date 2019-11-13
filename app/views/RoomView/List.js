@@ -3,10 +3,8 @@ import {
 	ActivityIndicator, FlatList, InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
-import debounce from 'lodash/debounce';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -16,6 +14,7 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import debounce from '../../utils/debounce';
 
 export class List extends React.Component {
 	static propTypes = {
@@ -63,16 +62,12 @@ export class List extends React.Component {
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(
-					Q.where('rid', tmid)
-				)
+				.query(Q.where('rid', tmid))
 				.observeWithColumns(['_updated_at']);
 		} else {
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(
-					Q.where('rid', rid)
-				)
+				.query(Q.where('rid', rid))
 				.observeWithColumns(['_updated_at']);
 		}
 
@@ -84,8 +79,7 @@ export class List extends React.Component {
 					}
 					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
-						animateNextTransition();
-						this.setState({ messages });
+						this.setState({ messages }, () => this.debouncedUpdate());
 					} else {
 						this.state.messages = messages;
 					}
@@ -104,14 +98,11 @@ export class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { messages, loading, end } = this.state;
+		const { loading, end } = this.state;
 		if (loading !== nextState.loading) {
 			return true;
 		}
 		if (end !== nextState.end) {
-			return true;
-		}
-		if (!isEqual(messages, nextState.messages)) {
 			return true;
 		}
 		return false;
@@ -126,6 +117,9 @@ export class List extends React.Component {
 		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
+		}
+		if (this.debouncedUpdate && this.debouncedUpdate.stop) {
+			this.debouncedUpdate.stop();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -154,6 +148,17 @@ export class List extends React.Component {
 			this.setState({ loading: false });
 			log(e);
 		}
+	}, 300)
+
+	// eslint-disable-next-line react/sort-comp
+	update = () => {
+		animateNextTransition();
+		this.forceUpdate();
+	};
+
+	// eslint-disable-next-line react/sort-comp
+	debouncedUpdate = debounce(() => {
+		this.update();
 	}, 300)
 
 	renderFooter = () => {
