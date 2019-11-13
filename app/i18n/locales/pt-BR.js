@@ -377,7 +377,7 @@ export default {
 	Username_or_email: 'Usuário ou email',
 	Video_call: 'Chamada de vídeo',
 	Voice_call: 'Chamada de voz',
-	Websocket_disabled: 'O servidor precisa ter o Websocket ativado.\n{{contact}}',
+	Websocket_disabled: 'Websocket está desativado para esse servidor.\n{{contact}}',
 	Welcome: 'Bem vindo',
 	Welcome_to_RocketChat: 'Bem vindo ao Rocket.Chat',
 	Whats_your_2fa: 'Qual seu código de autenticação?',

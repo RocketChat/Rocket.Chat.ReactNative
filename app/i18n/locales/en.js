@@ -422,7 +422,7 @@ export default {
 	Video_call: 'Video call',
 	View_Original: 'View Original',
 	Voice_call: 'Voice call',
-	Websocket_disabled: 'Server must have Websocket enabled.\n{{contact}}',
+	Websocket_disabled: 'Websocket is disabled for this server.\n{{contact}}',
 	Welcome: 'Welcome',
 	Welcome_to_RocketChat: 'Welcome to Rocket.Chat',
 	Whats_your_2fa: 'What\'s your 2FA code?',
