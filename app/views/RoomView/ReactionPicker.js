@@ -71,8 +71,7 @@ class ReactionPicker extends React.Component {
 						testID='reaction-picker'
 					>
 						<EmojiPicker
-							tabEmojiStyle={tabEmojiStyle}
-							width={widthStyle}
+							// tabEmojiStyle={tabEmojiStyle}
 							onEmojiSelected={this.onEmojiSelected}
 							baseUrl={baseUrl}
 						/>
