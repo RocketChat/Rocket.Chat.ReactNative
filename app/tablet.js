@@ -92,6 +92,7 @@ export const initTabletNav = (setState) => {
 					if (roomRef) {
 						roomRef.dispatch(resetAction);
 					}
+					setState({ showModal: false });
 				}
 				if (routeName === 'ReadReceiptsView') {
 					roomRef.dispatch(NavigationActions.navigate({ routeName, params }));
