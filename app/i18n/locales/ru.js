@@ -106,7 +106,7 @@ export default {
 	Avatar_changed_successfully: 'Аватар успешно изменен!',
 	Avatar_Url: 'URL аватара',
 	Away: 'Отошел',
-	Back: 'Back',
+	Back: 'Назад',
 	Block_user: 'Блокировать пользователя',
 	Broadcast_channel_Description: 'Только авторизованные пользователи могут писать новые сообщения, но другие пользователи смогут ответить',
 	Broadcast_Channel: 'Широковещательный канал',
@@ -191,7 +191,7 @@ export default {
 	Full_table: 'Нажмите, чтобы увидеть полную таблицу',
 	Group_by_favorites: 'По избранным',
 	Group_by_type: 'По типу',
-	Hide: 'Скрыть'
+	Hide: 'Скрыть',
 	Has_joined_the_channel: 'Присоединился к каналу',
 	Has_joined_the_conversation: 'Присоединился к беседе',
 	Has_left_the_channel: 'Покинул канал',
@@ -204,7 +204,7 @@ export default {
 	is_typing: 'печатает',
 	Invalid_server_version: 'Сервер, к которому вы пытаетесь подключиться, использует версию, которая больше не поддерживается приложением: {{currentVersion}}.\n\nНам нужна версия {{minVersion}}',
 	Join_the_community: 'Присоединиться к сообществу',
-	Join: 'Присоединиться'
+	Join: 'Присоединиться',
 	Just_invited_people_can_access_this_channel: 'Только приглашенные люди могут получить доступ к этому каналу',
 	Language: 'Язык',
 	last_message: 'последнее сообщение',
@@ -333,7 +333,7 @@ export default {
 	saving_settings: 'сохранение настроек',
 	Search_Messages: 'Поиск сообщений',
 	Search: 'Поиск',
-	Search_by: 'Поиск по'
+	Search_by: 'Поиск по',
 	Search_global_users: 'Поиск глобальных пользователей',
 	Search_global_users_description: 'При активации станет возможен поиск пользователей на других серверах.',
 	Seconds: '{{second}} секунд',
@@ -360,7 +360,7 @@ export default {
 	Sign_Up: 'Регистрация',
 	Some_field_is_invalid_or_empty: 'Некоторые поля недопустимы или пусты',
 	Sorting_by: 'Сортировать по {{key}}',
-	Sound: 'Звук'
+	Sound: 'Звук',
 	Star_room: 'В избранное',
 	Star: 'Отметить',
 	Starred_Messages: 'Отмеченные сообщения',
