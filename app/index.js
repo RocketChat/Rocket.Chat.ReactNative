@@ -102,6 +102,9 @@ const RoomRoutes = {
 	},
 	MarkdownTableView: {
 		getScreen: () => require('./views/MarkdownTableView').default
+	},
+	ReadReceiptsView: {
+		getScreen: () => require('./views/ReadReceiptView').default
 	}
 };
 
@@ -133,9 +136,6 @@ const ChatsStack = createStackNavigator({
 	},
 	AutoTranslateView: {
 		getScreen: () => require('./views/AutoTranslateView').default
-	},
-	ReadReceiptsView: {
-		getScreen: () => require('./views/ReadReceiptView').default
 	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default

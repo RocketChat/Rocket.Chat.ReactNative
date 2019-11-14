@@ -93,6 +93,10 @@ export const initTabletNav = (setState) => {
 						roomRef.dispatch(resetAction);
 					}
 				}
+				if (routeName === 'ReadReceiptsView') {
+					roomRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					return null;
+				}
 				if (routeName === 'OutsideStack') {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
