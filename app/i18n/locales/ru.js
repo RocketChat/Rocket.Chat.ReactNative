@@ -417,7 +417,7 @@ export default {
 	User_was_set_role_by_: '{{user}} был назначен {{role}} пользователем {{userBy}}',
 	Username_is_empty: 'Имя пользователя пусто',
 	Username: 'Имя пользователя',
-	sername_or_email: 'Имя пользователя или email',
+	Username_or_email: 'Имя пользователя или email',
 	Validating: 'Проверка',
 	Video_call: 'Видеозвонок',
 	View_Original: 'Посмотреть оригинал',
