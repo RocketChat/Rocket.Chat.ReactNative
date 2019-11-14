@@ -424,7 +424,7 @@ export default {
 	Voice_call: 'Голосовой вызов',
 	Websocket_disabled: 'Websocket отключен для этого сервера.\n{{contact}}',
 	Welcome: 'Добро пожаловать,',
-	Welcome_to_RocketChat:'Добро пожаловать в Rocket.Chat',
+	Welcome_to_RocketChat: 'Добро пожаловать в Rocket.Chat',
 	Whats_your_2fa: 'Какой у вас код 2FA?',
 	Without_Servers: 'Без серверов',
 	Yes_action_it: 'Да, {{action}} это!',
