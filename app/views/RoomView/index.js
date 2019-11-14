@@ -73,6 +73,7 @@ class RoomView extends React.Component {
 		const baseUrl = navigation.getParam('baseUrl');
 		const userId = navigation.getParam('userId');
 		const token = navigation.getParam('token');
+		const avatar = navigation.getParam('avatar');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
@@ -109,7 +110,7 @@ class RoomView extends React.Component {
 					baseUrl={baseUrl}
 					userId={userId}
 					token={token}
-					title={title}
+					title={avatar}
 					t={t}
 					goRoomActionsView={goRoomActionsView}
 					split={screenProps.split}
@@ -146,9 +147,13 @@ class RoomView extends React.Component {
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
 		const selectedMessage = props.navigation.getParam('message');
+		const name = props.navigation.getParam('name');
+		const fname = props.navigation.getParam('fname');
 		this.state = {
 			joined: true,
-			room: room || { rid: this.rid, t: this.t },
+			room: room || {
+				rid: this.rid, t: this.t, name, fname
+			},
 			roomUpdate: {},
 			lastOpen: null,
 			photoModalVisible: false,
@@ -188,9 +193,10 @@ class RoomView extends React.Component {
 			const {
 				navigation, isAuthenticated, user, baseUrl
 			} = this.props;
-			if (room.id && !this.tmid) {
+			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					avatar: room.name,
 					t: room.t,
 					token: user.token,
 					userId: user.id,
