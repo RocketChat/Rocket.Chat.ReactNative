@@ -134,12 +134,9 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	deleteServer = (server) => {
+	deleteServer = async(server) => {
 		try {
-			const serversDB = database.servers;
-			serversDB.action(async() => {
-				await server.destroyPermanently();
-			});
+			await RocketChat.removeServer(server.id);
 		} catch (e) {
 			log(e);
 		}

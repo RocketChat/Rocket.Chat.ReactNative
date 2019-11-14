@@ -388,6 +388,7 @@ const RocketChat = {
 			throw e;
 		}
 	},
+
 	async logout({ server }) {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
@@ -411,6 +412,13 @@ const RocketChat = {
 		}
 		this.sdk = null;
 
+		await this.removeServer(server);
+
+		await RNUserDefaults.clear('currentServer');
+		await RNUserDefaults.clear(TOKEN_KEY);
+	},
+
+	async removeServer(server) {
 		try {
 			const servers = await RNUserDefaults.objectForKey(SERVERS);
 			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
@@ -421,38 +429,47 @@ const RocketChat = {
 				await FileSystem.deleteAsync(certificate.path);
 			}
 		} catch (error) {
-			console.log('logout_rn_user_defaults', error);
+			// do nothing
 		}
 
 		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			const serversDB = database.servers;
+			const serversDB = database.server;
 			await serversDB.action(async() => {
 				const usersCollection = serversDB.collections.get('users');
 				const userRecord = await usersCollection.find(userId);
+				await serversDB.batch(
+					userRecord.prepareDestroyPermanently()
+				);
+			});
+		} catch (e) {
+			// do nothing
+		}
+
+		try {
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
 				const serverCollection = serversDB.collections.get('servers');
 				const serverRecord = await serverCollection.find(server);
 				await serversDB.batch(
-					userRecord.prepareDestroyPermanently(),
 					serverRecord.prepareDestroyPermanently()
 				);
 			});
-		} catch (error) {
-			// Do nothing
+		} catch (e) {
+			// do nothing
 		}
-
-		await RNUserDefaults.clear('currentServer');
-		await RNUserDefaults.clear(TOKEN_KEY);
-		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 
 		try {
-			const db = database.active;
+			const db = database.getDB(server);
 			await db.action(() => db.unsafeResetDatabase());
 		} catch (error) {
-			console.log(error);
+			// do nothing
 		}
+
+		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
 	},
+
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();

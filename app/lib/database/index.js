@@ -52,6 +52,11 @@ class DB {
 	}
 
 	setActiveDB(database = '') {
+		this.databases.activeDB = this.getDB(database);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	getDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
@@ -61,7 +66,7 @@ class DB {
 			migrations
 		});
 
-		this.databases.activeDB = new Database({
+		return new Database({
 			adapter,
 			modelClasses: [
 				Subscription,
