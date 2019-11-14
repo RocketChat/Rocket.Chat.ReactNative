@@ -166,7 +166,7 @@ class ServerDropdown extends Component {
 						style: 'cancel'
 					}
 				],
-				{ cancelable: true },
+				{ cancelable: true }
 			);
 		}
 	}
