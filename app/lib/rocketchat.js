@@ -1031,7 +1031,7 @@ const RocketChat = {
 			const serverVersion = reduxStore.getState().server.version;
 
 			// if server is lower than 1.1.0
-			if (semver.lt(semver.coerce(serverVersion), '1.1.0')) {
+			if (serverVersion && semver.lt(semver.coerce(serverVersion), '1.1.0')) {
 				if (this.activeUsersSubTimeout) {
 					clearTimeout(this.activeUsersSubTimeout);
 					this.activeUsersSubTimeout = false;
