@@ -85,13 +85,6 @@ export const initTabletNav = (setState) => {
 			if (isSplited()) {
 				if (routeName === 'InsideStack') {
 					KeyCommands.setKeyCommands(keyCommands);
-					const resetAction = StackActions.reset({
-						index: 0,
-						actions: [NavigationActions.navigate({ routeName: 'RoomView' })]
-					});
-					if (roomRef) {
-						roomRef.dispatch(resetAction);
-					}
 					setState({ showModal: false });
 				}
 				if (routeName === 'ReadReceiptsView') {
