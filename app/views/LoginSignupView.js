@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
 
 const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
+let noEmailLogin = 0;
 
 class LoginSignupView extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -345,10 +346,12 @@ class LoginSignupView extends React.Component {
 				break;
 			}
 			case 'oauth_custom': {
+				noEmailLogin = 1;
 				onPress = () => this.onPressCustomOAuth(service);
 				break;
 			}
 			case 'saml': {
+				noEmailLogin = 1;
 				onPress = () => this.onPressSaml(service);
 				break;
 			}
@@ -406,27 +409,39 @@ class LoginSignupView extends React.Component {
 	}
 
 	render() {
-		return (
-			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
-				<StatusBar />
-				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
-					{this.renderServices()}
-					{this.renderServicesSeparator()}
-					<Button
-						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
-						type='primary'
-						onPress={() => this.login()}
-						testID='welcome-view-login'
-					/>
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						onPress={() => this.register()}
-						testID='welcome-view-register'
-					/>
-				</SafeAreaView>
-			</ScrollView>
-		);
+		if (noEmailLogin === 1) {
+			return (
+				<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
+					<StatusBar />
+					<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
+						{this.renderServices()}
+						{this.renderServicesSeparator()}
+					</SafeAreaView>
+				</ScrollView>
+			);
+		} else {
+			return (
+				<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
+					<StatusBar />
+					<SafeAreaView testID='welcome-view' forceInset={{ bottom: 'never' }} style={styles.safeArea}>
+						{this.renderServices()}
+						{this.renderServicesSeparator()}
+						<Button
+							title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
+							type='primary'
+							onPress={() => this.login()}
+							testID='welcome-view-login'
+						/>
+						<Button
+							title={I18n.t('Create_account')}
+							type='secondary'
+							onPress={() => this.register()}
+							testID='welcome-view-register'
+						/>
+					</SafeAreaView>
+				</ScrollView>
+			);
+		}
 	}
 }
 
