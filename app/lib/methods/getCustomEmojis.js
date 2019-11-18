@@ -91,7 +91,7 @@ export function getCustomEmojis() {
 			const updatedSince = await getUpdatedSince(allRecords);
 
 			// if server version is lower than 0.75.0, fetches from old api
-			if (semver.lt(serverVersion, '0.75.0')) {
+			if (serverVersion && semver.lt(serverVersion, '0.75.0')) {
 				// RC 0.61.0
 				const result = await this.sdk.get('emoji-custom');
 
