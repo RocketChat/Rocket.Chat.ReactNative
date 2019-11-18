@@ -1,6 +1,6 @@
 {
   "name": "BugsnagReactNative",
-  "version": "2.22.4",
+  "version": "2.23.2",
   "license": "MIT",
   "summary": "Bugsnag crash and error reporting for React Native apps",
   "authors": {
@@ -9,7 +9,7 @@
   "homepage": "https://docs.bugsnag.com/platforms/react-native",
   "source": {
     "git": "https://github.com/bugsnag/bugsnag-react-native.git",
-    "tag": "v2.22.4"
+    "tag": "v2.23.2"
   },
   "platforms": {
     "ios": "8.0"
