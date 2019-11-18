@@ -12,7 +12,6 @@ import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
-const tabEmojiStyle = { fontSize: 15 };
 
 class ReactionPicker extends React.Component {
 	static propTypes = {
