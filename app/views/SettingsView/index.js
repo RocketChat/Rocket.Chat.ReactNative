@@ -28,6 +28,7 @@ import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import SidebarView from '../SidebarView';
 import { withSplit } from '../../split';
+import Navigation from '../../lib/Navigation';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const ItemInfo = React.memo(({ info }) => (
@@ -61,7 +62,10 @@ class SettingsView extends React.Component {
 	}
 
 	logout = () => {
-		const { logout } = this.props;
+		const { logout, split } = this.props;
+		if (split) {
+			Navigation.navigate('RoomView');
+		}
 		logout();
 	}
 
