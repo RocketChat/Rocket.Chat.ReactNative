@@ -22,7 +22,7 @@ import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
 		const serverInfo = yield RocketChat.getServerInfo(server);
-		let websocketInfo = true;
+		let websocketInfo = { success: true };
 		if (raiseError) {
 			websocketInfo = yield RocketChat.getWebsocketInfo({ server });
 		}
