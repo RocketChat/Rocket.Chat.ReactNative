@@ -30,7 +30,7 @@ class ReactionPicker extends React.Component {
 		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
 	}
 
-	onEmojiSelected(emoji, shortname) {
+	onEmojiSelected = (emoji, shortname) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
@@ -42,6 +42,13 @@ class ReactionPicker extends React.Component {
 		const {
 			window: { width, height }, show, baseUrl, reactionClose, split
 		} = this.props;
+
+		let widthStyle = width - margin;
+		let heightStyle = Math.min(width, height) - (margin * 2);
+		if (split) {
+			widthStyle = maxSize;
+			heightStyle = maxSize;
+		}
 
 		return (show
 			? (
@@ -56,15 +63,16 @@ class ReactionPicker extends React.Component {
 					<View
 						style={[
 							styles.reactionPickerContainer,
-							{ width: width - margin, height: Math.min(width, height) - (margin * 2) },
-							split && { width: maxSize, height: maxSize }
+							{
+								width: widthStyle,
+								height: heightStyle
+							}
 						]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
-							tabEmojiStyle={tabEmojiStyle}
-							width={split ? maxSize : Math.min(width, height) - margin}
-							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+							// tabEmojiStyle={tabEmojiStyle}
+							onEmojiSelected={this.onEmojiSelected}
 							baseUrl={baseUrl}
 						/>
 					</View>

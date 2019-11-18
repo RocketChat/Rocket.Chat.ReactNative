@@ -105,7 +105,6 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false
 		};
-		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
 		this.focused = false;
 		this.fileOptions = [
@@ -765,7 +764,8 @@ class MessageBox extends Component {
 
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
-			onSubmitEditing: this.submit
+			onSubmitEditing: this.submit,
+			returnKeyType: 'send'
 		} : {};
 
 		if (recording) {
@@ -806,9 +806,9 @@ class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							{...isAndroidTablet}
 							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
+							{...isAndroidTablet}
 						/>
 						<RightButtons
 							showSend={showSend}
