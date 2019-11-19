@@ -270,6 +270,8 @@ class NewServerView extends React.Component {
 							testID='new-server-view-input'
 							onSubmitEditing={this.submit}
 							clearButtonMode='while-editing'
+							keyboardType='url'
+							textContentType='URL'
 						/>
 						<Button
 							title={I18n.t('Connect')}
