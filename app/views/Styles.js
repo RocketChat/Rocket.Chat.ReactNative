@@ -9,7 +9,6 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	container: {
-		backgroundColor: 'white',
 		flex: 1
 	},
 	containerScrollView: {

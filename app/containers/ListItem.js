@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_TEXT, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 const Content = React.memo(({
 	title, subtitle, disabled, testID, right, theme
 }) => (
-	<View style={[styles.container, disabled && styles.disabled, { backgroundColor: themes[theme].backgroundColor }]} testID={testID}>
+	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
 		<View style={styles.textContainer}>
 			<Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>
 			{subtitle
@@ -52,9 +52,10 @@ const Button = React.memo(({
 }) => (
 	<RectButton
 		onPress={onPress}
-		activeOpacity={0.1}
-		underlayColor={COLOR_TEXT}
-		enabled={!props.disabled} // TODO
+		underlayColor={themes[props.theme].bannerBackground}
+		style={{ backgroundColor: themes[props.theme].backgroundColor }}
+		activeOpacity={1}
+		enabled={!props.disabled}
 	>
 		<Content {...props} />
 	</RectButton>
@@ -64,11 +65,16 @@ const Item = React.memo(({ ...props }) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
-	return <Content {...props} />;
+	return (
+		<View style={{ backgroundColor: themes[props.theme].backgroundColor }}>
+			<Content {...props} />
+		</View>
+	);
 });
 
 Item.propTypes = {
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	theme: PropTypes.string
 };
 
 Content.propTypes = {
@@ -82,7 +88,8 @@ Content.propTypes = {
 
 Button.propTypes = {
 	onPress: PropTypes.func,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 Button.defaultProps = {

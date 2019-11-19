@@ -21,7 +21,7 @@ import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../constants/colors';
+import { COLOR_PRIMARY, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
 	},
 	createChannelContainer: {
 		height: 47,
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -149,12 +148,12 @@ class NewMessageView extends React.Component {
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<RectButton
 					onPress={this.createChannel}
-					style={styles.createChannelButton}
+					style={[styles.createChannelButton, { backgroundColor: themes[theme].backgroundColor }]}
 					underlayColor={themes[theme].bannerBackground}
 					activeOpacity={1}
 					testID='new-message-view-create-channel'
 				>
-					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
 					</View>

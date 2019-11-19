@@ -75,7 +75,7 @@ class MessagesView extends React.Component {
 
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 
 		const renderItemCommonProps = item => ({
 			baseUrl,
@@ -111,6 +111,7 @@ class MessagesView extends React.Component {
 								description: item.description,
 								...url
 							}]}
+							theme={theme}
 						/>
 					);
 				}
@@ -130,6 +131,7 @@ class MessagesView extends React.Component {
 					<Message
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
+						theme={theme}
 					/>
 				)
 			},
@@ -149,6 +151,7 @@ class MessagesView extends React.Component {
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
 						onLongPress={() => this.onLongPress(item)}
+						theme={theme}
 					/>
 				),
 				actionTitle: I18n.t('Unstar'),
@@ -165,6 +168,7 @@ class MessagesView extends React.Component {
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
 						onLongPress={() => this.onLongPress(item)}
+						theme={theme}
 					/>
 				),
 				actionTitle: I18n.t('Unpin'),

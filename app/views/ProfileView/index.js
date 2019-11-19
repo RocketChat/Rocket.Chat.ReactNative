@@ -381,13 +381,14 @@ class ProfileView extends React.Component {
 
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]} testID='profile-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
 					<ScrollView
-						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].focusedBackground }]}
+						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='profile-view-list'
 						{...scrollPersistTaps}
 					>

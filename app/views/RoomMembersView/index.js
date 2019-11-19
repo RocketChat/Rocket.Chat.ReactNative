@@ -23,6 +23,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { themes } from '../../constants/colors';
 
 const PAGE_SIZE = 25;
 
@@ -261,7 +262,7 @@ class RoomMembersView extends React.Component {
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
