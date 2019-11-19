@@ -156,6 +156,7 @@ class RoomView extends React.Component {
 		this.beginAnimating = false;
 		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
+		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -500,6 +501,9 @@ class RoomView extends React.Component {
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
+			if (this.list && this.list.current) {
+				this.list.current.update();
+			}
 			this.setLastOpen(null);
 		});
 	};
@@ -808,6 +812,7 @@ class RoomView extends React.Component {
 			>
 				<StatusBar />
 				<List
+					ref={this.list}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}

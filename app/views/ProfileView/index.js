@@ -375,7 +375,9 @@ class ProfileView extends React.Component {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
-		const { baseUrl, user, theme } = this.props;
+		const {
+			baseUrl, user, theme, Accounts_CustomFields
+		} = this.props;
 
 		return (
 			<KeyboardView
@@ -436,7 +438,7 @@ class ProfileView extends React.Component {
 							value={newPassword}
 							onChangeText={value => this.setState({ newPassword: value })}
 							onSubmitEditing={() => {
-								if (Object.keys(customFields).length) {
+								if (Accounts_CustomFields && Object.keys(customFields).length) {
 									return this[Object.keys(customFields)[0]].focus();
 								}
 								this.avatarUrl.focus();

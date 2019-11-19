@@ -265,6 +265,14 @@ class ThreadMessagesView extends React.Component {
 		);
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
@@ -284,6 +292,7 @@ class ThreadMessagesView extends React.Component {
 				baseUrl={baseUrl}
 				useRealName={useRealName}
 				getCustomEmoji={this.getCustomEmoji}
+				navToRoomInfo={this.navToRoomInfo}
 			/>
 		);
 	}
