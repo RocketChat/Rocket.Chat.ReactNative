@@ -180,9 +180,10 @@ class List extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { messages } = this.state;
+		const { theme } = this.props;
 		return (
 			<>
-				<EmptyRoom length={messages.length} mounted={this.mounted} />
+				<EmptyRoom length={messages.length} mounted={this.mounted} theme={theme} />
 				<FlatList
 					testID='room-view-messages'
 					ref={ref => this.list = ref}

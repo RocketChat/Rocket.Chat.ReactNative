@@ -2,6 +2,8 @@ import React from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { themes } from '../../constants/colors';
+
 const styles = StyleSheet.create({
 	image: {
 		width: '100%',
@@ -10,15 +12,22 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = React.memo(({ length, mounted }) => {
+const EmptyRoom = React.memo(({ length, mounted, theme }) => {
 	if (length === 0 && mounted) {
-		return <ImageBackground source={{ uri: 'message_empty' }} style={styles.image} />;
+		return (
+			<ImageBackground
+				source={{ uri: `message_empty_${ theme }` }}
+				style={[styles.image, { backgroundColor: themes[theme].emptyChatBackground }]}
+				resizeMode='contain'
+			/>
+		);
 	}
 	return null;
 });
 
 EmptyRoom.propTypes = {
 	length: PropTypes.number.isRequired,
-	mounted: PropTypes.bool
+	mounted: PropTypes.bool,
+	theme: PropTypes.string
 };
 export default EmptyRoom;
