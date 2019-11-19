@@ -175,7 +175,7 @@ class NewServerView extends React.Component {
 	}
 
 	completeUrl = (url) => {
-		url = url && url.trim();
+		url = url && url.replace(/\s/g, '');
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)
 			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
