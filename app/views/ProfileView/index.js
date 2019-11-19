@@ -6,6 +6,7 @@ import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
@@ -22,7 +23,6 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import Touch from '../../utils/touch';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
@@ -256,20 +256,17 @@ class ProfileView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<Touch
+			<RectButton
+				activeOpacity={1}
 				key={key}
 				testID={key}
 				onPress={onPress}
-				underlayColor='rgba(255, 255, 255, 0.5)'
-				activeOpacity={0.3}
-				disabled={disabled}
+				underlayColor={themes[theme].bannerBackground}
+				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+				enabled={!disabled}
 			>
-				<View
-					style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1, backgroundColor: themes[theme].borderColors }]}
-				>
-					{child}
-				</View>
-			</Touch>
+				{child}
+			</RectButton>
 		);
 	}
 
@@ -381,7 +378,7 @@ class ProfileView extends React.Component {
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
