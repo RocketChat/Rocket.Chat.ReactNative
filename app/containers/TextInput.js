@@ -142,6 +142,7 @@ export default class RCTextInput extends React.PureComponent {
 						placeholder={placeholder}
 						placeholderTextColor={themes[theme].auxiliaryText}
 						contentDescription={placeholder}
+						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 						{...inputProps}
 					/>
 					{iconLeft ? this.iconLeft : null}

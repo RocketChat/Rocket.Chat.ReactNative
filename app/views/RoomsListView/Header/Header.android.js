@@ -53,6 +53,7 @@ const Header = React.memo(({
 					placeholder='Search'
 					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={onSearchChangeText}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 				/>
 			</View>
 		);

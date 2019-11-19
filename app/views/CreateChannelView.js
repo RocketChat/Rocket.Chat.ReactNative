@@ -335,6 +335,7 @@ class CreateChannelView extends React.Component {
 								testID='create-channel-name'
 								autoCorrect={false}
 								autoCapitalize='none'
+								keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 								underlineColorAndroid='transparent'
 							/>
 							{this.renderFormSeparator()}

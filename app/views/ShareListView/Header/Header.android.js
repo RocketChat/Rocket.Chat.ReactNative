@@ -34,6 +34,7 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 					placeholder={I18n.t('Search')}
 					placeholderTextColor='rgba(255, 255, 255, 0.5)'
 					onChangeText={onChangeSearchText}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 					autoFocus
 				/>
 			</View>
