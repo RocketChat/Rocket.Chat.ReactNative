@@ -8,7 +8,7 @@ import { themes } from '../../../constants/colors';
 
 const FixedMentionItem = ({ item, onPress, theme }) => (
 	<TouchableOpacity
-		style={[styles.mentionItem, { backgroundColor: themes[theme].auxiliaryBackground, borderTopColor: themes[theme].borderColor }]}
+		style={[styles.mentionItem, { backgroundColor: themes[theme].messageboxBackground, borderTopColor: themes[theme].borderColor }]}
 		onPress={() => onPress(item)}
 	>
 		<Text style={[styles.fixedMentionAvatar, { color: themes[theme].titleText }]}>{item.username}</Text>
