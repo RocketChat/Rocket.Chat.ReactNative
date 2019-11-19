@@ -35,7 +35,7 @@ export default StyleSheet.create({
 	},
 	button_inverted: {
 		textAlign: 'center',
-		color: '#414852',
+		// color: '#414852',
 		fontWeight: '700',
 		flexGrow: 1
 	},

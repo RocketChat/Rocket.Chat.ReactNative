@@ -410,11 +410,11 @@ class RoomActionsView extends React.Component {
 				</Avatar>,
 				<View key='name' style={styles.roomTitleContainer}>
 					{room.t === 'd'
-						? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]}>{room.fname}</Text>
+						? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 						: (
 							<View style={styles.roomTitleRow}>
 								<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
-								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]}>{room.prid ? room.fname : room.name}</Text>
+								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.prid ? room.fname : room.name}</Text>
 							</View>
 						)
 					}

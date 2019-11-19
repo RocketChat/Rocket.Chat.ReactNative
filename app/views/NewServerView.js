@@ -253,13 +253,14 @@ class NewServerView extends React.Component {
 		const { text, autoFocus } = this.state;
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
 				<StatusBar light />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='new-server-view'>
+					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
 						<TextInput

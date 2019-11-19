@@ -191,10 +191,13 @@ class RegisterView extends React.Component {
 		const { saving } = this.state;
 		const { theme } = this.props;
 		return (
-			<KeyboardView contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+			<KeyboardView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={sharedStyles.container}
+			>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='register-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							autoFocus

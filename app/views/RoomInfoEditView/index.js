@@ -25,6 +25,8 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themedHeader } from '../../utils/navigation';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -49,7 +51,8 @@ class RoomInfoEditView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		eraseRoom: PropTypes.func
+		eraseRoom: PropTypes.func,
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -147,11 +150,12 @@ class RoomInfoEditView extends React.Component {
 		const {
 			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
 		} = this.state;
+		const { joinCodeRequired } = room;
 		return !(room.name === name
 			&& room.description === description
 			&& room.topic === topic
 			&& room.announcement === announcement
-			&& this.randomValue === joinCode
+			&& (joinCodeRequired ? this.randomValue : '') === joinCode
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
@@ -298,8 +302,10 @@ class RoomInfoEditView extends React.Component {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived
 		} = this.state;
+		const { theme } = this.props;
 		return (
 			<KeyboardView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
@@ -317,6 +323,7 @@ class RoomInfoEditView extends React.Component {
 							onChangeText={value => this.setState({ name: value })}
 							onSubmitEditing={() => { this.description.focus(); }}
 							error={nameError}
+							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
 						<RCTextInput
@@ -325,6 +332,7 @@ class RoomInfoEditView extends React.Component {
 							value={description}
 							onChangeText={value => this.setState({ description: value })}
 							onSubmitEditing={() => { this.topic.focus(); }}
+							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
 						<RCTextInput
@@ -333,6 +341,7 @@ class RoomInfoEditView extends React.Component {
 							value={topic}
 							onChangeText={value => this.setState({ topic: value })}
 							onSubmitEditing={() => { this.announcement.focus(); }}
+							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
 						<RCTextInput
@@ -341,6 +350,7 @@ class RoomInfoEditView extends React.Component {
 							value={announcement}
 							onChangeText={value => this.setState({ announcement: value })}
 							onSubmitEditing={() => { this.joinCode.focus(); }}
+							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
 						<RCTextInput
@@ -350,6 +360,7 @@ class RoomInfoEditView extends React.Component {
 							onChangeText={value => this.setState({ joinCode: value })}
 							onSubmitEditing={this.submit}
 							secureTextEntry
+							theme={theme}
 							testID='room-info-edit-view-password'
 						/>
 						<SwitchContainer
@@ -359,6 +370,7 @@ class RoomInfoEditView extends React.Component {
 							rightLabelPrimary={I18n.t('Private')}
 							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
 							onValueChange={value => this.setState({ t: value })}
+							theme={theme}
 							testID='room-info-edit-view-t'
 						/>
 						<SwitchContainer
@@ -369,6 +381,7 @@ class RoomInfoEditView extends React.Component {
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={value => this.setState({ ro: value })}
 							disabled={!permissions[PERMISSION_SET_READONLY] || room.broadcast}
+							theme={theme}
 							testID='room-info-edit-view-ro'
 						/>
 						{ro && !room.broadcast
@@ -381,6 +394,7 @@ class RoomInfoEditView extends React.Component {
 									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
 									disabled={!permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+									theme={theme}
 									testID='room-info-edit-view-react-when-ro'
 								/>
 							)
@@ -389,7 +403,7 @@ class RoomInfoEditView extends React.Component {
 						{room.broadcast
 							? [
 								<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
-								<View style={styles.divider} />
+								<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 							]
 							: null
 						}
@@ -403,11 +417,11 @@ class RoomInfoEditView extends React.Component {
 						</TouchableOpacity>
 						<View style={{ flexDirection: 'row' }}>
 							<TouchableOpacity
-								style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted, { flex: 1 }]}
+								style={[sharedStyles.buttonContainer_inverted, styles.buttonInverted, { flex: 1, borderColor: themes[theme].auxiliaryText }]}
 								onPress={this.reset}
 								testID='room-info-edit-view-reset'
 							>
-								<Text style={sharedStyles.button_inverted} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
+								<Text style={[sharedStyles.button_inverted, { color: themes[theme].bodyText }]} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
 								style={[
@@ -425,7 +439,7 @@ class RoomInfoEditView extends React.Component {
 								</Text>
 							</TouchableOpacity>
 						</View>
-						<View style={styles.divider} />
+						<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 						<TouchableOpacity
 							style={[
 								sharedStyles.buttonContainer_inverted,
@@ -451,4 +465,4 @@ const mapDispatchToProps = dispatch => ({
 	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
 });
 
-export default connect(null, mapDispatchToProps)(RoomInfoEditView);
+export default connect(null, mapDispatchToProps)(withTheme(RoomInfoEditView));

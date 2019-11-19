@@ -24,7 +24,6 @@ import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#f7f8fa',
 		flex: 1
 	},
 	list: {
@@ -316,11 +315,12 @@ class CreateChannelView extends React.Component {
 
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, styles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={sharedStyles.separatorVertical}>
 							<TextInput

@@ -267,7 +267,8 @@ class LoginView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<KeyboardView
-				contentContainerStyle={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
