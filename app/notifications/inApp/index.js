@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	inner: {
+		flex: 1
+	},
 	avatar: {
 		marginRight: 10
 	},
@@ -160,7 +163,7 @@ class NotificationBadge extends React.Component {
 		if (!rid) {
 			return;
 		}
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
 			rid, name, t: type, prid
@@ -174,7 +177,7 @@ class NotificationBadge extends React.Component {
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 
 		let top = 0;
 		if (isIOS) {
@@ -185,8 +188,6 @@ class NotificationBadge extends React.Component {
 				top = 0;
 			}
 		}
-
-		const maxWidthMessage = window.width - 110;
 
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -202,9 +203,9 @@ class NotificationBadge extends React.Component {
 				>
 					<>
 						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-						<View>
-							<Text style={styles.roomName}>{name}</Text>
-							<Text style={[styles.message, { maxWidth: maxWidthMessage }]} numberOfLines={1}>{message}</Text>
+						<View style={styles.inner}>
+							<Text style={styles.roomName} numberOfLines={1}>{name}</Text>
+							<Text style={styles.message} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
 				</Touchable>
