@@ -108,7 +108,6 @@ class AuthenticationWebView extends React.PureComponent {
 			<>
 				<StatusBar />
 				<WebView
-					useWebKit
 					source={{ uri }}
 					userAgent={userAgent}
 					onNavigationStateChange={this.onNavigationStateChange}

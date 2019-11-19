@@ -216,6 +216,8 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
+					textContentType='username'
+					autoCompleteType='username'
 				/>
 				<TextInput
 					inputRef={(e) => { this.passwordInput = e; }}
@@ -227,6 +229,8 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ password: value })}
 					testID='login-view-password'
 					containerStyle={sharedStyles.inputLastChild}
+					textContentType='password'
+					autoCompleteType='password'
 				/>
 				<Button
 					title={I18n.t('Login')}
