@@ -252,6 +252,7 @@ class RegisterView extends React.Component {
 							testID='register-view-submit'
 							disabled={!this.valid()}
 							loading={saving}
+							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>

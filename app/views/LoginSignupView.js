@@ -424,12 +424,14 @@ class LoginSignupView extends React.Component {
 						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
 						type='primary'
 						onPress={() => this.login()}
+						theme={theme}
 						testID='welcome-view-login'
 					/>
 					<Button
 						title={I18n.t('Create_account')}
 						type='secondary'
 						onPress={() => this.register()}
+						theme={theme}
 						testID='welcome-view-register'
 					/>
 				</SafeAreaView>

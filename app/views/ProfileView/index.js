@@ -467,6 +467,7 @@ class ProfileView extends React.Component {
 							disabled={!this.formIsChanged()}
 							testID='profile-view-submit'
 							loading={saving}
+							theme={theme}
 						/>
 						<Dialog.Container visible={showPasswordAlert}>
 							<Dialog.Title>

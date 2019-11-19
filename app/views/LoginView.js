@@ -198,6 +198,7 @@ class LoginView extends React.Component {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
+					theme={theme}
 				/>
 			</SafeAreaView>
 		);
@@ -240,6 +241,7 @@ class LoginView extends React.Component {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
+					theme={theme}
 				/>
 				{Accounts_PasswordReset && (
 					<Button
@@ -247,6 +249,7 @@ class LoginView extends React.Component {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
+						theme={theme}
 					/>
 				)}
 				<View style={styles.bottomContainer}>

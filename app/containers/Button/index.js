@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_BUTTON_PRIMARY } from '../../constants/colors';
+import { COLOR_BUTTON_PRIMARY, themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
@@ -55,6 +55,7 @@ export default class Button extends React.PureComponent {
 		disabled: PropTypes.bool,
 		backgroundColor: PropTypes.string,
 		loading: PropTypes.bool,
+		theme: PropTypes.string,
 		style: PropTypes.any
 	}
 
@@ -68,7 +69,7 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, backgroundColor, loading, style, ...otherProps
+			title, type, onPress, disabled, backgroundColor, loading, style, theme, ...otherProps
 		} = this.props;
 		return (
 			<RectButton
@@ -77,7 +78,7 @@ export default class Button extends React.PureComponent {
 				style={[
 					styles.container,
 					backgroundColor ? { backgroundColor } : styles[`background_${ type }`],
-					disabled && styles.disabled,
+					disabled && { backgroundColor: themes[theme].borderColor },
 					style
 				]}
 				{...otherProps}

@@ -112,6 +112,7 @@ class ForgotPasswordView extends React.Component {
 							testID='forgot-password-view-submit'
 							loading={isFetching}
 							disabled={invalidEmail}
+							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
