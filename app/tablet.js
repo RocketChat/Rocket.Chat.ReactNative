@@ -79,10 +79,10 @@ export const initTabletNav = (setState) => {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
-				const commands = defaultCommands;
+				let commands = defaultCommands;
 				let newState = { inside: true };
 				if (isSplited()) {
-					commands.push(keyCommands);
+					commands = [...commands, ...keyCommands];
 					newState = { ...newState, showModal: false };
 				}
 				KeyCommands.setKeyCommands(commands);
