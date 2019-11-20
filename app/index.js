@@ -464,11 +464,13 @@ export default class Root extends React.Component {
 
 	// eslint-disable-next-line no-unused-vars
 	componentDidUpdate(_, prevState) {
-		const { split } = this.state;
-		if (split !== prevState.split) {
-			// Reset app on split mode changes
-			Navigation.navigate('RoomsListView');
-			this.closeModals();
+		if (isTablet) {
+			const { split, inside } = this.state;
+			if (inside && split !== prevState.split) {
+				// Reset app on split mode changes
+				Navigation.navigate('RoomsListView');
+				this.closeModals();
+			}
 		}
 	}
 
