@@ -30,7 +30,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { HEADER_BACK, themes, COLOR_WHITE } from '../../constants/colors';
+import { themes, COLOR_WHITE } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
@@ -93,7 +93,7 @@ class RoomView extends React.Component {
 					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 					backTitleVisible={isIOS}
 					onPress={() => navigation.goBack()}
-					tintColor={HEADER_BACK}
+					tintColor={themes[screenProps.theme].headerTintColor}
 				/>
 			)
 		};

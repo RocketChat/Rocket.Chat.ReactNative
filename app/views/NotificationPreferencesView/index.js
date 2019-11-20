@@ -19,11 +19,42 @@ import log from '../../utils/log';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
-const SectionTitle = React.memo(({ title, theme }) => <Text style={[styles.sectionTitle, { backgroundColor: themes[theme].focusedBackground, color: themes[theme].titleText }]}>{title}</Text>);
+const SectionTitle = React.memo(({ title, theme }) => (
+	<Text
+		style={[
+			styles.sectionTitle,
+			{
+				backgroundColor: themes[theme].auxiliaryBackground,
+				color: themes[theme].titleText
+			}
+		]}
+	>
+		{title}
+	</Text>
+));
 
-const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparatorBorder, { backgroundColor: themes[theme].focusedBackground }]} />);
+const SectionSeparator = React.memo(({ theme }) => (
+	<View
+		style={[
+			styles.sectionSeparatorBorder,
+			{ backgroundColor: themes[theme].auxiliaryBackground }
+		]}
+	/>
+));
 
-const Info = React.memo(({ info, theme }) => <Text style={[styles.infoText, { color: themes[theme].bodyText, backgroundColor: themes[theme].focusedBackground }]}>{info}</Text>);
+const Info = React.memo(({ info, theme }) => (
+	<Text
+		style={[
+			styles.infoText,
+			{
+				color: themes[theme].bodyText,
+				backgroundColor: themes[theme].auxiliaryBackground
+			}
+		]}
+	>
+		{info}
+	</Text>
+));
 
 SectionTitle.propTypes = {
 	title: PropTypes.string,
@@ -204,11 +235,12 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='notification-preference-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={sharedStyles.container} testID='notification-preference-view' forceInset={{ vertical: 'never' }}>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].focusedBackground }]}
+					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 					testID='notification-preference-view-list'
 				>
@@ -308,7 +340,7 @@ class NotificationPreferencesView extends React.Component {
 					/>
 					<Separator theme={theme} />
 
-					<View style={[styles.marginBottom, { backgroundColor: themes[theme].focusedBackground }]} />
+					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
 				</ScrollView>
 			</SafeAreaView>
 		);

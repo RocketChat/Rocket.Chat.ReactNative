@@ -4,7 +4,6 @@ import { HeaderBackButton } from 'react-navigation';
 
 import HeaderComponent from '../../app/views/RoomView/Header/Header';
 import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';
-import { COLOR_SEPARATOR, HEADER_BACKGROUND } from '../../app/constants/colors';
 import StoriesSeparator from './StoriesSeparator';
 import { isIOS } from '../../app/utils/deviceInfo';
 
@@ -17,9 +16,7 @@ const styles = StyleSheet.create({
 		height: isIOS ? 44 : 56,
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
-		borderColor: COLOR_SEPARATOR,
-		marginVertical: 6,
-		backgroundColor: HEADER_BACKGROUND
+		marginVertical: 6
 	}
 });
 

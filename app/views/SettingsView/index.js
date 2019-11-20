@@ -26,12 +26,23 @@ import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
-const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparatorBorder, { borderColor: themes[theme].borderColor, backgroundColor: themes[theme].focusedBackground }]} />);
+const SectionSeparator = React.memo(({ theme }) => (
+	<View
+		style={[
+			styles.sectionSeparatorBorder,
+			{
+				borderColor: themes[theme].borderColor,
+				backgroundColor: themes[theme].auxiliaryBackground
+			}
+		]}
+	/>
+));
 SectionSeparator.propTypes = {
 	theme: PropTypes.string
 };
+
 const ItemInfo = React.memo(({ info, theme }) => (
-	<View style={[styles.infoContainer, { backgroundColor: themes[theme].focusedBackground }]}>
+	<View style={[styles.infoContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 		<Text style={[styles.infoText, { color: themes[theme].titleText }]}>{info}</Text>
 	</View>
 ));
@@ -107,7 +118,10 @@ class SettingsView extends React.Component {
 
 	onPressLicense = () => openLink(LICENSE_LINK)
 
-	renderDisclosure = () => <DisclosureImage />
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureImage theme={theme} />;
+	}
 
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
@@ -134,11 +148,18 @@ class SettingsView extends React.Component {
 	render() {
 		const { server, theme } = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='settings-view'>
+			<SafeAreaView
+				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				testID='settings-view'
+			>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[sharedStyles.listContentContainer, styles.listWithoutBorderBottom, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
+					contentContainerStyle={[
+						sharedStyles.listContentContainer,
+						styles.listWithoutBorderBottom,
+						{ borderColor: themes[theme].borderColor }
+					]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>

@@ -25,7 +25,11 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
-const Separator = React.memo(() => <View style={styles.separator} />);
+const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
+Separator.propTypes = {
+	theme: PropTypes.string
+};
+
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
@@ -254,7 +258,10 @@ class ThreadMessagesView extends React.Component {
 		});
 	}, 1000, true)
 
-	renderSeparator = () => <Separator />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <Separator theme={theme} />;
+	}
 
 	renderEmpty = () => {
 		const { theme } = this.props;

@@ -117,7 +117,7 @@ class AutoTranslateView extends React.Component {
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <CustomIcon name='check' size={20} style={[sharedStyles.colorPrimary, { color: themes[theme].tintColor }]} />;
+		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
 	}
 
 	renderSwitch = () => {
@@ -153,7 +153,7 @@ class AutoTranslateView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
 				forceInset={{ vertical: 'never' }}
 				testID='auto-translate-view'
 			>

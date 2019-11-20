@@ -25,7 +25,10 @@ import { withTheme } from '../../theme';
 
 const keyExtractor = item => item.id;
 
-const Separator = React.memo(() => <View style={styles.separator} />);
+const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
+Separator.propTypes = {
+	theme: PropTypes.string
+};
 
 const permissions = [
 	'view-statistics',
@@ -220,7 +223,7 @@ class Sidebar extends Component {
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
 				) : null}
-				<Separator key='separator-logout' />
+				<Separator theme={theme} key='separator-logout' />
 				<SidebarItem
 					text={I18n.t('Logout')}
 					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
@@ -282,7 +285,7 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</RectButton>
 
-					<Separator key='separator-header' />
+					<Separator theme={theme} key='separator-header' />
 
 					{!showStatus ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}

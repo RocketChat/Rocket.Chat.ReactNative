@@ -420,7 +420,7 @@ class RoomActionsView extends React.Component {
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,
-				<DisclosureIndicator key='disclosure-indicator' />
+				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 			], item)
 		);
 	}
@@ -453,7 +453,7 @@ class RoomActionsView extends React.Component {
 			<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />,
 			<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>,
 			item.description ? <Text key='description' style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null,
-			<DisclosureIndicator key='disclosure-indicator' />
+			<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 		];
 		return this.renderTouchableItem(subview, item);
 	}

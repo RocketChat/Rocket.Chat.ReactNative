@@ -81,7 +81,7 @@ class LegalView extends React.Component {
 				testID={testID}
 			>
 				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
-				<DisclosureIndicator />
+				<DisclosureIndicator theme={theme} />
 			</RectButton>
 		);
 	}

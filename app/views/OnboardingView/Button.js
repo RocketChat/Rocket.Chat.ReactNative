@@ -53,7 +53,7 @@ export default class Button extends React.PureComponent {
 						<Text style={[styles.buttonTitle, { color: isPrimary ? COLOR_WHITE : themes[theme].tintColor }, activeStyle]}>{title}</Text>
 						{subtitle ? <Text style={[styles.buttonSubtitle, activeStyle, { color: themes[theme].auxiliaryText }]}>{subtitle}</Text> : null}
 					</View>
-					{type === 'secondary' ? <DisclosureIndicator /> : null}
+					{type === 'secondary' ? <DisclosureIndicator theme={theme} /> : null}
 				</View>
 			</TouchableWithoutFeedback>
 		);

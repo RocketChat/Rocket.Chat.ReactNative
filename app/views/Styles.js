@@ -1,13 +1,8 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
-} from '../constants/colors';
+import { COLOR_DANGER, COLOR_BUTTON_PRIMARY } from '../constants/colors';
 
 export default StyleSheet.create({
-	root: {
-		flex: 1
-	},
 	container: {
 		flex: 1
 	},
@@ -35,7 +30,6 @@ export default StyleSheet.create({
 	},
 	button_inverted: {
 		textAlign: 'center',
-		// color: '#414852',
 		fontWeight: '700',
 		flexGrow: 1
 	},
@@ -76,36 +70,23 @@ export default StyleSheet.create({
 	loginTitle: {
 		fontSize: 20,
 		marginVertical: 15,
-		color: COLOR_TITLE,
 		lineHeight: 28
 	},
 	loginSubtitle: {
 		fontSize: 16,
-		color: COLOR_TITLE,
 		lineHeight: 20,
 		marginBottom: 15
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
+		height: StyleSheet.hairlineWidth
 	},
 	separatorTop: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	separatorBottom: {
-		borderColor: COLOR_SEPARATOR,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separatorVertical: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
@@ -165,26 +146,16 @@ export default StyleSheet.create({
 			}
 		})
 	},
-	colorPrimary: {
-		color: 'purple'
-	},
 	inputLastChild: {
 		marginBottom: 15
 	},
-	listSafeArea: {
-		flex: 1,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
-	},
 	listContentContainer: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_WHITE,
 		marginVertical: 10
 	},
 	notchLandscapeContainer: {
 		marginTop: -34,
-		paddingHorizontal: 30,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		paddingHorizontal: 30
 	}
 });
