@@ -469,7 +469,7 @@ export default class Root extends React.Component {
 			if (inside && split !== prevState.split) {
 				// Reset app on split mode changes
 				Navigation.navigate('RoomsListView');
-				this.closeModals();
+				this.closeModal();
 			}
 		}
 	}
@@ -520,7 +520,7 @@ export default class Root extends React.Component {
 		setWidth(width);
 	}
 
-	closeModals = () => this.setState({ showModal: false });
+	closeModal = () => this.setState({ showModal: false });
 
 	render() {
 		const { split } = this.state;
@@ -542,8 +542,8 @@ export default class Root extends React.Component {
 					tablet={split}
 					inside={inside}
 					showModal={showModal}
+					closeModal={this.closeModal}
 					onLayout={this.onLayout}
-					close={this.closeModals}
 				>
 					{content}
 				</Tablet>

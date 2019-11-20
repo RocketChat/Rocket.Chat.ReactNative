@@ -141,26 +141,28 @@ export const initTabletNav = (setState) => {
 	};
 };
 
+const Split = ({
+	split, tablet, showModal, closeModal, setModalRef
+}) => {
+	if (split) {
+		return (
+			<>
+				<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
+					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet }} />
+				</View>
+				<ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} screenProps={{ split: tablet }} />
+			</>
+		);
+	}
+	return null;
+};
+
 const Tablet = ({
-	children, tablet, inside, showModal, onLayout, close
+	children, tablet, inside, showModal, closeModal, onLayout
 }) => {
 	const setModalRef = (ref) => {
 		modalRef = ref;
 		ModalNavigation.setTopLevelNavigator(modalRef);
-	};
-
-	const renderSplit = (split) => {
-		if (split) {
-			return (
-				<>
-					<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-						<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet }} />
-					</View>
-					<ModalContainer showModal={showModal} close={close} ref={setModalRef} screenProps={{ split: tablet }} />
-				</>
-			);
-		}
-		return null;
 	};
 
 	const split = tablet && inside;
@@ -169,10 +171,18 @@ const Tablet = ({
 			<View style={[sharedStyles.container, split && { maxWidth: MAX_SIDEBAR_WIDTH }]}>
 				{children}
 			</View>
-			{renderSplit(split)}
+			<Split split={split} tablet={tablet} showModal={showModal} closeModal={closeModal} setModalRef={setModalRef} />
 			<NotificationContainer ref={ref => notificationRef = ref} />
 		</View>
 	);
+};
+
+Split.propTypes = {
+	split: PropTypes.bool,
+	tablet: PropTypes.bool,
+	showModal: PropTypes.bool,
+	closeModal: PropTypes.func,
+	setModalRef: PropTypes.func
 };
 
 Tablet.propTypes = {
@@ -180,8 +190,8 @@ Tablet.propTypes = {
 	tablet: PropTypes.bool,
 	inside: PropTypes.bool,
 	showModal: PropTypes.bool,
-	onLayout: PropTypes.func,
-	close: PropTypes.func
+	closeModal: PropTypes.func,
+	onLayout: PropTypes.func
 };
 
 export default Tablet;
