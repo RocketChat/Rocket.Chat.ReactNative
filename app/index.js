@@ -1,9 +1,9 @@
 import React from 'react';
+import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
-import { View, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
@@ -316,8 +316,14 @@ const DirectoryStack = createStackNavigator({
 });
 
 const SidebarStack = createStackNavigator({
-	SidebarView: {
-		getScreen: () => require('./views/SidebarView').default
+	SettingsView: {
+		getScreen: () => require('./views/SettingsView').default
+	},
+	ProfileView: {
+		getScreen: () => require('./views/ProfileView').default
+	},
+	AdminPanelView: {
+		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader
@@ -364,9 +370,7 @@ const ModalSwitch = createSwitchNavigator({
 	DirectoryStack,
 	SidebarStack,
 	RoomActionsStack,
-	ProfileStack,
 	SettingsStack,
-	AdminPanelStack,
 	AuthLoading: () => null
 },
 {
@@ -379,21 +383,40 @@ class CustomModalStack extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		showModal: PropTypes.bool,
-		close: PropTypes.func,
+		closeModal: PropTypes.func,
 		screenProps: PropTypes.object
+	}
+
+	componentDidMount() {
+		this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.closeModal);
+	}
+
+	componentWillUnmount() {
+		this.backHandler.remove();
+	}
+
+	closeModal = () => {
+		const { closeModal, navigation } = this.props;
+		const { state } = navigation;
+		if (state && state.routes[state.index] && state.routes[state.index].index === 0) {
+			closeModal();
+			return true;
+		}
+		return false;
 	}
 
 	render() {
 		const {
-			navigation, showModal, close, screenProps
+			navigation, showModal, closeModal, screenProps
 		} = this.props;
 		return (
 			<Modal
 				useNativeDriver
 				coverScreen={false}
 				isVisible={showModal}
-				onBackdropPress={close}
+				onBackdropPress={closeModal}
 				hideModalContentWhileAnimating
+				avoidKeyboard
 			>
 				<View style={sharedStyles.modal}>
 					<ModalSwitch navigation={navigation} screenProps={screenProps} />
@@ -443,7 +466,8 @@ export default class Root extends React.Component {
 		this.initCrashReport();
 		this.state = {
 			split: false,
-			inside: false
+			inside: false,
+			showModal: false
 		};
 		if (isTablet) {
 			this.initTablet();
