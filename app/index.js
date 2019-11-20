@@ -445,6 +445,9 @@ export default class Root extends React.Component {
 			split: false,
 			inside: false
 		};
+		if (isTablet) {
+			this.initTablet();
+		}
 	}
 
 	componentDidMount() {
@@ -456,10 +459,6 @@ export default class Root extends React.Component {
 				}
 			});
 		}, 5000);
-
-		if (isTablet) {
-			this.initTablet();
-		}
 	}
 
 	// eslint-disable-next-line no-unused-vars
