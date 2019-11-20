@@ -1,17 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
-import { COLOR_BACKGROUND_CONTAINER, COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	scroll: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: COLOR_WHITE,
 		padding: 10
 	},
 	item: {
@@ -62,7 +59,6 @@ export default StyleSheet.create({
 	},
 	roleBadge: {
 		padding: 6,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderRadius: 2,
 		marginRight: 6,
 		marginBottom: 6

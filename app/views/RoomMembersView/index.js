@@ -232,7 +232,10 @@ class RoomMembersView extends React.Component {
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;

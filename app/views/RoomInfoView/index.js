@@ -158,9 +158,10 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRole = (description) => {
+		const { theme } = this.props;
 		if (description) {
 			return (
-				<View style={styles.roleBadge} key={description}>
+				<View style={[styles.roleBadge, { backgroundColor: themes[theme].focusedBackground }]} key={description}>
 					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
@@ -290,7 +291,11 @@ class RoomInfoView extends React.Component {
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
-				<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='room-info-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView
+					style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
+					forceInset={{ vertical: 'never' }}
+					testID='room-info-view'
+				>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR, COLOR_BORDER, COLOR_DANGER } from '../../constants/colors';
+import { COLOR_DANGER } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -8,8 +8,7 @@ export default StyleSheet.create({
 		paddingBottom: 30
 	},
 	container: {
-		flex: 1,
-		backgroundColor: '#F6F7F9'
+		flex: 1
 	},
 	sectionItem: {
 		paddingVertical: 16,
@@ -33,15 +32,12 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
+		height: StyleSheet.hairlineWidth
 	},
 	sectionSeparator: {
-		height: 10,
-		backgroundColor: '#F6F7F9'
+		height: 10
 	},
 	sectionSeparatorBorder: {
-		borderColor: COLOR_BORDER,
 		borderTopWidth: 1
 	},
 	textColorDanger: {

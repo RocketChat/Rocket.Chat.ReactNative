@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { COLOR_BLACK } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -38,7 +39,8 @@ export default StyleSheet.create({
 		top: 0
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill
+		...StyleSheet.absoluteFill,
+		backgroundColor: COLOR_BLACK
 	},
 	dropdownContainerHeader: {
 		height: 47,
