@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 const NOTCH_DEVICES = ['iPhone X', 'iPhone XS', 'iPhone XS Max', 'iPhone XR'];
+export const MIN_WIDTH_SPLIT_LAYOUT = 700;
 
 export const isNotch = NOTCH_DEVICES.includes(DeviceInfo.getModel());
 export const isIOS = Platform.OS === 'ios';
@@ -18,4 +19,4 @@ export const isTablet = DeviceInfo.isTablet();
 // https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1300#discussion_r341405245
 let _width = null;
 export const setWidth = width => _width = width;
-export const isSplited = () => isTablet && _width > 700;
+export const isSplited = () => isTablet && _width > MIN_WIDTH_SPLIT_LAYOUT;

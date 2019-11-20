@@ -22,7 +22,7 @@ import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import RocketChat from './lib/rocketchat';
 import {
-	isTablet, isSplited, isIOS, setWidth
+	isTablet, isSplited, isIOS, setWidth, MIN_WIDTH_SPLIT_LAYOUT
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -514,7 +514,7 @@ export default class Root extends React.Component {
 	onLayout = ({ nativeEvent: { layout: { width } } }) => (isTablet ? this.setSplit(width) : null);
 
 	setSplit = (width) => {
-		this.setState({ split: width > 700 });
+		this.setState({ split: width > MIN_WIDTH_SPLIT_LAYOUT });
 		setWidth(width);
 	}
 
