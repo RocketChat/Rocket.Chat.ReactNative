@@ -134,6 +134,7 @@ class RoomView extends React.Component {
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
+		screenProps: PropTypes.object,
 		useMarkdown: PropTypes.bool,
 		replyBroadcast: PropTypes.func
 	};
@@ -653,11 +654,17 @@ class RoomView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
+		const { room } = this.state;
+		const { navigation, user, screenProps } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		navigation.navigate('RoomInfoView', navParam);
+		if (screenProps && screenProps.split) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+			ModalNavigation.navigate('RoomInfoView', navParam);
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
 	}
 
 	callJitsi = () => {
