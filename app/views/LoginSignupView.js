@@ -415,7 +415,15 @@ class LoginSignupView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container, { backgroundColor: themes[theme].backgroundColor }]} {...scrollPersistTaps}>
+			<ScrollView
+				style={[
+					sharedStyles.containerScrollView,
+					sharedStyles.container,
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				{...scrollPersistTaps}
+			>
 				<StatusBar />
 				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}

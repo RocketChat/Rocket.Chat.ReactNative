@@ -85,6 +85,7 @@ const Message = React.memo((props) => {
 				<ReadReceipt
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					unread={props.unread}
+					theme={props.theme}
 				/>
 			</View>
 		</View>
@@ -135,7 +136,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	onPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
-	unread: PropTypes.bool
+	unread: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 MessageInner.propTypes = {

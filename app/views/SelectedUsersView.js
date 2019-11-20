@@ -17,23 +17,18 @@ import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_WHITE, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
-		flex: 1,
-		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
-	},
-	header: {
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	separator: {
 		marginLeft: 60
@@ -193,7 +188,7 @@ class SelectedUsersView extends React.Component {
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.header, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
 				{this.renderSelected()}
 			</View>
@@ -291,7 +286,11 @@ class SelectedUsersView extends React.Component {
 	render = () => {
 		const { loading, theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]} testID='select-users-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]}
+				forceInset={{ vertical: 'never' }}
+				testID='select-users-view'
+			>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />

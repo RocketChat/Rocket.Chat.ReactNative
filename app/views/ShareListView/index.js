@@ -384,6 +384,7 @@ class ShareListView extends React.Component {
 				data={searching ? searchResults : chats}
 				keyExtractor={keyExtractor}
 				style={[styles.flatlist, { backgroundColor: themes[theme].focusedBackground }]}
+				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={this.renderSeparator}

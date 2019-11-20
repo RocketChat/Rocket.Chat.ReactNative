@@ -19,7 +19,6 @@ export default StyleSheet.create({
 	},
 	infoText: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	}
 });

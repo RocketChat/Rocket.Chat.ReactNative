@@ -33,7 +33,6 @@ export default StyleSheet.create({
 	},
 	roomTitle: {
 		fontSize: 18,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	roomTitleRow: {
@@ -48,12 +47,10 @@ export default StyleSheet.create({
 	itemLabel: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	itemContent: {
 		fontSize: 14,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	itemContent__empty: {
@@ -72,7 +69,6 @@ export default StyleSheet.create({
 	},
 	role: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	}
 });

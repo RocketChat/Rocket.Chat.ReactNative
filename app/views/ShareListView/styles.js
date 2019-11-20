@@ -15,7 +15,6 @@ export default StyleSheet.create({
 	},
 	content: {
 		flex: 1,
-		backgroundColor: isIOS ? '#fff' : '#E1E5E8',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},

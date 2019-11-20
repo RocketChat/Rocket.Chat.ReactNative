@@ -16,7 +16,6 @@ export default StyleSheet.create({
 	},
 	noDataFound: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textRegular
 	}
 });

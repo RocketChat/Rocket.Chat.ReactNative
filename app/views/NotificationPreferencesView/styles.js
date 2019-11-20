@@ -18,7 +18,6 @@ export default StyleSheet.create({
 	},
 	infoText: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal,
 		fontSize: 13,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
@@ -29,8 +28,7 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		paddingVertical: 10,
-		fontSize: 14,
-		...sharedStyles.textColorNormal
+		fontSize: 14
 	},
 	viewContainer: {
 		justifyContent: 'center'

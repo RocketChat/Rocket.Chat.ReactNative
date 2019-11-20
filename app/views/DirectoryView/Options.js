@@ -103,7 +103,7 @@ export default class DirectoryOptions extends PureComponent {
 						activeOpacity={1}
 						underlayColor={themes[theme].bannerBackground}
 					>
-						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer]}>
+						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: themes[theme].separatorColor }]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].bodyText }]} size={22} name='arrow-down' />
 						</View>
@@ -113,7 +113,7 @@ export default class DirectoryOptions extends PureComponent {
 					{isFederationEnabled
 						? (
 							<>
-								<View style={styles.dropdownSeparator} />
+								<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 								<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 									<View style={styles.globalUsersTextContainer}>
 										<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>

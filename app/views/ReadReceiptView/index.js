@@ -14,6 +14,7 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { themes } from '../../constants/colors';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -76,19 +77,22 @@ class ReadReceiptView extends React.Component {
 		}
 	}
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID='read-receipt-view'>
-			<Text>{I18n.t('No_Read_Receipts')}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]} testID='read-receipt-view'>
+				<Text style={{ color: themes[theme].titleText }}>{I18n.t('No_Read_Receipts')}</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => {
 		const {
-			Message_TimeFormat, userId, baseUrl, token
+			Message_TimeFormat, userId, baseUrl, token, theme
 		} = this.props;
 		const time = moment(item.ts).format(Message_TimeFormat);
 		return (
-			<View style={styles.itemContainer}>
+			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Avatar
 					text={item.user.username}
 					size={40}
@@ -98,14 +102,14 @@ class ReadReceiptView extends React.Component {
 				/>
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={styles.name}>
+						<Text style={[styles.name, { color: themes[theme].titleText }]}>
 							{item.user.name}
 						</Text>
-						<Text>
+						<Text style={{ color: themes[theme].titleText }}>
 							{time}
 						</Text>
 					</View>
-					<Text>
+					<Text style={{ color: themes[theme].titleText }}>
 						{`@${ item.user.username }`}
 					</Text>
 				</View>
@@ -113,7 +117,10 @@ class ReadReceiptView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	render() {
 		const { receipts, loading } = this.state;
@@ -124,7 +131,11 @@ class ReadReceiptView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.container} testID='read-receipt-view' forceInset={{ bottom: 'always' }}>
+			<SafeAreaView
+				style={[styles.container, { backgroundColor: themes[theme].chatComponentBackground }]}
+				forceInset={{ bottom: 'always' }}
+				testID='read-receipt-view'
+			>
 				<StatusBar />
 				<View>
 					{loading
@@ -134,7 +145,7 @@ class ReadReceiptView extends React.Component {
 								data={receipts}
 								renderItem={this.renderItem}
 								ItemSeparatorComponent={this.renderSeparator}
-								style={styles.list}
+								style={[styles.list, { backgroundColor: themes[theme].chatComponentBackground }]}
 								keyExtractor={item => item._id}
 							/>
 						)}

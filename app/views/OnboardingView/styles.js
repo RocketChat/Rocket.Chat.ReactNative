@@ -2,13 +2,11 @@ import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
 import sharedStyles from '../Styles';
-import { COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		backgroundColor: COLOR_WHITE
+		flexDirection: 'column'
 	},
 	onboarding: {
 		alignSelf: 'center',
@@ -21,7 +19,6 @@ export default StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal,
 		letterSpacing: 0,
 		fontSize: moderateScale(24),
 		alignSelf: 'center',
@@ -57,7 +54,6 @@ export default StyleSheet.create({
 	},
 	buttonSubtitle: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
 		fontSize: 15
 	},
 	buttonIconContainer: {

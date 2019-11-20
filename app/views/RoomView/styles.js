@@ -23,7 +23,7 @@ export default StyleSheet.create({
 	reactionPickerContainer: {
 		// width: width - 20,
 		// height: width - 20,
-		backgroundColor: '#F7F7F7',
+		// backgroundColor: '#F7F7F7',
 		borderRadius: 4,
 		flexDirection: 'column'
 	},

@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 	},
 	dontHaveAccount: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
 		fontSize: 13
 	},
 	createAccount: {

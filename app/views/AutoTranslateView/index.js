@@ -13,25 +13,20 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
-import {
-	SWITCH_TRACK_COLOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_SEPARATOR, themes
-} from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_WHITE,
 		marginTop: 10,
 		paddingBottom: 30
 	},
 	sectionSeparator: {
 		...sharedStyles.separatorVertical,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 10
 	}
 });
@@ -157,11 +152,21 @@ class AutoTranslateView extends React.Component {
 		const { languages } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]} testID='auto-translate-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[sharedStyles.listSafeArea, { backgroundColor: themes[theme].focusedBackground }]}
+				forceInset={{ vertical: 'never' }}
+				testID='auto-translate-view'
+			>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[styles.contentContainerStyle, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
+					contentContainerStyle={[
+						styles.contentContainerStyle,
+						{
+							backgroundColor: themes[theme].focusedBackground,
+							borderColor: themes[theme].borderColor
+						}
+					]}
 					testID='auto-translate-view-list'
 				>
 					<ListItem

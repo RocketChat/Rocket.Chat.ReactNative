@@ -16,19 +16,17 @@ import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
-		flex: 1,
-		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
+		flex: 1
 	},
 	separator: {
 		marginLeft: 60
@@ -42,12 +40,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	createChannelIcon: {
-		color: COLOR_PRIMARY,
 		marginLeft: 18,
 		marginRight: 15
 	},
 	createChannelText: {
-		color: COLOR_PRIMARY,
 		fontSize: 17,
 		...sharedStyles.textRegular
 	}
@@ -213,7 +209,11 @@ class NewMessageView extends React.Component {
 	render = () => {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]} testID='new-message-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]}
+				forceInset={{ vertical: 'never' }}
+				testID='new-message-view'
+			>
 				<StatusBar />
 				{this.renderList()}
 			</SafeAreaView>

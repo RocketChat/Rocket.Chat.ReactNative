@@ -165,12 +165,6 @@ export default StyleSheet.create({
 			}
 		})
 	},
-	textColorNormal: {
-		color: 'yellow'
-	},
-	textColorDescription: {
-		color: 'red'
-	},
 	colorPrimary: {
 		color: 'purple'
 	},

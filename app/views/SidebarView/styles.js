@@ -26,8 +26,7 @@ export default StyleSheet.create({
 	itemText: {
 		marginVertical: 16,
 		fontSize: 14,
-		...sharedStyles.textSemibold,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textSemibold
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -50,12 +49,10 @@ export default StyleSheet.create({
 	},
 	username: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	headerIcon: {
-		paddingHorizontal: 10,
-		...sharedStyles.textColorNormal
+		paddingHorizontal: 10
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -65,14 +62,12 @@ export default StyleSheet.create({
 	},
 	currentServerText: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	version: {
 		marginHorizontal: 10,
 		marginBottom: 10,
 		fontSize: 13,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	inverted: {

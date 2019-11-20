@@ -28,12 +28,10 @@ export default StyleSheet.create({
 	},
 	serverName: {
 		fontSize: 18,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
 		fontSize: 15,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	}
 });

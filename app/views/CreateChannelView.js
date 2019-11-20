@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 18,
 		fontSize: 17,
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal,
 		backgroundColor: COLOR_WHITE
 	},
 	swithContainer: {
@@ -54,8 +53,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 17,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textMedium
 	},
 	invitedHeader: {
 		marginTop: 18,
@@ -67,13 +65,11 @@ const styles = StyleSheet.create({
 	invitedTitle: {
 		fontSize: 18,
 		...sharedStyles.textSemibold,
-		...sharedStyles.textColorNormal,
 		lineHeight: 41
 	},
 	invitedCount: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
 	}
 });
 

@@ -90,7 +90,6 @@ export default StyleSheet.create({
 		height: 100
 	},
 	send: {
-		...sharedStyles.textColorHeaderBack,
 		...sharedStyles.textSemibold,
 		fontSize: 16
 	}

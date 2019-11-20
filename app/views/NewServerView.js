@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		// ...sharedStyles.textColorNormal,
 		fontSize: moderateScale(22),
 		letterSpacing: 0,
 		alignSelf: 'center'
@@ -58,7 +57,6 @@ const styles = StyleSheet.create({
 	chooseCertificateTitle: {
 		fontSize: 15,
 		...sharedStyles.textRegular
-		// ...sharedStyles.textColorDescription
 	},
 	chooseCertificate: {
 		fontSize: 15,

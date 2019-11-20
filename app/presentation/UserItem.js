@@ -26,13 +26,11 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		fontSize: 17,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textMedium
 	},
 	username: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
 	},
 	icon: {
 		marginHorizontal: 15,
