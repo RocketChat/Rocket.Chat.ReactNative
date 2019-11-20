@@ -61,7 +61,8 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState'
+	'appState',
+	'theme'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,

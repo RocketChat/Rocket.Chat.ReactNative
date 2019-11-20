@@ -100,6 +100,11 @@ class SettingsView extends React.Component {
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
+	changeTheme = () => {
+		const { navigation } = this.props;
+		navigation.navigate('ThemeView');
+	}
+
 	onPressLicense = () => openLink(LICENSE_LINK)
 
 	renderDisclosure = () => <DisclosureImage />
@@ -167,8 +172,9 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
-						disabled
+						onPress={this.changeTheme}
 						testID='settings-view-theme'
+						right={this.renderDisclosure}
 						theme={theme}
 					/>
 					<Separator theme={theme} />

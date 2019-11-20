@@ -171,6 +171,9 @@ const SettingsStack = createStackNavigator({
 	},
 	LanguageView: {
 		getScreen: () => require('./views/LanguageView').default
+	},
+	ThemeView: {
+		getScreen: () => require('./views/ThemeView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader

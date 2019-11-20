@@ -19,7 +19,8 @@ const StatusBar = React.memo(({ light, theme }) => {
 });
 
 StatusBar.propTypes = {
-	light: PropTypes.bool
+	light: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 StatusBar.defaultProps = {

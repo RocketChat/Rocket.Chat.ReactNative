@@ -18,7 +18,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
-import { COLOR_TEXT, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
@@ -73,7 +73,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey
+			Site_Name, user, baseUrl, activeItemKey, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -88,6 +88,9 @@ class Sidebar extends Component {
 			return true;
 		}
 		if (nextProps.activeItemKey !== activeItemKey) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.user && user) {
