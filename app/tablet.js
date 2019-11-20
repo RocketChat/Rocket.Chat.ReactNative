@@ -79,14 +79,16 @@ export const initTabletNav = (setState) => {
 			const { routeName, params } = action;
 
 			if (routeName === 'InsideStack') {
-				KeyCommands.setKeyCommands(defaultCommands);
-				setState({ inside: true });
+				const commands = defaultCommands;
+				let newState = { inside: true };
+				if (isSplited()) {
+					commands.push(keyCommands);
+					newState = { ...newState, showModal: false };
+				}
+				KeyCommands.setKeyCommands(commands);
+				setState(newState);
 			}
 			if (isSplited()) {
-				if (routeName === 'InsideStack') {
-					KeyCommands.setKeyCommands(keyCommands);
-					setState({ showModal: false });
-				}
 				if (routeName === 'ReadReceiptsView') {
 					roomRef.dispatch(NavigationActions.navigate({ routeName, params }));
 					return null;
