@@ -5,13 +5,14 @@ export const defaultHeader = {
 	headerBackTitle: null
 };
 
-export const themedHeader = (theme) => {
-	return {
-		headerStyle: { backgroundColor: themes[theme].headerBackground },
-		headerTintColor: themes[theme].headerTintColor,
-		headerTitleStyle: { color: themes[theme].headerTitleColor }
-	};
-};
+export const themedHeader = theme => ({
+	headerStyle: {
+		backgroundColor: themes[theme].headerBackground,
+		borderBottomColor: themes[theme].borderColor
+	},
+	headerTintColor: themes[theme].headerTintColor,
+	headerTitleStyle: { color: themes[theme].headerTitleColor }
+});
 
 // gets the current screen from navigation state
 export const getActiveRouteName = (navigationState) => {

@@ -431,7 +431,7 @@ class RoomActionsView extends React.Component {
 			<RectButton
 				onPress={() => this.onPressTouchable(item)}
 				underlayColor={themes[theme].bannerBackground}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: themes[theme].focusedBackground }}
 				activeOpacity={1}
 				accessibilityLabel={item.name}
 				accessibilityTraits='button'

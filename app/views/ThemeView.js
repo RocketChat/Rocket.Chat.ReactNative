@@ -47,25 +47,28 @@ class LanguageView extends React.Component {
 		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
 	}
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item, index }) => {
 		const { setTheme, theme } = this.props;
 		const { label, value } = item;
 		const isSelected = theme === value;
 		return (
-			<ListItem
-				title={label}
-				onPress={() => setTheme(value)}
-				testID={`theme-view-${ value }`}
-				right={isSelected ? this.renderIcon : null}
-				theme={theme}
-			/>
+			<>
+				{index === 0 ? this.renderSeparator() : null}
+				<ListItem
+					title={label}
+					onPress={() => setTheme(value)}
+					testID={`theme-view-${ value }`}
+					right={isSelected ? this.renderIcon : null}
+					theme={theme}
+				/>
+			</>
 		);
 	}
 
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ paddingTop: 20, paddingHorizontal: 16 }}>
+			<View style={{ paddingVertical: 10, paddingHorizontal: 16 }}>
 				<Text style={{ color: themes[theme].auxiliaryText }}>{I18n.t('ALL_THEMES')}</Text>
 			</View>
 		);
@@ -80,15 +83,18 @@ class LanguageView extends React.Component {
 				testID='language-view'
 			>
 				<StatusBar />
-				{this.renderHeader()}
 				<FlatList
 					data={THEMES}
 					keyExtractor={item => item.value}
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
-						{ borderColor: themes[theme].separatorColor }
+						{
+							borderColor: themes[theme].borderColor,
+							borderTopWidth: 0
+						}
 					]}
 					renderItem={this.renderItem}
+					ListHeaderComponent={this.renderHeader}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
 			</SafeAreaView>

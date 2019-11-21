@@ -35,6 +35,7 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth
 	},
 	sectionSeparator: {
+		borderBottomWidth: 1,
 		height: 10
 	},
 	sectionSeparatorBorder: {

@@ -53,7 +53,7 @@ const Button = React.memo(({
 	<RectButton
 		onPress={onPress}
 		underlayColor={themes[props.theme].bannerBackground}
-		style={{ backgroundColor: themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: themes[props.theme].focusedBackground }}
 		activeOpacity={1}
 		enabled={!props.disabled}
 	>
@@ -66,7 +66,7 @@ const Item = React.memo(({ ...props }) => {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: themes[props.theme].backgroundColor }}>
+		<View style={{ backgroundColor: themes[props.theme].focusedBackground }}>
 			<Content {...props} />
 		</View>
 	);

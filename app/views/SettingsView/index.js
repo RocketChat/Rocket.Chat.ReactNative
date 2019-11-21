@@ -31,7 +31,7 @@ const SectionSeparator = React.memo(({ theme }) => (
 		style={[
 			styles.sectionSeparatorBorder,
 			{
-				borderColor: themes[theme].separatorColor,
+				borderColor: themes[theme].borderColor,
 				backgroundColor: themes[theme].auxiliaryBackground
 			}
 		]}
@@ -161,7 +161,7 @@ class SettingsView extends React.Component {
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
 						styles.listWithoutBorderBottom,
-						{ borderColor: themes[theme].separatorColor }
+						{ borderColor: themes[theme].borderColor }
 					]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
