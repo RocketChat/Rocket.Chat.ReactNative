@@ -149,7 +149,7 @@ class NewMessageView extends React.Component {
 					activeOpacity={1}
 					testID='new-message-view-create-channel'
 				>
-					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer]}>
+					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
 					</View>
@@ -160,16 +160,16 @@ class NewMessageView extends React.Component {
 
 	renderSeparator = () => {
 		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].borderColor }]} />;
+		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
 	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
-		let style = {};
+		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
-			style = { ...sharedStyles.separatorTop };
+			style = { ...style, ...sharedStyles.separatorTop };
 		}
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };

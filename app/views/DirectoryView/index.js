@@ -161,7 +161,7 @@ class DirectoryView extends React.Component {
 					style={styles.dropdownItemButton}
 					testID='federation-view-create-channel'
 				>
-					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer]}>
+					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
 						<CustomIcon name='arrow-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
