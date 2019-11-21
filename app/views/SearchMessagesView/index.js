@@ -99,7 +99,7 @@ class SearchMessagesView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		return (
 			<Message
 				baseUrl={baseUrl}
@@ -113,6 +113,7 @@ class SearchMessagesView extends React.Component {
 				isHeader
 				onOpenFileModal={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
+				theme={theme}
 			/>
 		);
 	}

@@ -5,7 +5,6 @@ import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import styles from './styles';
-import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
@@ -56,7 +55,7 @@ const Message = React.memo((props) => {
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[

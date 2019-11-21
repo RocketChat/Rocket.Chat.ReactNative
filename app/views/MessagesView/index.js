@@ -259,7 +259,13 @@ class MessagesView extends React.Component {
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].focusedBackground }]} testID={this.content.testID}>
+			<View
+				style={[
+					styles.listEmptyContainer,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID={this.content.testID}
+			>
 				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
 			</View>
 		);
@@ -278,12 +284,19 @@ class MessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={[styles.list, { backgroundColor: themes[theme].focusedBackground }]} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[
+					styles.list,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				forceInset={{ vertical: 'never' }}
+				testID={this.content.testID}
+			>
 				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].focusedBackground }]}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}

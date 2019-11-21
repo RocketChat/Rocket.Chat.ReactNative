@@ -3,7 +3,6 @@ import { View, Text, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
-import sharedStyles from '../Styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 
 export default class SwitchContainer extends React.PureComponent {
@@ -26,9 +25,9 @@ export default class SwitchContainer extends React.PureComponent {
 		return (
 			[
 				<View key='switch-container' style={styles.switchContainer}>
-					<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
+					<View style={styles.switchLabelContainer}>
 						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{leftLabelPrimary}</Text>
-						<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight, { color: themes[theme].titleText }]}>{leftLabelSecondary}</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{leftLabelSecondary}</Text>
 					</View>
 					<Switch
 						style={styles.switch}

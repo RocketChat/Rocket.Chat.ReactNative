@@ -52,7 +52,8 @@ class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLandscape: false
+			isLandscape: false,
+			theme: 'dark'
 		};
 		this.init();
 	}
@@ -78,22 +79,20 @@ class Root extends React.Component {
 	}
 
 	render() {
-		const { isLandscape } = this.state;
+		const { isLandscape, theme } = this.state;
 		return (
 			<View
 				style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
 				onLayout={this.handleLayout}
 			>
 				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{ theme: 'dark', setTheme: theme => console.log(theme) }}
-					>
+					<ThemeContext.Provider value={{ theme }}>
 						<AppContainer
 							ref={(navigatorRef) => {
 								Navigation.setTopLevelNavigator(navigatorRef);
 							}}
 							onNavigationStateChange={onNavigationStateChange}
-							screenProps={{ theme: 'dark' }}
+							screenProps={{ theme }}
 						/>
 					</ThemeContext.Provider>
 				</Provider>

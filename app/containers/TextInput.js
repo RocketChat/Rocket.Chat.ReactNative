@@ -10,6 +10,11 @@ import { COLOR_DANGER, themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
+	error: {
+		textAlign: 'center',
+		color: COLOR_DANGER,
+		paddingTop: 5
+	},
 	inputContainer: {
 		marginBottom: 10
 	},
@@ -148,7 +153,7 @@ export default class RCTextInput extends React.PureComponent {
 					{iconLeft ? this.iconLeft : null}
 					{secureTextEntry ? this.iconPassword : null}
 				</View>
-				{error.error ? <Text style={sharedStyles.error}>{error.reason}</Text> : null}
+				{error.error ? <Text style={styles.error}>{error.reason}</Text> : null}
 			</View>
 		);
 	}

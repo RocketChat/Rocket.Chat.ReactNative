@@ -1,7 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import { COLOR_DANGER, COLOR_BUTTON_PRIMARY } from '../constants/colors';
-
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -10,56 +8,12 @@ export default StyleSheet.create({
 		padding: 15,
 		paddingBottom: 30
 	},
-	buttonContainerLastChild: {
-		marginBottom: 40
-	},
-	buttonContainer: {
-		paddingVertical: 15,
-		backgroundColor: '#414852',
-		marginBottom: 20,
-		borderRadius: 2
-	},
-	buttonContainer_inverted: {
-		paddingVertical: 15,
-		marginBottom: 0
-	},
-	button: {
-		textAlign: 'center',
-		color: 'white',
-		fontWeight: '700'
-	},
-	button_inverted: {
-		textAlign: 'center',
-		fontWeight: '700',
-		flexGrow: 1
-	},
-	error: {
-		textAlign: 'center',
-		color: COLOR_DANGER,
-		paddingTop: 5
-	},
 	status: {
 		position: 'absolute',
 		bottom: -3,
 		right: -3,
 		borderWidth: 3,
 		borderColor: '#fff'
-	},
-	link: {
-		fontWeight: 'bold',
-		color: COLOR_BUTTON_PRIMARY
-	},
-	alignItemsFlexEnd: {
-		alignItems: 'flex-end'
-	},
-	alignItemsFlexStart: {
-		alignItems: 'flex-start'
-	},
-	alignItemsCenter: {
-		alignItems: 'center'
-	},
-	textAlignRight: {
-		textAlign: 'right'
 	},
 	textAlignCenter: {
 		textAlign: 'center'
