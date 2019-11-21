@@ -5,7 +5,8 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
-import DeviceInfo from 'react-native-device-info';
+import RNUserDefaults from 'rn-user-defaults';
+// import DeviceInfo from 'react-native-device-info';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -18,7 +19,7 @@ import NotificationBadge from './notifications/inApp';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
-import RocketChat from './lib/rocketchat';
+import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { isIOS } from './utils/deviceInfo';
 
@@ -276,14 +277,14 @@ const App = createAppContainer(createSwitchNavigator(
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		const deviceName = DeviceInfo.getDeviceName();
-		let theme = 'light';
-		if (deviceName === 'iPhone 8') {
-			theme = 'dark';
-		} else if (deviceName === 'iPhone 11 Pro') {
-			theme = 'black';
-		}
-		this.state = { theme };
+		// const deviceName = DeviceInfo.getDeviceName();
+		// let theme = 'light';
+		// if (deviceName === 'iPhone 8') {
+		// 	theme = 'dark';
+		// } else if (deviceName === 'iPhone 11 Pro') {
+		// 	theme = 'black';
+		// }
+		this.state = { theme: 'light' };
 		this.init();
 		this.initCrashReport();
 	}
@@ -304,6 +305,14 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
+		if (isIOS) {
+			await RNUserDefaults.setName('group.ios.chat.rocket');
+		}
+		RNUserDefaults.get(THEME_KEY).then((th) => {
+			if (th) {
+				this.setState({ theme: th });
+			}
+		});
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {

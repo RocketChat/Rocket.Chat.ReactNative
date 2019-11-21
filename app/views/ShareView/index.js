@@ -145,7 +145,7 @@ class ShareView extends React.Component {
 			);
 
 		return (
-			<View style={[styles.mediaContent, { backgroundColor: themes[theme].focusedBackground }]}>
+			<View style={[styles.mediaContent, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				{icon}
 				<View style={styles.mediaInfo}>
 					<Text style={[styles.mediaText, { color: themes[theme].titleText }]} numberOfLines={1}>{fileInfo.name}</Text>
@@ -229,14 +229,14 @@ class ShareView extends React.Component {
 		}
 
 		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
-				<View style={[isMedia ? styles.toContent : styles.toContentText, { backgroundColor: isMedia ? themes[theme].backgroundColor : themes[theme].focusedBackground }]}>
+			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+				<View style={[isMedia ? styles.toContent : styles.toContentText, { backgroundColor: isMedia ? themes[theme].backgroundColor : themes[theme].auxiliaryBackground }]}>
 					<Text style={styles.text} numberOfLines={1}>
 						<Text style={[styles.to, { color: themes[theme].auxiliaryText }]}>{`${ I18n.t('To') }: `}</Text>
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>{`${ name }`}</Text>
 					</Text>
 				</View>
-				<View style={[styles.content, { backgroundColor: themes[theme].focusedBackground }]}>
+				<View style={[styles.content, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 					{isMedia ? this.renderMediaContent() : this.renderInput()}
 				</View>
 				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }

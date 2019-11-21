@@ -79,23 +79,27 @@ class SelectServerView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />;
+	}
 
 	render() {
 		const { servers } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar />
-				<View style={styles.list}>
+				<View style={[styles.list, { borderColor: themes[theme].separatorColor }]}>
 					<FlatList
 						data={servers}
 						keyExtractor={keyExtractor}
 						renderItem={this.renderItem}
 						getItemLayout={getItemLayout}
+						contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 						ItemSeparatorComponent={this.renderSeparator}
 						enableEmptySections
 						removeClippedSubviews

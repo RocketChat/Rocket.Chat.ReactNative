@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -12,6 +13,7 @@ import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
+import { THEME_KEY } from '../lib/rocketchat';
 
 const THEMES = [
 	{
@@ -37,6 +39,12 @@ class LanguageView extends React.Component {
 		setTheme: PropTypes.func
 	}
 
+	setTheme = async(value) => {
+		const { setTheme } = this.props;
+		setTheme(value);
+		await RNUserDefaults.set(THEME_KEY, value);
+	};
+
 	renderSeparator = () => {
 		const { theme } = this.props;
 		return <Separator theme={theme} />;
@@ -48,7 +56,7 @@ class LanguageView extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { setTheme, theme } = this.props;
+		const { theme } = this.props;
 		const { label, value } = item;
 		const isSelected = theme === value;
 		return (
@@ -56,7 +64,7 @@ class LanguageView extends React.Component {
 				{index === 0 ? this.renderSeparator() : null}
 				<ListItem
 					title={label}
-					onPress={() => setTheme(value)}
+					onPress={() => this.setTheme(value)}
 					testID={`theme-view-${ value }`}
 					right={isSelected ? this.renderIcon : null}
 					theme={theme}

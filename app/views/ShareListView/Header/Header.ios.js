@@ -40,7 +40,15 @@ const Header = React.memo(({
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+		<View
+			style={[
+				styles.container,
+				{
+					borderColor: themes[theme].borderColor,
+					backgroundColor: themes[theme].backgroundColor
+				}
+			]}
+		>
 			{
 				!searching
 					? (

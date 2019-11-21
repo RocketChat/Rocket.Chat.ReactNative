@@ -10,7 +10,7 @@ import store from './lib/createStore';
 import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
-import RocketChat from './lib/rocketchat';
+import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
 const InsideNavigator = createStackNavigator({
@@ -53,7 +53,7 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
-			theme: 'dark'
+			theme: 'light'
 		};
 		this.init();
 	}
@@ -62,6 +62,11 @@ class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
+		RNUserDefaults.get(THEME_KEY).then((th) => {
+			if (th) {
+				this.setState({ theme: th });
+			}
+		});
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
