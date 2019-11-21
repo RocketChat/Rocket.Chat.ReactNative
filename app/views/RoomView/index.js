@@ -69,7 +69,6 @@ class RoomView extends React.Component {
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
-		const room = navigation.getParam('room');
 		const baseUrl = navigation.getParam('baseUrl');
 		const userId = navigation.getParam('userId');
 		const token = navigation.getParam('token');
@@ -96,7 +95,6 @@ class RoomView extends React.Component {
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
-					room={room}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={toggleFollowThread}
