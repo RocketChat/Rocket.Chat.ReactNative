@@ -197,10 +197,7 @@ export class List extends React.Component {
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<FlatList
 					testID='room-view-messages'
-					ref={(ref) => {
-						this.list = ref;
-						listRef(ref);
-					}}
+					ref={listRef}
 					keyExtractor={item => item.id}
 					data={messages}
 					extraData={this.state}

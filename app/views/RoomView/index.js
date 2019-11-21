@@ -872,6 +872,8 @@ class RoomView extends React.Component {
 
 	setLastItem = item => this.lastItem = item;
 
+	setListRef = ref => this.flatList = ref;
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
@@ -885,7 +887,7 @@ class RoomView extends React.Component {
 				<StatusBar />
 				<List
 					ref={this.list}
-					listRef={ref => this.flatList = ref}
+					listRef={this.setListRef}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}
