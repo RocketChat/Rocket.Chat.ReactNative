@@ -31,7 +31,7 @@ const SectionSeparator = React.memo(({ theme }) => (
 		style={[
 			styles.sectionSeparatorBorder,
 			{
-				borderColor: themes[theme].borderColor,
+				borderColor: themes[theme].separatorColor,
 				backgroundColor: themes[theme].auxiliaryBackground
 			}
 		]}
@@ -116,7 +116,10 @@ class SettingsView extends React.Component {
 		navigation.navigate('ThemeView');
 	}
 
-	onPressLicense = () => openLink(LICENSE_LINK)
+	onPressLicense = () => {
+		const { theme } = this.props;
+		openLink(LICENSE_LINK, theme);
+	}
 
 	renderDisclosure = () => {
 		const { theme } = this.props;
@@ -158,7 +161,7 @@ class SettingsView extends React.Component {
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
 						styles.listWithoutBorderBottom,
-						{ borderColor: themes[theme].borderColor }
+						{ borderColor: themes[theme].separatorColor }
 					]}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'

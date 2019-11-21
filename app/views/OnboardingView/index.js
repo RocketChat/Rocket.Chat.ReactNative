@@ -99,7 +99,8 @@ class OnboardingView extends React.Component {
 	}
 
 	createWorkspace = () => {
-		openLink('https://cloud.rocket.chat/trial');
+		const { theme } = this.props;
+		openLink('https://cloud.rocket.chat/trial', theme);
 	}
 
 	renderClose = () => {

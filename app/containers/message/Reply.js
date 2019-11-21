@@ -135,7 +135,7 @@ const Reply = React.memo(({
 		if (attachment.type === 'file') {
 			url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		}
-		openLink(url);
+		openLink(url, theme);
 	};
 
 	return (

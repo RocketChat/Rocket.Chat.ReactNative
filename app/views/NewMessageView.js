@@ -193,6 +193,7 @@ class NewMessageView extends React.Component {
 
 	renderList = () => {
 		const { search, chats } = this.state;
+		const { theme } = this.props;
 		return (
 			<FlatList
 				data={search.length > 0 ? search : chats}
@@ -201,6 +202,7 @@ class NewMessageView extends React.Component {
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
+				contentContainerStyle={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				keyboardShouldPersistTaps='always'
 			/>
 		);
@@ -210,7 +212,7 @@ class NewMessageView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 				testID='new-message-view'
 			>

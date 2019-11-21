@@ -268,7 +268,7 @@ class CreateChannelView extends React.Component {
 
 	renderFormSeparator = () => {
 		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].borderColor }]} />;
+		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
 	}
 
 	renderItem = ({ item }) => {
@@ -295,7 +295,14 @@ class CreateChannelView extends React.Component {
 				data={users}
 				extraData={users}
 				keyExtractor={item => item._id}
-				style={[styles.list, sharedStyles.separatorVertical, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]}
+				style={[
+					styles.list,
+					sharedStyles.separatorVertical,
+					{
+						backgroundColor: themes[theme].focusedBackground,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				enableEmptySections
@@ -318,7 +325,7 @@ class CreateChannelView extends React.Component {
 				<StatusBar />
 				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
-						<View style={sharedStyles.separatorVertical}>
+						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
 								autoFocus
 								style={[styles.input, { backgroundColor: themes[theme].backgroundColor, color: themes[theme].titleText }]}

@@ -13,7 +13,7 @@ const Link = React.memo(({
 		if (!link) {
 			return;
 		}
-		openLink(link);
+		openLink(link, theme);
 	};
 
 	const childLength = React.Children.toArray(children).filter(o => o).length;

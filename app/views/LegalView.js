@@ -63,11 +63,11 @@ class LegalView extends React.Component {
 	}
 
 	onPressItem = ({ route }) => {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		if (!server) {
 			return;
 		}
-		openLink(`${ server }/${ route }`);
+		openLink(`${ server }/${ route }`, theme);
 	}
 
 	renderItem = ({ text, route, testID }) => {

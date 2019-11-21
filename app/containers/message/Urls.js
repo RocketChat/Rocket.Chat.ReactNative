@@ -76,7 +76,7 @@ const Url = React.memo(({
 		return null;
 	}
 
-	const onPress = () => openLink(url.url);
+	const onPress = () => openLink(url.url, theme);
 
 	return (
 		<Touchable

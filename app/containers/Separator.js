@@ -11,7 +11,15 @@ const styles = StyleSheet.create({
 });
 
 
-const Separator = React.memo(({ style, theme }) => <View style={[styles.separator, style, { backgroundColor: themes[theme].borderColor }]} />);
+const Separator = React.memo(({ style, theme }) => (
+	<View
+		style={[
+			styles.separator,
+			style,
+			{ backgroundColor: themes[theme].separatorColor }
+		]}
+	/>
+));
 
 Separator.propTypes = {
 	style: PropTypes.object,

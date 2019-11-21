@@ -75,7 +75,7 @@ class LanguageView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 				testID='language-view'
 			>
@@ -86,10 +86,7 @@ class LanguageView extends React.Component {
 					keyExtractor={item => item.value}
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
-						{
-							backgroundColor: themes[theme].focusedBackground,
-							borderColor: themes[theme].borderColor
-						}
+						{ borderColor: themes[theme].separatorColor }
 					]}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
