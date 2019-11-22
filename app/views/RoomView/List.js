@@ -72,6 +72,7 @@ class List extends React.Component {
 				.observeWithColumns(['_updated_at']);
 		}
 
+		this.unsubscribeMessages();
 		this.messagesSubscription = this.messagesObservable
 			.subscribe((data) => {
 				this.interaction = InteractionManager.runAfterInteractions(() => {
@@ -110,9 +111,7 @@ class List extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
-			this.messagesSubscription.unsubscribe();
-		}
+		this.unsubscribeMessages();
 		if (this.interaction && this.interaction.cancel) {
 			this.interaction.cancel();
 		}
@@ -161,6 +160,12 @@ class List extends React.Component {
 	debouncedUpdate = debounce(() => {
 		this.update();
 	}, 300)
+
+	unsubscribeMessages = () => {
+		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+			this.messagesSubscription.unsubscribe();
+		}
+	}
 
 	renderFooter = () => {
 		const { loading } = this.state;
