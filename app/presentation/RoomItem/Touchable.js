@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
-import {
-	RectButton,
-	PanGestureHandler,
-	State
-} from 'react-native-gesture-handler';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
+
+import Touch from '../../utils/touch';
 import {
 	ACTION_WIDTH,
 	SMALL_SWIPE,
@@ -200,17 +198,16 @@ class Touchable extends React.Component {
 								transform: [{ translateX: this.transX }]
 							}}
 						>
-							<RectButton
+							<Touch
 								onPress={this.onPress}
-								activeOpacity={1}
-								underlayColor={themes[theme].bannerBackground}
+								theme={theme}
 								testID={testID}
 								style={{
 									backgroundColor: themes[theme].backgroundColor
 								}}
 							>
 								{children}
-							</RectButton>
+							</Touch>
 						</Animated.View>
 					</Animated.View>
 

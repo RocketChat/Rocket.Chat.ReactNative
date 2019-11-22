@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../utils/touch';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 
@@ -50,15 +50,14 @@ const Content = React.memo(({
 const Button = React.memo(({
 	onPress, ...props
 }) => (
-	<RectButton
+	<Touch
 		onPress={onPress}
-		underlayColor={themes[props.theme].bannerBackground}
 		style={{ backgroundColor: themes[props.theme].focusedBackground }}
-		activeOpacity={1}
 		enabled={!props.disabled}
+		theme={props.theme}
 	>
 		<Content {...props} />
-	</RectButton>
+	</Touch>
 ));
 
 const Item = React.memo(({ ...props }) => {

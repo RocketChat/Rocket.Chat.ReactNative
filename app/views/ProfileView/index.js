@@ -6,10 +6,10 @@ import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -256,17 +256,16 @@ class ProfileView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<RectButton
-				activeOpacity={1}
+			<Touch
 				key={key}
 				testID={key}
 				onPress={onPress}
-				underlayColor={themes[theme].bannerBackground}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
 				enabled={!disabled}
+				theme={theme}
 			>
 				{child}
-			</RectButton>
+			</Touch>
 		);
 	}
 

@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
-import { RectButton } from 'react-native-gesture-handler';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
+import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -142,11 +142,10 @@ class ServerDropdown extends Component {
 		const { server, theme } = this.props;
 
 		return (
-			<RectButton
+			<Touch
 				onPress={() => this.select(item.id)}
 				testID={`rooms-list-header-server-${ item.id }`}
-				activeOpacity={1}
-				underlayColor={themes[theme].bannerBackground}
+				theme={theme}
 			>
 				<View style={styles.serverItemContainer}>
 					{item.iconURL
@@ -171,7 +170,7 @@ class ServerDropdown extends Component {
 					</View>
 					{item.id === server ? <Check theme={theme} /> : null}
 				</View>
-			</RectButton>
+			</Touch>
 		);
 	}
 

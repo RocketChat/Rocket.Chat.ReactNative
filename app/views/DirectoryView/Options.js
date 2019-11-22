@@ -3,9 +3,9 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, Switch
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
+import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
@@ -65,18 +65,17 @@ export default class DirectoryOptions extends PureComponent {
 		}
 
 		return (
-			<RectButton
+			<Touch
 				onPress={() => changeType(itemType)}
-				activeOpacity={1}
-				underlayColor={themes[theme].bannerBackground}
 				style={styles.dropdownItemButton}
+				theme={theme}
 			>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check theme={theme} /> : null}
 				</View>
-			</RectButton>
+			</Touch>
 		);
 	}
 
@@ -98,16 +97,15 @@ export default class DirectoryOptions extends PureComponent {
 					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
-					<RectButton
+					<Touch
 						onPress={this.close}
-						activeOpacity={1}
-						underlayColor={themes[theme].bannerBackground}
+						theme={theme}
 					>
 						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: themes[theme].separatorColor }]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].bodyText }]} size={22} name='arrow-down' />
 						</View>
-					</RectButton>
+					</Touch>
 					{this.renderItem('channels')}
 					{this.renderItem('users')}
 					{isFederationEnabled

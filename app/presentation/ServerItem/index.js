@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../../utils/touch';
 import Check from '../../containers/Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../constants/colors';
@@ -13,12 +13,11 @@ export { ROW_HEIGHT };
 const ServerItem = React.memo(({
 	server, item, onPress, hasCheck, theme
 }) => (
-	<RectButton
+	<Touch
 		onPress={onPress}
-		underlayColor={themes[theme].bannerBackground}
 		style={[styles.serverItem, { backgroundColor: themes[theme].backgroundColor }]}
-		activeOpacity={1}
 		testID={`rooms-list-header-server-${ item.id }`}
+		theme={theme}
 	>
 		<View style={styles.serverItemContainer}>
 			{item.iconURL
@@ -46,7 +45,7 @@ const ServerItem = React.memo(({
 			</View>
 			{item.id === server && hasCheck ? <Check theme={theme} /> : null}
 		</View>
-	</RectButton>
+	</Touch>
 ));
 
 ServerItem.propTypes = {

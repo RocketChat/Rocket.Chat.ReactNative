@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
 import styles from '../styles';
+import Touch from '../../../utils/touch';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import Check from '../../../containers/Check';
@@ -11,14 +11,13 @@ import { themes } from '../../../constants/colors';
 
 
 export const SortItemButton = ({ children, onPress, theme }) => (
-	<RectButton
+	<Touch
 		style={styles.sortItemButton}
 		onPress={onPress}
-		activeOpacity={1}
-		underlayColor={themes[theme].bannerBackground}
+		theme={theme}
 	>
 		{children}
-	</RectButton>
+	</Touch>
 );
 
 SortItemButton.propTypes = {

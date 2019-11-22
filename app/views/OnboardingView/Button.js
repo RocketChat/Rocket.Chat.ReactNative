@@ -35,7 +35,7 @@ export default class Button extends React.PureComponent {
 		const activeStyle = active && styles.buttonActive;
 		const isPrimary = (type === 'primary');
 		const buttonContainerStyle = {
-			backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor,
+			backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].focusedBackground,
 			borderColor: isPrimary ? themes[theme].actionTintColor : themes[theme].borderColor
 		};
 		return (

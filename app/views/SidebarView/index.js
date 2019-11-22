@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { RectButton } from 'react-native-gesture-handler';
 import { Q } from '@nozbe/watermelondb';
 
+import Touch from '../../utils/touch';
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
@@ -260,12 +260,11 @@ class Sidebar extends Component {
 		return (
 			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
 				<ScrollView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} {...scrollPersistTaps}>
-					<RectButton
+					<Touch
 						onPress={this.toggleStatus}
-						underlayColor={themes[theme].bannerBackground}
-						activeOpacity={1}
 						testID='sidebar-toggle-status'
 						style={styles.header}
+						theme={theme}
 					>
 						<Avatar
 							text={user.username}
@@ -283,7 +282,7 @@ class Sidebar extends Component {
 							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
-					</RectButton>
+					</Touch>
 
 					<Separator theme={theme} key='separator-header' />
 

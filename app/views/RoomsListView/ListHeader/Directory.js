@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
 import I18n from '../../../i18n';
 import styles from '../styles';
@@ -12,10 +12,9 @@ import { withTheme } from '../../../theme';
 
 
 const Directory = React.memo(({ goDirectory, theme }) => (
-	<RectButton
+	<Touch
 		onPress={goDirectory}
-		underlayColor={themes[theme].bannerBackground}
-		activeOpacity={1}
+		theme={theme}
 	>
 		<View
 			style={[
@@ -27,7 +26,7 @@ const Directory = React.memo(({ goDirectory, theme }) => (
 			<Text style={[styles.directoryText, { color: themes[theme].tintColor }]}>{I18n.t('Directory')}</Text>
 			<DisclosureIndicator theme={theme} />
 		</View>
-	</RectButton>
+	</Touch>
 ));
 
 Directory.propTypes = {

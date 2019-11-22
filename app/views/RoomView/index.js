@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -11,6 +10,7 @@ import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
+import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
@@ -709,14 +709,13 @@ class RoomView extends React.Component {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
-					<RectButton
+					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
-						activeOpacity={1}
-						underlayColor={themes[theme].bannerBackground}
+						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: COLOR_WHITE }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
-					</RectButton>
+					</Touch>
 				</View>
 			);
 		}

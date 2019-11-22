@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
 
 import styles from '../styles';
+import Touch from '../../../utils/touch';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
 import log from '../../../utils/log';
@@ -131,10 +131,9 @@ class Sort extends PureComponent {
 						}
 					]}
 				>
-					<RectButton
+					<Touch
 						onPress={this.close}
-						activeOpacity={1}
-						underlayColor={themes[theme].bannerBackground}
+						theme={theme}
 					>
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>
@@ -142,7 +141,7 @@ class Sort extends PureComponent {
 								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort1' />
 							</View>
 						</View>
-					</RectButton>
+					</Touch>
 					<SortItemButton onPress={this.sortByName} theme={theme}>
 						<SortItemContent
 							icon='sort'

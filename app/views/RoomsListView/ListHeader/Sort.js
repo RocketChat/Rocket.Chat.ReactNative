@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
 import I18n from '../../../i18n';
 import styles from '../styles';
@@ -17,10 +17,9 @@ const Sort = React.memo(({
 		return null;
 	}
 	return (
-		<RectButton
+		<Touch
 			onPress={toggleSort}
-			activeOpacity={1}
-			underlayColor={themes[theme].bannerBackground}
+			theme={theme}
 		>
 			<View
 				style={[
@@ -31,7 +30,7 @@ const Sort = React.memo(({
 				<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
 				<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort1' />
 			</View>
-		</RectButton>
+		</Touch>
 	);
 });
 

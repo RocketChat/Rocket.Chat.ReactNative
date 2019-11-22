@@ -62,9 +62,9 @@ class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then((th) => {
-			if (th) {
-				this.setState({ theme: th });
+		RNUserDefaults.get(THEME_KEY).then((theme) => {
+			if (theme) {
+				this.setState({ theme });
 			}
 		});
 		const currentServer = await RNUserDefaults.get('currentServer');

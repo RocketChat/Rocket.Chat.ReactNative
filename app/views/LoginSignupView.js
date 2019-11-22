@@ -6,9 +6,10 @@ import {
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
@@ -373,18 +374,17 @@ class LoginSignupView extends React.Component {
 			);
 		}
 		return (
-			<RectButton
+			<Touch
 				key={service.name}
 				onPress={onPress}
 				style={styles.serviceButton}
-				underlayColor={themes[theme].bannerBackground}
-				activeOpacity={1}
+				theme={theme}
 			>
 				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
-			</RectButton>
+			</Touch>
 		);
 	}
 

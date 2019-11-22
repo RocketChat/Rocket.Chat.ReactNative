@@ -129,7 +129,13 @@ class OnboardingView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='onboarding-view'>
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='onboarding-view'
+			>
 				<StatusBar light />
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Welcome_to_RocketChat')}</Text>

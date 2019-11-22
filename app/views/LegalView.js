@@ -4,9 +4,9 @@ import {
 	Text, ScrollView, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
@@ -73,25 +73,37 @@ class LegalView extends React.Component {
 	renderItem = ({ text, route, testID }) => {
 		const { theme } = this.props;
 		return (
-			<RectButton
+			<Touch
 				style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
-				underlayColor={themes[theme].bannerBackground}
 				onPress={() => this.onPressItem({ route })}
-				activeOpacity={1}
 				testID={testID}
+				theme={theme}
 			>
 				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
 				<DisclosureIndicator theme={theme} />
-			</RectButton>
+			</Touch>
 		);
 	}
 
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} testID='legal-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].auxiliaryBackground }
+				]}
+				forceInset={{ vertical: 'never' }}
+				testID='legal-view'
+			>
 				<StatusBar />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].auxiliaryText }]}>
+				<ScrollView
+					contentContainerStyle={[
+						styles.scroll,
+						{ borderColor: themes[theme].auxiliaryText }
+					]}
+					{...scrollPersistTaps}
+				>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'terms-of-service', testID: 'legal-terms-button' })}
 					<Separator theme={theme} />
 					{this.renderItem({ text: 'Privacy_Policy', route: 'privacy-policy', testID: 'legal-privacy-button' })}

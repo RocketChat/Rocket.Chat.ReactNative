@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
@@ -154,19 +154,18 @@ class DirectoryView extends React.Component {
 					onSubmitEditing={this.search}
 					testID='federation-view-search'
 				/>
-				<RectButton
+				<Touch
 					onPress={this.toggleDropdown}
-					activeOpacity={1}
-					underlayColor={themes[theme].bannerBackground}
 					style={styles.dropdownItemButton}
 					testID='federation-view-create-channel'
+					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
 						<CustomIcon name='arrow-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>
-				</RectButton>
+				</Touch>
 			</>
 		);
 	}

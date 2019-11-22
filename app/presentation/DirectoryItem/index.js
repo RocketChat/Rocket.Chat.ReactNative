@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
@@ -20,12 +20,11 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 const DirectoryItem = ({
 	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme
 }) => (
-	<RectButton
+	<Touch
 		onPress={onPress}
-		underlayColor={themes[theme].bannerBackground}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
-		activeOpacity={1}
 		testID={testID}
+		theme={theme}
 	>
 		<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 			<Avatar
@@ -46,7 +45,7 @@ const DirectoryItem = ({
 			</View>
 			<DirectoryItemLabel text={rightLabel} theme={theme} />
 		</View>
-	</RectButton>
+	</Touch>
 );
 
 DirectoryItem.propTypes = {

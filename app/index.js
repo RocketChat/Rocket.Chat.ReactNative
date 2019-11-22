@@ -308,9 +308,9 @@ export default class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then((th) => {
-			if (th) {
-				this.setState({ theme: th });
+		RNUserDefaults.get(THEME_KEY).then((theme) => {
+			if (theme) {
+				this.setState({ theme });
 			}
 		});
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);

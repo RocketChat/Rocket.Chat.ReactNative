@@ -1,21 +1,20 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
+import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const Item = React.memo(({
 	left, text, onPress, testID, current, theme
 }) => (
-	<RectButton
+	<Touch
 		key={testID}
 		testID={testID}
 		onPress={onPress}
-		underlayColor={themes[theme].bannerBackground}
-		activeOpacity={1}
+		theme={theme}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
 	>
 		<View style={styles.itemLeft}>
@@ -26,7 +25,7 @@ const Item = React.memo(({
 				{text}
 			</Text>
 		</View>
-	</RectButton>
+	</Touch>
 ));
 
 Item.propTypes = {

@@ -8,8 +8,8 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
-import { RectButton } from 'react-native-gesture-handler';
 
+import Touch from '../utils/touch';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -142,18 +142,17 @@ class NewMessageView extends React.Component {
 		return (
 			<View>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-				<RectButton
+				<Touch
 					onPress={this.createChannel}
 					style={[styles.createChannelButton, { backgroundColor: themes[theme].backgroundColor }]}
-					underlayColor={themes[theme].bannerBackground}
-					activeOpacity={1}
 					testID='new-message-view-create-channel'
+					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
 					</View>
-				</RectButton>
+				</Touch>
 			</View>
 		);
 	}
