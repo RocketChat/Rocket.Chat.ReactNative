@@ -1,11 +1,10 @@
 import React from 'react';
-import {
-	View, StyleSheet, Text, TextInput
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
+import TextInput from '../utils/textInput';
 import { COLOR_DANGER, themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
@@ -145,9 +144,8 @@ export default class RCTextInput extends React.PureComponent {
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						placeholderTextColor={themes[theme].auxiliaryText}
 						contentDescription={placeholder}
-						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+						theme={theme}
 						{...inputProps}
 					/>
 					{iconLeft ? this.iconLeft : null}

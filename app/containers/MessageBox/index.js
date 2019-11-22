@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, TextInput, Alert
-} from 'react-native';
+import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -11,6 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
+import TextInput from '../../utils/textInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
@@ -769,7 +768,7 @@ class MessageBox extends Component {
 						/>
 						<TextInput
 							ref={component => this.component = component}
-							style={[styles.textBoxInput, { color: themes[theme].titleText }]}
+							style={styles.textBoxInput}
 							returnKeyType='default'
 							keyboardType='twitter'
 							blurOnSubmit={false}
@@ -778,9 +777,8 @@ class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							placeholderTextColor={themes[theme].auxiliaryText}
-							keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 							testID='messagebox-input'
+							theme={theme}
 						/>
 						<RightButtons
 							theme={theme}

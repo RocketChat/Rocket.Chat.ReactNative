@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
+	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import TextInput from '../utils/textInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
@@ -328,17 +329,16 @@ class CreateChannelView extends React.Component {
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
 								autoFocus
-								style={[styles.input, { backgroundColor: themes[theme].backgroundColor, color: themes[theme].titleText }]}
+								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
 								label={I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
 								placeholder={I18n.t('Channel_Name')}
-								placeholderTextColor={themes[theme].auxiliaryText}
 								returnKeyType='done'
 								testID='create-channel-name'
 								autoCorrect={false}
 								autoCapitalize='none'
-								keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
 							{this.renderFormSeparator()}

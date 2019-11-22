@@ -1,9 +1,8 @@
 import React from 'react';
-import {
-	View, StyleSheet, Text, TextInput
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
+import TextInput from '../../../utils/textInput';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
@@ -30,11 +29,10 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 		return (
 			<View style={styles.container}>
 				<TextInput
-					style={[styles.search, { color: themes[theme].titleText }]}
+					style={styles.search}
 					placeholder={I18n.t('Search')}
-					placeholderTextColor='rgba(255, 255, 255, 0.5)'
 					onChangeText={onChangeSearchText}
-					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					theme={theme}
 					autoFocus
 				/>
 			</View>

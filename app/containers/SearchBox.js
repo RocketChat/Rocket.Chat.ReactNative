@@ -1,10 +1,9 @@
 import React from 'react';
-import {
-	View, StyleSheet, TextInput, Text
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
+import TextInput from '../utils/textInput';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
@@ -63,14 +62,13 @@ const SearchBox = ({
 				blurOnSubmit
 				clearButtonMode='while-editing'
 				placeholder={I18n.t('Search')}
-				placeholderTextColor={themes[theme].auxiliaryText}
 				returnKeyType='search'
-				style={[styles.input, { color: themes[theme].controlText }]}
+				style={styles.input}
 				testID={testID}
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
 				onSubmitEditing={onSubmitEditing}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+				theme={theme}
 				{...props}
 			/>
 		</View>

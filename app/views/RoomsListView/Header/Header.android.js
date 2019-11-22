@@ -3,8 +3,8 @@ import {
 	Text, View, TouchableOpacity, Image, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { TextInput } from 'react-native-gesture-handler';
 
+import TextInput from '../../../utils/textInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
@@ -43,17 +43,15 @@ const styles = StyleSheet.create({
 const Header = React.memo(({
 	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
-	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={[styles.server, titleColorStyle]}
+					style={styles.server}
 					placeholder='Search'
-					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={onSearchChangeText}
-					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					theme={theme}
 				/>
 			</View>
 		);
