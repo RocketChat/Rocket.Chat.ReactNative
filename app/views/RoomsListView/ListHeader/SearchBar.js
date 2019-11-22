@@ -19,6 +19,7 @@ const SearchBar = React.memo(({ theme, onChangeSearchText }) => {
 });
 
 SearchBar.propTypes = {
+	theme: PropTypes.string,
 	onChangeSearchText: PropTypes.func
 };
 

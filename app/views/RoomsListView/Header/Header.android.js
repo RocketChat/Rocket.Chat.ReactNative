@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 const Header = React.memo(({
 	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
+	const titleColorStyle = { color: themes[theme].headerTintColor };
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>

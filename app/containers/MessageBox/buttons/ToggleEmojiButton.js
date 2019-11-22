@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
 
-const ToggleEmojiButton = React.memo(({ theme, show, open, close }) => {
+const ToggleEmojiButton = React.memo(({
+	theme, show, open, close
+}) => {
 	if (show) {
 		return (
 			<BaseButton
