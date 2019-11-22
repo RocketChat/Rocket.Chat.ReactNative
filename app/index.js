@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
-// import DeviceInfo from 'react-native-device-info';
 
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -278,13 +277,6 @@ const App = createAppContainer(createSwitchNavigator(
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		// const deviceName = DeviceInfo.getDeviceName();
-		// let theme = 'light';
-		// if (deviceName === 'iPhone 8') {
-		// 	theme = 'dark';
-		// } else if (deviceName === 'iPhone 11 Pro') {
-		// 	theme = 'black';
-		// }
 		this.state = { theme: Appearance.getColorScheme() };
 		this.init();
 		this.initCrashReport();
@@ -303,6 +295,10 @@ export default class Root extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+
+		if (this.subTheme && this.subTheme.remove) {
+			this.subTheme.remove();
+		}
 	}
 
 	init = async() => {
@@ -324,6 +320,10 @@ export default class Root extends React.Component {
 	setTheme = (theme) => {
 		if (theme) {
 			this.setState({ theme });
+		} else {
+			this.subTheme = Appearance.addChangeListener(({ colorScheme }) => {
+				this.setState({ theme: colorScheme });
+			});
 		}
 	}
 

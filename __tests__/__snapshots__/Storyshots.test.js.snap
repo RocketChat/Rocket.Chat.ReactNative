@@ -27190,7 +27190,9 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginLeft": 10,
             "marginTop": 30,
           },
-          undefined,
+          Object {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
@@ -27206,7 +27208,9 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginLeft": 10,
             "marginTop": 30,
           },
-          undefined,
+          Object {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
@@ -27223,7 +27227,9 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginLeft": 10,
             "marginTop": 30,
           },
-          undefined,
+          Object {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
@@ -27243,7 +27249,9 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginLeft": 10,
             "marginTop": 30,
           },
-          undefined,
+          Object {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
@@ -27267,7 +27275,9 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginLeft": 10,
             "marginTop": 30,
           },
-          undefined,
+          Object {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >

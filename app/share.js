@@ -59,6 +59,12 @@ class Root extends React.Component {
 		this.init();
 	}
 
+	componentWillUnmount() {
+		if (this.subTheme && this.subTheme.remove) {
+			this.subTheme.remove();
+		}
+	}
+
 	init = async() => {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
@@ -78,6 +84,10 @@ class Root extends React.Component {
 	setTheme = (theme) => {
 		if (theme) {
 			this.setState({ theme });
+		} else {
+			this.subTheme = Appearance.addChangeListener(({ colorScheme }) => {
+				this.setState({ theme: colorScheme });
+			});
 		}
 	}
 
