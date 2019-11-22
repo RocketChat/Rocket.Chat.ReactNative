@@ -6,7 +6,6 @@ import {
 	BackHandler,
 	ActivityIndicator,
 	Text,
-	ScrollView,
 	Keyboard,
 	Dimensions
 } from 'react-native';
@@ -178,12 +177,6 @@ class RoomsListView extends React.Component {
 			loading: true,
 			allChats: [],
 			chats: [],
-			unread: [],
-			favorites: [],
-			discussions: [],
-			channels: [],
-			privateGroup: [],
-			direct: [],
 			width
 		};
 		Orientation.unlockAllOrientations();
@@ -347,10 +340,22 @@ class RoomsListView extends React.Component {
 		this.setState(...args);
 	};
 
+	addRoomsGroup = (data, header, allData) => {
+		if (data.length > 0) {
+			if (header) {
+				allData.push({ rid: header, separator: true });
+			}
+			allData = allData.concat(data);
+		}
+		return allData;
+	}
+
 	getSubscriptions = debounce(async() => {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
+
+		this.setState({ loading: true });
 
 		const {
 			sortBy,
@@ -370,13 +375,8 @@ class RoomsListView extends React.Component {
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
+			let tempChats = [];
 			let chats = [];
-			let unread = [];
-			let favorites = [];
-			let discussions = [];
-			let channels = [];
-			let privateGroup = [];
-			let direct = [];
 			if (sortBy === 'alphabetical') {
 				chats = orderBy(data, ['name'], ['asc']);
 			} else {
@@ -401,37 +401,36 @@ class RoomsListView extends React.Component {
 
 			// unread
 			if (showUnread) {
-				unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
-			} else {
-				unread = [];
+				const unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
+				tempChats = this.addRoomsGroup(unread, UNREAD_HEADER, tempChats);
 			}
 
 			// favorites
 			if (showFavorites) {
-				favorites = chats.filter(s => s.f);
-			} else {
-				favorites = [];
+				const favorites = chats.filter(s => s.f);
+				tempChats =	this.addRoomsGroup(favorites, FAVORITES_HEADER, tempChats);
 			}
 
 			// type
 			if (groupByType) {
-				discussions = chats.filter(s => s.prid);
-				channels = chats.filter(s => s.t === 'c' && !s.prid);
-				privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
-				direct = chats.filter(s => s.t === 'd' && !s.prid);
+				const discussions = chats.filter(s => s.prid);
+				const channels = chats.filter(s => s.t === 'c' && !s.prid);
+				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
+				const direct = chats.filter(s => s.t === 'd' && !s.prid);
+				tempChats =	this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
+				tempChats =	this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
+				tempChats =	this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
+				tempChats =	this.addRoomsGroup(direct, DM_HEADER, tempChats);
 			} else if (showUnread) {
 				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
+				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
+			} else {
+				tempChats =	this.addRoomsGroup(chats, null, tempChats);
 			}
 
 			this.internalSetState({
+				chats: tempChats,
 				allChats,
-				chats,
-				unread,
-				favorites,
-				discussions,
-				channels,
-				privateGroup,
-				direct,
 				loading: false
 			});
 		});
@@ -718,9 +717,11 @@ class RoomsListView extends React.Component {
 				this.goRoom(chats[input - 1]);
 			}
 		} else if (handleCommandPreviousRoom(event)) {
-			this.goOtherRoom(-1);
+			// TODO: refactor
+			// this.goOtherRoom(-1);
 		} else if (handleCommandNextRoom(event)) {
-			this.goOtherRoom(1);
+			// TODO: refactor
+			// this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		} else if (handleCommandAddNewServer(event)) {
@@ -752,6 +753,10 @@ class RoomsListView extends React.Component {
 	};
 
 	renderItem = ({ item, header }) => {
+		if (item.separator) {
+			return this.renderSectionHeader(item.rid);
+		}
+
 		const { width } = this.state;
 		const {
 			userId,
@@ -801,129 +806,29 @@ class RoomsListView extends React.Component {
 		</View>
 	);
 
-	renderSection = (data, header) => {
-		const { showUnread, showFavorites, groupByType } = this.props;
-
-		if (header === UNREAD_HEADER && !showUnread) {
-			return null;
-		} else if (header === FAVORITES_HEADER && !showFavorites) {
-			return null;
-		} else if (
-			[
-				DISCUSSIONS_HEADER,
-				CHANNELS_HEADER,
-				DM_HEADER,
-				GROUPS_HEADER
-			].includes(header)
-			&& !groupByType
-		) {
-			return null;
-		} else if (header === CHATS_HEADER && groupByType) {
-			return null;
-		}
-		if (data && data.length > 0) {
-			return (
-				<FlatList
-					data={data}
-					extraData={data}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={({ item }) => this.renderItem({ item, header })}
-					ListHeaderComponent={() => this.renderSectionHeader(header)}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews={isIOS}
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={INITIAL_NUM_TO_RENDER}
-					windowSize={7}
-				/>
-			);
-		}
-		return null;
-	};
-
-	renderList = () => {
-		const {
-			search,
-			chats,
-			unread,
-			favorites,
-			discussions,
-			channels,
-			direct,
-			privateGroup
-		} = this.state;
-
-		if (search.length > 0) {
-			return (
-				<FlatList
-					data={search}
-					extraData={search}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={({ item }) => this.renderItem({ item, header: 'Search' })}
-					getItemLayout={getItemLayout}
-					enableEmptySections
-					removeClippedSubviews={isIOS}
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={INITIAL_NUM_TO_RENDER}
-					windowSize={7}
-				/>
-			);
-		}
-
-		return (
-			<View style={styles.container}>
-				{this.renderSection(unread, UNREAD_HEADER)}
-				{this.renderSection(favorites, FAVORITES_HEADER)}
-				{this.renderSection(discussions, DISCUSSIONS_HEADER)}
-				{this.renderSection(channels, CHANNELS_HEADER)}
-				{this.renderSection(direct, DM_HEADER)}
-				{this.renderSection(privateGroup, GROUPS_HEADER)}
-				{this.renderSection(chats, CHATS_HEADER)}
-			</View>
-		);
-	};
-
 	renderScroll = () => {
-		const { loading } = this.state;
+		const { loading, chats, search } = this.state;
 
 		if (loading) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 
-		const { showUnread, showFavorites, groupByType } = this.props;
-		if (!(showUnread || showFavorites || groupByType)) {
-			const { chats, search } = this.state;
-			return (
-				<FlatList
-					ref={this.getScrollRef}
-					data={search.length ? search : chats}
-					extraData={search.length ? search : chats}
-					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
-					keyExtractor={keyExtractor}
-					style={styles.list}
-					renderItem={({ item }) => this.renderItem({ item, header: CHATS_HEADER })}
-					ListHeaderComponent={this.renderListHeader}
-					getItemLayout={getItemLayout}
-					removeClippedSubviews={isIOS}
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={INITIAL_NUM_TO_RENDER}
-					windowSize={9}
-				/>
-			);
-		}
-
 		return (
-			<ScrollView
+			<FlatList
 				ref={this.getScrollRef}
+				data={search.length ? search : chats}
+				extraData={search.length ? search : chats}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
+				keyExtractor={keyExtractor}
+				style={styles.list}
+				renderItem={({ item }) => this.renderItem({ item, header: CHATS_HEADER })}
+				ListHeaderComponent={this.renderListHeader}
+				getItemLayout={getItemLayout}
+				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				testID='rooms-list-view-list'
-			>
-				{this.renderListHeader()}
-				{this.renderList()}
-			</ScrollView>
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				windowSize={9}
+			/>
 		);
 	};
 
