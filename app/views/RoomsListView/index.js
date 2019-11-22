@@ -700,7 +700,9 @@ class RoomsListView extends React.Component {
 
 	handleCommands = ({ event }) => {
 		const { chats } = this.state;
-		const { navigation, server } = this.props;
+		const {
+			navigation, server, showUnread, showFavorites, groupByType
+		} = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
 			navigation.toggleDrawer();
@@ -708,6 +710,10 @@ class RoomsListView extends React.Component {
 			this.scroll.scrollToOffset({ animated: true, offset: 0 });
 			this.inputRef.focus();
 		} else if (handleCommandSelectRoom(event)) {
+			// Disabled when grouped for now
+			if (showUnread || showFavorites || groupByType) {
+				return;
+			}
 			if (chats[input - 1]) {
 				this.goRoom(chats[input - 1]);
 			}
