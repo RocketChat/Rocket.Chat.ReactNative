@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { AppearanceProvider, Appearance } from 'react-native-appearance';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
@@ -53,7 +54,7 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
-			theme: 'light'
+			theme: Appearance.getColorScheme()
 		};
 		this.init();
 	}
@@ -62,11 +63,7 @@ class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then((theme) => {
-			if (theme) {
-				this.setState({ theme });
-			}
-		});
+		RNUserDefaults.get(THEME_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
@@ -78,6 +75,12 @@ class Root extends React.Component {
 		}
 	}
 
+	setTheme = (theme) => {
+		if (theme) {
+			this.setState({ theme });
+		}
+	}
+
 	handleLayout = (event) => {
 		const { width, height } = event.nativeEvent.layout;
 		this.setState({ isLandscape: width > height });
@@ -86,22 +89,24 @@ class Root extends React.Component {
 	render() {
 		const { isLandscape, theme } = this.state;
 		return (
-			<View
-				style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
-				onLayout={this.handleLayout}
-			>
-				<Provider store={store}>
-					<ThemeContext.Provider value={{ theme }}>
-						<AppContainer
-							ref={(navigatorRef) => {
-								Navigation.setTopLevelNavigator(navigatorRef);
-							}}
-							onNavigationStateChange={onNavigationStateChange}
-							screenProps={{ theme }}
-						/>
-					</ThemeContext.Provider>
-				</Provider>
-			</View>
+			<AppearanceProvider>
+				<View
+					style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
+					onLayout={this.handleLayout}
+				>
+					<Provider store={store}>
+						<ThemeContext.Provider value={{ theme }}>
+							<AppContainer
+								ref={(navigatorRef) => {
+									Navigation.setTopLevelNavigator(navigatorRef);
+								}}
+								onNavigationStateChange={onNavigationStateChange}
+								screenProps={{ theme }}
+							/>
+						</ThemeContext.Provider>
+					</Provider>
+				</View>
+			</AppearanceProvider>
 		);
 	}
 }

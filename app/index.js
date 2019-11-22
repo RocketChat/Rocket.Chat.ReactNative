@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { AppearanceProvider, Appearance } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
@@ -284,7 +285,7 @@ export default class Root extends React.Component {
 		// } else if (deviceName === 'iPhone 11 Pro') {
 		// 	theme = 'black';
 		// }
-		this.state = { theme: 'light' };
+		this.state = { theme: Appearance.getColorScheme() };
 		this.init();
 		this.initCrashReport();
 	}
@@ -308,11 +309,7 @@ export default class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then((theme) => {
-			if (theme) {
-				this.setState({ theme });
-			}
-		});
+		RNUserDefaults.get(THEME_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {
@@ -321,6 +318,12 @@ export default class Root extends React.Component {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 		} else {
 			store.dispatch(appInit());
+		}
+	}
+
+	setTheme = (theme) => {
+		if (theme) {
+			this.setState({ theme });
 		}
 	}
 
@@ -335,26 +338,24 @@ export default class Root extends React.Component {
 			});
 	}
 
-	setTheme = (theme) => {
-		this.setState({ theme });
-	}
-
 	render() {
 		const { theme } = this.state;
 		return (
-			<Provider store={store}>
-				<ThemeContext.Provider
-					value={{ theme, setTheme: this.setTheme }}
-				>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
-						}}
-						screenProps={{ theme }}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
-				</ThemeContext.Provider>
-			</Provider>
+			<AppearanceProvider>
+				<Provider store={store}>
+					<ThemeContext.Provider
+						value={{ theme, setTheme: this.setTheme }}
+					>
+						<App
+							ref={(navigatorRef) => {
+								Navigation.setTopLevelNavigator(navigatorRef);
+							}}
+							screenProps={{ theme }}
+							onNavigationStateChange={onNavigationStateChange}
+						/>
+					</ThemeContext.Provider>
+				</Provider>
+			</AppearanceProvider>
 		);
 	}
 }
