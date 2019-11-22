@@ -52,7 +52,7 @@ const Button = React.memo(({
 }) => (
 	<Touch
 		onPress={onPress}
-		style={{ backgroundColor: themes[props.theme].focusedBackground }}
+		style={{ backgroundColor: themes[props.theme].backgroundColor }}
 		enabled={!props.disabled}
 		theme={props.theme}
 	>
@@ -65,7 +65,7 @@ const Item = React.memo(({ ...props }) => {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: themes[props.theme].focusedBackground }}>
+		<View style={{ backgroundColor: themes[props.theme].backgroundColor }}>
 			<Content {...props} />
 		</View>
 	);

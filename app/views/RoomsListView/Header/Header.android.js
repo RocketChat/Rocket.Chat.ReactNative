@@ -49,7 +49,7 @@ const Header = React.memo(({
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={styles.server}
+					style={[styles.server, { color: themes[theme].headerTintColor }]}
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}
@@ -68,7 +68,14 @@ const Header = React.memo(({
 				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
 					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]}>{serverName}</Text>
-					<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown, titleColorStyle]} source={{ uri: 'disclosure_indicator_server' }} />
+					<Image
+						style={[
+							styles.disclosure,
+							showServerDropdown && styles.upsideDown,
+							{ tintColor: themes[theme].headerTintColor }
+						]}
+						source={{ uri: 'disclosure_indicator_server' }}
+					/>
 				</View>
 			</TouchableOpacity>
 		</View>

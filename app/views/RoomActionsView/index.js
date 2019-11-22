@@ -430,7 +430,7 @@ class RoomActionsView extends React.Component {
 		return (
 			<Touch
 				onPress={() => this.onPressTouchable(item)}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				accessibilityLabel={item.name}
 				accessibilityTraits='button'
 				testID={item.testID}

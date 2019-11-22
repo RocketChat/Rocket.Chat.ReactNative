@@ -7,7 +7,7 @@ import { themes } from '../constants/colors';
 const ThemedTextInput = React.forwardRef(({ style, theme, ...props }, ref) => (
 	<TextInput
 		ref={ref}
-		style={[style, { color: themes[theme].titleText }]}
+		style={[{ color: themes[theme].titleText }, style]}
 		placeholderTextColor={themes[theme].auxiliaryText}
 		keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 		{...props}

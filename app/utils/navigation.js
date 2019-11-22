@@ -5,10 +5,16 @@ export const defaultHeader = {
 	headerBackTitle: null
 };
 
+const borderBottom = theme => (
+	theme !== 'light'
+		? { borderBottomColor: themes[theme].borderColor }
+		: {}
+);
+
 export const themedHeader = theme => ({
 	headerStyle: {
 		backgroundColor: themes[theme].headerBackground,
-		borderBottomColor: themes[theme].borderColor
+		...borderBottom(theme)
 	},
 	headerTintColor: themes[theme].headerTintColor,
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
