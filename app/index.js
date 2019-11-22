@@ -562,22 +562,22 @@ export default class Root extends React.Component {
 		if (isTablet) {
 			const { inside, showModal } = this.state;
 			content = (
-				<Tablet
-					tablet={split}
-					inside={inside}
-					showModal={showModal}
-					closeModal={this.closeModal}
-					onLayout={this.onLayout}
-				>
-					{content}
-				</Tablet>
+				<SplitContext.Provider value={{ split }}>
+					<Tablet
+						tablet={split}
+						inside={inside}
+						showModal={showModal}
+						closeModal={this.closeModal}
+						onLayout={this.onLayout}
+					>
+						{content}
+					</Tablet>
+				</SplitContext.Provider>
 			);
 		}
 		return (
 			<Provider store={store}>
-				<SplitContext.Provider value={{ split }}>
-					{content}
-				</SplitContext.Provider>
+				{content}
 			</Provider>
 		);
 	}
