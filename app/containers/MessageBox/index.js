@@ -259,6 +259,7 @@ class MessageBox extends Component {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
+		this.setInput(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -267,7 +268,6 @@ class MessageBox extends Component {
 		const isTextEmpty = text.length === 0;
 		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
@@ -467,7 +467,10 @@ class MessageBox extends Component {
 	}
 
 	setShowSend = (showSend) => {
-		this.setState({ showSend });
+		const { showSend: prevShowSend } = this.state;
+		if (prevShowSend !== showSend) {
+			this.setState({ showSend });
+		}
 	}
 
 	clearInput = () => {
@@ -638,6 +641,7 @@ class MessageBox extends Component {
 		const message = this.text;
 
 		this.clearInput();
+		this.debouncedOnChangeText.stop();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
