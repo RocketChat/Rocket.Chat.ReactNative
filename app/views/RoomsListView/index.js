@@ -60,6 +60,13 @@ import { withSplit } from '../../split';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
+const CHATS_HEADER = 'Chats';
+const UNREAD_HEADER = 'Unread';
+const FAVORITES_HEADER = 'Favorites';
+const DISCUSSIONS_HEADER = 'Discussions';
+const CHANNELS_HEADER = 'Channels';
+const DM_HEADER = 'Direct_Messages';
+const GROUPS_HEADER = 'Private_Groups';
 
 const shouldUpdateProps = [
 	'searchText',
@@ -164,7 +171,6 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
-		this.idx = 0;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -473,11 +479,11 @@ class RoomsListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	};
 
-	goRoom = (item) => {
+	goRoom = (item, header) => {
 		this.cancelSearchingAndroid();
-		const { chats } = this.state;
 		const { navigation } = this.props;
-		this.idx = chats.findIndex(c => c.rid === item.rid);
+		this.item = item;
+		this.header = header;
 		navigation.navigate('RoomView', {
 			rid: item.rid,
 			name: this.getRoomTitle(item),
@@ -487,9 +493,9 @@ class RoomsListView extends React.Component {
 		});
 	};
 
-	_onPressItem = async(item = {}) => {
+	_onPressItem = async(item = {}, header) => {
 		if (!item.search) {
-			return this.goRoom(item);
+			return this.goRoom(item, header);
 		}
 		if (item.t === 'd') {
 			// if user is using the search we need first to join/create room
@@ -501,13 +507,13 @@ class RoomsListView extends React.Component {
 						rid: result.room._id,
 						name: username,
 						t: 'd'
-					});
+					}, header);
 				}
 			} catch (e) {
 				log(e);
 			}
 		} else {
-			return this.goRoom(item);
+			return this.goRoom(item, header);
 		}
 	};
 
@@ -594,6 +600,104 @@ class RoomsListView extends React.Component {
 		navigation.navigate('DirectoryView');
 	};
 
+	// Get rooms group state by header
+	getRoomsGroupState = (header) => {
+		const {
+			chats, favorites, unread, discussions, channels, direct, privateGroup
+		} = this.state;
+		let rooms = [];
+		switch (header) {
+			case CHATS_HEADER:
+				rooms = chats;
+				break;
+			case FAVORITES_HEADER:
+				rooms = favorites;
+				break;
+			case UNREAD_HEADER:
+				rooms = unread;
+				break;
+			case DISCUSSIONS_HEADER:
+				rooms = discussions;
+				break;
+			case CHANNELS_HEADER:
+				rooms = channels;
+				break;
+			case DM_HEADER:
+				rooms = direct;
+				break;
+			case GROUPS_HEADER:
+				rooms = privateGroup;
+				break;
+			default:
+				break;
+		}
+		return rooms;
+	}
+
+	getRoomsGroupOrder = () => {
+		const { showUnread, showFavorites, groupByType } = this.props;
+		const order = [];
+		if (showUnread) {
+			order.push(UNREAD_HEADER);
+		}
+		if (showFavorites) {
+			order.push(FAVORITES_HEADER);
+		}
+		if (groupByType) {
+			order.push(DISCUSSIONS_HEADER);
+			order.push(CHANNELS_HEADER);
+			order.push(DM_HEADER);
+			order.push(GROUPS_HEADER);
+		} else {
+			order.push(CHATS_HEADER);
+		}
+		return order;
+	}
+
+	getOtherRoomsGroupState = (header, sign) => {
+		const order = this.getRoomsGroupOrder();
+		const index = order.indexOf(header);
+		const otherGroupHeader = order[index + sign];
+		// if it's the last rooms group
+		if (!otherGroupHeader) {
+			return {};
+		}
+		const otherGroupState = this.getRoomsGroupState(otherGroupHeader);
+		if (!otherGroupState.length) {
+			return this.getOtherRoomsGroupState(otherGroupHeader, sign);
+		}
+		return { state: otherGroupState, header: otherGroupHeader };
+	}
+
+	// Go to previous or next room based on sign (-1 or 1)
+	// It's used by iPad key commands
+	goOtherRoom = (sign) => {
+		if (!this.header || !this.item) {
+			return;
+		}
+		// Don't run during search
+		const { search } = this.state;
+		if (search.length > 0) {
+			return;
+		}
+		const roomsGroup = this.getRoomsGroupState(this.header);
+		const roomIndex = roomsGroup.findIndex(c => c.rid === this.item.rid);
+		const otherRoomInGroup = roomsGroup[roomIndex + sign];
+
+		// If other room is on the same group
+		if (otherRoomInGroup) {
+			this.goRoom(otherRoomInGroup, this.header);
+
+		// if other room is NOT on the same group
+		} else {
+			const { state: otherRoomsGroupState, header: otherRoomsGroupHeader } = this.getOtherRoomsGroupState(this.header, sign);
+			if (otherRoomsGroupHeader) {
+				const index = sign === 1 ? 0 : otherRoomsGroupState.length - 1;
+				this.goRoom(otherRoomsGroupState[index], otherRoomsGroupHeader);
+			}
+		}
+	}
+
 	handleCommands = ({ event }) => {
 		const { chats } = this.state;
 		const { navigation, server } = this.props;
@@ -608,13 +712,9 @@ class RoomsListView extends React.Component {
 				this.goRoom(chats[input - 1]);
 			}
 		} else if (handleCommandPreviousRoom(event)) {
-			if (chats[this.idx - 1]) {
-				this.goRoom(chats[this.idx - 1]);
-			}
+			this.goOtherRoom(-1);
 		} else if (handleCommandNextRoom(event)) {
-			if (chats[this.idx + 1]) {
-				this.goRoom(chats[this.idx + 1]);
-			}
+			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		} else if (handleCommandAddNewServer(event)) {
@@ -645,7 +745,7 @@ class RoomsListView extends React.Component {
 		return !isUnread;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item, header }) => {
 		const { width } = this.state;
 		const {
 			userId,
@@ -679,7 +779,7 @@ class RoomsListView extends React.Component {
 				baseUrl={baseUrl}
 				prid={item.prid}
 				showLastMessage={StoreLastMessage}
-				onPress={() => this._onPressItem(item)}
+				onPress={() => this._onPressItem(item, header)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={split ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
@@ -698,21 +798,21 @@ class RoomsListView extends React.Component {
 	renderSection = (data, header) => {
 		const { showUnread, showFavorites, groupByType } = this.props;
 
-		if (header === 'Unread' && !showUnread) {
+		if (header === UNREAD_HEADER && !showUnread) {
 			return null;
-		} else if (header === 'Favorites' && !showFavorites) {
+		} else if (header === FAVORITES_HEADER && !showFavorites) {
 			return null;
 		} else if (
 			[
-				'Discussions',
-				'Channels',
-				'Direct_Messages',
-				'Private_Groups'
+				DISCUSSIONS_HEADER,
+				CHANNELS_HEADER,
+				DM_HEADER,
+				GROUPS_HEADER
 			].includes(header)
 			&& !groupByType
 		) {
 			return null;
-		} else if (header === 'Chats' && groupByType) {
+		} else if (header === CHATS_HEADER && groupByType) {
 			return null;
 		}
 		if (data && data.length > 0) {
@@ -722,7 +822,7 @@ class RoomsListView extends React.Component {
 					extraData={data}
 					keyExtractor={keyExtractor}
 					style={styles.list}
-					renderItem={this.renderItem}
+					renderItem={({ item }) => this.renderItem({ item, header })}
 					ListHeaderComponent={() => this.renderSectionHeader(header)}
 					getItemLayout={getItemLayout}
 					enableEmptySections
@@ -755,7 +855,7 @@ class RoomsListView extends React.Component {
 					extraData={search}
 					keyExtractor={keyExtractor}
 					style={styles.list}
-					renderItem={this.renderItem}
+					renderItem={({ item }) => this.renderItem({ item, header: 'Search' })}
 					getItemLayout={getItemLayout}
 					enableEmptySections
 					removeClippedSubviews={isIOS}
@@ -768,13 +868,13 @@ class RoomsListView extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				{this.renderSection(unread, 'Unread')}
-				{this.renderSection(favorites, 'Favorites')}
-				{this.renderSection(discussions, 'Discussions')}
-				{this.renderSection(channels, 'Channels')}
-				{this.renderSection(direct, 'Direct_Messages')}
-				{this.renderSection(privateGroup, 'Private_Groups')}
-				{this.renderSection(chats, 'Chats')}
+				{this.renderSection(unread, UNREAD_HEADER)}
+				{this.renderSection(favorites, FAVORITES_HEADER)}
+				{this.renderSection(discussions, DISCUSSIONS_HEADER)}
+				{this.renderSection(channels, CHANNELS_HEADER)}
+				{this.renderSection(direct, DM_HEADER)}
+				{this.renderSection(privateGroup, GROUPS_HEADER)}
+				{this.renderSection(chats, CHATS_HEADER)}
 			</View>
 		);
 	};
@@ -797,7 +897,7 @@ class RoomsListView extends React.Component {
 					contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 					keyExtractor={keyExtractor}
 					style={styles.list}
-					renderItem={this.renderItem}
+					renderItem={({ item }) => this.renderItem({ item, header: CHATS_HEADER })}
 					ListHeaderComponent={this.renderListHeader}
 					getItemLayout={getItemLayout}
 					removeClippedSubviews={isIOS}
