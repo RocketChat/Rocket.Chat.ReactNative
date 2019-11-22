@@ -694,7 +694,10 @@ class RoomView extends React.Component {
 				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 				ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
 			} else if (handleCommandReplyLatest(event)) {
-				this.onReplyInit(this.lastItem, false);
+				if (this.list && this.list.current) {
+					const message = this.list.current.getLastMessage();
+					this.onReplyInit(message, false);
+				}
 			}
 		}
 	}
@@ -870,8 +873,6 @@ class RoomView extends React.Component {
 		);
 	}
 
-	setLastItem = item => this.lastItem = item;
-
 	setListRef = ref => this.flatList = ref;
 
 	render() {
@@ -893,7 +894,6 @@ class RoomView extends React.Component {
 					tmid={this.tmid}
 					room={room}
 					renderRow={this.renderItem}
-					setLastItem={this.setLastItem}
 					loading={loading}
 					animated={this.beginAnimating}
 				/>
