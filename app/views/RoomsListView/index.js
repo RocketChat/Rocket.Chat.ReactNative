@@ -424,6 +424,9 @@ class RoomsListView extends React.Component {
 			} else if (showUnread) {
 				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
 				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
+			} else if (showFavorites) {
+				chats = chats.filter(s => !s.f);
+				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
 				tempChats =	this.addRoomsGroup(chats, null, tempChats);
 			}
