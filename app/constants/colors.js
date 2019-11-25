@@ -1,11 +1,9 @@
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 
+const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
 export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#2de0a5';
-export const COLOR_PRIMARY = '#1d74f5';
-const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
 export const COLOR_BLACK = '#000000'; // KEEP
-export const COLOR_BUTTON_PRIMARY = COLOR_PRIMARY;
 export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: COLOR_DANGER,
@@ -13,14 +11,10 @@ export const STATUS_COLORS = {
 	offline: '#cbced1'
 };
 
-export const HEADER_BACKGROUND = isIOS ? '#f8f8f8' : '#2F343D';
-export const HEADER_TINT = isIOS ? COLOR_PRIMARY : COLOR_WHITE;
-
 export const SWITCH_TRACK_COLOR = {
 	false: isAndroid ? COLOR_DANGER : null,
 	true: COLOR_SUCCESS
 };
-
 
 export const themes = {
 	light: {
