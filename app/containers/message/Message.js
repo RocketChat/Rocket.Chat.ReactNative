@@ -93,7 +93,6 @@ const Message = React.memo((props) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props) => {
-	props.theme = 'dark';
 	if (props.hasError) {
 		return (
 			<View>
