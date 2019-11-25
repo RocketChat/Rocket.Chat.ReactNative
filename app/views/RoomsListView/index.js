@@ -180,33 +180,11 @@ class RoomsListView extends React.Component {
 			chats: [],
 			width
 		};
-		Orientation.unlockAllOrientations();
-		this.willFocusListener = props.navigation.addListener('willFocus', () => {
-			// Check if there were changes while not focused (it's set on sCU)
-			if (this.shouldUpdate) {
-				// animateNextTransition();
-				this.forceUpdate();
-				this.shouldUpdate = false;
-			}
-		});
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				this.handleBackPress
-			);
-		});
-		this.willBlurListener = props.navigation.addListener('willBlur', () => {
-			props.closeServerDropdown();
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				this.handleBackPress
-			);
-		});
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
-		const { navigation } = this.props;
+		const { navigation, closeServerDropdown } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
 			initSearchingAndroid: this.initSearchingAndroid,
@@ -216,6 +194,28 @@ class RoomsListView extends React.Component {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
+		Orientation.unlockAllOrientations();
+		this.willFocusListener = navigation.addListener('willFocus', () => {
+			// Check if there were changes while not focused (it's set on sCU)
+			if (this.shouldUpdate) {
+				// animateNextTransition();
+				this.forceUpdate();
+				this.shouldUpdate = false;
+			}
+		});
+		this.didFocusListener = navigation.addListener('didFocus', () => {
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+		});
+		this.willBlurListener = navigation.addListener('willBlur', () => {
+			closeServerDropdown();
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				this.handleBackPress
+			);
+		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
