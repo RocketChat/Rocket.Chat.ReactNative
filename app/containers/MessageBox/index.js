@@ -796,7 +796,7 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -815,7 +815,8 @@ class MessageBox extends Component {
 					trackInteractive
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
-					// addBottomView -> https://github.com/wix/react-native-keyboard-tracking-view/blob/master/lib/KeyboardTrackingViewManager.m#L450
+					addBottomView
+					bottomViewColor={themes[theme].messageboxBackground}
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}
