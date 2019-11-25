@@ -267,7 +267,7 @@ class ProfileView extends React.Component {
 	)
 
 	renderAvatarButtons = () => {
-		const { avatarUrl, avatarSuggestions } = this.state;
+		const { avatarSuggestions } = this.state;
 		const { user, baseUrl } = this.props;
 
 		return (
@@ -281,12 +281,6 @@ class ProfileView extends React.Component {
 					child: <CustomIcon name='upload' size={30} color={COLOR_TEXT} />,
 					onPress: () => this.pickImage(),
 					key: 'profile-view-upload-avatar'
-				})}
-				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} color={COLOR_TEXT} />,
-					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
-					disabled: !avatarUrl,
-					key: 'profile-view-avatar-url-button'
 				})}
 				{Object.keys(avatarSuggestions).map((service) => {
 					const { url, blob, contentType } = avatarSuggestions[service];
@@ -364,7 +358,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
+			username, avatar, saving, showPasswordAlert
 		} = this.state;
 		const { baseUrl, user } = this.props;
 
@@ -390,58 +384,6 @@ class ProfileView extends React.Component {
 								token={user.token}
 							/>
 						</View>
-						<RCTextInput
-							inputRef={(e) => { this.name = e; }}
-							label={I18n.t('Name')}
-							placeholder={I18n.t('Name')}
-							value={name}
-							onChangeText={value => this.setState({ name: value })}
-							onSubmitEditing={() => { this.username.focus(); }}
-							testID='profile-view-name'
-						/>
-						<RCTextInput
-							inputRef={(e) => { this.username = e; }}
-							label={I18n.t('Username')}
-							placeholder={I18n.t('Username')}
-							value={username}
-							onChangeText={value => this.setState({ username: value })}
-							onSubmitEditing={() => { this.email.focus(); }}
-							testID='profile-view-username'
-						/>
-						<RCTextInput
-							inputRef={(e) => { this.email = e; }}
-							label={I18n.t('Email')}
-							placeholder={I18n.t('Email')}
-							value={email}
-							onChangeText={value => this.setState({ email: value })}
-							onSubmitEditing={() => { this.newPassword.focus(); }}
-							testID='profile-view-email'
-						/>
-						<RCTextInput
-							inputRef={(e) => { this.newPassword = e; }}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							value={newPassword}
-							onChangeText={value => this.setState({ newPassword: value })}
-							onSubmitEditing={() => {
-								if (Object.keys(customFields).length) {
-									return this[Object.keys(customFields)[0]].focus();
-								}
-								this.avatarUrl.focus();
-							}}
-							secureTextEntry
-							testID='profile-view-new-password'
-						/>
-						{this.renderCustomFields()}
-						<RCTextInput
-							inputRef={(e) => { this.avatarUrl = e; }}
-							label={I18n.t('Avatar_Url')}
-							placeholder={I18n.t('Avatar_Url')}
-							value={avatarUrl}
-							onChangeText={value => this.setState({ avatarUrl: value })}
-							onSubmitEditing={this.submit}
-							testID='profile-view-avatar-url'
-						/>
 						{this.renderAvatarButtons()}
 						<Button
 							title={I18n.t('Save_Changes')}
