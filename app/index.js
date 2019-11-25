@@ -277,7 +277,7 @@ const App = createAppContainer(createSwitchNavigator(
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { theme: Appearance.getColorScheme() };
+		this.state = { theme: Appearance.getColorScheme() !== 'no-preference' ? Appearance.getColorScheme() : 'light' };
 		this.init();
 		this.initCrashReport();
 	}

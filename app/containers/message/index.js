@@ -50,7 +50,8 @@ class MessageContainer extends React.Component {
 	static defaultProps = {
 		onLongPress: () => {},
 		archived: false,
-		broadcast: false
+		broadcast: false,
+		theme: 'light'
 	}
 
 	componentDidMount() {

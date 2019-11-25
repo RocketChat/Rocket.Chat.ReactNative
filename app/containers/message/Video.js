@@ -45,7 +45,7 @@ const Video = React.memo(({
 			<Touchable
 				onPress={onPress}
 				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-				background={Touchable.Ripple(COLOR_WHITE)}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<CustomIcon
 					name='play'

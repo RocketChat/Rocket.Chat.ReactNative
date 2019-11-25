@@ -8,7 +8,7 @@ import isEqual from 'deep-equal';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	button: {
@@ -149,7 +149,7 @@ const Reply = React.memo(({
 					borderColor: themes[theme].borderColor
 				}
 			]}
-			background={Touchable.Ripple(COLOR_WHITE)}
+			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
 			<View style={styles.attachmentContainer}>
 				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />

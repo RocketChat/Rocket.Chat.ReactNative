@@ -22,7 +22,7 @@ const Discussion = React.memo(({
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={onDiscussionPress}
-					background={Touchable.Ripple(COLOR_WHITE)}
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
 					style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>

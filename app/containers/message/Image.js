@@ -8,13 +8,13 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
-const Button = React.memo(({ children, onPress }) => (
+const Button = React.memo(({ children, onPress, theme }) => (
 	<Touchable
 		onPress={onPress}
 		style={styles.imageContainer}
-		background={Touchable.Ripple(COLOR_WHITE)}
+		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		{children}
 	</Touchable>
@@ -40,7 +40,7 @@ const ImageContainer = React.memo(({
 
 	if (file.description) {
 		return (
-			<Button onPress={onPress}>
+			<Button onPress={onPress} theme={theme}>
 				<View>
 					<Image img={img} theme={theme} />
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
@@ -50,7 +50,7 @@ const ImageContainer = React.memo(({
 	}
 
 	return (
-		<Button onPress={onPress}>
+		<Button onPress={onPress} theme={theme}>
 			<Image img={img} theme={theme} />
 		</Button>
 	);
@@ -75,7 +75,8 @@ ImageContainer.displayName = 'MessageImage';
 
 Button.propTypes = {
 	children: PropTypes.node,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	theme: PropTypes.string
 };
 ImageContainer.displayName = 'MessageButton';
 

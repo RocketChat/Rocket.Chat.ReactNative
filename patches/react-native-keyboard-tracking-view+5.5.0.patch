@@ -82,15 +82,3 @@ index 0000000..a6dbe01
 +  s.dependency 'React'
 +end
 \ No newline at end of file
-diff --git a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
-index 5e2c207..b97a39a 100644
---- a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
-+++ b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
-@@ -13,6 +13,7 @@ export default class KeyboardTrackingView extends PureComponent {
-     super(props);
-   }
-   render() {
-+    console.log(this.props.bottomViewColor);
-     return (
-       <NativeKeyboardTrackingView {...this.props} ref={r => this.ref = r}/>
-     );

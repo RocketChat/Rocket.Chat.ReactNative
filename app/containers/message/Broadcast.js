@@ -18,7 +18,7 @@ const Broadcast = React.memo(({
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={replyBroadcast}
-					background={Touchable.Ripple(COLOR_WHITE)}
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
 					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>

@@ -7,7 +7,7 @@ import isEqual from 'lodash/isEqual';
 
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -90,7 +90,7 @@ const Url = React.memo(({
 					borderColor: themes[theme].borderColor
 				}
 			]}
-			background={Touchable.Ripple(COLOR_WHITE)}
+			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
 			<>
 				<UrlImage image={url.image} user={user} baseUrl={baseUrl} />
