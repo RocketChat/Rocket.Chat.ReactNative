@@ -1,7 +1,6 @@
 import { StyleSheet, PixelRatio } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { COLOR_WHITE } from '../../constants/colors';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
@@ -89,7 +88,6 @@ export default StyleSheet.create({
 		height: ROW_HEIGHT
 	},
 	actionText: {
-		color: COLOR_WHITE,
 		fontSize: 15,
 		justifyContent: 'center',
 		marginTop: 4,

@@ -9,9 +9,9 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { Video } from 'expo-av';
 
 import sharedStyles from '../views/Styles';
-import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import ActivityIndicator from './ActivityIndicator';
+import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -50,8 +50,8 @@ const ModalContent = React.memo(({
 			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: COLOR_WHITE }]}>{attachment.title}</Text>
-						{attachment.description ? <Text style={[styles.description, { color: COLOR_WHITE }]}>{attachment.description}</Text> : null}
+						<Text style={[styles.title, { color: themes[theme].buttonText }]}>{attachment.title}</Text>
+						{attachment.description ? <Text style={[styles.description, { color: themes[theme].buttonText }]}>{attachment.description}</Text> : null}
 					</View>
 				</TouchableWithoutFeedback>
 				<ImageViewer

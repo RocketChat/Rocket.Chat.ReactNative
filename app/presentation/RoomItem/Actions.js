@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const FAV_COLOR = '#ffbb00';
 const HIDE_COLOR = '#54585e';
@@ -51,7 +51,7 @@ export const LeftActions = React.memo(({
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
-							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
 						</>
 					</RectButton>
 				</Animated.View>
@@ -61,7 +61,7 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	transX, favorite, width, toggleFav, onHidePress
+	transX, favorite, width, toggleFav, onHidePress, theme
 }) => {
 	const translateXFav = transX.interpolate({
 		inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
@@ -94,8 +94,8 @@ export const RightActions = React.memo(({
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: FAV_COLOR }]} onPress={toggleFav}>
 					<>
-						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={COLOR_WHITE} />
-						<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
+						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={themes[theme].buttonText} />
+						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
 					</>
 				</RectButton>
 			</Animated.View>
@@ -110,8 +110,8 @@ export const RightActions = React.memo(({
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: HIDE_COLOR }]} onPress={onHidePress}>
 					<>
-						<CustomIcon size={20} name='eye-off' color={COLOR_WHITE} />
-						<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
+						<CustomIcon size={20} name='eye-off' color={themes[theme].buttonText} />
+						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
 					</>
 				</RectButton>
 			</Animated.View>
@@ -128,6 +128,7 @@ LeftActions.propTypes = {
 };
 
 RightActions.propTypes = {
+	theme: PropTypes.string,
 	transX: PropTypes.object,
 	favorite: PropTypes.bool,
 	width: PropTypes.number,

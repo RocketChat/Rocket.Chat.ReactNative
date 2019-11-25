@@ -2,9 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import {
-	STATUS_COLORS, COLOR_WHITE, themes
-} from '../../../constants/colors';
+import { STATUS_COLORS, themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
 import { isAndroid } from '../../../utils/deviceInfo';
@@ -32,7 +30,7 @@ const Icon = React.memo(({ type, status, theme }) => {
 	if (type === 'd') {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
-		colorStyle = { color: isAndroid && theme === 'light' ? COLOR_WHITE : themes[theme].auxiliaryText };
+		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
 	}
 
 	let icon;

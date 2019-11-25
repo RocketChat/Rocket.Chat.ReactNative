@@ -9,7 +9,7 @@ import styles from './styles';
 const AtMention = React.memo(({
 	mention, mentions, username, navToRoomInfo, preview, style = [], theme
 }) => {
-	let mentionStyle = styles.mention;
+	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
 		mentionStyle = {
 			...mentionStyle,
@@ -18,7 +18,11 @@ const AtMention = React.memo(({
 	} else if (mention === username) {
 		mentionStyle = {
 			...mentionStyle,
-			...styles.mentionLoggedUser,
+			backgroundColor: themes[theme].actionTintColor
+		};
+	} else {
+		mentionStyle = {
+			...mentionStyle,
 			color: themes[theme].actionTintColor
 		};
 	}

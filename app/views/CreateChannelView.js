@@ -19,7 +19,7 @@ import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_WHITE, SWITCH_TRACK_COLOR, themes } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 
@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	list: {
-		width: '100%',
-		backgroundColor: COLOR_WHITE
+		width: '100%'
 	},
 	separator: {
 		marginLeft: 60
@@ -41,12 +40,10 @@ const styles = StyleSheet.create({
 		height: 54,
 		paddingHorizontal: 18,
 		fontSize: 17,
-		...sharedStyles.textRegular,
-		backgroundColor: COLOR_WHITE
+		...sharedStyles.textRegular
 	},
 	swithContainer: {
 		height: 54,
-		backgroundColor: COLOR_WHITE,
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',

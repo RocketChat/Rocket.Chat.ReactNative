@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 import PropTypes from 'prop-types';
 
-import { COLOR_WHITE, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
 import { withTheme } from '../theme';
@@ -50,7 +50,7 @@ class Toast extends React.Component {
 				ref={toast => this.toast = toast}
 				position='center'
 				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
-				textStyle={[styles.text, { color: COLOR_WHITE }]}
+				textStyle={[styles.text, { color: themes[theme].buttonText }]}
 				opacity={0.9}
 			/>
 		);

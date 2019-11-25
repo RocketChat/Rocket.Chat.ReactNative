@@ -6,7 +6,7 @@ import { formatLastMessage, formatMessageCount } from './utils';
 import styles from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { THREAD } from './constants';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const Thread = React.memo(({
 	msg, tcount, tlm, customThreadTimeFormat, isThreadRoom, theme
@@ -23,8 +23,8 @@ const Thread = React.memo(({
 				style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
 				testID={`message-thread-button-${ msg }`}
 			>
-				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, { color: COLOR_WHITE }]} />
-				<Text style={[styles.buttonText, { color: COLOR_WHITE }]}>{buttonText}</Text>
+				<CustomIcon name='thread' size={20} style={[styles.buttonIcon, { color: themes[theme].buttonText }]} />
+				<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 			</View>
 			<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 		</View>

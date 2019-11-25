@@ -17,7 +17,7 @@ import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 class OnboardingView extends React.Component {
@@ -162,7 +162,7 @@ class OnboardingView extends React.Component {
 					<Button
 						type='primary'
 						title={I18n.t('Create_a_new_workspace')}
-						icon={<CustomIcon name='plus' size={30} color={COLOR_WHITE} />}
+						icon={<CustomIcon name='plus' size={30} color={themes[theme].buttonText} />}
 						onPress={this.createWorkspace}
 						testID='create-workspace-button'
 						theme={theme}

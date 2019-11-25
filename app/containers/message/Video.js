@@ -9,7 +9,7 @@ import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -50,7 +50,7 @@ const Video = React.memo(({
 				<CustomIcon
 					name='play'
 					size={54}
-					color={COLOR_WHITE}
+					color={themes[theme].buttonText}
 				/>
 			</Touchable>
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />

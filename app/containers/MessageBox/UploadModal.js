@@ -12,7 +12,7 @@ import Button from '../Button';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { isIOS } from '../../utils/deviceInfo';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 
@@ -170,7 +170,7 @@ class UploadModal extends Component {
 					underlayColor={themes[theme].tintColor}
 					activeOpacity={0.5}
 				>
-					<Text style={[styles.androidButtonText, { ...sharedStyles.textMedium, color: COLOR_WHITE }]}>{I18n.t('Send')}</Text>
+					<Text style={[styles.androidButtonText, { ...sharedStyles.textMedium, color: themes[theme].buttonText }]}>{I18n.t('Send')}</Text>
 				</TouchableHighlight>
 			</View>
 		);
@@ -184,7 +184,7 @@ class UploadModal extends Component {
 		if (file.mime && file.mime.match(/video/)) {
 			return (
 				<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
-					<CustomIcon name='play' size={72} color={COLOR_WHITE} />
+					<CustomIcon name='play' size={72} color={themes[theme].buttonText} />
 				</View>
 			);
 		}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const UnreadBadge = React.memo(({
 	theme, unread, userMentions, type
@@ -26,7 +26,7 @@ const UnreadBadge = React.memo(({
 			<Text
 				style={[
 					styles.unreadText,
-					{ color: mentioned ? COLOR_WHITE : themes[theme].bodyText }
+					{ color: mentioned ? themes[theme].buttonText : themes[theme].bodyText }
 				]}
 			>{ unread }
 			</Text>

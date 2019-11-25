@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 
 import styles from './styles';
-import { themes, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 
 export default class Button extends React.PureComponent {
@@ -50,7 +50,7 @@ export default class Button extends React.PureComponent {
 						{icon}
 					</View>
 					<View style={styles.buttonCenter}>
-						<Text style={[styles.buttonTitle, { color: isPrimary ? COLOR_WHITE : themes[theme].tintColor }, activeStyle]}>{title}</Text>
+						<Text style={[styles.buttonTitle, { color: isPrimary ? themes[theme].buttonText : themes[theme].tintColor }, activeStyle]}>{title}</Text>
 						{subtitle ? <Text style={[styles.buttonSubtitle, activeStyle, { color: themes[theme].auxiliaryText }]}>{subtitle}</Text> : null}
 					</View>
 					{type === 'secondary' ? <DisclosureIndicator theme={theme} /> : null}

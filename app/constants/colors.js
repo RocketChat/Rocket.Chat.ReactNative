@@ -3,7 +3,7 @@ import { isIOS, isAndroid } from '../utils/deviceInfo';
 export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#2de0a5';
 export const COLOR_PRIMARY = '#1d74f5';
-export const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
+const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
 export const COLOR_BLACK = '#000000'; // KEEP
 export const COLOR_BUTTON_PRIMARY = COLOR_PRIMARY;
 export const STATUS_COLORS = {
@@ -47,7 +47,8 @@ export const themes = {
 		headerTitleColor: isAndroid ? COLOR_WHITE : '#0d0e12',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
-		messageboxBackground: isIOS ? '#f8f8f8' : '#ffffff'
+		messageboxBackground: isIOS ? '#f8f8f8' : '#ffffff',
+		buttonText: '#ffffff'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -73,7 +74,8 @@ export const themes = {
 		headerTitleColor: '#FFFFFF',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
-		messageboxBackground: '#0b182c'
+		messageboxBackground: '#0b182c',
+		buttonText: '#ffffff'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -99,6 +101,7 @@ export const themes = {
 		headerTitleColor: '#f9f9f9',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
-		messageboxBackground: '#0d0d0d'
+		messageboxBackground: '#0d0d0d',
+		buttonText: '#ffffff'
 	}
 };

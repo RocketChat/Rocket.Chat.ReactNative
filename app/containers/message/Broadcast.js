@@ -7,7 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
-import { COLOR_WHITE, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const Broadcast = React.memo(({
 	author, user, broadcast, replyBroadcast, theme
@@ -23,8 +23,8 @@ const Broadcast = React.memo(({
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='back' size={20} style={styles.buttonIcon} color={COLOR_WHITE} />
-						<Text style={[styles.buttonText, { color: COLOR_WHITE }]}>{I18n.t('Reply')}</Text>
+						<CustomIcon name='back' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Reply')}</Text>
 					</>
 				</Touchable>
 			</View>
