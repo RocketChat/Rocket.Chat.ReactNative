@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TextInput, Alert
+	View, TextInput, Alert, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -25,8 +25,15 @@ import debounce from '../../utils/debounce';
 import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
+import EventEmiter from '../../utils/events';
+import {
+	KEY_COMMAND,
+	handleCommandTyping,
+	handleCommandSubmit,
+	handleCommandShowUpload
+} from '../../commands';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -98,8 +105,8 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false
 		};
-		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.focused = false;
 		this.fileOptions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
@@ -161,6 +168,10 @@ class MessageBox extends Component {
 
 		if (isAndroid) {
 			require('./EmojiKeyboard');
+		}
+
+		if (isTablet) {
+			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
@@ -239,12 +250,16 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
+		if (isTablet) {
+			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
+		this.setInput(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -253,7 +268,6 @@ class MessageBox extends Component {
 		const isTextEmpty = text.length === 0;
 		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
@@ -453,7 +467,10 @@ class MessageBox extends Component {
 	}
 
 	setShowSend = (showSend) => {
-		this.setState({ showSend });
+		const { showSend: prevShowSend } = this.state;
+		if (prevShowSend !== showSend) {
+			this.setState({ showSend });
+		}
 	}
 
 	clearInput = () => {
@@ -624,6 +641,7 @@ class MessageBox extends Component {
 		const message = this.text;
 
 		this.clearInput();
+		this.debouncedOnChangeText.stop();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
@@ -725,6 +743,21 @@ class MessageBox extends Component {
 		});
 	}
 
+	handleCommands = ({ event }) => {
+		if (handleCommandTyping(event)) {
+			if (this.focused) {
+				Keyboard.dismiss();
+			} else {
+				this.component.focus();
+			}
+			this.focused = !this.focused;
+		} else if (handleCommandSubmit(event)) {
+			this.submit();
+		} else if (handleCommandShowUpload(event)) {
+			this.showFileActions();
+		}
+	}
+
 	renderContent = () => {
 		const {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
@@ -732,6 +765,12 @@ class MessageBox extends Component {
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji
 		} = this.props;
+
+		const isAndroidTablet = isTablet && isAndroid ? {
+			multiline: false,
+			onSubmitEditing: this.submit,
+			returnKeyType: 'send'
+		} : {};
 
 		if (recording) {
 			return <Recording onFinish={this.finishAudioMessage} />;
@@ -773,6 +812,7 @@ class MessageBox extends Component {
 							multiline
 							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
+							{...isAndroidTablet}
 						/>
 						<RightButtons
 							showSend={showSend}

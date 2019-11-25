@@ -18,6 +18,9 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
+import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
+import { isTablet } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -26,6 +29,7 @@ class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
+		split: PropTypes.bool,
 		server: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
@@ -58,6 +62,9 @@ class ServerDropdown extends Component {
 				useNativeDriver: true
 			}
 		).start();
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -90,6 +97,9 @@ class ServerDropdown extends Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	close = () => {
@@ -116,12 +126,15 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart
+			server: currentServer, selectServerRequest, appStart, navigation, split
 		} = this.props;
 
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			if (split) {
+				navigation.navigate('RoomView');
+			}
 			if (!userId) {
 				appStart();
 				this.newServerTimeout = setTimeout(() => {
@@ -129,6 +142,18 @@ class ServerDropdown extends Component {
 				}, 1000);
 			} else {
 				selectServerRequest(server);
+			}
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		const { servers } = this.state;
+		const { navigation } = this.props;
+		const { input } = event;
+		if (handleCommandSelectServer(event)) {
+			if (servers[input - 1]) {
+				this.select(servers[input - 1].id);
+				navigation.navigate('RoomView');
 			}
 		}
 	}
@@ -201,6 +226,7 @@ class ServerDropdown extends Component {
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={this.renderSeparator}
+						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>
 			]
@@ -219,4 +245,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: () => dispatch(appStartAction('outside'))
 });
 
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(ServerDropdown));
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withSplit(ServerDropdown)));

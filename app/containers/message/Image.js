@@ -8,11 +8,13 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { withSplit } from '../../split';
+import sharedStyles from '../../views/Styles';
 
-const Button = React.memo(({ children, onPress }) => (
+const Button = React.memo(({ children, onPress, split }) => (
 	<Touchable
 		onPress={onPress}
-		style={styles.imageContainer}
+		style={[styles.imageContainer, split && sharedStyles.tabletContent]}
 		background={Touchable.Ripple('#fff')}
 	>
 		{children}
@@ -28,7 +30,7 @@ const Image = React.memo(({ img }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, split
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -39,7 +41,7 @@ const ImageContainer = React.memo(({
 
 	if (file.description) {
 		return (
-			<Button onPress={onPress}>
+			<Button split={split} onPress={onPress}>
 				<View>
 					<Image img={img} />
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
@@ -49,11 +51,11 @@ const ImageContainer = React.memo(({
 	}
 
 	return (
-		<Button onPress={onPress}>
+		<Button split={split} onPress={onPress}>
 			<Image img={img} />
 		</Button>
 	);
-}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file));
+}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
@@ -61,7 +63,8 @@ ImageContainer.propTypes = {
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	split: PropTypes.bool
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
@@ -72,8 +75,9 @@ ImageContainer.displayName = 'MessageImage';
 
 Button.propTypes = {
 	children: PropTypes.node,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	split: PropTypes.bool
 };
 ImageContainer.displayName = 'MessageButton';
 
-export default ImageContainer;
+export default withSplit(ImageContainer);

@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import { responsive } from 'react-native-responsive-ui';
 import Touchable from 'react-native-platform-touchable';
 
-import { isNotch, isIOS } from '../../utils/deviceInfo';
+import { isNotch, isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_BACKGROUND_NOTIFICATION, COLOR_SEPARATOR, COLOR_TEXT } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
@@ -158,7 +158,7 @@ class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = async() => {
-		const { notification: { payload }, navigation } = this.props;
+		const { notification: { payload }, navigation, baseUrl } = this.props;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
@@ -166,7 +166,7 @@ class NotificationBadge extends React.Component {
 		const name = type === 'd' ? payload.sender.username : payload.name;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name, t: type, prid
+			rid, name, t: type, prid, baseUrl
 		});
 		this.hide();
 	}
@@ -185,7 +185,7 @@ class NotificationBadge extends React.Component {
 			if (portrait) {
 				top = isNotch ? 45 : 20;
 			} else {
-				top = 0;
+				top = isTablet ? 20 : 0;
 			}
 		}
 

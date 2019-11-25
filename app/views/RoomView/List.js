@@ -24,6 +24,7 @@ export class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
+		listRef: PropTypes.func,
 		animated: PropTypes.bool
 	};
 
@@ -63,29 +64,31 @@ export class List extends React.Component {
 			this.messagesObservable = db.collections
 				.get('thread_messages')
 				.query(Q.where('rid', tmid))
-				.observeWithColumns(['_updated_at']);
-		} else {
+				.observe();
+		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
 				.query(Q.where('rid', rid))
-				.observeWithColumns(['_updated_at']);
+				.observe();
 		}
 
-		this.unsubscribeMessages();
-		this.messagesSubscription = this.messagesObservable
-			.subscribe((data) => {
-				this.interaction = InteractionManager.runAfterInteractions(() => {
-					if (tmid) {
-						data = [this.thread, ...data];
-					}
-					const messages = orderBy(data, ['ts'], ['desc']);
-					if (this.mounted) {
-						this.setState({ messages }, () => this.debouncedUpdate());
-					} else {
-						this.state.messages = messages;
-					}
+		if (rid) {
+			this.unsubscribeMessages();
+			this.messagesSubscription = this.messagesObservable
+				.subscribe((data) => {
+					this.interaction = InteractionManager.runAfterInteractions(() => {
+						if (tmid) {
+							data = [this.thread, ...data];
+						}
+						const messages = orderBy(data, ['ts'], ['desc']);
+						if (this.mounted) {
+							this.setState({ messages }, () => this.update());
+						} else {
+							this.state.messages = messages;
+						}
+					});
 				});
-			});
+		}
 	}
 
 	// this.state.loading works for this.onEndReached and RoomView.init
@@ -116,9 +119,6 @@ export class List extends React.Component {
 		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
-		}
-		if (this.debouncedUpdate && this.debouncedUpdate.stop) {
-			this.debouncedUpdate.stop();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -155,20 +155,24 @@ export class List extends React.Component {
 		this.forceUpdate();
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	debouncedUpdate = debounce(() => {
-		this.update();
-	}, 300)
-
 	unsubscribeMessages = () => {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
 		}
 	}
 
+	getLastMessage = () => {
+		const { messages } = this.state;
+		if (messages.length > 0) {
+			return messages[0];
+		}
+		return null;
+	}
+
 	renderFooter = () => {
 		const { loading } = this.state;
-		if (loading) {
+		const { rid } = this.props;
+		if (loading && rid) {
 			return <ActivityIndicator style={styles.loading} />;
 		}
 		return null;
@@ -182,13 +186,14 @@ export class List extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
+		const { rid, listRef } = this.props;
 		const { messages } = this.state;
 		return (
 			<>
-				<EmptyRoom length={messages.length} mounted={this.mounted} />
+				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<FlatList
 					testID='room-view-messages'
-					ref={ref => this.list = ref}
+					ref={listRef}
 					keyExtractor={item => item.id}
 					data={messages}
 					extraData={this.state}
