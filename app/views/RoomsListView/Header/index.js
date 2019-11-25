@@ -6,6 +6,9 @@ import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
+import EventEmitter from '../../../utils/events';
+import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
+import { isTablet } from '../../../utils/deviceInfo';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -19,6 +22,24 @@ class RoomsListHeaderView extends PureComponent {
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
+	}
+
+	componentDidMount() {
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	componentWillUnmount() {
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		if (handleCommandOpenServerDropdown(event)) {
+			this.onPress();
+		}
 	}
 
 	onSearchChangeText = (text) => {

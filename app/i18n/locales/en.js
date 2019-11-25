@@ -279,6 +279,7 @@ export default {
 	pinned: 'pinned',
 	Pinned: 'Pinned',
 	Please_enter_your_password: 'Please enter your password',
+	Preferences: 'Preferences',
 	Preferences_saved: 'Preferences saved!',
 	Privacy_Policy: ' Privacy Policy',
 	Private_Channel: 'Private Channel',
@@ -441,5 +442,19 @@ export default {
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	Change_Language: 'Change Language',
-	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order to identify problems and fix it.'
+	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order to identify problems and fix it.',
+	Type_message: 'Type message',
+	Room_search: 'Rooms search',
+	Room_selection: 'Room selection 1...9',
+	Next_room: 'Next room',
+	Previous_room: 'Previous room',
+	New_room: 'New room',
+	Upload_room: 'Upload to room',
+	Search_messages: 'Search messages',
+	Scroll_messages: 'Scroll messages',
+	Reply_latest: 'Reply to latest',
+	Server_selection: 'Server selection',
+	Server_selection_numbers: 'Server selection 1...9',
+	Add_server: 'Add server',
+	New_line: 'New line'
 };

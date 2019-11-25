@@ -21,6 +21,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import ModalNavigation from '../../lib/ModalNavigation';
 
 const Separator = React.memo(() => <View style={styles.separator} />);
 const API_FETCH_COUNT = 50;
@@ -35,7 +36,8 @@ class ThreadMessagesView extends React.Component {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	constructor(props) {
@@ -258,11 +260,16 @@ class ThreadMessagesView extends React.Component {
 	)
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
+		const { navigation, user, screenProps } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		navigation.navigate('RoomInfoView', navParam);
+		if (screenProps && screenProps.split) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
+			ModalNavigation.navigate('RoomInfoView', navParam);
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
 	}
 
 	renderItem = ({ item }) => {

@@ -19,6 +19,7 @@ import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_PRIMARY } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -173,7 +174,7 @@ class LoginView extends React.Component {
 	renderTOTP = () => {
 		const { isFetching } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
 				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
 				<TextInput
@@ -204,7 +205,7 @@ class LoginView extends React.Component {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching
 		} = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='login-view' forceInset={{ vertical: 'never' }}>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
 				<TextInput
 					autoFocus

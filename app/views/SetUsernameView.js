@@ -17,6 +17,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -49,7 +50,9 @@ class SetUsernameView extends React.Component {
 		};
 		const { server } = this.props;
 		props.navigation.setParams({ title: server });
-		Orientation.lockToPortrait();
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 	}
 
 	async componentDidMount() {

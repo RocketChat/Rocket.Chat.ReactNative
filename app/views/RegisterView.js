@@ -20,6 +20,7 @@ import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
+import { isTablet } from '../utils/deviceInfo';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -186,7 +187,7 @@ class RegisterView extends React.Component {
 			<KeyboardView contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='register-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							autoFocus

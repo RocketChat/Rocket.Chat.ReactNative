@@ -21,12 +21,19 @@ import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_WHITE } from '../../constants/colors';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 const renderSeparator = () => <View style={styles.separator} />;
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Actions')
+	static navigationOptions = ({ navigation, screenProps }) => {
+		const options = {
+			title: I18n.t('Actions')
+		};
+		if (screenProps.split) {
+			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		}
+		return options;
 	}
 
 	static propTypes = {

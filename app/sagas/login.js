@@ -114,7 +114,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
 		} else {
-			yield put(appStart('inside'));
+			const currentRoot = yield select(state => state.app.root);
+			if (currentRoot !== 'inside') {
+				yield put(appStart('inside'));
+			}
 		}
 	} catch (e) {
 		log(e);

@@ -17,6 +17,7 @@ import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { COLOR_SEPARATOR, COLOR_BORDER } from '../constants/colors';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -407,7 +408,7 @@ class LoginSignupView extends React.Component {
 
 	render() {
 		return (
-			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container]} {...scrollPersistTaps}>
+			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container, isTablet && sharedStyles.tabletScreenContent]} {...scrollPersistTaps}>
 				<StatusBar />
 				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}

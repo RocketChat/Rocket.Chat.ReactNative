@@ -7,6 +7,7 @@ import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
+import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
 
 import KeyboardView from '../../presentation/KeyboardView';
@@ -27,11 +28,18 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_TEXT } from '../../constants/colors';
+import { COLOR_TEXT, HEADER_BACK } from '../../constants/colors';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <DrawerButton navigation={navigation} />,
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		headerLeft: screenProps.split ? (
+			<HeaderBackButton
+				onPress={() => navigation.navigate('SettingsView')}
+				tintColor={HEADER_BACK}
+			/>
+		) : (
+			<DrawerButton navigation={navigation} />
+		),
 		title: I18n.t('Profile')
 	})
 
