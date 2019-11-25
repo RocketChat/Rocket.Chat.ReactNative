@@ -170,6 +170,7 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
+		this.gotSubscriptions = false;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -219,15 +220,19 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText } = this.props;
+		const { loadingServer, searchText, server } = this.props;
 
 		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
 			if (nextProps.loadingServer) {
-				this.internalSetState({ loading: true });
+				this.setState({ loading: true });
 			} else {
 				this.getSubscriptions();
 			}
-		} else if (searchText !== nextProps.searchText) {
+		}
+		if (server && server !== nextProps.server) {
+			this.gotSubscriptions = false;
+		}
+		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
 		}
 	}
@@ -297,7 +302,7 @@ class RoomsListView extends React.Component {
 				&& prevProps.showUnread === showUnread
 			)
 		) {
-			this.getSubscriptions();
+			this.getSubscriptions(true);
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
@@ -307,9 +312,6 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.getSubscriptions && this.getSubscriptions.stop) {
-			this.getSubscriptions.stop();
-		}
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
@@ -350,7 +352,12 @@ class RoomsListView extends React.Component {
 		return allData;
 	}
 
-	getSubscriptions = debounce(async() => {
+	getSubscriptions = async(force = false) => {
+		if (this.gotSubscriptions && !force) {
+			return;
+		}
+		this.gotSubscriptions = true;
+
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
@@ -437,7 +444,7 @@ class RoomsListView extends React.Component {
 				loading: false
 			});
 		});
-	}, 300, true);
+	}
 
 	initSearchingAndroid = () => {
 		const { openSearchHeader, navigation } = this.props;
