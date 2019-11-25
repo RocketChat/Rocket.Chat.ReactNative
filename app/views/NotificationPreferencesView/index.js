@@ -205,12 +205,13 @@ class NotificationPreferencesView extends React.Component {
 
 	renderPicker = (key) => {
 		const { room } = this.state;
+		const { theme } = this.props;
 		return (
 			<RNPickerSelect
 				testID={key}
 				style={{ viewContainer: styles.viewContainer }}
 				value={room[key]}
-				textInputProps={{ style: styles.pickerText }}
+				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
 				onValueChange={value => this.onValueChangePicker(key, value)}

@@ -256,7 +256,7 @@ class NewServerView extends React.Component {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
-				<StatusBar light />
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />

@@ -18,7 +18,8 @@ const AtMention = React.memo(({
 	} else if (mention === username) {
 		mentionStyle = {
 			...mentionStyle,
-			...styles.mentionLoggedUser
+			...styles.mentionLoggedUser,
+			color: themes[theme].actionTintColor
 		};
 	}
 

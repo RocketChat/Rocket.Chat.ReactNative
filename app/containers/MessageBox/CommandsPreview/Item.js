@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 
 import styles from '../styles';
 import { CustomIcon } from '../../../lib/Icons';
-import { COLOR_PRIMARY } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 import MessageboxContext from '../Context';
 import ActivityIndicator from '../../ActivityIndicator';
 
@@ -32,7 +32,7 @@ const Item = ({ item, theme }) => {
 						{ loading ? <ActivityIndicator theme={theme} /> : null }
 					</FastImage>
 				)
-				: <CustomIcon name='file-generic' size={36} color={COLOR_PRIMARY} />
+				: <CustomIcon name='file-generic' size={36} color={themes[theme].actionTintColor} />
 			}
 		</TouchableOpacity>
 	);

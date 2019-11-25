@@ -17,7 +17,7 @@ import { isIOS, isNotch } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_PRIMARY, COLOR_WHITE, themes } from '../../constants/colors';
+import { COLOR_WHITE, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 class OnboardingView extends React.Component {
@@ -104,6 +104,7 @@ class OnboardingView extends React.Component {
 	}
 
 	renderClose = () => {
+		const { theme } = this.props;
 		if (this.previousServer) {
 			let top = 15;
 			if (isIOS) {
@@ -118,7 +119,7 @@ class OnboardingView extends React.Component {
 					<CustomIcon
 						name='cross'
 						size={30}
-						color={COLOR_PRIMARY}
+						color={themes[theme].actionTintColor}
 					/>
 				</TouchableOpacity>
 			);
@@ -144,7 +145,7 @@ class OnboardingView extends React.Component {
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
-						icon={<CustomIcon name='permalink' size={30} color={COLOR_PRIMARY} />}
+						icon={<CustomIcon name='permalink' size={30} color={themes[theme].actionTintColor} />}
 						onPress={this.connectServer}
 						testID='connect-server-button'
 						theme={theme}

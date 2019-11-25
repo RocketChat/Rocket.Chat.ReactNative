@@ -6,7 +6,7 @@ import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 import Avatar from '../containers/Avatar';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { COLOR_PRIMARY, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import Touch from '../utils/touch';
 
 const styles = StyleSheet.create({
@@ -35,8 +35,7 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		marginHorizontal: 15,
-		alignSelf: 'center',
-		color: COLOR_PRIMARY
+		alignSelf: 'center'
 	}
 });
 
@@ -66,7 +65,7 @@ const UserItem = ({
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>{name}</Text>
 						<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>@{username}</Text>
 					</View>
-					{icon ? <CustomIcon name={icon} size={22} style={styles.icon} /> : null}
+					{icon ? <CustomIcon name={icon} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
 				</View>
 			</Touch>
 		</LongPressGestureHandler>

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_PRIMARY } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -30,7 +29,6 @@ export default StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 16,
-		color: COLOR_PRIMARY
+		fontSize: 16
 	}
 });

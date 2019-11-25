@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import { COLOR_WHITE } from '../../constants/colors';
 
 const codeFontFamily = Platform.select({
 	ios: { fontFamily: 'Courier New' },
@@ -61,8 +61,7 @@ export default StyleSheet.create({
 		backgroundColor: '#E8F2FF'
 	},
 	mentionLoggedUser: {
-		color: COLOR_WHITE,
-		backgroundColor: COLOR_PRIMARY
+		color: COLOR_WHITE
 	},
 	mentionAll: {
 		color: COLOR_WHITE,
@@ -96,7 +95,6 @@ export default StyleSheet.create({
 	},
 	link: {
 		fontSize: 16,
-		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
 	edited: {
