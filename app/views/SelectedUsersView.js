@@ -196,7 +196,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	renderSelected = () => {
-		const { users } = this.props;
+		const { users, theme } = this.props;
 
 		if (users.length === 0) {
 			return null;
@@ -205,7 +205,7 @@ class SelectedUsersView extends React.Component {
 			<FlatList
 				data={users}
 				keyExtractor={item => item._id}
-				style={sharedStyles.separatorTop}
+				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
 				enableEmptySections
@@ -242,9 +242,9 @@ class SelectedUsersView extends React.Component {
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
-		let style = {};
+		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
-			style = { ...sharedStyles.separatorTop };
+			style = { ...style, ...sharedStyles.separatorTop };
 		}
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };

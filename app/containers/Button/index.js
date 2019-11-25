@@ -61,7 +61,7 @@ export default class Button extends React.PureComponent {
 					styles.container,
 					backgroundColor
 						? { backgroundColor }
-						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : 'transparent' },
+						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor },
 					disabled && { backgroundColor: themes[theme].borderColor },
 					style
 				]}

@@ -238,9 +238,26 @@ class NewServerView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.certificatePicker}>
-				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].titleText }]}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
-				<TouchableOpacity onPress={certificate ? this.showActionSheet : this.chooseCertificate} testID='new-server-choose-certificate'>
-					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor }]}>{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}</Text>
+				<Text
+					style={[
+						styles.chooseCertificateTitle,
+						{ color: themes[theme].auxiliaryText }
+					]}
+				>
+					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
+				</Text>
+				<TouchableOpacity
+					onPress={certificate ? this.showActionSheet : this.chooseCertificate}
+					testID='new-server-choose-certificate'
+				>
+					<Text
+						style={[
+							styles.chooseCertificate,
+							{ color: themes[theme].tintColor }
+						]}
+					>
+						{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}
+					</Text>
 				</TouchableOpacity>
 			</View>
 		);

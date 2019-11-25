@@ -137,7 +137,7 @@ class Markdown extends PureComponent {
 
 	renderText = ({ context, literal }) => {
 		const {
-			numberOfLines, preview, style = [], theme
+			numberOfLines, preview, style = []
 		} = this.props;
 		const defaultStyle = [
 			this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : {},
@@ -147,7 +147,6 @@ class Markdown extends PureComponent {
 			<Text
 				style={[
 					styles.text,
-					{ color: themes[theme].titleText },
 					!preview ? defaultStyle : {},
 					...style
 				]}
@@ -206,12 +205,12 @@ class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
-		const { numberOfLines, style } = this.props;
+		const { numberOfLines, style, theme } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
-			<Text style={style} numberOfLines={numberOfLines}>
+			<Text style={[style, { color: themes[theme].titleText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);

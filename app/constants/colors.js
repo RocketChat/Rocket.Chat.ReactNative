@@ -1,6 +1,5 @@
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 
-const COLOR_WHITE = '#fff'; // TODO: we shouldn't be using this color directly. Maybe we could remove the export.
 export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#2de0a5';
 export const COLOR_BLACK = '#000000'; // KEEP
@@ -37,8 +36,8 @@ export const themes = {
 		strongAccent: '', // ???
 		separatorColor: '#A7A7AA', // TODO: use it on separators
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
-		headerTintColor: isAndroid ? COLOR_WHITE : '#1d74f5',
-		headerTitleColor: isAndroid ? COLOR_WHITE : '#0d0e12',
+		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
+		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		messageboxBackground: isIOS ? '#f8f8f8' : '#ffffff',
