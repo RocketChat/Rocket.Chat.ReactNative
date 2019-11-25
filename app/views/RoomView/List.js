@@ -64,12 +64,12 @@ export class List extends React.Component {
 			this.messagesObservable = db.collections
 				.get('thread_messages')
 				.query(Q.where('rid', tmid))
-				.observeWithColumns(['_updated_at']);
+				.observe();
 		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
 				.query(Q.where('rid', rid))
-				.observeWithColumns(['_updated_at']);
+				.observe();
 		}
 
 		if (rid) {
@@ -82,7 +82,7 @@ export class List extends React.Component {
 						}
 						const messages = orderBy(data, ['ts'], ['desc']);
 						if (this.mounted) {
-							this.setState({ messages }, () => this.debouncedUpdate());
+							this.setState({ messages }, () => this.update());
 						} else {
 							this.state.messages = messages;
 						}
@@ -120,9 +120,6 @@ export class List extends React.Component {
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
-		if (this.debouncedUpdate && this.debouncedUpdate.stop) {
-			this.debouncedUpdate.stop();
-		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -157,11 +154,6 @@ export class List extends React.Component {
 		animateNextTransition();
 		this.forceUpdate();
 	};
-
-	// eslint-disable-next-line react/sort-comp
-	debouncedUpdate = debounce(() => {
-		this.update();
-	}, 300)
 
 	unsubscribeMessages = () => {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
