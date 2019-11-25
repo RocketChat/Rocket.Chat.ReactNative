@@ -428,7 +428,7 @@ class RoomsListView extends React.Component {
 				chats = chats.filter(s => !s.f);
 				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
-				tempChats =	this.addRoomsGroup(chats, null, tempChats);
+				tempChats =	chats;
 			}
 
 			this.internalSetState({
