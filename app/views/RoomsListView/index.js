@@ -204,17 +204,11 @@ class RoomsListView extends React.Component {
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				this.handleBackPress
-			);
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
 			closeServerDropdown();
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				this.handleBackPress
-			);
+			this.backHandler.remove();
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
