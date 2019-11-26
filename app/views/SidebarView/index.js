@@ -21,6 +21,7 @@ import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import openLink from '../../utils/openLink';
 
 const keyExtractor = item => item.id;
 
@@ -149,6 +150,10 @@ class Sidebar extends Component {
 		logout();
 	}
 
+	onPressCommunityProfile = () => {
+		openLink('https://app.milchjugend.ch/members/me');
+	}
+
 	sidebarNavigate = (route) => {
 		const { navigation } = this.props;
 		navigation.navigate(route);
@@ -193,7 +198,13 @@ class Sidebar extends Component {
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
-					text={I18n.t('Profile')}
+					text={I18n.t('Community_Profile')}
+					left={<CustomIcon name='discover' size={20} color={COLOR_TEXT} />}
+					onPress={this.onPressCommunityProfile}
+					testID='sidebar-community-profile'
+				/>
+				<SidebarItem
+					text={I18n.t('Chat_Profile_Image')}
 					left={<CustomIcon name='user' size={20} color={COLOR_TEXT} />}
 					onPress={() => this.sidebarNavigate('ProfileView')}
 					testID='sidebar-profile'

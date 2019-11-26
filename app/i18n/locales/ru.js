@@ -305,5 +305,7 @@ export default {
 	you_were_mentioned: 'вы были упомянуты',
 	You_will_not_be_able_to_recover_this_message: 'Вы не сможете восстановить это сообщение!',
 	you: 'вы',
-	Your_server: 'Ваш сервер'
+	Your_server: 'Ваш сервер',
+	Community_Profile: 'My Planet',
+	Chat_Profile_Image: 'Chat Profil Image'
 };
