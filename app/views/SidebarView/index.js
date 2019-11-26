@@ -154,6 +154,10 @@ class Sidebar extends Component {
 		openLink('https://app.milchjugend.ch/members/me');
 	}
 
+	onPressAgenda = () => {
+		openLink('https://app.milchjugend.ch/events');
+	}
+
 	sidebarNavigate = (route) => {
 		const { navigation } = this.props;
 		navigation.navigate(route);
@@ -202,6 +206,12 @@ class Sidebar extends Component {
 					left={<CustomIcon name='discover' size={20} color={COLOR_TEXT} />}
 					onPress={this.onPressCommunityProfile}
 					testID='sidebar-community-profile'
+				/>
+				<SidebarItem
+					text={I18n.t('Agenda')}
+					left={<CustomIcon name='calendar' size={20} color={COLOR_TEXT} />}
+					onPress={this.onPressAgenda}
+					testID='sidebar-agenda'
 				/>
 				<SidebarItem
 					text={I18n.t('Chat_Profile_Image')}

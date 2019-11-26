@@ -354,5 +354,6 @@ export default {
 	You: 'Vous',
 	You_will_not_be_able_to_recover_this_message: 'Vous ne serez pas en mesure de récupérer ce message!',
 	Community_Profile: 'My Planet',
+	Agenda: 'Agenda',
 	Chat_Profile_Image: 'Chat Profil Image'
 };

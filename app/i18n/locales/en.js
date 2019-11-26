@@ -440,5 +440,6 @@ export default {
 	Change_Language: 'Change Language',
 	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order to identify problems and fix it.',
 	Community_Profile: 'My Planet',
+	Agenda: 'Agenda',
 	Chat_Profile_Image: 'Chat Profil Image'
 };

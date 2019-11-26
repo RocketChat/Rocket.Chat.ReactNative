@@ -348,5 +348,6 @@ export default {
 	you: '你',
 	Your_server: '你的服务器',
 	Community_Profile: 'My Planet',
+	Agenda: 'Agenda',
 	Chat_Profile_Image: 'Chat Profil Image'
 };
