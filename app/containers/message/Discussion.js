@@ -28,7 +28,7 @@ const Discussion = React.memo(({
 				>
 					<>
 						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
-						<Text style={[styles.buttonText, { color: themes[theme].auxiliaryText }]}>{buttonText}</Text>
+						<Text style={[styles.buttonText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 					</>
 				</Touchable>
 				<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>

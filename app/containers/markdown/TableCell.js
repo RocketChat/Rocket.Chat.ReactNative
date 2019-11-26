@@ -25,7 +25,7 @@ const TableCell = React.memo(({
 
 	return (
 		<View style={[...cellStyle, { width: CELL_WIDTH }]}>
-			<Text style={textStyle}>
+			<Text style={[textStyle, { color: themes[theme].titleText }]}>
 				{children}
 			</Text>
 		</View>
