@@ -398,5 +398,7 @@ export default {
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'Sie können diese Nachricht nicht wiederherstellen!',
 	Change_Language: 'Sprache ändern',
-	Crash_report_disclaimer: 'Wir verfolgen niemals den Inhalt Ihrer Chats. Der Crash-Report enthält nur für uns relevante Informationen in der Reihenfolge '
+	Crash_report_disclaimer: 'Wir verfolgen niemals den Inhalt Ihrer Chats. Der Crash-Report enthält nur für uns relevante Informationen in der Reihenfolge ',
+	Community_Profile: 'Mein Planet',
+	Chat_Profile_Image: 'Chat-Profilbild'
 };

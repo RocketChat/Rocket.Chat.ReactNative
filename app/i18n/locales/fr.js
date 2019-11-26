@@ -352,5 +352,7 @@ export default {
 	you_were_mentioned: 'vous avez été mentionné',
 	you: 'vous',
 	You: 'Vous',
-	You_will_not_be_able_to_recover_this_message: 'Vous ne serez pas en mesure de récupérer ce message!'
+	You_will_not_be_able_to_recover_this_message: 'Vous ne serez pas en mesure de récupérer ce message!',
+	Community_Profile: 'My Planet',
+	Chat_Profile_Image: 'Chat Profil Image'
 };
