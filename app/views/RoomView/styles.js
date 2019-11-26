@@ -21,11 +21,9 @@ export default StyleSheet.create({
 		marginVertical: 15
 	},
 	reactionPickerContainer: {
-		// width: width - 20,
-		// height: width - 20,
-		// backgroundColor: '#F7F7F7',
 		borderRadius: 4,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		overflow: 'hidden'
 	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',

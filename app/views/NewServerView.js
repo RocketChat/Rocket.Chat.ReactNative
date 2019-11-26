@@ -18,7 +18,7 @@ import TextInput from '../containers/TextInput';
 import I18n from '../i18n';
 import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
-import { isIOS, isNotch } from '../utils/deviceInfo';
+import { isIOS, isNotch, isTablet } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
@@ -278,30 +278,32 @@ class NewServerView extends React.Component {
 					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
-						<TextInput
-							autoFocus={autoFocus}
-							containerStyle={styles.inputContainer}
-							placeholder={defaultServer}
-							value={text}
-							returnKeyType='send'
-							onChangeText={this.onChangeText}
-							testID='new-server-view-input'
-							onSubmitEditing={this.submit}
-							clearButtonMode='while-editing'
-							keyboardType='url'
-							textContentType='URL'
-							theme={theme}
-						/>
-						<Button
-							title={I18n.t('Connect')}
-							type='primary'
-							onPress={this.submit}
-							disabled={!text}
-							loading={connecting}
-							testID='new-server-view-button'
-							theme={theme}
-						/>
-						{ isIOS ? this.renderCertificatePicker() : null }
+						<View style={isTablet && sharedStyles.tabletScreenContent}>
+							<TextInput
+								autoFocus={autoFocus}
+								containerStyle={styles.inputContainer}
+								placeholder={defaultServer}
+								value={text}
+								returnKeyType='send'
+								onChangeText={this.onChangeText}
+								testID='new-server-view-input'
+								onSubmitEditing={this.submit}
+								clearButtonMode='while-editing'
+								keyboardType='url'
+								textContentType='URL'
+								theme={theme}
+							/>
+							<Button
+								title={I18n.t('Connect')}
+								type='primary'
+								onPress={this.submit}
+								disabled={!text}
+								loading={connecting}
+								testID='new-server-view-button'
+								theme={theme}
+							/>
+							{ isIOS ? this.renderCertificatePicker() : null }
+						</View>
 					</SafeAreaView>
 				</ScrollView>
 				{this.renderBack()}

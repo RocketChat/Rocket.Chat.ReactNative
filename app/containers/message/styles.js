@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
+import { isTablet } from '../../utils/deviceInfo';
 
 export default StyleSheet.create({
 	root: {
@@ -107,8 +108,8 @@ export default StyleSheet.create({
 	},
 	image: {
 		width: '100%',
-		maxWidth: 400,
-		minHeight: 200,
+		// maxWidth: 400,
+		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		borderWidth: 1
 	},

@@ -1,23 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
-
-const styles = StyleSheet.create({
-	more: {
-		marginHorizontal: 0,
-		marginLeft: 0,
-		marginRight: 5
-	},
-	thread: {
-		marginHorizontal: 0,
-		marginLeft: 0,
-		marginRight: 15
-	}
-});
 
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
@@ -27,8 +13,7 @@ class RightButtonsContainer extends React.PureComponent {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		navigation: PropTypes.object,
-		toggleFollowThread: PropTypes.func,
-		room: PropTypes.object
+		toggleFollowThread: PropTypes.func
 	};
 
 	constructor(props) {
@@ -75,13 +60,6 @@ class RightButtonsContainer extends React.PureComponent {
 		navigation.navigate('ThreadMessagesView', { rid, t });
 	}
 
-	goRoomActionsView = () => {
-		const {
-			rid, t, navigation, room
-		} = this.props;
-		navigation.navigate('RoomActionsView', { rid, t, room });
-	}
-
 	toggleFollowThread = () => {
 		const { isFollowingThread } = this.state;
 		const { toggleFollowThread } = this.props;
@@ -116,16 +94,8 @@ class RightButtonsContainer extends React.PureComponent {
 						iconName='thread'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
-						buttonStyle={styles.thread}
 					/>
 				) : null}
-				<Item
-					title='more'
-					iconName='menu'
-					onPress={this.goRoomActionsView}
-					testID='room-view-header-actions'
-					buttonStyle={styles.more}
-				/>
 			</CustomHeaderButtons>
 		);
 	}

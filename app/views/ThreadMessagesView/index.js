@@ -24,6 +24,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import ModalNavigation from '../../lib/ModalNavigation';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -44,7 +45,8 @@ class ThreadMessagesView extends React.Component {
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	constructor(props) {
@@ -273,11 +275,16 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
+		const { navigation, user, screenProps } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		navigation.navigate('RoomInfoView', navParam);
+		if (screenProps && screenProps.split) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
+			ModalNavigation.navigate('RoomInfoView', navParam);
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
 	}
 
 	renderItem = ({ item }) => {

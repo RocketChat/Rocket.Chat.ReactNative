@@ -28,7 +28,7 @@ export default class EmojiKeyboard extends React.PureComponent {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.emojiKeyboardContainer, { borderTopColor: themes[theme].borderColor }]} testID='messagebox-keyboard-emoji'>
-				<EmojiPicker onEmojiSelected={emoji => this.onEmojiSelected(emoji)} baseUrl={this.baseUrl} />
+				<EmojiPicker onEmojiSelected={this.onEmojiSelected} baseUrl={this.baseUrl} />
 			</View>
 		);
 	}

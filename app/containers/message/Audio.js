@@ -14,6 +14,7 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -75,6 +76,7 @@ class Audio extends React.Component {
 		user: PropTypes.object.isRequired,
 		useMarkdown: PropTypes.bool,
 		theme: PropTypes.string,
+		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
 	}
 
@@ -93,7 +95,7 @@ class Audio extends React.Component {
 		const {
 			currentTime, duration, paused, uri
 		} = this.state;
-		const { file } = this.props;
+		const { file, split } = this.props;
 		if (nextState.currentTime !== currentTime) {
 			return true;
 		}
@@ -107,6 +109,9 @@ class Audio extends React.Component {
 			return true;
 		}
 		if (!equal(nextProps.file, file)) {
+			return true;
+		}
+		if (nextProps.split !== split) {
 			return true;
 		}
 		return false;
@@ -149,7 +154,7 @@ class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji, useMarkdown, theme
+			user, baseUrl, file, getCustomEmoji, useMarkdown, split, theme
 		} = this.props;
 		const { description } = file;
 
@@ -159,7 +164,13 @@ class Audio extends React.Component {
 
 		return (
 			<>
-				<View style={[styles.audioContainer, { backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }]}>
+				<View
+					style={[
+						styles.audioContainer,
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor },
+						split && sharedStyles.tabletContent
+					]}
+				>
 					<Video
 						ref={this.setRef}
 						source={{ uri }}
@@ -191,4 +202,4 @@ class Audio extends React.Component {
 	}
 }
 
-export default Audio;
+export default withSplit(Audio);

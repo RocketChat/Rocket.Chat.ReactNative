@@ -20,6 +20,7 @@ import log from '../utils/log';
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -54,7 +55,9 @@ class SetUsernameView extends React.Component {
 		};
 		const { server } = this.props;
 		props.navigation.setParams({ title: server });
-		Orientation.lockToPortrait();
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 	}
 
 	async componentDidMount() {

@@ -9,6 +9,7 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	button: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 6,
-		alignSelf: 'flex-end',
+		alignSelf: 'flex-start',
 		borderWidth: 1,
 		borderRadius: 4
 	},
@@ -121,7 +122,7 @@ const Fields = React.memo(({ attachment, theme }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields));
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, theme
+	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, split, theme
 }) => {
 	if (!attachment) {
 		return null;
@@ -147,7 +148,8 @@ const Reply = React.memo(({
 				{
 					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].borderColor
-				}
+				},
+				split && sharedStyles.tabletContent
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
@@ -166,7 +168,7 @@ const Reply = React.memo(({
 			</View>
 		</Touchable>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment));
+}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,
@@ -176,7 +178,8 @@ Reply.propTypes = {
 	index: PropTypes.number,
 	useMarkdown: PropTypes.bool,
 	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	split: PropTypes.bool
 };
 Reply.displayName = 'MessageReply';
 
@@ -203,4 +206,4 @@ Fields.propTypes = {
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default Reply;
+export default withSplit(Reply);

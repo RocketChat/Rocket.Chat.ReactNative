@@ -9,6 +9,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	button: {
@@ -70,7 +71,7 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 });
 
 const Url = React.memo(({
-	url, index, user, baseUrl, theme
+	url, index, user, baseUrl, split, theme
 }) => {
 	if (!url) {
 		return null;
@@ -88,7 +89,8 @@ const Url = React.memo(({
 				{
 					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].borderColor
-				}
+				},
+				split && sharedStyles.tabletContent
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
@@ -98,19 +100,19 @@ const Url = React.memo(({
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split);
 
 const Urls = React.memo(({
-	urls, user, baseUrl, theme
+	urls, user, baseUrl, split, theme
 }) => {
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
 	return urls.map((url, index) => (
-		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} theme={theme} />
+		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} split={split} theme={theme} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls));
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split);
 
 UrlImage.propTypes = {
 	image: PropTypes.string,
@@ -131,7 +133,8 @@ Url.propTypes = {
 	index: PropTypes.number,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	split: PropTypes.bool
 };
 Url.displayName = 'MessageUrl';
 
@@ -139,8 +142,9 @@ Urls.propTypes = {
 	urls: PropTypes.array,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	split: PropTypes.bool
 };
 Urls.displayName = 'MessageUrls';
 
-export default withTheme(Urls);
+export default withTheme(withSplit(Urls));

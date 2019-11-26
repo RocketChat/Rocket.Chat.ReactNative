@@ -93,6 +93,9 @@ export default StyleSheet.create({
 		marginTop: 4,
 		...sharedStyles.textSemibold
 	},
+	actionLeftContainer: {
+		backgroundColor: COLOR_PRIMARY
+	},
 	actionLeftButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,

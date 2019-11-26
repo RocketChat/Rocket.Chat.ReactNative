@@ -89,6 +89,7 @@ class UploadProgress extends Component {
 
 	init = () => {
 		const { rid } = this.props;
+		if (!rid) { return; }
 
 		const db = database.active;
 		this.uploadsObservable = db.collections

@@ -6,10 +6,11 @@ import isEqual from 'deep-equal';
 
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -44,7 +45,7 @@ const Video = React.memo(({
 		<>
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
+				style={[styles.button, { backgroundColor: themes[theme].videoBackground }, isTablet && sharedStyles.tabletContent]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<CustomIcon

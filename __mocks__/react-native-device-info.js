@@ -1,5 +1,6 @@
 export default {
 	getModel: () => '',
 	getReadableVersion: () => '',
-	getBundleId: () => ''
+	getBundleId: () => '',
+	isTablet: () => false
 };

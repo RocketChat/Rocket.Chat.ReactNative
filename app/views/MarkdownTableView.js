@@ -8,7 +8,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 
-class TableView extends React.Component {
+class MarkdownTableView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		...themedHeader(screenProps.theme),
 		title: I18n.t('Table')
@@ -42,4 +42,4 @@ class TableView extends React.Component {
 	}
 }
 
-export default withTheme(TableView);
+export default withTheme(MarkdownTableView);

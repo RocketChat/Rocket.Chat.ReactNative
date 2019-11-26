@@ -50,6 +50,6 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	customCategoryEmoji: {
-		margin: 4
+		margin: 8
 	}
 });

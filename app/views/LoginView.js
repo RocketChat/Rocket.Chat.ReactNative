@@ -21,6 +21,7 @@ import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -175,9 +176,25 @@ class LoginView extends React.Component {
 	renderTOTP = () => {
 		const { isFetching, theme } = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='login-view' forceInset={{ vertical: 'never' }}>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: themes[theme].titleText }]}>{I18n.t('Two_Factor_Authentication')}</Text>
-				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}>{I18n.t('Whats_your_2fa')}</Text>
+			<SafeAreaView
+				style={[
+					sharedStyles.container,
+					isTablet && sharedStyles.tabletScreenContent,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='login-view'
+				forceInset={{ vertical: 'never' }}
+			>
+				<Text
+					style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: themes[theme].titleText }]}
+				>
+					{I18n.t('Two_Factor_Authentication')}
+				</Text>
+				<Text
+					style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}
+				>
+					{I18n.t('Whats_your_2fa')}
+				</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
 					autoFocus
@@ -208,7 +225,15 @@ class LoginView extends React.Component {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching, theme
 		} = this.props;
 		return (
-			<SafeAreaView style={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='login-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={[
+					sharedStyles.container,
+					isTablet && sharedStyles.tabletScreenContent,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='login-view'
+				forceInset={{ vertical: 'never' }}
+			>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
 					autoFocus

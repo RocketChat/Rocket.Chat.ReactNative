@@ -25,7 +25,7 @@ export const LeftActions = React.memo(({
 	});
 	return (
 		<View
-			style={styles.actionsContainer}
+			style={[styles.actionsContainer, styles.actionLeftContainer]}
 			pointerEvents='box-none'
 		>
 			<Animated.View

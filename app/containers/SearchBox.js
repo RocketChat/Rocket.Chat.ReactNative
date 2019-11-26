@@ -51,12 +51,13 @@ const CancelButton = (onCancelPress, theme) => (
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, theme, ...props
+	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
 }) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].borderColor }]}>
 			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
+				ref={inputRef}
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
@@ -81,8 +82,9 @@ SearchBox.propTypes = {
 	onSubmitEditing: PropTypes.func,
 	hasCancel: PropTypes.bool,
 	onCancelPress: PropTypes.func,
-	testID: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	inputRef: PropTypes.func,
+	testID: PropTypes.string
 };
 
 export default withTheme(SearchBox);

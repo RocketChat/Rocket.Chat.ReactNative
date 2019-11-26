@@ -8,12 +8,16 @@ import Touchable from 'react-native-platform-touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
-const Button = React.memo(({ children, onPress, theme }) => (
+const Button = React.memo(({
+	children, onPress, split, theme
+}) => (
 	<Touchable
 		onPress={onPress}
-		style={styles.imageContainer}
+		style={[styles.imageContainer, split && sharedStyles.tabletContent]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		{children}
@@ -29,7 +33,7 @@ const Image = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, theme
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, split, theme
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -40,7 +44,7 @@ const ImageContainer = React.memo(({
 
 	if (file.description) {
 		return (
-			<Button onPress={onPress} theme={theme}>
+			<Button split={split} theme={theme} onPress={onPress}>
 				<View>
 					<Image img={img} theme={theme} />
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
@@ -50,11 +54,11 @@ const ImageContainer = React.memo(({
 	}
 
 	return (
-		<Button onPress={onPress} theme={theme}>
+		<Button split={split} theme={theme} onPress={onPress}>
 			<Image img={img} theme={theme} />
 		</Button>
 	);
-}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file));
+}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
@@ -63,7 +67,8 @@ ImageContainer.propTypes = {
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
 	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	split: PropTypes.bool
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
@@ -76,8 +81,9 @@ ImageContainer.displayName = 'MessageImage';
 Button.propTypes = {
 	children: PropTypes.node,
 	onPress: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	split: PropTypes.bool
 };
 ImageContainer.displayName = 'MessageButton';
 
-export default ImageContainer;
+export default withSplit(ImageContainer);

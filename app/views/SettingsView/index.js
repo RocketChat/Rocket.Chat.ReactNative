@@ -5,17 +5,20 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { logout as logoutAction } from '../../actions/login';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
-import { DrawerButton } from '../../containers/HeaderButton';
+import { SWITCH_TRACK_COLOR, COLOR_DANGER, themes } from '../../constants/colors';
+import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
-import { getReadableVersion, getDeviceModel, isAndroid } from '../../utils/deviceInfo';
+import {
+	getReadableVersion, getDeviceModel, isAndroid
+} from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
@@ -25,6 +28,9 @@ import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import SidebarView from '../SidebarView';
+import { withSplit } from '../../split';
+import Navigation from '../../lib/Navigation';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -54,7 +60,11 @@ ItemInfo.propTypes = {
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		...themedHeader(screenProps.theme),
-		headerLeft: <DrawerButton navigation={navigation} />,
+		headerLeft: screenProps.split ? (
+			<CloseModalButton navigation={navigation} testID='settings-view-close' />
+		) : (
+			<DrawerButton navigation={navigation} />
+		),
 		title: I18n.t('Settings')
 	});
 
@@ -65,7 +75,17 @@ class SettingsView extends React.Component {
 		allowCrashReport: PropTypes.bool,
 		toggleMarkdown: PropTypes.func,
 		toggleCrashReport: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		split: PropTypes.bool,
+		logout: PropTypes.func.isRequired
+	}
+
+	logout = () => {
+		const { logout, split } = this.props;
+		if (split) {
+			Navigation.navigate('RoomView');
+		}
+		logout();
 	}
 
 	toggleMarkdown = (value) => {
@@ -126,6 +146,21 @@ class SettingsView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
+	renderLogout = () => (
+		<>
+			<Separator />
+			<ListItem
+				title={I18n.t('Logout')}
+				testID='settings-logout'
+				onPress={this.logout}
+				right={this.renderDisclosure}
+				color={COLOR_DANGER}
+			/>
+			<Separator />
+			<ItemInfo />
+		</>
+	);
+
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
 		return (
@@ -149,7 +184,7 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server, theme } = this.props;
+		const { server, split, theme } = this.props;
 		return (
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
@@ -166,6 +201,21 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
+					{split ? (
+						<>
+							<SidebarView />
+							<SectionSeparator />
+							<ListItem
+								title={I18n.t('Profile')}
+								onPress={() => this.navigateToRoom('ProfileView')}
+								showActionIndicator
+								testID='settings-profile'
+								right={this.renderDisclosure}
+							/>
+							<Separator />
+						</>
+					) : null}
+
 					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
@@ -245,6 +295,8 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 						theme={theme}
 					/>
+
+					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -258,8 +310,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+	logout: () => dispatch(logoutAction()),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));

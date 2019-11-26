@@ -23,12 +23,19 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		title: I18n.t('Actions')
-	})
+	static navigationOptions = ({ navigation, screenProps }) => {
+		const options = {
+			...themedHeader(screenProps.theme),
+			title: I18n.t('Actions')
+		};
+		if (screenProps.split) {
+			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		}
+		return options;
+	}
 
 	static propTypes = {
 		baseUrl: PropTypes.string,

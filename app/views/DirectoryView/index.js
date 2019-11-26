@@ -15,6 +15,7 @@ import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import { CloseModalButton } from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
@@ -24,10 +25,16 @@ import styles from './styles';
 import { themedHeader } from '../../utils/navigation';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		title: I18n.t('Directory')
-	})
+	static navigationOptions = ({ navigation, screenProps }) => {
+		const options = {
+			...themedHeader(screenProps.theme),
+			title: I18n.t('Directory')
+		};
+		if (screenProps.split) {
+			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+		}
+		return options;
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -59,16 +66,6 @@ class DirectoryView extends React.Component {
 
 	onSearchChangeText = (text) => {
 		this.setState({ text });
-	}
-
-	onPressItem = (item) => {
-		const { navigation } = this.props;
-		try {
-			const onPressItem = navigation.getParam('onPressItem', () => {});
-			onPressItem(item);
-		} catch (error) {
-			console.log('DirectoryView -> onPressItem -> error', error);
-		}
 	}
 
 	// eslint-disable-next-line react/sort-comp

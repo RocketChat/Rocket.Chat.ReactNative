@@ -22,6 +22,7 @@ import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
 
 const keyExtractor = item => item.id;
 
@@ -46,7 +47,8 @@ class Sidebar extends Component {
 		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
 		theme: PropTypes.string,
-		loadingServer: PropTypes.bool
+		loadingServer: PropTypes.bool,
+		split: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -76,7 +78,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, theme
+			Site_Name, user, baseUrl, activeItemKey, split, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -106,6 +108,9 @@ class Sidebar extends Component {
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
+		}
+		if (nextProps.split !== split) {
+			return true;
 		}
 		if (!equal(nextState.status, status)) {
 			return true;
@@ -251,7 +256,7 @@ class Sidebar extends Component {
 	render() {
 		const { showStatus } = this.state;
 		const {
-			user, Site_Name, baseUrl, theme
+			user, Site_Name, baseUrl, split, theme
 		} = this.props;
 
 		if (!user) {
@@ -284,9 +289,9 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</Touch>
 
-					<Separator theme={theme} key='separator-header' />
+					{!split || showStatus ? <Separator theme={theme} key='separator-header' /> : null}
 
-					{!showStatus ? this.renderNavigation() : null}
+					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 			</SafeAreaView>
@@ -312,4 +317,4 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sidebar));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(Sidebar)));

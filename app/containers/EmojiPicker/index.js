@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import equal from 'deep-equal';
@@ -30,8 +30,6 @@ class EmojiPicker extends Component {
 		customEmojis: PropTypes.object,
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
-		emojisPerRow: PropTypes.number,
-		width: PropTypes.number,
 		theme: PropTypes.string
 	};
 
@@ -47,7 +45,8 @@ class EmojiPicker extends Component {
 		this.state = {
 			frequentlyUsed: [],
 			customEmojis,
-			show: false
+			show: false,
+			width: null
 		};
 	}
 
@@ -57,12 +56,11 @@ class EmojiPicker extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { frequentlyUsed, show } = this.state;
-		const { width } = this.props;
+		const { frequentlyUsed, show, width } = this.state;
 		if (nextState.show !== show) {
 			return true;
 		}
-		if (nextProps.width !== width) {
+		if (nextState.width !== width) {
 			return true;
 		}
 		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
@@ -129,11 +127,11 @@ class EmojiPicker extends Component {
 		this.setState({ frequentlyUsed });
 	}
 
-	renderCategory(category, i) {
-		const { frequentlyUsed, customEmojis } = this.state;
-		const {
-			emojisPerRow, width, baseUrl
-		} = this.props;
+	onLayout = ({ nativeEvent: { layout: { width } } }) => this.setState({ width });
+
+	renderCategory(category, i, label) {
+		const { frequentlyUsed, customEmojis, width } = this.state;
+		const { baseUrl } = this.props;
 
 		let emojis = [];
 		if (i === 0) {
@@ -148,9 +146,9 @@ class EmojiPicker extends Component {
 				emojis={emojis}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
-				size={emojisPerRow}
 				width={width}
 				baseUrl={baseUrl}
+				tabLabel={label}
 			/>
 		);
 	}
@@ -163,26 +161,21 @@ class EmojiPicker extends Component {
 			return null;
 		}
 		return (
-			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
-				contentProps={scrollProps}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
-			>
-				{
-					categories.tabs.map((tab, i) => (
-						(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
-							: (
-								<ScrollView
-									key={tab.category}
-									tabLabel={tab.tabLabel}
-									style={{ backgroundColor: themes[theme].chatComponentBackground }}
-									{...scrollProps}
-								>
-									{this.renderCategory(tab.category, i)}
-								</ScrollView>
-							)))
-				}
-			</ScrollableTabView>
+			<View onLayout={this.onLayout} style={{ flex: 1 }}>
+				<ScrollableTabView
+					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
+					contentProps={scrollProps}
+					style={{ backgroundColor: themes[theme].focusedBackground }}
+				>
+					{
+						categories.tabs.map((tab, i) => (
+							(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
+								: (
+									this.renderCategory(tab.category, i, tab.tabLabel)
+								)))
+					}
+				</ScrollableTabView>
+			</View>
 		);
 	}
 }

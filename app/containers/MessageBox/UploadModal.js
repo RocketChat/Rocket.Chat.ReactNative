@@ -15,10 +15,13 @@ import { isIOS } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	modal: {
-		alignItems: 'center'
+		width: '100%',
+		alignItems: 'center',
+		margin: 0
 	},
 	titleContainer: {
 		flexDirection: 'row',
@@ -42,6 +45,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginBottom: 16,
 		resizeMode: 'contain'
+	},
+	bigPreview: {
+		height: 250
 	},
 	buttonContainer: {
 		flexDirection: 'row',
@@ -84,7 +90,8 @@ class UploadModal extends Component {
 		close: PropTypes.func,
 		submit: PropTypes.func,
 		window: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		split: PropTypes.bool
 	}
 
 	state = {
@@ -106,9 +113,12 @@ class UploadModal extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { name, description, file } = this.state;
-		const { window, isVisible } = this.props;
+		const { window, isVisible, split } = this.props;
 
 		if (nextState.name !== name) {
+			return true;
+		}
+		if (nextProps.split !== split) {
 			return true;
 		}
 		if (nextState.description !== description) {
@@ -177,9 +187,9 @@ class UploadModal extends Component {
 	}
 
 	renderPreview() {
-		const { file, theme } = this.props;
+		const { file, split, theme } = this.props;
 		if (file.mime && file.mime.match(/image/)) {
-			return (<Image source={{ isStatic: true, uri: file.path }} style={styles.image} />);
+			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />);
 		}
 		if (file.mime && file.mime.match(/video/)) {
 			return (
@@ -193,7 +203,7 @@ class UploadModal extends Component {
 
 	render() {
 		const {
-			window: { width }, isVisible, close, theme
+			window: { width }, isVisible, close, split, theme
 		} = this.props;
 		const { name, description } = this.state;
 		return (
@@ -208,7 +218,7 @@ class UploadModal extends Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].chatComponentBackground }]}>
+				<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].chatComponentBackground }, split && sharedStyles.modal]}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
@@ -235,4 +245,4 @@ class UploadModal extends Component {
 	}
 }
 
-export default responsive(withTheme(UploadModal));
+export default responsive(withTheme(withSplit(UploadModal)));

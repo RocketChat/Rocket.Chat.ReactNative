@@ -20,6 +20,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -420,7 +421,8 @@ class LoginSignupView extends React.Component {
 					sharedStyles.containerScrollView,
 					sharedStyles.container,
 					styles.container,
-					{ backgroundColor: themes[theme].backgroundColor }
+					{ backgroundColor: themes[theme].backgroundColor },
+					isTablet && sharedStyles.tabletScreenContent
 				]}
 				{...scrollPersistTaps}
 			>
