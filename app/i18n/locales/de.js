@@ -401,5 +401,6 @@ export default {
 	Crash_report_disclaimer: 'Wir verfolgen niemals den Inhalt Ihrer Chats. Der Crash-Report enthält nur für uns relevante Informationen in der Reihenfolge ',
 	Community_Profile: 'Mein Planet',
 	Agenda: 'Agenda',
+	Community: 'Community',
 	Chat_Profile_Image: 'Chat-Profilbild'
 };

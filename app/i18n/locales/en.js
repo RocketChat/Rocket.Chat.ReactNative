@@ -441,5 +441,6 @@ export default {
 	Crash_report_disclaimer: 'We never track the content of your chats. The crash report only contains relevant information for us in order to identify problems and fix it.',
 	Community_Profile: 'My Planet',
 	Agenda: 'Agenda',
+	Community: 'Community',
 	Chat_Profile_Image: 'Chat Profil Image'
 };

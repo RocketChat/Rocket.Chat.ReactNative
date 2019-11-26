@@ -308,5 +308,6 @@ export default {
 	Your_server: 'Ваш сервер',
 	Community_Profile: 'My Planet',
 	Agenda: 'Agenda',
+	Community: 'Community',
 	Chat_Profile_Image: 'Chat Profil Image'
 };
