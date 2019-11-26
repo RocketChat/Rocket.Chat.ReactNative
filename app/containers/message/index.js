@@ -64,7 +64,11 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate() {
+	shouldComponentUpdate(nextProps) {
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		return false;
 	}
 

@@ -58,7 +58,7 @@ const ImageContainer = React.memo(({
 			<Image img={img} theme={theme} />
 		</Button>
 	);
-}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split);
+}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,

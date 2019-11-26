@@ -75,7 +75,7 @@ const ReplyPreview = React.memo(({
 			<CustomIcon name='cross' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.replying === nextProps.replying);
+}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme);
 
 ReplyPreview.propTypes = {
 	replying: PropTypes.bool,

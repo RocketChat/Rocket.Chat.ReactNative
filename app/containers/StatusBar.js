@@ -6,11 +6,7 @@ import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
-const StatusBar = React.memo(({ theme = 'light' }) => {
-	// TODO: need this?
-	// if (light) {
-	// 	return <StatusBarRN backgroundColor={COLOR_WHITE} barStyle='light-content' animated />;
-	// }
+const StatusBar = React.memo(({ theme }) => {
 	let barStyle = 'light-content';
 	if (theme === 'light' && isIOS) {
 		barStyle = 'dark-content';

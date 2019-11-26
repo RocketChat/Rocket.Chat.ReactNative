@@ -67,6 +67,9 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 	if (prevProps.description !== nextProps.description) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 
@@ -100,7 +103,7 @@ const Url = React.memo(({
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split);
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
 
 const Urls = React.memo(({
 	urls, user, baseUrl, split, theme
@@ -112,7 +115,7 @@ const Urls = React.memo(({
 	return urls.map((url, index) => (
 		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} split={split} theme={theme} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split);
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
 
 UrlImage.propTypes = {
 	image: PropTypes.string,

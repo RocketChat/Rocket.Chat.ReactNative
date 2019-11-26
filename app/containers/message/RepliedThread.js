@@ -41,6 +41,9 @@ const RepliedThread = React.memo(({
 	if (prevProps.isHeader !== nextProps.isHeader) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 

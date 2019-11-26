@@ -33,6 +33,9 @@ const Thread = React.memo(({
 	if (prevProps.tcount !== nextProps.tcount) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 

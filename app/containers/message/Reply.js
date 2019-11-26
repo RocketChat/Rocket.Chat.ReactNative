@@ -76,7 +76,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{ time }</Text> : null}
 		</View>
 	);
-}, () => true);
+}, (prevProps, nextProps) => prevProps.theme === nextProps.theme);
 
 const Description = React.memo(({
 	attachment, baseUrl, user, getCustomEmoji, useMarkdown, theme
@@ -102,6 +102,9 @@ const Description = React.memo(({
 	if (prevProps.attachment.title !== nextProps.attachment.title) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 
@@ -119,7 +122,7 @@ const Fields = React.memo(({ attachment, theme }) => {
 			))}
 		</View>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields));
+}, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
 const Reply = React.memo(({
 	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, split, theme
@@ -168,7 +171,7 @@ const Reply = React.memo(({
 			</View>
 		</Touchable>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split);
+}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,

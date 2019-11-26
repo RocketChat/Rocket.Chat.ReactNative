@@ -28,7 +28,7 @@ const Attachments = React.memo(({
 		// eslint-disable-next-line react/no-array-index-key
 		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />;
 	});
-}, (prevProps, nextProps) => isEqual(prevProps.attachments, nextProps.attachments));
+}, (prevProps, nextProps) => isEqual(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
 
 Attachments.propTypes = {
 	attachments: PropTypes.array,

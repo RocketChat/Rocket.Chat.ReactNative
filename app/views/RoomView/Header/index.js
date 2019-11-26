@@ -26,8 +26,11 @@ class RoomHeaderView extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, status, window, connecting, goRoomActionsView, usersTyping
+			type, title, status, window, connecting, goRoomActionsView, usersTyping, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.type !== type) {
 			return true;
 		}

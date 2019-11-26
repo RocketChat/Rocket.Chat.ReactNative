@@ -95,7 +95,10 @@ class Audio extends React.Component {
 		const {
 			currentTime, duration, paused, uri
 		} = this.state;
-		const { file, split } = this.props;
+		const { file, split, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.currentTime !== currentTime) {
 			return true;
 		}

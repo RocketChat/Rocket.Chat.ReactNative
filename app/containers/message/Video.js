@@ -57,7 +57,7 @@ const Video = React.memo(({
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file));
+}, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
 Video.propTypes = {
 	file: PropTypes.object,

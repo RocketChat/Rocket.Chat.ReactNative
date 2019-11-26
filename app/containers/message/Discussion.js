@@ -45,6 +45,9 @@ const Discussion = React.memo(({
 	if (prevProps.dlm !== nextProps.dlm) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 

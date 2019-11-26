@@ -42,7 +42,7 @@ const Content = React.memo((props) => {
 			{content}
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp && prevProps.msg === nextProps.msg);
+}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp && prevProps.msg === nextProps.msg && prevProps.theme === nextProps.theme);
 
 Content.propTypes = {
 	isTemp: PropTypes.bool,
