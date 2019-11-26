@@ -6,7 +6,6 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
-import { loginRequest } from '../actions/login';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';

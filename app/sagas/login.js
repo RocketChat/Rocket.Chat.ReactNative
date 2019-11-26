@@ -9,7 +9,9 @@ import 'moment/min/locales';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
-import { loginFailure, loginSuccess, setUser, logout } from '../actions/login';
+import {
+	loginFailure, loginSuccess, setUser, logout
+} from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
