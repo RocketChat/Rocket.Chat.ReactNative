@@ -215,7 +215,7 @@ class NewMessageView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID='new-message-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				{this.renderList()}
 			</SafeAreaView>
 		);

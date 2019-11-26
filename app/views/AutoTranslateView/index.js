@@ -157,7 +157,7 @@ class AutoTranslateView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID='auto-translate-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={[

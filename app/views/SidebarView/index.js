@@ -264,7 +264,17 @@ class Sidebar extends Component {
 		}
 		return (
 			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
-				<ScrollView style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]} {...scrollPersistTaps}>
+				<ScrollView
+					style={[
+						styles.container,
+						{
+							backgroundColor: split
+								? themes[theme].backgroundColor
+								: themes[theme].focusedBackground
+						}
+					]}
+					{...scrollPersistTaps}
+				>
 					<Touch
 						onPress={this.toggleStatus}
 						testID='sidebar-toggle-status'

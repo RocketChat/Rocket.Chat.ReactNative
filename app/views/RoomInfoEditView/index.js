@@ -309,7 +309,7 @@ class RoomInfoEditView extends React.Component {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='room-info-edit-view-list'

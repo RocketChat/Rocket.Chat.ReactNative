@@ -261,7 +261,7 @@ class RoomMembersView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}

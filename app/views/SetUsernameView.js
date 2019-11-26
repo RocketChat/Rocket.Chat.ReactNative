@@ -104,7 +104,7 @@ class SetUsernameView extends React.Component {
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={sharedStyles.container}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ vertical: 'never' }}>
 						<Text

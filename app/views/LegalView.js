@@ -96,7 +96,7 @@ class LegalView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID='legal-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView
 					contentContainerStyle={[
 						styles.scroll,

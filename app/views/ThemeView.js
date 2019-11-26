@@ -90,7 +90,7 @@ class LanguageView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID='language-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={THEMES}
 					keyExtractor={item => item.value}

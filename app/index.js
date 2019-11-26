@@ -437,12 +437,13 @@ class CustomNotificationStack extends React.Component {
 	static router = InsideStackModal.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation } = this.props;
-		return <NotificationBadge navigation={navigation} />;
+		const { navigation, screenProps } = this.props;
+		return <NotificationBadge navigation={navigation} screenProps={screenProps} />;
 	}
 }
 
@@ -469,13 +470,13 @@ export const NotificationContainer = createAppContainer(CustomNotificationStack)
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { theme: Appearance.getColorScheme() !== 'no-preference' ? Appearance.getColorScheme() : 'light' };
 		this.init();
 		this.initCrashReport();
 		this.state = {
 			split: false,
 			inside: false,
-			showModal: false
+			showModal: false,
+			theme: Appearance.getColorScheme() && Appearance.getColorScheme() !== 'no-preference' ? Appearance.getColorScheme() : 'light'
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -604,9 +605,7 @@ export default class Root extends React.Component {
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{ theme, setTheme: this.setTheme }}
-					>
+					<ThemeContext.Provider value={{ theme, setTheme: this.setTheme }}>
 						{content}
 					</ThemeContext.Provider>
 				</Provider>

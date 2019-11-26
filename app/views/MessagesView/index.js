@@ -292,7 +292,7 @@ class MessagesView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID={this.content.testID}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

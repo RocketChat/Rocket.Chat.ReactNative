@@ -99,7 +99,7 @@ class AuthenticationWebView extends React.PureComponent {
 		const uri = navigation.getParam('url');
 		return (
 			<>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<WebView
 					source={{ uri }}
 					userAgent={userAgent}

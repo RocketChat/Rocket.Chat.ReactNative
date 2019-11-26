@@ -291,7 +291,7 @@ class SelectedUsersView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 				testID='select-users-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

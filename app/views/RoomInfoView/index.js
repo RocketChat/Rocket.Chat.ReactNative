@@ -290,7 +290,7 @@ class RoomInfoView extends React.Component {
 		}
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<SafeAreaView
 					style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 					forceInset={{ vertical: 'never' }}

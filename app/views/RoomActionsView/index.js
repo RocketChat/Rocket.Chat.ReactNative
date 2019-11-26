@@ -479,7 +479,7 @@ class RoomActionsView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<SectionList
 					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}
 					style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}

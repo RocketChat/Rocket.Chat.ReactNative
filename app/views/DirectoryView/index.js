@@ -220,7 +220,7 @@ class DirectoryView extends React.Component {
 		const { isFederationEnabled, theme } = this.props;
 		return (
 			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].backgroundColor }]} testID='directory-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={data}
 					style={styles.list}

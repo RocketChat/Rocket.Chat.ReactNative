@@ -10761,12 +10761,10 @@ exports[`Storyshots Message list 1`] = `
                         Object {
                           "overflow": "hidden",
                         },
-<<<<<<< HEAD
                         Array [
                           Object {
                             "borderRadius": 4,
                             "borderWidth": 1,
-                            "maxWidth": 400,
                             "minHeight": 200,
                             "width": "100%",
                           },
@@ -10774,15 +10772,6 @@ exports[`Storyshots Message list 1`] = `
                             "borderColor": "#0f213d",
                           },
                         ],
-=======
-                        Object {
-                          "borderColor": "#e1e5e8",
-                          "borderRadius": 4,
-                          "borderWidth": 1,
-                          "minHeight": 200,
-                          "width": "100%",
-                        },
->>>>>>> develop
                       ]
                     }
                   >
@@ -11049,12 +11038,10 @@ exports[`Storyshots Message list 1`] = `
                         Object {
                           "overflow": "hidden",
                         },
-<<<<<<< HEAD
                         Array [
                           Object {
                             "borderRadius": 4,
                             "borderWidth": 1,
-                            "maxWidth": 400,
                             "minHeight": 200,
                             "width": "100%",
                           },
@@ -11062,15 +11049,6 @@ exports[`Storyshots Message list 1`] = `
                             "borderColor": "#0f213d",
                           },
                         ],
-=======
-                        Object {
-                          "borderColor": "#e1e5e8",
-                          "borderRadius": 4,
-                          "borderWidth": 1,
-                          "minHeight": 200,
-                          "width": "100%",
-                        },
->>>>>>> develop
                       ]
                     }
                   >
@@ -11914,11 +11892,6 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "alignItems": "center",
-<<<<<<< HEAD
-=======
-                      "backgroundColor": "#f3f4f5",
-                      "borderColor": "#e1e5e8",
->>>>>>> develop
                       "borderRadius": 4,
                       "borderWidth": 1,
                       "flex": 1,
@@ -11926,14 +11899,11 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-<<<<<<< HEAD
                     Object {
                       "backgroundColor": "#192132",
                       "borderColor": "#0f213d",
                     },
-=======
                     undefined,
->>>>>>> develop
                   ]
                 }
               >
@@ -12270,11 +12240,6 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "alignItems": "center",
-<<<<<<< HEAD
-=======
-                      "backgroundColor": "#f3f4f5",
-                      "borderColor": "#e1e5e8",
->>>>>>> develop
                       "borderRadius": 4,
                       "borderWidth": 1,
                       "flex": 1,
@@ -12282,14 +12247,11 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-<<<<<<< HEAD
                     Object {
                       "backgroundColor": "#192132",
                       "borderColor": "#0f213d",
                     },
-=======
                     undefined,
->>>>>>> develop
                   ]
                 }
               >
@@ -12500,11 +12462,6 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "alignItems": "center",
-<<<<<<< HEAD
-=======
-                      "backgroundColor": "#f3f4f5",
-                      "borderColor": "#e1e5e8",
->>>>>>> develop
                       "borderRadius": 4,
                       "borderWidth": 1,
                       "flex": 1,
@@ -12512,14 +12469,11 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-<<<<<<< HEAD
                     Object {
                       "backgroundColor": "#192132",
                       "borderColor": "#0f213d",
                     },
-=======
                     undefined,
->>>>>>> develop
                   ]
                 }
               >
@@ -12694,11 +12648,6 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     Object {
                       "alignItems": "center",
-<<<<<<< HEAD
-=======
-                      "backgroundColor": "#f3f4f5",
-                      "borderColor": "#e1e5e8",
->>>>>>> develop
                       "borderRadius": 4,
                       "borderWidth": 1,
                       "flex": 1,
@@ -12706,14 +12655,11 @@ exports[`Storyshots Message list 1`] = `
                       "height": 56,
                       "marginBottom": 6,
                     },
-<<<<<<< HEAD
                     Object {
                       "backgroundColor": "#192132",
                       "borderColor": "#0f213d",
                     },
-=======
                     undefined,
->>>>>>> develop
                   ]
                 }
               >
@@ -13137,15 +13083,9 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-<<<<<<< HEAD
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#07101e",
                     "borderColor": "#0f213d",
-=======
-                    "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
->>>>>>> develop
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,
@@ -13535,15 +13475,9 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-<<<<<<< HEAD
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#07101e",
                     "borderColor": "#0f213d",
-=======
-                    "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
->>>>>>> develop
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,
@@ -21015,15 +20949,9 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-<<<<<<< HEAD
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#07101e",
                     "borderColor": "#0f213d",
-=======
-                    "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
->>>>>>> develop
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,
@@ -21634,15 +21562,9 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-<<<<<<< HEAD
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#07101e",
                     "borderColor": "#0f213d",
-=======
-                    "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
->>>>>>> develop
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,
@@ -21866,15 +21788,9 @@ exports[`Storyshots Message list 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-<<<<<<< HEAD
-                    "alignSelf": "flex-end",
+                    "alignSelf": "flex-start",
                     "backgroundColor": "#07101e",
                     "borderColor": "#0f213d",
-=======
-                    "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
->>>>>>> develop
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,

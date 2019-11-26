@@ -303,7 +303,7 @@ class LoginView extends React.Component {
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}

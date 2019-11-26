@@ -29,13 +29,10 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	roomTitle: {
-		flex: 1,
 		fontSize: 18,
-		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomTitleRow: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

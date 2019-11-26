@@ -799,7 +799,7 @@ class RoomsListView extends React.Component {
 				testID='rooms-list-view'
 				forceInset={{ vertical: 'never' }}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				{this.renderScroll()}
 				{showSortDropdown ? (
 					<SortDropdown

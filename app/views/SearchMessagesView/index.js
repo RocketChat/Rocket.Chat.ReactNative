@@ -143,7 +143,7 @@ class SearchMessagesView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						autoFocus

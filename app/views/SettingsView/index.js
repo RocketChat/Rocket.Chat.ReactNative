@@ -146,20 +146,24 @@ class SettingsView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	renderLogout = () => (
-		<>
-			<Separator />
-			<ListItem
-				title={I18n.t('Logout')}
-				testID='settings-logout'
-				onPress={this.logout}
-				right={this.renderDisclosure}
-				color={COLOR_DANGER}
-			/>
-			<Separator />
-			<ItemInfo />
-		</>
-	);
+	renderLogout = () => {
+		const { theme } = this.props;
+		return (
+			<>
+				<Separator theme={theme} />
+				<ListItem
+					title={I18n.t('Logout')}
+					testID='settings-logout'
+					onPress={this.logout}
+					right={this.renderDisclosure}
+					color={COLOR_DANGER}
+					theme={theme}
+				/>
+				<Separator theme={theme} />
+				<ItemInfo theme={theme} />
+			</>
+		);
+	}
 
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
@@ -190,7 +194,7 @@ class SettingsView extends React.Component {
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				testID='settings-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={[
@@ -203,16 +207,17 @@ class SettingsView extends React.Component {
 				>
 					{split ? (
 						<>
-							<SidebarView />
-							<SectionSeparator />
+							<SidebarView theme={theme} />
+							<SectionSeparator theme={theme} />
 							<ListItem
 								title={I18n.t('Profile')}
 								onPress={() => this.navigateToRoom('ProfileView')}
 								showActionIndicator
 								testID='settings-profile'
 								right={this.renderDisclosure}
+								theme={theme}
 							/>
-							<Separator />
+							<Separator theme={theme} />
 						</>
 					) : null}
 

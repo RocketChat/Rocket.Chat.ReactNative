@@ -389,7 +389,7 @@ class ProfileView extends React.Component {
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}

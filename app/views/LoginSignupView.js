@@ -426,7 +426,7 @@ class LoginSignupView extends React.Component {
 				]}
 				{...scrollPersistTaps}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}

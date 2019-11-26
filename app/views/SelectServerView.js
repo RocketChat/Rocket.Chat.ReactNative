@@ -92,7 +92,7 @@ class SelectServerView extends React.Component {
 				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<View style={[styles.list, { borderColor: themes[theme].separatorColor }]}>
 					<FlatList
 						data={servers}

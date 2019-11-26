@@ -199,12 +199,15 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused
+			roomType, replying, editing, isFocused, theme
 		} = this.props;
 		if (!isFocused()) {
 			return false;
 		}
 		if (nextProps.roomType !== roomType) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.replying !== replying) {

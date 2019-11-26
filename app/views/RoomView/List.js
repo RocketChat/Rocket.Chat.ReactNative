@@ -12,7 +12,6 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
-import { withTheme } from '../../theme';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 
@@ -26,8 +25,7 @@ class List extends React.Component {
 		tmid: PropTypes.string,
 		animated: PropTypes.bool,
 		theme: PropTypes.string,
-		listRef: PropTypes.func,
-		animated: PropTypes.bool
+		listRef: PropTypes.func
 	};
 
 	constructor(props) {
@@ -105,6 +103,10 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end } = this.state;
+		const { theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (loading !== nextState.loading) {
 			return true;
 		}
@@ -218,4 +220,4 @@ class List extends React.Component {
 	}
 }
 
-export default withTheme(List);
+export default List;

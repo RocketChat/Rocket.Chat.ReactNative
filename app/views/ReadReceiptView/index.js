@@ -136,7 +136,7 @@ class ReadReceiptView extends React.Component {
 				forceInset={{ bottom: 'always' }}
 				testID='read-receipt-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<View>
 					{loading
 						? <ActivityIndicator theme={theme} />

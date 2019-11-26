@@ -32,7 +32,7 @@ class AdminPanelView extends React.Component {
 		}
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='terms-view'>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}

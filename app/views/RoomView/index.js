@@ -79,7 +79,9 @@ class RoomView extends React.Component {
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		if (!rid) {
-			return null;
+			return {
+				...themedHeader(screenProps.theme)
+			};
 		}
 		return {
 			...themedHeader(screenProps.theme),
@@ -229,7 +231,10 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate } = state;
-		const { appState } = this.props;
+		const { appState, theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (appState !== nextProps.appState) {
 			return true;
 		}
@@ -897,13 +902,14 @@ class RoomView extends React.Component {
 				testID='room-view'
 				forceInset={{ vertical: 'never' }}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}
+					theme={theme}
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
