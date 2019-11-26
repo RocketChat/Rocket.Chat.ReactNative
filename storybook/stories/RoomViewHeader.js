@@ -1,13 +1,14 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { HeaderBackButton } from 'react-navigation';
+import { HeaderBackButton } from 'react-navigation-stack';
 
 import HeaderComponent from '../../app/views/RoomView/Header/Header';
-import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';
+// import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';
 import StoriesSeparator from './StoriesSeparator';
 import { isIOS } from '../../app/utils/deviceInfo';
+import { themes } from '../../app/constants/colors';
 
-const theme = 'dark';
+let _theme = 'light';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,47 +22,52 @@ const styles = StyleSheet.create({
 });
 
 const Header = props => (
-	<View style={styles.container}>
+	<View style={[styles.container, { backgroundColor: themes[_theme].headerBackground }]}>
 		<HeaderBackButton />
 		<HeaderComponent
 			title='test'
 			type='d'
 			width={375}
 			height={480}
-			theme={theme}
+			theme={_theme}
 			{...props}
 		/>
-		<CustomHeaderButtons>
+		{/* not working because we use withTheme */}
+		{/* <CustomHeaderButtons>
 			<Item title='thread' iconName='thread' />
 		</CustomHeaderButtons>
 		<CustomHeaderButtons>
 			<Item title='more' iconName='menu' />
-		</CustomHeaderButtons>
+		</CustomHeaderButtons> */}
 	</View>
 );
 
-export default (
-	<ScrollView>
-		<StoriesSeparator title='Basic' />
-		<Header />
+// eslint-disable-next-line react/prop-types
+export default ({ theme }) => {
+	_theme = theme;
+	return (
+		<ScrollView style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
+			<StoriesSeparator title='Basic' theme={theme} />
+			<Header />
 
-		<StoriesSeparator title='Types' />
-		<Header type='d' />
-		<Header type='c' />
-		<Header type='p' />
-		<Header type='discussion' />
-		<Header type='thread' />
+			<StoriesSeparator title='Types' theme={theme} />
+			<Header type='d' />
+			<Header type='c' />
+			<Header type='p' />
+			<Header type='discussion' />
+			<Header type='thread' />
 
-		<StoriesSeparator title='Typing' />
-		<Header usersTyping={[{ username: 'diego.mello' }]} />
-		<Header usersTyping={[{ username: 'diego.mello' }, { username: 'rocket.cat' }]} />
-		<Header usersTyping={[{ username: 'diego.mello' }, { username: 'rocket.cat' }, { username: 'detoxrn' }]} />
+			<StoriesSeparator title='Typing' theme={theme} />
+			<Header usersTyping={['diego.mello']} />
+			<Header usersTyping={['diego.mello', 'rocket.cat']} />
+			<Header usersTyping={['diego.mello', 'rocket.cat', 'detoxrn']} />
 
-		<StoriesSeparator title='Title scroll' />
-		<Header title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' />
-		<Header
-			title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-			usersTyping={[{ username: 'diego.mello' }, { username: 'rocket.cat' }, { username: 'detoxrn' }]}
-		/>
-	</ScrollView>
-);
+			<StoriesSeparator title='Title scroll' theme={theme} />
+			<Header title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' />
+			<Header
+				title='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				usersTyping={['diego.mello', 'rocket.cat', 'detoxrn']}
+			/>
+		</ScrollView>
+	);
+};
