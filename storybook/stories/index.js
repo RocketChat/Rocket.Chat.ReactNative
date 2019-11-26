@@ -23,7 +23,7 @@ const reducers = combineReducers({
 });
 const store = createStore(reducers);
 
-storiesOf('RoomItem Light', module)
+storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
