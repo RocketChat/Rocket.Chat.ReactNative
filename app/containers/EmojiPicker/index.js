@@ -163,7 +163,7 @@ class EmojiPicker extends Component {
 		return (
 			<View onLayout={this.onLayout} style={{ flex: 1 }}>
 				<ScrollableTabView
-					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
+					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
 					contentProps={scrollProps}
 					style={{ backgroundColor: themes[theme].focusedBackground }}
 				>

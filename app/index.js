@@ -19,7 +19,7 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import { ThemeContext } from './theme';
@@ -77,7 +77,8 @@ const OutsideStack = createStackNavigator({
 		getScreen: () => require('./views/LegalView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AuthenticationWebViewStack = createStackNavigator({
@@ -85,7 +86,8 @@ const AuthenticationWebViewStack = createStackNavigator({
 		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const OutsideStackModal = createStackNavigator({
@@ -149,14 +151,16 @@ const ChatsStack = createStackNavigator({
 	},
 	...RoomRoutes
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 // Inside
 const RoomStack = createStackNavigator({
 	...RoomRoutes
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -174,7 +178,8 @@ const ProfileStack = createStackNavigator({
 		getScreen: () => require('./views/ProfileView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ProfileStack.navigationOptions = ({ navigation }) => {
@@ -198,7 +203,8 @@ const SettingsStack = createStackNavigator({
 		getScreen: () => require('./views/ThemeView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AdminPanelStack = createStackNavigator({
@@ -206,7 +212,8 @@ const AdminPanelStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 SettingsStack.navigationOptions = ({ navigation }) => {
@@ -240,7 +247,8 @@ const NewMessageStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const InsideStackModal = createStackNavigator({
@@ -311,7 +319,8 @@ const MessagesStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const DirectoryStack = createStackNavigator({
@@ -319,7 +328,8 @@ const DirectoryStack = createStackNavigator({
 		getScreen: () => require('./views/DirectoryView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const SidebarStack = createStackNavigator({
@@ -333,7 +343,8 @@ const SidebarStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const RoomActionsStack = createStackNavigator({
@@ -368,7 +379,8 @@ const RoomActionsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 

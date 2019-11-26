@@ -5,6 +5,10 @@ export const defaultHeader = {
 	headerBackTitle: null
 };
 
+export const cardStyle = {
+	backgroundColor: 'rgba(0,0,0,0.5)'
+};
+
 export const themedHeader = theme => ({
 	headerStyle: {
 		backgroundColor: themes[theme].headerBackground

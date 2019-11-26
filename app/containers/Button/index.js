@@ -19,12 +19,6 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 18,
 		textAlign: 'center'
-	},
-	text_primary: {
-		...sharedStyles.textMedium
-	},
-	text_secondary: {
-		...sharedStyles.textBold
 	}
 });
 
@@ -74,7 +68,7 @@ export default class Button extends React.PureComponent {
 							<Text
 								style={[
 									styles.text,
-									styles[`text_${ type }`],
+									isPrimary ? sharedStyles.textMedium : sharedStyles.textBold,
 									{ color: isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor }
 								]}
 							>
