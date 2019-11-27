@@ -53,17 +53,13 @@ const handleOpen = function* handleOpen({ params }) {
 
 	// TODO: needs better test
 	// if deep link is from same server
-	if (server === host) {
-		if (user) {
-			const connected = yield select(state => state.server.connected);
-			if (!connected) {
-				yield put(selectServerRequest(host));
-				yield take(types.SERVER.SELECT_SUCCESS);
-			}
-			yield navigate({ params });
-		} else {
-			yield put(appStart('outside'));
+	if (server === host && user) {
+		const connected = yield select(state => state.server.connected);
+		if (!connected) {
+			yield put(selectServerRequest(host));
+			yield take(types.SERVER.SELECT_SUCCESS);
 		}
+		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
 		const serversDB = database.servers;
@@ -80,13 +76,18 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield RocketChat.getServerInfo(server);
+		const result = yield RocketChat.getServerInfo(host);
 		if (!result.success) {
 			return;
 		}
 		Navigation.navigate('OnboardingView', { previousServer: server });
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
+
+		if (params.token) {
+			yield take(types.SERVER.SELECT_SUCCESS);
+			yield RocketChat.connect({ server: host, user: { token: params.token } });
+		}
 	}
 };
 
