@@ -39,10 +39,11 @@ class LanguageView extends React.Component {
 		setTheme: PropTypes.func
 	}
 
-	setTheme = async(value) => {
+	setTheme = (value) => {
 		const { setTheme } = this.props;
 		setTheme(value);
-		await RNUserDefaults.set(THEME_KEY, value);
+		// no await, because this causes a delay
+		RNUserDefaults.set(THEME_KEY, value);
 	};
 
 	renderSeparator = () => {
