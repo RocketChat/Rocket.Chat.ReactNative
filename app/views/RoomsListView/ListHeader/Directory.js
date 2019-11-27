@@ -15,6 +15,7 @@ const Directory = React.memo(({ goDirectory, theme }) => (
 	<Touch
 		onPress={goDirectory}
 		theme={theme}
+		style={{ backgroundColor: themes[theme].headerBackground }}
 	>
 		<View
 			style={[

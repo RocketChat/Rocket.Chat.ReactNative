@@ -132,7 +132,7 @@ export default StyleSheet.create({
 	listContentContainer: {
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginVertical: 10
+		marginVertical: 36
 	},
 	notchLandscapeContainer: {
 		marginTop: -34,

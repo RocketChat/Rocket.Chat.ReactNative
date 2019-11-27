@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 56,
+		height: 46,
 		paddingHorizontal: 15
 	},
 	disabled: {

@@ -87,7 +87,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		if (user) {
-			yield RocketChat.connect({ server, user });
+			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
 		} else {

@@ -3,7 +3,7 @@ import { Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
-import { toShort, shortnameToUnicode } from 'emoji-toolkit';
+import { shortnameToUnicode } from 'emoji-toolkit';
 
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
@@ -33,13 +33,19 @@ const emojiRanges = [
 	' |\n' // allow spaces and line breaks
 ].join('|');
 
+const removeSpaces = str => str && str.replace(/\s/g, '');
+
 const removeAllEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
 
-const isOnlyEmoji = str => !removeAllEmoji(str).length;
+const isOnlyEmoji = (str) => {
+	str = removeSpaces(str);
+	return !removeAllEmoji(str).length;
+};
 
 const removeOneEmoji = str => str.replace(new RegExp(emojiRanges), '');
 
 const emojiCount = (str) => {
+	str = removeSpaces(str);
 	let oldLength = 0;
 	let counter = 0;
 
@@ -379,6 +385,8 @@ class Markdown extends PureComponent {
 
 		if (preview) {
 			m = m.split('\n').reduce((lines, line) => `${ lines } ${ line }`, '');
+			const ast = this.parser.parse(m);
+			return this.renderer.render(ast);
 		}
 
 		if (!useMarkdown && !preview) {
@@ -386,8 +394,7 @@ class Markdown extends PureComponent {
 		}
 
 		const ast = this.parser.parse(m);
-		const encodedEmojis = toShort(m);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(encodedEmojis) && emojiCount(encodedEmojis) <= 3;
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
 		this.editedMessage(ast);
 

@@ -45,7 +45,7 @@ const Header = React.memo(({
 				styles.container,
 				{
 					borderColor: themes[theme].separatorColor,
-					backgroundColor: themes[theme].backgroundColor
+					backgroundColor: themes[theme].headerBackground
 				}
 			]}
 		>

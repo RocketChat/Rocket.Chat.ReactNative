@@ -44,7 +44,7 @@ class ShareListView extends React.Component {
 
 		if (isIOS) {
 			return {
-				headerStyle: { backgroundColor: themes[screenProps.theme].backgroundColor },
+				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
 				headerTitle: (
 					<ShareListHeader
 						searching={searching}

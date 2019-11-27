@@ -49,7 +49,7 @@ SectionSeparator.propTypes = {
 
 const ItemInfo = React.memo(({ info, theme }) => (
 	<View style={[styles.infoContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-		<Text style={[styles.infoText, { color: themes[theme].titleText }]}>{info}</Text>
+		<Text style={[styles.infoText, { color: themes[theme].auxiliaryText }]}>{info}</Text>
 	</View>
 ));
 ItemInfo.propTypes = {

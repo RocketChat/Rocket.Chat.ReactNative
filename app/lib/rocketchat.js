@@ -14,9 +14,7 @@ import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
 import fetch, { headers } from '../utils/fetch';
 
-import {
-	setUser, setLoginServices, loginRequest, loginFailure, logout
-} from '../actions/login';
+import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import {
 	shareSelectServer, shareSetUser
@@ -164,7 +162,7 @@ const RocketChat = {
 	stopListener(listener) {
 		return listener && listener.stop();
 	},
-	connect({ server, user }) {
+	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {
 				database.setActiveDB(server);
@@ -209,7 +207,7 @@ const RocketChat = {
 			this.sdk.connect()
 				.then(() => {
 					if (user && user.token) {
-						reduxStore.dispatch(loginRequest({ resume: user.token }));
+						reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 					}
 				})
 				.catch((err) => {
@@ -381,11 +379,6 @@ const RocketChat = {
 			};
 			return user;
 		} catch (e) {
-			if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
-				reduxStore.dispatch(logout({ server: this.sdk.client.host }));
-			} else {
-				reduxStore.dispatch(loginFailure(e));
-			}
 			throw e;
 		}
 	},

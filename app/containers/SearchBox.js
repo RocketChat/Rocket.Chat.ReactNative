@@ -53,7 +53,7 @@ const CancelButton = (onCancelPress, theme) => (
 const SearchBox = ({
 	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
 }) => (
-	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+	<View style={[styles.container, { backgroundColor: themes[theme].headerBackground }]}>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].borderColor }]}>
 			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput

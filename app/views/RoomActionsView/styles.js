@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	sectionItem: {
-		paddingVertical: 16,
+		paddingVertical: 11,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -36,7 +36,7 @@ export default StyleSheet.create({
 	},
 	sectionSeparator: {
 		borderBottomWidth: 1,
-		height: 10
+		height: 36
 	},
 	sectionSeparatorBorder: {
 		borderTopWidth: 1

@@ -9,7 +9,9 @@ import 'moment/min/locales';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
-import { loginFailure, loginSuccess, setUser } from '../actions/login';
+import {
+	loginFailure, loginSuccess, setUser, logout
+} from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
@@ -24,7 +26,7 @@ const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
 	try {
 		let result;
 		if (credentials.resume) {
@@ -34,7 +36,11 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		}
 		return yield put(loginSuccess(result));
 	} catch (error) {
-		yield put(loginFailure(error));
+		if (logoutOnError) {
+			yield put(logout());
+		} else {
+			yield put(loginFailure(error));
+		}
 	}
 };
 

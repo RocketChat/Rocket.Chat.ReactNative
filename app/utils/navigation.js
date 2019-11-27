@@ -11,6 +11,7 @@ export const cardStyle = {
 
 export const themedHeader = theme => ({
 	headerStyle: {
+		borderBottomWidth: 0.3,
 		backgroundColor: themes[theme].headerBackground
 	},
 	headerTintColor: themes[theme].headerTintColor,

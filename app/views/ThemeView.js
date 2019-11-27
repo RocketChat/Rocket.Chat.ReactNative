@@ -77,7 +77,7 @@ class LanguageView extends React.Component {
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ paddingVertical: 10, paddingHorizontal: 16 }}>
+			<View style={{ paddingBottom: 10, paddingHorizontal: 16 }}>
 				<Text style={{ color: themes[theme].auxiliaryText }}>{I18n.t('ALL_THEMES')}</Text>
 			</View>
 		);

@@ -50,7 +50,6 @@ export default StyleSheet.create({
 	},
 	dropdownItemButton: {
 		height: 47,
-		marginVertical: 5,
 		justifyContent: 'center'
 	},
 	dropdownItemContainer: {

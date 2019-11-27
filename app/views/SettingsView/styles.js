@@ -5,14 +5,14 @@ import sharedStyles from '../Styles';
 export default StyleSheet.create({
 	sectionSeparatorBorder: {
 		...sharedStyles.separatorVertical,
-		height: 10
+		height: 36
 	},
 	listWithoutBorderBottom: {
 		borderBottomWidth: 0
 	},
 	infoContainer: {
 		padding: 15,
-		paddingBottom: 40
+		marginBottom: 40
 	},
 	infoText: {
 		fontSize: 14,
