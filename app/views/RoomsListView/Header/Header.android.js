@@ -49,7 +49,7 @@ const Header = React.memo(({
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={[styles.server, { color: themes[theme].headerTintColor }]}
+					style={styles.server}
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}

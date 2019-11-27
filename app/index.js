@@ -10,6 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
+import { defaultTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -488,7 +489,7 @@ export default class Root extends React.Component {
 			split: false,
 			inside: false,
 			showModal: false,
-			theme: Appearance.getColorScheme() && Appearance.getColorScheme() !== 'no-preference' ? Appearance.getColorScheme() : 'light'
+			theme: defaultTheme
 		};
 		if (isTablet) {
 			this.initTablet();

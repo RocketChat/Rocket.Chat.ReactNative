@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
+import { defaultTheme } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
@@ -54,7 +55,7 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
-			theme: Appearance.getColorScheme()
+			theme: defaultTheme
 		};
 		this.init();
 	}
