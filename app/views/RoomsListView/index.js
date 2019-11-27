@@ -208,7 +208,9 @@ class RoomsListView extends React.Component {
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
 			closeServerDropdown();
-			this.backHandler.remove();
+			if (this.backHandler && this.backHandler.remove) {
+				this.backHandler.remove();
+			}
 		});
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
