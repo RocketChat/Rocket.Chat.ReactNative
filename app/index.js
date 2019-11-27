@@ -6,8 +6,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-// eslint-disable-next-line import/no-unresolved
-import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands/src';
 
 import EventEmitter from './utils/events';
 import { appInit } from './actions';

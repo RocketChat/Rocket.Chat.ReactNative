@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard, Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -114,6 +114,7 @@ class SettingsView extends React.Component {
 
 	saveToClipboard = (content) => {
 		Clipboard.setString(content);
+		Alert.alert('Copied to clipboard');
 	}
 
 	onPressLicense = () => openLink(LICENSE_LINK)

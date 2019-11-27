@@ -1,6 +1,5 @@
 /* eslint-disable no-bitwise */
-// eslint-disable-next-line import/no-unresolved
-import { constants } from 'react-native-keycommands';
+import { constants } from 'react-native-keycommands/src';
 
 import I18n from './i18n';
 

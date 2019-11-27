@@ -2,8 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationActions, StackActions } from 'react-navigation';
-// eslint-disable-next-line import/no-unresolved
-import KeyCommands from 'react-native-keycommands';
+import KeyCommands from 'react-native-keycommands/src';
 
 import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';
