@@ -1,4 +1,0 @@
-date
-cal
-ls
-sl

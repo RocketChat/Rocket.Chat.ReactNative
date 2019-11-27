@@ -66,7 +66,7 @@ const ModalContent = React.memo(({
 			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>hi</Text>
+						<Text style={styles.title}>{attachment.title}</Text>
 						{attachment.description ? <Text style={styles.description}>{attachment.description}</Text> : null}
 					</View>
 				</TouchableWithoutFeedback>
