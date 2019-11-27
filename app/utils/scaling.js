@@ -1,9 +1,11 @@
 import { Dimensions } from 'react-native';
 
+import { isTablet } from './deviceInfo';
+
 const { width, height } = Dimensions.get('window');
 
-const guidelineBaseWidth = 375;
-const guidelineBaseHeight = 667;
+const guidelineBaseWidth = isTablet ? 600 : 375;
+const guidelineBaseHeight = isTablet ? 800 : 667;
 
 const scale = size => (width / guidelineBaseWidth) * size;
 const verticalScale = size => (height / guidelineBaseHeight) * size;

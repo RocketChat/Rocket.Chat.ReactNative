@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import { responsive } from 'react-native-responsive-ui';
 import Touchable from 'react-native-platform-touchable';
 
-import { isNotch, isIOS } from '../../utils/deviceInfo';
+import { isNotch, isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { COLOR_BACKGROUND_NOTIFICATION, COLOR_SEPARATOR, COLOR_TEXT } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	inner: {
+		flex: 1
 	},
 	avatar: {
 		marginRight: 10
@@ -120,7 +123,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 1,
 				...ANIMATION_PROPS
-			},
+			}
 		).start(() => {
 			this.clearTimeout();
 			this.timeout = setTimeout(() => {
@@ -136,7 +139,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 0,
 				...ANIMATION_PROPS
-			},
+			}
 		).start();
 		setTimeout(removeNotification, ANIMATION_DURATION);
 	}
@@ -155,15 +158,15 @@ class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = async() => {
-		const { notification: { payload }, navigation } = this.props;
+		const { notification: { payload }, navigation, baseUrl } = this.props;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
 		}
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name, t: type, prid
+			rid, name, t: type, prid, baseUrl
 		});
 		this.hide();
 	}
@@ -174,7 +177,7 @@ class NotificationBadge extends React.Component {
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 
 		let top = 0;
 		if (isIOS) {
@@ -182,11 +185,9 @@ class NotificationBadge extends React.Component {
 			if (portrait) {
 				top = isNotch ? 45 : 20;
 			} else {
-				top = 0;
+				top = isTablet ? 20 : 0;
 			}
 		}
-
-		const maxWidthMessage = window.width - 110;
 
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -202,9 +203,9 @@ class NotificationBadge extends React.Component {
 				>
 					<>
 						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-						<View>
-							<Text style={styles.roomName}>{name}</Text>
-							<Text style={[styles.message, { maxWidth: maxWidthMessage }]} numberOfLines={1}>{message}</Text>
+						<View style={styles.inner}>
+							<Text style={styles.roomName} numberOfLines={1}>{name}</Text>
+							<Text style={styles.message} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
 				</Touchable>

@@ -4,6 +4,7 @@ import sharedStyles from '../../views/Styles';
 import {
 	COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE
 } from '../../constants/colors';
+import { isTablet } from '../../utils/deviceInfo';
 
 export default StyleSheet.create({
 	root: {
@@ -121,8 +122,8 @@ export default StyleSheet.create({
 	},
 	image: {
 		width: '100%',
-		maxWidth: 400,
-		minHeight: 200,
+		// maxWidth: 400,
+		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		borderColor: COLOR_BORDER,
 		borderWidth: 1

@@ -113,11 +113,14 @@ export default function subscribeRoom({ rid }) {
 				// Do nothing
 			}
 			if (messageRecord) {
-				batch.push(
-					messageRecord.prepareUpdate(protectedFunction((m) => {
+				try {
+					const update = messageRecord.prepareUpdate((m) => {
 						Object.assign(m, message);
-					}))
-				);
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
 			} else {
 				batch.push(
 					msgCollection.prepareCreate(protectedFunction((m) => {

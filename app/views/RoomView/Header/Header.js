@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, ScrollView
+	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isIOS, isAndroid } from '../../../utils/deviceInfo';
+import { isIOS, isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { COLOR_TEXT_DESCRIPTION, HEADER_TITLE, COLOR_WHITE } from '../../../constants/colors';
+
+const androidMarginLeft = isTablet ? 0 : 10;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: '100%',
 		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? 10 : 0
+		marginLeft: isAndroid ? androidMarginLeft : -12
 	},
 	titleContainer: {
 		flex: 6,
@@ -90,12 +92,12 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting
+	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView
 }) => {
 	const portrait = height > width;
 	let scale = 1;
 
-	if (!portrait) {
+	if (!portrait && !tmid) {
 		if (usersTyping.length > 0) {
 			scale = 0.8;
 		}
@@ -107,8 +109,14 @@ const Header = React.memo(({
 		}
 	}
 
+	const onPress = () => {
+		if (!tmid) {
+			goRoomActionsView();
+		}
+	};
+
 	return (
-		<View style={[styles.container, { width: width - widthOffset }]}>
+		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
@@ -118,9 +126,6 @@ const Header = React.memo(({
 				>
 					<Icon type={prid ? 'discussion' : type} status={status} />
 					<HeaderTitle
-						prid={prid}
-						type={type}
-						status={status}
 						title={title}
 						scale={scale}
 						connecting={connecting}
@@ -128,7 +133,7 @@ const Header = React.memo(({
 				</ScrollView>
 			</View>
 			{type === 'thread' ? null : <Typing usersTyping={usersTyping} />}
-		</View>
+		</TouchableOpacity>
 	);
 });
 
@@ -142,7 +147,8 @@ Header.propTypes = {
 	status: PropTypes.string,
 	usersTyping: PropTypes.array,
 	widthOffset: PropTypes.number,
-	connecting: PropTypes.bool
+	connecting: PropTypes.bool,
+	goRoomActionsView: PropTypes.func
 };
 
 Header.defaultProps = {

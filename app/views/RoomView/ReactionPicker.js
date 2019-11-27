@@ -8,9 +8,10 @@ import { responsive } from 'react-native-responsive-ui';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
-const tabEmojiStyle = { fontSize: 15 };
+const maxSize = 400;
 
 class ReactionPicker extends React.Component {
 	static propTypes = {
@@ -19,15 +20,16 @@ class ReactionPicker extends React.Component {
 		message: PropTypes.object,
 		show: PropTypes.bool,
 		reactionClose: PropTypes.func,
-		onEmojiSelected: PropTypes.func
+		onEmojiSelected: PropTypes.func,
+		split: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { show, window } = this.props;
-		return nextProps.show !== show || window.width !== nextProps.window.width;
+		const { show, window, split } = this.props;
+		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
 	}
 
-	onEmojiSelected(emoji, shortname) {
+	onEmojiSelected = (emoji, shortname) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
@@ -37,8 +39,15 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			window: { width, height }, show, baseUrl, reactionClose
+			window: { width, height }, show, baseUrl, reactionClose, split
 		} = this.props;
+
+		let widthStyle = width - margin;
+		let heightStyle = Math.min(width, height) - (margin * 2);
+		if (split) {
+			widthStyle = maxSize;
+			heightStyle = maxSize;
+		}
 
 		return (show
 			? (
@@ -51,13 +60,18 @@ class ReactionPicker extends React.Component {
 					animationOut='fadeOut'
 				>
 					<View
-						style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+						style={[
+							styles.reactionPickerContainer,
+							{
+								width: widthStyle,
+								height: heightStyle
+							}
+						]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
-							tabEmojiStyle={tabEmojiStyle}
-							width={Math.min(width, height) - margin}
-							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+							// tabEmojiStyle={tabEmojiStyle}
+							onEmojiSelected={this.onEmojiSelected}
 							baseUrl={baseUrl}
 						/>
 					</View>
@@ -72,4 +86,4 @@ const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 
-export default responsive(connect(mapStateToProps)(ReactionPicker));
+export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));
