@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -112,6 +112,10 @@ class SettingsView extends React.Component {
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
+	saveToClipboard = (content) => {
+		Clipboard.setString(content);
+	}
+
 	onPressLicense = () => openLink(LICENSE_LINK)
 
 	renderDisclosure = () => <DisclosureImage />
@@ -221,10 +225,15 @@ class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 					/>
 					<Separator />
-					<ListItem title={I18n.t('Version_no', { version: getReadableVersion })} testID='settings-view-version' />
+					<ListItem
+						title={I18n.t('Version_no', { version: getReadableVersion })}
+						onPress={() => this.saveToClipboard(getReadableVersion)}
+						testID='settings-view-version'
+					/>
 					<Separator />
 					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
+						onPress={() => this.saveToClipboard(server.version)}
 						subtitle={`${ server.server.split('//')[1] }`}
 						testID='settings-view-server-version'
 					/>
