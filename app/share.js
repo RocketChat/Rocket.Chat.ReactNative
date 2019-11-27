@@ -11,7 +11,7 @@ import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
@@ -27,7 +27,8 @@ const InsideNavigator = createStackNavigator({
 	}
 }, {
 	initialRouteName: 'ShareListView',
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const OutsideNavigator = createStackNavigator({
@@ -36,7 +37,8 @@ const OutsideNavigator = createStackNavigator({
 	}
 }, {
 	initialRouteName: 'WithoutServersView',
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AppContainer = createAppContainer(createSwitchNavigator({
