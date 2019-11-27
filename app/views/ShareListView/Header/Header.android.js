@@ -25,11 +25,13 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
+	const titleColorStyle = { color: themes[theme].headerTintColor };
+	const isLight = theme === 'light';
 	if (searching) {
 		return (
 			<View style={styles.container}>
 				<TextInput
-					style={styles.search}
+					style={[styles.search, isLight && titleColorStyle]}
 					placeholder={I18n.t('Search')}
 					onChangeText={onChangeSearchText}
 					theme={theme}
@@ -38,7 +40,7 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 			</View>
 		);
 	}
-	return <Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Send_to')}</Text>;
+	return <Text style={[styles.title, titleColorStyle]}>{I18n.t('Send_to')}</Text>;
 });
 
 Header.propTypes = {

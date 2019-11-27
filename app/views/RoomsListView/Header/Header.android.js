@@ -44,12 +44,13 @@ const Header = React.memo(({
 	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTintColor };
+	const isLight = theme === 'light';
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={styles.server}
+					style={[styles.server, isLight && titleColorStyle]}
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}
