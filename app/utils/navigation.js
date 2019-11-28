@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
-import { isAndroid } from './deviceInfo';
 
 export const defaultHeader = {
 	headerBackTitle: null
@@ -23,7 +22,7 @@ export const themedHeader = theme => ({
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground
 	},
-	headerTintColor: isAndroid ? themes[theme].headerTitleColor : themes[theme].headerTintColor,
+	headerTintColor: themes[theme].headerTintColor,
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
 });
 
