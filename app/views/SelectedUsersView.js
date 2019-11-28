@@ -269,6 +269,7 @@ class SelectedUsersView extends React.Component {
 
 	renderList = () => {
 		const { search, chats } = this.state;
+		const { theme } = this.props;
 		return (
 			<FlatList
 				data={search.length > 0 ? search : chats}
@@ -277,6 +278,7 @@ class SelectedUsersView extends React.Component {
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
+				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
@@ -287,7 +289,7 @@ class SelectedUsersView extends React.Component {
 		const { loading, theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 				testID='select-users-view'
 			>

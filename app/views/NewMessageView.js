@@ -140,7 +140,7 @@ class NewMessageView extends React.Component {
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View>
+			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<Touch
 					onPress={this.createChannel}
@@ -201,7 +201,7 @@ class NewMessageView extends React.Component {
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
-				contentContainerStyle={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
 		);

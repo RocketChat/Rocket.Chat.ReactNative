@@ -166,7 +166,10 @@ class ShareView extends React.Component {
 	renderMediaContent = () => {
 		const { fileInfo, file } = this.state;
 		const { theme } = this.props;
-		const border = { borderColor: themes[theme].separatorColor };
+		const inputStyle = {
+			backgroundColor: themes[theme].focusedBackground,
+			borderColor: themes[theme].separatorColor
+		};
 		return fileInfo ? (
 			<View style={styles.mediaContainer}>
 				{this.renderPreview()}
@@ -176,7 +179,7 @@ class ShareView extends React.Component {
 							styles.mediaNameInput,
 							styles.input,
 							styles.firstInput,
-							border
+							inputStyle
 						]}
 						placeholder={I18n.t('File_name')}
 						onChangeText={name => this.setState({ file: { ...file, name } })}
@@ -188,7 +191,7 @@ class ShareView extends React.Component {
 						inputStyle={[
 							styles.mediaDescriptionInput,
 							styles.input,
-							border
+							inputStyle
 						]}
 						placeholder={I18n.t('File_description')}
 						onChangeText={description => this.setState({ file: { ...file, description } })}
@@ -210,7 +213,14 @@ class ShareView extends React.Component {
 		return (
 			<TextInput
 				containerStyle={[styles.content, styles.inputContainer]}
-				inputStyle={[styles.input, styles.textInput, { borderColor: themes[theme].separatorColor }]}
+				inputStyle={[
+					styles.input,
+					styles.textInput,
+					{
+						borderColor: themes[theme].separatorColor,
+						backgroundColor: themes[theme].focusedBackground
+					}
+				]}
 				placeholder=''
 				onChangeText={handleText => this.setState({ value: handleText })}
 				defaultValue={value}
@@ -248,7 +258,18 @@ class ShareView extends React.Component {
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<View style={[isMedia ? styles.toContent : styles.toContentText, { backgroundColor: isMedia ? themes[theme].backgroundColor : themes[theme].auxiliaryBackground }]}>
+				<View
+					style={[
+						isMedia
+							? styles.toContent
+							: styles.toContentText,
+						{
+							backgroundColor: isMedia
+								? themes[theme].focusedBackground
+								: themes[theme].auxiliaryBackground
+						}
+					]}
+				>
 					<Text style={styles.text} numberOfLines={1}>
 						<Text style={[styles.to, { color: themes[theme].auxiliaryText }]}>{`${ I18n.t('To') }: `}</Text>
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>{`${ name }`}</Text>

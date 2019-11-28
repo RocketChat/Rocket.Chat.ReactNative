@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import {
+	FlatList, Text, View, StyleSheet
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 
@@ -27,6 +29,16 @@ const THEMES = [
 		value: 'black'
 	}
 ];
+
+const styles = StyleSheet.create({
+	list: {
+		paddingVertical: 18
+	},
+	info: {
+		paddingVertical: 10,
+		paddingHorizontal: 16
+	}
+});
 
 class LanguageView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -77,8 +89,17 @@ class LanguageView extends React.Component {
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ paddingBottom: 10, paddingHorizontal: 16 }}>
-				<Text style={{ color: themes[theme].auxiliaryText }}>{I18n.t('ALL_THEMES')}</Text>
+			<View style={styles.info}>
+				<Text style={{ color: themes[theme].infoText }}>{I18n.t('ALL_THEMES')}</Text>
+			</View>
+		);
+	}
+
+	renderFooter = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.info, sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}>
+				<Text style={{ color: themes[theme].infoText }}>{I18n.t('Applying_a_theme_will_change_how_the_app_looks')}</Text>
 			</View>
 		);
 	}
@@ -96,14 +117,12 @@ class LanguageView extends React.Component {
 					data={THEMES}
 					keyExtractor={item => item.value}
 					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						{
-							borderColor: themes[theme].separatorColor,
-							borderTopWidth: 0
-						}
+						styles.list,
+						{ borderColor: themes[theme].separatorColor }
 					]}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderHeader}
+					ListFooterComponent={this.renderFooter}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
 			</SafeAreaView>

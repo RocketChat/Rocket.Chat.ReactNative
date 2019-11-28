@@ -54,7 +54,7 @@ const DateSeparator = React.memo(({ ts, unread, theme }) => {
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={[styles.line, { backgroundColor: themes[theme].auxiliaryText }]} />
+				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
 				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginLeft]}>{date}</Text>
 			</View>
 		);

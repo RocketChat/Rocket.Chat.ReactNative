@@ -105,11 +105,11 @@ class ReadReceiptView extends React.Component {
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>
 							{item.user.name}
 						</Text>
-						<Text style={{ color: themes[theme].titleText }}>
+						<Text style={{ color: themes[theme].auxiliaryText }}>
 							{time}
 						</Text>
 					</View>
-					<Text style={{ color: themes[theme].titleText }}>
+					<Text style={{ color: themes[theme].auxiliaryText }}>
 						{`@${ item.user.username }`}
 					</Text>
 				</View>
@@ -145,7 +145,13 @@ class ReadReceiptView extends React.Component {
 								data={receipts}
 								renderItem={this.renderItem}
 								ItemSeparatorComponent={this.renderSeparator}
-								style={[styles.list, { backgroundColor: themes[theme].chatComponentBackground }]}
+								style={[
+									styles.list,
+									{
+										backgroundColor: themes[theme].chatComponentBackground,
+										borderColor: themes[theme].separatorColor
+									}
+								]}
 								keyExtractor={item => item._id}
 							/>
 						)}

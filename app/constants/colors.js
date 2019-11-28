@@ -32,10 +32,11 @@ export const themes = {
 		tintColor: '#1d74f5',
 		auxiliaryTintColor: '#caced1',
 		actionTintColor: '#1d74f5',
-		actionBackgroundColor: '#e8f2ff', // weird color
+		actionBackgroundColor: '#e8f2ff',
 		separatorColor: '#cbcbcc',
 		strongAccent: '', // ???
 		navbarBackground: '#ffffff',
+		headerBorder: '#B2B2B2',
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
 		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
@@ -65,6 +66,7 @@ export const themes = {
 		separatorColor: '#2b2b2d',
 		strongAccent: '', // ???
 		navbarBackground: '#0b182c',
+		headerBorder: '#2F3A4B',
 		headerBackground: '#0b182c',
 		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: '#FFFFFF',
@@ -94,6 +96,7 @@ export const themes = {
 		separatorColor: '#272728',
 		strongAccent: '', // ???
 		navbarBackground: '#0d0d0d',
+		headerBorder: '#323232',
 		headerBackground: '#0d0d0d',
 		headerTintColor: isAndroid ? '#ffffff' : '#1e9bfe',
 		headerTitleColor: '#f9f9f9',

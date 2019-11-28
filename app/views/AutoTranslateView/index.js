@@ -7,7 +7,6 @@ import { SafeAreaView, ScrollView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
-// import log from '../../utils/log';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
@@ -21,9 +20,11 @@ import { themedHeader } from '../../utils/navigation';
 const styles = StyleSheet.create({
 	contentContainerStyle: {
 		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginTop: 10,
 		paddingBottom: 30
+	},
+	flatListContainerStyle: {
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	sectionSeparator: {
 		...sharedStyles.separatorVertical,
@@ -31,7 +32,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SectionSeparator = React.memo(({ theme }) => <View style={[styles.sectionSeparator, { backgroundColor: themes[theme].focusedBackground, borderColor: themes[theme].borderColor }]} />);
+const SectionSeparator = React.memo(({ theme }) => (
+	<View
+		style={[
+			styles.sectionSeparator,
+			{
+				backgroundColor: themes[theme].auxiliaryBackground,
+				borderColor: themes[theme].separatorColor
+			}
+		]}
+	/>
+));
 
 SectionSeparator.propTypes = {
 	theme: PropTypes.string
@@ -153,7 +164,7 @@ class AutoTranslateView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].focusedBackground }]}
+				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
 				testID='auto-translate-view'
 			>
@@ -163,8 +174,8 @@ class AutoTranslateView extends React.Component {
 					contentContainerStyle={[
 						styles.contentContainerStyle,
 						{
-							backgroundColor: themes[theme].focusedBackground,
-							borderColor: themes[theme].borderColor
+							backgroundColor: themes[theme].auxiliaryBackground,
+							borderColor: themes[theme].separatorColor
 						}
 					]}
 					testID='auto-translate-view-list'
@@ -182,6 +193,7 @@ class AutoTranslateView extends React.Component {
 						keyExtractor={item => item.language}
 						renderItem={this.renderItem}
 						ItemSeparatorComponent={this.renderSeparator}
+						contentContainerStyle={[styles.flatListContainerStyle, { borderColor: themes[theme].separatorColor }]}
 					/>
 				</ScrollView>
 			</SafeAreaView>

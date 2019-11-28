@@ -253,7 +253,6 @@ class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
-					<Separator theme={theme} />
 
 					<SectionSeparator theme={theme} />
 

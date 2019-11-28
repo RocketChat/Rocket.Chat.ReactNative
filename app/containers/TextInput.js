@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingLeft: 14,
 		paddingRight: 14,
-		borderWidth: 1,
+		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2
 	},
 	inputIconLeft: {
@@ -131,7 +131,7 @@ export default class RCTextInput extends React.PureComponent {
 							secureTextEntry && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
-								borderColor: themes[theme].borderColor,
+								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
 							},
 							inputStyle

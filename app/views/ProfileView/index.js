@@ -385,7 +385,7 @@ class ProfileView extends React.Component {
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>

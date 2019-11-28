@@ -783,7 +783,7 @@ class MessageBox extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].borderColor }]}>
+				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
 					<ReplyPreview
 						message={message}
 						close={replyCancel}

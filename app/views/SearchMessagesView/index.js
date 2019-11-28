@@ -92,7 +92,7 @@ class SearchMessagesView extends React.Component {
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].focusedBackground }]}>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
@@ -154,7 +154,7 @@ class SearchMessagesView extends React.Component {
 						theme={theme}
 					/>
 					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' theme={theme} />
-					<View style={[styles.divider, { backgroundColor: themes[theme].auxiliaryText }]} />
+					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}
 			</SafeAreaView>
