@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard, Alert
+	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -29,6 +29,8 @@ import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/
 import SidebarView from '../SidebarView';
 import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
 
 const SectionSeparator = React.memo(() => <View style={styles.sectionSeparatorBorder} />);
 const ItemInfo = React.memo(({ info }) => (
@@ -112,9 +114,9 @@ class SettingsView extends React.Component {
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
-	saveToClipboard = (content) => {
-		Clipboard.setString(content);
-		Alert.alert('Copied to clipboard');
+	saveToClipboard = async(content) => {
+		await Clipboard.setString(content);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onPressLicense = () => openLink(LICENSE_LINK)
