@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -11,7 +11,16 @@ import { withTheme } from '../theme';
 export const headerIconSize = 23;
 
 const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
-	<HeaderButton {...props} IconComponent={CustomIcon} iconSize={headerIconSize} color={themes[theme].headerTintColor} />
+	<HeaderButton
+		{...props}
+		IconComponent={CustomIcon}
+		iconSize={headerIconSize}
+		color={
+			isAndroid
+				? themes[theme].headerTitleColor
+				: themes[theme].headerTintColor
+		}
+	/>
 )));
 
 export const CustomHeaderButtons = React.memo(props => (

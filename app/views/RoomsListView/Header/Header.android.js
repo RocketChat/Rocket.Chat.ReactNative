@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 const Header = React.memo(({
 	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
-	const titleColorStyle = { color: themes[theme].headerTintColor };
+	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
 	if (showSearchHeader) {
 		return (
@@ -73,7 +73,7 @@ const Header = React.memo(({
 						style={[
 							styles.disclosure,
 							showServerDropdown && styles.upsideDown,
-							{ tintColor: themes[theme].headerTintColor }
+							{ tintColor: themes[theme].headerTitleColor }
 						]}
 						source={{ uri: 'disclosure_indicator_server' }}
 					/>

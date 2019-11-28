@@ -15,7 +15,11 @@ const Directory = React.memo(({ goDirectory, theme }) => (
 	<Touch
 		onPress={goDirectory}
 		theme={theme}
-		style={{ backgroundColor: themes[theme].headerBackground }}
+		style={{
+			backgroundColor: theme !== 'light'
+				? themes[theme].headerBackground
+				: themes[theme].focusedBackground
+		}}
 	>
 		<View
 			style={[
@@ -25,7 +29,7 @@ const Directory = React.memo(({ goDirectory, theme }) => (
 		>
 			<CustomIcon style={[styles.directoryIcon, { color: themes[theme].tintColor }]} size={22} name='discover' />
 			<Text style={[styles.directoryText, { color: themes[theme].tintColor }]}>{I18n.t('Directory')}</Text>
-			<DisclosureIndicator theme={theme} />
+			<DisclosureIndicator />
 		</View>
 	</Touch>
 ));

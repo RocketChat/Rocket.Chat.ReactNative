@@ -98,7 +98,7 @@ class LanguageView extends React.Component {
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
 						{
-							borderColor: themes[theme].borderColor,
+							borderColor: themes[theme].separatorColor,
 							borderTopWidth: 0
 						}
 					]}

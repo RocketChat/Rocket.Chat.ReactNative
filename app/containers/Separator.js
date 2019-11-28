@@ -16,7 +16,7 @@ const Separator = React.memo(({ style, theme }) => (
 		style={[
 			styles.separator,
 			style,
-			{ backgroundColor: themes[theme].borderColor }
+			{ backgroundColor: themes[theme].separatorColor }
 		]}
 	/>
 ));

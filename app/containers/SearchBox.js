@@ -54,7 +54,7 @@ const SearchBox = ({
 	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
 }) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].headerBackground }]}>
-		<View style={[styles.searchBox, { backgroundColor: themes[theme].borderColor }]}>
+		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
 			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}

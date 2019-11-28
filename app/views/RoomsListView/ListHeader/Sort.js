@@ -20,7 +20,11 @@ const Sort = React.memo(({
 		<Touch
 			onPress={toggleSort}
 			theme={theme}
-			style={{ backgroundColor: themes[theme].headerBackground }}
+			style={{
+				backgroundColor: theme !== 'light'
+					? themes[theme].headerBackground
+					: themes[theme].focusedBackground
+			}}
 		>
 			<View
 				style={[

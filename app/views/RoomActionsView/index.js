@@ -336,7 +336,7 @@ class RoomActionsView extends React.Component {
 
 	renderSeparator = () => {
 		const { theme } = this.props;
-		return <View style={[styles.separator, { backgroundColor: themes[theme].borderColor }]} />;
+		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
 	}
 
 	updateRoomMember = async() => {
@@ -427,7 +427,7 @@ class RoomActionsView extends React.Component {
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
 				</View>,
-				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
+				<DisclosureIndicator key='disclosure-indicator' />
 			], item)
 		);
 	}
@@ -459,7 +459,7 @@ class RoomActionsView extends React.Component {
 			<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />,
 			<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>,
 			item.description ? <Text key='description' style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null,
-			<DisclosureIndicator theme={theme} key='disclosure-indicator' />
+			<DisclosureIndicator key='disclosure-indicator' />
 		];
 		return this.renderTouchableItem(subview, item);
 	}
@@ -467,10 +467,10 @@ class RoomActionsView extends React.Component {
 	renderSectionSeparator = (data) => {
 		const { theme } = this.props;
 		if (data.trailingItem) {
-			return <View style={[styles.sectionSeparator, data.leadingSection && styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].borderColor }]} />;
+			return <View style={[styles.sectionSeparator, data.leadingSection && styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].separatorColor }]} />;
 		}
 		if (!data.trailingSection) {
-			return <View style={[styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].borderColor }]} />;
+			return <View style={[styles.sectionSeparatorBorder, { backgroundColor: themes[theme].auxiliaryBackground, borderColor: themes[theme].separatorColor }]} />;
 		}
 		return null;
 	}

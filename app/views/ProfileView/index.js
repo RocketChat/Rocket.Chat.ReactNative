@@ -31,6 +31,7 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { isAndroid } from '../../utils/deviceInfo';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -38,7 +39,11 @@ class ProfileView extends React.Component {
 		headerLeft: screenProps.split ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
-				tintColor={themes[screenProps.theme].headerTintColor}
+				tintColor={
+					isAndroid
+						? themes[screenProps.theme].headerTitleColor
+						: themes[screenProps.theme].headerTintColor
+				}
 			/>
 		) : (
 			<DrawerButton navigation={navigation} />

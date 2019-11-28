@@ -1,10 +1,10 @@
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 
 export const COLOR_DANGER = '#f5455c';
-export const COLOR_SUCCESS = '#2de0a5';
+export const COLOR_SUCCESS = '#4BD964';
 export const COLOR_BLACK = '#000000'; // KEEP
 export const STATUS_COLORS = {
-	online: '#2de0a5',
+	online: '#4BD964',
 	busy: COLOR_DANGER,
 	away: '#ffd21f',
 	offline: '#cbced1'
@@ -21,26 +21,27 @@ export const themes = {
 		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
 		emptyChatBackground: '#f3f4f5',
-		auxiliaryBackground: '#eeeef4',
+		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
 		titleText: '#0d0e12',
 		bodyText: '#2f343d',
 		borderColor: '#e1e5e8',
 		controlText: '#54585e',
 		auxiliaryText: '#9ca2a8',
+		infoText: '#6d6d72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#0a4469',
+		auxiliaryTintColor: '#caced1',
 		actionTintColor: '#1d74f5',
 		actionBackgroundColor: '#e8f2ff', // weird color
-		mutedAccent: '#cbcbcc',
+		separatorColor: '#cbcbcc',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA', // TODO: use it on separators
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
 		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
-		messageboxBackground: isIOS ? '#f8f8f8' : '#ffffff',
+		messageboxBackground: '#ffffff',
+		searchboxBackground: '#E6E6E7',
 		buttonText: '#ffffff'
 	},
 	dark: {
@@ -55,19 +56,20 @@ export const themes = {
 		borderColor: '#0f213d',
 		controlText: '#dadde6',
 		auxiliaryText: '#9297a2',
+		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
 		auxiliaryTintColor: '#cdcdcd',
 		actionTintColor: '#1d74f5',
 		actionBackgroundColor: '#e8f2ff',
-		mutedAccent: '#2a2a2d',
+		separatorColor: '#2b2b2d',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA',
 		headerBackground: '#0b182c',
 		headerTintColor: '#1d74f5',
 		headerTitleColor: '#FFFFFF',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		messageboxBackground: '#0b182c',
+		searchboxBackground: '#192d4d',
 		buttonText: '#ffffff'
 	},
 	black: {
@@ -82,19 +84,20 @@ export const themes = {
 		borderColor: '#1f2329',
 		controlText: '#dadde6',
 		auxiliaryText: '#b2b8c6',
+		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
 		auxiliaryTintColor: '#cdcdcd',
 		actionTintColor: '#1ea1fe',
 		actionBackgroundColor: '#e8f2ff',
-		mutedAccent: '#282828',
+		separatorColor: '#272728',
 		strongAccent: '', // ???
-		separatorColor: '#A7A7AA',
 		headerBackground: '#0d0d0d',
 		headerTintColor: '#1e9bfe',
 		headerTitleColor: '#f9f9f9',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		messageboxBackground: '#0d0d0d',
+		searchboxBackground: '#1f1f1f',
 		buttonText: '#ffffff'
 	}
 };

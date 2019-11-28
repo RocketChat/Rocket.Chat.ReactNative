@@ -25,7 +25,7 @@ const SectionTitle = React.memo(({ title, theme }) => (
 			styles.sectionTitle,
 			{
 				backgroundColor: themes[theme].auxiliaryBackground,
-				color: themes[theme].titleText
+				color: themes[theme].infoText
 			}
 		]}
 	>
@@ -47,7 +47,7 @@ const Info = React.memo(({ info, theme }) => (
 		style={[
 			styles.infoText,
 			{
-				color: themes[theme].bodyText,
+				color: themes[theme].infoText,
 				backgroundColor: themes[theme].auxiliaryBackground
 			}
 		]}

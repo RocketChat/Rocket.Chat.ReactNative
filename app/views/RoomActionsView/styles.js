@@ -35,11 +35,11 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth
 	},
 	sectionSeparator: {
-		borderBottomWidth: 1,
+		borderBottomWidth: StyleSheet.hairlineWidth,
 		height: 36
 	},
 	sectionSeparatorBorder: {
-		borderTopWidth: 1
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	textColorDanger: {
 		color: COLOR_DANGER
