@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationActions, StackActions } from 'react-navigation';
-import KeyCommands from 'react-native-keycommands/src';
+import KeyCommands from 'react-native-keycommands';
 
 import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';

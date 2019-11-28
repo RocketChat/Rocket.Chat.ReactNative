@@ -6,7 +6,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands/src';
+import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
