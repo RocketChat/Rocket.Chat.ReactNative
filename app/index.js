@@ -9,7 +9,9 @@ import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
+import { themes } from './constants/colors';
 import { defaultTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
@@ -27,7 +29,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth
+	isTablet, isSplited, isIOS, setWidth, isAndroid
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -549,10 +551,18 @@ export default class Root extends React.Component {
 	setTheme = (theme) => {
 		if (theme) {
 			this.setState({ theme });
+			this.setAndroidNavbar(theme);
 		} else {
 			this.subTheme = Appearance.addChangeListener(({ colorScheme }) => {
 				this.setState({ theme: colorScheme });
 			});
+		}
+	}
+
+	setAndroidNavbar = (theme) => {
+		if (isAndroid) {
+			const iconsLight = theme === 'light';
+			changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
 		}
 	}
 

@@ -145,7 +145,15 @@ class ShareView extends React.Component {
 			);
 
 		return (
-			<View style={[styles.mediaContent, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<View
+				style={[
+					styles.mediaContent,
+					{
+						borderColor: themes[theme].separatorColor,
+						backgroundColor: themes[theme].auxiliaryBackground
+					}
+				]}
+			>
 				{icon}
 				<View style={styles.mediaInfo}>
 					<Text style={[styles.mediaText, { color: themes[theme].titleText }]} numberOfLines={1}>{fileInfo.name}</Text>
@@ -158,12 +166,18 @@ class ShareView extends React.Component {
 	renderMediaContent = () => {
 		const { fileInfo, file } = this.state;
 		const { theme } = this.props;
+		const border = { borderColor: themes[theme].separatorColor };
 		return fileInfo ? (
 			<View style={styles.mediaContainer}>
 				{this.renderPreview()}
-				<View style={[styles.mediaInputContent, { borderColor: themes[theme].borderColor }]}>
+				<View style={styles.mediaInputContent}>
 					<TextInput
-						inputStyle={[styles.mediaNameInput, styles.input]}
+						inputStyle={[
+							styles.mediaNameInput,
+							styles.input,
+							styles.firstInput,
+							border
+						]}
 						placeholder={I18n.t('File_name')}
 						onChangeText={name => this.setState({ file: { ...file, name } })}
 						defaultValue={file.name}
@@ -171,7 +185,11 @@ class ShareView extends React.Component {
 						theme={theme}
 					/>
 					<TextInput
-						inputStyle={[styles.mediaDescriptionInput, styles.input]}
+						inputStyle={[
+							styles.mediaDescriptionInput,
+							styles.input,
+							border
+						]}
 						placeholder={I18n.t('File_description')}
 						onChangeText={description => this.setState({ file: { ...file, description } })}
 						defaultValue={file.description}
@@ -192,7 +210,7 @@ class ShareView extends React.Component {
 		return (
 			<TextInput
 				containerStyle={[styles.content, styles.inputContainer]}
-				inputStyle={[styles.input, styles.textInput]}
+				inputStyle={[styles.input, styles.textInput, { borderColor: themes[theme].separatorColor }]}
 				placeholder=''
 				onChangeText={handleText => this.setState({ value: handleText })}
 				defaultValue={value}

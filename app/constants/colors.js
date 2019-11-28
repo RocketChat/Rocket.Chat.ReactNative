@@ -4,7 +4,7 @@ export const COLOR_DANGER = '#f5455c';
 export const COLOR_SUCCESS = '#4BD964';
 export const COLOR_BLACK = '#000000'; // KEEP
 export const STATUS_COLORS = {
-	online: '#4BD964',
+	online: '#2de0a5',
 	busy: COLOR_DANGER,
 	away: '#ffd21f',
 	offline: '#cbced1'
@@ -35,6 +35,7 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff', // weird color
 		separatorColor: '#cbcbcc',
 		strongAccent: '', // ???
+		navbarBackground: '#ffffff',
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
 		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
@@ -63,8 +64,9 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff',
 		separatorColor: '#2b2b2d',
 		strongAccent: '', // ???
+		navbarBackground: '#0b182c',
 		headerBackground: '#0b182c',
-		headerTintColor: '#1d74f5',
+		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: '#FFFFFF',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
@@ -91,8 +93,9 @@ export const themes = {
 		actionBackgroundColor: '#e8f2ff',
 		separatorColor: '#272728',
 		strongAccent: '', // ???
+		navbarBackground: '#0d0d0d',
 		headerBackground: '#0d0d0d',
-		headerTintColor: '#1e9bfe',
+		headerTintColor: isAndroid ? '#ffffff' : '#1e9bfe',
 		headerTitleColor: '#f9f9f9',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',

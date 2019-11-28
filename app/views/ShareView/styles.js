@@ -42,7 +42,8 @@ export default StyleSheet.create({
 	mediaContent: {
 		flexDirection: 'row',
 		padding: 16,
-		alignItems: 'center'
+		alignItems: 'center',
+		...sharedStyles.separatorTop
 	},
 	mediaImage: {
 		height: 64,
@@ -64,8 +65,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	mediaInputContent: {
-		width: '100%',
-		...sharedStyles.separatorVertical
+		width: '100%'
 	},
 	input: {
 		fontSize: 16,
@@ -74,14 +74,16 @@ export default StyleSheet.create({
 	inputContainer: {
 		marginBottom: 0
 	},
+	firstInput: {
+		borderBottomWidth: 0
+	},
 	textInput: {
 		height: '100%'
 	},
 	mediaNameInput: {
 		paddingLeft: 16,
 		paddingRight: 16,
-		paddingVertical: 8,
-		...sharedStyles.separatorBottom
+		paddingVertical: 8
 	},
 	mediaDescriptionInput: {
 		paddingLeft: 16,

@@ -24,6 +24,7 @@ class Touch extends React.Component {
 				onPress={onPress}
 				activeOpacity={1}
 				underlayColor={themes[theme].bannerBackground}
+				rippleColor={themes[theme].bannerBackground}
 				{...props}
 			>
 				{children}

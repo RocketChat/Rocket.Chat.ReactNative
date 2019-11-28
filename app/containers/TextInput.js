@@ -127,14 +127,14 @@ export default class RCTextInput extends React.PureComponent {
 						style={[
 							styles.input,
 							error.error && styles.inputError,
-							inputStyle,
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].borderColor,
 								color: themes[theme].titleText
-							}
+							},
+							inputStyle
 						]}
 						ref={inputRef}
 						autoCorrect={false}
