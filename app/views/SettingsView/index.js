@@ -114,6 +114,15 @@ class SettingsView extends React.Component {
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
+	copyServerVersion = () => {
+		const { server } = this.props;
+		this.saveToClipboard(server.version);
+	}
+
+	copyAppVersion = () => {
+		this.saveToClipboard(getReadableVersion);
+	}
+
 	saveToClipboard = async(content) => {
 		await Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
@@ -230,13 +239,13 @@ class SettingsView extends React.Component {
 					<Separator />
 					<ListItem
 						title={I18n.t('Version_no', { version: getReadableVersion })}
-						onPress={() => this.saveToClipboard(getReadableVersion)}
+						onPress={this.copyAppVersion}
 						testID='settings-view-version'
 					/>
 					<Separator />
 					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
-						onPress={() => this.saveToClipboard(server.version)}
+						onPress={this.copyServerVersion}
 						subtitle={`${ server.server.split('//')[1] }`}
 						testID='settings-view-server-version'
 					/>
