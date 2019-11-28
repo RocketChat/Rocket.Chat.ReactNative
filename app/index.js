@@ -10,6 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import setRootViewColor from 'rn-root-view';
 
 import { themes } from './constants/colors';
 import { defaultTheme } from './utils/theme';
@@ -548,14 +549,11 @@ export default class Root extends React.Component {
 		}
 	}
 
-	setTheme = (theme) => {
-		if (theme) {
-			this.setState({ theme });
-			this.setAndroidNavbar(theme);
+	setTheme = (colorScheme) => {
+		if (colorScheme) {
+			this.changeTheme({ colorScheme });
 		} else {
-			this.subTheme = Appearance.addChangeListener(({ colorScheme }) => {
-				this.setState({ theme: colorScheme });
-			});
+			this.subTheme = Appearance.addChangeListener(this.changeTheme);
 		}
 	}
 
@@ -564,6 +562,12 @@ export default class Root extends React.Component {
 			const iconsLight = theme === 'light';
 			changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
 		}
+	}
+
+	changeTheme = ({ colorScheme: theme }) => {
+		this.setState({ theme });
+		this.setAndroidNavbar(theme);
+		setRootViewColor(themes[theme].backgroundColor);
 	}
 
 	initTablet = async() => {
