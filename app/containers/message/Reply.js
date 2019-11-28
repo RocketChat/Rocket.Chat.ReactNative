@@ -149,7 +149,7 @@ const Reply = React.memo(({
 				styles.button,
 				index > 0 && styles.marginTop,
 				{
-					backgroundColor: themes[theme].auxiliaryBackground,
+					backgroundColor: themes[theme].chatComponentBackground,
 					borderColor: themes[theme].borderColor
 				},
 				split && sharedStyles.tabletContent

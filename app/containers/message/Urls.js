@@ -90,7 +90,7 @@ const Url = React.memo(({
 				index > 0 && styles.marginTop,
 				styles.container,
 				{
-					backgroundColor: themes[theme].auxiliaryBackground,
+					backgroundColor: themes[theme].chatComponentBackground,
 					borderColor: themes[theme].borderColor
 				},
 				split && sharedStyles.tabletContent
