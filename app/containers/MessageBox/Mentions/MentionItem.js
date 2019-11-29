@@ -71,7 +71,13 @@ const MentionItem = ({
 
 	return (
 		<TouchableOpacity
-			style={[styles.mentionItem, { backgroundColor: themes[theme].messageboxBackground, borderTopColor: themes[theme].borderColor }]}
+			style={[
+				styles.mentionItem,
+				{
+					backgroundColor: themes[theme].auxiliaryBackground,
+					borderTopColor: themes[theme].separatorColor
+				}
+			]}
 			onPress={() => onPressMention(item)}
 			testID={testID}
 		>

@@ -47,7 +47,7 @@ export default StyleSheet.create({
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
-		borderTopWidth: 1,
+		borderTopWidth: StyleSheet.hairlineWidth,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
@@ -75,7 +75,7 @@ export default StyleSheet.create({
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
-		borderTopWidth: 1
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	slash: {
 		height: 30,

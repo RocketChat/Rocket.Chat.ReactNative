@@ -8,11 +8,19 @@ import { themes } from '../../../constants/colors';
 
 const FixedMentionItem = ({ item, onPress, theme }) => (
 	<TouchableOpacity
-		style={[styles.mentionItem, { backgroundColor: themes[theme].messageboxBackground, borderTopColor: themes[theme].borderColor }]}
+		style={[
+			styles.mentionItem,
+			{
+				backgroundColor: themes[theme].auxiliaryBackground,
+				borderTopColor: themes[theme].separatorColor
+			}
+		]}
 		onPress={() => onPress(item)}
 	>
 		<Text style={[styles.fixedMentionAvatar, { color: themes[theme].titleText }]}>{item.username}</Text>
-		<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}</Text>
+		<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>
+			{item.username === 'here' ? I18n.t('Notify_active_in_this_room') : I18n.t('Notify_all_in_this_room')}
+		</Text>
 	</TouchableOpacity>
 );
 

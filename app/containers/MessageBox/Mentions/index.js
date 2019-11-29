@@ -5,6 +5,7 @@ import equal from 'deep-equal';
 
 import styles from '../styles';
 import MentionItem from './MentionItem';
+import { themes } from '../../../constants/colors';
 
 const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 	if (!trackingType) {
@@ -13,7 +14,7 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 	return (
 		<FlatList
 			testID='messagebox-container'
-			style={styles.mentionList}
+			style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			data={mentions}
 			extraData={mentions}
 			renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
