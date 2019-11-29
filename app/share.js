@@ -91,6 +91,7 @@ class Root extends React.Component {
 		if (colorScheme) {
 			this.changeTheme({ colorScheme });
 		} else {
+			this.changeTheme({ colorScheme: defaultTheme });
 			this.subTheme = Appearance.addChangeListener(this.changeTheme);
 		}
 	}

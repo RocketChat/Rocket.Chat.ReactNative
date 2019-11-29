@@ -13,7 +13,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
 import { themes } from './constants/colors';
-import { defaultTheme } from './utils/theme';
+import { defaultTheme, navigationTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -558,6 +558,7 @@ export default class Root extends React.Component {
 		if (colorScheme) {
 			this.changeTheme({ colorScheme });
 		} else {
+			this.changeTheme({ colorScheme: defaultTheme });
 			this.subTheme = Appearance.addChangeListener(this.changeTheme);
 		}
 	}
@@ -614,6 +615,7 @@ export default class Root extends React.Component {
 				}}
 				screenProps={{ split, theme }}
 				onNavigationStateChange={onNavigationStateChange}
+				theme={navigationTheme(theme)}
 			/>
 		);
 
