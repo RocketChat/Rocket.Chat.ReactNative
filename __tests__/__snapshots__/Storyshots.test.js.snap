@@ -15235,7 +15235,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -15507,7 +15507,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -15779,7 +15779,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -16051,7 +16051,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -16323,7 +16323,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -16563,7 +16563,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -16803,7 +16803,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
@@ -17883,7 +17883,7 @@ exports[`Storyshots Message list 1`] = `
                       "width": 20,
                     },
                     Object {
-                      "tintColor": undefined,
+                      "tintColor": "#caced1",
                     },
                   ]
                 }
