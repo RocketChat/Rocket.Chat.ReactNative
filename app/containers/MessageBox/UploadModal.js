@@ -153,12 +153,14 @@ class UploadModal extends Component {
 						backgroundColor={themes[theme].chatComponentBackground}
 						style={styles.button}
 						onPress={close}
+						theme={theme}
 					/>
 					<Button
 						title={I18n.t('Send')}
 						type='primary'
 						style={styles.button}
 						onPress={this.submit}
+						theme={theme}
 					/>
 				</View>
 			);
