@@ -100,7 +100,8 @@ const OutsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
 
 const RoomRoutes = {
@@ -264,13 +265,17 @@ const InsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
 
 const SetUsernameStack = createStackNavigator({
 	SetUsernameView: {
 		getScreen: () => require('./views/SetUsernameView').default
 	}
+},
+{
+	cardStyle
 });
 
 class CustomInsideStack extends React.Component {
