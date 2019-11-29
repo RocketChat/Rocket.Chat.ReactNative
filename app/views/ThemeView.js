@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class LanguageView extends React.Component {
+class ThemeView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		title: I18n.t('Theme'),
 		...themedHeader(screenProps.theme)
@@ -130,4 +130,4 @@ class LanguageView extends React.Component {
 	}
 }
 
-export default withTheme(LanguageView);
+export default withTheme(ThemeView);
