@@ -9,7 +9,7 @@ export const defaultHeader = {
 };
 
 export const cardStyle = {
-	backgroundColor: 'rgba(0,0,0,0.5)'
+	backgroundColor: 'rgba(0,0,0,0)'
 };
 
 const borderBottom = theme => ({
