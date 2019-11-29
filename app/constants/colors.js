@@ -37,7 +37,7 @@ export const themes = {
 		navbarBackground: '#ffffff',
 		headerBorder: '#B2B2B2',
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
-		headerSecondaryBackground: isAndroid ? '#54585e' : '#ffffff',
+		headerSecondaryBackground: '#ffffff',
 		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
 		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
 		headerSecondaryText: isAndroid ? '#9ca2a8' : '#1d74f5',

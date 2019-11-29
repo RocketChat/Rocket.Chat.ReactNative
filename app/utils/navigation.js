@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
-import { isAndroid } from './deviceInfo';
 
 export const defaultHeader = {
 	headerBackTitle: null
@@ -14,7 +13,7 @@ export const cardStyle = {
 
 const borderBottom = theme => ({
 	borderBottomWidth: StyleSheet.hairlineWidth,
-	borderBottomColor: (isAndroid && theme === 'light') ? 'transparent' : themes[theme].headerBorder,
+	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });
 
