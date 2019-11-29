@@ -260,15 +260,15 @@ const RocketChat = {
 	async shareExtensionInit(server) {
 		database.setActiveDB(server);
 
-		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
+		if (this.shareSDK) {
+			this.shareSDK.disconnect();
+			this.shareSDK = null;
 		}
 
 		// Use useSsl: false only if server url starts with http://
 		const useSsl = !/http:\/\//.test(server);
 
-		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 
 		// set Server
 		const serversDB = database.servers;
@@ -295,6 +295,12 @@ const RocketChat = {
 			await RocketChat.login({ resume: user.token });
 		} catch (e) {
 			log(e);
+		}
+	},
+	closeShareExtension() {
+		if (this.shareSDK) {
+			this.shareSDK.disconnect();
+			this.shareSDK = null;
 		}
 	},
 
@@ -362,9 +368,10 @@ const RocketChat = {
 
 	async login(params) {
 		try {
+			const sdk = this.shareSDK || this.sdk;
 			// RC 0.64.0
-			await this.sdk.login(params);
-			const { result } = this.sdk.currentLogin;
+			await sdk.login(params);
+			const { result } = sdk.currentLogin;
 			const user = {
 				id: result.userId,
 				token: result.authToken,

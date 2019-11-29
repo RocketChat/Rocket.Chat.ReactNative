@@ -56,6 +56,10 @@ class Root extends React.Component {
 		this.init();
 	}
 
+	componentWillUnmount() {
+		RocketChat.closeShareExtension();
+	}
+
 	init = async() => {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
