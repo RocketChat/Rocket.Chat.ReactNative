@@ -15,6 +15,7 @@ import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
+import { isAndroid } from '../../../utils/deviceInfo';
 
 const ANIMATION_DURATION = 200;
 
@@ -134,6 +135,11 @@ class Sort extends PureComponent {
 					<Touch
 						onPress={this.close}
 						theme={theme}
+						style={{
+							backgroundColor: isAndroid
+								? themes[theme].headerSecondaryBackground
+								: themes[theme].backgroundColor
+						}}
 					>
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>

@@ -9,6 +9,7 @@ import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +54,12 @@ const CancelButton = (onCancelPress, theme) => (
 const SearchBox = ({
 	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
 }) => (
-	<View style={[styles.container, { backgroundColor: themes[theme].headerBackground }]}>
+	<View
+		style={[
+			styles.container,
+			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
+		]}
+	>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
 			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput

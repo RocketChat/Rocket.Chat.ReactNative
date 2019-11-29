@@ -9,21 +9,14 @@ import styles from '../styles';
 import DisclosureIndicator from '../../../containers/DisclosureIndicator';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
-import { isAndroid } from '../../../utils/deviceInfo';
-
 
 const Directory = React.memo(({ goDirectory, theme }) => {
-	const isLight = theme === 'light';
-	const color = !isLight && isAndroid ? { color: themes[theme].auxiliaryText } : { color: themes[theme].tintColor };
+	const color = { color: themes[theme].headerSecondaryText };
 	return (
 		<Touch
 			onPress={goDirectory}
 			theme={theme}
-			style={{
-				backgroundColor: isLight
-					? themes[theme].backgroundColor
-					: themes[theme].headerBackground
-			}}
+			style={{ backgroundColor: themes[theme].headerSecondaryBackground }}
 		>
 			<View
 				style={[

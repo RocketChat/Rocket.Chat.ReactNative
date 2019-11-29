@@ -10,6 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { isAndroid } from '../../utils/deviceInfo';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -100,10 +101,15 @@ export default class DirectoryOptions extends PureComponent {
 					<Touch
 						onPress={this.close}
 						theme={theme}
+						style={{
+							backgroundColor: isAndroid
+								? themes[theme].headerSecondaryBackground
+								: themes[theme].backgroundColor
+						}}
 					>
 						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: themes[theme].separatorColor }]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
-							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].bodyText }]} size={22} name='arrow-down' />
+							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryText }]} size={22} name='arrow-down' />
 						</View>
 					</Touch>
 					{this.renderItem('channels')}
