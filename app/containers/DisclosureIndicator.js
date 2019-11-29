@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { themes } from '../constants/colors';
+
 const styles = StyleSheet.create({
 	disclosureContainer: {
 		marginLeft: 6,
@@ -15,23 +17,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const DisclosureImage = React.memo(({ color }) => (
+export const DisclosureImage = React.memo(({ theme }) => (
 	<Image
 		source={{ uri: 'disclosure_indicator' }}
-		style={[styles.disclosureIndicator, { tintColor: color }]}
+		style={[styles.disclosureIndicator, { tintColor: themes[theme].auxiliaryTintColor }]}
 	/>
 ));
 DisclosureImage.propTypes = {
-	color: PropTypes.string
+	theme: PropTypes.string
 };
 
-const DisclosureIndicator = React.memo(({ color }) => (
+const DisclosureIndicator = React.memo(({ theme }) => (
 	<View style={styles.disclosureContainer}>
-		<DisclosureImage color={color} />
+		<DisclosureImage theme={theme} />
 	</View>
 ));
 DisclosureIndicator.propTypes = {
-	color: PropTypes.string
+	theme: PropTypes.string
 };
 
 export default DisclosureIndicator;

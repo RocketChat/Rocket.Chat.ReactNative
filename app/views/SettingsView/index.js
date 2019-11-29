@@ -141,7 +141,10 @@ class SettingsView extends React.Component {
 		openLink(LICENSE_LINK, theme);
 	}
 
-	renderDisclosure = () => <DisclosureImage />;
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureImage theme={theme} />;
+	}
 
 	renderLogout = () => {
 		const { theme } = this.props;
