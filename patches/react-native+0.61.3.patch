@@ -141,6 +141,153 @@ index a134d2e..a88c099 100644
      [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
    });
  }
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.h b/node_modules/react-native/React/Base/RCTKeyCommands.h
+index 4c9c1fe..8c0ebc3 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.h
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.h
+@@ -14,10 +14,15 @@
+ /**
+  * Register a single-press keyboard command.
+  */
+-- (void)registerKeyCommandWithInput:(NSString *)input
++ - (void)registerKeyCommandWithInput:(NSString *)input
+                       modifierFlags:(UIKeyModifierFlags)flags
+                              action:(void (^)(UIKeyCommand *command))block;
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block;
++
+ /**
+  * Unregister a single-press keyboard command.
+  */
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.m b/node_modules/react-native/React/Base/RCTKeyCommands.m
+index 8f8f19b..150bcfe 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.m
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.m
+@@ -12,8 +12,6 @@
+ #import "RCTDefines.h"
+ #import "RCTUtils.h"
+ 
+-#if RCT_DEV
+-
+ @interface RCTKeyCommand : NSObject <NSCopying>
+ 
+ @property (nonatomic, strong) UIKeyCommand *keyCommand;
+@@ -114,7 +112,9 @@ - (void)RCT_handleKeyCommand:(UIKeyCommand *)key
+   // NOTE: throttle the key handler because on iOS 9 the handleKeyCommand:
+   // method gets called repeatedly if the command key is held down.
+   static NSTimeInterval lastCommand = 0;
+-  if (CACurrentMediaTime() - lastCommand > 0.5) {
++  if (CACurrentMediaTime() - lastCommand > 0.5 ||
++      [key.input isEqualToString:@"UIKeyInputUpArrow"] || // repeat command if is scroll
++      [key.input isEqualToString:@"UIKeyInputDownArrow"]) {
+     for (RCTKeyCommand *command in [RCTKeyCommands sharedInstance].commands) {
+       if ([command.keyCommand.input isEqualToString:key.input] &&
+           command.keyCommand.modifierFlags == key.modifierFlags) {
+@@ -184,6 +184,8 @@ - (void)RCT_handleDoublePressKeyCommand:(UIKeyCommand *)key
+ 
+ @end
+ 
++#if RCT_DEV
++
+ @implementation RCTKeyCommands
+ 
+ + (void)initialize
+@@ -228,6 +230,23 @@ - (void)registerKeyCommandWithInput:(NSString *)input
+   [_commands addObject:keyCommand];
+ }
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block
++{
++  RCTAssertMainQueue();
++
++  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:input
++                                              modifierFlags:flags
++                                                     action:@selector(RCT_handleKeyCommand:)
++                                       discoverabilityTitle:discoverabilityTitle];
++
++  RCTKeyCommand *keyCommand = [[RCTKeyCommand alloc] initWithKeyCommand:command block:block];
++  [_commands removeObject:keyCommand];
++  [_commands addObject:keyCommand];
++}
++
+ - (void)unregisterKeyCommandWithInput:(NSString *)input
+                         modifierFlags:(UIKeyModifierFlags)flags
+ {
+@@ -301,9 +320,48 @@ - (BOOL)isDoublePressKeyCommandRegisteredForInput:(NSString *)input
+ 
+ @implementation RCTKeyCommands
+ 
+++ (void)initialize
++{
++  // swizzle UIResponder
++  RCTSwapInstanceMethods([UIResponder class],
++                         @selector(keyCommands),
++                         @selector(RCT_keyCommands));
++}
++
+ + (instancetype)sharedInstance
+ {
+-  return nil;
++  static RCTKeyCommands *sharedInstance;
++  static dispatch_once_t onceToken;
++  dispatch_once(&onceToken, ^{
++    sharedInstance = [self new];
++  });
++
++  return sharedInstance;
++}
++
++- (instancetype)init
++{
++  if ((self = [super init])) {
++    _commands = [NSMutableSet new];
++  }
++  return self;
++}
++
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block
++{
++  RCTAssertMainQueue();
++
++  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:input
++                                              modifierFlags:flags
++                                                     action:@selector(RCT_handleKeyCommand:)
++                                       discoverabilityTitle:discoverabilityTitle];
++
++  RCTKeyCommand *keyCommand = [[RCTKeyCommand alloc] initWithKeyCommand:command block:block];
++  [_commands removeObject:keyCommand];
++  [_commands addObject:keyCommand];
+ }
+ 
+ - (void)registerKeyCommandWithInput:(NSString *)input
+@@ -311,7 +369,17 @@ - (void)registerKeyCommandWithInput:(NSString *)input
+                              action:(void (^)(UIKeyCommand *))block {}
+ 
+ - (void)unregisterKeyCommandWithInput:(NSString *)input
+-                        modifierFlags:(UIKeyModifierFlags)flags {}
++                        modifierFlags:(UIKeyModifierFlags)flags
++{
++  RCTAssertMainQueue();
++
++  for (RCTKeyCommand *command in _commands.allObjects) {
++    if ([command matchesInput:input flags:flags]) {
++      [_commands removeObject:command];
++      break;
++    }
++  }
++}
+ 
+ - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
+                          modifierFlags:(UIKeyModifierFlags)flags
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java

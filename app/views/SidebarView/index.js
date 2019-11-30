@@ -21,6 +21,7 @@ import SidebarItem from './SidebarItem';
 import { COLOR_TEXT } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withSplit } from '../../split';
 
 const keyExtractor = item => item.id;
 
@@ -41,7 +42,8 @@ class Sidebar extends Component {
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
-		loadingServer: PropTypes.bool
+		loadingServer: PropTypes.bool,
+		split: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -71,7 +73,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey
+			Site_Name, user, baseUrl, activeItemKey, split
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -98,6 +100,9 @@ class Sidebar extends Component {
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
+		}
+		if (nextProps.split !== split) {
+			return true;
 		}
 		if (!equal(nextState.status, status)) {
 			return true;
@@ -242,7 +247,9 @@ class Sidebar extends Component {
 
 	render() {
 		const { showStatus } = this.state;
-		const { user, Site_Name, baseUrl } = this.props;
+		const {
+			user, Site_Name, baseUrl, split
+		} = this.props;
 
 		if (!user) {
 			return null;
@@ -275,9 +282,9 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted]} />
 					</RectButton>
 
-					<Separator key='separator-header' />
+					{!split || showStatus ? <Separator key='separator-header' /> : null}
 
-					{!showStatus ? this.renderNavigation() : null}
+					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 			</SafeAreaView>
@@ -303,4 +310,4 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(withSplit(Sidebar));

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 
-export default class TableView extends React.Component {
+export default class MarkdownTableView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Table')
 	});

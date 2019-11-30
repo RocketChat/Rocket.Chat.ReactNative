@@ -3,6 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 import {
 	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY, HEADER_BACK
 } from '../constants/colors';
+import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
 	root: {
@@ -15,6 +16,26 @@ export default StyleSheet.create({
 	containerScrollView: {
 		padding: 15,
 		paddingBottom: 30
+	},
+	containerSplitView: {
+		flex: 1,
+		flexDirection: 'row'
+	},
+	tabletContent: {
+		maxWidth: MAX_CONTENT_WIDTH
+	},
+	tabletScreenContent: {
+		alignSelf: 'center',
+		width: MAX_SCREEN_CONTENT_WIDTH
+	},
+	modal: {
+		// Following UIModalPresentationFormSheet size
+		// this not change on different iPad sizes
+		width: 540,
+		height: 620,
+		alignSelf: 'center',
+		borderRadius: 10,
+		overflow: 'hidden'
 	},
 	buttonContainerLastChild: {
 		marginBottom: 40
@@ -116,6 +137,10 @@ export default StyleSheet.create({
 		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	separatorLeft: {
+		borderColor: COLOR_SEPARATOR,
+		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
 		backgroundColor: 'transparent',

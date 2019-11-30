@@ -10,6 +10,7 @@ import sharedStyles from '../../views/Styles';
 import {
 	COLOR_BACKGROUND_CONTAINER, COLOR_BORDER, COLOR_PRIMARY
 } from '../../constants/colors';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	button: {
@@ -75,7 +76,7 @@ const UrlContent = React.memo(({ title, description }) => (
 });
 
 const Url = React.memo(({
-	url, index, user, baseUrl
+	url, index, user, baseUrl, split
 }) => {
 	if (!url) {
 		return null;
@@ -86,7 +87,7 @@ const Url = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop, styles.container]}
+			style={[styles.button, index > 0 && styles.marginTop, styles.container, split && sharedStyles.tabletContent]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<>
@@ -95,17 +96,19 @@ const Url = React.memo(({
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url));
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split);
 
-const Urls = React.memo(({ urls, user, baseUrl }) => {
+const Urls = React.memo(({
+	urls, user, baseUrl, split
+}) => {
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
 	return urls.map((url, index) => (
-		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} />
+		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} split={split} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls));
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split);
 
 UrlImage.propTypes = {
 	image: PropTypes.string,
@@ -124,15 +127,17 @@ Url.propTypes = {
 	url: PropTypes.object.isRequired,
 	index: PropTypes.number,
 	user: PropTypes.object,
-	baseUrl: PropTypes.string
+	baseUrl: PropTypes.string,
+	split: PropTypes.bool
 };
 Url.displayName = 'MessageUrl';
 
 Urls.propTypes = {
 	urls: PropTypes.array,
 	user: PropTypes.object,
-	baseUrl: PropTypes.string
+	baseUrl: PropTypes.string,
+	split: PropTypes.bool
 };
 Urls.displayName = 'MessageUrls';
 
-export default Urls;
+export default withSplit(Urls);
