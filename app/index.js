@@ -499,7 +499,7 @@ export default class Root extends React.Component {
 			showModal: false,
 			colorScheme: {
 				currentTheme: 'automatic',
-				theme: defaultTheme,
+				theme: defaultTheme(),
 				darkLevel: 'dark'
 			}
 		};
@@ -551,7 +551,6 @@ export default class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		// await RNUserDefaults.clear(THEME_KEY);
 		RNUserDefaults.objectForKey(THEME_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
@@ -590,7 +589,7 @@ export default class Root extends React.Component {
 
 	changeTheme = (colorScheme) => {
 		const { darkLevel, currentTheme: theme } = colorScheme;
-		let color = theme === 'automatic' ? Appearance.getColorScheme() : theme;
+		let color = theme === 'automatic' ? defaultTheme() : theme;
 		color = color === 'dark' ? darkLevel : 'light';
 		this.setState({ colorScheme: { ...colorScheme, theme: color, currentTheme: theme } });
 		this.setAndroidNavbar(color);

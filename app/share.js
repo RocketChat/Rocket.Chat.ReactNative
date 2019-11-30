@@ -60,7 +60,11 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
-			theme: defaultTheme
+			colorScheme: {
+				currentTheme: 'automatic',
+				theme: defaultTheme(),
+				darkLevel: 'dark'
+			}
 		};
 		this.init();
 	}
@@ -75,7 +79,7 @@ class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then(this.setTheme);
+		RNUserDefaults.objectForKey(THEME_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
@@ -88,11 +92,12 @@ class Root extends React.Component {
 	}
 
 	setTheme = (colorScheme) => {
-		if (colorScheme) {
-			this.changeTheme({ colorScheme });
+		const { colorScheme: scheme } = this.state;
+		if (colorScheme && colorScheme.currentTheme && colorScheme.currentTheme !== 'automatic') {
+			this.changeTheme(colorScheme);
 		} else {
-			this.changeTheme({ colorScheme: defaultTheme });
-			this.subTheme = Appearance.addChangeListener(this.changeTheme);
+			this.changeTheme({ ...scheme, ...(colorScheme || {}), currentTheme: 'automatic' });
+			this.subTheme = Appearance.addChangeListener(() => this.changeTheme({ ...scheme, ...(colorScheme || {}) }));
 		}
 	}
 
@@ -103,10 +108,13 @@ class Root extends React.Component {
 		}
 	}
 
-	changeTheme = ({ colorScheme: theme }) => {
-		this.setState({ theme });
-		this.setAndroidNavbar(theme);
-		setRootViewColor(themes[theme].backgroundColor);
+	changeTheme = (colorScheme) => {
+		const { darkLevel, currentTheme: theme } = colorScheme;
+		let color = theme === 'automatic' ? defaultTheme() : theme;
+		color = color === 'dark' ? darkLevel : 'light';
+		this.setState({ colorScheme: { ...colorScheme, theme: color, currentTheme: theme } });
+		this.setAndroidNavbar(color);
+		setRootViewColor(themes[color].backgroundColor);
 	}
 
 	handleLayout = (event) => {
@@ -115,7 +123,8 @@ class Root extends React.Component {
 	}
 
 	render() {
-		const { isLandscape, theme } = this.state;
+		const { isLandscape, colorScheme } = this.state;
+		const { theme } = colorScheme;
 		return (
 			<AppearanceProvider>
 				<View
