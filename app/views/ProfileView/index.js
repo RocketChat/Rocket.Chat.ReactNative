@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import {
+	View, ScrollView, Keyboard, Alert
+} from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -47,7 +49,8 @@ class ProfileView extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		navigation: PropTypes.object
 	}
 
 	state = {
@@ -66,6 +69,23 @@ class ProfileView extends React.Component {
 
 	async componentDidMount() {
 		this.init();
+		const { navigation } = this.props;
+		this.blurListener = navigation.addListener('willBlur', () => {
+			if (this.formIsChanged() === true) {
+				Alert.alert(
+					'Unsaved Changes',
+					'Changes will be discarded',
+					[
+						{
+							text: 'Discard',
+							style: 'destructive'
+						},
+						{ text: 'Save', onPress: () => this.submit(), style: 'default' }
+					],
+					{ cancelable: false }
+				);
+			}
+		});
 
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
@@ -74,6 +94,7 @@ class ProfileView extends React.Component {
 			log(e);
 		}
 	}
+
 
 	componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
@@ -90,6 +111,10 @@ class ProfileView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		this.blurListener.remove();
 	}
 
 	setAvatar = (avatar) => {
@@ -138,6 +163,7 @@ class ProfileView extends React.Component {
 			&& !customFieldsChanged
 		);
 	}
+
 
 	closePasswordAlert = () => {
 		this.setState({ showPasswordAlert: false });
