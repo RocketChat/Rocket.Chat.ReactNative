@@ -497,7 +497,11 @@ export default class Root extends React.Component {
 			split: false,
 			inside: false,
 			showModal: false,
-			theme: defaultTheme
+			colorScheme: {
+				currentTheme: 'automatic',
+				theme: defaultTheme,
+				darkLevel: 'dark'
+			}
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -530,11 +534,16 @@ export default class Root extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 
-		if (this.subTheme && this.subTheme.remove) {
-			this.subTheme.remove();
-		}
+		this.removeSubTheme();
+
 		if (this.onKeyCommands && this.onKeyCommands.remove) {
 			this.onKeyCommands.remove();
+		}
+	}
+
+	removeSubTheme = () => {
+		if (this.subTheme && this.subTheme.remove) {
+			this.subTheme.remove();
 		}
 	}
 
@@ -542,7 +551,8 @@ export default class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.get(THEME_KEY).then(this.setTheme);
+		// await RNUserDefaults.clear(THEME_KEY);
+		RNUserDefaults.objectForKey(THEME_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {
@@ -554,12 +564,20 @@ export default class Root extends React.Component {
 		}
 	}
 
+	setDark = (dark) => {
+		const { colorScheme } = this.state;
+		this.changeTheme({ ...colorScheme, darkLevel: dark });
+	}
+
 	setTheme = (colorScheme) => {
-		if (colorScheme) {
-			this.changeTheme({ colorScheme });
+		const { colorScheme: scheme } = this.state;
+		if (colorScheme && colorScheme.currentTheme && colorScheme.currentTheme !== 'automatic') {
+			this.removeSubTheme();
+			this.changeTheme(colorScheme);
 		} else {
-			this.changeTheme({ colorScheme: defaultTheme });
-			this.subTheme = Appearance.addChangeListener(this.changeTheme);
+			this.removeSubTheme();
+			this.changeTheme({ ...scheme, ...(colorScheme || {}), currentTheme: 'automatic' });
+			this.subTheme = Appearance.addChangeListener(() => this.changeTheme({ ...scheme, ...(colorScheme || {}) }));
 		}
 	}
 
@@ -570,10 +588,13 @@ export default class Root extends React.Component {
 		}
 	}
 
-	changeTheme = ({ colorScheme: theme }) => {
-		this.setState({ theme });
-		this.setAndroidNavbar(theme);
-		setRootViewColor(themes[theme].backgroundColor);
+	changeTheme = (colorScheme) => {
+		const { darkLevel, currentTheme: theme } = colorScheme;
+		let color = theme === 'automatic' ? Appearance.getColorScheme() : theme;
+		color = color === 'dark' ? darkLevel : 'light';
+		this.setState({ colorScheme: { ...colorScheme, theme: color, currentTheme: theme } });
+		this.setAndroidNavbar(color);
+		setRootViewColor(themes[color].backgroundColor);
 	}
 
 	initTablet = async() => {
@@ -606,7 +627,8 @@ export default class Root extends React.Component {
 	closeModal = () => this.setState({ showModal: false });
 
 	render() {
-		const { split, theme } = this.state;
+		const { split, colorScheme } = this.state;
+		const { theme } = colorScheme;
 
 		let content = (
 			<App
@@ -639,7 +661,14 @@ export default class Root extends React.Component {
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
-					<ThemeContext.Provider value={{ theme, setTheme: this.setTheme }}>
+					<ThemeContext.Provider
+						value={{
+							theme,
+							colorScheme,
+							setTheme: this.setTheme,
+							setDark: this.setDark
+						}}
+					>
 						{content}
 					</ThemeContext.Provider>
 				</Provider>

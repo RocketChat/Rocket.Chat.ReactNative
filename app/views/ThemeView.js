@@ -19,24 +19,44 @@ import { THEME_KEY } from '../lib/rocketchat';
 
 const THEMES = [
 	{
+		label: I18n.t('Automatic'),
+		value: 'automatic',
+		separator: true,
+		header: I18n.t('Theme'),
+		group: 'theme'
+	}, {
 		label: I18n.t('Light'),
-		value: 'light'
+		value: 'light',
+		group: 'theme'
 	}, {
 		label: I18n.t('Dark'),
-		value: 'dark'
+		value: 'dark',
+		group: 'theme'
+	}, {
+		label: I18n.t('Dark'),
+		value: 'dark',
+		separator: true,
+		header: I18n.t('Dark_level'),
+		group: 'darkLevel'
 	}, {
 		label: I18n.t('Black'),
-		value: 'black'
+		value: 'black',
+		group: 'darkLevel'
 	}
 ];
 
 const styles = StyleSheet.create({
 	list: {
-		paddingVertical: 18
+		paddingBottom: 18
 	},
 	info: {
-		paddingVertical: 10,
+		paddingTop: 25,
+		paddingBottom: 18,
 		paddingHorizontal: 16
+	},
+	infoText: {
+		fontSize: 16,
+		...sharedStyles.textRegular
 	}
 });
 
@@ -48,15 +68,46 @@ class ThemeView extends React.Component {
 
 	static propTypes = {
 		theme: PropTypes.string,
-		setTheme: PropTypes.func
+		colorScheme: PropTypes.object,
+		setTheme: PropTypes.func,
+		setDark: PropTypes.func
 	}
 
-	setTheme = (value) => {
-		const { setTheme } = this.props;
-		setTheme(value);
+	isSelected = (item) => {
+		const { colorScheme } = this.props;
+		const { group } = item;
+		const { darkLevel, currentTheme } = colorScheme;
+		if (group === 'theme') {
+			return item.value === currentTheme;
+		}
+		if (group === 'darkLevel') {
+			return item.value === darkLevel;
+		}
+	}
+
+	setTheme = async(value) => {
+		const { setTheme, colorScheme } = this.props;
+		setTheme({ ...colorScheme, currentTheme: value });
 		// no await, because this causes a delay
-		RNUserDefaults.set(THEME_KEY, value);
+		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, currentTheme: value });
 	};
+
+	setDark = async(value) => {
+		const { setDark, colorScheme } = this.props;
+		setDark(value);
+		// no await, because this causes a delay
+		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, darkLevel: value });
+	}
+
+	onClick = (item) => {
+		const { value, group } = item;
+		if (group === 'theme') {
+			this.setTheme(value);
+		}
+		if (group === 'darkLevel') {
+			this.setDark(value);
+		}
+	}
 
 	renderSeparator = () => {
 		const { theme } = this.props;
@@ -68,30 +119,32 @@ class ThemeView extends React.Component {
 		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
 	}
 
-	renderItem = ({ item, index }) => {
+	renderItem = ({ item }) => {
 		const { theme } = this.props;
 		const { label, value } = item;
-		const isSelected = theme === value;
 		return (
 			<>
-				{index === 0 ? this.renderSeparator() : null}
+				{item.separator ? this.renderSectionHeader(item.header) : null}
 				<ListItem
 					title={label}
-					onPress={() => this.setTheme(value)}
+					onPress={() => this.onClick(item)}
 					testID={`theme-view-${ value }`}
-					right={isSelected ? this.renderIcon : null}
+					right={this.isSelected(item) ? this.renderIcon : null}
 					theme={theme}
 				/>
 			</>
 		);
 	}
 
-	renderHeader = () => {
+	renderSectionHeader = (header) => {
 		const { theme } = this.props;
 		return (
-			<View style={styles.info}>
-				<Text style={{ color: themes[theme].infoText }}>{I18n.t('ALL_THEMES')}</Text>
-			</View>
+			<>
+				<View style={styles.info}>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{header}</Text>
+				</View>
+				{this.renderSeparator()}
+			</>
 		);
 	}
 
@@ -99,7 +152,9 @@ class ThemeView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.info, sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}>
-				<Text style={{ color: themes[theme].infoText }}>{I18n.t('Applying_a_theme_will_change_how_the_app_looks')}</Text>
+				<Text style={{ color: themes[theme].infoText }}>
+					{I18n.t('Applying_a_theme_will_change_how_the_app_looks')}
+				</Text>
 			</View>
 		);
 	}
