@@ -74,7 +74,7 @@ class ProfileView extends React.Component {
 			if (this.formIsChanged() === true) {
 				Alert.alert(
 					'Unsaved Changes',
-					'Changes will be discarded',
+					'You have some unsaved changes. Would you like to save them?',
 					[
 						{
 							text: 'Discard',
