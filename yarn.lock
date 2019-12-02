@@ -9247,10 +9247,10 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-appearance@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.2.2.tgz#40a73db9b08caea450c162c945617c3fb9b4ae41"
-  integrity sha512-+1oaDQfpkVS3hxcUvCBsqyDxhQp3SvEvaebMgGn9A9SgD1ZzNKrrCkG5KSnM07BHA4vnX2ZFT9ISPlLjcVMYig==
+react-native-appearance@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.1.tgz#f8120222131767e9227c2c7ba3a9478f4c6a5ab7"
+  integrity sha512-humg0ddjWjMfiSQCjsAcJk5o/jLJVy7aDEJuqN29ypQTfEfMKC3kVZP7dgb5lhAfJT3gquvDlT9IalZ2B7n6CQ==
   dependencies:
     fbemitter "^2.1.1"
     invariant "^2.2.4"
