@@ -235,9 +235,9 @@ jobs:
           name: Restore gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
-      # - restore_cache:
-      #     name: Restore NPM cache
-      #     key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Node 8
@@ -259,12 +259,6 @@ jobs:
           command: |
             echo "ruby-2.6.4" > ~/.ruby-version
             bundle install
-          working_directory: ios
-
-      - run:
-          name: Install Pods
-          command: |
-            pod install
           working_directory: ios
 
       - run:
