@@ -57,6 +57,10 @@ class EmojiPicker extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { frequentlyUsed, show, width } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.show !== show) {
 			return true;
 		}

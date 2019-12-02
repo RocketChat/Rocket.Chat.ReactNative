@@ -46,6 +46,10 @@ class SearchMessagesView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, searchText, messages } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.loading !== loading) {
 			return true;
 		}

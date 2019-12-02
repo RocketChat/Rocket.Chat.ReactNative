@@ -106,7 +106,9 @@ const FileModal = React.memo(({
 	>
 		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} theme={theme} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading);
+), (prevProps, nextProps) => (
+	prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading && prevProps.theme === nextProps.theme
+));
 
 FileModal.propTypes = {
 	isVisible: PropTypes.bool,

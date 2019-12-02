@@ -39,6 +39,10 @@ class ForgotPasswordView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { email, invalidEmail, isFetching } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.email !== email) {
 			return true;
 		}

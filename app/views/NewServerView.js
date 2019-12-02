@@ -108,7 +108,7 @@ class NewServerView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { text, certificate } = this.state;
-		const { connecting } = this.props;
+		const { connecting, theme } = this.props;
 		if (nextState.text !== text) {
 			return true;
 		}
@@ -116,6 +116,9 @@ class NewServerView extends React.Component {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		return false;

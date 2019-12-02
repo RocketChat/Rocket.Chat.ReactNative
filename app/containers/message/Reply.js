@@ -76,7 +76,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{ time }</Text> : null}
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.theme === nextProps.theme);
+});
 
 const Description = React.memo(({
 	attachment, baseUrl, user, getCustomEmoji, useMarkdown, theme

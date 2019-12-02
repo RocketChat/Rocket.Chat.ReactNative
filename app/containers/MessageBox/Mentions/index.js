@@ -23,6 +23,9 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 		/>
 	);
 }, (prevProps, nextProps) => {
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	if (prevProps.trackingType !== nextProps.trackingType) {
 		return false;
 	}

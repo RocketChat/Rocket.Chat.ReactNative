@@ -69,6 +69,10 @@ class SetUsernameView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { username, saving } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.username !== username) {
 			return true;
 		}

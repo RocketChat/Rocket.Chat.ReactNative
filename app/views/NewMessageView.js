@@ -77,6 +77,10 @@ class NewMessageView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { search, chats } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!equal(nextState.search, search)) {
 			return true;
 		}

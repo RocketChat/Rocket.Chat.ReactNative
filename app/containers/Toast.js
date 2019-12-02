@@ -31,7 +31,11 @@ class Toast extends React.Component {
 		EventEmitter.addEventListener(LISTENER, this.showToast);
 	}
 
-	shouldComponentUpdate() {
+	shouldComponentUpdate(nextProps) {
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		return false;
 	}
 

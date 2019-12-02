@@ -31,7 +31,7 @@ const Broadcast = React.memo(({
 		);
 	}
 	return null;
-}, (prevProps, nextProps) => prevProps.theme === nextProps.theme);
+});
 
 Broadcast.propTypes = {
 	author: PropTypes.object,

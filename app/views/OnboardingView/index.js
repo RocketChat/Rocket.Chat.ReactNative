@@ -54,7 +54,11 @@ class OnboardingView extends React.Component {
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
-	shouldComponentUpdate() {
+	shouldComponentUpdate(nextProps) {
+		const { theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		return false;
 	}
 

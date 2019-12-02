@@ -14,8 +14,11 @@ export default class TabBar extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { activeTab } = this.props;
+		const { activeTab, theme } = this.props;
 		if (nextProps.activeTab !== activeTab) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		return false;

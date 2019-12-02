@@ -67,7 +67,10 @@ class LanguageView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { language, saving } = this.state;
-		const { userLanguage } = this.props;
+		const { userLanguage, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.language !== language) {
 			return true;
 		}

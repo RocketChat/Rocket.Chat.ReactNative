@@ -122,7 +122,9 @@ class LoginSignupView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { collapsed, servicesHeight } = this.state;
-		const { server, Site_Name, services } = this.props;
+		const {
+			server, Site_Name, services, theme
+		} = this.props;
 		if (nextState.collapsed !== collapsed) {
 			return true;
 		}
@@ -133,6 +135,9 @@ class LoginSignupView extends React.Component {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (!equal(nextProps.services, services)) {

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Separator = ({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].auxiliaryText }]} />;
+const Separator = ({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
 Separator.propTypes = {
 	theme: PropTypes.string
 };
@@ -100,7 +100,10 @@ class LegalView extends React.Component {
 				<ScrollView
 					contentContainerStyle={[
 						styles.scroll,
-						{ borderColor: themes[theme].auxiliaryText }
+						{
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
 					]}
 					{...scrollPersistTaps}
 				>

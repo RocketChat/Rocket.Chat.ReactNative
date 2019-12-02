@@ -25,6 +25,9 @@ const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview 
 		/>
 	);
 }, (prevProps, nextProps) => {
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
 		return false;
 	}

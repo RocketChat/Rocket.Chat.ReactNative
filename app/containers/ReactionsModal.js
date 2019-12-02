@@ -119,7 +119,7 @@ const ModalContent = React.memo(({
 });
 
 const ReactionsModal = React.memo(({
-	isVisible, onClose, ...props
+	isVisible, onClose, theme, ...props
 }) => (
 	<Modal
 		isVisible={isVisible}
@@ -129,13 +129,14 @@ const ReactionsModal = React.memo(({
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
-		<ModalContent onClose={onClose} {...props} />
+		<ModalContent onClose={onClose} theme={theme} {...props} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
+), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.theme === nextProps.theme);
 
 ReactionsModal.propTypes = {
 	isVisible: PropTypes.bool,
-	onClose: PropTypes.func
+	onClose: PropTypes.func,
+	theme: PropTypes.string
 };
 ReactionsModal.displayName = 'ReactionsModal';
 

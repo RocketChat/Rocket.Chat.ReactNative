@@ -72,7 +72,10 @@ class ServerDropdown extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { servers } = this.state;
-		const { closeServerDropdown, server } = this.props;
+		const { closeServerDropdown, server, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.closeServerDropdown !== closeServerDropdown) {
 			return true;
 		}

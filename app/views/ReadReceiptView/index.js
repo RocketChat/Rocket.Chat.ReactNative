@@ -46,6 +46,10 @@ class ReadReceiptView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, receipts } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.loading !== loading) {
 			return true;
 		}

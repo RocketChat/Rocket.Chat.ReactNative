@@ -101,7 +101,7 @@ class LoginView extends React.Component {
 			user, password, code, showTOTP
 		} = this.state;
 		const {
-			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
+			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, theme
 		} = this.props;
 		if (nextState.user !== user) {
 			return true;
@@ -119,6 +119,9 @@ class LoginView extends React.Component {
 			return true;
 		}
 		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {

@@ -124,8 +124,11 @@ class CreateChannelView extends React.Component {
 			channelName, type, readOnly, broadcast
 		} = this.state;
 		const {
-			error, failure, isFetching, result, users
+			error, failure, isFetching, result, users, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.channelName !== channelName) {
 			return true;
 		}

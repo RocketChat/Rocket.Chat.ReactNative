@@ -82,7 +82,10 @@ class SelectedUsersView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { search, chats } = this.state;
-		const { users, loading } = this.props;
+		const { users, loading, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.loading !== loading) {
 			return true;
 		}

@@ -113,12 +113,17 @@ class UploadModal extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { name, description, file } = this.state;
-		const { window, isVisible, split } = this.props;
+		const {
+			window, isVisible, split, theme
+		} = this.props;
 
 		if (nextState.name !== name) {
 			return true;
 		}
 		if (nextProps.split !== split) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.description !== description) {

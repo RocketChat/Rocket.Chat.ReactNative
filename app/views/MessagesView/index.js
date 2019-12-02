@@ -57,6 +57,10 @@ class MessagesView extends React.Component {
 		const {
 			loading, messages, photoModalVisible, fileLoading
 		} = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.loading !== loading) {
 			return true;
 		}

@@ -73,6 +73,10 @@ class RegisterView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { customFields } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!equal(nextState.customFields, customFields)) {
 			return true;
 		}
