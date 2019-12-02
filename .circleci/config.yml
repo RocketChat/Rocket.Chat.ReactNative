@@ -46,7 +46,7 @@ jobs:
 
   e2e-test:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -223,7 +223,7 @@ jobs:
 
   ios-build:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -257,7 +257,7 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            echo "ruby-2.4" > ~/.ruby-version
+            echo "ruby-2.6.4" > ~/.ruby-version
             bundle install
           working_directory: ios
 
@@ -320,7 +320,7 @@ jobs:
 
   ios-testflight:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     steps:
       - checkout
