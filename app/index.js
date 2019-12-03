@@ -569,12 +569,17 @@ export default class Root extends React.Component {
 		}
 	}
 
-	setTheme = (nextThemePreferences = {}) => {
-		const { themePreferences: previousThemePreferences } = this.state;
-		const newThemePreferences = { ...previousThemePreferences, ...nextThemePreferences };
-		this.subscribeAppearance(newThemePreferences);
-		this.setState({ themePreferences: newThemePreferences });
-		setNativeTheme(newThemePreferences);
+	setTheme = (newTheme = {}) => {
+		this.setState(prevState => ({
+			themePreferences: {
+				...prevState.themePreferences,
+				...newTheme
+			}
+		}), () => {
+			const { themePreferences } = this.state;
+			this.subscribeAppearance(themePreferences);
+			setNativeTheme(themePreferences);
+		});
 	}
 
 	initTablet = async() => {
