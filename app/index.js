@@ -575,18 +575,19 @@ export default class Root extends React.Component {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState((prevState) => {
-			// change themePreferences by param
-			// we spread old state with new values from param
+			// new theme preferences
 			const themePreferences = {
 				...prevState.themePreferences,
 				...newTheme
 			};
-			// set new state of themePreferences & new Theme based on themePreferences
+			// set new state of themePreferences
+			// and theme (based on themePreferences)
 			return { themePreferences, theme: getTheme(themePreferences) };
 		}, () => {
-			// subscribe to Appearance changes & set native components theme
 			const { themePreferences } = this.state;
+			// subscribe to Appearance changes
 			this.subscribeAppearance(themePreferences);
+			// set native components theme
 			setNativeTheme(themePreferences);
 		});
 	}

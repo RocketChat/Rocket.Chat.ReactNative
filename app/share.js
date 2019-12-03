@@ -12,7 +12,7 @@ import store from './lib/createStore';
 import sharedStyles from './views/Styles';
 import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
-import RocketChat, { THEME_KEY } from './lib/rocketchat';
+import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
 const InsideNavigator = createStackNavigator({
@@ -84,7 +84,7 @@ class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.objectForKey(THEME_KEY).then(this.setTheme);
+		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
@@ -97,15 +97,21 @@ class Root extends React.Component {
 	}
 
 	setTheme = (newTheme = {}) => {
+		// change theme state
 		this.setState((prevState) => {
+			// new theme preferences
 			const themePreferences = {
 				...prevState.themePreferences,
 				...newTheme
 			};
+			// set new state of themePreferences
+			// and theme (based on themePreferences)
 			return { themePreferences, theme: getTheme(themePreferences) };
 		}, () => {
 			const { themePreferences } = this.state;
+			// subscribe to Appearance changes
 			this.subscribeAppearance(themePreferences);
+			// set native components theme
 			setNativeTheme(themePreferences);
 		});
 	}
