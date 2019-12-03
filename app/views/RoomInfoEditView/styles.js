@@ -4,24 +4,21 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	button: {
-		textAlign: 'center',
-		color: 'white',
-		fontWeight: '700'
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textBold
 	},
 	buttonInverted: {
 		borderWidth: 2,
 		borderRadius: 2
 	},
 	buttonContainerDisabled: {
-		backgroundColor: 'rgba(65, 72, 82, 0.7)'
+		opacity: 0.7
 	},
 	buttonContainer_inverted: {
 		paddingVertical: 15,
 		marginBottom: 0
 	},
 	button_inverted: {
-		textAlign: 'center',
-		fontWeight: '700',
 		flexGrow: 1
 	},
 	buttonContainerLastChild: {
@@ -29,7 +26,6 @@ export default StyleSheet.create({
 	},
 	buttonContainer: {
 		paddingVertical: 15,
-		backgroundColor: '#414852',
 		marginBottom: 20,
 		borderRadius: 2
 	},
@@ -65,7 +61,7 @@ export default StyleSheet.create({
 		marginVertical: 20
 	},
 	broadcast: {
-		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
 	}
 });

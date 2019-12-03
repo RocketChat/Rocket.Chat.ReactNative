@@ -303,6 +303,7 @@ class RoomInfoEditView extends React.Component {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived
 		} = this.state;
 		const { theme } = this.props;
+		const { dangerColor } = themes[theme];
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -408,32 +409,57 @@ class RoomInfoEditView extends React.Component {
 							: null
 						}
 						<TouchableOpacity
-							style={[styles.buttonContainer, !this.formIsChanged() && styles.buttonContainerDisabled]}
+							style={[
+								styles.buttonContainer,
+								{ backgroundColor: themes[theme].buttonBackground },
+								!this.formIsChanged() && styles.buttonContainerDisabled
+							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
 							testID='room-info-edit-view-submit'
 						>
-							<Text style={styles.button} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
+							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityTraits='button'>{I18n.t('SAVE')}</Text>
 						</TouchableOpacity>
 						<View style={{ flexDirection: 'row' }}>
 							<TouchableOpacity
-								style={[styles.buttonContainer_inverted, styles.buttonInverted, { flex: 1, borderColor: themes[theme].auxiliaryText }]}
+								style={[
+									styles.buttonContainer_inverted,
+									styles.buttonInverted,
+									{ flex: 1, borderColor: themes[theme].auxiliaryText }
+								]}
 								onPress={this.reset}
 								testID='room-info-edit-view-reset'
 							>
-								<Text style={[styles.button_inverted, { color: themes[theme].bodyText }]} accessibilityTraits='button'>{I18n.t('RESET')}</Text>
+								<Text
+									style={[
+										styles.button,
+										styles.button_inverted,
+										{ color: themes[theme].bodyText }
+									]}
+									accessibilityTraits='button'
+								>
+									{I18n.t('RESET')}
+								</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
 								style={[
+									styles.buttonInverted,
 									styles.buttonContainer_inverted,
 									!this.hasArchivePermission() && sharedStyles.opacity5,
-									{ flex: 1, marginLeft: 10, borderColor: themes[theme].dangerColor }
+									{ flex: 1, marginLeft: 10, borderColor: dangerColor }
 								]}
 								onPress={this.toggleArchive}
 								disabled={!this.hasArchivePermission()}
 								testID='room-info-edit-view-archive'
 							>
-								<Text style={[styles.button_inverted, { color: themes[theme].dangerColor }]} accessibilityTraits='button'>
+								<Text
+									style={[
+										styles.button,
+										styles.button_inverted,
+										{ color: dangerColor }
+									]}
+									accessibilityTraits='button'
+								>
 									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 								</Text>
 							</TouchableOpacity>
@@ -444,13 +470,23 @@ class RoomInfoEditView extends React.Component {
 								styles.buttonContainer_inverted,
 								styles.buttonContainerLastChild,
 								styles.buttonDanger,
+								{ borderColor: dangerColor },
 								!this.hasDeletePermission() && sharedStyles.opacity5
 							]}
 							onPress={this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'
 						>
-							<Text style={[styles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>{I18n.t('DELETE')}</Text>
+							<Text
+								style={[
+									styles.button,
+									styles.button_inverted,
+									{ color: dangerColor }
+								]}
+								accessibilityTraits='button'
+							>
+								{I18n.t('DELETE')}
+							</Text>
 						</TouchableOpacity>
 						<Loading visible={saving} />
 					</SafeAreaView>
