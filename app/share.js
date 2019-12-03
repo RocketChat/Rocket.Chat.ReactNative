@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
-import { getTheme, setNativeTheme } from './utils/theme';
+import { getTheme, setNativeTheme, defaultTheme } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
@@ -57,6 +57,7 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
+			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: 'automatic',
 				darkLevel: 'dark'
@@ -96,12 +97,13 @@ class Root extends React.Component {
 	}
 
 	setTheme = (newTheme = {}) => {
-		this.setState(prevState => ({
-			themePreferences: {
+		this.setState((prevState) => {
+			const themePreferences = {
 				...prevState.themePreferences,
 				...newTheme
-			}
-		}), () => {
+			};
+			return { themePreferences, theme: getTheme(themePreferences) };
+		}, () => {
 			const { themePreferences } = this.state;
 			this.subscribeAppearance(themePreferences);
 			setNativeTheme(themePreferences);
@@ -114,8 +116,7 @@ class Root extends React.Component {
 	}
 
 	render() {
-		const { isLandscape, themePreferences } = this.state;
-		const theme = getTheme(themePreferences);
+		const { isLandscape, theme } = this.state;
 		return (
 			<AppearanceProvider>
 				<View

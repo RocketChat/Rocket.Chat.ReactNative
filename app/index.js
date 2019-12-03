@@ -10,7 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
-import { getTheme, setNativeTheme } from './utils/theme';
+import { getTheme, setNativeTheme, defaultTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -494,6 +494,7 @@ export default class Root extends React.Component {
 			split: false,
 			inside: false,
 			showModal: false,
+			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: 'automatic',
 				darkLevel: 'dark'
@@ -571,12 +572,13 @@ export default class Root extends React.Component {
 	}
 
 	setTheme = (newTheme = {}) => {
-		this.setState(prevState => ({
-			themePreferences: {
+		this.setState((prevState) => {
+			const themePreferences = {
 				...prevState.themePreferences,
 				...newTheme
-			}
-		}), () => {
+			};
+			return { themePreferences, theme: getTheme(themePreferences) };
+		}, () => {
 			const { themePreferences } = this.state;
 			this.subscribeAppearance(themePreferences);
 			setNativeTheme(themePreferences);
@@ -613,8 +615,7 @@ export default class Root extends React.Component {
 	closeModal = () => this.setState({ showModal: false });
 
 	render() {
-		const { split, themePreferences } = this.state;
-		const theme = getTheme(themePreferences);
+		const { split, themePreferences, theme } = this.state;
 
 		let content = (
 			<App
