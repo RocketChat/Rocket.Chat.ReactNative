@@ -87,14 +87,14 @@ class ThemeView extends React.Component {
 
 	setTheme = async(value) => {
 		const { setTheme, colorScheme } = this.props;
-		setTheme({ ...colorScheme, currentTheme: value });
+		setTheme({ currentTheme: value });
 		// no await, because this causes a delay
 		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, currentTheme: value });
 	};
 
 	setDark = async(value) => {
 		const { setDark, colorScheme } = this.props;
-		setDark(value);
+		setDark({ darkLevel: value });
 		// no await, because this causes a delay
 		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, darkLevel: value });
 	}

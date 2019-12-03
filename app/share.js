@@ -8,7 +8,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
-import { defaultTheme } from './utils/theme';
+import { getTheme } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
@@ -62,7 +62,6 @@ class Root extends React.Component {
 			isLandscape: false,
 			colorScheme: {
 				currentTheme: 'automatic',
-				theme: defaultTheme(),
 				darkLevel: 'dark'
 			}
 		};
@@ -70,6 +69,16 @@ class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.removeSubTheme();
+	}
+
+	addSubTheme = (colorScheme) => {
+		if (colorScheme.currentTheme && colorScheme.currentTheme === 'automatic') {
+			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
+		}
+	}
+
+	removeSubTheme = () => {
 		if (this.subTheme && this.subTheme.remove) {
 			this.subTheme.remove();
 		}
@@ -91,14 +100,12 @@ class Root extends React.Component {
 		}
 	}
 
-	setTheme = (colorScheme) => {
-		const { colorScheme: scheme } = this.state;
-		if (colorScheme && colorScheme.currentTheme && colorScheme.currentTheme !== 'automatic') {
-			this.changeTheme(colorScheme);
-		} else {
-			this.changeTheme({ ...scheme, ...(colorScheme || {}), currentTheme: 'automatic' });
-			this.subTheme = Appearance.addChangeListener(() => this.changeTheme({ ...scheme, ...(colorScheme || {}) }));
-		}
+	setTheme = (theme = {}) => {
+		const { colorScheme } = this.state;
+		const scheme = { ...colorScheme, ...theme };
+		this.removeSubTheme();
+		this.changeTheme(scheme);
+		this.addSubTheme(scheme);
 	}
 
 	setAndroidNavbar = (theme) => {
@@ -109,10 +116,8 @@ class Root extends React.Component {
 	}
 
 	changeTheme = (colorScheme) => {
-		const { darkLevel, currentTheme: theme } = colorScheme;
-		let color = theme === 'automatic' ? defaultTheme() : theme;
-		color = color === 'dark' ? darkLevel : 'light';
-		this.setState({ colorScheme: { ...colorScheme, theme: color, currentTheme: theme } });
+		const color = getTheme(colorScheme);
+		this.setState({ colorScheme });
 		this.setAndroidNavbar(color);
 		setRootViewColor(themes[color].backgroundColor);
 	}
@@ -124,7 +129,7 @@ class Root extends React.Component {
 
 	render() {
 		const { isLandscape, colorScheme } = this.state;
-		const { theme } = colorScheme;
+		const theme = getTheme(colorScheme);
 		return (
 			<AppearanceProvider>
 				<View

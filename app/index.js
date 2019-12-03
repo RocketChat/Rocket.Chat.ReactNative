@@ -13,7 +13,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
 import { themes } from './constants/colors';
-import { defaultTheme, navigationTheme } from './utils/theme';
+import { getTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -499,7 +499,6 @@ export default class Root extends React.Component {
 			showModal: false,
 			colorScheme: {
 				currentTheme: 'automatic',
-				theme: defaultTheme(),
 				darkLevel: 'dark'
 			}
 		};
@@ -541,6 +540,12 @@ export default class Root extends React.Component {
 		}
 	}
 
+	addSubTheme = (colorScheme) => {
+		if (colorScheme.currentTheme && colorScheme.currentTheme === 'automatic') {
+			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
+		}
+	}
+
 	removeSubTheme = () => {
 		if (this.subTheme && this.subTheme.remove) {
 			this.subTheme.remove();
@@ -563,21 +568,18 @@ export default class Root extends React.Component {
 		}
 	}
 
-	setDark = (dark) => {
+	setDark = (dark = {}) => {
 		const { colorScheme } = this.state;
-		this.changeTheme({ ...colorScheme, darkLevel: dark });
+		const scheme = { ...colorScheme, ...dark };
+		this.changeTheme(scheme);
 	}
 
-	setTheme = (colorScheme) => {
-		const { colorScheme: scheme } = this.state;
-		if (colorScheme && colorScheme.currentTheme && colorScheme.currentTheme !== 'automatic') {
-			this.removeSubTheme();
-			this.changeTheme(colorScheme);
-		} else {
-			this.removeSubTheme();
-			this.changeTheme({ ...scheme, ...(colorScheme || {}), currentTheme: 'automatic' });
-			this.subTheme = Appearance.addChangeListener(() => this.changeTheme({ ...scheme, ...(colorScheme || {}) }));
-		}
+	setTheme = (theme = {}) => {
+		const { colorScheme } = this.state;
+		const scheme = { ...colorScheme, ...theme };
+		this.removeSubTheme();
+		this.changeTheme(scheme);
+		this.addSubTheme(scheme);
 	}
 
 	setAndroidNavbar = (theme) => {
@@ -588,10 +590,8 @@ export default class Root extends React.Component {
 	}
 
 	changeTheme = (colorScheme) => {
-		const { darkLevel, currentTheme: theme } = colorScheme;
-		let color = theme === 'automatic' ? defaultTheme() : theme;
-		color = color === 'dark' ? darkLevel : 'light';
-		this.setState({ colorScheme: { ...colorScheme, theme: color, currentTheme: theme } });
+		const color = getTheme(colorScheme);
+		this.setState({ colorScheme });
 		this.setAndroidNavbar(color);
 		setRootViewColor(themes[color].backgroundColor);
 	}
@@ -627,7 +627,7 @@ export default class Root extends React.Component {
 
 	render() {
 		const { split, colorScheme } = this.state;
-		const { theme } = colorScheme;
+		const theme = getTheme(colorScheme);
 
 		let content = (
 			<App
@@ -636,7 +636,6 @@ export default class Root extends React.Component {
 				}}
 				screenProps={{ split, theme }}
 				onNavigationStateChange={onNavigationStateChange}
-				theme={navigationTheme(theme)}
 			/>
 		);
 

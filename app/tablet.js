@@ -13,7 +13,6 @@ import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 import { keyCommands, defaultCommands } from './commands';
 import { themes } from './constants/colors';
-import { navigationTheme } from './utils/theme';
 
 import sharedStyles from './views/Styles';
 
@@ -152,7 +151,7 @@ const Split = ({
 		return (
 			<>
 				<View style={[sharedStyles.container, sharedStyles.separatorLeft, { borderColor: themes[theme].separatorColor }]}>
-					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet, theme }} theme={navigationTheme(theme)} />
+					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet, theme }} />
 				</View>
 				<ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} screenProps={{ split: tablet, theme }} />
 			</>
@@ -176,7 +175,7 @@ const Tablet = ({
 				{children}
 			</View>
 			<Split split={split} tablet={tablet} theme={theme} showModal={showModal} closeModal={closeModal} setModalRef={setModalRef} />
-			<NotificationContainer ref={ref => notificationRef = ref} screenProps={{ theme }} theme={navigationTheme(theme)} />
+			<NotificationContainer ref={ref => notificationRef = ref} screenProps={{ theme }} />
 		</View>
 	);
 };

@@ -8,4 +8,11 @@ export const defaultTheme = () => {
 	return 'light';
 };
 
-export const navigationTheme = theme => (theme === 'light' ? 'light' : 'dark');
+export const getTheme = (colorScheme) => {
+	const { darkLevel, currentTheme } = colorScheme;
+	let color = currentTheme;
+	if (currentTheme === 'automatic') {
+		color = defaultTheme();
+	}
+	return color === 'dark' ? darkLevel : 'light';
+};
