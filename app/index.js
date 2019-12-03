@@ -569,11 +569,8 @@ export default class Root extends React.Component {
 	setTheme = (theme = {}) => {
 		const { colorScheme } = this.state;
 		const scheme = { ...colorScheme, ...theme };
-		// change did on currentTheme, try subscribe to theme changes
-		if (colorScheme.darkLevel === theme.darkLevel) {
-			this.removeSubTheme();
-			this.addSubTheme(scheme);
-		}
+		this.removeSubTheme();
+		this.addSubTheme(scheme);
 		this.changeTheme(scheme);
 	}
 
