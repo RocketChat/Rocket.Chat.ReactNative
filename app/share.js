@@ -5,18 +5,15 @@ import { AppearanceProvider, Appearance } from 'react-native-appearance';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import setRootViewColor from 'rn-root-view';
 
-import { getTheme } from './utils/theme';
+import { getTheme, setNativeTheme } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, isIOS, isAndroid } from './utils/deviceInfo';
+import { isNotch, isIOS } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
-import { themes } from './constants/colors';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -69,18 +66,15 @@ class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.removeSubTheme();
-	}
-
-	addSubTheme = (colorScheme) => {
-		if (colorScheme.currentTheme && colorScheme.currentTheme === 'automatic') {
-			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
+		if (this.subTheme && this.subTheme.remove) {
+			this.subTheme.remove();
 		}
 	}
 
-	removeSubTheme = () => {
-		if (this.subTheme && this.subTheme.remove) {
-			this.subTheme.remove();
+	addSubTheme = (colorScheme) => {
+		const { currentTheme } = colorScheme;
+		if (currentTheme === 'automatic') {
+			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
 		}
 	}
 
@@ -103,23 +97,14 @@ class Root extends React.Component {
 	setTheme = (theme = {}) => {
 		const { colorScheme } = this.state;
 		const scheme = { ...colorScheme, ...theme };
-		this.removeSubTheme();
 		this.changeTheme(scheme);
 		this.addSubTheme(scheme);
-	}
-
-	setAndroidNavbar = (theme) => {
-		if (isAndroid) {
-			const iconsLight = theme === 'light';
-			changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
-		}
 	}
 
 	changeTheme = (colorScheme) => {
 		const color = getTheme(colorScheme);
 		this.setState({ colorScheme });
-		this.setAndroidNavbar(color);
-		setRootViewColor(themes[color].backgroundColor);
+		setNativeTheme(color);
 	}
 
 	handleLayout = (event) => {

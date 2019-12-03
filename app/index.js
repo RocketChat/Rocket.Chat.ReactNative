@@ -9,11 +9,8 @@ import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import setRootViewColor from 'rn-root-view';
 
-import { themes } from './constants/colors';
-import { getTheme } from './utils/theme';
+import { getTheme, setNativeTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -30,7 +27,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth, isAndroid
+	isTablet, isSplited, isIOS, setWidth
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -541,7 +538,8 @@ export default class Root extends React.Component {
 	}
 
 	addSubTheme = (colorScheme) => {
-		if (colorScheme.currentTheme && colorScheme.currentTheme === 'automatic') {
+		const { currentTheme } = colorScheme;
+		if (currentTheme === 'automatic') {
 			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
 		}
 	}
@@ -568,32 +566,21 @@ export default class Root extends React.Component {
 		}
 	}
 
-	setDark = (dark = {}) => {
-		const { colorScheme } = this.state;
-		const scheme = { ...colorScheme, ...dark };
-		this.changeTheme(scheme);
-	}
-
 	setTheme = (theme = {}) => {
 		const { colorScheme } = this.state;
 		const scheme = { ...colorScheme, ...theme };
-		this.removeSubTheme();
-		this.changeTheme(scheme);
-		this.addSubTheme(scheme);
-	}
-
-	setAndroidNavbar = (theme) => {
-		if (isAndroid) {
-			const iconsLight = theme === 'light';
-			changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
+		// change did on currentTheme, try subscribe to theme changes
+		if (colorScheme.darkLevel === theme.darkLevel) {
+			this.removeSubTheme();
+			this.addSubTheme(scheme);
 		}
+		this.changeTheme(scheme);
 	}
 
 	changeTheme = (colorScheme) => {
 		const color = getTheme(colorScheme);
 		this.setState({ colorScheme });
-		this.setAndroidNavbar(color);
-		setRootViewColor(themes[color].backgroundColor);
+		setNativeTheme(color);
 	}
 
 	initTablet = async() => {
@@ -663,8 +650,7 @@ export default class Root extends React.Component {
 						value={{
 							theme,
 							colorScheme,
-							setTheme: this.setTheme,
-							setDark: this.setDark
+							setTheme: this.setTheme
 						}}
 					>
 						{content}

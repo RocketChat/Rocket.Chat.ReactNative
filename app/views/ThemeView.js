@@ -17,31 +17,34 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_KEY } from '../lib/rocketchat';
 
+const THEME_GROUP = 'THEME_GROUP';
+const DARK_GROUP = 'DARK_GROUP';
+
 const THEMES = [
 	{
 		label: I18n.t('Automatic'),
 		value: 'automatic',
 		separator: true,
 		header: I18n.t('Theme'),
-		group: 'theme'
+		group: THEME_GROUP
 	}, {
 		label: I18n.t('Light'),
 		value: 'light',
-		group: 'theme'
+		group: THEME_GROUP
 	}, {
 		label: I18n.t('Dark'),
 		value: 'dark',
-		group: 'theme'
+		group: THEME_GROUP
 	}, {
 		label: I18n.t('Dark'),
 		value: 'dark',
 		separator: true,
 		header: I18n.t('Dark_level'),
-		group: 'darkLevel'
+		group: DARK_GROUP
 	}, {
 		label: I18n.t('Black'),
 		value: 'black',
-		group: 'darkLevel'
+		group: DARK_GROUP
 	}
 ];
 
@@ -69,45 +72,37 @@ class ThemeView extends React.Component {
 	static propTypes = {
 		theme: PropTypes.string,
 		colorScheme: PropTypes.object,
-		setTheme: PropTypes.func,
-		setDark: PropTypes.func
+		setTheme: PropTypes.func
 	}
 
 	isSelected = (item) => {
 		const { colorScheme } = this.props;
 		const { group } = item;
 		const { darkLevel, currentTheme } = colorScheme;
-		if (group === 'theme') {
+		if (group === THEME_GROUP) {
 			return item.value === currentTheme;
 		}
-		if (group === 'darkLevel') {
+		if (group === DARK_GROUP) {
 			return item.value === darkLevel;
 		}
 	}
 
-	setTheme = async(value) => {
-		const { setTheme, colorScheme } = this.props;
-		setTheme({ currentTheme: value });
-		// no await, because this causes a delay
-		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, currentTheme: value });
-	};
-
-	setDark = async(value) => {
-		const { setDark, colorScheme } = this.props;
-		setDark({ darkLevel: value });
-		// no await, because this causes a delay
-		await RNUserDefaults.setObjectForKey(THEME_KEY, { ...colorScheme, darkLevel: value });
-	}
-
 	onClick = (item) => {
 		const { value, group } = item;
-		if (group === 'theme') {
-			this.setTheme(value);
+		if (group === THEME_GROUP) {
+			this.setTheme({ currentTheme: value });
 		}
-		if (group === 'darkLevel') {
-			this.setDark(value);
+		if (group === DARK_GROUP) {
+			this.setTheme({ darkLevel: value });
 		}
 	}
+
+	setTheme = async(theme) => {
+		const { setTheme, colorScheme } = this.props;
+		const scheme = { ...colorScheme, ...theme };
+		setTheme(scheme);
+		await RNUserDefaults.setObjectForKey(THEME_KEY, scheme);
+	};
 
 	renderSeparator = () => {
 		const { theme } = this.props;
@@ -116,7 +111,7 @@ class ThemeView extends React.Component {
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
+		return <CustomIcon name='check' size={20} color={themes[theme].tintColor} />;
 	}
 
 	renderItem = ({ item }) => {
@@ -165,7 +160,7 @@ class ThemeView extends React.Component {
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
-				testID='language-view'
+				testID='theme-view'
 			>
 				<StatusBar theme={theme} />
 				<FlatList
