@@ -119,7 +119,7 @@ class Sort extends PureComponent {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[

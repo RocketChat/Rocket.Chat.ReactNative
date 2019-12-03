@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_BLACK } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -47,8 +46,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill,
-		backgroundColor: COLOR_BLACK
+		...StyleSheet.absoluteFill
 	},
 	sortSeparator: {
 		height: StyleSheet.hairlineWidth,

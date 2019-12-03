@@ -1,8 +1,9 @@
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 
 export const COLOR_DANGER = '#f5455c';
-export const COLOR_SUCCESS = '#4BD964';
-export const COLOR_BLACK = '#000000'; // KEEP
+export const COLOR_SUCCESS = '#2de0a5';
+export const FAV_COLOR = '#ffbb00';
+export const HIDE_COLOR = '#54585e';
 export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: COLOR_DANGER,
@@ -20,11 +21,11 @@ export const themes = {
 		backgroundColor: '#ffffff',
 		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
-		emptyChatBackground: '#f3f4f5',
 		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
 		titleText: '#0d0e12',
 		bodyText: '#2f343d',
+		backdropColor: '#000000',
 		borderColor: '#e1e5e8',
 		controlText: '#54585e',
 		auxiliaryText: '#9ca2a8',
@@ -33,7 +34,6 @@ export const themes = {
 		auxiliaryTintColor: '#caced1',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#cbcbcc',
-		strongAccent: '', // ???
 		navbarBackground: '#ffffff',
 		headerBorder: '#B2B2B2',
 		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
@@ -51,11 +51,11 @@ export const themes = {
 		backgroundColor: '#030b1b',
 		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',
-		emptyChatBackground: '#030A1A',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
 		titleText: '#FFFFFF',
 		bodyText: '#e8ebed',
+		backdropColor: '#000000',
 		borderColor: '#0f213d',
 		controlText: '#dadde6',
 		auxiliaryText: '#9297a2',
@@ -64,7 +64,6 @@ export const themes = {
 		auxiliaryTintColor: '#cdcdcd',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#2b2b2d',
-		strongAccent: '', // ???
 		navbarBackground: '#0b182c',
 		headerBorder: '#2F3A4B',
 		headerBackground: '#0b182c',
@@ -82,11 +81,11 @@ export const themes = {
 		backgroundColor: '#000000',
 		focusedBackground: '#0d0d0d',
 		chatComponentBackground: '#16181a',
-		emptyChatBackground: '#000000',
 		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
 		titleText: '#f9f9f9',
 		bodyText: '#e8ebed',
+		backdropColor: '#000000',
 		borderColor: '#1f2329',
 		controlText: '#dadde6',
 		auxiliaryText: '#b2b8c6',
@@ -95,14 +94,13 @@ export const themes = {
 		auxiliaryTintColor: '#cdcdcd',
 		actionTintColor: '#1ea1fe',
 		separatorColor: '#272728',
-		strongAccent: '', // ???
 		navbarBackground: '#0d0d0d',
 		headerBorder: '#323232',
 		headerBackground: '#0d0d0d',
 		headerSecondaryBackground: '#0d0d0d',
 		headerTintColor: isAndroid ? '#ffffff' : '#1e9bfe',
 		headerTitleColor: '#f9f9f9',
-		headerSecondaryText: isAndroid ? '#b2b8c6' : '#1d74f5',
+		headerSecondaryText: isAndroid ? '#b2b8c6' : '#1e9bfe',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		messageboxBackground: '#0d0d0d',

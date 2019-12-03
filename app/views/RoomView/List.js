@@ -177,7 +177,7 @@ class List extends React.Component {
 		const { loading } = this.state;
 		const { rid, theme } = this.props;
 		if (loading && rid) {
-			return <ActivityIndicator theme={theme} style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
 	}

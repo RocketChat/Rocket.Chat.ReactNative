@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_BLACK } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -17,7 +16,7 @@ export default StyleSheet.create({
 		marginLeft: 60
 	},
 	toggleDropdownContainer: {
-		height: 47,
+		height: 46,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -39,17 +38,16 @@ export default StyleSheet.create({
 		top: 0
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill,
-		backgroundColor: COLOR_BLACK
+		...StyleSheet.absoluteFill
 	},
 	dropdownContainerHeader: {
-		height: 47,
+		height: 46,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	dropdownItemButton: {
-		height: 47,
+		height: 46,
 		justifyContent: 'center'
 	},
 	dropdownItemContainer: {

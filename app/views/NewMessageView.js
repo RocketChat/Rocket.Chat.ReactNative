@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 		marginVertical: 25
 	},
 	createChannelContainer: {
-		height: 47,
+		height: 46,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

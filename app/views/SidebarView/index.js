@@ -228,7 +228,7 @@ class Sidebar extends Component {
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
 				) : null}
-				<Separator theme={theme} key='separator-logout' />
+				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Logout')}
 					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
@@ -244,7 +244,6 @@ class Sidebar extends Component {
 		const { user } = this.props;
 		return (
 			<FlatList
-				key='status-list'
 				data={status}
 				extraData={user}
 				renderItem={this.renderStatusItem}
@@ -299,7 +298,7 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</Touch>
 
-					{!split || showStatus ? <Separator theme={theme} key='separator-header' /> : null}
+					{!split || showStatus ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}

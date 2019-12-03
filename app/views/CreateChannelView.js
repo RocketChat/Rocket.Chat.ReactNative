@@ -7,7 +7,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
-import TextInput from '../utils/textInput';
+import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';

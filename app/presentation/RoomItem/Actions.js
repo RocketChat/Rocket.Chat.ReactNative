@@ -6,10 +6,7 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
-
-const FAV_COLOR = '#ffbb00';
-const HIDE_COLOR = '#54585e';
+import { FAV_COLOR, HIDE_COLOR, themes } from '../../constants/colors';
 
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress

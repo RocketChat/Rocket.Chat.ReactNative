@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import TextInput from '../../../utils/textInput';
+import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
-import TextInput from '../utils/textInput';
+import TextInput from '../presentation/TextInput';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';

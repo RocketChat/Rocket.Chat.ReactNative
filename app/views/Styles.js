@@ -67,7 +67,6 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separatorLeft: {
-		borderColor: 'red',
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {

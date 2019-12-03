@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
-import TextInput from '../utils/textInput';
+import TextInput from '../presentation/TextInput';
 import { COLOR_DANGER, themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 

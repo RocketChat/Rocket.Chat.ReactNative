@@ -66,7 +66,7 @@ const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', '
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const rid = navigation.getParam('rid');
+		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');

@@ -16,7 +16,7 @@ const Item = ({ item, theme }) => {
 
 	return (
 		<TouchableOpacity
-			style={[styles.commandPreview]}
+			style={styles.commandPreview}
 			onPress={() => onPressCommandPreview(item)}
 			testID={`command-preview-item${ item.id }`}
 		>
