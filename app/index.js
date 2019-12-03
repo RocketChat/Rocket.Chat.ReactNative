@@ -539,9 +539,10 @@ export default class Root extends React.Component {
 
 	subscribeAppearance = (themePreferences) => {
 		const { currentTheme } = themePreferences;
-		this.unsubscribeAppearance();
-		if (currentTheme === 'automatic') {
+		if (!this.appearanceListener && currentTheme === 'automatic') {
 			this.appearanceListener = Appearance.addChangeListener(this.setTheme);
+		} else if (currentTheme !== 'automatic') {
+			this.unsubscribeAppearance();
 		}
 	}
 
