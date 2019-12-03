@@ -71,14 +71,14 @@ class ThemeView extends React.Component {
 
 	static propTypes = {
 		theme: PropTypes.string,
-		colorScheme: PropTypes.object,
+		themePreferences: PropTypes.object,
 		setTheme: PropTypes.func
 	}
 
 	isSelected = (item) => {
-		const { colorScheme } = this.props;
+		const { themePreferences } = this.props;
 		const { group } = item;
-		const { darkLevel, currentTheme } = colorScheme;
+		const { darkLevel, currentTheme } = themePreferences;
 		if (group === THEME_GROUP) {
 			return item.value === currentTheme;
 		}
@@ -98,8 +98,8 @@ class ThemeView extends React.Component {
 	}
 
 	setTheme = async(theme) => {
-		const { setTheme, colorScheme } = this.props;
-		const scheme = { ...colorScheme, ...theme };
+		const { setTheme, themePreferences } = this.props;
+		const scheme = { ...themePreferences, ...theme };
 		setTheme(scheme);
 		await RNUserDefaults.setObjectForKey(THEME_KEY, scheme);
 	};

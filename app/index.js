@@ -494,7 +494,7 @@ export default class Root extends React.Component {
 			split: false,
 			inside: false,
 			showModal: false,
-			colorScheme: {
+			themePreferences: {
 				currentTheme: 'automatic',
 				darkLevel: 'dark'
 			}
@@ -530,23 +530,25 @@ export default class Root extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 
-		this.removeSubTheme();
+		this.unsubscribeAppearance();
 
 		if (this.onKeyCommands && this.onKeyCommands.remove) {
 			this.onKeyCommands.remove();
 		}
 	}
 
-	addSubTheme = (colorScheme) => {
-		const { currentTheme } = colorScheme;
-		if (currentTheme === 'automatic') {
-			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
+	subscribeAppearance = (themePreferences) => {
+		const { currentTheme } = themePreferences;
+		this.unsubscribeAppearance();
+		if (!this.appearanceListener && currentTheme === 'automatic') {
+			this.appearanceListener = Appearance.addChangeListener(this.setTheme);
 		}
 	}
 
-	removeSubTheme = () => {
-		if (this.subTheme && this.subTheme.remove) {
-			this.subTheme.remove();
+	unsubscribeAppearance = () => {
+		if (this.appearanceListener && this.appearanceListener.remove) {
+			this.appearanceListener.remove();
+			this.appearanceListener = null;
 		}
 	}
 
@@ -566,17 +568,12 @@ export default class Root extends React.Component {
 		}
 	}
 
-	setTheme = (theme = {}) => {
-		const { colorScheme } = this.state;
-		const scheme = { ...colorScheme, ...theme };
-		this.removeSubTheme();
-		this.addSubTheme(scheme);
-		this.changeTheme(scheme);
-	}
-
-	changeTheme = (colorScheme) => {
-		const color = getTheme(colorScheme);
-		this.setState({ colorScheme });
+	setTheme = (nextThemePreferences = {}) => {
+		const { themePreferences: previousThemePreferences } = this.state;
+		const newThemePreferences = { ...previousThemePreferences, ...nextThemePreferences };
+		this.subscribeAppearance(newThemePreferences);
+		const color = getTheme(newThemePreferences);
+		this.setState({ themePreferences: newThemePreferences });
 		setNativeTheme(color);
 	}
 
@@ -610,8 +607,8 @@ export default class Root extends React.Component {
 	closeModal = () => this.setState({ showModal: false });
 
 	render() {
-		const { split, colorScheme } = this.state;
-		const theme = getTheme(colorScheme);
+		const { split, themePreferences } = this.state;
+		const theme = getTheme(themePreferences);
 
 		let content = (
 			<App
@@ -646,7 +643,7 @@ export default class Root extends React.Component {
 					<ThemeContext.Provider
 						value={{
 							theme,
-							colorScheme,
+							themePreferences,
 							setTheme: this.setTheme
 						}}
 					>

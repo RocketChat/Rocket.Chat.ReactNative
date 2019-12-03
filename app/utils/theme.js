@@ -6,15 +6,15 @@ import { isAndroid } from './deviceInfo';
 import { themes } from '../constants/colors';
 
 export const defaultTheme = () => {
-	const colorScheme = Appearance.getColorScheme();
-	if (colorScheme && colorScheme !== 'no-preference') {
-		return colorScheme;
+	const systemTheme = Appearance.getColorScheme();
+	if (systemTheme && systemTheme !== 'no-preference') {
+		return systemTheme;
 	}
 	return 'light';
 };
 
-export const getTheme = (colorScheme) => {
-	const { darkLevel, currentTheme } = colorScheme;
+export const getTheme = (themePreferences) => {
+	const { darkLevel, currentTheme } = themePreferences;
 	let color = currentTheme;
 	if (currentTheme === 'automatic') {
 		color = defaultTheme();

@@ -57,7 +57,7 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			isLandscape: false,
-			colorScheme: {
+			themePreferences: {
 				currentTheme: 'automatic',
 				darkLevel: 'dark'
 			}
@@ -66,15 +66,15 @@ class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.subTheme && this.subTheme.remove) {
-			this.subTheme.remove();
+		if (this.appearanceListener && this.appearanceListener.remove) {
+			this.appearanceListener.remove();
 		}
 	}
 
-	addSubTheme = (colorScheme) => {
-		const { currentTheme } = colorScheme;
+	subscribeAppearance = (themePreferences) => {
+		const { currentTheme } = themePreferences;
 		if (currentTheme === 'automatic') {
-			this.subTheme = Appearance.addChangeListener(() => this.changeTheme(colorScheme));
+			this.appearanceListener = Appearance.addChangeListener(this.setTheme);
 		}
 	}
 
@@ -94,16 +94,12 @@ class Root extends React.Component {
 		}
 	}
 
-	setTheme = (theme = {}) => {
-		const { colorScheme } = this.state;
-		const scheme = { ...colorScheme, ...theme };
-		this.changeTheme(scheme);
-		this.addSubTheme(scheme);
-	}
-
-	changeTheme = (colorScheme) => {
-		const color = getTheme(colorScheme);
-		this.setState({ colorScheme });
+	setTheme = (nextThemePreferences = {}) => {
+		const { themePreferences: previousThemePreferences } = this.state;
+		const newThemePreferences = { ...previousThemePreferences, ...nextThemePreferences };
+		this.subscribeAppearance(newThemePreferences);
+		const color = getTheme(newThemePreferences);
+		this.setState({ themePreferences: newThemePreferences });
 		setNativeTheme(color);
 	}
 
@@ -113,8 +109,8 @@ class Root extends React.Component {
 	}
 
 	render() {
-		const { isLandscape, colorScheme } = this.state;
-		const theme = getTheme(colorScheme);
+		const { isLandscape, themePreferences } = this.state;
+		const theme = getTheme(themePreferences);
 		return (
 			<AppearanceProvider>
 				<View
