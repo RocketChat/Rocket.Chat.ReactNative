@@ -67,6 +67,9 @@ const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
 
+const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsFavorite = s => s.f;
+
 const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
@@ -404,14 +407,16 @@ class RoomsListView extends React.Component {
 
 			// unread
 			if (showUnread) {
-				const unread = chats.filter(s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus);
+				const unread = chats.filter(s => filterIsUnread(s));
+				chats = chats.filter(s => !filterIsUnread(s));
 				tempChats = this.addRoomsGroup(unread, UNREAD_HEADER, tempChats);
 			}
 
 			// favorites
 			if (showFavorites) {
-				const favorites = chats.filter(s => s.f);
-				tempChats =	this.addRoomsGroup(favorites, FAVORITES_HEADER, tempChats);
+				const favorites = chats.filter(s => filterIsFavorite(s));
+				chats = chats.filter(s => !filterIsFavorite(s));
+				tempChats = this.addRoomsGroup(favorites, FAVORITES_HEADER, tempChats);
 			}
 
 			// type
@@ -420,18 +425,14 @@ class RoomsListView extends React.Component {
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
-				tempChats =	this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-				tempChats =	this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
-				tempChats =	this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
-				tempChats =	this.addRoomsGroup(direct, DM_HEADER, tempChats);
-			} else if (showUnread) {
-				chats = chats.filter(s => (!s.unread && !s.alert) || s.hideUnreadStatus);
-				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
-			} else if (showFavorites) {
-				chats = chats.filter(s => !s.f);
-				tempChats =	this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
+				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
+				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
+				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
+				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
+			} else if (showUnread || showFavorites) {
+				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
-				tempChats =	chats;
+				tempChats = chats;
 			}
 
 			this.internalSetState({
