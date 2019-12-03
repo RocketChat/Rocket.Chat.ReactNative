@@ -15,14 +15,15 @@ export const defaultTheme = () => {
 
 export const getTheme = (themePreferences) => {
 	const { darkLevel, currentTheme } = themePreferences;
-	let color = currentTheme;
+	let theme = currentTheme;
 	if (currentTheme === 'automatic') {
-		color = defaultTheme();
+		theme = defaultTheme();
 	}
-	return color === 'dark' ? darkLevel : 'light';
+	return theme === 'dark' ? darkLevel : 'light';
 };
 
-export const setNativeTheme = (theme) => {
+export const setNativeTheme = (themePreferences) => {
+	const theme = getTheme(themePreferences);
 	if (isAndroid) {
 		const iconsLight = theme === 'light';
 		changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);

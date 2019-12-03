@@ -573,9 +573,8 @@ export default class Root extends React.Component {
 		const { themePreferences: previousThemePreferences } = this.state;
 		const newThemePreferences = { ...previousThemePreferences, ...nextThemePreferences };
 		this.subscribeAppearance(newThemePreferences);
-		const color = getTheme(newThemePreferences);
 		this.setState({ themePreferences: newThemePreferences });
-		setNativeTheme(color);
+		setNativeTheme(newThemePreferences);
 	}
 
 	initTablet = async() => {
