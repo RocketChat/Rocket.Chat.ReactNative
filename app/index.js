@@ -24,7 +24,7 @@ import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navig
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import { ThemeContext } from './theme';
-import RocketChat, { THEME_KEY } from './lib/rocketchat';
+import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
 	isTablet, isSplited, isIOS, setWidth
@@ -544,6 +544,7 @@ export default class Root extends React.Component {
 			// not use listener params because we use getTheme
 			this.appearanceListener = Appearance.addChangeListener(() => this.setTheme());
 		} else if (currentTheme !== 'automatic') {
+			// unsubscribe appearance changes when automatic was disabled
 			this.unsubscribeAppearance();
 		}
 	}
@@ -559,7 +560,7 @@ export default class Root extends React.Component {
 		if (isIOS) {
 			await RNUserDefaults.setName('group.ios.chat.rocket');
 		}
-		RNUserDefaults.objectForKey(THEME_KEY).then(this.setTheme);
+		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {
@@ -572,13 +573,18 @@ export default class Root extends React.Component {
 	}
 
 	setTheme = (newTheme = {}) => {
+		// change theme state
 		this.setState((prevState) => {
+			// change themePreferences by param
+			// we spread old state with new values from param
 			const themePreferences = {
 				...prevState.themePreferences,
 				...newTheme
 			};
+			// set new state of themePreferences & new Theme based on themePreferences
 			return { themePreferences, theme: getTheme(themePreferences) };
 		}, () => {
+			// subscribe to Appearance changes & set native components theme
 			const { themePreferences } = this.state;
 			this.subscribeAppearance(themePreferences);
 			setNativeTheme(themePreferences);

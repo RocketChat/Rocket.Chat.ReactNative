@@ -15,7 +15,7 @@ import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
-import { THEME_KEY } from '../lib/rocketchat';
+import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -105,7 +105,7 @@ class ThemeView extends React.Component {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
-		await RNUserDefaults.setObjectForKey(THEME_KEY, newTheme);
+		await RNUserDefaults.setObjectForKey(THEME_PREFERENCES_KEY, newTheme);
 	};
 
 	renderSeparator = () => {
