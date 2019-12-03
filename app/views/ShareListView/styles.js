@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
-import { COLOR_DANGER } from '../../constants/colors';
-
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -45,9 +43,6 @@ export default StyleSheet.create({
 	separator: {
 		...sharedStyles.separatorBottom,
 		marginLeft: 48
-	},
-	errorIcon: {
-		color: COLOR_DANGER
 	},
 	fileMime: {
 		...sharedStyles.textBold,

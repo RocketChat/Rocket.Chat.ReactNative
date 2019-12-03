@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_DANGER } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -35,12 +34,8 @@ export default StyleSheet.create({
 		borderRadius: 2
 	},
 	buttonDanger: {
-		borderColor: COLOR_DANGER,
 		borderWidth: 2,
 		borderRadius: 2
-	},
-	colorDanger: {
-		color: COLOR_DANGER
 	},
 	switchContainer: {
 		flexDirection: 'row',

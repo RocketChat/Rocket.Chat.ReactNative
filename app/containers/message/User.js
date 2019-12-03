@@ -49,7 +49,7 @@ const User = React.memo(({
 					</Text>
 				</View>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
-				{ hasError && <MessageError hasError={hasError} {...props} /> }
+				{ hasError && <MessageError hasError={hasError} theme={theme} {...props} /> }
 			</View>
 		);
 	}

@@ -5,13 +5,12 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
-import { COLOR_DANGER, themes } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	error: {
 		textAlign: 'center',
-		color: COLOR_DANGER,
 		paddingTop: 5
 	},
 	inputContainer: {
@@ -36,13 +35,6 @@ const styles = StyleSheet.create({
 	},
 	inputIconRight: {
 		paddingRight: 45
-	},
-	labelError: {
-		color: COLOR_DANGER
-	},
-	inputError: {
-		color: COLOR_DANGER,
-		borderColor: COLOR_DANGER
 	},
 	wrap: {
 		position: 'relative'
@@ -119,14 +111,30 @@ export default class RCTextInput extends React.PureComponent {
 		const {
 			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
+		const { dangerColor } = themes[theme];
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
-				{label ? <Text contentDescription={null} accessibilityLabel={null} style={[styles.label, { color: themes[theme].titleText }, error.error && styles.labelError]}>{label}</Text> : null}
+				{label ? (
+					<Text
+						contentDescription={null}
+						accessibilityLabel={null}
+						style={[
+							styles.label,
+							{ color: themes[theme].titleText },
+							error.error && { color: dangerColor }
+						]}
+					>
+						{label}
+					</Text>
+				) : null}
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
 							styles.input,
-							error.error && styles.inputError,
+							error.error && {
+								color: dangerColor,
+								borderColor: dangerColor
+							},
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight,
 							{
@@ -151,7 +159,7 @@ export default class RCTextInput extends React.PureComponent {
 					{iconLeft ? this.iconLeft : null}
 					{secureTextEntry ? this.iconPassword : null}
 				</View>
-				{error.error ? <Text style={styles.error}>{error.reason}</Text> : null}
+				{error.error ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>
 		);
 	}

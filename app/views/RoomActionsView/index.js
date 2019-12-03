@@ -452,9 +452,10 @@ class RoomActionsView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
+		const colorDanger = { color: themes[theme].dangerColor };
 		const subview = item.type === 'danger' ? [
-			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, styles.textColorDanger]} />,
-			<Text key='name' style={[styles.sectionItemName, styles.textColorDanger]}>{ item.name }</Text>
+			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, colorDanger]} />,
+			<Text key='name' style={[styles.sectionItemName, colorDanger]}>{ item.name }</Text>
 		] : [
 			<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />,
 			<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>,

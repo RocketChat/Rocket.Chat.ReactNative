@@ -11,7 +11,7 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_DANGER, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';
 
@@ -185,7 +185,7 @@ class UploadProgress extends Component {
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={COLOR_DANGER} />
+				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
 				<View style={styles.descriptionContainer}>
 					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>

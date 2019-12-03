@@ -426,15 +426,14 @@ class RoomInfoEditView extends React.Component {
 							<TouchableOpacity
 								style={[
 									styles.buttonContainer_inverted,
-									styles.buttonDanger,
 									!this.hasArchivePermission() && sharedStyles.opacity5,
-									{ flex: 1, marginLeft: 10 }
+									{ flex: 1, marginLeft: 10, borderColor: themes[theme].dangerColor }
 								]}
 								onPress={this.toggleArchive}
 								disabled={!this.hasArchivePermission()}
 								testID='room-info-edit-view-archive'
 							>
-								<Text style={[styles.button_inverted, styles.colorDanger]} accessibilityTraits='button'>
+								<Text style={[styles.button_inverted, { color: themes[theme].dangerColor }]} accessibilityTraits='button'>
 									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 								</Text>
 							</TouchableOpacity>

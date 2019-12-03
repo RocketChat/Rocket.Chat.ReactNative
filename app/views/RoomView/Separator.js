@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
-import { COLOR_DANGER, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,12 +23,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
-	unreadLine: {
-		backgroundColor: COLOR_DANGER
-	},
-	unreadText: {
-		color: COLOR_DANGER
-	},
 	marginLeft: {
 		marginLeft: 14
 	},
@@ -42,12 +36,14 @@ const styles = StyleSheet.create({
 
 const DateSeparator = React.memo(({ ts, unread, theme }) => {
 	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
+	const unreadLine = { backgroundColor: themes[theme].dangerColor };
+	const unreadText = { color: themes[theme].dangerColor };
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, styles.unreadText]}>{I18n.t('unread_messages')}</Text>
-				<View style={[styles.line, styles.unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, styles.unreadText]}>{date}</Text>
+				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+				<View style={[styles.line, unreadLine, styles.marginHorizontal]} />
+				<Text style={[styles.text, unreadText]}>{date}</Text>
 			</View>
 		);
 	}
@@ -61,8 +57,8 @@ const DateSeparator = React.memo(({ ts, unread, theme }) => {
 	}
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
-			<View style={[styles.line, styles.unreadLine]} />
+			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<View style={[styles.line, unreadLine]} />
 		</View>
 	);
 });

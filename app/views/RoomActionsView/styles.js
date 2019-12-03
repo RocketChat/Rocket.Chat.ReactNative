@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_DANGER } from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
@@ -40,9 +39,6 @@ export default StyleSheet.create({
 	},
 	sectionSeparatorBorder: {
 		borderTopWidth: StyleSheet.hairlineWidth
-	},
-	textColorDanger: {
-		color: COLOR_DANGER
 	},
 	avatar: {
 		marginHorizontal: 16

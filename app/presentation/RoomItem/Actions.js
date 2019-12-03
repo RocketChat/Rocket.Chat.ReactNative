@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
-import { FAV_COLOR, HIDE_COLOR, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress
@@ -85,11 +85,11 @@ export const RightActions = React.memo(({
 					{
 						width,
 						transform: [{ translateX: translateXFav }],
-						backgroundColor: HIDE_COLOR
+						backgroundColor: themes[theme].hideBackground
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: FAV_COLOR }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
 					<>
 						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={themes[theme].buttonText} />
 						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
@@ -105,7 +105,7 @@ export const RightActions = React.memo(({
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: HIDE_COLOR }]} onPress={onHidePress}>
+				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
 					<>
 						<CustomIcon size={20} name='eye-off' color={themes[theme].buttonText} />
 						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>

@@ -1,19 +1,15 @@
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 
-export const COLOR_DANGER = '#f5455c';
-export const COLOR_SUCCESS = '#2de0a5';
-export const FAV_COLOR = '#ffbb00';
-export const HIDE_COLOR = '#54585e';
 export const STATUS_COLORS = {
 	online: '#2de0a5',
-	busy: COLOR_DANGER,
+	busy: '#f5455c',
 	away: '#ffd21f',
 	offline: '#cbced1'
 };
 
 export const SWITCH_TRACK_COLOR = {
-	false: isAndroid ? COLOR_DANGER : null,
-	true: COLOR_SUCCESS
+	false: isAndroid ? '#f5455c' : null,
+	true: '#2de0a5'
 };
 
 export const themes = {
@@ -26,6 +22,8 @@ export const themes = {
 		titleText: '#0d0e12',
 		bodyText: '#2f343d',
 		backdropColor: '#000000',
+		dangerColor: '#f5455c',
+		successColor: '#2de0a5',
 		borderColor: '#e1e5e8',
 		controlText: '#54585e',
 		auxiliaryText: '#9ca2a8',
@@ -43,6 +41,8 @@ export const themes = {
 		headerSecondaryText: isAndroid ? '#9ca2a8' : '#1d74f5',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
+		favoriteBackground: '#ffbb00',
+		hideBackground: '#54585e',
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonText: '#ffffff'
@@ -56,6 +56,8 @@ export const themes = {
 		titleText: '#FFFFFF',
 		bodyText: '#e8ebed',
 		backdropColor: '#000000',
+		dangerColor: '#f5455c',
+		successColor: '#2de0a5',
 		borderColor: '#0f213d',
 		controlText: '#dadde6',
 		auxiliaryText: '#9297a2',
@@ -73,6 +75,8 @@ export const themes = {
 		headerSecondaryText: isAndroid ? '#9297a2' : '#1d74f5',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
+		favoriteBackground: '#ffbb00',
+		hideBackground: '#54585e',
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonText: '#ffffff'
@@ -86,6 +90,8 @@ export const themes = {
 		titleText: '#f9f9f9',
 		bodyText: '#e8ebed',
 		backdropColor: '#000000',
+		dangerColor: '#f5455c',
+		successColor: '#2de0a5',
 		borderColor: '#1f2329',
 		controlText: '#dadde6',
 		auxiliaryText: '#b2b8c6',
@@ -103,6 +109,8 @@ export const themes = {
 		headerSecondaryText: isAndroid ? '#b2b8c6' : '#1e9bfe',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
+		favoriteBackground: '#ffbb00',
+		hideBackground: '#54585e',
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonText: '#ffffff'

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { logout as logoutAction } from '../../actions/login';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR, COLOR_DANGER, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
@@ -156,7 +156,7 @@ class SettingsView extends React.Component {
 					testID='settings-logout'
 					onPress={this.logout}
 					right={this.renderDisclosure}
-					color={COLOR_DANGER}
+					color={themes[theme].dangerColor}
 					theme={theme}
 				/>
 				<Separator theme={theme} />
