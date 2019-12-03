@@ -88,11 +88,13 @@ class ThemeView extends React.Component {
 	}
 
 	onClick = (item) => {
+		const { themePreferences } = this.props;
+		const { darkLevel, currentTheme } = themePreferences;
 		const { value, group } = item;
-		if (group === THEME_GROUP) {
+		if (group === THEME_GROUP && currentTheme !== value) {
 			this.setTheme({ currentTheme: value });
 		}
-		if (group === DARK_GROUP) {
+		if (group === DARK_GROUP && darkLevel !== value) {
 			this.setTheme({ darkLevel: value });
 		}
 	}
