@@ -540,7 +540,8 @@ export default class Root extends React.Component {
 	subscribeAppearance = (themePreferences) => {
 		const { currentTheme } = themePreferences;
 		if (!this.appearanceListener && currentTheme === 'automatic') {
-			this.appearanceListener = Appearance.addChangeListener(this.setTheme);
+			// not use listener params because we use getTheme
+			this.appearanceListener = Appearance.addChangeListener(() => this.setTheme());
 		} else if (currentTheme !== 'automatic') {
 			this.unsubscribeAppearance();
 		}

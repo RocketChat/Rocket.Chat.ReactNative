@@ -91,19 +91,21 @@ class ThemeView extends React.Component {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
 		const { value, group } = item;
+		let changes = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
-			this.setTheme({ currentTheme: value });
+			changes = { currentTheme: value };
 		}
 		if (group === DARK_GROUP && darkLevel !== value) {
-			this.setTheme({ darkLevel: value });
+			changes = { darkLevel: value };
 		}
+		this.setTheme(changes);
 	}
 
 	setTheme = async(theme) => {
 		const { setTheme, themePreferences } = this.props;
-		const scheme = { ...themePreferences, ...theme };
-		setTheme(scheme);
-		await RNUserDefaults.setObjectForKey(THEME_KEY, scheme);
+		const newTheme = { ...themePreferences, ...theme };
+		setTheme(newTheme);
+		await RNUserDefaults.setObjectForKey(THEME_KEY, newTheme);
 	};
 
 	renderSeparator = () => {
