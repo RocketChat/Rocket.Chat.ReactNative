@@ -4,7 +4,6 @@ import {
 	View,
 	FlatList,
 	BackHandler,
-	ActivityIndicator,
 	Text,
 	Keyboard,
 	Dimensions
@@ -40,9 +39,13 @@ import {
 	Item
 } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
+import { themes } from '../../constants/colors';
+import { themedHeader } from '../../utils/navigation';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -82,6 +85,7 @@ const shouldUpdateProps = [
 	'useRealName',
 	'StoreLastMessage',
 	'appState',
+	'theme',
 	'split'
 ];
 const getItemLayout = (data, index) => ({
@@ -92,7 +96,7 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearchingAndroid = navigation.getParam(
 			'cancelSearchingAndroid'
@@ -104,6 +108,7 @@ class RoomsListView extends React.Component {
 		);
 
 		return {
+			...themedHeader(screenProps.theme),
 			headerLeft: searching ? (
 				<CustomHeaderButtons left>
 					<Item
@@ -159,6 +164,7 @@ class RoomsListView extends React.Component {
 		useRealName: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
+		theme: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
@@ -704,12 +710,14 @@ class RoomsListView extends React.Component {
 			token,
 			baseUrl,
 			StoreLastMessage,
+			theme,
 			split
 		} = this.props;
 		const id = item.rid.replace(userId, '').trim();
 
 		return (
 			<RoomItem
+				theme={theme}
 				alert={item.alert}
 				unread={item.unread}
 				hideUnreadStatus={item.hideUnreadStatus}
@@ -740,17 +748,21 @@ class RoomsListView extends React.Component {
 		);
 	};
 
-	renderSectionHeader = header => (
-		<View style={styles.groupTitleContainer}>
-			<Text style={styles.groupTitle}>{I18n.t(header)}</Text>
-		</View>
-	);
+	renderSectionHeader = (header) => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
+			</View>
+		);
+	}
 
 	renderScroll = () => {
 		const { loading, chats, search } = this.state;
+		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		return (
@@ -760,7 +772,7 @@ class RoomsListView extends React.Component {
 				extraData={search.length ? search : chats}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
-				style={styles.list}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
 				getItemLayout={getItemLayout}
@@ -780,16 +792,17 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			showServerDropdown,
-			showSortDropdown
+			showSortDropdown,
+			theme
 		} = this.props;
 
 		return (
 			<SafeAreaView
-				style={styles.container}
+				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				testID='rooms-list-view'
 				forceInset={{ vertical: 'never' }}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				{this.renderScroll()}
 				{showSortDropdown ? (
 					<SortDropdown
@@ -835,4 +848,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSplit(RoomsListView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(RoomsListView)));

@@ -2,13 +2,13 @@ import React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
-import { COLOR_PRIMARY } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import styles from '../styles';
 import I18n from '../../../i18n';
 
 const BaseButton = React.memo(({
-	onPress, testID, accessibilityLabel, icon
+	onPress, testID, accessibilityLabel, icon, theme
 }) => (
 	<BorderlessButton
 		onPress={onPress}
@@ -17,11 +17,12 @@ const BaseButton = React.memo(({
 		accessibilityLabel={I18n.t(accessibilityLabel)}
 		accessibilityTraits='button'
 	>
-		<CustomIcon name={icon} size={23} color={COLOR_PRIMARY} />
+		<CustomIcon name={icon} size={23} color={themes[theme].tintColor} />
 	</BorderlessButton>
 ));
 
 BaseButton.propTypes = {
+	theme: PropTypes.string,
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	accessibilityLabel: PropTypes.string.isRequired,

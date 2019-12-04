@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -11,10 +10,11 @@ import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
+import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import { List } from './List';
+import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -30,7 +30,7 @@ import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
@@ -38,6 +38,8 @@ import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 import {
 	KEY_COMMAND,
 	handleCommandScroll,
@@ -77,9 +79,12 @@ class RoomView extends React.Component {
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		if (!rid) {
-			return null;
+			return {
+				...themedHeader(screenProps.theme)
+			};
 		}
 		return {
+			...themedHeader(screenProps.theme),
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}
@@ -109,6 +114,7 @@ class RoomView extends React.Component {
 					userId={userId}
 					token={token}
 					title={avatar}
+					theme={screenProps.theme}
 					t={t}
 					goRoomActionsView={goRoomActionsView}
 					split={screenProps.split}
@@ -134,6 +140,7 @@ class RoomView extends React.Component {
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
 		useMarkdown: PropTypes.bool,
+		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
 
@@ -224,7 +231,10 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate } = state;
-		const { appState } = this.props;
+		const { appState, theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (appState !== nextProps.appState) {
 			return true;
 		}
@@ -711,7 +721,7 @@ class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, theme
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -768,6 +778,7 @@ class RoomView extends React.Component {
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
+						theme={theme}
 					/>
 				</>
 			);
@@ -780,7 +791,7 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 
 		if (!this.rid) {
 			return null;
@@ -788,29 +799,28 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
-					<RectButton
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Touch
 						onPress={this.joinRoom}
-						style={styles.joinRoomButton}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						theme={theme}
 					>
-						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
-					</RectButton>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+					</Touch>
 				</View>
 			);
 		}
 		if (this.isReadOnly) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
@@ -880,18 +890,26 @@ class RoomView extends React.Component {
 		const {
 			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='room-view'
+				forceInset={{ vertical: 'never' }}
+			>
+				<StatusBar theme={theme} />
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}
+					theme={theme}
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
@@ -947,4 +965,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));

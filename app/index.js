@@ -3,11 +3,19 @@ import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
+import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
+import {
+	defaultTheme,
+	newThemeState,
+	subscribeTheme,
+	unsubscribeTheme
+} from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -17,13 +25,14 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
-import RocketChat from './lib/rocketchat';
+import { ThemeContext } from './theme';
+import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth
+	isTablet, isSplited, isIOS, setWidth, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -74,7 +83,8 @@ const OutsideStack = createStackNavigator({
 		getScreen: () => require('./views/LegalView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AuthenticationWebViewStack = createStackNavigator({
@@ -82,7 +92,8 @@ const AuthenticationWebViewStack = createStackNavigator({
 		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const OutsideStackModal = createStackNavigator({
@@ -91,7 +102,8 @@ const OutsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
 
 const RoomRoutes = {
@@ -146,14 +158,16 @@ const ChatsStack = createStackNavigator({
 	},
 	...RoomRoutes
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 // Inside
 const RoomStack = createStackNavigator({
 	...RoomRoutes
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
@@ -171,7 +185,8 @@ const ProfileStack = createStackNavigator({
 		getScreen: () => require('./views/ProfileView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ProfileStack.navigationOptions = ({ navigation }) => {
@@ -190,9 +205,13 @@ const SettingsStack = createStackNavigator({
 	},
 	LanguageView: {
 		getScreen: () => require('./views/LanguageView').default
+	},
+	ThemeView: {
+		getScreen: () => require('./views/ThemeView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AdminPanelStack = createStackNavigator({
@@ -200,7 +219,8 @@ const AdminPanelStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 SettingsStack.navigationOptions = ({ navigation }) => {
@@ -234,7 +254,8 @@ const NewMessageStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const InsideStackModal = createStackNavigator({
@@ -246,13 +267,17 @@ const InsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
 
 const SetUsernameStack = createStackNavigator({
 	SetUsernameView: {
 		getScreen: () => require('./views/SetUsernameView').default
 	}
+},
+{
+	cardStyle
 });
 
 class CustomInsideStack extends React.Component {
@@ -305,7 +330,8 @@ const MessagesStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const DirectoryStack = createStackNavigator({
@@ -313,7 +339,8 @@ const DirectoryStack = createStackNavigator({
 		getScreen: () => require('./views/DirectoryView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const SidebarStack = createStackNavigator({
@@ -327,7 +354,8 @@ const SidebarStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const RoomActionsStack = createStackNavigator({
@@ -362,7 +390,8 @@ const RoomActionsStack = createStackNavigator({
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 
@@ -431,12 +460,13 @@ class CustomNotificationStack extends React.Component {
 	static router = InsideStackModal.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation } = this.props;
-		return <NotificationBadge navigation={navigation} />;
+		const { navigation, screenProps } = this.props;
+		return <NotificationBadge navigation={navigation} screenProps={screenProps} />;
 	}
 }
 
@@ -468,7 +498,12 @@ export default class Root extends React.Component {
 		this.state = {
 			split: false,
 			inside: false,
-			showModal: false
+			showModal: false,
+			theme: defaultTheme(),
+			themePreferences: {
+				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
+				darkLevel: 'dark'
+			}
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -500,12 +535,19 @@ export default class Root extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+
+		unsubscribeTheme();
+
 		if (this.onKeyCommands && this.onKeyCommands.remove) {
 			this.onKeyCommands.remove();
 		}
 	}
 
 	init = async() => {
+		if (isIOS) {
+			await RNUserDefaults.setName('group.ios.chat.rocket');
+		}
+		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (notification) {
@@ -515,6 +557,15 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	setTheme = (newTheme = {}) => {
+		// change theme state
+		this.setState(prevState => newThemeState(prevState, newTheme), () => {
+			const { themePreferences } = this.state;
+			// subscribe to Appearance changes
+			subscribeTheme(themePreferences, this.setTheme);
+		});
 	}
 
 	initTablet = async() => {
@@ -547,14 +598,14 @@ export default class Root extends React.Component {
 	closeModal = () => this.setState({ showModal: false });
 
 	render() {
-		const { split } = this.state;
+		const { split, themePreferences, theme } = this.state;
 
 		let content = (
 			<App
 				ref={(navigatorRef) => {
 					Navigation.setTopLevelNavigator(navigatorRef);
 				}}
-				screenProps={{ split }}
+				screenProps={{ split, theme }}
 				onNavigationStateChange={onNavigationStateChange}
 			/>
 		);
@@ -564,6 +615,7 @@ export default class Root extends React.Component {
 			content = (
 				<SplitContext.Provider value={{ split }}>
 					<Tablet
+						theme={theme}
 						tablet={split}
 						inside={inside}
 						showModal={showModal}
@@ -576,9 +628,19 @@ export default class Root extends React.Component {
 			);
 		}
 		return (
-			<Provider store={store}>
-				{content}
-			</Provider>
+			<AppearanceProvider>
+				<Provider store={store}>
+					<ThemeContext.Provider
+						value={{
+							theme,
+							themePreferences,
+							setTheme: this.setTheme
+						}}
+					>
+						{content}
+					</ThemeContext.Provider>
+				</Provider>
+			</AppearanceProvider>
 		);
 	}
 }

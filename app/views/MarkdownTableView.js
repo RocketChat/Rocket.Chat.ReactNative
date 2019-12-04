@@ -4,31 +4,36 @@ import PropTypes from 'prop-types';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
-export default class MarkdownTableView extends React.Component {
-	static navigationOptions = () => ({
+class MarkdownTableView extends React.Component {
+	static navigationOptions = ({ screenProps }) => ({
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Table')
 	});
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 		const renderRows = navigation.getParam('renderRows');
 		const tableWidth = navigation.getParam('tableWidth');
 
 		if (isIOS) {
 			return (
-				<ScrollView contentContainerStyle={{ width: tableWidth }}>
+				<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
 					{renderRows()}
 				</ScrollView>
 			);
 		}
 
 		return (
-			<ScrollView>
+			<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView horizontal>
 					{renderRows()}
 				</ScrollView>
@@ -36,3 +41,5 @@ export default class MarkdownTableView extends React.Component {
 		);
 	}
 }
+
+export default withTheme(MarkdownTableView);

@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, TextInput, StyleSheet, FlatList
+	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
+import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
@@ -18,16 +19,16 @@ import UserItem from '../presentation/UserItem';
 import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_TEXT_DESCRIPTION, COLOR_WHITE, SWITCH_TRACK_COLOR } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#f7f8fa',
 		flex: 1
 	},
 	list: {
-		width: '100%',
-		backgroundColor: COLOR_WHITE
+		width: '100%'
 	},
 	separator: {
 		marginLeft: 60
@@ -39,13 +40,10 @@ const styles = StyleSheet.create({
 		height: 54,
 		paddingHorizontal: 18,
 		fontSize: 17,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal,
-		backgroundColor: COLOR_WHITE
+		...sharedStyles.textRegular
 	},
 	swithContainer: {
 		height: 54,
-		backgroundColor: COLOR_WHITE,
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
@@ -53,8 +51,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 17,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textMedium
 	},
 	invitedHeader: {
 		marginTop: 18,
@@ -66,21 +63,20 @@ const styles = StyleSheet.create({
 	invitedTitle: {
 		fontSize: 18,
 		...sharedStyles.textSemibold,
-		...sharedStyles.textColorNormal,
 		lineHeight: 41
 	},
 	invitedCount: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
 	}
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const submit = navigation.getParam('submit', () => {});
 		const showSubmit = navigation.getParam('showSubmit');
 		return {
+			...themedHeader(screenProps.theme),
 			title: I18n.t('Create_Channel'),
 			headerRight: (
 				showSubmit
@@ -107,7 +103,8 @@ class CreateChannelView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	state = {
@@ -127,8 +124,11 @@ class CreateChannelView extends React.Component {
 			channelName, type, readOnly, broadcast
 		} = this.state;
 		const {
-			error, failure, isFetching, result, users
+			error, failure, isFetching, result, users, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.channelName !== channelName) {
 			return true;
 		}
@@ -213,18 +213,21 @@ class CreateChannelView extends React.Component {
 
 	renderSwitch = ({
 		id, value, label, onValueChange, disabled = false
-	}) => (
-		<View style={styles.swithContainer}>
-			<Text style={styles.label}>{I18n.t(label)}</Text>
-			<Switch
-				value={value}
-				onValueChange={onValueChange}
-				testID={`create-channel-${ id }`}
-				trackColor={SWITCH_TRACK_COLOR}
-				disabled={disabled}
-			/>
-		</View>
-	)
+	}) => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.swithContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+				<Switch
+					value={value}
+					onValueChange={onValueChange}
+					testID={`create-channel-${ id }`}
+					trackColor={SWITCH_TRACK_COLOR}
+					disabled={disabled}
+				/>
+			</View>
+		);
+	}
 
 	renderType() {
 		const { type } = this.state;
@@ -264,10 +267,13 @@ class CreateChannelView extends React.Component {
 
 	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
 
-	renderFormSeparator = () => <View style={[sharedStyles.separator, styles.formSeparator]} />
+	renderFormSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<UserItem
@@ -277,19 +283,27 @@ class CreateChannelView extends React.Component {
 				testID={`create-channel-view-item-${ item.name }`}
 				baseUrl={baseUrl}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
 
 	renderInvitedList = () => {
-		const { users } = this.props;
+		const { users, theme } = this.props;
 
 		return (
 			<FlatList
 				data={users}
 				extraData={users}
 				keyExtractor={item => item._id}
-				style={[styles.list, sharedStyles.separatorVertical]}
+				style={[
+					styles.list,
+					sharedStyles.separatorVertical,
+					{
+						backgroundColor: themes[theme].focusedBackground,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				enableEmptySections
@@ -300,30 +314,31 @@ class CreateChannelView extends React.Component {
 
 	render() {
 		const { channelName } = this.state;
-		const { users, isFetching } = this.props;
+		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
 
 		return (
 			<KeyboardView
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
 					<ScrollView {...scrollPersistTaps}>
-						<View style={sharedStyles.separatorVertical}>
+						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
 								autoFocus
-								style={styles.input}
+								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
 								label={I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
 								placeholder={I18n.t('Channel_Name')}
-								placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 								returnKeyType='done'
 								testID='create-channel-name'
 								autoCorrect={false}
 								autoCapitalize='none'
+								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
 							{this.renderFormSeparator()}
@@ -334,8 +349,8 @@ class CreateChannelView extends React.Component {
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
-							<Text style={styles.invitedTitle}>{I18n.t('Invite')}</Text>
-							<Text style={styles.invitedCount}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
+							<Text style={[styles.invitedTitle, { color: themes[theme].titleText }]}>{I18n.t('Invite')}</Text>
+							<Text style={[styles.invitedCount, { color: themes[theme].auxiliaryText }]}>{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}</Text>
 						</View>
 						{this.renderInvitedList()}
 						<Loading visible={isFetching} />
@@ -364,4 +379,4 @@ const mapDispatchToProps = dispatch => ({
 	removeUser: user => dispatch(removeUserAction(user))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateChannelView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));

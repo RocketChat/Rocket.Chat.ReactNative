@@ -4,31 +4,29 @@ import {
 	Text, ScrollView, View, StyleSheet
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import DisclosureIndicator from '../containers/DisclosureIndicator';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_SEPARATOR, COLOR_WHITE } from '../constants/colors';
+import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#f7f8fa',
 		flex: 1
 	},
 	scroll: {
 		marginTop: 35,
-		backgroundColor: COLOR_WHITE,
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separator: {
-		backgroundColor: COLOR_SEPARATOR,
 		height: StyleSheet.hairlineWidth,
 		width: '100%',
 		marginLeft: 20
@@ -36,7 +34,6 @@ const styles = StyleSheet.create({
 	item: {
 		width: '100%',
 		height: 48,
-		backgroundColor: COLOR_WHITE,
 		paddingLeft: 20,
 		paddingRight: 10,
 		flexDirection: 'row',
@@ -45,44 +42,73 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal,
 		fontSize: 18
 	}
 });
 
-const Separator = () => <View style={styles.separator} />;
+const Separator = ({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+Separator.propTypes = {
+	theme: PropTypes.string
+};
 
 class LegalView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Legal')
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Legal'),
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {
-		server: PropTypes.string
+		server: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	onPressItem = ({ route }) => {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		if (!server) {
 			return;
 		}
-		openLink(`${ server }/${ route }`);
+		openLink(`${ server }/${ route }`, theme);
 	}
 
-	renderItem = ({ text, route, testID }) => (
-		<RectButton style={styles.item} onPress={() => this.onPressItem({ route })} testID={testID}>
-			<Text style={styles.text}>{I18n.t(text)}</Text>
-			<DisclosureIndicator />
-		</RectButton>
-	)
+	renderItem = ({ text, route, testID }) => {
+		const { theme } = this.props;
+		return (
+			<Touch
+				style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
+				onPress={() => this.onPressItem({ route })}
+				testID={testID}
+				theme={theme}
+			>
+				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
+				<DisclosureIndicator theme={theme} />
+			</Touch>
+		);
+	}
 
 	render() {
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='legal-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={styles.scroll}>
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].auxiliaryBackground }
+				]}
+				forceInset={{ vertical: 'never' }}
+				testID='legal-view'
+			>
+				<StatusBar theme={theme} />
+				<ScrollView
+					contentContainerStyle={[
+						styles.scroll,
+						{
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
+					]}
+					{...scrollPersistTaps}
+				>
 					{this.renderItem({ text: 'Terms_of_Service', route: 'terms-of-service', testID: 'legal-terms-button' })}
-					<Separator />
+					<Separator theme={theme} />
 					{this.renderItem({ text: 'Privacy_Policy', route: 'privacy-policy', testID: 'legal-privacy-button' })}
 				</ScrollView>
 			</SafeAreaView>
@@ -94,4 +120,4 @@ const mapStateToProps = state => ({
 	server: state.server.server
 });
 
-export default connect(mapStateToProps)(LegalView);
+export default connect(mapStateToProps)(withTheme(LegalView));

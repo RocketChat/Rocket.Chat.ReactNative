@@ -9,6 +9,7 @@ import openLink from '../../utils/openLink';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -19,22 +20,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 4,
 		height: 150,
-		backgroundColor: '#1f2329',
 		marginBottom: 6,
 		alignItems: 'center',
 		justifyContent: 'center'
-	},
-	modal: {
-		margin: 0,
-		backgroundColor: '#000'
-	},
-	image: {
-		color: 'white'
 	}
 });
 
 const Video = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji
+	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, theme
 }) => {
 	if (!baseUrl) {
 		return null;
@@ -45,26 +38,26 @@ const Video = React.memo(({
 			return onOpenFileModal(file);
 		}
 		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
-		openLink(uri);
+		openLink(uri, theme);
 	};
 
 	return (
 		<>
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, isTablet && sharedStyles.tabletContent]}
-				background={Touchable.Ripple('#fff')}
+				style={[styles.button, { backgroundColor: themes[theme].videoBackground }, isTablet && sharedStyles.tabletContent]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<CustomIcon
 					name='play'
 					size={54}
-					style={styles.image}
+					color={themes[theme].buttonText}
 				/>
 			</Touchable>
-			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} />
+			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file));
+}, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
 Video.propTypes = {
 	file: PropTypes.object,
@@ -72,7 +65,8 @@ Video.propTypes = {
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
 	onOpenFileModal: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default Video;

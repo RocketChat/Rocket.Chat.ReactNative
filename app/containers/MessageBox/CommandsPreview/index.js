@@ -5,17 +5,19 @@ import equal from 'deep-equal';
 
 import Item from './Item';
 import styles from '../styles';
+import { themes } from '../../../constants/colors';
+import { withTheme } from '../../../theme';
 
-const CommandsPreview = React.memo(({ commandPreview, showCommandPreview }) => {
+const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview }) => {
 	if (!showCommandPreview) {
 		return null;
 	}
 	return (
 		<FlatList
 			testID='commandbox-container'
-			style={styles.mentionList}
+			style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
 			data={commandPreview}
-			renderItem={({ item }) => <Item item={item} />}
+			renderItem={({ item }) => <Item item={item} theme={theme} />}
 			keyExtractor={item => item.id}
 			keyboardShouldPersistTaps='always'
 			horizontal
@@ -23,6 +25,9 @@ const CommandsPreview = React.memo(({ commandPreview, showCommandPreview }) => {
 		/>
 	);
 }, (prevProps, nextProps) => {
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
 		return false;
 	}
@@ -34,7 +39,8 @@ const CommandsPreview = React.memo(({ commandPreview, showCommandPreview }) => {
 
 CommandsPreview.propTypes = {
 	commandPreview: PropTypes.array,
-	showCommandPreview: PropTypes.bool
+	showCommandPreview: PropTypes.bool,
+	theme: PropTypes.string
 };
 
-export default CommandsPreview;
+export default withTheme(CommandsPreview);

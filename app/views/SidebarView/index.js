@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { RectButton } from 'react-native-gesture-handler';
 import { Q } from '@nozbe/watermelondb';
 
+import Touch from '../../utils/touch';
 import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
@@ -18,14 +18,18 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import SidebarItem from './SidebarItem';
-import { COLOR_TEXT } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 
 const keyExtractor = item => item.id;
 
-const Separator = React.memo(() => <View style={styles.separator} />);
+const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
+Separator.propTypes = {
+	theme: PropTypes.string
+};
 
 const permissions = [
 	'view-statistics',
@@ -42,6 +46,7 @@ class Sidebar extends Component {
 		user: PropTypes.object,
 		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
+		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		split: PropTypes.bool
 	}
@@ -73,7 +78,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split
+			Site_Name, user, baseUrl, activeItemKey, split, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -88,6 +93,9 @@ class Sidebar extends Component {
 			return true;
 		}
 		if (nextProps.activeItemKey !== activeItemKey) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.user && user) {
@@ -187,26 +195,26 @@ class Sidebar extends Component {
 
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey } = this.props;
+		const { activeItemKey, theme } = this.props;
 		return (
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('RoomsListView')}
 					testID='sidebar-chats'
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileView')}
 					testID='sidebar-profile'
 					current={activeItemKey === 'ProfileStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsView')}
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
@@ -214,16 +222,16 @@ class Sidebar extends Component {
 				{isAdmin ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='shield-alt' size={20} color={COLOR_TEXT} />}
+						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
 						onPress={() => this.sidebarNavigate('AdminPanelView')}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
 				) : null}
-				<Separator key='separator-logout' />
+				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Logout')}
-					left={<CustomIcon name='sign-out' size={20} color={COLOR_TEXT} />}
+					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
 					onPress={this.logout}
 					testID='sidebar-logout'
 				/>
@@ -236,7 +244,6 @@ class Sidebar extends Component {
 		const { user } = this.props;
 		return (
 			<FlatList
-				key='status-list'
 				data={status}
 				extraData={user}
 				renderItem={this.renderStatusItem}
@@ -248,21 +255,30 @@ class Sidebar extends Component {
 	render() {
 		const { showStatus } = this.state;
 		const {
-			user, Site_Name, baseUrl, split
+			user, Site_Name, baseUrl, split, theme
 		} = this.props;
 
 		if (!user) {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={styles.container}>
-				<ScrollView style={styles.container} {...scrollPersistTaps}>
-					<RectButton
+			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+				<ScrollView
+					style={[
+						styles.container,
+						{
+							backgroundColor: split
+								? themes[theme].backgroundColor
+								: themes[theme].focusedBackground
+						}
+					]}
+					{...scrollPersistTaps}
+				>
+					<Touch
 						onPress={this.toggleStatus}
-						underlayColor={COLOR_TEXT}
-						activeOpacity={0.1}
 						testID='sidebar-toggle-status'
 						style={styles.header}
+						theme={theme}
 					>
 						<Avatar
 							text={user.username}
@@ -275,14 +291,14 @@ class Sidebar extends Component {
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
 								<Status style={styles.status} size={12} status={user && user.status} />
-								<Text numberOfLines={1} style={styles.username}>{user.username}</Text>
+								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{user.username}</Text>
 							</View>
-							<Text style={styles.currentServerText} numberOfLines={1}>{Site_Name}</Text>
+							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
-						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted]} />
-					</RectButton>
+						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
+					</Touch>
 
-					{!split || showStatus ? <Separator key='separator-header' /> : null}
+					{!split || showStatus ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
@@ -310,4 +326,4 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSplit(Sidebar));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(Sidebar)));

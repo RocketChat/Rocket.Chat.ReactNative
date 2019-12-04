@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { shortnameToUnicode } from 'emoji-toolkit';
 
 import I18n from '../../i18n';
+import { themes } from '../../constants/colors';
 
 import MarkdownLink from './Link';
 import MarkdownList from './List';
@@ -59,7 +60,7 @@ const emojiCount = (str) => {
 	return counter;
 };
 
-export default class Markdown extends PureComponent {
+class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
 		getCustomEmoji: PropTypes.func,
@@ -74,6 +75,7 @@ export default class Markdown extends PureComponent {
 		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		navToRoomInfo: PropTypes.func,
 		preview: PropTypes.bool,
+		theme: PropTypes.string,
 		style: PropTypes.array
 	};
 
@@ -140,7 +142,9 @@ export default class Markdown extends PureComponent {
 	};
 
 	renderText = ({ context, literal }) => {
-		const { numberOfLines, preview, style = [] } = this.props;
+		const {
+			numberOfLines, preview, style = []
+		} = this.props;
 		const defaultStyle = [
 			this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : {},
 			...context.map(type => styles[type])
@@ -160,13 +164,45 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderCodeInline = ({ literal }) => {
-		const { preview } = this.props;
-		return <Text style={!preview ? styles.codeInline : {}}>{literal}</Text>;
+		const { preview, theme, style = [] } = this.props;
+		return (
+			<Text
+				style={[
+					!preview
+						? {
+							...styles.codeInline,
+							color: themes[theme].titleText,
+							backgroundColor: themes[theme].bannerBackground,
+							borderColor: themes[theme].bannerBackground
+						}
+						: { ...styles.text, color: themes[theme].titleText },
+					...style
+				]}
+			>
+				{literal}
+			</Text>
+		);
 	};
 
 	renderCodeBlock = ({ literal }) => {
-		const { preview } = this.props;
-		return <Text style={!preview ? styles.codeBlock : {}}>{literal}</Text>;
+		const { preview, theme, style = [] } = this.props;
+		return (
+			<Text
+				style={[
+					!preview
+						? {
+							...styles.codeBlock,
+							color: themes[theme].titleText,
+							backgroundColor: themes[theme].bannerBackground,
+							borderColor: themes[theme].bannerBackground
+						}
+						: { ...styles.text, color: themes[theme].titleText },
+					...style
+				]}
+			>
+				{literal}
+			</Text>
+		);
 	};
 
 	renderBreak = () => {
@@ -175,21 +211,25 @@ export default class Markdown extends PureComponent {
 	}
 
 	renderParagraph = ({ children }) => {
-		const { numberOfLines, style } = this.props;
+		const { numberOfLines, style, theme } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
-			<Text style={style} numberOfLines={numberOfLines}>
+			<Text style={[style, { color: themes[theme].titleText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
 	};
 
 	renderLink = ({ children, href }) => {
-		const { preview } = this.props;
+		const { preview, theme } = this.props;
 		return (
-			<MarkdownLink link={href} preview={preview}>
+			<MarkdownLink
+				link={href}
+				preview={preview}
+				theme={theme}
+			>
 				{children}
 			</MarkdownLink>
 		);
@@ -197,7 +237,7 @@ export default class Markdown extends PureComponent {
 
 	renderHashtag = ({ hashtag }) => {
 		const {
-			channels, navToRoomInfo, style, preview
+			channels, navToRoomInfo, style, preview, theme
 		} = this.props;
 		return (
 			<MarkdownHashtag
@@ -205,6 +245,7 @@ export default class Markdown extends PureComponent {
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
 				preview={preview}
+				theme={theme}
 				style={style}
 			/>
 		);
@@ -212,7 +253,7 @@ export default class Markdown extends PureComponent {
 
 	renderAtMention = ({ mentionName }) => {
 		const {
-			username, mentions, navToRoomInfo, preview, style
+			username, mentions, navToRoomInfo, preview, style, theme
 		} = this.props;
 		return (
 			<MarkdownAtMention
@@ -221,6 +262,7 @@ export default class Markdown extends PureComponent {
 				username={username}
 				navToRoomInfo={navToRoomInfo}
 				preview={preview}
+				theme={theme}
 				style={style}
 			/>
 		);
@@ -228,7 +270,7 @@ export default class Markdown extends PureComponent {
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
-			getCustomEmoji, baseUrl, customEmojis = true, preview, style
+			getCustomEmoji, baseUrl, customEmojis = true, preview, style, theme
 		} = this.props;
 		return (
 			<MarkdownEmoji
@@ -239,19 +281,23 @@ export default class Markdown extends PureComponent {
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
+				theme={theme}
 			/>
 		);
 	}
 
 	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
 
-	renderEditedIndicator = () => <Text style={styles.edited}> ({I18n.t('edited')})</Text>;
+	renderEditedIndicator = () => {
+		const { theme } = this.props;
+		return <Text style={[styles.edited, { color: themes[theme].auxiliaryText }]}> ({I18n.t('edited')})</Text>;
+	}
 
 	renderHeading = ({ children, level }) => {
-		const { numberOfLines } = this.props;
+		const { numberOfLines, theme } = this.props;
 		const textStyle = styles[`heading${ level }Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={textStyle}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].titleText }]}>
 				{children}
 			</Text>
 		);
@@ -276,11 +322,13 @@ export default class Markdown extends PureComponent {
 	renderListItem = ({
 		children, context, ...otherProps
 	}) => {
+		const { theme } = this.props;
 		const level = context.filter(type => type === 'list').length;
 
 		return (
 			<MarkdownListItem
 				level={level}
+				theme={theme}
 				{...otherProps}
 			>
 				{children}
@@ -289,30 +337,39 @@ export default class Markdown extends PureComponent {
 	};
 
 	renderBlockQuote = ({ children }) => {
-		const { preview } = this.props;
+		const { preview, theme } = this.props;
 		if (preview) {
 			return children;
 		}
 		return (
-			<MarkdownBlockQuote>
+			<MarkdownBlockQuote theme={theme}>
 				{children}
 			</MarkdownBlockQuote>
 		);
 	}
 
-	renderTable = ({ children, numColumns }) => (
-		<MarkdownTable numColumns={numColumns}>
-			{children}
-		</MarkdownTable>
-	);
+	renderTable = ({ children, numColumns }) => {
+		const { theme } = this.props;
+		return (
+			<MarkdownTable numColumns={numColumns} theme={theme}>
+				{children}
+			</MarkdownTable>
+		);
+	}
 
-	renderTableRow = args => <MarkdownTableRow {...args} />;
+	renderTableRow = (args) => {
+		const { theme } = this.props;
+		return <MarkdownTableRow {...args} theme={theme} />;
+	}
 
-	renderTableCell = args => <MarkdownTableCell {...args} />;
+	renderTableCell = (args) => {
+		const { theme } = this.props;
+		return <MarkdownTableCell {...args} theme={theme} />;
+	}
 
 	render() {
 		const {
-			msg, useMarkdown = true, numberOfLines, preview = false
+			msg, useMarkdown = true, numberOfLines, preview = false, theme
 		} = this.props;
 
 		if (!msg) {
@@ -333,7 +390,7 @@ export default class Markdown extends PureComponent {
 		}
 
 		if (!useMarkdown && !preview) {
-			return <Text style={styles.text} numberOfLines={numberOfLines}>{m}</Text>;
+			return <Text style={[styles.text, { color: themes[theme].titleText }]} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
 		const ast = this.parser.parse(m);
@@ -344,3 +401,5 @@ export default class Markdown extends PureComponent {
 		return this.renderer.render(ast);
 	}
 }
+
+export default Markdown;
