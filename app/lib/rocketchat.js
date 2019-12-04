@@ -258,7 +258,7 @@ const RocketChat = {
 	},
 
 	async shareExtensionInit(server) {
-		database.setActiveDB(server);
+		database.setShareDB(server);
 
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();
@@ -302,6 +302,7 @@ const RocketChat = {
 			this.shareSDK.disconnect();
 			this.shareSDK = null;
 		}
+		database.share = null;
 	},
 
 	updateJitsiTimeout(rid) {
