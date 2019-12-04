@@ -10,7 +10,7 @@ import { getTheme, setNativeTheme, defaultTheme } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, isIOS } from './utils/deviceInfo';
+import { isNotch, isIOS, supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
@@ -59,7 +59,7 @@ class Root extends React.Component {
 			isLandscape: false,
 			theme: defaultTheme(),
 			themePreferences: {
-				currentTheme: 'automatic',
+				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
 			}
 		};

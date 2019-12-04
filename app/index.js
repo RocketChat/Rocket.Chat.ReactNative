@@ -27,7 +27,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth
+	isTablet, isSplited, isIOS, setWidth, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -496,7 +496,7 @@ export default class Root extends React.Component {
 			showModal: false,
 			theme: defaultTheme(),
 			themePreferences: {
-				currentTheme: 'automatic',
+				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
 			}
 		};

@@ -16,18 +16,19 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
+import { supportSystemTheme } from '../utils/deviceInfo';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
 
+const SYSTEM_THEME = {
+	label: I18n.t('Automatic'),
+	value: 'automatic',
+	group: THEME_GROUP
+};
+
 const THEMES = [
 	{
-		label: I18n.t('Automatic'),
-		value: 'automatic',
-		separator: true,
-		header: I18n.t('Theme'),
-		group: THEME_GROUP
-	}, {
 		label: I18n.t('Light'),
 		value: 'light',
 		group: THEME_GROUP
@@ -75,6 +76,13 @@ class ThemeView extends React.Component {
 		setTheme: PropTypes.func
 	}
 
+	constructor(props) {
+		super(props);
+		if (supportSystemTheme()) {
+			THEMES.unshift(SYSTEM_THEME);
+		}
+	}
+
 	isSelected = (item) => {
 		const { themePreferences } = this.props;
 		const { group } = item;
@@ -118,12 +126,13 @@ class ThemeView extends React.Component {
 		return <CustomIcon name='check' size={20} color={themes[theme].tintColor} />;
 	}
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item, index }) => {
 		const { theme } = this.props;
 		const { label, value } = item;
+		const isFirst = index === 0;
 		return (
 			<>
-				{item.separator ? this.renderSectionHeader(item.header) : null}
+				{item.separator || isFirst ? this.renderSectionHeader(item.header) : null}
 				<ListItem
 					title={label}
 					onPress={() => this.onClick(item)}
@@ -135,7 +144,7 @@ class ThemeView extends React.Component {
 		);
 	}
 
-	renderSectionHeader = (header) => {
+	renderSectionHeader = (header = I18n.t('Theme')) => {
 		const { theme } = this.props;
 		return (
 			<>
