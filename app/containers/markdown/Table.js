@@ -11,16 +11,17 @@ import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
 import Navigation from '../../lib/Navigation';
 import I18n from '../../i18n';
+import { themes } from '../../constants/colors';
 
 const MAX_HEIGHT = 300;
 
 const Table = React.memo(({
-	children, numColumns
+	children, numColumns, theme
 }) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 
 	const renderRows = (drawExtraBorders = true) => {
-		const tableStyle = [styles.table];
+		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}
@@ -45,18 +46,19 @@ const Table = React.memo(({
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}
 				showsVerticalScrollIndicator={false}
-				style={[styles.containerTable, { maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT }]}
+				style={[styles.containerTable, { maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].borderColor }]}
 			>
 				{renderRows(false)}
 			</ScrollView>
-			<Text style={styles.textInfo}>{I18n.t('Full_table')}</Text>
+			<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Full_table')}</Text>
 		</TouchableOpacity>
 	);
 });
 
 Table.propTypes = {
 	children: PropTypes.node.isRequired,
-	numColumns: PropTypes.number.isRequired
+	numColumns: PropTypes.number.isRequired,
+	theme: PropTypes.string
 };
 
 export default Table;

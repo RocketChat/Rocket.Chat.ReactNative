@@ -13,17 +13,22 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
+import { themedHeader } from '../utils/navigation';
 
-export default class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+class ForgotPasswordView extends React.Component {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			title
+			title,
+			...themedHeader(screenProps.theme)
 		};
 	}
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	state = {
@@ -34,6 +39,10 @@ export default class ForgotPasswordView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { email, invalidEmail, isFetching } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.email !== email) {
 			return true;
 		}
@@ -76,16 +85,18 @@ export default class ForgotPasswordView extends React.Component {
 
 	render() {
 		const { invalidEmail, isFetching } = this.state;
+		const { theme } = this.props;
 
 		return (
 			<KeyboardView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ vertical: 'never' }}>
-						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Forgot_password')}</Text>
+						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Forgot_password')}</Text>
 						<TextInput
 							autoFocus
 							placeholder={I18n.t('Email')}
@@ -96,6 +107,7 @@ export default class ForgotPasswordView extends React.Component {
 							onSubmitEditing={this.resetPassword}
 							testID='forgot-password-view-email'
 							containerStyle={sharedStyles.inputLastChild}
+							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Reset_password')}
@@ -104,6 +116,7 @@ export default class ForgotPasswordView extends React.Component {
 							testID='forgot-password-view-submit'
 							loading={isFetching}
 							disabled={invalidEmail}
+							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
@@ -111,3 +124,5 @@ export default class ForgotPasswordView extends React.Component {
 		);
 	}
 }
+
+export default withTheme(ForgotPasswordView);

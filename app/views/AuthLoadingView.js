@@ -3,6 +3,7 @@ import { StyleSheet, Image } from 'react-native';
 
 import StatusBar from '../containers/StatusBar';
 import { isAndroid } from '../utils/deviceInfo';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	image: {
@@ -12,9 +13,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default React.memo(() => (
+export default React.memo(withTheme(({ theme }) => (
 	<>
-		<StatusBar />
-		{isAndroid ? <Image source={{ uri: 'launch_screen' }} style={styles.image} resizeMode='contain' /> : null}
+		<StatusBar theme={theme} />
+		{isAndroid
+			? (
+				<Image
+					source={{ uri: 'launch_screen' }}
+					style={styles.image}
+					resizeMode='contain'
+				/>
+			)
+			: null
+		}
 	</>
-));
+)));

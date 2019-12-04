@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	ActivityIndicator, FlatList, InteractionManager
-} from 'react-native';
+import { FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -14,9 +12,10 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 
-export class List extends React.Component {
+class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -24,8 +23,9 @@ export class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		listRef: PropTypes.func,
-		animated: PropTypes.bool
+		animated: PropTypes.bool,
+		theme: PropTypes.string,
+		listRef: PropTypes.func
 	};
 
 	constructor(props) {
@@ -103,6 +103,10 @@ export class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end } = this.state;
+		const { theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (loading !== nextState.loading) {
 			return true;
 		}
@@ -171,9 +175,9 @@ export class List extends React.Component {
 
 	renderFooter = () => {
 		const { loading } = this.state;
-		const { rid } = this.props;
+		const { rid, theme } = this.props;
 		if (loading && rid) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
 	}
@@ -188,9 +192,10 @@ export class List extends React.Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
 		const { messages } = this.state;
+		const { theme } = this.props;
 		return (
 			<>
-				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
+				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
 				<FlatList
 					testID='room-view-messages'
 					ref={listRef}
@@ -214,3 +219,5 @@ export class List extends React.Component {
 		);
 	}
 }
+
+export default List;

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
+import { themes } from '../../constants/colors';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
@@ -45,20 +46,22 @@ const formatMsg = ({
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert
+	lastMessage, type, showLastMessage, username, alert, theme
 }) => (
 	<Markdown
 		msg={formatMsg({
 			lastMessage, type, showLastMessage, username
 		})}
-		style={[styles.markdownText, alert && styles.markdownTextAlert]}
+		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
 		customEmojis={false}
 		numberOfLines={2}
 		preview
+		theme={theme}
 	/>
 ), arePropsEqual);
 
 LastMessage.propTypes = {
+	theme: PropTypes.string,
 	lastMessage: PropTypes.object,
 	type: PropTypes.string,
 	showLastMessage: PropTypes.bool,

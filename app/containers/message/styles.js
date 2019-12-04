@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import {
-	COLOR_BORDER, COLOR_PRIMARY, COLOR_WHITE
-} from '../../constants/colors';
 import { isTablet } from '../../utils/deviceInfo';
 
 export default StyleSheet.create({
@@ -26,6 +23,9 @@ export default StyleSheet.create({
 	messageContentWithError: {
 		marginLeft: 0
 	},
+	center: {
+		alignItems: 'center'
+	},
 	flex: {
 		flexDirection: 'row'
 		// flex: 1
@@ -44,27 +44,19 @@ export default StyleSheet.create({
 		marginBottom: 6,
 		borderRadius: 2
 	},
-	reactionButtonReacted: {
-		backgroundColor: '#e8f2ff'
-	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: 2,
 		borderWidth: 1,
-		borderColor: COLOR_BORDER,
 		height: 28,
 		minWidth: 46.3
-	},
-	reactedContainer: {
-		borderColor: COLOR_PRIMARY
 	},
 	reactionCount: {
 		fontSize: 14,
 		marginLeft: 3,
 		marginRight: 8.5,
-		color: COLOR_PRIMARY,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
@@ -82,9 +74,6 @@ export default StyleSheet.create({
 	avatarSmall: {
 		marginLeft: 16
 	},
-	addReaction: {
-		color: COLOR_PRIMARY
-	},
 	errorButton: {
 		paddingLeft: 10,
 		paddingVertical: 5
@@ -100,18 +89,15 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: COLOR_PRIMARY,
 		borderRadius: 2
 	},
 	smallButton: {
 		height: 30
 	},
 	buttonIcon: {
-		color: COLOR_WHITE,
 		marginRight: 6
 	},
 	buttonText: {
-		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -125,7 +111,6 @@ export default StyleSheet.create({
 		// maxWidth: 400,
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		borderColor: COLOR_BORDER,
 		borderWidth: 1
 	},
 	imagePressed: {
@@ -138,27 +123,23 @@ export default StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
 		fontSize: 16,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
 		fontSize: 16,
 		marginBottom: 6,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	time: {
 		fontSize: 12,
 		paddingLeft: 10,
 		lineHeight: 22,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
 	},
@@ -170,14 +151,12 @@ export default StyleSheet.create({
 		marginBottom: 12
 	},
 	repliedThreadIcon: {
-		color: COLOR_PRIMARY,
 		marginRight: 10,
 		marginLeft: 16
 	},
 	repliedThreadName: {
 		fontSize: 16,
 		flex: 1,
-		color: COLOR_PRIMARY,
 		...sharedStyles.textRegular
 	},
 	readReceipt: {

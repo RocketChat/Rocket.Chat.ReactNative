@@ -3,8 +3,7 @@ import { View, Text, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
-import sharedStyles from '../Styles';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 
 export default class SwitchContainer extends React.PureComponent {
 	static propTypes = {
@@ -15,19 +14,20 @@ export default class SwitchContainer extends React.PureComponent {
 		rightLabelPrimary: PropTypes.string,
 		rightLabelSecondary: PropTypes.string,
 		onValueChange: PropTypes.func,
+		theme: PropTypes.string,
 		testID: PropTypes.string
 	}
 
 	render() {
 		const {
-			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, testID
+			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID
 		} = this.props;
 		return (
 			[
 				<View key='switch-container' style={styles.switchContainer}>
-					<View style={[styles.switchLabelContainer, sharedStyles.alignItemsFlexEnd]}>
-						<Text style={styles.switchLabelPrimary}>{leftLabelPrimary}</Text>
-						<Text style={[styles.switchLabelSecondary, sharedStyles.textAlignRight]}>{leftLabelSecondary}</Text>
+					<View style={styles.switchLabelContainer}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{leftLabelPrimary}</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{leftLabelSecondary}</Text>
 					</View>
 					<Switch
 						style={styles.switch}
@@ -38,11 +38,11 @@ export default class SwitchContainer extends React.PureComponent {
 						testID={testID}
 					/>
 					<View style={styles.switchLabelContainer}>
-						<Text style={styles.switchLabelPrimary}>{rightLabelPrimary}</Text>
-						<Text style={styles.switchLabelSecondary}>{rightLabelSecondary}</Text>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{rightLabelPrimary}</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{rightLabelSecondary}</Text>
 					</View>
 				</View>,
-				<View key='switch-divider' style={styles.divider} />
+				<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 			]
 		);
 	}

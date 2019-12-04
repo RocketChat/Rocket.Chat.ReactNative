@@ -6,9 +6,10 @@ import {
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import { SafeAreaView } from 'react-navigation';
-import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
@@ -16,7 +17,9 @@ import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_SEPARATOR, COLOR_BORDER } from '../constants/colors';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
@@ -33,7 +36,6 @@ const styles = StyleSheet.create({
 	serviceButtonContainer: {
 		borderRadius: 2,
 		borderWidth: 1,
-		borderColor: COLOR_BORDER,
 		width: '100%',
 		height: 48,
 		flexDirection: 'row',
@@ -50,7 +52,6 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal,
 		fontSize: 16
 	},
 	serviceName: {
@@ -72,8 +73,7 @@ const styles = StyleSheet.create({
 	},
 	separatorLine: {
 		flex: 1,
-		height: 1,
-		backgroundColor: COLOR_SEPARATOR
+		height: 1
 	},
 	separatorLineLeft: {
 		marginRight: 15
@@ -90,9 +90,10 @@ const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
 class LoginSignupView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
+			...themedHeader(screenProps.theme),
 			title,
 			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
 		};
@@ -105,7 +106,8 @@ class LoginSignupView extends React.Component {
 		Site_Name: PropTypes.string,
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
-		CAS_login_url: PropTypes.string
+		CAS_login_url: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -120,7 +122,9 @@ class LoginSignupView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { collapsed, servicesHeight } = this.state;
-		const { server, Site_Name, services } = this.props;
+		const {
+			server, Site_Name, services, theme
+		} = this.props;
 		if (nextState.collapsed !== collapsed) {
 			return true;
 		}
@@ -131,6 +135,9 @@ class LoginSignupView extends React.Component {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (!equal(nextProps.services, services)) {
@@ -313,17 +320,17 @@ class LoginSignupView extends React.Component {
 
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
-		const { services } = this.props;
+		const { services, theme } = this.props;
 		const { length } = Object.values(services);
 
 		if (length > 3) {
 			return (
 				<View style={styles.servicesTogglerContainer}>
-					<View style={[styles.separatorLine, styles.separatorLineLeft]} />
+					<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
 					<BorderlessButton onPress={this.toggleServices}>
 						<Image source={{ uri: 'options' }} style={[styles.servicesToggler, !collapsed && styles.inverted]} />
 					</BorderlessButton>
-					<View style={[styles.separatorLine, styles.separatorLineRight]} />
+					<View style={[styles.separatorLine, styles.separatorLineRight, { backgroundColor: themes[theme].auxiliaryText }]} />
 				</View>
 			);
 		}
@@ -361,7 +368,7 @@ class LoginSignupView extends React.Component {
 				break;
 		}
 		name = name.charAt(0).toUpperCase() + name.slice(1);
-		const { CAS_enabled } = this.props;
+		const { CAS_enabled, theme } = this.props;
 		let buttonText;
 		if (service.service === 'saml' || (service.service === 'cas' && CAS_enabled)) {
 			buttonText = <Text style={styles.serviceName}>{name}</Text>;
@@ -373,12 +380,17 @@ class LoginSignupView extends React.Component {
 			);
 		}
 		return (
-			<RectButton key={service.name} onPress={onPress} style={styles.serviceButton}>
-				<View style={styles.serviceButtonContainer}>
+			<Touch
+				key={service.name}
+				onPress={onPress}
+				style={styles.serviceButton}
+				theme={theme}
+			>
+				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
-					<Text style={styles.serviceText}>{buttonText}</Text>
+					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
-			</RectButton>
+			</Touch>
 		);
 	}
 
@@ -407,9 +419,19 @@ class LoginSignupView extends React.Component {
 	}
 
 	render() {
+		const { theme } = this.props;
 		return (
-			<ScrollView style={[sharedStyles.containerScrollView, sharedStyles.container, styles.container, isTablet && sharedStyles.tabletScreenContent]} {...scrollPersistTaps}>
-				<StatusBar />
+			<ScrollView
+				style={[
+					sharedStyles.containerScrollView,
+					sharedStyles.container,
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor },
+					isTablet && sharedStyles.tabletScreenContent
+				]}
+				{...scrollPersistTaps}
+			>
+				<StatusBar theme={theme} />
 				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
@@ -417,12 +439,14 @@ class LoginSignupView extends React.Component {
 						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
 						type='primary'
 						onPress={() => this.login()}
+						theme={theme}
 						testID='welcome-view-login'
 					/>
 					<Button
 						title={I18n.t('Create_account')}
 						type='secondary'
 						onPress={() => this.register()}
+						theme={theme}
 						testID='welcome-view-register'
 					/>
 				</SafeAreaView>
@@ -440,4 +464,4 @@ const mapStateToProps = state => ({
 	services: state.login.services
 });
 
-export default connect(mapStateToProps)(LoginSignupView);
+export default connect(mapStateToProps)(withTheme(LoginSignupView));
