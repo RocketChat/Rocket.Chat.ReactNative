@@ -1,12 +1,17 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { AppearanceProvider, Appearance } from 'react-native-appearance';
+import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
-import { getTheme, setNativeTheme, defaultTheme } from './utils/theme';
+import {
+	defaultTheme,
+	newThemeState,
+	subscribeTheme,
+	unsubscribeTheme
+} from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
@@ -67,17 +72,7 @@ class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.appearanceListener && this.appearanceListener.remove) {
-			this.appearanceListener.remove();
-		}
-	}
-
-	subscribeAppearance = (themePreferences) => {
-		const { currentTheme } = themePreferences;
-		if (currentTheme === 'automatic') {
-			// not use listener params because we use getTheme
-			this.appearanceListener = Appearance.addChangeListener(() => this.setTheme());
-		}
+		unsubscribeTheme();
 	}
 
 	init = async() => {
@@ -98,21 +93,10 @@ class Root extends React.Component {
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState((prevState) => {
-			// new theme preferences
-			const themePreferences = {
-				...prevState.themePreferences,
-				...newTheme
-			};
-			// set new state of themePreferences
-			// and theme (based on themePreferences)
-			return { themePreferences, theme: getTheme(themePreferences) };
-		}, () => {
+		this.setState(prevState => newThemeState(prevState, newTheme), () => {
 			const { themePreferences } = this.state;
 			// subscribe to Appearance changes
-			this.subscribeAppearance(themePreferences);
-			// set native components theme
-			setNativeTheme(themePreferences);
+			subscribeTheme(themePreferences, this.setTheme);
 		});
 	}
 

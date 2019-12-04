@@ -3,14 +3,19 @@ import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { AppearanceProvider, Appearance } from 'react-native-appearance';
+import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
-import { getTheme, setNativeTheme, defaultTheme } from './utils/theme';
+import {
+	defaultTheme,
+	newThemeState,
+	subscribeTheme,
+	unsubscribeTheme
+} from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -531,28 +536,10 @@ export default class Root extends React.Component {
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 
-		this.unsubscribeAppearance();
+		unsubscribeTheme();
 
 		if (this.onKeyCommands && this.onKeyCommands.remove) {
 			this.onKeyCommands.remove();
-		}
-	}
-
-	subscribeAppearance = (themePreferences) => {
-		const { currentTheme } = themePreferences;
-		if (!this.appearanceListener && currentTheme === 'automatic') {
-			// not use listener params because we use getTheme
-			this.appearanceListener = Appearance.addChangeListener(() => this.setTheme());
-		} else if (currentTheme !== 'automatic') {
-			// unsubscribe appearance changes when automatic was disabled
-			this.unsubscribeAppearance();
-		}
-	}
-
-	unsubscribeAppearance = () => {
-		if (this.appearanceListener && this.appearanceListener.remove) {
-			this.appearanceListener.remove();
-			this.appearanceListener = null;
 		}
 	}
 
@@ -574,21 +561,10 @@ export default class Root extends React.Component {
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState((prevState) => {
-			// new theme preferences
-			const themePreferences = {
-				...prevState.themePreferences,
-				...newTheme
-			};
-			// set new state of themePreferences
-			// and theme (based on themePreferences)
-			return { themePreferences, theme: getTheme(themePreferences) };
-		}, () => {
+		this.setState(prevState => newThemeState(prevState, newTheme), () => {
 			const { themePreferences } = this.state;
 			// subscribe to Appearance changes
-			this.subscribeAppearance(themePreferences);
-			// set native components theme
-			setNativeTheme(themePreferences);
+			subscribeTheme(themePreferences, this.setTheme);
 		});
 	}
 
