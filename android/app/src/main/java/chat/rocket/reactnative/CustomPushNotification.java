@@ -1,5 +1,6 @@
 package chat.rocket.reactnative;
 
+import android.util.Log;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings.System;
 import android.media.RingtoneManager;
+import android.content.SharedPreferences;
 
 import java.util.Random;
 import com.google.gson.*;
@@ -68,11 +70,15 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private Bitmap getAvatar() {
+        String BaseKEY = "reactnativemeteor_usertoken-";
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences("react-native", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString(BaseKEY.concat(this.ejson.serverURL()), "");
+        String token = sharedPreferences.getString(BaseKEY.concat(userId), "");
         try {
             return Glide.with(mContext)
                 .asBitmap()
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .load(this.ejson.getAvatarUri())
+                .load(this.ejson.getAvatarUri(token, userId))
                 .submit(100, 100)
                 .get();
         } catch (final ExecutionException | InterruptedException e) {

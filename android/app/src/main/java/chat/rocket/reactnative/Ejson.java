@@ -5,8 +5,16 @@ public class Ejson {
     String rid;
     Sender sender;
 
-    public String getAvatarUri() {
-        return this.removeTrailingSlash(this.host) + "/avatar/" + this.sender.username;
+    public String getAvatarUri(String token, String userId) {
+        return this.serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token + "&rc_uid=" + userId;
+    }
+
+    public String serverURL() {
+        String url = this.removeTrailingSlash(this.host);
+        if (!url.contains("http")) {
+           return "https://" + url;
+        }
+        return url;
     }
 
     public String getGroupIdentifier() {
