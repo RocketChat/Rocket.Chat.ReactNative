@@ -17,6 +17,9 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
+import { themedHeader } from '../utils/navigation';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
@@ -27,9 +30,10 @@ const styles = StyleSheet.create({
 });
 
 class SetUsernameView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title');
 		return {
+			...themedHeader(screenProps.theme),
 			title
 		};
 	}
@@ -39,7 +43,8 @@ class SetUsernameView extends React.Component {
 		server: PropTypes.string,
 		userId: PropTypes.string,
 		loginRequest: PropTypes.func,
-		token: PropTypes.string
+		token: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -64,6 +69,10 @@ class SetUsernameView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { username, saving } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.username !== username) {
 			return true;
 		}
@@ -93,13 +102,34 @@ class SetUsernameView extends React.Component {
 
 	render() {
 		const { username, saving } = this.state;
+		const { theme } = this.props;
 		return (
-			<KeyboardView contentContainerStyle={sharedStyles.container}>
-				<StatusBar />
+			<KeyboardView
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				contentContainerStyle={sharedStyles.container}
+			>
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ vertical: 'never' }}>
-						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
-						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Set_username_subtitle')}</Text>
+						<Text
+							style={[
+								sharedStyles.loginTitle,
+								sharedStyles.textBold,
+								styles.loginTitle,
+								{ color: themes[theme].titleText }
+							]}
+						>
+							{I18n.t('Username')}
+						</Text>
+						<Text
+							style={[
+								sharedStyles.loginSubtitle,
+								sharedStyles.textRegular,
+								{ color: themes[theme].titleText }
+							]}
+						>
+							{I18n.t('Set_username_subtitle')}
+						</Text>
 						<TextInput
 							autoFocus
 							placeholder={I18n.t('Username')}
@@ -111,6 +141,7 @@ class SetUsernameView extends React.Component {
 							testID='set-username-view-input'
 							clearButtonMode='while-editing'
 							containerStyle={sharedStyles.inputLastChild}
+							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Register')}
@@ -119,6 +150,7 @@ class SetUsernameView extends React.Component {
 							testID='set-username-view-submit'
 							disabled={!username}
 							loading={saving}
+							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
@@ -136,4 +168,4 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SetUsernameView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SetUsernameView));

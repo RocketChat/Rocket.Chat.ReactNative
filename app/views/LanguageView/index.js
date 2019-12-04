@@ -15,6 +15,9 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const LANGUAGES = [
 	{
@@ -42,14 +45,16 @@ const LANGUAGES = [
 ];
 
 class LanguageView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Change_Language')
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Change_Language'),
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {
 		userLanguage: PropTypes.string,
 		navigation: PropTypes.object,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -62,7 +67,10 @@ class LanguageView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { language, saving } = this.state;
-		const { userLanguage } = this.props;
+		const { userLanguage, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.language !== language) {
 			return true;
 		}
@@ -114,13 +122,20 @@ class LanguageView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => <Separator />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <Separator theme={theme} />;
+	}
 
-	renderIcon = () => <CustomIcon name='check' size={20} style={sharedStyles.colorPrimary} />
+	renderIcon = () => {
+		const { theme } = this.props;
+		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
+	}
 
 	renderItem = ({ item }) => {
 		const { value, label } = item;
 		const { language } = this.state;
+		const { theme } = this.props;
 		const isSelected = language === value;
 
 		return (
@@ -129,19 +144,31 @@ class LanguageView extends React.Component {
 				onPress={() => this.submit(value)}
 				testID={`language-view-${ value }`}
 				right={isSelected ? this.renderIcon : null}
+				theme={theme}
 			/>
 		);
 	}
 
 	render() {
 		const { saving } = this.state;
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.listSafeArea} testID='language-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView
+				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				forceInset={{ vertical: 'never' }}
+				testID='language-view'
+			>
+				<StatusBar theme={theme} />
 				<FlatList
 					data={LANGUAGES}
 					keyExtractor={item => item.value}
-					contentContainerStyle={sharedStyles.listContentContainer}
+					contentContainerStyle={[
+						sharedStyles.listContentContainer,
+						{
+							backgroundColor: themes[theme].auxiliaryBackground,
+							borderColor: themes[theme].separatorColor
+						}
+					]}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
@@ -159,4 +186,4 @@ const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));

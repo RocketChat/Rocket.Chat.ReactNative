@@ -1,10 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
 
-import { HEADER_TINT, HEADER_BACKGROUND } from '../constants/colors';
+import { themes } from '../constants/colors';
 
-const openLink = url => WebBrowser.openBrowserAsync(url, {
-	toolbarColor: HEADER_BACKGROUND,
-	controlsColor: HEADER_TINT,
+const openLink = (url, theme = 'light') => WebBrowser.openBrowserAsync(url, {
+	toolbarColor: themes[theme].headerBackground,
+	controlsColor: themes[theme].headerTintColor,
 	collapseToolbar: true,
 	showTitle: true
 });

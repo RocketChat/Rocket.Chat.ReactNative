@@ -1,16 +1,9 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import {
-	COLOR_DANGER, COLOR_BUTTON_PRIMARY, COLOR_SEPARATOR, COLOR_TEXT, COLOR_TEXT_DESCRIPTION, COLOR_TITLE, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY, HEADER_BACK
-} from '../constants/colors';
 import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
-	root: {
-		flex: 1
-	},
 	container: {
-		backgroundColor: 'white',
 		flex: 1
 	},
 	containerScrollView: {
@@ -37,64 +30,12 @@ export default StyleSheet.create({
 		borderRadius: 10,
 		overflow: 'hidden'
 	},
-	buttonContainerLastChild: {
-		marginBottom: 40
-	},
-	buttonContainer: {
-		paddingVertical: 15,
-		backgroundColor: '#414852',
-		marginBottom: 20,
-		borderRadius: 2
-	},
-	buttonContainer_inverted: {
-		paddingVertical: 15,
-		marginBottom: 0
-	},
-	button: {
-		textAlign: 'center',
-		color: 'white',
-		fontWeight: '700'
-	},
-	button_inverted: {
-		textAlign: 'center',
-		color: '#414852',
-		fontWeight: '700',
-		flexGrow: 1
-	},
-	error: {
-		textAlign: 'center',
-		color: COLOR_DANGER,
-		paddingTop: 5
-	},
-	loading: {
-		flex: 1,
-		position: 'absolute',
-		backgroundColor: 'rgba(255,255,255,.2)',
-		left: 0,
-		top: 0
-	},
 	status: {
 		position: 'absolute',
 		bottom: -3,
 		right: -3,
 		borderWidth: 3,
 		borderColor: '#fff'
-	},
-	link: {
-		fontWeight: 'bold',
-		color: COLOR_BUTTON_PRIMARY
-	},
-	alignItemsFlexEnd: {
-		alignItems: 'flex-end'
-	},
-	alignItemsFlexStart: {
-		alignItems: 'flex-start'
-	},
-	alignItemsCenter: {
-		alignItems: 'center'
-	},
-	textAlignRight: {
-		textAlign: 'right'
 	},
 	textAlignCenter: {
 		textAlign: 'center'
@@ -105,41 +46,27 @@ export default StyleSheet.create({
 	loginTitle: {
 		fontSize: 20,
 		marginVertical: 15,
-		color: COLOR_TITLE,
 		lineHeight: 28
 	},
 	loginSubtitle: {
 		fontSize: 16,
-		color: COLOR_TITLE,
 		lineHeight: 20,
 		marginBottom: 15
 	},
-	headerButton: {
-		backgroundColor: 'transparent',
-		height: 44,
-		width: 44,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR
+		height: StyleSheet.hairlineWidth
 	},
 	separatorTop: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	separatorBottom: {
-		borderColor: COLOR_SEPARATOR,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separatorVertical: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	separatorLeft: {
-		borderColor: COLOR_SEPARATOR,
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
@@ -198,38 +125,16 @@ export default StyleSheet.create({
 			}
 		})
 	},
-	textColorTitle: {
-		color: COLOR_TITLE
-	},
-	textColorNormal: {
-		color: COLOR_TEXT
-	},
-	textColorDescription: {
-		color: COLOR_TEXT_DESCRIPTION
-	},
-	textColorHeaderBack: {
-		color: HEADER_BACK
-	},
-	colorPrimary: {
-		color: COLOR_PRIMARY
-	},
 	inputLastChild: {
 		marginBottom: 15
 	},
-	listSafeArea: {
-		flex: 1,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
-	},
 	listContentContainer: {
-		borderColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_WHITE,
-		marginVertical: 10
+		marginVertical: 36
 	},
 	notchLandscapeContainer: {
 		marginTop: -34,
-		paddingHorizontal: 30,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		paddingHorizontal: 30
 	}
 });

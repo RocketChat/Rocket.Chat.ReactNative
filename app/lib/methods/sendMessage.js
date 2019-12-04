@@ -10,8 +10,9 @@ export async function sendMessageCall(message) {
 		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
 	try {
+		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
-		await this.sdk.post('chat.sendMessage', {
+		await sdk.post('chat.sendMessage', {
 			message: {
 				_id, rid, msg, tmid
 			}

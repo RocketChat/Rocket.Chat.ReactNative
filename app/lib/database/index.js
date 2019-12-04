@@ -44,11 +44,42 @@ class DB {
 	}
 
 	get active() {
-		return this.databases.activeDB;
+		return this.databases.shareDB || this.databases.activeDB;
+	}
+
+	get share() {
+		return this.databases.shareDB;
+	}
+
+	set share(db) {
+		this.databases.shareDB = db;
 	}
 
 	get servers() {
 		return this.databases.serversDB;
+	}
+
+	setShareDB(database = '') {
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
+		const dbName = `${ appGroupPath }${ path }.db`;
+
+		const adapter = new SQLiteAdapter({
+			dbName,
+			schema: appSchema,
+			migrations
+		});
+
+		this.databases.shareDB = new Database({
+			adapter,
+			modelClasses: [
+				Subscription,
+				Message,
+				Thread,
+				ThreadMessage,
+				Upload
+			],
+			actionsEnabled: true
+		});
 	}
 
 	setActiveDB(database = '') {

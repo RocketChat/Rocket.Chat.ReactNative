@@ -3,23 +3,19 @@ import { StatusBar as StatusBarRN } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { isIOS } from '../utils/deviceInfo';
-import { HEADER_BACKGROUND, COLOR_WHITE } from '../constants/colors';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
-const HEADER_BAR_STYLE = isIOS ? 'dark-content' : 'light-content';
-
-const StatusBar = React.memo(({ light }) => {
-	if (light) {
-		return <StatusBarRN backgroundColor={COLOR_WHITE} barStyle='dark-content' animated />;
+const StatusBar = React.memo(({ theme }) => {
+	let barStyle = 'light-content';
+	if (theme === 'light' && isIOS) {
+		barStyle = 'dark-content';
 	}
-	return <StatusBarRN backgroundColor={HEADER_BACKGROUND} barStyle={HEADER_BAR_STYLE} animated />;
+	return <StatusBarRN backgroundColor={themes[theme].headerBackground} barStyle={barStyle} animated />;
 });
 
 StatusBar.propTypes = {
-	light: PropTypes.bool
+	theme: PropTypes.string
 };
 
-StatusBar.defaultProps = {
-	light: false
-};
-
-export default StatusBar;
+export default withTheme(StatusBar);

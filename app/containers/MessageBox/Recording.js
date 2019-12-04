@@ -11,7 +11,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_SUCCESS, COLOR_DANGER } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -37,6 +37,7 @@ export default class extends React.PureComponent {
 	}
 
 	static propTypes = {
+		theme: PropTypes.string,
 		onFinish: PropTypes.func.isRequired
 	}
 
@@ -122,14 +123,17 @@ export default class extends React.PureComponent {
 
 	render() {
 		const { currentTime } = this.state;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView
-				key='messagebox-recording'
 				testID='messagebox-recording'
-				style={styles.textBox}
+				style={[
+					styles.textBox,
+					{ borderTopColor: themes[theme].borderColor }
+				]}
 			>
-				<View style={styles.textArea}>
+				<View style={[styles.textArea, { backgroundColor: themes[theme].messageboxBackground }]}>
 					<BorderlessButton
 						onPress={this.cancelAudioMessage}
 						accessibilityLabel={I18n.t('Cancel_recording')}
@@ -138,11 +142,11 @@ export default class extends React.PureComponent {
 					>
 						<CustomIcon
 							size={22}
-							color={COLOR_DANGER}
+							color={themes[theme].dangerColor}
 							name='cross'
 						/>
 					</BorderlessButton>
-					<Text key='currentTime' style={styles.textBoxInput}>{currentTime}</Text>
+					<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>
 					<BorderlessButton
 						onPress={this.finishAudioMessage}
 						accessibilityLabel={I18n.t('Finish_recording')}
@@ -151,7 +155,7 @@ export default class extends React.PureComponent {
 					>
 						<CustomIcon
 							size={22}
-							color={COLOR_SUCCESS}
+							color={themes[theme].successColor}
 							name='check'
 						/>
 					</BorderlessButton>

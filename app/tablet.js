@@ -12,6 +12,7 @@ import {
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 import { keyCommands, defaultCommands } from './commands';
+import { themes } from './constants/colors';
 
 import sharedStyles from './views/Styles';
 
@@ -144,15 +145,15 @@ export const initTabletNav = (setState) => {
 };
 
 const Split = ({
-	split, tablet, showModal, closeModal, setModalRef
+	split, tablet, showModal, closeModal, setModalRef, theme
 }) => {
 	if (split) {
 		return (
 			<>
-				<View style={[sharedStyles.container, sharedStyles.separatorLeft]}>
-					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet }} />
+				<View style={[sharedStyles.container, sharedStyles.separatorLeft, { borderColor: themes[theme].separatorColor }]}>
+					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet, theme }} />
 				</View>
-				<ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} screenProps={{ split: tablet }} />
+				<ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} screenProps={{ split: tablet, theme }} />
 			</>
 		);
 	}
@@ -160,7 +161,7 @@ const Split = ({
 };
 
 const Tablet = ({
-	children, tablet, inside, showModal, closeModal, onLayout
+	children, tablet, theme, inside, showModal, closeModal, onLayout
 }) => {
 	const setModalRef = (ref) => {
 		modalRef = ref;
@@ -173,8 +174,8 @@ const Tablet = ({
 			<View style={[sharedStyles.container, split && { maxWidth: MAX_SIDEBAR_WIDTH }]}>
 				{children}
 			</View>
-			<Split split={split} tablet={tablet} showModal={showModal} closeModal={closeModal} setModalRef={setModalRef} />
-			<NotificationContainer ref={ref => notificationRef = ref} />
+			<Split split={split} tablet={tablet} theme={theme} showModal={showModal} closeModal={closeModal} setModalRef={setModalRef} />
+			<NotificationContainer ref={ref => notificationRef = ref} screenProps={{ theme }} />
 		</View>
 	);
 };
@@ -184,7 +185,8 @@ Split.propTypes = {
 	tablet: PropTypes.bool,
 	showModal: PropTypes.bool,
 	closeModal: PropTypes.func,
-	setModalRef: PropTypes.func
+	setModalRef: PropTypes.func,
+	theme: PropTypes.string
 };
 
 Tablet.propTypes = {
@@ -193,7 +195,8 @@ Tablet.propTypes = {
 	inside: PropTypes.bool,
 	showModal: PropTypes.bool,
 	closeModal: PropTypes.func,
-	onLayout: PropTypes.func
+	onLayout: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default Tablet;

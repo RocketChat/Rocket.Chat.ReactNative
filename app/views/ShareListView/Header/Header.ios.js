@@ -5,21 +5,20 @@ import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
 import { CloseShareExtensionButton } from '../../../containers/HeaderButton';
-import { HEADER_BACKGROUND } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: HEADER_BACKGROUND,
 		flexDirection: 'row',
 		...sharedStyles.separatorBottom
 	}
 });
 
 const Header = React.memo(({
-	searching, onChangeSearchText, initSearch, cancelSearch
+	searching, onChangeSearchText, initSearch, cancelSearch, theme
 }) => {
 	const [text, setText] = useState('');
 
@@ -41,7 +40,15 @@ const Header = React.memo(({
 	};
 
 	return (
-		<View style={styles.container}>
+		<View
+			style={[
+				styles.container,
+				{
+					borderColor: themes[theme].separatorColor,
+					backgroundColor: themes[theme].headerBackground
+				}
+			]}
+		>
 			{
 				!searching
 					? (
@@ -69,7 +76,8 @@ Header.propTypes = {
 	searching: PropTypes.bool,
 	onChangeSearchText: PropTypes.func,
 	initSearch: PropTypes.func,
-	cancelSearch: PropTypes.func
+	cancelSearch: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default Header;

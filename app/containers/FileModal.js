@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, ActivityIndicator, StyleSheet, SafeAreaView
+	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -9,8 +9,10 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { Video } from 'expo-av';
 
 import sharedStyles from '../views/Styles';
-import { COLOR_WHITE } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
+import ActivityIndicator from './ActivityIndicator';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -25,40 +27,22 @@ const styles = StyleSheet.create({
 		marginVertical: 10
 	},
 	title: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	description: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
-	indicator: {
-		flex: 1
-	},
 	video: {
 		flex: 1
-	},
-	loading: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		alignItems: 'center',
-		justifyContent: 'center'
 	}
 });
 
-const Indicator = React.memo(() => (
-	<ActivityIndicator style={styles.indicator} />
-));
-
 const ModalContent = React.memo(({
-	attachment, onClose, user, baseUrl
+	attachment, onClose, user, baseUrl, theme
 }) => {
 	if (attachment && attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
@@ -66,8 +50,8 @@ const ModalContent = React.memo(({
 			<SafeAreaView style={styles.safeArea}>
 				<TouchableWithoutFeedback onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>{attachment.title}</Text>
-						{attachment.description ? <Text style={styles.description}>{attachment.description}</Text> : null}
+						<Text style={[styles.title, { color: themes[theme].buttonText }]}>{attachment.title}</Text>
+						{attachment.description ? <Text style={[styles.description, { color: themes[theme].buttonText }]}>{attachment.description}</Text> : null}
 					</View>
 				</TouchableWithoutFeedback>
 				<ImageViewer
@@ -78,7 +62,7 @@ const ModalContent = React.memo(({
 					onSwipeDown={onClose}
 					renderIndicator={() => null}
 					renderImage={props => <FastImage {...props} />}
-					loadingRender={() => <Indicator />}
+					loadingRender={() => <ActivityIndicator size='large' theme={theme} />}
 				/>
 			</SafeAreaView>
 		);
@@ -102,7 +86,7 @@ const ModalContent = React.memo(({
 					onLoadStart={() => setLoading(true)}
 					onError={console.log}
 				/>
-				{ loading ? <ActivityIndicator size='large' style={styles.loading} /> : null }
+				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }
 			</>
 		);
 	}
@@ -110,7 +94,7 @@ const ModalContent = React.memo(({
 });
 
 const FileModal = React.memo(({
-	isVisible, onClose, attachment, user, baseUrl
+	isVisible, onClose, attachment, user, baseUrl, theme
 }) => (
 	<Modal
 		style={styles.modal}
@@ -120,15 +104,18 @@ const FileModal = React.memo(({
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'down']}
 	>
-		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} />
+		<ModalContent attachment={attachment} onClose={onClose} user={user} baseUrl={baseUrl} theme={theme} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading);
+), (prevProps, nextProps) => (
+	prevProps.isVisible === nextProps.isVisible && prevProps.loading === nextProps.loading && prevProps.theme === nextProps.theme
+));
 
 FileModal.propTypes = {
 	isVisible: PropTypes.bool,
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
+	theme: PropTypes.string,
 	onClose: PropTypes.func
 };
 FileModal.displayName = 'FileModal';
@@ -137,8 +124,9 @@ ModalContent.propTypes = {
 	attachment: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
+	theme: PropTypes.string,
 	onClose: PropTypes.func
 };
 ModalContent.displayName = 'FileModalContent';
 
-export default FileModal;
+export default withTheme(FileModal);
