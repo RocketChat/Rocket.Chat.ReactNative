@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 
 const ShareListHeader = React.memo(({
-	searching, initSearch, cancelSearch, search
+	searching, initSearch, cancelSearch, search, theme
 }) => {
 	const onSearchChangeText = (text) => {
 		search(text.trim());
@@ -12,6 +12,7 @@ const ShareListHeader = React.memo(({
 
 	return (
 		<Header
+			theme={theme}
 			searching={searching}
 			initSearch={initSearch}
 			cancelSearch={cancelSearch}
@@ -24,7 +25,8 @@ ShareListHeader.propTypes = {
 	searching: PropTypes.bool,
 	initSearch: PropTypes.func,
 	cancelSearch: PropTypes.func,
-	search: PropTypes.func
+	search: PropTypes.func,
+	theme: PropTypes.string
 };
 
 export default ShareListHeader;

@@ -1,17 +1,30 @@
-import { analytics, leaveBreadcrumb } from './log';
+import { StyleSheet } from 'react-native';
 
-import { HEADER_BACKGROUND, HEADER_TITLE, HEADER_BACK } from '../constants/colors';
+import { analytics, leaveBreadcrumb } from './log';
+import { themes } from '../constants/colors';
 
 export const defaultHeader = {
-	headerStyle: {
-		backgroundColor: HEADER_BACKGROUND
-	},
-	headerTitleStyle: {
-		color: HEADER_TITLE
-	},
-	headerBackTitle: null,
-	headerTintColor: HEADER_BACK
+	headerBackTitle: null
 };
+
+export const cardStyle = {
+	backgroundColor: 'rgba(0,0,0,0)'
+};
+
+const borderBottom = theme => ({
+	borderBottomWidth: StyleSheet.hairlineWidth,
+	borderBottomColor: themes[theme].headerBorder,
+	elevation: 0
+});
+
+export const themedHeader = theme => ({
+	headerStyle: {
+		...borderBottom(theme),
+		backgroundColor: themes[theme].headerBackground
+	},
+	headerTintColor: themes[theme].headerTintColor,
+	headerTitleStyle: { color: themes[theme].headerTitleColor }
+});
 
 // gets the current screen from navigation state
 export const getActiveRouteName = (navigationState) => {

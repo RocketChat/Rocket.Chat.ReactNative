@@ -10,11 +10,12 @@ import Touchable from 'react-native-platform-touchable';
 
 import { isNotch, isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_BACKGROUND_NOTIFICATION, COLOR_SEPARATOR, COLOR_TEXT } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
+import { withTheme } from '../../theme';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -38,10 +39,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		position: 'absolute',
 		zIndex: 2,
-		backgroundColor: COLOR_BACKGROUND_NOTIFICATION,
 		width: '100%',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	content: {
 		flex: 1,
@@ -57,17 +56,14 @@ const styles = StyleSheet.create({
 	roomName: {
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	message: {
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textRegular
 	},
 	close: {
-		color: COLOR_TEXT,
 		marginLeft: 10
 	}
 });
@@ -80,7 +76,8 @@ class NotificationBadge extends React.Component {
 		userId: PropTypes.string,
 		notification: PropTypes.object,
 		window: PropTypes.object,
-		removeNotification: PropTypes.func
+		removeNotification: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -91,8 +88,11 @@ class NotificationBadge extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
 		const {
-			notification: { payload }, window
+			notification: { payload }, window, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!equal(nextNotification.payload, payload)) {
 			return true;
 		}
@@ -173,7 +173,7 @@ class NotificationBadge extends React.Component {
 
 	render() {
 		const {
-			baseUrl, token, userId, notification, window
+			baseUrl, token, userId, notification, window, theme
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
@@ -194,7 +194,16 @@ class NotificationBadge extends React.Component {
 			outputRange: [-top - ROW_HEIGHT, top]
 		});
 		return (
-			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+			<Animated.View
+				style={[
+					styles.container,
+					{
+						transform: [{ translateY }],
+						backgroundColor: themes[theme].focusedBackground,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
+			>
 				<Touchable
 					style={styles.content}
 					onPress={this.goToRoom}
@@ -204,13 +213,13 @@ class NotificationBadge extends React.Component {
 					<>
 						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 						<View style={styles.inner}>
-							<Text style={styles.roomName} numberOfLines={1}>{name}</Text>
-							<Text style={styles.message} numberOfLines={1}>{message}</Text>
+							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
+							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
 				</Touchable>
 				<TouchableOpacity onPress={this.hide}>
-					<CustomIcon name='circle-cross' style={styles.close} size={20} />
+					<CustomIcon name='circle-cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 				</TouchableOpacity>
 			</Animated.View>
 		);
@@ -228,4 +237,4 @@ const mapDispatchToProps = dispatch => ({
 	removeNotification: () => dispatch(removeNotificationAction())
 });
 
-export default responsive(connect(mapStateToProps, mapDispatchToProps)(NotificationBadge));
+export default responsive(connect(mapStateToProps, mapDispatchToProps)(withTheme(NotificationBadge)));

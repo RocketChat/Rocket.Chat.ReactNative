@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
-import { COLOR_DANGER, COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,20 +16,12 @@ const styles = StyleSheet.create({
 		marginHorizontal: 14
 	},
 	line: {
-		backgroundColor: COLOR_TEXT_DESCRIPTION,
 		height: 1,
 		flex: 1
 	},
 	text: {
 		fontSize: 14,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorDescription
-	},
-	unreadLine: {
-		backgroundColor: COLOR_DANGER
-	},
-	unreadText: {
-		color: COLOR_DANGER
+		...sharedStyles.textMedium
 	},
 	marginLeft: {
 		marginLeft: 14
@@ -42,36 +34,39 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = React.memo(({ ts, unread }) => {
+const DateSeparator = React.memo(({ ts, unread, theme }) => {
 	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
+	const unreadLine = { backgroundColor: themes[theme].dangerColor };
+	const unreadText = { color: themes[theme].dangerColor };
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, styles.unreadText]}>{I18n.t('unread_messages')}</Text>
-				<View style={[styles.line, styles.unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, styles.unreadText]}>{date}</Text>
+				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+				<View style={[styles.line, unreadLine, styles.marginHorizontal]} />
+				<Text style={[styles.text, unreadText]}>{date}</Text>
 			</View>
 		);
 	}
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={styles.line} />
-				<Text style={[styles.text, styles.marginLeft]}>{date}</Text>
+				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
+				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginLeft]}>{date}</Text>
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, styles.unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
-			<View style={[styles.line, styles.unreadLine]} />
+			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<View style={[styles.line, unreadLine]} />
 		</View>
 	);
 });
 
 DateSeparator.propTypes = {
 	ts: PropTypes.instanceOf(Date),
-	unread: PropTypes.bool
+	unread: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 export default DateSeparator;

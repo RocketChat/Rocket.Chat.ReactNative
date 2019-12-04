@@ -20,6 +20,12 @@ export function appInit() {
 	};
 }
 
+export function appInitLocalSettings() {
+	return {
+		type: APP.INIT_LOCAL_SETTINGS
+	};
+}
+
 export function setCurrentServer(server) {
 	return {
 		type: types.SET_CURRENT_SERVER,

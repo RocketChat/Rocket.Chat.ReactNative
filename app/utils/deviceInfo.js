@@ -12,6 +12,12 @@ export const getReadableVersion = DeviceInfo.getReadableVersion();
 export const getBundleId = DeviceInfo.getBundleId();
 export const getDeviceModel = DeviceInfo.getModel();
 
+// Theme is supported by system on iOS 13+ or Android 10+
+export const supportSystemTheme = () => {
+	const systemVersion = parseInt(DeviceInfo.getSystemVersion(), 10);
+	return systemVersion >= (isIOS ? 13 : 10);
+};
+
 // Tablet info
 export const isTablet = DeviceInfo.isTablet();
 

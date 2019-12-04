@@ -1,10 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { COLOR_SEPARATOR, COLOR_WHITE } from '../../constants/colors';
 
 export default StyleSheet.create({
 	list: {
-		flex: 1,
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	item: {
 		flexDirection: 'row',
@@ -17,10 +15,6 @@ export default StyleSheet.create({
 	},
 	separator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 60
-	},
-	loading: {
-		flex: 1
 	}
 });
