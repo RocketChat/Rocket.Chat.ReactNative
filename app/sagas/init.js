@@ -20,6 +20,17 @@ import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
+export const initLocalSettings = function* initLocalSettings() {
+	const sortPreferences = yield RocketChat.getSortPreferences();
+	yield put(setAllPreferences(sortPreferences));
+
+	const useMarkdown = yield RocketChat.getUseMarkdown();
+	yield put(toggleMarkdown(useMarkdown));
+
+	const allowCrashReport = yield RocketChat.getAllowCrashReport();
+	yield put(toggleCrashReport(allowCrashReport));
+};
+
 const restore = function* restore() {
 	try {
 		let hasMigration;
@@ -83,15 +94,6 @@ const restore = function* restore() {
 			}
 		}
 
-		const sortPreferences = yield RocketChat.getSortPreferences();
-		yield put(setAllPreferences(sortPreferences));
-
-		const useMarkdown = yield RocketChat.getUseMarkdown();
-		yield put(toggleMarkdown(useMarkdown));
-
-		const allowCrashReport = yield RocketChat.getAllowCrashReport();
-		yield put(toggleCrashReport(allowCrashReport));
-
 		if (!token || !server) {
 			yield all([
 				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
@@ -126,5 +128,6 @@ const start = function* start({ root }) {
 const root = function* root() {
 	yield takeLatest(APP.INIT, restore);
 	yield takeLatest(APP.START, start);
+	yield takeLatest(APP.INIT_LOCAL_SETTINGS, initLocalSettings);
 };
 export default root;

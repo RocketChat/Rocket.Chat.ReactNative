@@ -17,7 +17,7 @@ import {
 	unsubscribeTheme
 } from './utils/theme';
 import EventEmitter from './utils/events';
-import { appInit } from './actions';
+import { appInit, appInitLocalSettings } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
@@ -550,6 +550,7 @@ export default class Root extends React.Component {
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		store.dispatch(appInitLocalSettings());
 		if (notification) {
 			onNotification(notification);
 		} else if (parsedDeepLinkingURL) {
