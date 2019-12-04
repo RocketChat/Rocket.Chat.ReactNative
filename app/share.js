@@ -72,6 +72,7 @@ class Root extends React.Component {
 	}
 
 	componentWillUnmount() {
+		RocketChat.closeShareExtension();
 		unsubscribeTheme();
 	}
 
