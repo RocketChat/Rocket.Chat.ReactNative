@@ -366,7 +366,7 @@ PODS:
     - React
   - RNGestureHandler (1.5.0):
     - React
-  - RNImageCropPicker (0.25.0):
+  - RNImageCropPicker (0.26.1):
     - QBImagePickerController
     - React-Core
     - React-RCTImage
@@ -740,7 +740,7 @@ SPEC CHECKSUMS:
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
-  RNImageCropPicker: 0a731d984e64ee4c28bddaa7ce52262e4b80979f
+  RNImageCropPicker: e1d8c3381e5b05a1bdcd13ea57a4f1c020a09cef
   RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
