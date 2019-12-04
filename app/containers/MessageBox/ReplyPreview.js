@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -47,45 +47,38 @@ const styles = StyleSheet.create({
 	}
 });
 
-class ReplyPreview extends Component {
-	static propTypes = {
-		useMarkdown: PropTypes.bool,
-		message: PropTypes.object.isRequired,
-		Message_TimeFormat: PropTypes.string.isRequired,
-		close: PropTypes.func.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired,
-		getCustomEmoji: PropTypes.func
+const ReplyPreview = React.memo(({
+	message, Message_TimeFormat, baseUrl, username, useMarkdown, replying, getCustomEmoji, close
+}) => {
+	if (!replying) {
+		return null;
 	}
 
-	shouldComponentUpdate() {
-		return false;
-	}
-
-	close = () => {
-		const { close } = this.props;
-		close();
-	}
-
-	render() {
-		const {
-			message, Message_TimeFormat, baseUrl, username, useMarkdown, getCustomEmoji
-		} = this.props;
-		const time = moment(message.ts).format(Message_TimeFormat);
-		return (
-			<View style={styles.container}>
-				<View style={styles.messageContainer}>
-					<View style={styles.header}>
-						<Text style={styles.username}>{message.u.username}</Text>
-						<Text style={styles.time}>{time}</Text>
-					</View>
-					<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} preview />
+	const time = moment(message.ts).format(Message_TimeFormat);
+	return (
+		<View style={styles.container}>
+			<View style={styles.messageContainer}>
+				<View style={styles.header}>
+					<Text style={styles.username}>{message.u.username}</Text>
+					<Text style={styles.time}>{time}</Text>
 				</View>
-				<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={this.close} />
+				<Markdown msg={message.msg} baseUrl={baseUrl} username={username} getCustomEmoji={getCustomEmoji} numberOfLines={1} useMarkdown={useMarkdown} preview />
 			</View>
-		);
-	}
-}
+			<CustomIcon name='cross' color={COLOR_TEXT_DESCRIPTION} size={20} style={styles.close} onPress={close} />
+		</View>
+	);
+}, (prevProps, nextProps) => prevProps.replying === nextProps.replying);
+
+ReplyPreview.propTypes = {
+	replying: PropTypes.bool,
+	useMarkdown: PropTypes.bool,
+	message: PropTypes.object.isRequired,
+	Message_TimeFormat: PropTypes.string.isRequired,
+	close: PropTypes.func.isRequired,
+	baseUrl: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
+	getCustomEmoji: PropTypes.func
+};
 
 const mapStateToProps = state => ({
 	useMarkdown: state.markdown.useMarkdown,

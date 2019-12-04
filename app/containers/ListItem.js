@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, right
+	title, subtitle, disabled, testID, right, color
 }) => (
 	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
 		<View style={styles.textContainer}>
-			<Text style={styles.title}>{title}</Text>
+			<Text style={[styles.title, color && { color }]}>{title}</Text>
 			{subtitle
 				? <Text style={styles.subtitle}>{subtitle}</Text>
 				: null
@@ -78,6 +78,7 @@ Content.propTypes = {
 	subtitle: PropTypes.string,
 	right: PropTypes.func,
 	disabled: PropTypes.bool,
+	color: PropTypes.string,
 	testID: PropTypes.string
 };
 

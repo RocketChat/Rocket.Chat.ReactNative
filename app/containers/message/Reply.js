@@ -9,6 +9,7 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { COLOR_BACKGROUND_CONTAINER, COLOR_BORDER } from '../../constants/colors';
+import { withSplit } from '../../split';
 
 const styles = StyleSheet.create({
 	button: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 6,
-		alignSelf: 'flex-end',
+		alignSelf: 'flex-start',
 		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		borderColor: COLOR_BORDER,
 		borderWidth: 1,
@@ -126,7 +127,7 @@ const Fields = React.memo(({ attachment }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields));
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown
+	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, split
 }) => {
 	if (!attachment) {
 		return null;
@@ -146,7 +147,7 @@ const Reply = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[styles.button, index > 0 && styles.marginTop]}
+			style={[styles.button, index > 0 && styles.marginTop, split && sharedStyles.tabletContent]}
 			background={Touchable.Ripple('#fff')}
 		>
 			<View style={styles.attachmentContainer}>
@@ -163,7 +164,7 @@ const Reply = React.memo(({
 			</View>
 		</Touchable>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment));
+}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,
@@ -172,7 +173,8 @@ Reply.propTypes = {
 	user: PropTypes.object,
 	index: PropTypes.number,
 	useMarkdown: PropTypes.bool,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	split: PropTypes.bool
 };
 Reply.displayName = 'MessageReply';
 
@@ -196,4 +198,4 @@ Fields.propTypes = {
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default Reply;
+export default withSplit(Reply);

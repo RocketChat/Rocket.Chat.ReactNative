@@ -103,19 +103,59 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// Do nothing
 			}
 
+			const batch = [];
 			if (sub) {
-				await sub.update(protectedFunction((s) => {
-					Object.assign(s, tmp);
-				}));
+				try {
+					const update = sub.prepareUpdate((s) => {
+						Object.assign(s, tmp);
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
 			} else {
-				await subCollection.create(protectedFunction((s) => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				}));
+				try {
+					const create = subCollection.prepareCreate((s) => {
+						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+						Object.assign(s, tmp);
+						if (s.roomUpdatedAt) {
+							s.roomUpdatedAt = new Date();
+						}
+					});
+					batch.push(create);
+				} catch (e) {
+					console.log(e);
+				}
 			}
+
+			// if (tmp.lastMessage) {
+			// 	const lastMessage = buildMessage(tmp.lastMessage);
+			// 	const messagesCollection = db.collections.get('messages');
+			// 	let messageRecord;
+			// 	try {
+			// 		messageRecord = await messagesCollection.find(lastMessage._id);
+			// 	} catch (error) {
+			// 		// Do nothing
+			// 	}
+
+			// 	if (messageRecord) {
+			// 		batch.push(
+			// 			messageRecord.prepareUpdate(() => {
+			// 				Object.assign(messageRecord, lastMessage);
+			// 			})
+			// 		);
+			// 	} else {
+			// 		batch.push(
+			// 			messagesCollection.prepareCreate((m) => {
+			// 				m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+			// 				m.subscription.id = lastMessage.rid;
+			// 				return Object.assign(m, lastMessage);
+			// 			})
+			// 		);
+			// 	}
+			// }
+
+			await db.batch(...batch);
 		});
 	} catch (e) {
 		log(e);
@@ -155,7 +195,7 @@ export default function subscribeRooms() {
 							sub.prepareDestroyPermanently(),
 							...messagesToDelete,
 							...threadsToDelete,
-							...threadMessagesToDelete,
+							...threadMessagesToDelete
 						);
 					});
 				} catch (e) {

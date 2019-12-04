@@ -13,11 +13,12 @@ import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
-import { isIOS, isNotch } from '../../utils/deviceInfo';
+import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import sharedStyles from '../Styles';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -38,7 +39,9 @@ class OnboardingView extends React.Component {
 		super(props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		this.previousServer = props.navigation.getParam('previousServer');
-		Orientation.lockToPortrait();
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 	}
 
 	componentDidMount() {
@@ -130,7 +133,7 @@ class OnboardingView extends React.Component {
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
 				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
 				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>
-				<View style={styles.buttonsContainer}>
+				<View style={[styles.buttonsContainer, isTablet && sharedStyles.tabletScreenContent]}>
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
