@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
-import { COLOR_TEXT } from '../constants/colors';
+import Touch from '../utils/touch';
+import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 56,
+		height: 46,
 		paddingHorizontal: 15
 	},
 	disabled: {
@@ -24,24 +24,22 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	}
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, right, color
+	title, subtitle, disabled, testID, right, color, theme
 }) => (
 	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
 		<View style={styles.textContainer}>
-			<Text style={[styles.title, color && { color }]}>{title}</Text>
+			<Text style={[styles.title, { color: color || themes[theme].titleText }]}>{title}</Text>
 			{subtitle
-				? <Text style={styles.subtitle}>{subtitle}</Text>
+				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text>
 				: null
 			}
 		</View>
@@ -52,25 +50,30 @@ const Content = React.memo(({
 const Button = React.memo(({
 	onPress, ...props
 }) => (
-	<RectButton
+	<Touch
 		onPress={onPress}
-		activeOpacity={0.1}
-		underlayColor={COLOR_TEXT}
+		style={{ backgroundColor: themes[props.theme].backgroundColor }}
 		enabled={!props.disabled}
+		theme={props.theme}
 	>
 		<Content {...props} />
-	</RectButton>
+	</Touch>
 ));
 
 const Item = React.memo(({ ...props }) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
-	return <Content {...props} />;
+	return (
+		<View style={{ backgroundColor: themes[props.theme].backgroundColor }}>
+			<Content {...props} />
+		</View>
+	);
 });
 
 Item.propTypes = {
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	theme: PropTypes.string
 };
 
 Content.propTypes = {
@@ -78,13 +81,15 @@ Content.propTypes = {
 	subtitle: PropTypes.string,
 	right: PropTypes.func,
 	disabled: PropTypes.bool,
-	color: PropTypes.string,
-	testID: PropTypes.string
+	testID: PropTypes.string,
+	theme: PropTypes.string,
+	color: PropTypes.string
 };
 
 Button.propTypes = {
 	onPress: PropTypes.func,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 Button.defaultProps = {

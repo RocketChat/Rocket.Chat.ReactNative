@@ -20,14 +20,18 @@ import isValidEmail from '../utils/isValidEmail';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
+import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
+			...themedHeader(screenProps.theme),
 			title,
 			headerRight: <LegalButton testID='register-view-more' navigation={navigation} />
 		};
@@ -37,7 +41,8 @@ class RegisterView extends React.Component {
 		navigation: PropTypes.object,
 		loginRequest: PropTypes.func,
 		Site_Name: PropTypes.string,
-		Accounts_CustomFields: PropTypes.string
+		Accounts_CustomFields: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -68,6 +73,10 @@ class RegisterView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { customFields } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!equal(nextState.customFields, customFields)) {
 			return true;
 		}
@@ -125,7 +134,7 @@ class RegisterView extends React.Component {
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		const { Accounts_CustomFields } = this.props;
+		const { Accounts_CustomFields, theme } = this.props;
 		if (!Accounts_CustomFields) {
 			return null;
 		}
@@ -150,6 +159,7 @@ class RegisterView extends React.Component {
 								value={customFields[key]}
 								iconLeft='flag'
 								testID='register-view-custom-picker'
+								theme={theme}
 							/>
 						</RNPickerSelect>
 					);
@@ -173,6 +183,7 @@ class RegisterView extends React.Component {
 							}
 							this.avatarUrl.focus();
 						}}
+						theme={theme}
 					/>
 				);
 			});
@@ -183,12 +194,16 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
+		const { theme } = this.props;
 		return (
-			<KeyboardView contentContainerStyle={sharedStyles.container}>
-				<StatusBar />
+			<KeyboardView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={sharedStyles.container}
+			>
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
-						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Sign_Up')}</Text>
+						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							autoFocus
 							placeholder={I18n.t('Name')}
@@ -197,6 +212,7 @@ class RegisterView extends React.Component {
 							onChangeText={name => this.setState({ name })}
 							onSubmitEditing={() => { this.usernameInput.focus(); }}
 							testID='register-view-name'
+							theme={theme}
 						/>
 						<TextInput
 							inputRef={(e) => { this.usernameInput = e; }}
@@ -206,6 +222,7 @@ class RegisterView extends React.Component {
 							onChangeText={username => this.setState({ username })}
 							onSubmitEditing={() => { this.emailInput.focus(); }}
 							testID='register-view-username'
+							theme={theme}
 						/>
 						<TextInput
 							inputRef={(e) => { this.emailInput = e; }}
@@ -216,6 +233,7 @@ class RegisterView extends React.Component {
 							onChangeText={email => this.setState({ email })}
 							onSubmitEditing={() => { this.passwordInput.focus(); }}
 							testID='register-view-email'
+							theme={theme}
 						/>
 						<TextInput
 							inputRef={(e) => { this.passwordInput = e; }}
@@ -227,6 +245,7 @@ class RegisterView extends React.Component {
 							onSubmitEditing={this.submit}
 							testID='register-view-password'
 							containerStyle={sharedStyles.inputLastChild}
+							theme={theme}
 						/>
 
 						{this.renderCustomFields()}
@@ -238,6 +257,7 @@ class RegisterView extends React.Component {
 							testID='register-view-submit'
 							disabled={!this.valid()}
 							loading={saving}
+							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
@@ -254,4 +274,4 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));

@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 import { SendButton, AudioButton } from './buttons';
 
 const RightButtons = React.memo(({
-	showSend, submit, recordAudioMessage
+	theme, showSend, submit, recordAudioMessage
 }) => {
 	if (showSend) {
-		return <SendButton onPress={submit} />;
+		return <SendButton theme={theme} onPress={submit} />;
 	}
-	return <AudioButton onPress={recordAudioMessage} />;
+	return <AudioButton theme={theme} onPress={recordAudioMessage} />;
 });
 
 RightButtons.propTypes = {
+	theme: PropTypes.string,
 	showSend: PropTypes.bool,
 	submit: PropTypes.func.isRequired,
 	recordAudioMessage: PropTypes.func.isRequired

@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
+
+import Touch from '../../utils/touch';
 import {
-	RectButton,
-	PanGestureHandler,
-	State
-} from 'react-native-gesture-handler';
-import styles, {
 	ACTION_WIDTH,
 	SMALL_SWIPE,
 	LONG_SWIPE
 } from './styles';
+import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
 
 class Touchable extends React.Component {
@@ -25,7 +24,8 @@ class Touchable extends React.Component {
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
-		children: PropTypes.element
+		children: PropTypes.element,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -167,7 +167,7 @@ class Touchable extends React.Component {
 
 		render() {
 			const {
-				testID, isRead, width, favorite, children
+				testID, isRead, width, favorite, children, theme
 			} = this.props;
 
 			return (
@@ -183,6 +183,7 @@ class Touchable extends React.Component {
 							isRead={isRead}
 							width={width}
 							onToggleReadPress={this.onToggleReadPress}
+							theme={theme}
 						/>
 						<RightActions
 							transX={this.transX}
@@ -190,21 +191,23 @@ class Touchable extends React.Component {
 							width={width}
 							toggleFav={this.toggleFav}
 							onHidePress={this.onHidePress}
+							theme={theme}
 						/>
 						<Animated.View
 							style={{
 								transform: [{ translateX: this.transX }]
 							}}
 						>
-							<RectButton
+							<Touch
 								onPress={this.onPress}
-								activeOpacity={0.8}
-								underlayColor='#e1e5e8'
+								theme={theme}
 								testID={testID}
-								style={styles.button}
+								style={{
+									backgroundColor: themes[theme].backgroundColor
+								}}
 							>
 								{children}
-							</RectButton>
+							</Touch>
 						</Animated.View>
 					</Animated.View>
 

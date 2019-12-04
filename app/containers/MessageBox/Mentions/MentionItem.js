@@ -11,9 +11,10 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_COMMANDS
 } from '../constants';
+import { themes } from '../../../constants/colors';
 
 const MentionItem = ({
-	item, trackingType
+	item, trackingType, theme
 }) => {
 	const context = useContext(MessageboxContext);
 	const { baseUrl, user, onPressMention } = context;
@@ -32,7 +33,7 @@ const MentionItem = ({
 	const testID = defineTestID(trackingType);
 
 	if (item.username === 'all' || item.username === 'here') {
-		return <FixedMentionItem item={item} onPress={onPressMention} />;
+		return <FixedMentionItem item={item} onPress={onPressMention} theme={theme} />;
 	}
 
 	let content = (
@@ -46,7 +47,7 @@ const MentionItem = ({
 				userId={user.id}
 				token={user.token}
 			/>
-			<Text style={styles.mentionText}>{ item.username || item.name || item }</Text>
+			<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.username || item.name || item }</Text>
 		</>
 	);
 
@@ -54,7 +55,7 @@ const MentionItem = ({
 		content = (
 			<>
 				<MentionEmoji item={item} />
-				<Text style={styles.mentionText}>:{ item.name || item }:</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>:{ item.name || item }:</Text>
 			</>
 		);
 	}
@@ -62,15 +63,21 @@ const MentionItem = ({
 	if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) {
 		content = (
 			<>
-				<Text style={styles.slash}>/</Text>
-				<Text>{ item.command}</Text>
+				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.command}</Text>
 			</>
 		);
 	}
 
 	return (
 		<TouchableOpacity
-			style={styles.mentionItem}
+			style={[
+				styles.mentionItem,
+				{
+					backgroundColor: themes[theme].auxiliaryBackground,
+					borderTopColor: themes[theme].separatorColor
+				}
+			]}
 			onPress={() => onPressMention(item)}
 			testID={testID}
 		>
@@ -81,7 +88,8 @@ const MentionItem = ({
 
 MentionItem.propTypes = {
 	item: PropTypes.object,
-	trackingType: PropTypes.string
+	trackingType: PropTypes.string,
+	theme: PropTypes.string
 };
 
 export default MentionItem;

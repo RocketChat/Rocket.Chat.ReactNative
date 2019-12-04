@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -20,16 +20,21 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
+import { themes } from '../../constants/colors';
 
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
+			...themedHeader(screenProps.theme),
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
@@ -47,7 +52,8 @@ class RoomMembersView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -226,10 +232,13 @@ class RoomMembersView extends React.Component {
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<UserItem
@@ -240,6 +249,7 @@ class RoomMembersView extends React.Component {
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -248,22 +258,20 @@ class RoomMembersView extends React.Component {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
-		// if (isLoading) {
-		// 	return <ActivityIndicator style={styles.loading} />;
-		// }
+		const { theme } = this.props;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator style={styles.loading} />;
+							return <ActivityIndicator theme={theme} />;
 						}
 						return null;
 					}}
@@ -286,4 +294,4 @@ const mapStateToProps = state => ({
 	}
 });
 
-export default connect(mapStateToProps)(RoomMembersView);
+export default connect(mapStateToProps)(withTheme(RoomMembersView));
