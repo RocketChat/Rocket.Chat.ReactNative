@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView
+	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView, Alert
 } from 'react-native';
+import CameraRoll from '@react-native-community/cameraroll';
+import {
+	FileSystem
+//	Permissions
+} from 'react-native-unimodules';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -40,6 +45,26 @@ const styles = StyleSheet.create({
 		flex: 1
 	}
 });
+const handleSave = (img) => {
+	Alert.alert(img);
+	// let cameraPermissions = await Permissions.getAsync(Permissions.CameraRoll);
+	// if (cameraPermissions.status !== 'granted') {
+	// 	cameraPermissions = await Permissions.askAsync(Permissions.CameraRoll);
+	// }
+	// if (cameraPermissions.status === 'granted') {
+	FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + img[1] }.jpg`)
+		.then(({ uri }) => {
+			Alert.alert(uri);
+			CameraRoll.saveToCameraRoll(uri);
+			Alert.alert('Saved To Gallery');
+		})
+		.catch((error) => {
+			Alert.alert(error.toString(), error.toString());
+		});
+	// } else {
+	// 	Alert.alert('Requires Camera Roll Permission');
+	// }
+};
 
 const ModalContent = React.memo(({
 	attachment, onClose, user, baseUrl, theme
@@ -60,6 +85,7 @@ const ModalContent = React.memo(({
 					backgroundColor='transparent'
 					enableSwipeDown
 					onSwipeDown={onClose}
+					onSave={handleSave}
 					renderIndicator={() => null}
 					renderImage={props => <FastImage {...props} />}
 					loadingRender={() => <ActivityIndicator size='large' theme={theme} />}
