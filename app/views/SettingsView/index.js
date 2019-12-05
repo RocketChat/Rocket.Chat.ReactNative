@@ -291,7 +291,7 @@ class SettingsView extends React.Component {
 						title={I18n.t('Version_no', { version: getReadableVersion })}
 						onPress={this.copyAppVersion}
 						testID='settings-view-version'
-            theme={theme}
+						theme={theme}
 					/>
 					<Separator theme={theme} />
 
