@@ -10224,10 +10224,10 @@ rn-root-view@^1.0.3:
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
 
-rn-user-defaults@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.5.0.tgz#e6b9606e6a74c2ff7785eb4f2fed6bac7583db40"
-  integrity sha512-PRPpMkzI9/qo/8eCjfR8vKIsJFsmeFxPLT+Jy39X6D5WJLIXN4fY+IxIysOF6E7CkFRW8UCpwxeiMyldXN9Lqw==
+rn-user-defaults@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.6.0.tgz#17888f891a6c0f969700b104992ddaf5e2d8cd24"
+  integrity sha512-W9mpJvKGpLojZ13lhIHFC2mzR3AXIQHut8HIF3M2o+y60g3/o1vPah8Ov9jwipunjjW3riHIFwr2RTFdC4Krfw==
 
 rsvp@^3.3.3:
   version "3.6.2"
