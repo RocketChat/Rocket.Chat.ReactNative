@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView, Alert
+	View, Text, TouchableWithoutFeedback, StyleSheet, SafeAreaView
 } from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
 import {
 	FileSystem
-//	Permissions
 } from 'react-native-unimodules';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -18,6 +17,9 @@ import { formatAttachmentUrl } from '../lib/utils';
 import ActivityIndicator from './ActivityIndicator';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { LISTENER } from './Toast';
+import EventEmitter from '../utils/events';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -46,24 +48,17 @@ const styles = StyleSheet.create({
 	}
 });
 const handleSave = (img) => {
-	Alert.alert(img);
-	// let cameraPermissions = await Permissions.getAsync(Permissions.CameraRoll);
-	// if (cameraPermissions.status !== 'granted') {
-	// 	cameraPermissions = await Permissions.askAsync(Permissions.CameraRoll);
-	// }
-	// if (cameraPermissions.status === 'granted') {
-	FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + img[1] }.jpg`)
+	FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`)
 		.then(({ uri }) => {
-			Alert.alert(uri);
-			CameraRoll.saveToCameraRoll(uri);
-			Alert.alert('Saved To Gallery');
+			CameraRoll.saveToCameraRoll(uri).then(() => {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Saved to gallery') });
+			}).catch(() => {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Error in saving image') });
+			});
 		})
-		.catch((error) => {
-			Alert.alert(error.toString(), error.toString());
+		.catch(() => {
+			EventEmitter.emit(LISTENER, { message: I18n.t('Error in saving image') });
 		});
-	// } else {
-	// 	Alert.alert('Requires Camera Roll Permission');
-	// }
 };
 
 const ModalContent = React.memo(({
