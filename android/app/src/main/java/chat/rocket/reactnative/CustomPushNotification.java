@@ -72,7 +72,7 @@ public class CustomPushNotification extends PushNotification {
 
     private Bitmap getAvatar() {
         String BaseKEY = "reactnativemeteor_usertoken-";
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(mContext);
+        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences();
         String userId = sharedPreferences.getString(BaseKEY.concat(this.ejson.serverURL()), "");
         String token = sharedPreferences.getString(BaseKEY.concat(userId), "");
         try {
