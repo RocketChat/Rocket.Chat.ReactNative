@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings.System;
 import android.media.RingtoneManager;
-import android.content.SharedPreferences;
 
 import java.util.Random;
 import com.google.gson.*;
@@ -26,7 +25,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
-import chat.rocket.userdefaults.RNUserDefaultsModule;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
@@ -71,15 +69,11 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private Bitmap getAvatar() {
-        String BaseKEY = "reactnativemeteor_usertoken-";
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences();
-        String userId = sharedPreferences.getString(BaseKEY.concat(this.ejson.serverURL()), "");
-        String token = sharedPreferences.getString(BaseKEY.concat(userId), "");
         try {
             return Glide.with(mContext)
                 .asBitmap()
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .load(this.ejson.getAvatarUri(token, userId))
+                .load(this.ejson.getAvatarUri())
                 .submit(100, 100)
                 .get();
         } catch (final ExecutionException | InterruptedException e) {

@@ -1,12 +1,25 @@
 package chat.rocket.reactnative;
 
+import android.util.Log;
+import android.content.SharedPreferences;
+
+import chat.rocket.userdefaults.RNUserDefaultsModule;
+
 public class Ejson {
     String host;
     String rid;
     Sender sender;
 
-    public String getAvatarUri(String token, String userId) {
-        return this.serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token + "&rc_uid=" + userId;
+    public String getAvatarUri() {
+        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences();
+
+        String BaseKEY = "reactnativemeteor_usertoken-";
+        String serverURL = this.serverURL();
+
+        String userId = sharedPreferences.getString(BaseKEY.concat(serverURL), "");
+        String token = sharedPreferences.getString(BaseKEY.concat(userId), "");
+
+        return serverURL + "/avatar/" + this.sender.username + "?rc_token=" + token + "&rc_uid=" + userId;
     }
 
     public String serverURL() {
