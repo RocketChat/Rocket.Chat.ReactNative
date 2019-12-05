@@ -26,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
+import chat.rocket.userdefaults.RNUserDefaultsModule;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
@@ -71,7 +72,7 @@ public class CustomPushNotification extends PushNotification {
 
     private Bitmap getAvatar() {
         String BaseKEY = "reactnativemeteor_usertoken-";
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences("react-native", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(mContext);
         String userId = sharedPreferences.getString(BaseKEY.concat(this.ejson.serverURL()), "");
         String token = sharedPreferences.getString(BaseKEY.concat(userId), "");
         try {

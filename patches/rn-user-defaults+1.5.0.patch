@@ -1,0 +1,62 @@
+diff --git a/node_modules/rn-user-defaults/android/src/main/java/chat/rocket/userdefaults/RNUserDefaultsModule.java b/node_modules/rn-user-defaults/android/src/main/java/chat/rocket/userdefaults/RNUserDefaultsModule.java
+index 9032629..8a7e36b 100644
+--- a/node_modules/rn-user-defaults/android/src/main/java/chat/rocket/userdefaults/RNUserDefaultsModule.java
++++ b/node_modules/rn-user-defaults/android/src/main/java/chat/rocket/userdefaults/RNUserDefaultsModule.java
+@@ -19,14 +19,16 @@ import com.facebook.react.bridge.WritableMap;
+ import java.util.Map;
+ 
+ public class RNUserDefaultsModule extends ReactContextBaseJavaModule {
+-  private String preferencesName = "react-native";
+-  private String contextName = null;
++  private static String preferencesName = "react-native";
++  private static String contextName = null;
+ 
+   private final ReactApplicationContext reactContext;
++  private Context context;
+ 
+   public RNUserDefaultsModule(ReactApplicationContext reactContext) {
+     super(reactContext);
+     this.reactContext = reactContext;
++    this.context = getReactApplicationContext();
+   }
+ 
+   @Override
+@@ -36,7 +38,7 @@ public class RNUserDefaultsModule extends ReactContextBaseJavaModule {
+ 
+   @ReactMethod
+   public void get(String key, Promise promise) {
+-    promise.resolve(getPreferences().getString(key, null));
++    promise.resolve(getPreferences(context).getString(key, null));
+   }
+ 
+   @ReactMethod
+@@ -54,7 +56,7 @@ public class RNUserDefaultsModule extends ReactContextBaseJavaModule {
+   @ReactMethod
+   public void clearAll(Promise promise) {
+     SharedPreferences.Editor editor = getEditor();
+-    Map<String, ?> allEntries = getPreferences().getAll();
++    Map<String, ?> allEntries = getPreferences(context).getAll();
+     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+       editor.remove(entry.getKey());
+     }
+@@ -79,8 +81,7 @@ public class RNUserDefaultsModule extends ReactContextBaseJavaModule {
+     promise.resolve(preferencesName);
+   }
+ 
+-  private SharedPreferences getPreferences() {
+-    Context context = getReactApplicationContext();
++  public static SharedPreferences getPreferences(Context context) {
+     if (contextName != null) {
+       try {
+         context = context.createPackageContext(contextName, Context.CONTEXT_INCLUDE_CODE);
+@@ -92,7 +93,8 @@ public class RNUserDefaultsModule extends ReactContextBaseJavaModule {
+     }
+     return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+   }
++
+   private SharedPreferences.Editor getEditor() {
+-    return getPreferences().edit();
++    return getPreferences(context).edit();
+   }
+ }
+\ No newline at end of file
