@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
 import styles from './styles';
+import { themes } from '../../constants/colors';
 import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
-	children, link, preview
+	children, link, preview, theme
 }) => {
 	const handlePress = () => {
 		if (!link) {
 			return;
 		}
-		openLink(link);
+		openLink(link, theme);
 	};
 
 	const childLength = React.Children.toArray(children).filter(o => o).length;
@@ -21,7 +22,11 @@ const Link = React.memo(({
 	return (
 		<Text
 			onPress={preview ? undefined : handlePress}
-			style={styles.link}
+			style={
+				!preview
+					? { ...styles.link, color: themes[theme].actionTintColor }
+					: { color: themes[theme].titleText }
+			}
 		>
 			{ childLength !== 0 ? children : link }
 		</Text>
@@ -31,6 +36,7 @@ const Link = React.memo(({
 Link.propTypes = {
 	children: PropTypes.node,
 	link: PropTypes.string,
+	theme: PropTypes.string,
 	preview: PropTypes.bool
 };
 

@@ -12,6 +12,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1E0ECAB32385883800B3130E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E0ECAB12385883800B3130E /* LaunchScreen.storyboard */; };
 		1E1EA80A2326CD2200E22452 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA8092326CD2200E22452 /* AVFoundation.framework */; };
 		1E1EA80C2326CD2800E22452 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */; };
 		1E1EA80E2326CD2F00E22452 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */; };
@@ -81,6 +82,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RocketChatRN/main.m; sourceTree = "<group>"; };
+		1E0ECAB12385883800B3130E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E1EA8092326CD2200E22452 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -156,6 +158,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				1E0ECAB12385883800B3130E /* LaunchScreen.storyboard */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -397,6 +400,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A55F1C52236D541005109A0 /* custom.ttf in Resources */,
+				1E0ECAB32385883800B3130E /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 			);
@@ -435,8 +439,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ShareRocketChatRN/Pods-ShareRocketChatRN-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
@@ -459,8 +461,6 @@
 				"${PODS_ROOT}/RSKImageCropper/RSKImageCropper/RSKImageCropperStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
@@ -525,16 +525,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RocketChatRN/Pods-RocketChatRN-frameworks.sh",
 				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/JitsiMeet.framework",
 				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JitsiMeet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
@@ -687,7 +683,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -707,6 +703,7 @@
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -724,6 +721,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -735,7 +733,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -755,6 +753,7 @@
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -771,6 +770,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -817,7 +817,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -884,7 +884,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Development chat.rocket.reactnative.ShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -930,7 +930,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -996,7 +996,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.ShareExtension AppStore";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

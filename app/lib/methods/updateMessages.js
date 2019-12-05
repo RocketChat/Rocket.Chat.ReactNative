@@ -6,7 +6,7 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 
-export default function updateMessages({ rid, update, remove }) {
+export default function updateMessages({ rid, update = [], remove = [] }) {
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;
@@ -22,7 +22,7 @@ export default function updateMessages({ rid, update, remove }) {
 				console.log('updateMessages: subscription not found');
 			}
 
-			const messagesIds = update.map(m => m._id);
+			const messagesIds = [...update.map(m => m._id), ...remove.map(m => m._id)];
 			const msgCollection = db.collections.get('messages');
 			const threadCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');

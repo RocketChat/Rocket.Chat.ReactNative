@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, FlatList } from 'react-native';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import { responsive } from 'react-native-responsive-ui';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { isIOS } from '../../utils/deviceInfo';
 
-const EMOJIS_PER_ROW = isIOS ? 8 : 9;
+const EMOJI_SIZE = 50;
 
 const renderEmoji = (emoji, size, baseUrl) => {
-	if (emoji.isCustom) {
-		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 8, width: size - 8 }]} emoji={emoji} baseUrl={baseUrl} />;
+	if (emoji && emoji.isCustom) {
+		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />;
 	}
 	return (
 		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
@@ -33,44 +31,41 @@ class EmojiCategory extends React.Component {
 		width: PropTypes.number
 	}
 
-	constructor(props) {
-		super(props);
-		const { window, width, emojisPerRow } = this.props;
-		const { width: widthWidth, height: windowHeight } = window;
-
-		this.size = Math.min(width || widthWidth, windowHeight) / (emojisPerRow || EMOJIS_PER_ROW);
-		this.emojis = props.emojis;
-	}
-
-	shouldComponentUpdate() {
-		return false;
-	}
-
-	renderItem(emoji, size) {
+	renderItem(emoji) {
 		const { baseUrl, onEmojiSelected } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.7}
-				key={emoji.isCustom ? emoji.content : emoji}
+				key={emoji && emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${ emoji.isCustom ? emoji.content : emoji }`}
+				testID={`reaction-picker-${ emoji && emoji.isCustom ? emoji.content : emoji }`}
 			>
-				{renderEmoji(emoji, size, baseUrl)}
+				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
 			</TouchableOpacity>
 		);
 	}
 
 	render() {
-		const { emojis } = this.props;
+		const { emojis, width } = this.props;
+
+		if (!width) {
+			return null;
+		}
+
+		const numColumns = Math.trunc(width / EMOJI_SIZE);
+		const marginHorizontal = (width - (numColumns * EMOJI_SIZE)) / 2;
 
 		return (
-			<OptimizedFlatList
-				keyExtractor={item => (item.isCustom && item.content) || item}
+			<FlatList
+				contentContainerStyle={{ marginHorizontal }}
+				// rerender FlatList in case of width changes
+				key={`emoji-category-${ width }`}
+				keyExtractor={item => (item && item.isCustom && item.content) || item}
 				data={emojis}
-				renderItem={({ item }) => this.renderItem(item, this.size)}
-				numColumns={EMOJIS_PER_ROW}
+				extraData={this.props}
+				renderItem={({ item }) => this.renderItem(item)}
+				numColumns={numColumns}
 				initialNumToRender={45}
-				getItemLayout={(data, index) => ({ length: this.size, offset: this.size * index, index })}
 				removeClippedSubviews
 				{...scrollPersistTaps}
 			/>

@@ -17,8 +17,11 @@ import I18n from '../i18n';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_PRIMARY } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -28,12 +31,10 @@ const styles = StyleSheet.create({
 	},
 	dontHaveAccount: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
 		fontSize: 13
 	},
 	createAccount: {
 		...sharedStyles.textSemibold,
-		color: COLOR_PRIMARY,
 		fontSize: 13
 	},
 	loginTitle: {
@@ -43,11 +44,12 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
 			title,
-			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />
+			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />,
+			...themedHeader(screenProps.theme)
 		};
 	}
 
@@ -60,7 +62,8 @@ class LoginView extends React.Component {
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_PasswordReset: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		failure: PropTypes.bool
+		failure: PropTypes.bool,
+		theme: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -98,7 +101,7 @@ class LoginView extends React.Component {
 			user, password, code, showTOTP
 		} = this.state;
 		const {
-			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder
+			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, theme
 		} = this.props;
 		if (nextState.user !== user) {
 			return true;
@@ -116,6 +119,9 @@ class LoginView extends React.Component {
 			return true;
 		}
 		if (nextProps.failure !== failure) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
@@ -171,11 +177,27 @@ class LoginView extends React.Component {
 	}
 
 	renderTOTP = () => {
-		const { isFetching } = this.props;
+		const { isFetching, theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Two_Factor_Authentication')}</Text>
-				<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular]}>{I18n.t('Whats_your_2fa')}</Text>
+			<SafeAreaView
+				style={[
+					sharedStyles.container,
+					isTablet && sharedStyles.tabletScreenContent,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='login-view'
+				forceInset={{ vertical: 'never' }}
+			>
+				<Text
+					style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: themes[theme].titleText }]}
+				>
+					{I18n.t('Two_Factor_Authentication')}
+				</Text>
+				<Text
+					style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}
+				>
+					{I18n.t('Whats_your_2fa')}
+				</Text>
 				<TextInput
 					inputRef={ref => this.codeInput = ref}
 					autoFocus
@@ -186,6 +208,7 @@ class LoginView extends React.Component {
 					onSubmitEditing={this.submit}
 					testID='login-view-totp'
 					containerStyle={sharedStyles.inputLastChild}
+					theme={theme}
 				/>
 				<Button
 					title={I18n.t('Confirm')}
@@ -194,6 +217,7 @@ class LoginView extends React.Component {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
+					theme={theme}
 				/>
 			</SafeAreaView>
 		);
@@ -201,11 +225,19 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching, theme
 		} = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='login-view' forceInset={{ vertical: 'never' }}>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold]}>{I18n.t('Login')}</Text>
+			<SafeAreaView
+				style={[
+					sharedStyles.container,
+					isTablet && sharedStyles.tabletScreenContent,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='login-view'
+				forceInset={{ vertical: 'never' }}
+			>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
 					autoFocus
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
@@ -215,6 +247,9 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
+					textContentType='username'
+					autoCompleteType='username'
+					theme={theme}
 				/>
 				<TextInput
 					inputRef={(e) => { this.passwordInput = e; }}
@@ -226,6 +261,9 @@ class LoginView extends React.Component {
 					onChangeText={value => this.setState({ password: value })}
 					testID='login-view-password'
 					containerStyle={sharedStyles.inputLastChild}
+					textContentType='password'
+					autoCompleteType='password'
+					theme={theme}
 				/>
 				<Button
 					title={I18n.t('Login')}
@@ -234,6 +272,7 @@ class LoginView extends React.Component {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
+					theme={theme}
 				/>
 				{Accounts_PasswordReset && (
 					<Button
@@ -241,12 +280,13 @@ class LoginView extends React.Component {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
+						theme={theme}
 					/>
 				)}
 				<View style={styles.bottomContainer}>
-					<Text style={styles.dontHaveAccount}>{I18n.t('Dont_Have_An_Account')}</Text>
+					<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
-						style={styles.createAccount}
+						style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
 						onPress={this.register}
 						testID='login-view-register'
 					>{I18n.t('Create_account')}
@@ -258,13 +298,15 @@ class LoginView extends React.Component {
 
 	render() {
 		const { showTOTP } = this.state;
+		const { theme } = this.props;
 		return (
 			<KeyboardView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 				key='login-view'
 			>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}
@@ -288,4 +330,4 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));

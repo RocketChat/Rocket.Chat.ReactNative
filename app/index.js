@@ -1,13 +1,23 @@
 import React from 'react';
+import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
-import { useScreens } from 'react-native-screens'; // eslint-disable-line import/no-unresolved
-import { Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import RNUserDefaults from 'rn-user-defaults';
+import Modal from 'react-native-modal';
+import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
-import { appInit } from './actions';
+import {
+	defaultTheme,
+	newThemeState,
+	subscribeTheme,
+	unsubscribeTheme
+} from './utils/theme';
+import EventEmitter from './utils/events';
+import { appInit, appInitLocalSettings } from './actions';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
 import Sidebar from './views/SidebarView';
@@ -15,13 +25,24 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
-import RocketChat from './lib/rocketchat';
-import LayoutAnimation from './utils/layoutAnimation';
+import { ThemeContext } from './theme';
+import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
+import {
+	isTablet, isSplited, isIOS, setWidth, supportSystemTheme
+} from './utils/deviceInfo';
+import { KEY_COMMAND } from './commands';
+import Tablet, { initTabletNav } from './tablet';
+import sharedStyles from './views/Styles';
+import { SplitContext } from './split';
 
-useScreens();
+if (isIOS) {
+	const RNScreens = require('react-native-screens');
+	RNScreens.useScreens();
+}
 
 const parseDeepLinking = (url) => {
 	if (url) {
@@ -62,7 +83,8 @@ const OutsideStack = createStackNavigator({
 		getScreen: () => require('./views/LegalView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AuthenticationWebViewStack = createStackNavigator({
@@ -70,7 +92,8 @@ const AuthenticationWebViewStack = createStackNavigator({
 		getScreen: () => require('./views/AuthenticationWebView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const OutsideStackModal = createStackNavigator({
@@ -79,16 +102,29 @@ const OutsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
+
+const RoomRoutes = {
+	RoomView: {
+		getScreen: () => require('./views/RoomView').default
+	},
+	ThreadMessagesView: {
+		getScreen: () => require('./views/ThreadMessagesView').default
+	},
+	MarkdownTableView: {
+		getScreen: () => require('./views/MarkdownTableView').default
+	},
+	ReadReceiptsView: {
+		getScreen: () => require('./views/ReadReceiptView').default
+	}
+};
 
 // Inside
 const ChatsStack = createStackNavigator({
 	RoomsListView: {
 		getScreen: () => require('./views/RoomsListView').default
-	},
-	RoomView: {
-		getScreen: () => require('./views/RoomView').default
 	},
 	RoomActionsView: {
 		getScreen: () => require('./views/RoomActionsView').default
@@ -108,34 +144,35 @@ const ChatsStack = createStackNavigator({
 	SelectedUsersView: {
 		getScreen: () => require('./views/SelectedUsersView').default
 	},
-	ThreadMessagesView: {
-		getScreen: () => require('./views/ThreadMessagesView').default
-	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
 	},
 	AutoTranslateView: {
 		getScreen: () => require('./views/AutoTranslateView').default
 	},
-	ReadReceiptsView: {
-		getScreen: () => require('./views/ReadReceiptView').default
-	},
 	DirectoryView: {
 		getScreen: () => require('./views/DirectoryView').default
 	},
-	TableView: {
-		getScreen: () => require('./views/TableView').default
-	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
-	}
+	},
+	...RoomRoutes
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+// Inside
+const RoomStack = createStackNavigator({
+	...RoomRoutes
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ChatsStack.navigationOptions = ({ navigation }) => {
 	let drawerLockMode = 'unlocked';
-	if (navigation.state.index > 0) {
+	if (navigation.state.index > 0 || isSplited()) {
 		drawerLockMode = 'locked-closed';
 	}
 	return {
@@ -148,7 +185,8 @@ const ProfileStack = createStackNavigator({
 		getScreen: () => require('./views/ProfileView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 ProfileStack.navigationOptions = ({ navigation }) => {
@@ -167,9 +205,13 @@ const SettingsStack = createStackNavigator({
 	},
 	LanguageView: {
 		getScreen: () => require('./views/LanguageView').default
+	},
+	ThemeView: {
+		getScreen: () => require('./views/ThemeView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const AdminPanelStack = createStackNavigator({
@@ -177,7 +219,8 @@ const AdminPanelStack = createStackNavigator({
 		getScreen: () => require('./views/AdminPanelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 SettingsStack.navigationOptions = ({ navigation }) => {
@@ -211,7 +254,8 @@ const NewMessageStack = createStackNavigator({
 		getScreen: () => require('./views/CreateChannelView').default
 	}
 }, {
-	defaultNavigationOptions: defaultHeader
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
 });
 
 const InsideStackModal = createStackNavigator({
@@ -223,35 +267,210 @@ const InsideStackModal = createStackNavigator({
 },
 {
 	mode: 'modal',
-	headerMode: 'none'
+	headerMode: 'none',
+	cardStyle
 });
 
 const SetUsernameStack = createStackNavigator({
 	SetUsernameView: {
 		getScreen: () => require('./views/SetUsernameView').default
 	}
+},
+{
+	cardStyle
 });
 
 class CustomInsideStack extends React.Component {
 	static router = InsideStackModal.router;
 
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, screenProps } = this.props;
 		return (
 			<>
-				<InsideStackModal navigation={navigation} />
-				<NotificationBadge navigation={navigation} />
+				<InsideStackModal navigation={navigation} screenProps={screenProps} />
+				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
+				{ !isTablet ? <Toast /> : null }
+			</>
+		);
+	}
+}
+
+class CustomRoomStack extends React.Component {
+	static router = RoomStack.router;
+
+	static propTypes = {
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
+	}
+
+	render() {
+		const { navigation, screenProps } = this.props;
+		return (
+			<>
+				<RoomStack navigation={navigation} screenProps={screenProps} />
 				<Toast />
 			</>
 		);
 	}
 }
 
-const App = createAppContainer(createSwitchNavigator(
+const MessagesStack = createStackNavigator({
+	NewMessageView: {
+		getScreen: () => require('./views/NewMessageView').default
+	},
+	SelectedUsersViewCreateChannel: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	CreateChannelView: {
+		getScreen: () => require('./views/CreateChannelView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+const DirectoryStack = createStackNavigator({
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+const SidebarStack = createStackNavigator({
+	SettingsView: {
+		getScreen: () => require('./views/SettingsView').default
+	},
+	ProfileView: {
+		getScreen: () => require('./views/ProfileView').default
+	},
+	AdminPanelView: {
+		getScreen: () => require('./views/AdminPanelView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+const RoomActionsStack = createStackNavigator({
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	},
+	RoomInfoEditView: {
+		getScreen: () => require('./views/RoomInfoEditView').default
+	},
+	RoomMembersView: {
+		getScreen: () => require('./views/RoomMembersView').default
+	},
+	SearchMessagesView: {
+		getScreen: () => require('./views/SearchMessagesView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	MessagesView: {
+		getScreen: () => require('./views/MessagesView').default
+	},
+	AutoTranslateView: {
+		getScreen: () => require('./views/AutoTranslateView').default
+	},
+	ReadReceiptsView: {
+		getScreen: () => require('./views/ReadReceiptView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPreferencesView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+
+const ModalSwitch = createSwitchNavigator({
+	MessagesStack,
+	DirectoryStack,
+	SidebarStack,
+	RoomActionsStack,
+	SettingsStack,
+	AuthLoading: () => null
+},
+{
+	initialRouteName: 'AuthLoading'
+});
+
+class CustomModalStack extends React.Component {
+	static router = ModalSwitch.router;
+
+	static propTypes = {
+		navigation: PropTypes.object,
+		showModal: PropTypes.bool,
+		closeModal: PropTypes.func,
+		screenProps: PropTypes.object
+	}
+
+	componentDidMount() {
+		this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.closeModal);
+	}
+
+	componentWillUnmount() {
+		this.backHandler.remove();
+	}
+
+	closeModal = () => {
+		const { closeModal, navigation } = this.props;
+		const { state } = navigation;
+		if (state && state.routes[state.index] && state.routes[state.index].index === 0) {
+			closeModal();
+			return true;
+		}
+		return false;
+	}
+
+	render() {
+		const {
+			navigation, showModal, closeModal, screenProps
+		} = this.props;
+		return (
+			<Modal
+				useNativeDriver
+				coverScreen={false}
+				isVisible={showModal}
+				onBackdropPress={closeModal}
+				hideModalContentWhileAnimating
+				avoidKeyboard
+			>
+				<View style={sharedStyles.modal}>
+					<ModalSwitch navigation={navigation} screenProps={screenProps} />
+				</View>
+			</Modal>
+		);
+	}
+}
+
+class CustomNotificationStack extends React.Component {
+	static router = InsideStackModal.router;
+
+	static propTypes = {
+		navigation: PropTypes.object,
+		screenProps: PropTypes.object
+	}
+
+	render() {
+		const { navigation, screenProps } = this.props;
+		return <NotificationBadge navigation={navigation} screenProps={screenProps} />;
+	}
+}
+
+export const App = createAppContainer(createSwitchNavigator(
 	{
 		OutsideStack: OutsideStackModal,
 		InsideStack: CustomInsideStack,
@@ -265,11 +484,30 @@ const App = createAppContainer(createSwitchNavigator(
 	}
 ));
 
+export const RoomContainer = createAppContainer(CustomRoomStack);
+
+export const ModalContainer = createAppContainer(CustomModalStack);
+
+export const NotificationContainer = createAppContainer(CustomNotificationStack);
+
 export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
 		this.initCrashReport();
+		this.state = {
+			split: false,
+			inside: false,
+			showModal: false,
+			theme: defaultTheme(),
+			themePreferences: {
+				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
+				darkLevel: 'dark'
+			}
+		};
+		if (isTablet) {
+			this.initTablet();
+		}
 	}
 
 	componentDidMount() {
@@ -283,13 +521,36 @@ export default class Root extends React.Component {
 		}, 5000);
 	}
 
+	// eslint-disable-next-line no-unused-vars
+	componentDidUpdate(_, prevState) {
+		if (isTablet) {
+			const { split, inside } = this.state;
+			if (inside && split !== prevState.split) {
+				// Reset app on split mode changes
+				Navigation.navigate('RoomsListView');
+				this.closeModal();
+			}
+		}
+	}
+
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+
+		unsubscribeTheme();
+
+		if (this.onKeyCommands && this.onKeyCommands.remove) {
+			this.onKeyCommands.remove();
+		}
 	}
 
 	init = async() => {
+		if (isIOS) {
+			await RNUserDefaults.setName('group.ios.chat.rocket');
+		}
+		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		store.dispatch(appInitLocalSettings());
 		if (notification) {
 			onNotification(notification);
 		} else if (parsedDeepLinkingURL) {
@@ -297,6 +558,24 @@ export default class Root extends React.Component {
 		} else {
 			store.dispatch(appInit());
 		}
+	}
+
+	setTheme = (newTheme = {}) => {
+		// change theme state
+		this.setState(prevState => newThemeState(prevState, newTheme), () => {
+			const { themePreferences } = this.state;
+			// subscribe to Appearance changes
+			subscribeTheme(themePreferences, this.setTheme);
+		});
+	}
+
+	initTablet = async() => {
+		initTabletNav(args => this.setState(args));
+		await KeyCommands.setKeyCommands([]);
+		this.onKeyCommands = KeyCommandsEmitter.addListener(
+			'onKeyCommand',
+			command => EventEmitter.emit(KEY_COMMAND, { event: command })
+		);
 	}
 
 	initCrashReport = () => {
@@ -310,18 +589,59 @@ export default class Root extends React.Component {
 			});
 	}
 
+	onLayout = ({ nativeEvent: { layout: { width } } }) => (isTablet ? this.setSplit(width) : null);
+
+	setSplit = (width) => {
+		this.setState({ split: width > MIN_WIDTH_SPLIT_LAYOUT });
+		setWidth(width);
+	}
+
+	closeModal = () => this.setState({ showModal: false });
+
 	render() {
+		const { split, themePreferences, theme } = this.state;
+
+		let content = (
+			<App
+				ref={(navigatorRef) => {
+					Navigation.setTopLevelNavigator(navigatorRef);
+				}}
+				screenProps={{ split, theme }}
+				onNavigationStateChange={onNavigationStateChange}
+			/>
+		);
+
+		if (isTablet) {
+			const { inside, showModal } = this.state;
+			content = (
+				<SplitContext.Provider value={{ split }}>
+					<Tablet
+						theme={theme}
+						tablet={split}
+						inside={inside}
+						showModal={showModal}
+						closeModal={this.closeModal}
+						onLayout={this.onLayout}
+					>
+						{content}
+					</Tablet>
+				</SplitContext.Provider>
+			);
+		}
 		return (
-			<Provider store={store}>
-				<LayoutAnimation>
-					<App
-						ref={(navigatorRef) => {
-							Navigation.setTopLevelNavigator(navigatorRef);
+			<AppearanceProvider>
+				<Provider store={store}>
+					<ThemeContext.Provider
+						value={{
+							theme,
+							themePreferences,
+							setTheme: this.setTheme
 						}}
-						onNavigationStateChange={onNavigationStateChange}
-					/>
-				</LayoutAnimation>
-			</Provider>
+					>
+						{content}
+					</ThemeContext.Provider>
+				</Provider>
+			</AppearanceProvider>
 		);
 	}
 }

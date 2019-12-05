@@ -65,7 +65,7 @@ class JitsiMeetView extends React.Component {
 			<RNJitsiMeetView
 				onConferenceTerminated={this.onConferenceTerminated}
 				onConferenceJoined={this.onConferenceJoined}
-				style={sharedStyles.root}
+				style={sharedStyles.container}
 			/>
 		);
 	}

@@ -13,11 +13,13 @@ import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
-import { isIOS, isNotch } from '../../utils/deviceInfo';
+import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
-import { COLOR_PRIMARY, COLOR_WHITE } from '../../constants/colors';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import sharedStyles from '../Styles';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -31,14 +33,17 @@ class OnboardingView extends React.Component {
 		currentServer: PropTypes.string,
 		initAdd: PropTypes.func,
 		finishAdd: PropTypes.func,
-		appStart: PropTypes.func
+		appStart: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		this.previousServer = props.navigation.getParam('previousServer');
-		Orientation.lockToPortrait();
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 	}
 
 	componentDidMount() {
@@ -49,7 +54,11 @@ class OnboardingView extends React.Component {
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
-	shouldComponentUpdate() {
+	shouldComponentUpdate(nextProps) {
+		const { theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		return false;
 	}
 
@@ -97,10 +106,12 @@ class OnboardingView extends React.Component {
 	}
 
 	createWorkspace = () => {
-		openLink('https://cloud.rocket.chat/trial');
+		const { theme } = this.props;
+		openLink('https://cloud.rocket.chat/trial', theme);
 	}
 
 	renderClose = () => {
+		const { theme } = this.props;
 		if (this.previousServer) {
 			let top = 15;
 			if (isIOS) {
@@ -115,7 +126,7 @@ class OnboardingView extends React.Component {
 					<CustomIcon
 						name='cross'
 						size={30}
-						color={COLOR_PRIMARY}
+						color={themes[theme].actionTintColor}
 					/>
 				</TouchableOpacity>
 			);
@@ -124,19 +135,27 @@ class OnboardingView extends React.Component {
 	}
 
 	render() {
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='onboarding-view'>
-				<StatusBar light />
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='onboarding-view'
+			>
+				<StatusBar theme={theme} />
 				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
-				<Text style={styles.title}>{I18n.t('Welcome_to_RocketChat')}</Text>
-				<Text style={styles.subtitle}>{I18n.t('Open_Source_Communication')}</Text>
-				<View style={styles.buttonsContainer}>
+				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Welcome_to_RocketChat')}</Text>
+				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Open_Source_Communication')}</Text>
+				<View style={[styles.buttonsContainer, isTablet && sharedStyles.tabletScreenContent]}>
 					<Button
 						type='secondary'
 						title={I18n.t('Connect_to_a_server')}
-						icon={<CustomIcon name='permalink' size={30} color={COLOR_PRIMARY} />}
+						icon={<CustomIcon name='permalink' size={30} color={themes[theme].actionTintColor} />}
 						onPress={this.connectServer}
 						testID='connect-server-button'
+						theme={theme}
 					/>
 					<Button
 						type='secondary'
@@ -145,13 +164,15 @@ class OnboardingView extends React.Component {
 						icon={<Image source={{ uri: 'logo_onboarding' }} style={{ width: 32, height: 27 }} fadeDuration={0} />}
 						onPress={this.joinCommunity}
 						testID='join-community-button'
+						theme={theme}
 					/>
 					<Button
 						type='primary'
 						title={I18n.t('Create_a_new_workspace')}
-						icon={<CustomIcon name='plus' size={30} color={COLOR_WHITE} />}
+						icon={<CustomIcon name='plus' size={30} color={themes[theme].buttonText} />}
 						onPress={this.createWorkspace}
 						testID='create-workspace-button'
+						theme={theme}
 					/>
 				</View>
 				{this.renderClose()}
@@ -172,4 +193,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: root => dispatch(appStartAction(root))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OnboardingView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OnboardingView));

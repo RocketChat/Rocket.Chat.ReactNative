@@ -8,13 +8,14 @@ import equal from 'deep-equal';
 import { responsive } from 'react-native-responsive-ui';
 import Touchable from 'react-native-platform-touchable';
 
-import { isNotch, isIOS } from '../../utils/deviceInfo';
+import { isNotch, isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { COLOR_BACKGROUND_NOTIFICATION, COLOR_SEPARATOR, COLOR_TEXT } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
+import { withTheme } from '../../theme';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -38,15 +39,16 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		position: 'absolute',
 		zIndex: 2,
-		backgroundColor: COLOR_BACKGROUND_NOTIFICATION,
 		width: '100%',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	content: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	inner: {
+		flex: 1
 	},
 	avatar: {
 		marginRight: 10
@@ -54,17 +56,14 @@ const styles = StyleSheet.create({
 	roomName: {
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textMedium
 	},
 	message: {
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textRegular
 	},
 	close: {
-		color: COLOR_TEXT,
 		marginLeft: 10
 	}
 });
@@ -77,7 +76,8 @@ class NotificationBadge extends React.Component {
 		userId: PropTypes.string,
 		notification: PropTypes.object,
 		window: PropTypes.object,
-		removeNotification: PropTypes.func
+		removeNotification: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -88,8 +88,11 @@ class NotificationBadge extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
 		const {
-			notification: { payload }, window
+			notification: { payload }, window, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!equal(nextNotification.payload, payload)) {
 			return true;
 		}
@@ -120,7 +123,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 1,
 				...ANIMATION_PROPS
-			},
+			}
 		).start(() => {
 			this.clearTimeout();
 			this.timeout = setTimeout(() => {
@@ -136,7 +139,7 @@ class NotificationBadge extends React.Component {
 			{
 				toValue: 0,
 				...ANIMATION_PROPS
-			},
+			}
 		).start();
 		setTimeout(removeNotification, ANIMATION_DURATION);
 	}
@@ -155,26 +158,26 @@ class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = async() => {
-		const { notification: { payload }, navigation } = this.props;
+		const { notification: { payload }, navigation, baseUrl } = this.props;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
 		}
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name, t: type, prid
+			rid, name, t: type, prid, baseUrl
 		});
 		this.hide();
 	}
 
 	render() {
 		const {
-			baseUrl, token, userId, notification, window
+			baseUrl, token, userId, notification, window, theme
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
-		const name = type === 'p' ? payload.name : payload.sender.username;
+		const name = type === 'd' ? payload.sender.username : payload.name;
 
 		let top = 0;
 		if (isIOS) {
@@ -182,18 +185,25 @@ class NotificationBadge extends React.Component {
 			if (portrait) {
 				top = isNotch ? 45 : 20;
 			} else {
-				top = 0;
+				top = isTablet ? 20 : 0;
 			}
 		}
-
-		const maxWidthMessage = window.width - 110;
 
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [-top - ROW_HEIGHT, top]
 		});
 		return (
-			<Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+			<Animated.View
+				style={[
+					styles.container,
+					{
+						transform: [{ translateY }],
+						backgroundColor: themes[theme].focusedBackground,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
+			>
 				<Touchable
 					style={styles.content}
 					onPress={this.goToRoom}
@@ -202,14 +212,14 @@ class NotificationBadge extends React.Component {
 				>
 					<>
 						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-						<View>
-							<Text style={styles.roomName}>{name}</Text>
-							<Text style={[styles.message, { maxWidth: maxWidthMessage }]} numberOfLines={1}>{message}</Text>
+						<View style={styles.inner}>
+							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
+							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
 				</Touchable>
 				<TouchableOpacity onPress={this.hide}>
-					<CustomIcon name='circle-cross' style={styles.close} size={20} />
+					<CustomIcon name='circle-cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 				</TouchableOpacity>
 			</Animated.View>
 		);
@@ -227,4 +237,4 @@ const mapDispatchToProps = dispatch => ({
 	removeNotification: () => dispatch(removeNotificationAction())
 });
 
-export default responsive(connect(mapStateToProps, mapDispatchToProps)(NotificationBadge));
+export default responsive(connect(mapStateToProps, mapDispatchToProps)(withTheme(NotificationBadge)));
