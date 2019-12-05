@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, ActivityIndicator, Keyboard, BackHandler
+	View, Text, FlatList, Keyboard, BackHandler
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
@@ -22,17 +22,21 @@ import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
+import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
 		const initSearch = navigation.getParam('initSearch', () => {});
 		const cancelSearch = navigation.getParam('cancelSearch', () => {});
@@ -40,19 +44,21 @@ class ShareListView extends React.Component {
 
 		if (isIOS) {
 			return {
+				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
 				headerTitle: (
 					<ShareListHeader
 						searching={searching}
 						initSearch={initSearch}
 						cancelSearch={cancelSearch}
 						search={search}
+						theme={screenProps.theme}
 					/>
 				)
 			};
 		}
 
 		return {
-			headerBackTitle: null,
+			...themedHeader(screenProps.theme),
 			headerLeft: searching
 				? (
 					<CustomHeaderButtons left>
@@ -65,7 +71,7 @@ class ShareListView extends React.Component {
 						testID='share-extension-close'
 					/>
 				),
-			headerTitle: <ShareListHeader searching={searching} search={search} />,
+			headerTitle: <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
 			headerRight: (
 				searching
 					? null
@@ -83,7 +89,8 @@ class ShareListView extends React.Component {
 		server: PropTypes.string,
 		baseUrl: PropTypes.string,
 		token: PropTypes.string,
-		userId: PropTypes.string
+		userId: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -160,8 +167,11 @@ class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		if (server !== nextProps.server) {
+			return true;
+		}
+		if (theme !== nextProps.theme) {
 			return true;
 		}
 
@@ -273,13 +283,14 @@ class ShareListView extends React.Component {
 
 	renderSectionHeader = (header) => {
 		const { searching } = this.state;
+		const { theme } = this.props;
 		if (searching) {
 			return null;
 		}
 
 		return (
-			<View style={styles.headerContainer}>
-				<Text style={styles.headerText}>
+			<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+				<Text style={[styles.headerText, { color: themes[theme].titleText }]}>
 					{I18n.t(header)}
 				</Text>
 			</View>
@@ -287,7 +298,9 @@ class ShareListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { userId, token, baseUrl } = this.props;
+		const {
+			userId, token, baseUrl, theme
+		} = this.props;
 		return (
 			<DirectoryItem
 				user={{
@@ -305,37 +318,56 @@ class ShareListView extends React.Component {
 				type={item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${ item.name }`}
+				theme={theme}
 			/>
 		);
 	}
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />;
+	}
 
-	renderBorderBottom = () => <View style={styles.borderBottom} />;
+	renderBorderBottom = () => {
+		const { theme } = this.props;
+		return <View style={[styles.borderBottom, { borderColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderSelectServer = () => {
 		const { servers } = this.state;
-		const { server } = this.props;
+		const { server, theme } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
 			<>
 				{this.renderSectionHeader('Select_Server')}
-				<View style={styles.bordered}>
+				<View
+					style={[
+						styles.bordered,
+						{
+							borderColor: themes[theme].separatorColor,
+							backgroundColor: themes[theme].auxiliaryBackground
+						}
+					]}
+				>
 					<ServerItem
 						server={server}
 						onPress={() => Navigation.navigate('SelectServerView', { servers: this.servers })}
 						item={currentServer}
+						theme={theme}
 					/>
 				</View>
 			</>
 		) : null;
 	}
 
-	renderEmptyComponent = () => (
-		<View style={[styles.container, styles.emptyContainer]}>
-			<Text style={styles.title}>{I18n.t('No_results_found')}</Text>
-		</View>
-	);
+	renderEmptyComponent = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			</View>
+		);
+	}
 
 	renderHeader = () => {
 		const { searching } = this.state;
@@ -358,22 +390,24 @@ class ShareListView extends React.Component {
 		const {
 			chats, mediaLoading, loading, searchResults, searching, searchText
 		} = this.state;
+		const { theme } = this.props;
 
 		if (mediaLoading || loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		return (
 			<FlatList
 				data={searching ? searchResults : chats}
 				keyExtractor={keyExtractor}
-				style={styles.flatlist}
+				style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={!searching && this.renderBorderBottom}
-				ListHeaderComponentStyle={!searching ? styles.borderBottom : {}}
+				ListHeaderComponentStyle={!searching ? { ...styles.borderBottom, borderColor: themes[theme].separatorColor } : {}}
 				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
 				enableEmptySections
 				removeClippedSubviews
@@ -388,13 +422,14 @@ class ShareListView extends React.Component {
 		const {
 			fileInfo: file, loading, searching, error
 		} = this.state;
+		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+			return <ActivityIndicator theme={theme} />;
 		}
 
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				{ !searching
 					? (
 						<>
@@ -403,10 +438,10 @@ class ShareListView extends React.Component {
 					)
 					: null
 				}
-				<View style={[styles.container, styles.centered]}>
-					<Text style={styles.title}>{I18n.t(error)}</Text>
-					<CustomIcon name='circle-cross' size={120} style={styles.errorIcon} />
-					<Text style={styles.fileMime}>{ file.mime }</Text>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t(error)}</Text>
+					<CustomIcon name='circle-cross' size={120} color={themes[theme].dangerColor} />
+					<Text style={[styles.fileMime, { color: themes[theme].titleText }]}>{ file.mime }</Text>
 				</View>
 			</View>
 		);
@@ -414,9 +449,10 @@ class ShareListView extends React.Component {
 
 	render() {
 		const { showError } = this.state;
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]} forceInset={{ vertical: 'never' }}>
+				<StatusBar theme={theme} />
 				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>
 		);
@@ -430,4 +466,4 @@ const mapStateToProps = (({ share }) => ({
 	baseUrl: share ? share.server : ''
 }));
 
-export default connect(mapStateToProps)(ShareListView);
+export default connect(mapStateToProps)(withTheme(ShareListView));

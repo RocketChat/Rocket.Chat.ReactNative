@@ -1,27 +1,25 @@
 import React from 'react';
-import {
-	View, StyleSheet, TextInput, Text
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
+import TextInput from '../presentation/TextInput';
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: isIOS ? '#F7F8FA' : '#54585E',
 		flexDirection: 'row',
 		alignItems: 'center',
 		flex: 1
 	},
 	searchBox: {
 		alignItems: 'center',
-		backgroundColor: '#E1E5E8',
 		borderRadius: 10,
-		color: '#8E8E93',
 		flexDirection: 'row',
 		fontSize: 17,
 		height: 36,
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	input: {
-		color: '#8E8E93',
 		flex: 1,
 		fontSize: 17,
 		marginLeft: 8,
@@ -44,23 +41,27 @@ const styles = StyleSheet.create({
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorHeaderBack,
 		fontSize: 17
 	}
 });
 
-const CancelButton = onCancelPress => (
+const CancelButton = (onCancelPress, theme) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
-		<Text style={styles.cancelText}>{I18n.t('Cancel')}</Text>
+		<Text style={[styles.cancelText, { color: themes[theme].tintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, ...props
+	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
 }) => (
-	<View style={styles.container}>
-		<View style={styles.searchBox}>
-			<CustomIcon name='magnifier' size={14} color='#8E8E93' />
+	<View
+		style={[
+			styles.container,
+			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
+		]}
+	>
+		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
+			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
 				autoCapitalize='none'
@@ -74,10 +75,11 @@ const SearchBox = ({
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
 				onSubmitEditing={onSubmitEditing}
+				theme={theme}
 				{...props}
 			/>
 		</View>
-		{ hasCancel ? CancelButton(onCancelPress) : null }
+		{ hasCancel ? CancelButton(onCancelPress, theme) : null }
 	</View>
 );
 
@@ -86,8 +88,9 @@ SearchBox.propTypes = {
 	onSubmitEditing: PropTypes.func,
 	hasCancel: PropTypes.bool,
 	onCancelPress: PropTypes.func,
+	theme: PropTypes.string,
 	inputRef: PropTypes.func,
 	testID: PropTypes.string
 };
 
-export default SearchBox;
+export default withTheme(SearchBox);

@@ -17,21 +17,18 @@ import Loading from '../containers/Loading';
 import debounce from '../utils/debounce';
 import I18n from '../i18n';
 import log from '../utils/log';
-import { isIOS } from '../utils/deviceInfo';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { COLOR_WHITE } from '../constants/colors';
+import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { withTheme } from '../theme';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
-		flex: 1,
-		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
-	},
-	header: {
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	separator: {
 		marginLeft: 60
@@ -39,10 +36,11 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title');
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
+			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
 				<CustomHeaderButtons>
@@ -64,7 +62,8 @@ class SelectedUsersView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -83,7 +82,10 @@ class SelectedUsersView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { search, chats } = this.state;
-		const { users, loading } = this.props;
+		const { users, loading, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.loading !== loading) {
 			return true;
 		}
@@ -186,15 +188,18 @@ class SelectedUsersView extends React.Component {
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
-	renderHeader = () => (
-		<View style={styles.header}>
-			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
-			{this.renderSelected()}
-		</View>
-	)
+	renderHeader = () => {
+		const { theme } = this.props;
+		return (
+			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
+				{this.renderSelected()}
+			</View>
+		);
+	}
 
 	renderSelected = () => {
-		const { users } = this.props;
+		const { users, theme } = this.props;
 
 		if (users.length === 0) {
 			return null;
@@ -203,7 +208,7 @@ class SelectedUsersView extends React.Component {
 			<FlatList
 				data={users}
 				keyExtractor={item => item._id}
-				style={[styles.list, sharedStyles.separatorTop]}
+				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
 				enableEmptySections
@@ -214,7 +219,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	renderSelectedItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 		return (
 			<UserItem
 				name={item.fname}
@@ -224,21 +229,25 @@ class SelectedUsersView extends React.Component {
 				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		const name = item.search ? item.name : item.fname;
 		const username = item.search ? item.username : item.name;
-		let style = {};
+		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
-			style = { ...sharedStyles.separatorTop };
+			style = { ...style, ...sharedStyles.separatorTop };
 		}
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
@@ -256,12 +265,14 @@ class SelectedUsersView extends React.Component {
 				baseUrl={baseUrl}
 				style={style}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
 
 	renderList = () => {
 		const { search, chats } = this.state;
+		const { theme } = this.props;
 		return (
 			<FlatList
 				data={search.length > 0 ? search : chats}
@@ -270,6 +281,7 @@ class SelectedUsersView extends React.Component {
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={this.renderSeparator}
 				ListHeaderComponent={this.renderHeader}
+				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
@@ -277,10 +289,14 @@ class SelectedUsersView extends React.Component {
 	}
 
 	render = () => {
-		const { loading } = this.props;
+		const { loading, theme } = this.props;
 		return (
-			<SafeAreaView style={styles.safeAreaView} testID='select-users-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView
+				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				forceInset={{ vertical: 'never' }}
+				testID='select-users-view'
+			>
+				<StatusBar theme={theme} />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>
@@ -305,4 +321,4 @@ const mapDispatchToProps = dispatch => ({
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedUsersView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from 'react-navigation-stack';
 
 import { isIOS } from '../../../utils/deviceInfo';
-import { HEADER_BACK } from '../../../constants/colors';
+import { themes } from '../../../constants/colors';
 import Avatar from '../../../containers/Avatar';
 
 const styles = StyleSheet.create({
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 const RoomHeaderLeft = ({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, goRoomActionsView, split
+	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, split
 }) => {
 	if (!split || tmid) {
 		return (
@@ -23,7 +23,7 @@ const RoomHeaderLeft = ({
 				title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
 				backTitleVisible={isIOS}
 				onPress={() => navigation.goBack()}
-				tintColor={HEADER_BACK}
+				tintColor={themes[theme].headerTintColor}
 			/>
 		);
 	}
@@ -37,6 +37,7 @@ const RoomHeaderLeft = ({
 				style={styles.avatar}
 				userId={userId}
 				token={token}
+				theme={theme}
 				onPress={goRoomActionsView}
 			/>
 		);
@@ -53,6 +54,7 @@ RoomHeaderLeft.propTypes = {
 	token: PropTypes.string,
 	title: PropTypes.string,
 	t: PropTypes.string,
+	theme: PropTypes.string,
 	goRoomActionsView: PropTypes.func,
 	split: PropTypes.bool
 };

@@ -1,14 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
-import {
-	COLOR_BACKGROUND_CONTAINER, COLOR_WHITE
-} from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		flex: 1
 	},
 	centered: {
 		justifyContent: 'center',
@@ -17,54 +13,44 @@ export default StyleSheet.create({
 	title: {
 		fontSize: 18,
 		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textAlignCenter
 	},
 	text: {
 		paddingHorizontal: 16,
 		paddingVertical: 8,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	to: {
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	toContent: {
-		width: '100%',
-		backgroundColor: COLOR_WHITE
+		width: '100%'
 	},
 	toContentText: {
 		width: '100%',
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	name: {
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorTitle
+		...sharedStyles.textRegular
 	},
 	content: {
-		flex: 1,
-		backgroundColor: COLOR_WHITE
+		flex: 1
 	},
 	mediaContainer: {
-		flex: 1,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER
+		flex: 1
 	},
 	mediaContent: {
 		flexDirection: 'row',
 		padding: 16,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		alignItems: 'center'
+		alignItems: 'center',
+		...sharedStyles.separatorTop
 	},
 	mediaImage: {
 		height: 64,
 		width: 64
 	},
 	mediaIcon: {
-		fontSize: 64,
-		...sharedStyles.textColorNormal
+		fontSize: 64
 	},
 	mediaIconContainer: {
 		alignItems: 'center',
@@ -76,40 +62,36 @@ export default StyleSheet.create({
 	},
 	mediaText: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	mediaInputContent: {
-		width: '100%',
-		...sharedStyles.separatorVertical,
-		backgroundColor: COLOR_WHITE
+		width: '100%'
 	},
 	input: {
 		fontSize: 16,
-		...sharedStyles.textColorNormal,
-		...sharedStyles.textRegular,
-		backgroundColor: COLOR_WHITE
+		...sharedStyles.textRegular
+	},
+	inputContainer: {
+		marginBottom: 0
+	},
+	firstInput: {
+		borderBottomWidth: 0
 	},
 	textInput: {
-		flex: 1,
-		paddingHorizontal: 16
+		height: '100%'
 	},
 	mediaNameInput: {
-		marginLeft: 16,
+		paddingLeft: 16,
 		paddingRight: 16,
-		paddingVertical: 8,
-		backgroundColor: COLOR_WHITE,
-		...sharedStyles.separatorBottom
+		paddingVertical: 8
 	},
 	mediaDescriptionInput: {
-		marginLeft: 16,
+		paddingLeft: 16,
 		paddingRight: 16,
-		marginVertical: 8,
-		backgroundColor: COLOR_WHITE,
+		paddingVertical: 8,
 		height: 100
 	},
 	send: {
-		...sharedStyles.textColorHeaderBack,
 		...sharedStyles.textSemibold,
 		fontSize: 16
 	}

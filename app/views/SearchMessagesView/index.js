@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import RCTextInput from '../../containers/TextInput';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
@@ -16,17 +16,22 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 class SearchMessagesView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Search')
-	}
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Search'),
+		...themedHeader(screenProps.theme)
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		customEmojis: PropTypes.object
+		customEmojis: PropTypes.object,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -41,6 +46,10 @@ class SearchMessagesView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, searchText, messages } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -84,14 +93,17 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer}>
-			<Text style={styles.noDataFound}>{I18n.t('No_results_found')}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		return (
 			<Message
 				baseUrl={baseUrl}
@@ -105,12 +117,14 @@ class SearchMessagesView extends React.Component {
 				isHeader
 				onOpenFileModal={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
+				theme={theme}
 			/>
 		);
 	}
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
+		const { theme } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
@@ -120,19 +134,20 @@ class SearchMessagesView extends React.Component {
 			<FlatList
 				data={messages}
 				renderItem={this.renderItem}
-				style={styles.list}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.load}
-				ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				{...scrollPersistTaps}
 			/>
 		);
 	}
 
 	render() {
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
+				<StatusBar theme={theme} />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						autoFocus
@@ -140,9 +155,10 @@ class SearchMessagesView extends React.Component {
 						onChangeText={this.search}
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
+						theme={theme}
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' />
-					<View style={styles.divider} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' theme={theme} />
+					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}
 			</SafeAreaView>
@@ -160,4 +176,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(SearchMessagesView);
+export default connect(mapStateToProps)(withTheme(SearchMessagesView));

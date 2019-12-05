@@ -1,24 +1,37 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_DANGER, COLOR_SEPARATOR } from '../../constants/colors';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	button: {
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textBold
+	},
 	buttonInverted: {
-		borderColor: 'rgba(0,0,0,.15)',
 		borderWidth: 2,
 		borderRadius: 2
 	},
 	buttonContainerDisabled: {
-		backgroundColor: 'rgba(65, 72, 82, 0.7)'
+		opacity: 0.7
 	},
-	buttonDanger: {
-		borderColor: COLOR_DANGER,
-		borderWidth: 2,
+	buttonContainer_inverted: {
+		paddingVertical: 15,
+		marginBottom: 0
+	},
+	button_inverted: {
+		flexGrow: 1
+	},
+	buttonContainerLastChild: {
+		marginBottom: 40
+	},
+	buttonContainer: {
+		paddingVertical: 15,
+		marginBottom: 20,
 		borderRadius: 2
 	},
-	colorDanger: {
-		color: COLOR_DANGER
+	buttonDanger: {
+		borderWidth: 2,
+		borderRadius: 2
 	},
 	switchContainer: {
 		flexDirection: 'row',
@@ -26,31 +39,29 @@ export default StyleSheet.create({
 	},
 	switchLabelContainer: {
 		flex: 1,
-		paddingHorizontal: 10
+		paddingHorizontal: 10,
+		alignItems: 'flex-end'
 	},
 	switchLabelPrimary: {
 		fontSize: 16,
 		paddingBottom: 6,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textRegular
 	},
 	switchLabelSecondary: {
 		fontSize: 12,
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		textAlign: 'right'
 	},
 	switch: {
 		alignSelf: 'center'
 	},
 	divider: {
 		height: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginVertical: 20
 	},
 	broadcast: {
-		textAlign: 'center',
-		...sharedStyles.textSemibold,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textSemibold
 	}
 });
