@@ -1,6 +1,5 @@
 package chat.rocket.reactnative;
 
-import android.util.Log;
 import android.content.SharedPreferences;
 
 import chat.rocket.userdefaults.RNUserDefaultsModule;
