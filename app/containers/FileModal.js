@@ -51,13 +51,13 @@ const handleSave = (img) => {
 	FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`)
 		.then(({ uri }) => {
 			CameraRoll.saveToCameraRoll(uri).then(() => {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Saved to gallery') });
+				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 			}).catch(() => {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Error in saving image') });
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
 			});
 		})
 		.catch(() => {
-			EventEmitter.emit(LISTENER, { message: I18n.t('Error in saving image') });
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
 		});
 };
 
