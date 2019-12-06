@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-// import { shortnameToUnicode } from 'emoji-toolkit';
-const shortnameToUnicode = () => {}
 import equal from 'deep-equal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
@@ -16,6 +14,7 @@ import categories from './categories';
 import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
