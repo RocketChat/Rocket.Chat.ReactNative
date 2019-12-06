@@ -3,7 +3,15 @@ import { Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
-import { shortnameToUnicode } from 'emoji-toolkit';
+// import { shortnameToUnicode } from 'emoji-toolkit';
+// import EmojiShort from 'emoji-shortname-to-image';
+
+// const emoji = new EmojiShort('');
+
+// console.log(emoji.toUnicode(':croissant:'));
+
+// import emoji from '../../utils/emojiParser';
+// const shortnameToUnicode = emoji.toUnicode;
 
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';

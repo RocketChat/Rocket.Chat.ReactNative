@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, FlatList } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
+// import { shortnameToUnicode } from 'emoji-toolkit';
+const shortnameToUnicode = () => {}
 import { responsive } from 'react-native-responsive-ui';
 
 import styles from './styles';

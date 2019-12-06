@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
+// import { shortnameToUnicode } from 'emoji-toolkit';
+const shortnameToUnicode = () => {}
 import removeMarkdown from 'remove-markdown';
 
 import I18n from '../../../i18n';

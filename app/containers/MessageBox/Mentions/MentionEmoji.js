@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { shortnameToUnicode } from 'emoji-toolkit';
+// import { shortnameToUnicode } from 'emoji-toolkit';
+const shortnameToUnicode = () => {}
 
 import styles from '../styles';
 import MessageboxContext from '../Context';

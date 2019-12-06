@@ -2,11 +2,16 @@ import React from 'react';
 import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+// import EmojiShort from 'emoji-shortname-to-image';
 
 import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
+
+// const emoji = new EmojiShort('');
+
+// const shortnameToUnicode = emoji.toUnicode;
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
