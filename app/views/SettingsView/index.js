@@ -147,8 +147,6 @@ class SettingsView extends React.Component {
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
-	onPressLicense = () => openLink(LICENSE_LINK)
-
 	changeTheme = () => {
 		const { navigation } = this.props;
 		navigation.navigate('ThemeView');
