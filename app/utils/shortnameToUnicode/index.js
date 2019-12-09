@@ -1,9 +1,8 @@
 import emojis from './emojis';
 import ascii, { asciiRegexp } from './ascii';
 
-const shortnames = Object.keys(emojis).join('|').replace(/\+/g, '\\+');
-const shortnamePattern = new RegExp(shortnames, 'gi');
-const replaceShortNameWithUnicode = shortname => emojis[shortname].unicode;
+const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
+const replaceShortNameWithUnicode = shortname => (emojis[shortname] && emojis[shortname].unicode) || shortname;
 const regAscii = new RegExp(`((\\s|^)${ asciiRegexp }(?=\\s|$|[!,.?]))`, 'gi');
 
 const unescapeHTML = (string) => {
