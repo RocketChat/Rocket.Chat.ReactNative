@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, TextInput, Alert
-} from 'react-native';
+import { View, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -11,6 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
+import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
@@ -22,11 +21,18 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { COLOR_TEXT_DESCRIPTION } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
+import EventEmiter from '../../utils/events';
+import {
+	KEY_COMMAND,
+	handleCommandTyping,
+	handleCommandSubmit,
+	handleCommandShowUpload
+} from '../../commands';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -36,6 +42,7 @@ import {
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
+import { withTheme } from '../../theme';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -81,6 +88,7 @@ class MessageBox extends Component {
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
+		theme: PropTypes.string,
 		replyCancel: PropTypes.func
 	}
 
@@ -98,8 +106,8 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false
 		};
-		this.onEmojiSelected = this.onEmojiSelected.bind(this);
 		this.text = '';
+		this.focused = false;
 		this.fileOptions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
@@ -162,6 +170,10 @@ class MessageBox extends Component {
 		if (isAndroid) {
 			require('./EmojiKeyboard');
 		}
+
+		if (isTablet) {
+			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -187,8 +199,11 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused
+			roomType, replying, editing, isFocused, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (!isFocused()) {
 			return false;
 		}
@@ -239,12 +254,16 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
+		if (isTablet) {
+			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	onChangeText = (text) => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
+		this.setInput(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -253,7 +272,6 @@ class MessageBox extends Component {
 		const isTextEmpty = text.length === 0;
 		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		this.setInput(text);
 		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
 		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 		if (slashCommand) {
@@ -453,7 +471,10 @@ class MessageBox extends Component {
 	}
 
 	setShowSend = (showSend) => {
-		this.setState({ showSend });
+		const { showSend: prevShowSend } = this.state;
+		if (prevShowSend !== showSend) {
+			this.setState({ showSend });
+		}
 	}
 
 	clearInput = () => {
@@ -624,6 +645,7 @@ class MessageBox extends Component {
 		const message = this.text;
 
 		this.clearInput();
+		this.debouncedOnChangeText.stop();
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
@@ -725,34 +747,60 @@ class MessageBox extends Component {
 		});
 	}
 
+	handleCommands = ({ event }) => {
+		if (handleCommandTyping(event)) {
+			if (this.focused) {
+				Keyboard.dismiss();
+			} else {
+				this.component.focus();
+			}
+			this.focused = !this.focused;
+		} else if (handleCommandSubmit(event)) {
+			this.submit();
+		} else if (handleCommandShowUpload(event)) {
+			this.showFileActions();
+		}
+	}
+
 	renderContent = () => {
 		const {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme
 		} = this.props;
 
+		const isAndroidTablet = isTablet && isAndroid ? {
+			multiline: false,
+			onSubmitEditing: this.submit,
+			returnKeyType: 'send'
+		} : {};
+
 		if (recording) {
-			return <Recording onFinish={this.finishAudioMessage} />;
+			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
 		}
 		return (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} />
-				<View style={styles.composer}>
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
 					<ReplyPreview
 						message={message}
 						close={replyCancel}
 						username={user.username}
 						replying={replying}
 						getCustomEmoji={getCustomEmoji}
+						theme={theme}
 					/>
 					<View
-						style={[styles.textArea, editing && styles.editing]}
+						style={[
+							styles.textArea,
+							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+						]}
 						testID='messagebox'
 					>
 						<LeftButtons
+							theme={theme}
 							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
 							showFileActions={this.showFileActions}
@@ -771,10 +819,12 @@ class MessageBox extends Component {
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
-							placeholderTextColor={COLOR_TEXT_DESCRIPTION}
 							testID='messagebox-input'
+							theme={theme}
+							{...isAndroidTablet}
 						/>
 						<RightButtons
+							theme={theme}
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
@@ -789,7 +839,7 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -809,6 +859,7 @@ class MessageBox extends Component {
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
+					bottomViewColor={themes[theme].messageboxBackground}
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}
@@ -837,4 +888,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withTheme(MessageBox));

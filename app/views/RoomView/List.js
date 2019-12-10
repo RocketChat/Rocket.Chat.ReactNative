@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	ActivityIndicator, FlatList, InteractionManager
-} from 'react-native';
+import { FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -14,9 +12,10 @@ import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 
-export class List extends React.Component {
+class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -24,7 +23,9 @@ export class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool
+		animated: PropTypes.bool,
+		theme: PropTypes.string,
+		listRef: PropTypes.func
 	};
 
 	constructor(props) {
@@ -63,28 +64,31 @@ export class List extends React.Component {
 			this.messagesObservable = db.collections
 				.get('thread_messages')
 				.query(Q.where('rid', tmid))
-				.observeWithColumns(['_updated_at']);
-		} else {
+				.observe();
+		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
 				.query(Q.where('rid', rid))
-				.observeWithColumns(['_updated_at']);
+				.observe();
 		}
 
-		this.messagesSubscription = this.messagesObservable
-			.subscribe((data) => {
-				this.interaction = InteractionManager.runAfterInteractions(() => {
-					if (tmid) {
-						data = [this.thread, ...data];
-					}
-					const messages = orderBy(data, ['ts'], ['desc']);
-					if (this.mounted) {
-						this.setState({ messages }, () => this.debouncedUpdate());
-					} else {
-						this.state.messages = messages;
-					}
+		if (rid) {
+			this.unsubscribeMessages();
+			this.messagesSubscription = this.messagesObservable
+				.subscribe((data) => {
+					this.interaction = InteractionManager.runAfterInteractions(() => {
+						if (tmid) {
+							data = [this.thread, ...data];
+						}
+						const messages = orderBy(data, ['ts'], ['desc']);
+						if (this.mounted) {
+							this.setState({ messages }, () => this.update());
+						} else {
+							this.state.messages = messages;
+						}
+					});
 				});
-			});
+		}
 	}
 
 	// this.state.loading works for this.onEndReached and RoomView.init
@@ -99,6 +103,10 @@ export class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end } = this.state;
+		const { theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (loading !== nextState.loading) {
 			return true;
 		}
@@ -109,17 +117,12 @@ export class List extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
-			this.messagesSubscription.unsubscribe();
-		}
+		this.unsubscribeMessages();
 		if (this.interaction && this.interaction.cancel) {
 			this.interaction.cancel();
 		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
-		}
-		if (this.debouncedUpdate && this.debouncedUpdate.stop) {
-			this.debouncedUpdate.stop();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -156,15 +159,25 @@ export class List extends React.Component {
 		this.forceUpdate();
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	debouncedUpdate = debounce(() => {
-		this.update();
-	}, 300)
+	unsubscribeMessages = () => {
+		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+			this.messagesSubscription.unsubscribe();
+		}
+	}
+
+	getLastMessage = () => {
+		const { messages } = this.state;
+		if (messages.length > 0) {
+			return messages[0];
+		}
+		return null;
+	}
 
 	renderFooter = () => {
 		const { loading } = this.state;
-		if (loading) {
-			return <ActivityIndicator style={styles.loading} />;
+		const { rid, theme } = this.props;
+		if (loading && rid) {
+			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
 	}
@@ -177,13 +190,15 @@ export class List extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
+		const { rid, listRef } = this.props;
 		const { messages } = this.state;
+		const { theme } = this.props;
 		return (
 			<>
-				<EmptyRoom length={messages.length} mounted={this.mounted} />
+				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
 				<FlatList
 					testID='room-view-messages'
-					ref={ref => this.list = ref}
+					ref={listRef}
 					keyExtractor={item => item.id}
 					data={messages}
 					extraData={this.state}
@@ -204,3 +219,5 @@ export class List extends React.Component {
 		);
 	}
 }
+
+export default List;

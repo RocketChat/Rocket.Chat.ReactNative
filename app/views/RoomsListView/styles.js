@@ -1,34 +1,18 @@
 import { StyleSheet } from 'react-native';
-import { isIOS } from '../../utils/deviceInfo';
-import {
-	COLOR_SEPARATOR, COLOR_TEXT, COLOR_PRIMARY, COLOR_WHITE, COLOR_TEXT_DESCRIPTION
-} from '../../constants/colors';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: isIOS ? COLOR_WHITE : '#E1E5E8'
+		flex: 1
 	},
 	list: {
-		width: '100%',
-		backgroundColor: COLOR_WHITE
-	},
-	actionButtonIcon: {
-		fontSize: 20,
-		height: 22,
-		color: 'white'
-	},
-	loading: {
-		flex: 1
+		width: '100%'
 	},
 	dropdownContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	sortToggleContainerClose: {
@@ -37,17 +21,16 @@ export default StyleSheet.create({
 		width: '100%'
 	},
 	sortToggleText: {
-		fontSize: 15,
+		fontSize: 16,
 		flex: 1,
 		marginLeft: 15,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
-		backgroundColor: COLOR_WHITE,
 		width: '100%',
 		position: 'absolute',
-		top: 0
+		top: 0,
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	sortItemButton: {
 		height: 57,
@@ -60,51 +43,43 @@ export default StyleSheet.create({
 	sortItemText: {
 		fontSize: 18,
 		flex: 1,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill,
-		backgroundColor: '#000000'
+		...StyleSheet.absoluteFill
 	},
 	sortSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
 		marginHorizontal: 15,
 		flex: 1
 	},
 	sortIcon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15,
-		...sharedStyles.textColorDescription
+		marginHorizontal: 15
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 15,
 		paddingTop: 17,
-		paddingBottom: 10,
-		backgroundColor: isIOS ? COLOR_WHITE : '#9ea2a8'
+		paddingBottom: 10
 	},
 	groupTitle: {
-		color: isIOS ? COLOR_TEXT : '#54585E',
-		fontSize: isIOS ? 22 : 15,
+		fontSize: 16,
 		letterSpacing: 0.27,
 		flex: 1,
-		lineHeight: isIOS ? 41 : 24,
+		lineHeight: 24,
 		...sharedStyles.textBold
 	},
 	serverHeader: {
 		justifyContent: 'space-between'
 	},
 	serverHeaderText: {
-		fontSize: 15,
+		fontSize: 16,
 		marginLeft: 15,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
-		color: isIOS ? COLOR_PRIMARY : COLOR_WHITE,
-		fontSize: 15,
+		fontSize: 16,
 		marginRight: 15,
 		paddingVertical: 10,
 		...sharedStyles.textRegular
@@ -114,7 +89,8 @@ export default StyleSheet.create({
 	},
 	serverItemContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		height: 68
 	},
 	serverIcon: {
 		width: 42,
@@ -131,33 +107,24 @@ export default StyleSheet.create({
 	},
 	serverName: {
 		fontSize: 18,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
-		fontSize: 15,
-		...sharedStyles.textColorDescription,
+		fontSize: 16,
 		...sharedStyles.textRegular
-	},
-	checkIcon: {
-		marginHorizontal: 15,
-		color: COLOR_PRIMARY
 	},
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
 		marginLeft: 72
 	},
 	directoryIcon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15,
-		color: isIOS ? COLOR_PRIMARY : COLOR_TEXT_DESCRIPTION
+		marginHorizontal: 15
 	},
 	directoryText: {
-		fontSize: 15,
+		fontSize: 16,
 		flex: 1,
-		color: isIOS ? COLOR_PRIMARY : COLOR_TEXT_DESCRIPTION,
 		...sharedStyles.textRegular
 	}
 });

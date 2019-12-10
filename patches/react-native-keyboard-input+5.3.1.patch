@@ -1,3 +1,16 @@
+diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
+index 69ef9f3..10729c8 100644
+--- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
++++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
+@@ -1,7 +1,7 @@
+ package com.wix.reactnativekeyboardinput;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ import android.widget.FrameLayout;
+ 
 diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java
 index 3c8d37e..2fb804d 100644
 --- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootViewShadow.java
@@ -17,6 +30,32 @@ index 3c8d37e..2fb804d 100644
  
      public void setHeight(int heightPx) {
          setStyleHeight(heightPx);
+diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
+index eecb682..f4d3712 100644
+--- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
++++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/ReactSoftKeyboardMonitor.java
+@@ -1,7 +1,7 @@
+ package com.wix.reactnativekeyboardinput;
+ 
+ import android.graphics.Rect;
+-import android.support.annotation.Nullable;
++import androidx.annotation.Nullable;
+ import android.view.ViewTreeObserver;
+ 
+ import com.facebook.react.ReactRootView;
+diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
+index 5eda46a..39c30a7 100644
+--- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
++++ b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/utils/ViewUtils.java
+@@ -1,7 +1,7 @@
+ package com.wix.reactnativekeyboardinput.utils;
+ 
+ import android.app.Activity;
+-import android.support.annotation.Nullable;
++import androidx.annotation.Nullable;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.view.Window;
 diff --git a/node_modules/react-native-keyboard-input/react-native-keyboard-input.podspec b/node_modules/react-native-keyboard-input/react-native-keyboard-input.podspec
 new file mode 100644
 index 0000000..1d08ca1
@@ -43,3 +82,23 @@ index 0000000..1d08ca1
 +  s.dependency 'React'
 +end
 \ No newline at end of file
+diff --git a/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js b/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
+index bd557a8..6745017 100644
+--- a/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
++++ b/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
+@@ -23,6 +23,7 @@ export default class KeyboardAccessoryView extends Component {
+     manageScrollView: PropTypes.bool,
+     requiresSameParentToManageScrollView: PropTypes.bool,
+     addBottomView: PropTypes.bool,
++    bottomViewColor: PropTypes.string,
+     allowHitsOutsideBounds: PropTypes.bool,
+   };
+   static defaultProps = {
+@@ -136,6 +137,7 @@ export default class KeyboardAccessoryView extends Component {
+         manageScrollView={this.props.manageScrollView}
+         requiresSameParentToManageScrollView={this.props.requiresSameParentToManageScrollView}
+         addBottomView={this.props.addBottomView}
++        bottomViewColor={this.props.bottomViewColor}
+         allowHitsOutsideBounds={this.props.allowHitsOutsideBounds}
+       >
+         {this.props.renderContent && this.props.renderContent()}

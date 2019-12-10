@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Touch from '../utils/touch';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
 );
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token
+	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme
 }) => {
 	const avatarStyle = {
 		width: size,
@@ -39,7 +40,7 @@ const Avatar = React.memo(({
 	}
 
 
-	const image = (
+	let image = (
 		<FastImage
 			style={avatarStyle}
 			source={{
@@ -48,6 +49,14 @@ const Avatar = React.memo(({
 			}}
 		/>
 	);
+
+	if (onPress) {
+		image = (
+			<Touch onPress={onPress} theme={theme}>
+				{image}
+			</Touch>
+		);
+	}
 
 	return (
 		<View style={[avatarStyle, style]}>
@@ -67,7 +76,9 @@ Avatar.propTypes = {
 	type: PropTypes.string,
 	children: PropTypes.object,
 	userId: PropTypes.string,
-	token: PropTypes.string
+	token: PropTypes.string,
+	theme: PropTypes.string,
+	onPress: PropTypes.func
 };
 
 Avatar.defaultProps = {

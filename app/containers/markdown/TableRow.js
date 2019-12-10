@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { View } from 'react-native';
 
+import { themes } from '../../constants/colors';
+
 import styles from './styles';
 
 const TableRow = React.memo(({
-	isLastRow, children: _children
+	isLastRow, children: _children, theme
 }) => {
-	const rowStyle = [styles.row];
+	const rowStyle = [styles.row, { borderColor: themes[theme].borderColor }];
 	if (!isLastRow) {
 		rowStyle.push(styles.rowBottomBorder);
 	}
@@ -22,7 +24,8 @@ const TableRow = React.memo(({
 
 TableRow.propTypes = {
 	children: PropTypes.node,
-	isLastRow: PropTypes.bool
+	isLastRow: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 export default TableRow;

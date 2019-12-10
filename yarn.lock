@@ -4479,6 +4479,13 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
+fbemitter@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/fbemitter/-/fbemitter-2.1.1.tgz#523e14fdaf5248805bb02f62efc33be703f51865"
+  integrity sha1-Uj4U/a9SSIBbsC9i78M75wP1GGU=
+  dependencies:
+    fbjs "^0.8.4"
+
 fbjs-css-vars@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
@@ -4500,7 +4507,7 @@ fbjs-scripts@^1.1.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.9:
+fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -9240,6 +9247,15 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-appearance@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.1.tgz#f8120222131767e9227c2c7ba3a9478f4c6a5ab7"
+  integrity sha512-humg0ddjWjMfiSQCjsAcJk5o/jLJVy7aDEJuqN29ypQTfEfMKC3kVZP7dgb5lhAfJT3gquvDlT9IalZ2B7n6CQ==
+  dependencies:
+    fbemitter "^2.1.1"
+    invariant "^2.2.4"
+    use-subscription "^1.0.0"
+
 react-native-audio@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/react-native-audio/-/react-native-audio-4.3.0.tgz#fae22b81f6a4dda706fd4837d0c6a89c66cf2e7e"
@@ -9304,8 +9320,8 @@ react-native-gesture-handler@1.5.0:
     prop-types "^15.7.2"
 
 "react-native-image-crop-picker@git+https://github.com/RocketChat/react-native-image-crop-picker.git":
-  version "0.25.0"
-  resolved "git+https://github.com/RocketChat/react-native-image-crop-picker.git#08cd1196077d6a5ebb77a691e1396a5c3e48e69d"
+  version "0.26.1"
+  resolved "git+https://github.com/RocketChat/react-native-image-crop-picker.git#bd8ac59721add220a137f532c53fe9cebef79b75"
 
 react-native-image-pan-zoom@^2.1.9:
   version "2.1.11"
@@ -9349,6 +9365,11 @@ react-native-keyboard-tracking-view@^5.5.0:
   resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.5.0.tgz#87d28639f30e5b511de510e4063e476f23d6e4f2"
   integrity sha512-e/tYhvccmLOSV+6qpU5Hlpn/U2gVu5K5F555oCUBBF229vv/V/fGoq2QyBnBEKmF9IKzBEOpzxBavUR3IfaKXw==
 
+react-native-keycommands@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-keycommands/-/react-native-keycommands-2.0.3.tgz#09b799c1f70832e5cd9fbdb712ddaa3ee683f70e"
+  integrity sha512-s03K8JvCnfLhBg10Y2aRH3Bp9Uw9QOEr0uzuIj9OkgjjTB8/b+T4K5LSCxGuIAD30IxsEZvGZKjP1DzEMxaRhQ==
+
 react-native-localize@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.1.tgz#d0b7046acd4214ac2bcb61102317374351400c76"
@@ -9377,6 +9398,11 @@ react-native-modal@^9.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
 
+react-native-navigation-bar-color@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-1.0.0.tgz#04ff752a58049af93ceea9ccf266b8d3fbc6514a"
+  integrity sha512-djBE0zSp+JT65VeUm4UpIpr9DA9SpE9YTLwDAcqkWfB9JI8l3djSx+SmrIYfc7dUs216Y6qo2dr0qR3+M5qbOQ==
+
 react-native-notifications@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.0.6.tgz#5355fad1ea53327fb00fd5e8a6570279fe32f2a9"
@@ -9384,13 +9410,6 @@ react-native-notifications@^2.0.6:
   dependencies:
     core-js "^1.0.0"
     uuid "^2.0.3"
-
-react-native-optimized-flatlist@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-optimized-flatlist/-/react-native-optimized-flatlist-1.0.4.tgz#15c817ffb545e3c62e56a1b3c4654c1316414941"
-  integrity sha512-PMoZRJAHKzd/ahYKUzt43AJ+kVhHpOSTvBhJdQqooZXw312xADWpR7iDvBAbBiRGkmk0yM4GJacd9TMft6q/Gg==
-  dependencies:
-    prop-types "^15.6.0"
 
 react-native-orientation-locker@1.1.6:
   version "1.1.6"
@@ -10199,6 +10218,11 @@ rn-host-detect@1.1.5, rn-host-detect@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/rn-host-detect/-/rn-host-detect-1.1.5.tgz#fbecb982b73932f34529e97932b9a63e58d8deb6"
   integrity sha512-ufk2dFT3QeP9HyZ/xTuMtW27KnFy815CYitJMqQm+pgG3ZAtHBsrU8nXizNKkqXGy3bQmhEoloVbrfbvMJMqkg==
+
+rn-root-view@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
+  integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
 
 rn-user-defaults@^1.3.5:
   version "1.3.5"
@@ -11796,6 +11820,13 @@ urlgrey@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/urlgrey/-/urlgrey-0.4.4.tgz#892fe95960805e85519f1cd4389f2cb4cbb7652f"
   integrity sha1-iS/pWWCAXoVRnxzUOJ8stMu3ZS8=
+
+use-subscription@^1.0.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.3.0.tgz#3df13a798e826c8d462899423293289a3362e4e6"
+  integrity sha512-buZV7FUtnbOr+65dN7PHK7chHhQGfk/yjgqfpRLoWuHIAc4klAD/rdot2FsPNtFthN1ZydvA8tR/mWBMQ+/fDQ==
+  dependencies:
+    object-assign "^4.1.1"
 
 use@^3.1.0:
   version "3.1.1"

@@ -6,6 +6,8 @@ import equal from 'deep-equal';
 
 import Header from './Header';
 import RightButtons from './RightButtons';
+import { withTheme } from '../../../theme';
+import RoomHeaderLeft from './RoomHeaderLeft';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -17,14 +19,18 @@ class RoomHeaderView extends Component {
 		window: PropTypes.object,
 		status: PropTypes.string,
 		connecting: PropTypes.bool,
-		widthOffset: PropTypes.number
+		theme: PropTypes.string,
+		widthOffset: PropTypes.number,
+		goRoomActionsView: PropTypes.func
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { usersTyping } = this.props;
 		const {
-			type, title, status, window, connecting
+			type, title, status, window, connecting, goRoomActionsView, usersTyping, theme
 		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.type !== type) {
 			return true;
 		}
@@ -46,12 +52,15 @@ class RoomHeaderView extends Component {
 		if (!equal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
+		if (nextProps.goRoomActionsView !== goRoomActionsView) {
+			return true;
+		}
 		return false;
 	}
 
 	render() {
 		const {
-			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping
+			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView, theme
 		} = this.props;
 
 		return (
@@ -63,8 +72,10 @@ class RoomHeaderView extends Component {
 				status={status}
 				width={window.width}
 				height={window.height}
+				theme={theme}
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
+				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 			/>
 		);
@@ -89,6 +100,6 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default responsive(connect(mapStateToProps)(RoomHeaderView));
+export default responsive(connect(mapStateToProps)(withTheme(RoomHeaderView)));
 
-export { RightButtons };
+export { RightButtons, RoomHeaderLeft };
