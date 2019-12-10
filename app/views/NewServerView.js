@@ -25,6 +25,7 @@ import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
+import { completeUrl } from '../utils/server';
 
 const styles = StyleSheet.create({
 	image: {
@@ -148,7 +149,7 @@ class NewServerView extends React.Component {
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text), cert);
+			connectServer(completeUrl(text), cert);
 		}
 	}
 
@@ -174,25 +175,6 @@ class NewServerView extends React.Component {
 				log(e);
 			}
 		}
-	}
-
-	completeUrl = (url) => {
-		url = url && url.replace(/\s/g, '');
-
-		if (/^(\w|[0-9-_]){3,}$/.test(url)
-			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${ url }.rocket.chat`;
-		}
-
-		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${ url }`;
-			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${ url }`;
-			}
-		}
-
-		return url.replace(/\/+$/, '').replace(/\\/g, '/');
 	}
 
 	uriToPath = uri => uri.replace('file://', '');
