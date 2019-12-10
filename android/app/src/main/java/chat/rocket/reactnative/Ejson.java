@@ -18,13 +18,13 @@ public class Ejson {
     }
 
     public String token() {
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences();
+        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
         String BaseKEY = "reactnativemeteor_usertoken-";
         return sharedPreferences.getString(BaseKEY.concat(userId()), "");
     }
 
     public String userId() {
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences();
+        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
         String BaseKEY = "reactnativemeteor_usertoken-";
         return sharedPreferences.getString(BaseKEY.concat(serverURL()), "");
     }

@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
@@ -33,8 +34,11 @@ import java.util.ArrayList;
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
+    public static ReactApplicationContext reactApplicationContext;
+
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
+        reactApplicationContext = new ReactApplicationContext(context);
     }
 
     private static Map<String, List<String>> notificationMessages = new HashMap<String, List<String>>();
