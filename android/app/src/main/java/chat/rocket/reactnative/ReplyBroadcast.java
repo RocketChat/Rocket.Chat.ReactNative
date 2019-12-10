@@ -54,7 +54,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         }
     }
 
-    protected void replyToMessage(final Ejson ejson, final int notificationId, final CharSequence message) {
+    protected void replyToMessage(final Ejson ejson, final int notId, final CharSequence message) {
         String serverURL = ejson.serverURL();
         String rid = ejson.rid;
 
@@ -66,6 +66,8 @@ public class ReplyBroadcast extends BroadcastReceiver {
         final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
         String json = buildMessage(rid, message.toString());
+
+        CustomPushNotification.clearMessages(notId);
 
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
@@ -79,17 +81,17 @@ public class ReplyBroadcast extends BroadcastReceiver {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i("RCNotification", String.format("Reply FAILED exception %s", e.getMessage()));
-                onReplyFailed(notificationManager, notificationId);
+                onReplyFailed(notificationManager, notId);
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Log.d("RCNotification", "Reply SUCCESS");
-                    onReplySuccess(notificationManager, notificationId);
+                    onReplySuccess(notificationManager, notId);
                 } else {
                     Log.i("RCNotification", String.format("Reply FAILED status %s BODY %s", response.code(), response.body().string()));
-                    onReplyFailed(notificationManager, notificationId);
+                    onReplyFailed(notificationManager, notId);
                 }
             }
         });
@@ -123,7 +125,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         return json;
     }
 
-    protected void onReplyFailed(NotificationManager notificationManager, int notificationId) {
+    protected void onReplyFailed(NotificationManager notificationManager, int notId) {
         String CHANNEL_ID = "CHANNEL_ID_REPLY_FAILED";
 
         final Resources res = mContext.getResources();
@@ -138,11 +140,11 @@ public class ReplyBroadcast extends BroadcastReceiver {
                         .setSmallIcon(smallIconResId)
                         .build();
 
-        notificationManager.notify(notificationId, notification);
+        notificationManager.notify(notId, notification);
     }
 
-    protected void onReplySuccess(NotificationManager notificationManager, int notificationId) {
-        notificationManager.cancel(notificationId);
+    protected void onReplySuccess(NotificationManager notificationManager, int notId) {
+        notificationManager.cancel(notId);
     }
 
     private CharSequence getReplyMessage(Intent intent) {

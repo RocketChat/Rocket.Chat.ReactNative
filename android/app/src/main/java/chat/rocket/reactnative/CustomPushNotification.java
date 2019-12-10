@@ -43,6 +43,11 @@ public class CustomPushNotification extends PushNotification {
 
     private static Map<String, List<String>> notificationMessages = new HashMap<String, List<String>>();
     public static String KEY_REPLY = "KEY_REPLY";
+    public static String NOTIFICATION_ID = "NOTIFICATION_ID";
+
+    public static void clearMessages(int notId) {
+        notificationMessages.remove(Integer.toString(notId));
+    }
 
     @Override
     public void onReceived() throws InvalidNotificationException {
@@ -97,6 +102,10 @@ public class CustomPushNotification extends PushNotification {
             }
         }
 
+        if (messages.size() > 5) {
+            messageStyle.setSummaryText("+ " + Integer.toString(messages.size() - 6) + " messages");
+        }
+
         notification
             .setSmallIcon(smallIconResId)
             .setLargeIcon(getAvatar(ejson.getAvatarUri()))
@@ -106,7 +115,8 @@ public class CustomPushNotification extends PushNotification {
             .setStyle(messageStyle)
             .setNumber(messages.size())
             .setPriority(Notification.PRIORITY_HIGH)
-            .setDefaults(Notification.DEFAULT_ALL);
+            .setDefaults(Notification.DEFAULT_ALL)
+            .setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             notification.setColor(mContext.getColor(R.color.notification_text));
@@ -124,6 +134,7 @@ public class CustomPushNotification extends PushNotification {
         }
 
         notificationReply(notification, Integer.parseInt(notId), bundle);
+        notificationDismiss(notification, Integer.parseInt(notId));
 
         return notification;
     }
@@ -175,4 +186,15 @@ public class CustomPushNotification extends PushNotification {
             .setShowWhen(true)
             .addAction(replyAction);
     }
+
+    private void notificationDismiss(Notification.Builder notification, int notificationId) {
+        Intent intent = new Intent(mContext, DismissNotification.class);
+        intent.putExtra(NOTIFICATION_ID, notificationId);
+
+        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, 0);
+        
+        notification
+            .setDeleteIntent(dismissPendingIntent);
+    }
+
 }

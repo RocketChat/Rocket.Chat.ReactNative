@@ -44,6 +44,11 @@
 			android:name=".ReplyBroadcast"
 			android:enabled="true"
 			android:exported="false" />
+		<receiver
+    	android:name=".DismissNotification"
+			android:enabled="true"
+    	android:exported="false" >
+		</receiver>
 		<activity
 				android:noHistory="true"
 				android:name=".share.ShareActivity"
