@@ -43,10 +43,12 @@ export const onReply = async(notification, action) => {
 				const { rid, host } = EJSON.parse(data.ejson);
 				const { text } = action;
 
-				const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`);
+				const serverURL = completeUrl(host);
+
+				const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ serverURL }`);
 				const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ userId }`);
 
-				fetch(`${ completeUrl(host) }/api/v1/chat.sendMessage`, {
+				fetch(`${ serverURL }/api/v1/chat.sendMessage`, {
 					method: 'POST',
 					headers: {
 						'content-type': 'application/json',

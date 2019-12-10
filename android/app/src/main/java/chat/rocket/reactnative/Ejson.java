@@ -37,10 +37,6 @@ public class Ejson {
         return url;
     }
 
-    public String getGroupIdentifier() {
-        return this.host + this.rid;
-    }
-
     private String removeTrailingSlash(String baseUrl) {
         String url = baseUrl;
         if (url.endsWith("/")) {
