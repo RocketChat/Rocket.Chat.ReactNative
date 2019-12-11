@@ -83,7 +83,7 @@ project.ext.react = [
     entryFile: "index.js",
     bundleAssetName: "app.bundle",
     iconFontNames: [ 'custom.ttf' ],
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

@@ -55,16 +55,16 @@ allprojects {
     }
 }
 
-// subprojects { subproject ->
-//     afterEvaluate {
-//         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-//             android {
-//                 compileSdkVersion 28
-//                 buildToolsVersion "28.0.3"
-//                 defaultConfig {
-//                     targetSdkVersion 28
-//                 }
-//             }
-//         }
-//     }
-// }
+subprojects { subproject ->
+    afterEvaluate {
+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
+                defaultConfig {
+                    targetSdkVersion 28
+                }
+            }
+        }
+    }
+}
