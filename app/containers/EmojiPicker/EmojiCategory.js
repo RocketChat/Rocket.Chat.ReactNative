@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, FlatList } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
 import { responsive } from 'react-native-responsive-ui';
 
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';

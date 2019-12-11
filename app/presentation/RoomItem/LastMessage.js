@@ -1,5 +1,4 @@
 import React from 'react';
-import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -7,6 +6,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
