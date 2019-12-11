@@ -15440,7 +15440,7 @@ exports[`Storyshots Message list 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Thread with emoji :) 😂"
+            testID="message-thread-replied-on-Thread with emoji🙂 😂"
           >
             <Text
               allowFontScaling={false}
@@ -15482,7 +15482,7 @@ exports[`Storyshots Message list 1`] = `
                 ]
               }
             >
-              Thread with emoji :) 😂
+              Thread with emoji🙂 😂
             </Text>
             <View
               style={

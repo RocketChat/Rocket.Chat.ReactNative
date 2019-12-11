@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import removeMarkdown from 'remove-markdown';
-import { shortnameToUnicode } from 'emoji-toolkit';
 import PropTypes from 'prop-types';
 
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
