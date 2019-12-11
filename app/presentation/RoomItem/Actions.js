@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import I18n from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
+import { themes } from '../../constants/colors';
 
 export const LeftActions = React.memo(({
-	transX, isRead, width, onToggleReadPress
+	theme, transX, isRead, width, onToggleReadPress
 }) => {
 	const translateX = transX.interpolate({
 		inputRange: [0, ACTION_WIDTH],
@@ -21,7 +22,7 @@ export const LeftActions = React.memo(({
 	});
 	return (
 		<View
-			style={styles.actionsContainer}
+			style={[styles.actionsContainer, styles.actionLeftContainer]}
 			pointerEvents='box-none'
 		>
 			<Animated.View
@@ -30,7 +31,8 @@ export const LeftActions = React.memo(({
 					{
 						right: width - ACTION_WIDTH,
 						width,
-						transform: [{ translateX }]
+						transform: [{ translateX }],
+						backgroundColor: themes[theme].tintColor
 					}
 				]}
 			>
@@ -46,7 +48,7 @@ export const LeftActions = React.memo(({
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
-							<Text style={styles.actionText}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
 						</>
 					</RectButton>
 				</Animated.View>
@@ -56,7 +58,7 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	transX, favorite, width, toggleFav, onHidePress
+	transX, favorite, width, toggleFav, onHidePress, theme
 }) => {
 	const translateXFav = transX.interpolate({
 		inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
@@ -82,14 +84,15 @@ export const RightActions = React.memo(({
 					styles.actionRightButtonContainer,
 					{
 						width,
-						transform: [{ translateX: translateXFav }]
+						transform: [{ translateX: translateXFav }],
+						backgroundColor: themes[theme].hideBackground
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: '#ffbb00' }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
 					<>
-						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color='white' />
-						<Text style={styles.actionText}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
+						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={themes[theme].buttonText} />
+						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
 					</>
 				</RectButton>
 			</Animated.View>
@@ -102,10 +105,10 @@ export const RightActions = React.memo(({
 					}
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: '#54585e' }]} onPress={onHidePress}>
+				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
 					<>
-						<CustomIcon size={20} name='eye-off' color='white' />
-						<Text style={styles.actionText}>{I18n.t('Hide')}</Text>
+						<CustomIcon size={20} name='eye-off' color={themes[theme].buttonText} />
+						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
 					</>
 				</RectButton>
 			</Animated.View>
@@ -114,6 +117,7 @@ export const RightActions = React.memo(({
 });
 
 LeftActions.propTypes = {
+	theme: PropTypes.string,
 	transX: PropTypes.object,
 	isRead: PropTypes.bool,
 	width: PropTypes.number,
@@ -121,6 +125,7 @@ LeftActions.propTypes = {
 };
 
 RightActions.propTypes = {
+	theme: PropTypes.string,
 	transX: PropTypes.object,
 	favorite: PropTypes.bool,
 	width: PropTypes.number,

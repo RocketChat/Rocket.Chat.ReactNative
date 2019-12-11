@@ -2,33 +2,25 @@ import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
-import {
-	COLOR_BORDER, COLOR_SEPARATOR, COLOR_BACKGROUND_CONTAINER, COLOR_WHITE, COLOR_PRIMARY
-} from '../../constants/colors';
 
 const MENTION_HEIGHT = 50;
 const SCROLLVIEW_MENTION_HEIGHT = 4 * MENTION_HEIGHT;
 
 export default StyleSheet.create({
 	textBox: {
-		backgroundColor: COLOR_WHITE,
 		flex: 0,
 		alignItems: 'center',
 		borderTopWidth: StyleSheet.hairlineWidth,
-		borderTopColor: COLOR_SEPARATOR,
 		zIndex: 2
 	},
 	composer: {
-		backgroundColor: COLOR_WHITE,
 		flexDirection: 'column',
-		borderTopColor: COLOR_SEPARATOR,
 		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	textArea: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flexGrow: 0,
-		backgroundColor: COLOR_WHITE
+		flexGrow: 0
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
@@ -42,11 +34,7 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		fontSize: 17,
 		letterSpacing: 0,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
-	},
-	editing: {
-		backgroundColor: '#fff5df'
 	},
 	actionButton: {
 		alignItems: 'center',
@@ -59,9 +47,7 @@ export default StyleSheet.create({
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
-		borderTopWidth: 1,
-		borderTopColor: COLOR_BORDER,
+		borderTopWidth: StyleSheet.hairlineWidth,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
@@ -81,30 +67,17 @@ export default StyleSheet.create({
 		textAlign: 'center',
 		width: 46,
 		fontSize: 14,
-		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textBold
 	},
 	mentionText: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textRegular
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
-		borderTopColor: COLOR_BORDER,
-		borderTopWidth: 1
-	},
-	iphoneXArea: {
-		height: 50,
-		backgroundColor: COLOR_WHITE,
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	slash: {
-		color: COLOR_PRIMARY,
-		backgroundColor: COLOR_BORDER,
 		height: 30,
 		width: 30,
 		padding: 5,
@@ -120,7 +93,6 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	commandPreview: {
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 100,
 		flex: 1,
 		flexDirection: 'row',

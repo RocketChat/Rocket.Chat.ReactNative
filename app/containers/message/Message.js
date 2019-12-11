@@ -5,7 +5,6 @@ import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import styles from './styles';
-import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
@@ -52,11 +51,11 @@ MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
-		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
+		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[
@@ -85,6 +84,7 @@ const Message = React.memo((props) => {
 				<ReadReceipt
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					unread={props.unread}
+					theme={props.theme}
 				/>
 			</View>
 		</View>
@@ -134,7 +134,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	onPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
-	unread: PropTypes.bool
+	unread: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 MessageInner.propTypes = {

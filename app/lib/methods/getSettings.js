@@ -2,12 +2,14 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
+import RocketChat from '../rocketchat';
 import reduxStore from '../createStore';
 import * as actions from '../../actions';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
+import fetch from '../../utils/fetch';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
@@ -49,6 +51,20 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 		}
 	});
 };
+
+export async function setSettings() {
+	const db = database.active;
+	const settingsCollection = db.collections.get('settings');
+	const settingsRecords = await settingsCollection.query().fetch();
+	const parsed = Object.values(settingsRecords).map(item => ({
+		_id: item.id,
+		valueAsString: item.valueAsString,
+		valueAsBoolean: item.valueAsBoolean,
+		valueAsNumber: item.valueAsNumber,
+		_updatedAt: item._updatedAt
+	}));
+	reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
+}
 
 export default async function() {
 	try {

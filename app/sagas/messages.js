@@ -7,24 +7,30 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log from '../utils/log';
 
-const goRoom = function goRoom({ rid, name, message }) {
+const goRoom = function goRoom({
+	rid, name, fname, message
+}) {
 	Navigation.navigate('RoomsListView');
 	Navigation.navigate('RoomView', {
-		rid, name, t: 'd', message
+		rid, name, fname, t: 'd', message
 	});
 };
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
 		const db = database.active;
-		const { username } = message.u;
+		const { username, name } = message.u;
 		const subsCollection = db.collections.get('subscriptions');
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 		if (subscriptions.length) {
-			yield goRoom({ rid: subscriptions[0].rid, name: username, message });
+			yield goRoom({
+				rid: subscriptions[0].rid, name: username, fname: name, message
+			});
 		} else {
 			const room = yield RocketChat.createDirectMessage(username);
-			yield goRoom({ rid: room.rid, name: username, message });
+			yield goRoom({
+				rid: room.rid, name: username, fname: name, message
+			});
 		}
 	} catch (e) {
 		log(e);

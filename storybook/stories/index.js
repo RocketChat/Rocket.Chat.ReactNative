@@ -8,6 +8,9 @@ import RoomItem from './RoomItem';
 import Message from './Message';
 // import RoomViewHeader from './RoomViewHeader';
 
+// Change here to see themed storybook
+const theme = 'light';
+
 const reducers = combineReducers({
 	settings: () => ({}),
 	login: () => ({
@@ -22,9 +25,9 @@ const store = createStore(reducers);
 
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.add('list', () => RoomItem);
+	.add('list', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
-	.add('list', () => Message);
+	.add('list', () => <Message theme={theme} />);
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
-// 	.add('list', () => RoomViewHeader);
+// 	.add('list', () => <RoomViewHeader theme='black' />);

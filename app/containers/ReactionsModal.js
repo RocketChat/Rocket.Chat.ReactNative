@@ -10,7 +10,8 @@ import Emoji from './message/Emoji';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { COLOR_WHITE } from '../constants/colors';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -18,18 +19,15 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		color: COLOR_WHITE,
 		textAlign: 'center',
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	reactCount: {
-		color: COLOR_WHITE,
 		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {
-		color: COLOR_WHITE,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -54,15 +52,14 @@ const styles = StyleSheet.create({
 	closeButton: {
 		position: 'absolute',
 		left: 0,
-		top: 10,
-		color: COLOR_WHITE
+		top: 10
 	}
 });
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
 
 const Item = React.memo(({
-	item, user, baseUrl, getCustomEmoji
+	item, user, baseUrl, getCustomEmoji, theme
 }) => {
 	const count = item.usernames.length;
 	let usernames = item.usernames.slice(0, 3)
@@ -84,27 +81,29 @@ const Item = React.memo(({
 				/>
 			</View>
 			<View style={styles.peopleItemContainer}>
-				<Text style={styles.reactCount}>
+				<Text style={[styles.reactCount, { color: themes[theme].buttonText }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={styles.peopleReacted}>{ usernames }</Text>
+				<Text style={[styles.peopleReacted, { color: themes[theme].buttonText }]}>{ usernames }</Text>
 			</View>
 		</View>
 	);
 });
 
-const ModalContent = React.memo(({ message, onClose, ...props }) => {
+const ModalContent = React.memo(({
+	message, onClose, ...props
+}) => {
 	if (message && message.reactions) {
 		return (
 			<SafeAreaView style={{ flex: 1 }}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<CustomIcon
-							style={styles.closeButton}
+							style={[styles.closeButton, { color: themes[props.theme].buttonText }]}
 							name='cross'
 							size={20}
 						/>
-						<Text style={styles.title}>{I18n.t('Reactions')}</Text>
+						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>
 					</View>
 				</Touchable>
 				<FlatList
@@ -119,7 +118,9 @@ const ModalContent = React.memo(({ message, onClose, ...props }) => {
 	return null;
 });
 
-const ReactionsModal = React.memo(({ isVisible, onClose, ...props }) => (
+const ReactionsModal = React.memo(({
+	isVisible, onClose, theme, ...props
+}) => (
 	<Modal
 		isVisible={isVisible}
 		onBackdropPress={onClose}
@@ -128,19 +129,21 @@ const ReactionsModal = React.memo(({ isVisible, onClose, ...props }) => (
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
-		<ModalContent onClose={onClose} {...props} />
+		<ModalContent onClose={onClose} theme={theme} {...props} />
 	</Modal>
-), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible);
+), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.theme === nextProps.theme);
 
 ReactionsModal.propTypes = {
 	isVisible: PropTypes.bool,
-	onClose: PropTypes.func
+	onClose: PropTypes.func,
+	theme: PropTypes.string
 };
 ReactionsModal.displayName = 'ReactionsModal';
 
 ModalContent.propTypes = {
 	message: PropTypes.object,
-	onClose: PropTypes.func
+	onClose: PropTypes.func,
+	theme: PropTypes.string
 };
 ModalContent.displayName = 'ReactionsModalContent';
 
@@ -148,8 +151,9 @@ Item.propTypes = {
 	item: PropTypes.object,
 	user: PropTypes.object,
 	baseUrl: PropTypes.string,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	theme: PropTypes.string
 };
 Item.displayName = 'ReactionsModalItem';
 
-export default ReactionsModal;
+export default withTheme(ReactionsModal);

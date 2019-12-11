@@ -4,12 +4,12 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Touch from '../../utils/touch';
 import styles from './styles';
+import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -25,7 +25,8 @@ export default class DirectoryOptions extends PureComponent {
 		isFederationEnabled: PropTypes.bool,
 		close: PropTypes.func,
 		changeType: PropTypes.func,
-		toggleWorkspace: PropTypes.func
+		toggleWorkspace: PropTypes.func,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -39,7 +40,7 @@ export default class DirectoryOptions extends PureComponent {
 			{
 				toValue: 1,
 				...ANIMATION_PROPS
-			},
+			}
 		).start();
 	}
 
@@ -50,12 +51,12 @@ export default class DirectoryOptions extends PureComponent {
 			{
 				toValue: 0,
 				...ANIMATION_PROPS
-			},
+			}
 		).start(() => close());
 	}
 
 	renderItem = (itemType) => {
-		const { changeType, type: propType } = this.props;
+		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
 		let icon = 'user';
 		if (itemType === 'channels') {
@@ -64,11 +65,15 @@ export default class DirectoryOptions extends PureComponent {
 		}
 
 		return (
-			<Touch style={styles.dropdownItemButton} onPress={() => changeType(itemType)}>
+			<Touch
+				onPress={() => changeType(itemType)}
+				style={styles.dropdownItemButton}
+				theme={theme}
+			>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon style={styles.dropdownItemIcon} size={22} name={icon} />
-					<Text style={styles.dropdownItemText}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
+					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
+					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+					{propType === itemType ? <Check theme={theme} /> : null}
 				</View>
 			</Touch>
 		);
@@ -83,20 +88,19 @@ export default class DirectoryOptions extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [0, 0.3]
 		});
-		const { globalUsers, toggleWorkspace, isFederationEnabled } = this.props;
+		const {
+			globalUsers, toggleWorkspace, isFederationEnabled, theme
+		} = this.props;
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
-				<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }] }]}>
-					<Touch
-						onPress={this.close}
-						style={styles.dropdownContainerHeader}
-					>
-						<View style={styles.dropdownItemContainer}>
-							<Text style={styles.dropdownToggleText}>{I18n.t('Search_by')}</Text>
-							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted]} size={22} name='arrow-down' />
+				<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
+					<Touch onPress={this.close} theme={theme}>
+						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: themes[theme].separatorColor }]}>
+							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
+							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryTintColor }]} size={22} name='arrow-down' />
 						</View>
 					</Touch>
 					{this.renderItem('channels')}
@@ -104,7 +108,7 @@ export default class DirectoryOptions extends PureComponent {
 					{isFederationEnabled
 						? (
 							<>
-								<View style={styles.dropdownSeparator} />
+								<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 								<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 									<View style={styles.globalUsersTextContainer}>
 										<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>

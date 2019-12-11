@@ -11,10 +11,9 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import {
-	COLOR_SEPARATOR, COLOR_PRIMARY, COLOR_BACKGROUND_CONTAINER, COLOR_TEXT_DESCRIPTION, COLOR_DANGER
-} from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,10 +23,8 @@ const styles = StyleSheet.create({
 		maxHeight: 246
 	},
 	item: {
-		backgroundColor: COLOR_BACKGROUND_CONTAINER,
 		height: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
 		justifyContent: 'center',
 		paddingHorizontal: 20
 	},
@@ -43,17 +40,14 @@ const styles = StyleSheet.create({
 	descriptionText: {
 		fontSize: 16,
 		lineHeight: 20,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	progress: {
 		position: 'absolute',
 		bottom: 0,
-		backgroundColor: COLOR_PRIMARY,
 		height: 3
 	},
 	tryAgainButtonText: {
-		color: COLOR_PRIMARY,
 		fontSize: 16,
 		lineHeight: 20,
 		...sharedStyles.textMedium
@@ -64,6 +58,7 @@ class UploadProgress extends Component {
 	static propTypes = {
 		window: PropTypes.object,
 		rid: PropTypes.string,
+		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -94,6 +89,7 @@ class UploadProgress extends Component {
 
 	init = () => {
 		const { rid } = this.props;
+		if (!rid) { return; }
 
 		const db = database.active;
 		this.uploadsObservable = db.collections
@@ -171,42 +167,56 @@ class UploadProgress extends Component {
 	}
 
 	renderItemContent = (item) => {
-		const { window } = this.props;
+		const { window, theme } = this.props;
 
 		if (!item.error) {
 			return (
 				[
 					<View key='row' style={styles.row}>
-						<CustomIcon name='file-generic' size={20} color={COLOR_TEXT_DESCRIPTION} />
-						<Text style={[styles.descriptionContainer, styles.descriptionText]} ellipsizeMode='tail' numberOfLines={1}>
+						<CustomIcon name='file-generic' size={20} color={themes[theme].auxiliaryText} />
+						<Text style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>
 							{I18n.t('Uploading')} {item.name}
 						</Text>
-						<CustomIcon name='cross' size={20} color={COLOR_TEXT_DESCRIPTION} onPress={() => this.cancelUpload(item)} />
+						<CustomIcon name='cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
 					</View>,
-					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100 }]} />
+					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]} />
 				]
 			);
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={COLOR_DANGER} />
+				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
 				<View style={styles.descriptionContainer}>
-					<Text style={styles.descriptionText}>{I18n.t('Error_uploading')} {item.name}</Text>
+					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
+						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='cross' size={20} color={COLOR_TEXT_DESCRIPTION} onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	}
 
 	// TODO: transform into stateless and update based on its own observable changes
-	renderItem = (item, index) => (
-		<View key={item.path} style={[styles.item, index !== 0 ? { marginTop: 10 } : {}]}>
-			{this.renderItemContent(item)}
-		</View>
-	);
+	renderItem = (item, index) => {
+		const { theme } = this.props;
+
+		return (
+			<View
+				key={item.path}
+				style={[
+					styles.item,
+					index !== 0 ? { marginTop: 10 } : {},
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					}
+				]}
+			>
+				{this.renderItemContent(item)}
+			</View>
+		);
+	}
 
 	render() {
 		const { uploads } = this.state;
@@ -218,4 +228,4 @@ class UploadProgress extends Component {
 	}
 }
 
-export default responsive(UploadProgress);
+export default responsive(withTheme(UploadProgress));

@@ -9,7 +9,9 @@ import 'moment/min/locales';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
-import { loginFailure, loginSuccess, setUser } from '../actions/login';
+import {
+	loginFailure, loginSuccess, setUser, logout
+} from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
@@ -24,7 +26,7 @@ const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
 	try {
 		let result;
 		if (credentials.resume) {
@@ -34,7 +36,11 @@ const handleLoginRequest = function* handleLoginRequest({ credentials }) {
 		}
 		return yield put(loginSuccess(result));
 	} catch (error) {
-		yield put(loginFailure(error));
+		if (logoutOnError) {
+			yield put(logout());
+		} else {
+			yield put(loginFailure(error));
+		}
 	}
 };
 
@@ -114,7 +120,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
 		} else {
-			yield put(appStart('inside'));
+			const currentRoot = yield select(state => state.app.root);
+			if (currentRoot !== 'inside') {
+				yield put(appStart('inside'));
+			}
 		}
 	} catch (e) {
 		log(e);
@@ -130,16 +139,9 @@ const handleLogout = function* handleLogout() {
 			const serversDB = database.servers;
 			// all servers
 			const serversCollection = serversDB.collections.get('servers');
-
-			// filter logging out server and delete it
-			yield serversDB.action(async() => {
-				const serverRecord = await serversCollection.find(server);
-				await serverRecord.destroyPermanently();
-			});
-
 			const servers = yield serversCollection.query().fetch();
 
-			// see if there's other logged in servers and selects first one
+			// see if there're other logged in servers and selects first one
 			if (servers.length > 0) {
 				const newServer = servers[0].id;
 				const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);

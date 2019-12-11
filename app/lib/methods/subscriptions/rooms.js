@@ -66,10 +66,10 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			} catch (error) {
 				try {
 					await db.action(async() => {
-						await roomsCollection.create((r) => {
+						await roomsCollection.create(protectedFunction((r) => {
 							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 							Object.assign(r, room);
-						});
+						}));
 					});
 				} catch (e) {
 					// Do nothing
@@ -96,20 +96,66 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		const tmp = merge(subscription, room);
 		await db.action(async() => {
+			let sub;
 			try {
-				const sub = await subCollection.find(tmp.rid);
-				await sub.update((s) => {
-					Object.assign(s, tmp);
-				});
+				sub = await subCollection.find(tmp.rid);
 			} catch (error) {
-				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				});
+				// Do nothing
 			}
+
+			const batch = [];
+			if (sub) {
+				try {
+					const update = sub.prepareUpdate((s) => {
+						Object.assign(s, tmp);
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
+			} else {
+				try {
+					const create = subCollection.prepareCreate((s) => {
+						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+						Object.assign(s, tmp);
+						if (s.roomUpdatedAt) {
+							s.roomUpdatedAt = new Date();
+						}
+					});
+					batch.push(create);
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			// if (tmp.lastMessage) {
+			// 	const lastMessage = buildMessage(tmp.lastMessage);
+			// 	const messagesCollection = db.collections.get('messages');
+			// 	let messageRecord;
+			// 	try {
+			// 		messageRecord = await messagesCollection.find(lastMessage._id);
+			// 	} catch (error) {
+			// 		// Do nothing
+			// 	}
+
+			// 	if (messageRecord) {
+			// 		batch.push(
+			// 			messageRecord.prepareUpdate(() => {
+			// 				Object.assign(messageRecord, lastMessage);
+			// 			})
+			// 		);
+			// 	} else {
+			// 		batch.push(
+			// 			messagesCollection.prepareCreate((m) => {
+			// 				m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+			// 				m.subscription.id = lastMessage.rid;
+			// 				return Object.assign(m, lastMessage);
+			// 			})
+			// 		);
+			// 	}
+			// }
+
+			await db.batch(...batch);
 		});
 	} catch (e) {
 		log(e);
@@ -149,7 +195,7 @@ export default function subscribeRooms() {
 							sub.prepareDestroyPermanently(),
 							...messagesToDelete,
 							...threadsToDelete,
-							...threadMessagesToDelete,
+							...threadMessagesToDelete
 						);
 					});
 				} catch (e) {

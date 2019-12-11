@@ -18,6 +18,11 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import Check from '../../containers/Check';
 import database from '../../lib/database';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
+import { isTablet } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -26,7 +31,9 @@ class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
+		split: PropTypes.bool,
 		server: PropTypes.string,
+		theme: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func,
 		appStart: PropTypes.func
@@ -56,13 +63,19 @@ class ServerDropdown extends Component {
 				duration: ANIMATION_DURATION,
 				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
-			},
+			}
 		).start();
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { servers } = this.state;
-		const { closeServerDropdown, server } = this.props;
+		const { closeServerDropdown, server, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextProps.closeServerDropdown !== closeServerDropdown) {
 			return true;
 		}
@@ -90,6 +103,9 @@ class ServerDropdown extends Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	close = () => {
@@ -116,12 +132,15 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart
+			server: currentServer, selectServerRequest, appStart, navigation, split
 		} = this.props;
 
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			if (split) {
+				navigation.navigate('RoomView');
+			}
 			if (!userId) {
 				appStart();
 				this.newServerTimeout = setTimeout(() => {
@@ -133,13 +152,32 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	renderSeparator = () => <View style={styles.serverSeparator} />;
+	handleCommands = ({ event }) => {
+		const { servers } = this.state;
+		const { navigation } = this.props;
+		const { input } = event;
+		if (handleCommandSelectServer(event)) {
+			if (servers[input - 1]) {
+				this.select(servers[input - 1].id);
+				navigation.navigate('RoomView');
+			}
+		}
+	}
+
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.serverSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderServer = ({ item }) => {
-		const { server } = this.props;
+		const { server, theme } = this.props;
 
 		return (
-			<Touch onPress={() => this.select(item.id)} style={styles.serverItem} testID={`rooms-list-header-server-${ item.id }`}>
+			<Touch
+				onPress={() => this.select(item.id)}
+				testID={`rooms-list-header-server-${ item.id }`}
+				theme={theme}
+			>
 				<View style={styles.serverItemContainer}>
 					{item.iconURL
 						? (
@@ -158,10 +196,10 @@ class ServerDropdown extends Component {
 						)
 					}
 					<View style={styles.serverTextContainer}>
-						<Text style={styles.serverName}>{item.name || item.id}</Text>
-						<Text style={styles.serverUrl}>{item.id}</Text>
+						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
 					</View>
-					{item.id === server ? <Check /> : null}
+					{item.id === server ? <Check theme={theme} /> : null}
 				</View>
 			</Touch>
 		);
@@ -169,6 +207,7 @@ class ServerDropdown extends Component {
 
 	render() {
 		const { servers } = this.state;
+		const { theme } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
 		const translateY = this.animatedValue.interpolate({
@@ -177,22 +216,34 @@ class ServerDropdown extends Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.3]
+			outputRange: [0, 0.6]
 		});
 		return (
-			[
-				<TouchableWithoutFeedback key='sort-backdrop' onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
-				</TouchableWithoutFeedback>,
+			<>
+				<TouchableWithoutFeedback onPress={this.close}>
+					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+				</TouchableWithoutFeedback>
 				<Animated.View
-					key='sort-container'
-					style={[styles.dropdownContainer, { transform: [{ translateY }] }]}
+					style={[
+						styles.dropdownContainer,
+						{
+							transform: [{ translateY }],
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
+						}
+					]}
 					testID='rooms-list-header-server-dropdown'
 				>
-					<View style={[styles.dropdownContainerHeader, styles.serverHeader]}>
-						<Text style={styles.serverHeaderText}>{I18n.t('Server')}</Text>
+					<View
+						style={[
+							styles.dropdownContainerHeader,
+							styles.serverHeader,
+							{ borderColor: themes[theme].separatorColor }
+						]}
+					>
+						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
-							<Text style={styles.serverHeaderAdd}>{I18n.t('Add_Server')}</Text>
+							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
 					<FlatList
@@ -201,9 +252,10 @@ class ServerDropdown extends Component {
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={this.renderSeparator}
+						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>
-			]
+			</>
 		);
 	}
 }
@@ -219,4 +271,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: () => dispatch(appStartAction('outside'))
 });
 
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(ServerDropdown));
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));

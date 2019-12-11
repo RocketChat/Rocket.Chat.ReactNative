@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
+import { themes } from '../../constants/colors';
 
-const UnreadBadge = React.memo(({ unread, userMentions, type }) => {
+const UnreadBadge = React.memo(({
+	theme, unread, userMentions, type
+}) => {
 	if (!unread || unread <= 0) {
 		return;
 	}
@@ -14,13 +17,25 @@ const UnreadBadge = React.memo(({ unread, userMentions, type }) => {
 	const mentioned = userMentions > 0 && type !== 'd';
 
 	return (
-		<View style={[styles.unreadNumberContainer, mentioned && styles.unreadMentionedContainer]}>
-			<Text style={[styles.unreadText, mentioned && styles.unreadMentionedText]}>{ unread }</Text>
+		<View
+			style={[
+				styles.unreadNumberContainer,
+				{ backgroundColor: mentioned ? themes[theme].tintColor : themes[theme].borderColor }
+			]}
+		>
+			<Text
+				style={[
+					styles.unreadText,
+					{ color: mentioned ? themes[theme].buttonText : themes[theme].bodyText }
+				]}
+			>{ unread }
+			</Text>
 		</View>
 	);
 });
 
 UnreadBadge.propTypes = {
+	theme: PropTypes.string,
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	type: PropTypes.string

@@ -2,19 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
-import { RectButton } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
-import { HeaderBackButton } from 'react-navigation-stack';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
+import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import { List } from './List';
+import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -27,17 +26,27 @@ import styles from './styles';
 import log from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons } from './Header';
+import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
-import { COLOR_WHITE, HEADER_BACK } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
+import {
+	KEY_COMMAND,
+	handleCommandScroll,
+	handleCommandRoomActions,
+	handleCommandSearchMessages,
+	handleCommandReplyLatest
+} from '../../commands';
+import ModalNavigation from '../../lib/ModalNavigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -55,16 +64,26 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
-		const rid = navigation.getParam('rid');
+	static navigationOptions = ({ navigation, screenProps }) => {
+		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
-		const room = navigation.getParam('room');
+		const baseUrl = navigation.getParam('baseUrl');
+		const userId = navigation.getParam('userId');
+		const token = navigation.getParam('token');
+		const avatar = navigation.getParam('avatar');
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
+		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
+		if (!rid) {
+			return {
+				...themedHeader(screenProps.theme)
+			};
+		}
 		return {
+			...themedHeader(screenProps.theme),
 			headerTitle: (
 				<RoomHeaderView
 					rid={rid}
@@ -73,24 +92,31 @@ class RoomView extends React.Component {
 					title={title}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
+					goRoomActionsView={goRoomActionsView}
 				/>
 			),
 			headerRight: (
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
-					room={room}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
 			headerLeft: (
-				<HeaderBackButton
-					title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-					backTitleVisible={isIOS}
-					onPress={() => navigation.goBack()}
-					tintColor={HEADER_BACK}
+				<RoomHeaderLeft
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={screenProps.theme}
+					t={t}
+					goRoomActionsView={goRoomActionsView}
+					split={screenProps.split}
 				/>
 			)
 		};
@@ -111,7 +137,9 @@ class RoomView extends React.Component {
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
+		screenProps: PropTypes.object,
 		useMarkdown: PropTypes.bool,
+		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
 
@@ -124,9 +152,13 @@ class RoomView extends React.Component {
 		this.tmid = props.navigation.getParam('tmid', null);
 		const room = props.navigation.getParam('room');
 		const selectedMessage = props.navigation.getParam('message');
+		const name = props.navigation.getParam('name');
+		const fname = props.navigation.getParam('fname');
 		this.state = {
 			joined: true,
-			room: room || { rid: this.rid, t: this.t },
+			room: room || {
+				rid: this.rid, t: this.t, name, fname
+			},
 			roomUpdate: {},
 			lastOpen: null,
 			photoModalVisible: false,
@@ -145,13 +177,14 @@ class RoomView extends React.Component {
 
 		if (room && room.observe) {
 			this.observeRoom(room);
-		} else {
+		} else if (this.rid) {
 			this.findAndObserveRoom(this.rid);
 		}
 
 		this.beginAnimating = false;
 		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
+		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -159,32 +192,48 @@ class RoomView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
+		this.offset = 0;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { room } = this.state;
-			const { navigation, isAuthenticated } = this.props;
-			if (room.id && !this.tmid) {
-				navigation.setParams({ name: this.getRoomTitle(room), t: room.t });
+			const {
+				navigation, isAuthenticated, user, baseUrl
+			} = this.props;
+			if ((room.id || room.rid) && !this.tmid) {
+				navigation.setParams({
+					name: this.getRoomTitle(room),
+					avatar: room.name,
+					t: room.t,
+					token: user.token,
+					userId: user.id,
+					goRoomActionsView: this.goRoomActionsView,
+					baseUrl
+				});
 			}
 			if (this.tmid) {
-				navigation.setParams({ toggleFollowThread: this.toggleFollowThread });
+				navigation.setParams({ toggleFollowThread: this.toggleFollowThread, goRoomActionsView: this.goRoomActionsView });
 			}
-			if (isAuthenticated) {
+			if (isAuthenticated && this.rid) {
 				this.init();
-			} else {
+			} else if (this.rid) {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
-			if (isIOS) {
+			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
 		});
-
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate } = state;
-		const { appState } = this.props;
+		const { appState, theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
 		if (appState !== nextProps.appState) {
 			return true;
 		}
@@ -198,9 +247,13 @@ class RoomView extends React.Component {
 	componentDidUpdate(prevProps) {
 		const { appState } = this.props;
 
-		if (appState === 'foreground' && appState !== prevProps.appState) {
+		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
 				this.init();
+				// Fire List.init() just to keep observables working
+				if (this.list && this.list.current) {
+					this.list.current.init();
+				}
 			});
 		}
 		if (appState === 'background' && appState !== prevProps.appState) {
@@ -260,7 +313,17 @@ class RoomView extends React.Component {
 			this.queryUnreads.unsubscribe();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	// eslint-disable-next-line react/sort-comp
+	goRoomActionsView = () => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -312,7 +375,7 @@ class RoomView extends React.Component {
 			if (this.t !== 'd') {
 				console.log('Room not found');
 				this.internalSetState({ joined: false });
-			} else {
+			} else if (this.rid) {
 				// We navigate to RoomView before the DM is inserted to the local db
 				// So we retry just to make sure we have the right content
 				this.retryFindCount = this.retryFindCount + 1 || 1;
@@ -496,6 +559,9 @@ class RoomView extends React.Component {
 	sendMessage = (message, tmid) => {
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
+			if (this.list && this.list.current) {
+				this.list.current.update();
+			}
 			this.setLastOpen(null);
 		});
 	};
@@ -599,11 +665,17 @@ class RoomView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
+		const { room } = this.state;
+		const { navigation, user, screenProps } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		navigation.navigate('RoomInfoView', navParam);
+		if (screenProps && screenProps.split) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+			ModalNavigation.navigate('RoomInfoView', navParam);
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
 	}
 
 	callJitsi = () => {
@@ -616,6 +688,29 @@ class RoomView extends React.Component {
 		}
 	};
 
+	handleCommands = ({ event }) => {
+		if (this.rid) {
+			const { room } = this.state;
+			const { navigation } = this.props;
+			const { input } = event;
+			if (handleCommandScroll(event)) {
+				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
+				this.offset += offset;
+				this.flatList.scrollToOffset({ offset: this.offset });
+			} else if (handleCommandRoomActions(event)) {
+				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+			} else if (handleCommandSearchMessages(event)) {
+				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+				ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
+			} else if (handleCommandReplyLatest(event)) {
+				if (this.list && this.list.current) {
+					const message = this.list.current.getLastMessage();
+					this.onReplyInit(message, false);
+				}
+			}
+		}
+	}
+
 	get isReadOnly() {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -625,7 +720,7 @@ class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, theme
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -682,6 +777,7 @@ class RoomView extends React.Component {
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
+						theme={theme}
 					/>
 				</>
 			);
@@ -694,34 +790,36 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
 		} = this.state;
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 
+		if (!this.rid) {
+			return null;
+		}
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={styles.previewMode}>{I18n.t('You_are_in_preview_mode')}</Text>
-					<RectButton
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Touch
 						onPress={this.joinRoom}
-						style={styles.joinRoomButton}
-						activeOpacity={0.5}
-						underlayColor={COLOR_WHITE}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						theme={theme}
 					>
-						<Text style={styles.joinRoomText} testID='room-view-join-button'>{I18n.t('Join')}</Text>
-					</RectButton>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+					</Touch>
 				</View>
 			);
 		}
 		if (this.isReadOnly) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if (isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={styles.previewMode}>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
@@ -732,7 +830,7 @@ class RoomView extends React.Component {
 				rid={this.rid}
 				tmid={this.tmid}
 				roomType={room.t}
-				isFocused={navigation.isFocused()}
+				isFocused={navigation.isFocused}
 				message={selectedMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
@@ -775,6 +873,7 @@ class RoomView extends React.Component {
 				}
 				{showErrorActions ? (
 					<MessageErrorActions
+						tmid={this.tmid}
 						message={selectedMessage}
 						actionsHide={this.onErrorActionsHide}
 					/>
@@ -783,21 +882,33 @@ class RoomView extends React.Component {
 		);
 	}
 
+	setListRef = ref => this.flatList = ref;
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
 			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
 
 		return (
-			<SafeAreaView style={styles.container} testID='room-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID='room-view'
+				forceInset={{ vertical: 'never' }}
+			>
+				<StatusBar theme={theme} />
 				<List
+					ref={this.list}
+					listRef={this.setListRef}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}
+					theme={theme}
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
@@ -853,4 +964,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomView);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));

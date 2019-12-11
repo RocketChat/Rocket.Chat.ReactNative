@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
+import { themes } from '../../constants/colors';
+
 import styles from './styles';
 
 const AtMention = React.memo(({
-	mention, mentions, username, navToRoomInfo, preview, style = []
+	mention, mentions, username, navToRoomInfo, preview, style = [], theme
 }) => {
-	let mentionStyle = styles.mention;
+	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
 		mentionStyle = {
 			...mentionStyle,
@@ -16,7 +18,12 @@ const AtMention = React.memo(({
 	} else if (mention === username) {
 		mentionStyle = {
 			...mentionStyle,
-			...styles.mentionLoggedUser
+			backgroundColor: themes[theme].actionTintColor
+		};
+	} else {
+		mentionStyle = {
+			...mentionStyle,
+			color: themes[theme].actionTintColor
 		};
 	}
 
@@ -33,7 +40,7 @@ const AtMention = React.memo(({
 
 	return (
 		<Text
-			style={[preview ? styles.text : mentionStyle, ...style]}
+			style={[preview ? { ...styles.text, color: themes[theme].titleText } : mentionStyle, ...style]}
 			onPress={preview ? undefined : handlePress}
 		>
 			{`@${ mention }`}
@@ -47,6 +54,7 @@ AtMention.propTypes = {
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.array,
 	preview: PropTypes.bool,
+	theme: PropTypes.string,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
