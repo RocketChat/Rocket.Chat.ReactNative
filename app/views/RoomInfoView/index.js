@@ -285,6 +285,8 @@ class RoomInfoView extends React.Component {
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+		let displayName = roomUser.name || roomUser.username;
+		if (displayName === null || displayName === '') { displayName = 'Unnamed'; }
 		if (!room) {
 			return <View />;
 		}
@@ -298,7 +300,7 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && displayName, theme) }</View>
 					</View>
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
