@@ -566,6 +566,7 @@ class MessageBox extends Component {
 		}
 	}
 
+
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
 	}

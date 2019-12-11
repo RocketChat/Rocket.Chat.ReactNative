@@ -94,6 +94,9 @@ const restore = function* restore() {
 			}
 		}
 
+		const allowCrashReport = yield RocketChat.getAllowCrashReport();
+		yield put(toggleCrashReport(allowCrashReport));
+
 		if (!token || !server) {
 			yield all([
 				RNUserDefaults.clear(RocketChat.TOKEN_KEY),

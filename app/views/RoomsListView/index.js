@@ -755,7 +755,7 @@ class RoomsListView extends React.Component {
 				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
 			</View>
 		);
-	}
+	};
 
 	renderScroll = () => {
 		const { loading, chats, search } = this.state;

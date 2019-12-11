@@ -70,6 +70,10 @@ class LoginView extends React.Component {
 		Accounts_PasswordReset: true
 	}
 
+	static defaultProps = {
+		Accounts_PasswordReset: true
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {

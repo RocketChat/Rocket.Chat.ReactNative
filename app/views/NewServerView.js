@@ -214,6 +214,25 @@ class NewServerView extends React.Component {
 		});
 	}
 
+	uriToPath = uri => uri.replace('file://', '');
+
+	saveCertificate = (certificate) => {
+		animateNextTransition();
+		this.setState({ certificate });
+	}
+
+	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
+
+	showActionSheet = () => {
+		ActionSheet.showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX
+		}, (actionIndex) => {
+			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
+		});
+	}
+
 	renderBack = () => {
 		const { navigation, theme } = this.props;
 

@@ -10,6 +10,7 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
+import { isIOS } from '../utils/deviceInfo';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p'
@@ -30,6 +31,10 @@ const navigate = function* navigate({ params }) {
 const handleOpen = function* handleOpen({ params }) {
 	if (!params.host) {
 		return;
+	}
+
+	if (isIOS) {
+		yield RNUserDefaults.setName('group.ios.chat.rocket');
 	}
 
 	let { host } = params;
@@ -83,6 +88,9 @@ const handleOpen = function* handleOpen({ params }) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield RocketChat.connect({ server: host, user: { token: params.token } });
 		}
+		Navigation.navigate('OnboardingView', { previousServer: server });
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
 	}
 };
 
