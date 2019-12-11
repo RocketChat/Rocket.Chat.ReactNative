@@ -347,7 +347,7 @@ class RoomView extends React.Component {
 							this.setLastOpen(null);
 						}
 						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-						this.unsubscribe();
+						await this.unsubscribe();
 						this.sub = await RocketChat.subscribeRoom(room);
 					}
 				}
@@ -390,9 +390,9 @@ class RoomView extends React.Component {
 		}
 	}
 
-	unsubscribe = () => {
+	unsubscribe = async() => {
 		if (this.sub && this.sub.stop) {
-			this.sub.stop();
+			await this.sub.stop();
 		}
 	}
 
