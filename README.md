@@ -1,4 +1,4 @@
-# Rocket.Chat React Native Mobile
+# Rocket.Chat Mobile
 
 [![Project Dependencies](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative.svg)](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb15e2392a71473ea59d3f634f35c54e)](https://www.codacy.com/app/RocketChat/Rocket.Chat.ReactNative?utm_source=github.com&utm_medium=referral&utm_content=RocketChat/Rocket.Chat.ReactNative&utm_campaign=badger)
@@ -8,6 +8,16 @@
 **Supported Server Versions:** 0.70.0+
 
 ## Download
+
+### Official apps
+<a href="https://play.google.com/store/apps/details?id=chat.rocket.android">
+  <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
+</a>
+<a href="https://apps.apple.com/us/app/rocket-chat/id1148741252">
+  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
+</a>
+
+### Experimental apps
 <a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
   <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
 </a>
@@ -19,11 +29,17 @@
 
 ### TestFlight
 
-You can signup to our TestFlight builds by acessing this link: https://testflight.apple.com/join/7I3dLCNT.
+You can signup to our TestFlight builds by accessing these links:
+
+- Official: https://testflight.apple.com/join/3gcYeoMr
+- Experimental: https://testflight.apple.com/join/7I3dLCNT.
 
 ### Google Play beta
 
-You can subscribe to Google Play Beta program and download latest versions: https://play.google.com/store/apps/details?id=chat.rocket.reactnative
+You can subscribe to Google Play Beta program and download latest versions:
+
+- Official: https://play.google.com/store/apps/details?id=chat.rocket.android
+- Experimental: https://play.google.com/store/apps/details?id=chat.rocket.reactnative
 
 ## Reporting an Issue
 
@@ -57,13 +73,8 @@ If you don't need multiple servers, there is a branch `single-server` just for t
 Readme will guide you on how to config.
 
 ## Current priorities
-1) Jitsi integration
-2) Notification Preferences
-3) Two-way authentication
-4) Bugsnag
-5) Optional Analytics
-6) Typescript
-7) Prettier
+1) Omnichannel support
+2) E2E encryption
 
 ## Features
 | Feature                                                   	    | Status 	|
@@ -71,6 +82,7 @@ Readme will guide you on how to config.
 | Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
 | Discussions                                                     | ❌    	|
+| Omnichannel                                                     | ❌    	|
 | Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|
 | Record Video                                                  	| ✅    	|
@@ -83,14 +95,14 @@ Readme will guide you on how to config.
 | Grouped messages                                              	| ✅    	|
 | Mark room as read                                             	| ✅    	|
 | Mark room as unread                                           	| ✅    	|
-| Tablet Support                                                	| ❌    	|
+| Tablet Support                                                	| ✅    	|
 | Read receipt                                                  	| ✅    	|
 | Broadbast Channel                                             	| ✅    	|
 | Authentication via SAML                                       	| ✅    	|
 | Authentication via CAS                                        	| ✅    	|
 | Custom Fields on Signup                                       	| ✅    	|
 | Report message                                                	| ✅    	|
-| Theming                                                       	| ❌    	|
+| Theming                                                       	| ✅    	|
 | Settings -> Review the App                                    	| ❌    	|
 | Settings -> Default Browser                                   	| ❌    	|
 | Admin panel                                                   	| ✅    	|
