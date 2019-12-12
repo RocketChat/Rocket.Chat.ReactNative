@@ -439,7 +439,7 @@ export default {
 	You_are_in_preview_mode: 'Sie befinden sich im Vorschaumodus',
 	You_are_offline: 'Sie sind offline',
 	You_can_search_using_RegExp_eg: 'Sie können mit RegExp suchen. z.B. `/ ^ text $ / i`',
-	You_colon: 'Sie:',
+	You_colon: 'Sie: ',
 	you_were_mentioned: 'Sie wurden erwähnt',
 	you: 'Sie',
 	You: 'Sie',
