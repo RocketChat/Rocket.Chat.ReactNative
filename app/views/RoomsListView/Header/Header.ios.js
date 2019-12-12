@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Text, View, TouchableOpacity, Image, StyleSheet
+	Text, View, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -49,10 +49,10 @@ const HeaderTitle = React.memo(({ connecting, isFetching, theme }) => {
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, onPress, theme
+	connecting, isFetching, theme
 }) => (
 	<View style={styles.container}>
-		<TouchableOpacity
+		{/* <TouchableOpacity
 			onPress={onPress}
 			testID='rooms-list-header-server-dropdown-button'
 			style={styles.container}
@@ -63,22 +63,23 @@ const Header = React.memo(({
 				<Text style={[styles.server, { color: themes[theme].headerTintColor }]}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
 			</View>
-		</TouchableOpacity>
+		</TouchableOpacity> */}
+		<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 	</View>
 ));
 
 Header.propTypes = {
 	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
-	serverName: PropTypes.string,
+	// serverName: PropTypes.string,
 	theme: PropTypes.string,
-	showServerDropdown: PropTypes.bool.isRequired,
+	// showServerDropdown: PropTypes.bool.isRequired,
 	onPress: PropTypes.func.isRequired
 };
 
-Header.defaultProps = {
-	serverName: 'Rocket.Chat'
-};
+// Header.defaultProps = {
+// 	serverName: 'Rocket.Chat'
+// };
 
 HeaderTitle.propTypes = {
 	connecting: PropTypes.bool,

@@ -67,13 +67,13 @@ const parseDeepLinking = (url) => {
 
 // Outside
 const OutsideStack = createStackNavigator({
-	OnboardingView: {
-		getScreen: () => require('./views/OnboardingView').default,
-		header: null
-	},
-	NewServerView: {
-		getScreen: () => require('./views/NewServerView').default
-	},
+	// OnboardingView: {
+	// 	getScreen: () => require('./views/OnboardingView').default,
+	// 	header: null
+	// },
+	// NewServerView: {
+	// 	getScreen: () => require('./views/NewServerView').default
+	// },
 	LoginSignupView: {
 		getScreen: () => require('./views/LoginSignupView').default
 	},

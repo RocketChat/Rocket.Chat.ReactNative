@@ -5,7 +5,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
 
 import * as actions from '../actions';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
@@ -18,6 +18,7 @@ import {
 import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import appConfig from '../../app.json';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -95,7 +96,7 @@ const restore = function* restore() {
 				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
 				RNUserDefaults.clear('currentServer')
 			]);
-			yield put(actions.appStart('outside'));
+			yield put(serverRequest(appConfig.server));
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
