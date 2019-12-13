@@ -78,63 +78,25 @@ public class CustomPushNotification extends PushNotification {
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
         final Notification.Builder notification = new Notification.Builder(mContext);
 
-        final Resources res = mContext.getResources();
-        String packageName = mContext.getPackageName();
-
         Bundle bundle = mNotificationProps.asBundle();
-        int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
-        int largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
         String title = bundle.getString("title");
         String message = bundle.getString("message");
         String notId = bundle.getString("notId");
 
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
-
-        String CHANNEL_ID = "rocketchatrn_channel_01";
-        String CHANNEL_NAME = "All";
-
-        Notification.InboxStyle messageStyle = new Notification.InboxStyle();
-        List<String> messages = notificationMessages.get(notId);
-        if (messages != null) {
-            for (int i = 0; i < messages.size(); i++) {
-                messageStyle.addLine(messages.get(i));
-            }
-        }
-
-        if (messages.size() > 5) {
-            messageStyle.setSummaryText("+ " + Integer.toString(messages.size() - 6) + " messages");
-        }
-
         notification
-            .setSmallIcon(smallIconResId)
-            .setLargeIcon(getAvatar(ejson.getAvatarUri()))
             .setContentIntent(intent)
             .setContentTitle(title)
             .setContentText(message)
-            .setStyle(messageStyle)
-            .setNumber(messages.size())
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
             .setAutoCancel(true);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            notification.setColor(mContext.getColor(R.color.notification_text));
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                                                                  CHANNEL_NAME,
-                                                                  NotificationManager.IMPORTANCE_DEFAULT);
-
-            final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-
-            notification.setChannelId(CHANNEL_ID);
-        }
-
-        notificationReply(notification, Integer.parseInt(notId), bundle);
-        notificationDismiss(notification, Integer.parseInt(notId));
+        Integer notificationId = Integer.parseInt(notId);
+        notificationChannel(notification);
+        notificationIcons(notification, bundle);
+        notificationStyle(notification, notificationId, bundle);
+        notificationReply(notification, notificationId, bundle);
+        notificationDismiss(notification, notificationId);
 
         return notification;
     }
@@ -154,6 +116,55 @@ public class CustomPushNotification extends PushNotification {
         } catch (final ExecutionException | InterruptedException e) {
             return null;
         }
+    }
+
+    private void notificationIcons(Notification.Builder notification, Bundle bundle) {
+        final Resources res = mContext.getResources();
+        String packageName = mContext.getPackageName();
+
+        int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
+
+        Gson gson = new Gson();
+        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+
+        notification
+            .setSmallIcon(smallIconResId)
+            .setLargeIcon(getAvatar(ejson.getAvatarUri()));
+    }
+
+    private void notificationChannel(Notification.Builder notification) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "rocketchatrn_channel_01";
+            String CHANNEL_NAME = "All";
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                                                                  CHANNEL_NAME,
+                                                                  NotificationManager.IMPORTANCE_DEFAULT);
+
+            final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            notification.setChannelId(CHANNEL_ID);
+        }
+    }
+
+    private void notificationStyle(Notification.Builder notification, int notId, Bundle bundle) {
+        Notification.InboxStyle messageStyle = new Notification.InboxStyle();
+        List<String> messages = notificationMessages.get(Integer.toString(notId));
+        if (messages != null) {
+            for (int i = 0; i < messages.size(); i++) {
+                messageStyle.addLine(messages.get(i));
+            }
+            String summary = bundle.getString("summaryText");
+            messageStyle.setSummaryText(summary.replace("%n%", Integer.toString(messages.size())));
+            notification.setNumber(messages.size());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            notification.setColor(mContext.getColor(R.color.notification_text));
+        }
+
+        notification.setStyle(messageStyle);
     }
 
     private void notificationReply(Notification.Builder notification, int notificationId, Bundle bundle) {
@@ -193,8 +204,7 @@ public class CustomPushNotification extends PushNotification {
 
         PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, 0);
         
-        notification
-            .setDeleteIntent(dismissPendingIntent);
+        notification.setDeleteIntent(dismissPendingIntent);
     }
 
 }

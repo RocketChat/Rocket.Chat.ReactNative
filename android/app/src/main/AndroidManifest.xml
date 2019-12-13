@@ -45,9 +45,9 @@
 			android:enabled="true"
 			android:exported="false" />
 		<receiver
-    	android:name=".DismissNotification"
+			android:name=".DismissNotification"
 			android:enabled="true"
-    	android:exported="false" >
+			android:exported="false" >
 		</receiver>
 		<activity
 				android:noHistory="true"

@@ -10,6 +10,9 @@ public class Ejson {
     String type;
     Sender sender;
 
+    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
+    private SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
+
     public String getAvatarUri() {
         if (!type.equals("d")) {
             return null;
@@ -18,27 +21,15 @@ public class Ejson {
     }
 
     public String token() {
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
-        String BaseKEY = "reactnativemeteor_usertoken-";
-        return sharedPreferences.getString(BaseKEY.concat(userId()), "");
+        return sharedPreferences.getString(TOKEN_KEY.concat(userId()), "");
     }
 
     public String userId() {
-        SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
-        String BaseKEY = "reactnativemeteor_usertoken-";
-        return sharedPreferences.getString(BaseKEY.concat(serverURL()), "");
+        return sharedPreferences.getString(TOKEN_KEY.concat(serverURL()), "");
     }
 
     public String serverURL() {
-        String url = this.removeTrailingSlash(this.host);
-        if (!url.contains("http")) {
-           return "https://" + url;
-        }
-        return url;
-    }
-
-    private String removeTrailingSlash(String baseUrl) {
-        String url = baseUrl;
+        String url = this.host;
         if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
