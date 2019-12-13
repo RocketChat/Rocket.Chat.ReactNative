@@ -1,13 +1,14 @@
 import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
 import reduxStore from '../../lib/createStore';
+import I18n from '../../i18n';
 
 const replyAction = new NotificationAction({
 	activationMode: 'background',
-	title: 'Reply',
+	title: I18n.t('Reply'),
 	textInput: {
-		buttonTitle: 'Reply',
-		placeholder: 'Insert message'
+		buttonTitle: I18n.t('Reply'),
+		placeholder: I18n.t('Type_message')
 	},
 	identifier: 'REPLY_ACTION'
 });
@@ -22,13 +23,10 @@ class PushNotification {
 			this.deviceToken = deviceToken;
 		});
 
-		NotificationsIOS.addEventListener('notificationOpened', (notification, completion, action) => {
+		NotificationsIOS.addEventListener('notificationOpened', (notification, completion) => {
 			const { background } = reduxStore.getState().app;
 			if (background) {
 				this.onNotification(notification);
-			}
-			if (action) {
-				this.onReply(notification, action);
 			}
 			completion();
 		});
@@ -52,7 +50,6 @@ class PushNotification {
 	async configure(params) {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;
-		this.onReply = params.onReply;
 
 		const initial = await NotificationsIOS.getInitialNotification();
 		// NotificationsIOS.consumeBackgroundQueue();
