@@ -49,6 +49,10 @@ const THEMES = [
 	}
 ];
 
+if (supportSystemTheme()) {
+	THEMES.unshift(SYSTEM_THEME);
+}
+
 const styles = StyleSheet.create({
 	list: {
 		paddingBottom: 18
@@ -74,13 +78,6 @@ class ThemeView extends React.Component {
 		theme: PropTypes.string,
 		themePreferences: PropTypes.object,
 		setTheme: PropTypes.func
-	}
-
-	constructor(props) {
-		super(props);
-		if (supportSystemTheme()) {
-			THEMES.unshift(SYSTEM_THEME);
-		}
 	}
 
 	isSelected = (item) => {
