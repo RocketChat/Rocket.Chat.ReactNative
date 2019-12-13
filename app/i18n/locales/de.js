@@ -432,7 +432,7 @@ export default {
 	Websocket_disabled: 'Websockets sind auf diesem Server nicht aktiviert.\n{{contact}}',
 	Welcome: 'Herzlich willkommen',
 	Welcome_to_RocketChat: 'Willkommen bei Rocket.Chat',
-	Whats_your_2fa: 'Wie ist Ihr 2FA-Code?',
+	Whats_your_2fa: 'Wie lautet Ihr 2FA-Code?',
 	Without_Servers: 'Ohne Server',
 	Yes_action_it: 'Ja, {{action}}!',
 	Yesterday: 'Gestern',
