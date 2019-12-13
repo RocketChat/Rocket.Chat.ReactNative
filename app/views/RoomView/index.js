@@ -287,7 +287,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		this.unsubscribe();
+		await this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -324,38 +324,41 @@ class RoomView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	init = () => {
+	init = async() => {
 		try {
 			this.setState({ loading: true });
-			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
-				const { room, joined } = this.state;
-				if (this.tmid) {
-					await this.getThreadMessages();
-				} else {
-					const newLastOpen = new Date();
-					await this.getMessages(room);
+			const { room, joined } = this.state;
+			if (this.tmid) {
+				await this.getThreadMessages();
+			} else {
+				const newLastOpen = new Date();
+				await this.getMessages(room);
 
-					// if room is joined
-					if (joined) {
-						if (room.alert || room.unread || room.userMentions) {
-							this.setLastOpen(room.ls);
-						} else {
-							this.setLastOpen(null);
-						}
-						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-						this.unsubscribe();
-						this.sub = await RocketChat.subscribeRoom(room);
+				// if room is joined
+				if (joined) {
+					if (room.alert || room.unread || room.userMentions) {
+						this.setLastOpen(room.ls);
+					} else {
+						this.setLastOpen(null);
 					}
+					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					await this.unsubscribe();
+					this.sub = RocketChat.subscribeRoom(room);
 				}
+			}
 
-				// We run `canAutoTranslate` again in order to refetch auto translate permission
-				// in case of a missing connection or poor connection on room open
-				const canAutoTranslate = await RocketChat.canAutoTranslate();
-				this.setState({ canAutoTranslate, loading: false });
-			});
+			// We run `canAutoTranslate` again in order to refetch auto translate permission
+			// in case of a missing connection or poor connection on room open
+			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			this.setState({ canAutoTranslate, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			log(e);
+			this.retryInit = this.retryInit + 1 || 1;
+			if (this.retryInit <= 1) {
+				this.retryInitTimeout = setTimeout(() => {
+					this.init();
+				}, 300);
+			}
 		}
 	}
 
@@ -386,9 +389,9 @@ class RoomView extends React.Component {
 		}
 	}
 
-	unsubscribe = () => {
+	unsubscribe = async() => {
 		if (this.sub && this.sub.stop) {
-			this.sub.stop();
+			await this.sub.stop();
 		}
 	}
 
@@ -568,27 +571,16 @@ class RoomView extends React.Component {
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	}
 
-	getMessages = async() => {
+	getMessages = () => {
 		const { room } = this.state;
-		try {
-			if (room.lastOpen) {
-				await RocketChat.loadMissedMessages(room);
-			} else {
-				await RocketChat.loadMessagesForRoom(room);
-			}
-			return Promise.resolve();
-		} catch (e) {
-			log(e);
+		if (room.lastOpen) {
+			return RocketChat.loadMissedMessages(room);
+		} else {
+			return RocketChat.loadMessagesForRoom(room);
 		}
 	}
 
-	getThreadMessages = () => {
-		try {
-			return RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid });
-		} catch (e) {
-			log(e);
-		}
-	}
+	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
 
 	getCustomEmoji = (name) => {
 		const { customEmojis } = this.props;
