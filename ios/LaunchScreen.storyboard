@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,14 +21,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launch Screen Icon" translatesAutoresizingMaskIntoConstraints="NO" id="OgI-vW-r9q">
-                                <rect key="frame" x="133" y="286" width="109" height="95"/>
+                                <rect key="frame" x="132.5" y="284" width="110" height="99"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="109" id="OdC-6s-bFk"/>
-                                    <constraint firstAttribute="height" constant="95" id="aPz-Zh-jVS"/>
+                                    <constraint firstAttribute="height" constant="99" id="C2q-I8-Yqz"/>
+                                    <constraint firstAttribute="width" constant="110" id="FBL-RS-waK"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" name="splashBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="OgI-vW-r9q" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="6rJ-eg-g9T"/>
                             <constraint firstItem="OgI-vW-r9q" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="If3-ka-9Gs"/>
@@ -42,6 +41,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launch Screen Icon" width="109" height="95"/>
+        <image name="Launch Screen Icon" width="369" height="333"/>
+        <namedColor name="splashBackgroundColor">
+            <color red="0.93333333333333335" green="0.93725490196078431" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
