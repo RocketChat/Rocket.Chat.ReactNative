@@ -47,18 +47,27 @@ const styles = StyleSheet.create({
 		flex: 1
 	}
 });
-const handleSave = (img) => {
-	FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`)
-		.then(({ uri }) => {
-			CameraRoll.saveToCameraRoll(uri).then(() => {
-				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
-			}).catch(() => {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
-			});
-		})
-		.catch(() => {
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
-		});
+const handleSave = async(img) => {
+	try {
+		const file = `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`;
+		const { uri } = await FileSystem.downloadAsync(img, file);
+		await CameraRoll.saveToCameraRoll(uri);
+		EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+	} catch (e) {
+		EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
+	}
+
+	// FileSystem.downloadAsync(img, `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`)
+	// 	.then(({ uri }) => {
+	// 		CameraRoll.saveToCameraRoll(uri).then(() => {
+	// 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+	// 		}).catch(() => {
+	// 			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
+	// 		});
+	// 	})
+	// 	.catch(() => {
+	// 		EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
+	// 	});
 };
 
 const ModalContent = React.memo(({
