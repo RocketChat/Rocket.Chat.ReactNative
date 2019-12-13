@@ -250,15 +250,11 @@ class RoomView extends React.Component {
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				this.init();
 				// Fire List.init() just to keep observables working
 				if (this.list && this.list.current) {
 					this.list.current.init();
 				}
 			});
-		}
-		if (appState === 'background' && appState !== prevProps.appState) {
-			this.unsubscribe();
 		}
 	}
 
