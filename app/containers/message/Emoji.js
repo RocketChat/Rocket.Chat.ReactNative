@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { shortnameToUnicode } from 'emoji-toolkit';
 
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
 const Emoji = React.memo(({
