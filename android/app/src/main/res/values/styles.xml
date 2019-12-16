@@ -18,4 +18,9 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/Share.Window</item>
     </style>
+
+    <style name="BootTheme" parent="AppTheme">
+        <!-- set bootsplash.xml as activity background -->
+        <item name="android:background">@drawable/bootsplash</item>
+    </style>
 </resources>

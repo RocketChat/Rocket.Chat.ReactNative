@@ -8,13 +8,15 @@ import com.facebook.react.ReactFragmentActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.content.Intent;
 import android.content.res.Configuration;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);
-        super.onCreate(null);
+        // SplashScreen.show(this);
+        super.onCreate(savedInstanceState);
+        RNBootSplash.show(R.drawable.bootsplash, MainActivity.this);
     }
 
     /**

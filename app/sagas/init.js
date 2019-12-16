@@ -3,6 +3,7 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import RNBootSplash from "react-native-bootsplash";
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -122,7 +123,8 @@ const start = function* start({ root }) {
 	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
 	}
-	SplashScreen.hide();
+	// SplashScreen.hide();
+	RNBootSplash.hide();
 };
 
 const root = function* root() {

@@ -19,8 +19,8 @@ export default React.memo(withTheme(({ theme }) => (
 		{isAndroid
 			? (
 				<Image
-					source={{ uri: 'launch_screen' }}
-					style={styles.image}
+					source={{ uri: 'splash' }}
+					// style={styles.image}
 					resizeMode='contain'
 				/>
 			)
