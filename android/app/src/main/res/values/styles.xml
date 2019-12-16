@@ -20,7 +20,6 @@
     </style>
 
     <style name="BootTheme" parent="AppTheme">
-        <!-- set bootsplash.xml as activity background -->
-        <item name="android:background">@drawable/bootsplash</item>
+        <item name="android:background">@drawable/launch_screen</item>
     </style>
 </resources>
