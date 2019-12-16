@@ -122,7 +122,7 @@ const start = function* start({ root }) {
 	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
 	}
-	RNBootSplash.hide({ duration: 100 });
+	RNBootSplash.hide();
 };
 
 const root = function* root() {
