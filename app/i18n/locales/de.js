@@ -443,7 +443,7 @@ export default {
 	you_were_mentioned: 'Sie wurden erwähnt',
 	you: 'Sie',
 	You: 'Sie',
-	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Sie benötigen Zugangz zu mindestens einem Rocket.Chat-Server um etwas zu teilen.',
+	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Sie benötigen Zugang zu mindestens einem Rocket.Chat-Server um etwas zu teilen.',
 	Your_certificate: 'Ihr Zertifikat',
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'Sie können diese Nachricht nicht wiederherstellen!',
