@@ -56,6 +56,11 @@ class ImageView extends React.Component {
 		this.state = { attachment, loading: true };
 	}
 
+	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ handleSave: this.handleSave });
+	}
+
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
