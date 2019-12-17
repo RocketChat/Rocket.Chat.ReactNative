@@ -111,6 +111,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		});
 
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
+		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
