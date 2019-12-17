@@ -34,8 +34,7 @@ export default StyleSheet.create({
 		position: 'absolute',
 		bottom: -3,
 		right: -3,
-		borderWidth: 3,
-		borderColor: '#fff'
+		borderWidth: 3
 	},
 	textAlignCenter: {
 		textAlign: 'center'

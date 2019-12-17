@@ -14,7 +14,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
-#import "RNSplashScreen.h"
+#import "RNBootSplash.h"
 #import "Orientation.h"
 #import <Firebase.h>
 #import <UMCore/UMModuleRegistry.h>
@@ -39,7 +39,7 @@
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
   
-    [RNSplashScreen show];
+    [RNBootSplash show:@"LaunchScreen" inView:rootView];
     [RNNotifications startMonitorNotifications];
 
     return YES;

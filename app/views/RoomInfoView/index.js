@@ -205,7 +205,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<Avatar
@@ -217,7 +217,7 @@ class RoomInfoView extends React.Component {
 				userId={user.id}
 				token={user.token}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}

@@ -10,16 +10,17 @@ import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+const unsubscribe = (subscriptions = []) => Promise.all(subscriptions.map(sub => sub.unsubscribe));
 const removeListener = listener => listener.stop();
+
+let promises;
+let connectedListener;
+let disconnectedListener;
+let notifyRoomListener;
+let messageReceivedListener;
 
 export default function subscribeRoom({ rid }) {
 	console.log(`[RCRN] Subscribed to room ${ rid }`);
-	let promises;
-	let connectedListener;
-	let disconnectedListener;
-	let notifyRoomListener;
-	let messageReceivedListener;
 
 	const handleConnection = () => {
 		this.loadMissedMessages({ rid }).catch(e => console.log(e));
@@ -197,25 +198,35 @@ export default function subscribeRoom({ rid }) {
 		});
 	});
 
-	const stop = () => {
+	const stop = async() => {
+		let params;
 		if (promises) {
-			promises.then(unsubscribe);
+			try {
+				params = await promises;
+				await unsubscribe(params);
+			} catch (error) {
+				// Do nothing
+			}
 			promises = false;
 		}
 		if (connectedListener) {
-			connectedListener.then(removeListener);
+			params = await connectedListener;
+			removeListener(params);
 			connectedListener = false;
 		}
 		if (disconnectedListener) {
-			disconnectedListener.then(removeListener);
+			params = await disconnectedListener;
+			removeListener(params);
 			disconnectedListener = false;
 		}
 		if (notifyRoomListener) {
-			notifyRoomListener.then(removeListener);
+			params = await notifyRoomListener;
+			removeListener(params);
 			notifyRoomListener = false;
 		}
 		if (messageReceivedListener) {
-			messageReceivedListener.then(removeListener);
+			params = await messageReceivedListener;
+			removeListener(params);
 			messageReceivedListener = false;
 		}
 		reduxStore.dispatch(clearUserTyping());
@@ -226,11 +237,7 @@ export default function subscribeRoom({ rid }) {
 	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
 	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
 
-	try {
-		promises = this.sdk.subscribeRoom(rid);
-	} catch (e) {
-		log(e);
-	}
+	promises = this.sdk.subscribeRoom(rid);
 
 	return {
 		stop: () => stop()
