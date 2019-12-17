@@ -6,6 +6,7 @@ import CameraRoll from '@react-native-community/cameraroll';
 import { FileSystem } from 'react-native-unimodules';
 import { SharedElement } from 'react-navigation-shared-element';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { Video } from 'expo-av';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
@@ -64,7 +65,7 @@ class ImageView extends React.Component {
 	constructor(props) {
 		super(props);
 		const attachment = props.navigation.getParam('attachment');
-		this.state = { attachment, loading: false };
+		this.state = { attachment, loading: true };
 	}
 
 	handleSave = async() => {
@@ -84,7 +85,11 @@ class ImageView extends React.Component {
 	};
 
 	renderBottom() {
+		const { attachment } = this.state;
 		const { theme } = this.props;
+		if (attachment.video_url) {
+			return null;
+		}
 		return (
 			<View style={[styles.bottom, { backgroundColor: themes[theme].headerBackground, borderColor: themes[theme].headerBorder }]}>
 				<BorderlessButton style={styles.save} onPress={this.handleSave}>
@@ -94,18 +99,49 @@ class ImageView extends React.Component {
 		);
 	}
 
-	render() {
-		const { attachment, loading } = this.state;
+	renderContent() {
+		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+		if (attachment && attachment.image_url) {
+			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+			return (
+				<ImagePinch
+					uri={uri}
+					onLoadEnd={() => this.setState({ loading: false })}
+				/>
+			);
+		}
+		if (attachment && attachment.video_url) {
+			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
+			return (
+				<Video
+					source={{ uri }}
+					rate={1.0}
+					volume={1.0}
+					isMuted={false}
+					resizeMode={Video.RESIZE_MODE_CONTAIN}
+					shouldPlay
+					isLooping={false}
+					style={styles.container}
+					useNativeControls
+					onReadyForDisplay={() => this.setState({ loading: false })}
+					onError={console.log}
+				/>
+			);
+		}
+		return null;
+	}
+
+	render() {
+		const { loading } = this.state;
 		const { theme } = this.props;
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				<SharedElement id='image' style={[StyleSheet.absoluteFill, { marginBottom: BOTTOM_HEIGHT }]}>
-					<ImagePinch uri={uri} />
+				<SharedElement id='image' style={StyleSheet.absoluteFill}>
+					{this.renderContent()}
 				</SharedElement>
 				{this.renderBottom()}
-				{loading ? <RCActivityIndicator size='large' theme={theme} /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
 		);
 	}

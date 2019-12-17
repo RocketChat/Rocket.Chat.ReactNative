@@ -32,7 +32,6 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
-import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
@@ -52,7 +51,6 @@ import ModalNavigation from '../../lib/ModalNavigation';
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
-	'photoModalVisible',
 	'reactionsModalVisible',
 	'canAutoTranslate',
 	'showActions',
@@ -162,9 +160,7 @@ class RoomView extends React.Component {
 			},
 			roomUpdate: {},
 			lastOpen: null,
-			photoModalVisible: false,
 			reactionsModalVisible: false,
-			selectedAttachment: {},
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
@@ -470,11 +466,6 @@ class RoomView extends React.Component {
 	onOpenFileModal = (attachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('ImageView', { attachment });
-		// this.setState({ selectedAttachment: attachment, photoModalVisible: true });
-	}
-
-	onCloseFileModal = () => {
-		this.setState({ selectedAttachment: {}, photoModalVisible: false });
 	}
 
 	onReactionPress = async(shortname, messageId) => {
@@ -878,7 +869,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
+			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
 		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
@@ -914,13 +905,6 @@ class RoomView extends React.Component {
 					reactionClose={this.onReactionClose}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
-				<FileModal
-					attachment={selectedAttachment}
-					isVisible={photoModalVisible}
-					onClose={this.onCloseFileModal}
-					user={user}
-					baseUrl={baseUrl}
-				/>
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}

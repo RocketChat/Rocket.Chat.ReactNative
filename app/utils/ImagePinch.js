@@ -378,7 +378,7 @@ class ImagePinch extends ResponsiveComponent {
 	}
 
 	render() {
-		const { uri } = this.props;
+		const { uri, ...props } = this.props;
 		const { width } = this.state.window;
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
@@ -423,6 +423,7 @@ class ImagePinch extends ResponsiveComponent {
 								]}
 								resizeMode='contain'
 								source={{ uri }}
+								{...props}
 							/>
 						</PanGestureHandler>
 					</Animated.View>

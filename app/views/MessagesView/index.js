@@ -13,7 +13,6 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
-import FileModal from '../../containers/FileModal';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
@@ -40,8 +39,6 @@ class MessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			messages: [],
-			selectedAttachment: {},
-			photoModalVisible: false,
 			fileLoading: true
 		};
 		this.rid = props.navigation.getParam('rid');
@@ -55,16 +52,13 @@ class MessagesView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			loading, messages, photoModalVisible, fileLoading
+			loading, messages, fileLoading
 		} = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.photoModalVisible !== photoModalVisible) {
 			return true;
 		}
 		if (!equal(nextState.messages, messages)) {
@@ -216,11 +210,8 @@ class MessagesView extends React.Component {
 	}
 
 	onOpenFileModal = (attachment) => {
-		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
-	}
-
-	onCloseFileModal = () => {
-		this.setState({ selectedAttachment: {}, photoModalVisible: false });
+		const { navigation } = this.props;
+		navigation.navigate('ImageView', { attachment });
 	}
 
 	onLongPress = (message) => {
@@ -278,10 +269,8 @@ class MessagesView extends React.Component {
 	renderItem = ({ item }) => this.content.renderItem(item)
 
 	render() {
-		const {
-			messages, loading, selectedAttachment, photoModalVisible, fileLoading
-		} = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const { messages, loading } = this.state;
+		const { theme } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -304,15 +293,6 @@ class MessagesView extends React.Component {
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				/>
-				<FileModal
-					attachment={selectedAttachment}
-					isVisible={photoModalVisible}
-					onClose={this.onCloseFileModal}
-					user={user}
-					baseUrl={baseUrl}
-					loading={fileLoading}
-					setLoading={this.setFileLoading}
 				/>
 			</SafeAreaView>
 		);
