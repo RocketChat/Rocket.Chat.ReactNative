@@ -95,7 +95,7 @@
     "rn-extensions-share": "^2.3.10",
     "rn-fetch-blob": "0.11.2",
     "rn-root-view": "^1.0.3",
-    "rn-user-defaults": "^1.3.5",
+    "rn-user-defaults": "^1.7.0",
     "semver": "6.3.0",
     "snyk": "1.210.0",
     "strip-ansi": "5.2.0",
