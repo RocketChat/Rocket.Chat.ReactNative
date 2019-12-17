@@ -25,7 +25,7 @@ const Emoji = React.memo(({
 	return (
 		<Text
 			style={[
-				{ color: themes[theme].titleText },
+				{ color: themes[theme].bodyText },
 				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
 				...style
 			]}

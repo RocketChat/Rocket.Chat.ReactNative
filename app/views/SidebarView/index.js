@@ -290,7 +290,7 @@ class Sidebar extends Component {
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
-								<Status style={styles.status} size={12} status={user && user.status} />
+								<Status style={styles.status} size={12} status={user && user.status} theme={theme} />
 								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{user.username}</Text>
 							</View>
 							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
