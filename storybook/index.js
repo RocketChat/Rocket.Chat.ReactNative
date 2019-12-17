@@ -1,10 +1,10 @@
 import { AppRegistry } from 'react-native';
 import { getStorybookUI, configure } from '@storybook/react-native'; // eslint-disable-line
 
-import SplashScreen from 'react-native-splash-screen';
+import RNBootSplash from 'react-native-bootsplash';
 import 'react-native-gesture-handler';
 
-SplashScreen.hide();
+RNBootSplash.hide();
 
 // import stories
 configure(() => {

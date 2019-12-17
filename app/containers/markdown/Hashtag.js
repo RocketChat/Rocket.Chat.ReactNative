@@ -21,7 +21,7 @@ const Hashtag = React.memo(({
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<Text
-				style={[preview ? { ...styles.text, color: themes[theme].titleText } : styles.mention, ...style]}
+				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : styles.mention, ...style]}
 				onPress={preview ? undefined : handlePress}
 			>
 				{`#${ hashtag }`}
@@ -29,7 +29,7 @@ const Hashtag = React.memo(({
 		);
 	}
 	return (
-		<Text style={[preview ? { ...styles.text, color: themes[theme].titleText } : styles.mention, ...style]}>
+		<Text style={[preview ? { ...styles.text, color: themes[theme].bodyText } : styles.mention, ...style]}>
 			{`#${ hashtag }`}
 		</Text>
 	);

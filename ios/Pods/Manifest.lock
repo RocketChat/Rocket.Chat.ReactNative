@@ -301,8 +301,6 @@ PODS:
     - React
   - react-native-slider (2.0.5):
     - React
-  - react-native-splash-screen (3.2.0):
-    - React
   - react-native-video (5.0.2):
     - React
     - react-native-video/Video (= 5.0.2)
@@ -350,6 +348,8 @@ PODS:
   - rn-fetch-blob (0.11.2):
     - React-Core
   - RNAudio (4.3.0):
+    - React
+  - RNBootSplash (1.1.0):
     - React
   - RNDeviceInfo (2.3.2):
     - React
@@ -445,7 +445,6 @@ DEPENDENCIES:
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
-  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -462,6 +461,7 @@ DEPENDENCIES:
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudio (from `../node_modules/react-native-audio`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
@@ -583,8 +583,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
-  react-native-splash-screen:
-    :path: "../node_modules/react-native-splash-screen"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-webview:
@@ -615,6 +613,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNAudio:
     :path: "../node_modules/react-native-audio"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
@@ -731,7 +731,6 @@ SPEC CHECKSUMS:
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-slider: 39208600e44f885e2d2c0510b5c6435a0f62d087
-  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   react-native-webview: 2aadbfef6b9eaa9e89b306ae3e31e6e870a6306d
   React-RCTActionSheet: 94671eef55b01a93be735605822ef712d5ea208e
@@ -747,6 +746,7 @@ SPEC CHECKSUMS:
   rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
+  RNBootSplash: 73aabec1fc8f968798b655e7271760b17909648e
   RNDeviceInfo: 17e34f6dd902f08d88cbe2c0b7a01be948d43641
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
