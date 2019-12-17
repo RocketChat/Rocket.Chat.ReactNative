@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
 import { FileSystem } from 'react-native-unimodules';
 import { SharedElement } from 'react-navigation-shared-element';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
 
 import { LISTENER } from '../containers/Toast';
@@ -16,38 +15,27 @@ import ImagePinch from '../utils/ImagePinch';
 import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
-import { CustomIcon } from '../lib/Icons';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-
-const BOTTOM_HEIGHT = 56;
+import { SaveButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
-	},
-	bottom: {
-		bottom: 0,
-		width: '100%',
-		position: 'absolute',
-		height: BOTTOM_HEIGHT,
-		borderTopWidth: StyleSheet.hairlineWidth
-	},
-	save: {
-		marginVertical: 16,
-		position: 'absolute',
-		right: 16
 	}
 });
 
 class ImageView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
+		const { theme } = screenProps;
 		const attachment = navigation.getParam('attachment');
-		const { title } = attachment;
-		return ({
+		const handleSave = navigation.getParam('handleSave', () => {});
+		const { title, video_url } = attachment;
+		return {
 			title,
+			...themedHeader(theme),
 			gesturesEnabled: false,
-			...themedHeader(screenProps.theme)
-		});
+			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
+		};
 	}
 
 	static sharedElements = () => [{ id: 'image' }];
@@ -83,21 +71,6 @@ class ImageView extends React.Component {
 		}
 		this.setState({ loading: false });
 	};
-
-	renderBottom() {
-		const { attachment } = this.state;
-		const { theme } = this.props;
-		if (attachment.video_url) {
-			return null;
-		}
-		return (
-			<View style={[styles.bottom, { backgroundColor: themes[theme].headerBackground, borderColor: themes[theme].headerBorder }]}>
-				<BorderlessButton style={styles.save} onPress={this.handleSave}>
-					<CustomIcon name='Download' size={28} color={themes[theme].tintColor} />
-				</BorderlessButton>
-			</View>
-		);
-	}
 
 	renderContent() {
 		const { attachment } = this.state;
@@ -140,7 +113,6 @@ class ImageView extends React.Component {
 				<SharedElement id='image' style={StyleSheet.absoluteFill}>
 					{this.renderContent()}
 				</SharedElement>
-				{this.renderBottom()}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
 		);
