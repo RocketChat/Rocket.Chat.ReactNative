@@ -6,8 +6,11 @@ import {
 	State,
 	PinchGestureHandler
 } from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 import Animated, { Easing } from 'react-native-reanimated';
 import { ResponsiveComponent } from 'react-native-responsive-ui';
+
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 const styles = StyleSheet.create({
 	wrapper: {
@@ -380,6 +383,7 @@ class ImagePinch extends ResponsiveComponent {
 	render() {
 		const { uri, ...props } = this.props;
 		const { width } = this.state.window;
+
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
 		// is required for the "scale focal point" math to work correctly
@@ -402,7 +406,7 @@ class ImagePinch extends ResponsiveComponent {
 							onGestureEvent={this._onPanEvent}
 							onHandlerStateChange={this._onPanEvent}
 						>
-							<Animated.Image
+							<AnimatedFastImage
 								style={[
 									styles.image,
 									{
