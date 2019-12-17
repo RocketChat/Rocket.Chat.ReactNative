@@ -5,6 +5,36 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
+const changeMessageStatus = async(id, tmid, status) => {
+	const db = database.active;
+	const msgCollection = db.collections.get('messages');
+	const threadMessagesCollection = db.collections.get('thread_messages');
+	const successBatch = [];
+	const messageRecord = await msgCollection.find(id);
+	successBatch.push(
+		messageRecord.prepareUpdate((m) => {
+			m.status = status;
+		})
+	);
+
+	if (tmid) {
+		const threadMessageRecord = await threadMessagesCollection.find(id);
+		successBatch.push(
+			threadMessageRecord.prepareUpdate((tm) => {
+				tm.status = status;
+			})
+		);
+	}
+
+	try {
+		await db.action(async() => {
+			await db.batch(...successBatch);
+		});
+	} catch (error) {
+		// Do nothing
+	}
+};
+
 export async function sendMessageCall(message) {
 	const {
 		id: _id, subscription: { id: rid }, msg, tmid
@@ -17,30 +47,9 @@ export async function sendMessageCall(message) {
 				_id, rid, msg, tmid
 			}
 		});
+		await changeMessageStatus(_id, tmid, messagesStatus.SENT);
 	} catch (e) {
-		const db = database.active;
-		const msgCollection = db.collections.get('messages');
-		const threadMessagesCollection = db.collections.get('thread_messages');
-		const errorBatch = [];
-		const messageRecord = await msgCollection.find(_id);
-		errorBatch.push(
-			messageRecord.prepareUpdate((m) => {
-				m.status = messagesStatus.ERROR;
-			})
-		);
-
-		if (tmid) {
-			const threadMessageRecord = await threadMessagesCollection.find(_id);
-			errorBatch.push(
-				threadMessageRecord.prepareUpdate((tm) => {
-					tm.status = messagesStatus.ERROR;
-				})
-			);
-		}
-
-		await db.action(async() => {
-			await db.batch(...errorBatch);
-		});
+		await changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 	}
 }
 

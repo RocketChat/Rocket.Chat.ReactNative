@@ -197,7 +197,8 @@ jobs:
             npx jetify
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew bundleRelease
+              # TODO: enable app bundle again
+              ./gradlew assembleRelease
             else
               ./gradlew assembleDebug
             fi
