@@ -286,6 +286,8 @@ PODS:
     - React
   - react-native-background-timer (2.1.1):
     - React
+  - react-native-cameraroll (1.3.0):
+    - React
   - react-native-document-picker (3.2.4):
     - React
   - react-native-jitsi-meet (2.0.3):
@@ -381,6 +383,8 @@ PODS:
     - React
   - RNScreens (2.0.0-alpha.3):
     - React
+  - RNSharedElement (0.5.3):
+    - React
   - RNUserDefaults (1.3.5):
     - React
   - RNVectorIcons (6.6.0):
@@ -438,6 +442,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-appearance (from `../node_modules/react-native-appearance`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-keyboard-input (from `../node_modules/react-native-keyboard-input`)
@@ -471,6 +476,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSharedElement (from `../node_modules/react-native-shared-element`)
   - RNUserDefaults (from `../node_modules/rn-user-defaults`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -569,6 +575,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-appearance"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-jitsi-meet:
@@ -633,6 +641,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-root-view"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSharedElement:
+    :path: "../node_modules/react-native-shared-element"
   RNUserDefaults:
     :path: "../node_modules/rn-user-defaults"
   RNVectorIcons:
@@ -724,6 +734,7 @@ SPEC CHECKSUMS:
   React-jsinspector: a8939cc6909607eb5e8a5ecfff7c6226984e174d
   react-native-appearance: 368f9d1160e3f1d7ecb5945e704affe018deef46
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
+  react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-jitsi-meet: 1ca89538b8ef3158bfd306d60325d7f11ca1451a
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
@@ -756,6 +767,7 @@ SPEC CHECKSUMS:
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
+  RNSharedElement: 4ad4e32e2a2b3c1c4171d46e97a38f25cdf3ca58
   RNUserDefaults: 8a4928443510aa99e4ccb3b53f1bf186593d690b
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
