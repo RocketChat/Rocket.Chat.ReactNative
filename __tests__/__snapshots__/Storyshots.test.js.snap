@@ -213,7 +213,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -455,7 +455,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -697,7 +697,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -917,7 +917,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1011,7 +1011,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1105,7 +1105,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1325,7 +1325,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1441,7 +1441,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1701,7 +1701,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -1939,7 +1939,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -2181,7 +2181,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -2452,7 +2452,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -2704,7 +2704,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -2745,7 +2745,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -3005,7 +3005,7 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         }
                       }
                     >
@@ -3025,7 +3025,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -3083,7 +3083,7 @@ exports[`Storyshots Message list 1`] = `
                         <Text
                           style={
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             }
                           }
                         >
@@ -3103,7 +3103,7 @@ exports[`Storyshots Message list 1`] = `
                             Array [
                               undefined,
                               Object {
-                                "color": "#0d0e12",
+                                "color": "#2f343d",
                               },
                             ]
                           }
@@ -3165,7 +3165,7 @@ exports[`Storyshots Message list 1`] = `
                         <Text
                           style={
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             }
                           }
                         >
@@ -3185,7 +3185,7 @@ exports[`Storyshots Message list 1`] = `
                             Array [
                               undefined,
                               Object {
-                                "color": "#0d0e12",
+                                "color": "#2f343d",
                               },
                             ]
                           }
@@ -3453,7 +3453,7 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         }
                       }
                     >
@@ -3473,7 +3473,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -3533,7 +3533,7 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         }
                       }
                     >
@@ -3553,7 +3553,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -3817,7 +3817,7 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         }
                       }
                     >
@@ -3837,7 +3837,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -3953,7 +3953,7 @@ exports[`Storyshots Message list 1`] = `
                     <Text
                       style={
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         }
                       }
                     >
@@ -3973,7 +3973,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -4219,7 +4219,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -4461,7 +4461,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -4703,7 +4703,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -5108,7 +5108,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -5355,7 +5355,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -5602,7 +5602,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -5976,7 +5976,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -6224,7 +6224,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -6503,7 +6503,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -6803,7 +6803,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -7045,7 +7045,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -7627,7 +7627,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -8650,7 +8650,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -8870,7 +8870,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -9090,7 +9090,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -9310,7 +9310,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -9552,7 +9552,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -9834,7 +9834,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -9973,7 +9973,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -10193,7 +10193,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -10458,7 +10458,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -10757,7 +10757,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -11034,7 +11034,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -11352,7 +11352,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     undefined,
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -11980,7 +11980,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     undefined,
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -12104,7 +12104,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -12328,7 +12328,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     undefined,
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -12940,7 +12940,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -13081,7 +13081,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontWeight": "500",
                           },
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -13112,7 +13112,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -13332,7 +13332,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -13473,7 +13473,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontWeight": "500",
                           },
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -13504,7 +13504,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -13778,7 +13778,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -13924,7 +13924,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -14196,7 +14196,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -14364,7 +14364,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -14680,7 +14680,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -14995,7 +14995,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -15340,7 +15340,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -15612,7 +15612,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -15884,7 +15884,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -16156,7 +16156,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -16428,7 +16428,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -16668,7 +16668,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -16912,7 +16912,7 @@ exports[`Storyshots Message list 1`] = `
                         "fontWeight": "400",
                       },
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -17129,7 +17129,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -17391,7 +17391,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -17580,7 +17580,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -17741,7 +17741,7 @@ exports[`Storyshots Message list 1`] = `
                         "fontWeight": "400",
                       },
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -17988,7 +17988,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -18177,7 +18177,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -18350,7 +18350,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -18511,7 +18511,7 @@ exports[`Storyshots Message list 1`] = `
                         "fontWeight": "400",
                       },
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -18750,7 +18750,7 @@ exports[`Storyshots Message list 1`] = `
                       "fontWeight": "400",
                     },
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -18830,7 +18830,7 @@ exports[`Storyshots Message list 1`] = `
                           "fontWeight": "500",
                         },
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#ffffff",
                         },
                       ]
                     }
@@ -19065,7 +19065,7 @@ exports[`Storyshots Message list 1`] = `
                       "fontWeight": "400",
                     },
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -19145,7 +19145,7 @@ exports[`Storyshots Message list 1`] = `
                           "fontWeight": "500",
                         },
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#ffffff",
                         },
                       ]
                     }
@@ -19382,7 +19382,7 @@ exports[`Storyshots Message list 1`] = `
                       "fontWeight": "400",
                     },
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -19462,7 +19462,7 @@ exports[`Storyshots Message list 1`] = `
                           "fontWeight": "500",
                         },
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#ffffff",
                         },
                       ]
                     }
@@ -19699,7 +19699,7 @@ exports[`Storyshots Message list 1`] = `
                       "fontWeight": "400",
                     },
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -19779,7 +19779,7 @@ exports[`Storyshots Message list 1`] = `
                           "fontWeight": "500",
                         },
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#ffffff",
                         },
                       ]
                     }
@@ -20376,7 +20376,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -20851,7 +20851,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -20940,7 +20940,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontWeight": "500",
                           },
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -20971,7 +20971,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -21034,7 +21034,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21051,7 +21051,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21082,7 +21082,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21099,7 +21099,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21130,7 +21130,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21147,7 +21147,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21178,7 +21178,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21195,7 +21195,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21226,7 +21226,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21243,7 +21243,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21463,7 +21463,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -21552,7 +21552,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontWeight": "500",
                           },
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -21583,7 +21583,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -21646,7 +21646,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21663,7 +21663,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21694,7 +21694,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21711,7 +21711,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21778,7 +21778,7 @@ exports[`Storyshots Message list 1`] = `
                             "fontWeight": "500",
                           },
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -21809,7 +21809,7 @@ exports[`Storyshots Message list 1`] = `
                       Array [
                         undefined,
                         Object {
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                         },
                       ]
                     }
@@ -21872,7 +21872,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21889,7 +21889,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21920,7 +21920,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "600",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -21937,7 +21937,7 @@ exports[`Storyshots Message list 1`] = `
                               "fontWeight": "400",
                             },
                             Object {
-                              "color": "#0d0e12",
+                              "color": "#2f343d",
                             },
                           ]
                         }
@@ -22157,7 +22157,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -22481,7 +22481,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -22754,7 +22754,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     undefined,
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -22936,7 +22936,7 @@ exports[`Storyshots Message list 1`] = `
                   Array [
                     undefined,
                     Object {
-                      "color": "#0d0e12",
+                      "color": "#2f343d",
                     },
                   ]
                 }
@@ -23183,7 +23183,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -23425,7 +23425,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -26177,7 +26177,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -26419,7 +26419,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -26968,7 +26968,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27004,7 +27004,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27040,7 +27040,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27076,7 +27076,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27112,7 +27112,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27148,7 +27148,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27388,7 +27388,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -27881,7 +27881,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -28111,7 +28111,7 @@ exports[`Storyshots Message list 1`] = `
                     Array [
                       undefined,
                       Object {
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -28150,7 +28150,7 @@ exports[`Storyshots Message list 1`] = `
                           "borderColor": "#f1f2f4",
                           "borderRadius": 4,
                           "borderWidth": 1,
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                           "fontFamily": "Courier New",
                           "fontWeight": "400",
                         },
@@ -28193,7 +28193,7 @@ exports[`Storyshots Message list 1`] = `
                           "borderColor": "#f1f2f4",
                           "borderRadius": 4,
                           "borderWidth": 1,
-                          "color": "#0d0e12",
+                          "color": "#2f343d",
                           "fontFamily": "Courier New",
                           "fontWeight": "400",
                         },
@@ -28237,7 +28237,7 @@ exports[`Storyshots Message list 1`] = `
                         "borderColor": "#f1f2f4",
                         "borderRadius": 4,
                         "borderWidth": 1,
-                        "color": "#0d0e12",
+                        "color": "#2f343d",
                         "fontFamily": "Courier New",
                         "fontWeight": "400",
                         "padding": 4,
@@ -28487,7 +28487,7 @@ exports[`Storyshots Message list 1`] = `
                         Array [
                           undefined,
                           Object {
-                            "color": "#0d0e12",
+                            "color": "#2f343d",
                           },
                         ]
                       }
@@ -28819,7 +28819,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
@@ -28872,7 +28872,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
@@ -28944,7 +28944,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
@@ -28997,7 +28997,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
@@ -29066,7 +29066,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
@@ -29119,7 +29119,7 @@ exports[`Storyshots Message list 1`] = `
                                 Array [
                                   null,
                                   Object {
-                                    "color": "#0d0e12",
+                                    "color": "#2f343d",
                                   },
                                 ]
                               }
