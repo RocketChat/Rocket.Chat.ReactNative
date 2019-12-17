@@ -18,7 +18,7 @@ const Discussion = React.memo(({
 	return (
 		<>
 			<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
-			<Text style={[styles.text, { color: themes[theme].titleText }]}>{msg}</Text>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{msg}</Text>
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={onDiscussionPress}
@@ -28,7 +28,7 @@ const Discussion = React.memo(({
 				>
 					<>
 						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
-						<Text style={[styles.buttonText, { color: themes[theme].titleText }]}>{buttonText}</Text>
+						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 					</>
 				</Touchable>
 				<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>

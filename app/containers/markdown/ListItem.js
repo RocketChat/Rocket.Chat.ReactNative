@@ -39,7 +39,7 @@ const ListItem = React.memo(({
 	return (
 		<View style={style.container}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
-				<Text style={{ color: themes[theme].titleText }}>
+				<Text style={{ color: themes[theme].bodyText }}>
 					{bullet}
 				</Text>
 			</View>
