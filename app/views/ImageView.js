@@ -83,10 +83,12 @@ class ImageView extends React.Component {
 		if (attachment && attachment.image_url) {
 			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
 			return (
-				<ImagePinch
-					uri={uri}
-					onLoadEnd={() => this.setState({ loading: false })}
-				/>
+				<SharedElement id={uri} style={StyleSheet.absoluteFill}>
+					<ImagePinch
+						uri={uri}
+						onLoadEnd={() => this.setState({ loading: false })}
+					/>
+				</SharedElement>
 			);
 		}
 		if (attachment && attachment.video_url) {
@@ -115,9 +117,7 @@ class ImageView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				<SharedElement id='image' style={StyleSheet.absoluteFill}>
-					{this.renderContent()}
-				</SharedElement>
+				{this.renderContent()}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
 		);

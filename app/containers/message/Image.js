@@ -56,7 +56,7 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button split={split} theme={theme} onPress={onPress}>
-			<SharedElement id='image'>
+			<SharedElement id={img}>
 				<Image img={img} theme={theme} />
 			</SharedElement>
 		</Button>
