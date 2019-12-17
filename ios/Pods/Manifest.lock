@@ -383,8 +383,6 @@ PODS:
     - React
   - RNScreens (2.0.0-alpha.3):
     - React
-  - RNSharedElement (0.5.3):
-    - React
   - RNUserDefaults (1.7.0):
     - React
   - RNVectorIcons (6.6.0):
@@ -476,7 +474,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNSharedElement (from `../node_modules/react-native-shared-element`)
   - RNUserDefaults (from `../node_modules/rn-user-defaults`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -641,8 +638,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-root-view"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSharedElement:
-    :path: "../node_modules/react-native-shared-element"
   RNUserDefaults:
     :path: "../node_modules/rn-user-defaults"
   RNVectorIcons:
@@ -767,7 +762,6 @@ SPEC CHECKSUMS:
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
-  RNSharedElement: 4ad4e32e2a2b3c1c4171d46e97a38f25cdf3ca58
   RNUserDefaults: af71a1cdf1c12baf8210bc741c65f5faba9826d6
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
