@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { AppearanceProvider } from 'react-native-appearance';
@@ -123,51 +122,45 @@ const RoomRoutes = {
 };
 
 // Inside
-const ChatsStack = createSharedElementStackNavigator(
-	createStackNavigator,
-	{
-		RoomsListView: {
-			getScreen: () => require('./views/RoomsListView').default
-		},
-		RoomActionsView: {
-			getScreen: () => require('./views/RoomActionsView').default
-		},
-		RoomInfoView: {
-			getScreen: () => require('./views/RoomInfoView').default
-		},
-		RoomInfoEditView: {
-			getScreen: () => require('./views/RoomInfoEditView').default
-		},
-		RoomMembersView: {
-			getScreen: () => require('./views/RoomMembersView').default
-		},
-		SearchMessagesView: {
-			getScreen: () => require('./views/SearchMessagesView').default
-		},
-		SelectedUsersView: {
-			getScreen: () => require('./views/SelectedUsersView').default
-		},
-		MessagesView: {
-			getScreen: () => require('./views/MessagesView').default
-		},
-		AutoTranslateView: {
-			getScreen: () => require('./views/AutoTranslateView').default
-		},
-		DirectoryView: {
-			getScreen: () => require('./views/DirectoryView').default
-		},
-		NotificationPrefView: {
-			getScreen: () => require('./views/NotificationPreferencesView').default
-		},
-		ImageView: {
-			getScreen: () => require('./views/ImageView').default
-		},
-		...RoomRoutes
-	}, {
-		defaultNavigationOptions: defaultHeader,
-		cardStyle
-	}
-);
+const ChatsStack = createStackNavigator({
+	RoomsListView: {
+		getScreen: () => require('./views/RoomsListView').default
+	},
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	},
+	RoomInfoEditView: {
+		getScreen: () => require('./views/RoomInfoEditView').default
+	},
+	RoomMembersView: {
+		getScreen: () => require('./views/RoomMembersView').default
+	},
+	SearchMessagesView: {
+		getScreen: () => require('./views/SearchMessagesView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	MessagesView: {
+		getScreen: () => require('./views/MessagesView').default
+	},
+	AutoTranslateView: {
+		getScreen: () => require('./views/AutoTranslateView').default
+	},
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPreferencesView').default
+	},
+	...RoomRoutes
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
 
 // Inside
 const RoomStack = createStackNavigator({
@@ -265,9 +258,19 @@ const NewMessageStack = createStackNavigator({
 	cardStyle
 });
 
+const AttachmentStack = createStackNavigator({
+	AttachmentView: {
+		getScreen: () => require('./views/AttachmentView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
+	AttachmentStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}

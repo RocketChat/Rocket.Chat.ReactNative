@@ -465,7 +465,7 @@ class RoomView extends React.Component {
 
 	onOpenFileModal = (attachment) => {
 		const { navigation } = this.props;
-		navigation.navigate('ImageView', { attachment });
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onReactionPress = async(shortname, messageId) => {

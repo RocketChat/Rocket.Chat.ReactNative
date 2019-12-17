@@ -211,7 +211,7 @@ class MessagesView extends React.Component {
 
 	onOpenFileModal = (attachment) => {
 		const { navigation } = this.props;
-		navigation.navigate('ImageView', { attachment });
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onLongPress = (message) => {

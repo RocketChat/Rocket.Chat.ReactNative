@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
-import { SharedElement } from 'react-navigation-shared-element';
 
 import Markdown from '../markdown';
 import styles from './styles';
@@ -56,9 +55,7 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button split={split} theme={theme} onPress={onPress}>
-			<SharedElement id={img}>
-				<Image img={img} theme={theme} />
-			</SharedElement>
+			<Image img={img} theme={theme} />
 		</Button>
 	);
 }, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);

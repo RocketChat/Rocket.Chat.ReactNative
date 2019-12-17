@@ -4,19 +4,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
 import { FileSystem } from 'react-native-unimodules';
-import { SharedElement } from 'react-navigation-shared-element';
 import { Video } from 'expo-av';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import ImagePinch from '../utils/ImagePinch';
+import ImagePinch from '../presentation/ImagePinch';
 import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import { SaveButton } from '../containers/HeaderButton';
+import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class ImageView extends React.Component {
+class AttachmentView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
 		const attachment = navigation.getParam('attachment');
@@ -34,11 +33,10 @@ class ImageView extends React.Component {
 			title,
 			...themedHeader(theme),
 			gesturesEnabled: false,
+			headerLeft: <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
 			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
 		};
 	}
-
-	static sharedElements = () => [{ id: 'image' }];
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -83,12 +81,10 @@ class ImageView extends React.Component {
 		if (attachment && attachment.image_url) {
 			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
 			return (
-				<SharedElement id={uri} style={StyleSheet.absoluteFill}>
-					<ImagePinch
-						uri={encodeURI(uri)}
-						onLoadEnd={() => this.setState({ loading: false })}
-					/>
-				</SharedElement>
+				<ImagePinch
+					uri={encodeURI(uri)}
+					onLoadEnd={() => this.setState({ loading: false })}
+				/>
 			);
 		}
 		if (attachment && attachment.video_url) {
@@ -132,4 +128,4 @@ const mapStateToProps = state => ({
 	}
 });
 
-export default connect(mapStateToProps)(withTheme(ImageView));
+export default connect(mapStateToProps)(withTheme(AttachmentView));
