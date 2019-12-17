@@ -85,7 +85,7 @@ class ImageView extends React.Component {
 			return (
 				<SharedElement id={uri} style={StyleSheet.absoluteFill}>
 					<ImagePinch
-						uri={uri}
+						uri={encodeURI(uri)}
 						onLoadEnd={() => this.setState({ loading: false })}
 					/>
 				</SharedElement>
@@ -95,7 +95,7 @@ class ImageView extends React.Component {
 			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 			return (
 				<Video
-					source={{ uri }}
+					source={{ uri: encodeURI(uri) }}
 					rate={1.0}
 					volume={1.0}
 					isMuted={false}
