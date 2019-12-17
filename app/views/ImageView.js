@@ -16,6 +16,7 @@ import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import { CustomIcon } from '../lib/Icons';
+import RCActivityIndicator from '../containers/ActivityIndicator';
 
 const BOTTOM_HEIGHT = 56;
 
@@ -63,13 +64,14 @@ class ImageView extends React.Component {
 	constructor(props) {
 		super(props);
 		const attachment = props.navigation.getParam('attachment');
-		this.state = { attachment };
+		this.state = { attachment, loading: false };
 	}
 
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
 		const img = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+		this.setState({ loading: true });
 		try {
 			const file = `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`;
 			const { uri } = await FileSystem.downloadAsync(img, file);
@@ -78,6 +80,7 @@ class ImageView extends React.Component {
 		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
 		}
+		this.setState({ loading: false });
 	};
 
 	renderBottom() {
@@ -92,7 +95,7 @@ class ImageView extends React.Component {
 	}
 
 	render() {
-		const { attachment } = this.state;
+		const { attachment, loading } = this.state;
 		const { user, baseUrl } = this.props;
 		const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
 		const { theme } = this.props;
@@ -102,6 +105,7 @@ class ImageView extends React.Component {
 					<ImagePinch uri={uri} />
 				</SharedElement>
 				{this.renderBottom()}
+				{loading ? <RCActivityIndicator size='large' theme={theme} /> : null}
 			</View>
 		);
 	}

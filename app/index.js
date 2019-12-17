@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Linking, BackHandler } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { AppearanceProvider } from 'react-native-appearance';
@@ -39,7 +38,6 @@ import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
-import { springyFadeIn } from './utils/springyFadeIn';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -124,52 +122,48 @@ const RoomRoutes = {
 };
 
 // Inside
-const ChatsStack = createSharedElementStackNavigator(
-	createStackNavigator,
-	{
-		RoomsListView: {
-			getScreen: () => require('./views/RoomsListView').default
-		},
-		RoomActionsView: {
-			getScreen: () => require('./views/RoomActionsView').default
-		},
-		RoomInfoView: {
-			getScreen: () => require('./views/RoomInfoView').default
-		},
-		RoomInfoEditView: {
-			getScreen: () => require('./views/RoomInfoEditView').default
-		},
-		RoomMembersView: {
-			getScreen: () => require('./views/RoomMembersView').default
-		},
-		SearchMessagesView: {
-			getScreen: () => require('./views/SearchMessagesView').default
-		},
-		SelectedUsersView: {
-			getScreen: () => require('./views/SelectedUsersView').default
-		},
-		MessagesView: {
-			getScreen: () => require('./views/MessagesView').default
-		},
-		AutoTranslateView: {
-			getScreen: () => require('./views/AutoTranslateView').default
-		},
-		DirectoryView: {
-			getScreen: () => require('./views/DirectoryView').default
-		},
-		NotificationPrefView: {
-			getScreen: () => require('./views/NotificationPreferencesView').default
-		},
-		ImageView: {
-			getScreen: () => require('./views/ImageView').default
-		},
-		...RoomRoutes
-	}, {
-		transitionConfig: () => springyFadeIn(),
-		defaultNavigationOptions: defaultHeader,
-		cardStyle
-	}
-);
+const ChatsStack = createStackNavigator({
+	RoomsListView: {
+		getScreen: () => require('./views/RoomsListView').default
+	},
+	RoomActionsView: {
+		getScreen: () => require('./views/RoomActionsView').default
+	},
+	RoomInfoView: {
+		getScreen: () => require('./views/RoomInfoView').default
+	},
+	RoomInfoEditView: {
+		getScreen: () => require('./views/RoomInfoEditView').default
+	},
+	RoomMembersView: {
+		getScreen: () => require('./views/RoomMembersView').default
+	},
+	SearchMessagesView: {
+		getScreen: () => require('./views/SearchMessagesView').default
+	},
+	SelectedUsersView: {
+		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	MessagesView: {
+		getScreen: () => require('./views/MessagesView').default
+	},
+	AutoTranslateView: {
+		getScreen: () => require('./views/AutoTranslateView').default
+	},
+	DirectoryView: {
+		getScreen: () => require('./views/DirectoryView').default
+	},
+	NotificationPrefView: {
+		getScreen: () => require('./views/NotificationPreferencesView').default
+	},
+	ImageView: {
+		getScreen: () => require('./views/ImageView').default
+	},
+	...RoomRoutes
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
 
 // Inside
 const RoomStack = createStackNavigator({
