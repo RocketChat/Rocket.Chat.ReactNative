@@ -177,7 +177,7 @@ class Sidebar extends Component {
 		return (
 			<SidebarItem
 				text={item.name}
-				left={<Status style={styles.status} size={12} status={item.id} theme='light' />}
+				left={<Status style={styles.status} size={12} status={item.id} />}
 				current={user.status === item.id}
 				onPress={() => {
 					this.toggleStatus();

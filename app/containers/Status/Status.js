@@ -15,7 +15,7 @@ const Status = React.memo(({
 					width: size,
 					height: size,
 					backgroundColor: STATUS_COLORS[status],
-					borderColor: themes[theme].headerBackground
+					borderColor: themes[theme].backgroundColor
 				}
 			]}
 	/>
@@ -28,7 +28,8 @@ Status.propTypes = {
 };
 Status.defaultProps = {
 	status: 'offline',
-	size: 16
+	size: 16,
+	theme: 'light'
 };
 
 export default Status;

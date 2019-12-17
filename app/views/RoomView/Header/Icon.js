@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const Icon = React.memo(({ type, status, theme }) => {
 	if (type === 'd') {
-		return <Status size={10} style={styles.status} status={status} theme={theme} />;
+		return <Status size={10} style={styles.status} status={status} />;
 	}
 
 	let colorStyle = {};
