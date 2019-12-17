@@ -1445,6 +1445,11 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
+"@react-native-community/cameraroll@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-1.3.0.tgz#a340334440f4d08280da839130ef51c931b07483"
+  integrity sha512-QJl9N34euvGU7s/Gn6jhsqi70O4SmxFxuy+yBnW7ehE8qtPYO91gyLLrtiWdTfYvuVCUNvX/G0LKJQLm8SojAA==
+
 "@react-native-community/cli-platform-android@^3.0.0-alpha.1", "@react-native-community/cli-platform-android@^3.0.0-alpha.2":
   version "3.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-android/-/cli-platform-android-3.0.0-alpha.2.tgz#63cb00060c58a87d04b46229ef7140e056551dfa"
@@ -9471,6 +9476,11 @@ react-native-scrollable-tab-view@^1.0.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-shared-element@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-shared-element/-/react-native-shared-element-0.5.3.tgz#f857774c094535a8f869d7e34b239ce724b0d2a3"
+  integrity sha512-5PPbwMJNYhn3HEeV/mZX984aDYlcLE49vweci5+J6pdWQcEOlHzKh12HCAw3W9hvVH70WZ1t0INg4gU8G+WNPA==
+
 react-native-slowlog@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-slowlog/-/react-native-slowlog-1.0.2.tgz#5520979e3ef9d5273495d431ff3be34f02e35c89"
@@ -9586,6 +9596,13 @@ react-navigation-header-buttons@3.0.4:
   integrity sha512-9wXSciaY1bxGxJQMhzVoPrVR20DQd487Re3119crVYZbAvQpugTznAc4VKc4rY4Z68LR//V7x7a00uEGAiZQDA==
   dependencies:
     react-native-platform-touchable "^1.1.1"
+
+react-navigation-shared-element@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-shared-element/-/react-navigation-shared-element-0.5.0.tgz#b384dbf323dc2491c3e58b3aae1bb82054096ae0"
+  integrity sha512-RNIxqEGFYTKTR65FGHz+wP6DrdynbQHooy48irQBjygzPYgr1qBw48zJu6UV/STmFy1Iu/279JPZ+dm+hH36lg==
+  dependencies:
+    hoist-non-react-statics "^3.3.0"
 
 react-navigation-stack@^1.10.3:
   version "1.10.3"

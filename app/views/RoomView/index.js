@@ -468,7 +468,9 @@ class RoomView extends React.Component {
 	}
 
 	onOpenFileModal = (attachment) => {
-		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+		const { navigation } = this.props;
+		navigation.navigate('ImageView', { attachment });
+		// this.setState({ selectedAttachment: attachment, photoModalVisible: true });
 	}
 
 	onCloseFileModal = () => {
