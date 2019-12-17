@@ -436,6 +436,8 @@ export default {
 	Welcome_to_RocketChat: 'Welcome to Rocket.Chat',
 	Whats_your_2fa: 'What\'s your 2FA code?',
 	Without_Servers: 'Without Servers',
+	Write_External_Permission_Message: 'Rocket Chat needs access to your gallery so you can save images.',
+	Write_External_Permission: 'Gallery Permission',
 	Yes_action_it: 'Yes, {{action}} it!',
 	Yesterday: 'Yesterday',
 	You_are_in_preview_mode: 'You are in preview mode',

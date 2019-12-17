@@ -401,6 +401,8 @@ export default {
 	You: 'Você',
 	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'Você precisa acessar ao menos um servidor Rocket.Chat para compartilhar.',
 	You_will_not_be_able_to_recover_this_message: 'Você não será capaz de recuperar essa mensagem!',
+	Write_External_Permission_Message: 'Rocket Chat precisa de acesso a sua galeria para salvar imagens.',
+	Write_External_Permission: 'Acesso a Galeria',
 	Crash_report_disclaimer: 'Nós não rastreamos o conteúdo das suas conversas. O relatório de erros apenas contém informações relevantes para identificarmos problemas e corrigí-los.',
 	Type_message: 'Digitar mensagem',
 	Room_search: 'Busca de sala',

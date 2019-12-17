@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
@@ -16,6 +16,7 @@ import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
+import { isAndroid } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -63,6 +64,18 @@ class AttachmentView extends React.Component {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
 		const img = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+
+		if (isAndroid) {
+			const rationale = {
+				title: I18n.t('Write_External_Permission'),
+				message: I18n.t('Write_External_Permission_Message')
+			};
+			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
+			if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
+				return;
+			}
+		}
+
 		this.setState({ loading: true });
 		try {
 			const file = `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`;
