@@ -171,11 +171,11 @@ class Markdown extends PureComponent {
 					!preview
 						? {
 							...styles.codeInline,
-							color: themes[theme].titleText,
+							color: themes[theme].bodyText,
 							backgroundColor: themes[theme].bannerBackground,
 							borderColor: themes[theme].bannerBackground
 						}
-						: { ...styles.text, color: themes[theme].titleText },
+						: { ...styles.text, color: themes[theme].bodyText },
 					...style
 				]}
 			>
@@ -192,11 +192,11 @@ class Markdown extends PureComponent {
 					!preview
 						? {
 							...styles.codeBlock,
-							color: themes[theme].titleText,
+							color: themes[theme].bodyText,
 							backgroundColor: themes[theme].bannerBackground,
 							borderColor: themes[theme].bannerBackground
 						}
-						: { ...styles.text, color: themes[theme].titleText },
+						: { ...styles.text, color: themes[theme].bodyText },
 					...style
 				]}
 			>
@@ -216,7 +216,7 @@ class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<Text style={[style, { color: themes[theme].titleText }]} numberOfLines={numberOfLines}>
+			<Text style={[style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -297,7 +297,7 @@ class Markdown extends PureComponent {
 		const { numberOfLines, theme } = this.props;
 		const textStyle = styles[`heading${ level }Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].titleText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
 				{children}
 			</Text>
 		);
@@ -390,7 +390,7 @@ class Markdown extends PureComponent {
 		}
 
 		if (!useMarkdown && !preview) {
-			return <Text style={[styles.text, { color: themes[theme].titleText }]} numberOfLines={numberOfLines}>{m}</Text>;
+			return <Text style={[styles.text, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
 		const ast = this.parser.parse(m);

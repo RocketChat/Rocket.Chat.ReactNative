@@ -72,7 +72,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 	const time = attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
-			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].titleText }]}>{attachment.author_name}</Text> : null}
+			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text> : null}
 			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{ time }</Text> : null}
 		</View>
 	);
@@ -116,8 +116,8 @@ const Fields = React.memo(({ attachment, theme }) => {
 		<View style={styles.fieldsContainer}>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<Text style={[styles.fieldTitle, { color: themes[theme].titleText }]}>{field.title}</Text>
-					<Text style={[styles.fieldValue, { color: themes[theme].titleText }]}>{field.value}</Text>
+					<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
+					<Text style={[styles.fieldValue, { color: themes[theme].bodyText }]}>{field.value}</Text>
 				</View>
 			))}
 		</View>
