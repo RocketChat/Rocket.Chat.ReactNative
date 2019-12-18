@@ -97,8 +97,8 @@ class ShareView extends React.Component {
 		} else {
 			await this.sendTextMessage();
 		}
-		this.setState({ loading: false });
 
+		this.setState({ loading: false });
 		ShareExtension.close();
 	}
 
