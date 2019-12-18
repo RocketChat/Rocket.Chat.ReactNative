@@ -64,7 +64,7 @@ class RoomActionsView extends React.Component {
 			canAutoTranslate: false,
 			canAddUser: false
 		};
-		if (room && room.observe) {
+		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
