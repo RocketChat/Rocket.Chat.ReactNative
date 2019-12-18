@@ -63,7 +63,8 @@ class AttachmentView extends React.Component {
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const img = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+		const { image_url, title } = attachment;
+		const img = formatAttachmentUrl(image_url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
 			const rationale = {
@@ -78,9 +79,9 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const file = `${ FileSystem.documentDirectory + img[0] + Math.floor(Math.random() * 1000) }.jpg`;
+			const file = `${ FileSystem.documentDirectory + title + Math.floor(Math.random() * 1000) }.jpg`;
 			const { uri } = await FileSystem.downloadAsync(img, file);
-			await CameraRoll.saveToCameraRoll(uri);
+			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });

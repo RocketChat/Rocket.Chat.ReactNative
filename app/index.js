@@ -164,7 +164,10 @@ const ChatsStack = createStackNavigator({
 
 // Inside
 const RoomStack = createStackNavigator({
-	...RoomRoutes
+	...RoomRoutes,
+	AttachmentView: {
+		getScreen: () => require('./views/AttachmentView').default
+	}
 }, {
 	defaultNavigationOptions: defaultHeader,
 	cardStyle
