@@ -16,7 +16,7 @@ export default {
 	'error-duplicate-channel-name': 'A channel with name {{channel_name}} exists',
 	'error-email-domain-blacklisted': 'The email domain is blacklisted',
 	'error-email-send-failed': 'Error trying to send email: {{message}}',
-	'error-save-image': 'Error in saving image',
+	'error-save-image': 'Error while saving image',
 	'error-field-unavailable': '{{field}} is already in use :(',
 	'error-file-too-large': 'File is too large',
 	'error-importer-not-defined': 'The importer was not defined correctly, it is missing the Import class.',
