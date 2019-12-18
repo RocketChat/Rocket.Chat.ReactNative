@@ -419,7 +419,7 @@ export default {
 	User_is_no_longer_role_by_: '{{user}} ist nicht länger {{role}} von {{userBy}}',
 	User_muted_by: 'Benutzer {{userMuted}} von {{userBy}} stummgeschaltet',
 	User_removed_by: 'Benutzer {{userRemoved}} wurde von {{userBy}} entfernt',
-	User_sent_an_attachment: '{{user}} hat eine Anlage gesendet',
+	User_sent_an_attachment: '{{user}}: eine Datei gesendet',
 	User_unmuted_by: 'Benutzer {{userUnmuted}} nicht stummgeschaltet von {{userBy}}',
 	User_was_set_role_by_: '{{user}} wurde von {{userBy}} {{role}} festgelegt.',
 	Username_is_empty: 'Der Benutzername ist leer',
