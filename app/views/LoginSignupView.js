@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 30
 	},
 	safeArea: {
-		paddingBottom: 30
+		paddingBottom: 30,
+		flex: 1
 	},
 	serviceButton: {
 		borderRadius: 2,
@@ -421,18 +422,22 @@ class LoginSignupView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<ScrollView
-				style={[
-					sharedStyles.containerScrollView,
-					sharedStyles.container,
-					styles.container,
-					{ backgroundColor: themes[theme].backgroundColor },
-					isTablet && sharedStyles.tabletScreenContent
-				]}
-				{...scrollPersistTaps}
+			<SafeAreaView
+				testID='welcome-view'
+				forceInset={{ vertical: 'never' }}
+				style={[styles.safeArea, { backgroundColor: themes[theme].backgroundColor }]}
 			>
-				<StatusBar theme={theme} />
-				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
+				<ScrollView
+					style={[
+						sharedStyles.containerScrollView,
+						sharedStyles.container,
+						styles.container,
+						{ backgroundColor: themes[theme].backgroundColor },
+						isTablet && sharedStyles.tabletScreenContent
+					]}
+					{...scrollPersistTaps}
+				>
+					<StatusBar theme={theme} />
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
 					<Button
@@ -449,8 +454,8 @@ class LoginSignupView extends React.Component {
 						theme={theme}
 						testID='welcome-view-register'
 					/>
-				</SafeAreaView>
-			</ScrollView>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }
