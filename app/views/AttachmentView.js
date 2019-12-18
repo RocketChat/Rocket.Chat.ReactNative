@@ -10,7 +10,7 @@ import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import ImagePinch from '../presentation/ImagePinch';
+import ImageViewer from '../presentation/ImageViewer';
 import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
@@ -88,45 +88,45 @@ class AttachmentView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	renderContent() {
-		const { attachment } = this.state;
-		const { user, baseUrl } = this.props;
-		if (attachment && attachment.image_url) {
-			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
-			return (
-				<ImagePinch
-					uri={encodeURI(uri)}
-					onLoadEnd={() => this.setState({ loading: false })}
-				/>
-			);
-		}
-		if (attachment && attachment.video_url) {
-			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
-			return (
-				<Video
-					source={{ uri: encodeURI(uri) }}
-					rate={1.0}
-					volume={1.0}
-					isMuted={false}
-					resizeMode={Video.RESIZE_MODE_CONTAIN}
-					shouldPlay
-					isLooping={false}
-					style={styles.container}
-					useNativeControls
-					onReadyForDisplay={() => this.setState({ loading: false })}
-					onError={console.log}
-				/>
-			);
-		}
-		return null;
-	}
+	renderImage = uri => (
+		<ImageViewer
+			uri={uri}
+			onLoadEnd={() => this.setState({ loading: false })}
+		/>
+	);
+
+	renderVideo = uri => (
+		<Video
+			source={{ uri }}
+			rate={1.0}
+			volume={1.0}
+			isMuted={false}
+			resizeMode={Video.RESIZE_MODE_CONTAIN}
+			shouldPlay
+			isLooping={false}
+			style={styles.container}
+			useNativeControls
+			onReadyForDisplay={() => this.setState({ loading: false })}
+			onError={console.log}
+		/>
+	);
 
 	render() {
-		const { loading } = this.state;
-		const { theme } = this.props;
+		const { loading, attachment } = this.state;
+		const { theme, user, baseUrl } = this.props;
+		let content = null;
+
+		if (attachment && attachment.image_url) {
+			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+			content = this.renderImage(encodeURI(uri));
+		} else if (attachment && attachment.video_url) {
+			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
+			content = this.renderVideo(encodeURI(uri));
+		}
+
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				{this.renderContent()}
+				{content}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
 		);

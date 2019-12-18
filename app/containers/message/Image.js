@@ -33,14 +33,14 @@ const Image = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, split, theme
+	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, split, theme
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}
 
-	const onPress = () => onOpenFileModal(file);
+	const onPress = () => showAttachment(file);
 
 	if (file.description) {
 		return (
@@ -65,7 +65,7 @@ ImageContainer.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
-	onOpenFileModal: PropTypes.func,
+	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
 	split: PropTypes.bool

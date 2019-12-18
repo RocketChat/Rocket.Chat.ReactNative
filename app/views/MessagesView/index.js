@@ -84,7 +84,7 @@ class MessagesView extends React.Component {
 			isEdited: !!item.editedAt,
 			isHeader: true,
 			attachments: item.attachments || [],
-			onOpenFileModal: this.onOpenFileModal,
+			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji
 		});
 
@@ -209,7 +209,7 @@ class MessagesView extends React.Component {
 		return null;
 	}
 
-	onOpenFileModal = (attachment) => {
+	showAttachment = (attachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	}

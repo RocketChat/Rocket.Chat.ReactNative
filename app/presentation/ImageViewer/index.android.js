@@ -262,7 +262,9 @@ function bouncy(
 const WIDTH = 300;
 const HEIGHT = 300;
 
-class ImagePinch extends ResponsiveComponent {
+// it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
+// and changed to use FastImage animated component
+class ImageViewer extends ResponsiveComponent {
 	pinchRef = React.createRef();
 
 	panRef = React.createRef();
@@ -437,4 +439,4 @@ class ImagePinch extends ResponsiveComponent {
 	}
 }
 
-export default ImagePinch;
+export default ImageViewer;

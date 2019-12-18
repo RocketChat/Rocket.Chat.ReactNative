@@ -463,7 +463,7 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: message, showActions: true });
 	}
 
-	onOpenFileModal = (attachment) => {
+	showAttachment = (attachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	}
@@ -734,7 +734,7 @@ class RoomView extends React.Component {
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
-				onOpenFileModal={this.onOpenFileModal}
+				showAttachment={this.showAttachment}
 				reactionInit={this.onReactionInit}
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
