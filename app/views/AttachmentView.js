@@ -28,15 +28,19 @@ class AttachmentView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
 		const attachment = navigation.getParam('attachment');
+		const from = navigation.getParam('from');
 		const handleSave = navigation.getParam('handleSave', () => {});
 		const { title, video_url } = attachment;
-		return {
+		const options = {
 			title,
 			...themedHeader(theme),
-			gesturesEnabled: false,
-			headerLeft: <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
 			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
 		};
+		if (from !== 'MessagesView') {
+			options.gesturesEnabled = false;
+			options.headerLeft = <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
+		}
+		return options;
 	}
 
 	static propTypes = {

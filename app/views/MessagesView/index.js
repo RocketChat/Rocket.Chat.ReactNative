@@ -15,6 +15,7 @@ import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
 
 const ACTION_INDEX = 0;
@@ -31,7 +32,8 @@ class MessagesView extends React.Component {
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		split: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -210,8 +212,12 @@ class MessagesView extends React.Component {
 	}
 
 	showAttachment = (attachment) => {
-		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
+		const { navigation, split } = this.props;
+		let params = { attachment };
+		if (split) {
+			params = { ...params, from: 'MessagesView' };
+		}
+		navigation.navigate('AttachmentView', params);
 	}
 
 	onLongPress = (message) => {
@@ -309,4 +315,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(MessagesView));
+export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));
