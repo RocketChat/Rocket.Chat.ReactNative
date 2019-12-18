@@ -3,6 +3,7 @@ import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
+import * as mime from 'react-native-mime-types';
 import { FileSystem } from 'react-native-unimodules';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
@@ -68,7 +69,7 @@ class AttachmentView extends React.Component {
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const { image_url } = attachment;
+		const { image_url, image_type } = attachment;
 		const img = formatAttachmentUrl(image_url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
@@ -84,7 +85,8 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const file = `${ FileSystem.documentDirectory + SHA256(image_url) }.jpg`;
+			const extension = `.${ mime.extension(image_type) || 'jpg' }`;
+			const file = `${ FileSystem.documentDirectory + SHA256(image_url) + extension }`;
 			const { uri } = await FileSystem.downloadAsync(img, file);
 			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
