@@ -102,7 +102,7 @@ class MessagesView extends React.Component {
 				testID: 'room-files-view',
 				renderItem: (item) => {
 					const url = getFileUrlFromMessage(item);
-					console.log(item);
+
 					return (
 						<Message
 							{...renderItemCommonProps(item)}
