@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
 import { createImageProgress } from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import Markdown from '../markdown';
 import styles from './styles';
@@ -12,7 +13,6 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
-import RCActivityIndicator from '../ActivityIndicator';
 
 const ImageProgress = createImageProgress(FastImage);
 
@@ -33,7 +33,10 @@ const Image = React.memo(({ img, theme }) => (
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
-		indicator={() => <RCActivityIndicator theme={theme} />}
+		indicator={Progress.Pie}
+		indicatorProps={{
+			color: themes[theme].actionTintColor
+		}}
 	/>
 ));
 
