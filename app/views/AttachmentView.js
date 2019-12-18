@@ -107,7 +107,7 @@ class AttachmentView extends React.Component {
 			isLooping={false}
 			style={styles.container}
 			useNativeControls
-			onReadyForDisplay={() => this.setState({ loading: false })}
+			onLoad={() => this.setState({ loading: false })}
 			onError={console.log}
 		/>
 	);
