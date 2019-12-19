@@ -1614,6 +1614,11 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
+"@rocket.chat/ui-kit@^0.2.0-alpha.16":
+  version "0.2.0-alpha.16"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.16.tgz#d5208b26abc4840e23d97ed18fb1dcae3928452b"
+  integrity sha512-w5hlIXHpkqma8Xj5Bvb2q+6GLYtsBHClndJCaGrt5A+D/0sAdmJX6y5ngZ8xcmn/+Dz0gSbn44KNK3e7jPLE1A==
+
 "@snyk/composer-lockfile-parser@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@snyk/composer-lockfile-parser/-/composer-lockfile-parser-1.0.3.tgz#4b703883ec36f3cec63c64355031e06698c771f5"

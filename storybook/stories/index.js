@@ -6,6 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
 import Message from './Message';
+import UIKit from './UIKit';
 // import RoomViewHeader from './RoomViewHeader';
 
 // Change here to see themed storybook
@@ -25,9 +26,11 @@ const store = createStore(reducers);
 
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.add('list', () => <RoomItem theme={theme} />);
+	.add('list roomitem', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
-	.add('list', () => <Message theme={theme} />);
+	.add('list message', () => <Message theme={theme} />);
+storiesOf('UIKit', module)
+	.add('list uikit', () => <UIKit />);
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
 // 	.add('list', () => <RoomViewHeader theme='black' />);
