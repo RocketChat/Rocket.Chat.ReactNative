@@ -12,8 +12,8 @@ import { Button } from './Button';
 import { Section } from './Section';
 import { Actions } from './Actions';
 import { MessageImage } from './Image';
-// import { Context } from './Context';
 import { StaticSelect } from './StaticSelect';
+import { Context } from './Context';
 
 class MessageParser extends UiKitParserMessage {
 	button = (element, context) => {
@@ -33,7 +33,7 @@ class MessageParser extends UiKitParserMessage {
 
 	image = args => <MessageImage {...args} />;
 
-	context = () => null;
+	context = args => <Context {...args} parser={this} />;
 
 	multiStaticSelect = () => null;
 
