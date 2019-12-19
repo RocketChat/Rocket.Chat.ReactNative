@@ -31,7 +31,7 @@ class MessageParser extends UiKitParserMessage {
 
 	datePicker = () => null;
 
-	image = args => <MessageImage {...args} />;
+	image = (element, context) => <MessageImage element={element} context={context} />;
 
 	context = args => <Context {...args} parser={this} />;
 
