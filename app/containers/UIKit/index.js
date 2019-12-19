@@ -18,7 +18,7 @@ import { Context } from './Context';
 class MessageParser extends UiKitParserMessage {
 	button = (element, context) => {
 		const [, action] = useBlockContext(element, context);
-		return <Button element={element} action={action} parser={this} />;
+		return <Button element={element} action={action} />;
 	}
 
 	divider = () => <Divider />;

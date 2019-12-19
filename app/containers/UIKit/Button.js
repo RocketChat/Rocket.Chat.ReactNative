@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import RCButton from '../Button';
+import { extractText } from './utils';
 
-export const Button = ({ element, action, parser }) => {
+export const Button = ({ element, action }) => {
 	const { text, value } = element;
 	return (
 		<RCButton
-			title={parser.text(text)}
+			title={extractText(text)}
 			onPress={() => action({ value })}
 			theme='light'
 		/>
@@ -15,6 +16,5 @@ export const Button = ({ element, action, parser }) => {
 };
 Button.propTypes = {
 	element: PropTypes.object,
-	parser: PropTypes.object,
 	action: PropTypes.func
 };
