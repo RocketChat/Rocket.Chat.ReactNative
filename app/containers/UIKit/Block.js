@@ -8,9 +8,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Block = ({ children }) => (
-	<View style={styles.margin}>{children}</View>
+export const Block = ({ children, flexDirection }) => (
+	<View style={[styles.margin, flexDirection && { flexDirection }]}>{children}</View>
 );
 Block.propTypes = {
-	children: PropTypes.node
+	children: PropTypes.node,
+	flexDirection: PropTypes.string
 };
