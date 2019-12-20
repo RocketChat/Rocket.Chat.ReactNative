@@ -14,6 +14,7 @@ import { Actions } from './Actions';
 import { MessageImage } from './Image';
 import { StaticSelect } from './StaticSelect';
 import { Context } from './Context';
+import { MultiSelect } from './MultiSelect';
 
 class MessageParser extends UiKitParserMessage {
 	button = (element, context) => {
@@ -35,7 +36,10 @@ class MessageParser extends UiKitParserMessage {
 
 	context = args => <Context {...args} parser={this} />;
 
-	multiStaticSelect = () => null;
+	multiStaticSelect = (element, context) => {
+		const [, action] = useBlockContext(element, context);
+		return <MultiSelect {...element} onChange={action} />;
+	}
 
 	staticSelect = (element, context) => {
 		const [, action] = useBlockContext(element, context);
