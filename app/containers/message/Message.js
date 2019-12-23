@@ -10,6 +10,7 @@ import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
 import Urls from './Urls';
 import Thread from './Thread';
+import Blocks from './Blocks';
 import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
@@ -44,6 +45,7 @@ const MessageInner = React.memo((props) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
+			<Blocks {...props} />
 		</>
 	);
 });
