@@ -1,41 +1,48 @@
 import React, { useContext, useState } from 'react';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
-import { Alert } from 'react-native';
 
 export const extractText = ({ text } = { text: '' }) => text;
 
 export const defaultContext = {
-	action: ({ value }) => Alert.alert(value.toString()),
+	action: (...args) => console.log(args),
 	state: console.log,
 	appId: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 };
 
-export const kitContext = React.createContext(defaultContext);
+export const KitContext = React.createContext(defaultContext);
 
 export const useBlockContext = ({ blockId, actionId, appId }, context) => {
 	const [loading, setLoading] = useState(false);
-	const { action, appId: appIdFromContext, state } = useContext(kitContext);
+	const { action, appId: appIdFromContext, state } = useContext(KitContext);
 	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
 		return [{ loading, setLoading }, async({ value }) => {
 			setLoading(true);
-			await action({
-				blockId,
-				appId: appId || appIdFromContext,
-				actionId,
-				value
-			});
+			try {
+				await action({
+					blockId,
+					appId: appId || appIdFromContext,
+					actionId,
+					value
+				});
+			} catch (e) {
+				// do nothing
+			}
 			setLoading(false);
 		}];
 	}
 
 	return [{ loading, setLoading }, async({ value }) => {
 		setLoading(true);
-		await state({
-			blockId,
-			appId,
-			actionId,
-			value
-		});
+		try {
+			await state({
+				blockId,
+				appId,
+				actionId,
+				value
+			});
+		} catch (e) {
+			// do nothing
+		}
 		setLoading(false);
 	}];
 };

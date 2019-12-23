@@ -1,6 +1,7 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-import { UiKitMessage } from '../UIKit';
+import PropTypes from 'prop-types';
+import { messageBlockWithContext } from '../UIKit/MessageBlock';
+import RocketChat from '../../lib/rocketchat';
 
 const mockBlocks = [
 	{
@@ -30,17 +31,28 @@ const mockBlocks = [
 	}
 ];
 
-const Blocks = React.memo((/* { blocks, id, rid } */) => {
+const Blocks = React.memo(({ id, rid }) => {
 	if (mockBlocks) {
-		return <UiKitMessage blocks={mockBlocks} />;
+		return React.createElement(messageBlockWithContext({
+			action: async(options) => {
+				const {
+					appId, actionId, value, blockId
+				} = options;
+				await RocketChat.triggerBlockAction({
+					actionId, appId, value, blockId, rid, mid: id
+				});
+			},
+			appId: '123',
+			rid
+		}), { blocks: mockBlocks });
 	}
 	return null;
 });
 
 Blocks.propTypes = {
 	// blocks: PropTypes.array,
-	// id: PropTypes.string,
-	// rid: PropTypes.string
+	id: PropTypes.string,
+	rid: PropTypes.string
 };
 Blocks.displayName = 'MessageBlocks';
 

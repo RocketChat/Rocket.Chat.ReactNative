@@ -4,11 +4,12 @@ import {
 	UiKitParserMessage
 } from '@rocket.chat/ui-kit';
 
+import Button from '../Button';
+
 import { useBlockContext } from './utils';
 
 import { Text } from './Text';
 import { Divider } from './Divider';
-import { Button } from './Button';
 import { Section } from './Section';
 import { Actions } from './Actions';
 import { MessageImage } from './Image';
@@ -18,8 +19,16 @@ import { MultiSelect } from './MultiSelect';
 
 class MessageParser extends UiKitParserMessage {
 	button = (element, context) => {
-		const [, action] = useBlockContext(element, context);
-		return <Button element={element} action={action} />;
+		const { text } = element;
+		const [{ loading }, action] = useBlockContext(element, context);
+		return (
+			<Button
+				title={this.text(text)}
+				loading={loading}
+				onPress={action}
+				theme='light'
+			/>
+		);
 	}
 
 	divider = () => <Divider />;
