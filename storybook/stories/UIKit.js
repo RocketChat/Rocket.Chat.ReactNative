@@ -43,7 +43,7 @@ export default () => (
 				accessory: {
 					type: 'button',
 					text: {
-						type: 'mrkdwn',
+						type: 'plain_text',
 						text: 'button'
 					}
 				}
@@ -64,13 +64,13 @@ export default () => (
 						{
 							value: 1,
 							text: {
-								type: 'mrkdwn',
+								type: 'plain_text',
 								text: 'button'
 							}
 						}, {
 							value: 2,
 							text: {
-								type: 'mrkdwn',
+								type: 'plain_text',
 								text: 'second button'
 							}
 						}]
@@ -90,25 +90,25 @@ export default () => (
 					type: 'multi_static_select',
 					options: [{
 						text: {
-							type: 'mrkdwn',
+							type: 'plain_text',
 							text: 'button'
 						},
 						value: 1
 					}, {
 						text: {
-							type: 'mrkdwn',
+							type: 'plain_text',
 							text: 'opt 1'
 						},
 						value: 2
 					}, {
 						text: {
-							type: 'mrkdwn',
+							type: 'plain_text',
 							text: 'opt 2'
 						},
 						value: 3
 					}, {
 						text: {
-							type: 'mrkdwn',
+							type: 'plain_text',
 							text: 'opt 3'
 						},
 						value: 4
