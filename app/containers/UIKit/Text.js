@@ -5,10 +5,7 @@ import Markdown from '../markdown';
 
 export const Text = ({ text, type, theme = 'light' } = { text: '' }) => {
 	const useMarkdown = type === 'mrkdwn';
-	if (useMarkdown) {
-		return <Markdown msg={text} theme={theme} />;
-	}
-	return text;
+	return <Markdown msg={text} theme={theme} useMarkdown={useMarkdown} />;
 };
 Text.propTypes = {
 	text: PropTypes.string,

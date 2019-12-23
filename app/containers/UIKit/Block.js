@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	margin: {
-		margin: 16
+		marginVertical: 8
 	}
 });
 
