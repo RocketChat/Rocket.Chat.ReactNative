@@ -97,7 +97,6 @@ export default function subscribeRoom({ rid }) {
 		if (rid !== message.rid) {
 			return;
 		}
-		console.log(message);
 		InteractionManager.runAfterInteractions(async() => {
 			const db = database.active;
 			const batch = [];
