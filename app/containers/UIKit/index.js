@@ -11,7 +11,6 @@ import TextInput from '../TextInput';
 
 import { useBlockContext } from './utils';
 
-import { Text } from './Text';
 import { Divider } from './Divider';
 import { Section } from './Section';
 import { Actions } from './Actions';
@@ -37,7 +36,7 @@ class MessageParser extends UiKitParserMessage {
 
 	divider = () => <Divider />;
 
-	text = args => <Text {...args} />;
+	text = ({ text } = { text: '' }) => text;
 
 	section = args => <Section {...args} parser={this} />;
 
@@ -69,8 +68,6 @@ class ModalParser extends UiKitParserModal {
 			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
 		});
 	}
-
-	text = ({ text } = { text: '' }) => text;
 
 	input = ({
 		element, label, blockId, appId

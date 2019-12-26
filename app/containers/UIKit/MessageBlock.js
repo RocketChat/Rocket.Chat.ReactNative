@@ -1,14 +1,28 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import { UiKitMessage, UiKitModal } from './index';
+import {
+	UiKitMessage,
+	UiKitModal,
+	messageParser,
+	modalParser
+} from './index';
 import { KitContext } from './utils';
+import Markdown from '../markdown';
+
+messageParser.text = ({ text, type } = {}) => {
+	if (type !== 'mrkdwn') {
+		return text;
+	}
+
+	return <Markdown msg={text} theme='light' />;
+};
+
+modalParser.text = messageParser.text;
 
 const contextDefault = {
-	action: () => console.log('cachorro'),
-	state: (data) => {
-		console.log('state', data);
-	}
+	action: console.log,
+	state: console.log
 };
 
 export const messageBlockWithContext = context => ({ blocks }) => (
