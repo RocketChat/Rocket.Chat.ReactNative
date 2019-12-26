@@ -88,13 +88,13 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	subscribeData = () => {
+	subscribeData = async() => {
 		try {
 			const db = database.active;
-			this.subObservable = db.collections
-				.get('subscriptions')
-				.findAndObserve(this.rid);
-			this.subSubscription = this.subObservable
+			const subCollection = await db.collections.get('subscriptions');
+			const subscription = await subCollection.find(this.rid);
+			const observable = subscription.observe();
+			this.subSubscription = observable
 				.subscribe((data) => {
 					this.subscription = data;
 				});
