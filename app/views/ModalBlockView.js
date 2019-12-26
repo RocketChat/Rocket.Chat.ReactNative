@@ -56,6 +56,7 @@ class ModalBlockView extends React.Component {
 		const { navigation } = props;
 		const data = navigation.getParam('data');
 		this.state = { data };
+		this.keys = {};
 	}
 
 	componentDidMount() {
@@ -86,7 +87,7 @@ class ModalBlockView extends React.Component {
 			payload: {
 				view: {
 					id: viewId,
-					state: Object.entries({}).reduce((obj, [key, { blockId, value }]) => {
+					state: Object.entries(this.keys).reduce((obj, [key, { blockId, value }]) => {
 						obj[blockId] = obj[blockId] || {};
 						obj[blockId][key] = value;
 						return obj;
@@ -115,7 +116,10 @@ class ModalBlockView extends React.Component {
 							actionId, appId, value, blockId, rid, mid
 						}),
 						state: ({ actionId, value, blockId = 'default' }) => {
-							console.log(actionId, blockId, value);
+							this.keys[actionId] = {
+								blockId,
+								value
+							};
 						},
 						appId: data.appId
 					}), { blocks })
