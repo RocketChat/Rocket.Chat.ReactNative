@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 import RocketChat from '../../lib/rocketchat';
 
-const Blocks = React.memo(({ blocks, id, rid }) => {
+const Blocks = React.memo(({ blocks, id: mid, rid }) => {
 	if (blocks && blocks.length > 0) {
+		const [, secondBlock] = blocks;
+		const { appId = '' } = secondBlock;
 		return React.createElement(messageBlockWithContext({
-			action: ({
-				appId, actionId, value, blockId
-			}) => RocketChat.triggerBlockAction({
-				actionId, appId, value, blockId, rid, mid: id
+			action: ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
+				actionId, appId, value, blockId, rid, mid
 			}),
-			appId: '123',
+			appId,
 			rid
 		}), { blocks });
 	}

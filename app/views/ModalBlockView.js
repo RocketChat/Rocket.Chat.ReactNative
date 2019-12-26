@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class GenericView extends React.Component {
+class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
 		return {
@@ -59,14 +59,18 @@ class GenericView extends React.Component {
 	}
 
 	componentDidMount() {
+		const { data } = this.state;
 		const { navigation } = this.props;
+		const { viewId } = data;
 		navigation.setParams({ submit: this.submit });
 
-		EventEmitter.addEventListener('1234', this.handleUpdate);
+		EventEmitter.addEventListener(viewId, this.handleUpdate);
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener('1234');
+		const { data } = this.state;
+		const { viewId } = data;
+		EventEmitter.removeListener(viewId);
 	}
 
 	handleUpdate = (data) => {
@@ -95,7 +99,11 @@ class GenericView extends React.Component {
 	render() {
 		const { data } = this.state;
 		const { theme } = this.props;
-		const { blocks } = data;
+		const {
+			blocks,
+			rid,
+			mid
+		} = data;
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
@@ -104,12 +112,12 @@ class GenericView extends React.Component {
 						action: ({
 							actionId, appId, value, blockId
 						}) => RocketChat.triggerBlockAction({
-							actionId, appId, value, blockId, rid: '1234', mid: '1234'
+							actionId, appId, value, blockId, rid, mid
 						}),
-						state: ({ actionId = 'abc', value, /* ,appId, */blockId = 'default' }) => {
+						state: ({ actionId, value, blockId = 'default' }) => {
 							console.log(actionId, blockId, value);
 						},
-						appId: '1234'
+						appId: data.appId
 					}), { blocks })
 				}
 			</View>
@@ -117,4 +125,4 @@ class GenericView extends React.Component {
 	}
 }
 
-export default withTheme(GenericView);
+export default withTheme(ModalBlockView);
