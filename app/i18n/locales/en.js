@@ -405,6 +405,7 @@ export default {
 	Unfollowed_thread: 'Unfollowed thread',
 	Unmute: 'Unmute',
 	unmuted: 'unmuted',
+	unnamed: 'unnamed',
 	Unpin: 'Unpin',
 	unread_messages: 'unread',
 	Unread: 'Unread',
