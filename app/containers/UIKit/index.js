@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import {
 	uiKitMessage,
@@ -21,7 +22,7 @@ import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
 
 class MessageParser extends UiKitParserMessage {
-	button = (element, context) => {
+	button(element, context) {
 		const { text } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
 		return (
@@ -34,31 +35,47 @@ class MessageParser extends UiKitParserMessage {
 		);
 	}
 
-	divider = () => <Divider />;
+	divider() {
+		return <Divider />;
+	}
 
-	text = ({ text } = { text: '' }) => text;
+	text({ text } = { text: '' }) {
+		return text;
+	}
 
-	section = args => <Section {...args} parser={this} />;
+	section(args) {
+		return <Section {...args} parser={this} />;
+	}
 
-	actions = args => <Actions {...args} parser={this} />;
+	actions(args) {
+		return <Actions {...args} parser={this} />;
+	}
 
-	datePicker = () => null;
+	datePicker() {
+		return null;
+	}
 
-	image = (element, context) => <MessageImage element={element} context={context} />;
+	image(element, context) {
+		return <MessageImage element={element} context={context} />;
+	}
 
-	context = args => <Context {...args} parser={this} />;
+	context(args) {
+		return <Context {...args} parser={this} />;
+	}
 
-	multiStaticSelect = (element, context) => {
+	multiStaticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
 		return <MultiSelect {...element} onChange={action} />;
 	}
 
-	staticSelect = (element, context) => {
+	staticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
 		return <StaticSelect {...element} onChange={action} />;
 	}
 
-	selectInput = () => null;
+	selectInput() {
+		return null;
+	}
 }
 
 class ModalParser extends UiKitParserModal {
@@ -69,19 +86,23 @@ class ModalParser extends UiKitParserModal {
 		});
 	}
 
-	input = ({
+	input({
 		element, label, blockId, appId
-	}) => (
-		<Input
-			parser={this}
-			element={{ ...element, appId, blockId }}
-			label={this.text(label)}
-		/>
-	);
+	}) {
+		return (
+			<Input
+				parser={this}
+				element={{ ...element, appId, blockId }}
+				label={this.text(label)}
+			/>
+		);
+	}
 
-	image = (element, context) => <ModalImage element={element} context={context} />;
+	image(element, context) {
+		return <ModalImage element={element} context={context} />;
+	}
 
-	plainInput = (element, context) => {
+	plainInput(element, context) {
 		const [, action] = useBlockContext(element, context);
 		const { multiline, actionId, placeholder } = element;
 		return (
