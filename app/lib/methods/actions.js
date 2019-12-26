@@ -18,8 +18,6 @@ const MODAL_ACTIONS = {
 
 const triggersId = new Map();
 
-const instances = new Map();
-
 const invalidateTriggerId = (id) => {
 	const appId = triggersId.get(id);
 	triggersId.delete(id);
@@ -47,25 +45,23 @@ const handlePayloadUserInteraction = (type, { viewId = 'lero', triggerId, ...dat
 	}
 
 	if ([MODAL_ACTIONS.UPDATE].includes(type)) {
-		return EventEmitter.emit(viewId, {
+		EventEmitter.emit(viewId, {
 			triggerId,
 			viewId,
-			appId: appId || data.blocks[0].appId, // TODO REMOVE GAMBA
+			appId: appId || data.blocks[0].appId,
 			...data
 		});
 	}
 
 	if ([MODAL_ACTIONS.OPEN].includes(type)) {
-		const instance = Navigation.navigate('ModalBlockView', {
+		Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
 				viewId,
-				appId: appId || data.blocks[0].appId, // TODO REMOVE GAMBA
+				appId: appId || data.blocks[0].appId,
 				...data
 			}
 		});
-		instances.set(viewId, instance);
-		return instance;
 	}
 };
 
@@ -87,16 +83,16 @@ export async function triggerAction({
 		triggerId
 	});
 
-	return handlePayloadUserInteraction(interactionType, data);
+	handlePayloadUserInteraction(interactionType, data);
 }
 
 export default function triggerBlockAction(options) {
 	return triggerAction.call(this, { type: ACTION_TYPES.ACTION, ...options });
 }
 
-export async function triggerSubmitView({ viewId, ...options }) {
+export function triggerSubmitView({ viewId, ...options }) {
 	try {
-		await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+		return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
 	} catch (e) {
 		console.log(e);
 	}

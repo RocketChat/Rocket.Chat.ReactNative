@@ -22,11 +22,20 @@ const styles = StyleSheet.create({
 	}
 });
 
+const extractTitle = (data) => {
+	const { blocks } = data;
+	const [firstBlock] = blocks;
+	const { title = { text: '' } } = firstBlock;
+	const { text } = title;
+	return text;
+};
+
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
+		const data = navigation.getParam('data');
 		return {
-			title: '',
+			title: extractTitle(data),
 			...themedHeader(theme),
 			headerLeft: <CloseModalButton testID='close-generic-view' navigation={navigation} />,
 			headerRight: (
@@ -78,10 +87,10 @@ class ModalBlockView extends React.Component {
 		this.setState({ data });
 	};
 
-	submit = () => {
+	submit = async() => {
 		const { data } = this.state;
 		const { appId, viewId } = data;
-		RocketChat.triggerSubmitView({
+		await RocketChat.triggerSubmitView({
 			viewId,
 			appId,
 			payload: {
