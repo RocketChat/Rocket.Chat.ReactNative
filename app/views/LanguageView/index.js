@@ -30,7 +30,7 @@ const LANGUAGES = [
 		label: 'English',
 		value: 'en'
 	}, {
-		label: 'Español (España)',
+		label: 'Español (ES)',
 		value: 'es-ES'
 	}, {
 		label: 'Français',
