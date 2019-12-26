@@ -26,4 +26,6 @@ const genericImage = (element, context) => {
 	}
 };
 
+export const ModalImage = ({ element, context }) => genericImage(element, context) || <Media element={element} />;
+
 export const MessageImage = ({ element, context }) => genericImage(element, context) || <Media element={element} />;

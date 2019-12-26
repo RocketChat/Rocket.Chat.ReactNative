@@ -33,7 +33,7 @@ import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
-import triggerBlockAction from './methods/actions';
+import triggerBlockAction, { triggerSubmitView } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
@@ -586,6 +586,7 @@ const RocketChat = {
 		return this.sdk.post('channels.join', { roomId });
 	},
 	triggerBlockAction,
+	triggerSubmitView,
 	sendFileMessage,
 	cancelUpload,
 	isUploadActive,

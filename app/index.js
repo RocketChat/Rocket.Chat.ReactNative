@@ -269,10 +269,20 @@ const AttachmentStack = createStackNavigator({
 	cardStyle
 });
 
+const ModalBlockStack = createStackNavigator({
+	ModalBlockView: {
+		getScreen: () => require('./views/ModalBlockView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
+	ModalBlockStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}

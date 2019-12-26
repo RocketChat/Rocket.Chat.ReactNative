@@ -34,14 +34,11 @@ const mockBlocks = [
 const Blocks = React.memo(({ id, rid }) => {
 	if (mockBlocks) {
 		return React.createElement(messageBlockWithContext({
-			action: async(options) => {
-				const {
-					appId, actionId, value, blockId
-				} = options;
-				await RocketChat.triggerBlockAction({
-					actionId, appId, value, blockId, rid, mid: id
-				});
-			},
+			action: ({
+				appId, actionId, value, blockId
+			}) => RocketChat.triggerBlockAction({
+				actionId, appId, value, blockId, rid, mid: id
+			}),
 			appId: '123',
 			rid
 		}), { blocks: mockBlocks });
