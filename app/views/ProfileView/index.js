@@ -9,6 +9,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
+import isEqual from 'lodash/isEqual';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -81,7 +82,7 @@ class ProfileView extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
-		if (user !== nextProps.user) {
+		if (isEqual(user, nextProps.user)) {
 			this.init(nextProps.user);
 		}
 	}
