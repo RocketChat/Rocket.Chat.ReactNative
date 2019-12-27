@@ -158,6 +158,13 @@ class ProfileView extends React.Component {
 		);
 	}
 
+	getName = (user, name) => {
+		if (user) {
+			return name || user.username || I18n.t('unnamed');
+		}
+		return I18n.t('unnamed');
+	}
+
 	submit = async() => {
 		Keyboard.dismiss();
 
@@ -175,7 +182,7 @@ class ProfileView extends React.Component {
 
 		// Name
 		if (user.name !== name) {
-			params.name = name;
+			params.name = this.getName(user, name);
 		}
 
 		// Username
