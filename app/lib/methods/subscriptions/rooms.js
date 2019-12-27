@@ -217,6 +217,7 @@ export default function subscribeRooms() {
 				_id,
 				rid: args.rid,
 				msg: args.msg,
+				blocks: args.blocks,
 				ts: new Date(),
 				_updatedAt: new Date(),
 				status: messagesStatus.SENT,

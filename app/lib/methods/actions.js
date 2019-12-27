@@ -1,6 +1,9 @@
+import RNUserDefaults from 'rn-user-defaults';
+
 import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
+import RocketChat from '../rocketchat';
 
 const TRIGGER_TIMEOUT = 5000;
 
@@ -30,7 +33,7 @@ const generateTriggerId = (appId) => {
 	return triggerId;
 };
 
-const handlePayloadUserInteraction = (type, { viewId = 'lero', triggerId, ...data }) => {
+const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	if (!triggersId.has(triggerId)) {
 		return;
 	}
@@ -40,6 +43,8 @@ const handlePayloadUserInteraction = (type, { viewId = 'lero', triggerId, ...dat
 		return;
 	}
 
+	// TODO not sure this will always have 'view.id'
+	const { view: { id: viewId } } = data;
 	if (!viewId) {
 		return;
 	}
@@ -48,17 +53,18 @@ const handlePayloadUserInteraction = (type, { viewId = 'lero', triggerId, ...dat
 		EventEmitter.emit(viewId, {
 			triggerId,
 			viewId,
-			appId: appId || data.blocks[0].appId,
+			appId,
 			...data
 		});
 	}
+
 
 	if ([MODAL_ACTIONS.OPEN].includes(type)) {
 		Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
 				viewId,
-				appId: appId || data.blocks[0].appId,
+				appId,
 				...data
 			}
 		});
@@ -66,7 +72,7 @@ const handlePayloadUserInteraction = (type, { viewId = 'lero', triggerId, ...dat
 };
 
 export async function triggerAction({
-	actionId, appId, rid, mid, ...rest
+	type, actionId, appId, rid, mid, ...rest
 }) {
 	const triggerId = generateTriggerId(appId);
 
@@ -74,14 +80,28 @@ export async function triggerAction({
 
 	setTimeout(invalidateTriggerId, TRIGGER_TIMEOUT, triggerId);
 
-	const { type: interactionType, ...data } = await this.sdk.post(`apps/blockit/${ appId }/`, {
-		type: ACTION_TYPES.ACTION,
-		actionId,
-		payload,
-		mid,
-		rid,
-		triggerId
+	const server = await RNUserDefaults.get('currentServer');
+	const id = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+	const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ id }`);
+
+	const result = await fetch(`${ server }/api/apps/uikit/${ appId }/`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Auth-Token': token,
+			'X-User-Id': id
+		},
+		body: JSON.stringify({
+			type,
+			actionId,
+			payload,
+			mid,
+			rid,
+			triggerId
+		})
 	});
+
+	const { type: interactionType, ...data } = await result.json();
 
 	handlePayloadUserInteraction(interactionType, data);
 }

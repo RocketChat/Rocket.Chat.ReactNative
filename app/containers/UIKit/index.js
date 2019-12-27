@@ -24,13 +24,13 @@ import { Input } from './Input';
 
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
-		const { text } = element;
+		const { text, value } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
 		return (
 			<Button
 				title={this.text(text)}
 				loading={loading}
-				onPress={action}
+				onPress={() => action({ value })}
 				theme='light'
 			/>
 		);

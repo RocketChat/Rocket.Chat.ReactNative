@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '../theme';
@@ -22,26 +22,22 @@ const styles = StyleSheet.create({
 	}
 });
 
-const extractTitle = (data) => {
-	const { blocks } = data;
-	const [firstBlock] = blocks;
-	const { title = { text: '' } } = firstBlock;
-	const { text } = title;
-	return text;
-};
+const parseText = ({ text }) => text;
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
 		const data = navigation.getParam('data');
+		const { view } = data;
+		const { title, submit } = view;
 		return {
-			title: extractTitle(data),
+			title: parseText(title),
 			...themedHeader(theme),
 			headerLeft: <CloseModalButton testID='close-generic-view' navigation={navigation} />,
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item
-						title='Submit'
+						title={parseText(submit.text)}
 						style={styles.submit}
 						onPress={navigation.getParam('submit', () => {})}
 						testID='submit-modal-uikit'
@@ -89,50 +85,59 @@ class ModalBlockView extends React.Component {
 
 	submit = async() => {
 		const { data } = this.state;
+		const { navigation } = this.props;
 		const { appId, viewId } = data;
-		await RocketChat.triggerSubmitView({
-			viewId,
-			appId,
-			payload: {
-				view: {
-					id: viewId,
-					state: Object.entries(this.keys).reduce((obj, [key, { blockId, value }]) => {
-						obj[blockId] = obj[blockId] || {};
-						obj[blockId][key] = value;
-						return obj;
-					}, {})
+		try {
+			await RocketChat.triggerSubmitView({
+				viewId,
+				appId,
+				payload: {
+					view: {
+						id: viewId,
+						state: Object.entries(this.keys).reduce((obj, [key, { blockId, value }]) => {
+							obj[blockId] = obj[blockId] || {};
+							obj[blockId][key] = value;
+							return obj;
+						}, {})
+					}
 				}
-			}
-		});
+			});
+		} catch (e) {
+			// do nothing
+		}
+		navigation.pop();
 	};
 
 	render() {
 		const { data } = this.state;
 		const { theme } = this.props;
 		const {
-			blocks,
+			view,
 			rid,
 			mid
 		} = data;
+		const { blocks } = view;
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				{
-					React.createElement(modalBlockWithContext({
-						action: ({
-							actionId, appId, value, blockId
-						}) => RocketChat.triggerBlockAction({
-							actionId, appId, value, blockId, rid, mid
-						}),
-						state: ({ actionId, value, blockId = 'default' }) => {
-							this.keys[actionId] = {
-								blockId,
-								value
-							};
-						},
-						appId: data.appId
-					}), { blocks })
-				}
+				<ScrollView>
+					{
+						React.createElement(modalBlockWithContext({
+							action: ({
+								actionId, appId, value, blockId
+							}) => RocketChat.triggerBlockAction({
+								actionId, appId, value, blockId, rid, mid
+							}),
+							state: ({ actionId, value, blockId = 'default' }) => {
+								this.keys[actionId] = {
+									blockId,
+									value
+								};
+							},
+							appId: data.appId
+						}), { blocks })
+					}
+				</ScrollView>
 			</View>
 		);
 	}

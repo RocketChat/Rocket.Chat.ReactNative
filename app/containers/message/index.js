@@ -16,6 +16,7 @@ class MessageContainer extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
+		rid: PropTypes.string,
 		timeFormat: PropTypes.string,
 		customThreadTimeFormat: PropTypes.string,
 		style: PropTypes.any,
@@ -213,7 +214,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -230,6 +231,7 @@ class MessageContainer extends React.Component {
 			<Message
 				id={id}
 				msg={message}
+				rid={rid}
 				author={u}
 				ts={ts}
 				type={t}
