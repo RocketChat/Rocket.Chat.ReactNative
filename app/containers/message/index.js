@@ -44,6 +44,7 @@ class MessageContainer extends React.Component {
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
+		blockAction: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -212,7 +213,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, theme
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -280,6 +281,7 @@ class MessageContainer extends React.Component {
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				callJitsi={callJitsi}
+				blockAction={blockAction}
 				theme={theme}
 			/>
 		);

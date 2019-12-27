@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
-// import Message from './Message';
+import Message from './Message';
 import UIKit from './UIKit';
 // import RoomViewHeader from './RoomViewHeader';
 
@@ -27,8 +27,8 @@ const store = createStore(reducers);
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list roomitem', () => <RoomItem theme={theme} />);
-// storiesOf('Message', module)
-// 	.add('list message', () => <Message theme={theme} />);
+storiesOf('Message', module)
+	.add('list message', () => <Message theme={theme} />);
 storiesOf('UIKit', module)
 	.add('list uikit', () => <UIKit />);
 // FIXME: I couldn't make these pass on jest :(

@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
-import RocketChat from '../../lib/rocketchat';
 
-const Blocks = React.memo(({ blocks, id: mid, rid }) => {
+const Blocks = React.memo(({
+	blocks, id: mid, rid, blockAction
+}) => {
 	if (blocks && blocks.length > 0) {
 		const [, secondBlock] = blocks;
 		const { appId = '' } = secondBlock;
 		return React.createElement(messageBlockWithContext({
-			action: ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
+			action: ({ actionId, value, blockId }) => blockAction({
 				actionId, appId, value, blockId, rid, mid
 			}),
 			appId,
@@ -21,7 +22,8 @@ const Blocks = React.memo(({ blocks, id: mid, rid }) => {
 Blocks.propTypes = {
 	blocks: PropTypes.array,
 	id: PropTypes.string,
-	rid: PropTypes.string
+	rid: PropTypes.string,
+	blockAction: PropTypes.func
 };
 Blocks.displayName = 'MessageBlocks';
 

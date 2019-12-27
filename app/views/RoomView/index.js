@@ -699,6 +699,12 @@ class RoomView extends React.Component {
 		return isReadOnly(room, user);
 	}
 
+	blockAction = ({
+		actionId, appId, value, blockId, rid, mid
+	}) => RocketChat.triggerBlockAction({
+		actionId, appId, value, blockId, rid, mid
+	});
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -749,6 +755,7 @@ class RoomView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
+				blockAction={this.blockAction}
 			/>
 		);
 
