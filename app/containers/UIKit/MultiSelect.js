@@ -1,60 +1,59 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import {
-	View, Text, FlatList, TouchableOpacity, StyleSheet
+	View, StyleSheet, TouchableWithoutFeedback, Modal, SafeAreaView, Text, FlatList
 } from 'react-native';
-import Modal from 'react-native-modal';
+import { RectButton } from 'react-native-gesture-handler';
 
 import RCButton from '../Button';
 import Separator from '../Separator';
+import TextInput from '../../presentation/TextInput';
+import Check from '../Check';
 
+import { extractText } from './utils';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	backdrop: {
+		...StyleSheet.absoluteFillObject,
+		zIndex: 0,
+		flex: 1
+	},
 	item: {
 		height: 48,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%'
-	},
-	modal: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	content: {
-		height: 300,
-		width: 300,
-		backgroundColor: 'white',
-		borderRadius: 4,
-		overflow: 'hidden'
-	},
-	selectedItems: {
-		height: 36,
-		flexGrow: 0
-	},
-	selected: {
-		height: 24,
-		minWidth: 50,
-		marginVertical: 4,
-		marginHorizontal: 2,
-		borderRadius: 4,
-		paddingLeft: 8,
-		backgroundColor: 'grey',
-		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
-	cross: {
-		marginLeft: 4,
-		paddingRight: 8
+	content: {
+		overflow: 'hidden',
+		marginHorizontal: 18,
+		marginVertical: 26,
+		borderRadius: 6,
+		alignSelf: 'stretch',
+		flex: 1
+	},
+	searchInput: {
+		flex: 1,
+		fontSize: 16,
+		paddingVertical: 8
+	},
+	items: {
+		flex: 1
+	},
+	inputContent: {
+		flexDirection: 'row',
+		padding: 5
 	}
 });
 
-const Item = ({ item, onSelect, theme }) => (
-	<TouchableOpacity
+const Item = ({
+	item, selected, onSelect, theme
+}) => (
+	<RectButton
 		key={item}
 		onPress={() => onSelect(item)}
 		style={[
@@ -62,74 +61,81 @@ const Item = ({ item, onSelect, theme }) => (
 			{ backgroundColor: themes[theme].auxiliaryBackground }
 		]}
 	>
-		<Text style={{ color: themes[theme].titleText }}>{item}</Text>
-	</TouchableOpacity>
+		<Text style={{ color: themes[theme].titleText }}>{extractText(item.text)}</Text>
+		{selected ? <Check theme={theme} /> : null}
+	</RectButton>
 );
 
-const ItemSelected = ({ item, onSelect, theme }) => (
-	<TouchableOpacity
-		key={item}
-		onPress={() => onSelect(item)}
-		style={[
-			styles.selected,
-			{ backgroundColor: themes[theme].auxiliaryBackground }
-		]}
-	>
-		<Text style={{ color: themes[theme].titleText }}>{item}</Text>
-		<CustomIcon name='cross' size={14} style={styles.cross} />
-	</TouchableOpacity>
-);
-
-const Selected = ({
-	selected, onSelect, theme
+const Items = ({
+	items, selected, onSelect, theme
 }) => (
 	<FlatList
-		data={selected}
-		style={styles.selectedItems}
-		renderItem={({ item }) => <ItemSelected item={item} onSelect={onSelect} theme={theme} />}
-		horizontal
-	/>
-);
-
-const SelectModal = ({
-	values, onSelect, theme
-}) => (
-	<FlatList
-		data={values}
+		data={items}
 		style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+		contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
-		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} />}
+		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
 	/>
 );
 
-export const MultiSelect = withTheme(({ theme = 'light' }) => {
+export const MultiSelect = withTheme(({
+	options = [],
+	onChange,
+	placeholder = { text: 'Search' },
+	theme = 'light'
+}) => {
 	const [selected, select] = useState([]);
 	const [opened, open] = useState(false);
-	const values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+	const [search, onSearchChange] = useState('');
 
-	const onSelect = (value) => {
+	const onSelect = (item) => {
+		const { value } = item;
+		let newSelect = [];
 		if (!selected.includes(value)) {
-			select([...selected, value]);
+			newSelect = [...selected, value];
 		} else {
-			select(selected.filter(item => item !== value));
+			newSelect = selected.filter(s => s !== value);
 		}
+		select(newSelect);
+		onChange({ value: newSelect });
 	};
+
+	const items = options.filter(option => extractText(option.text).toLowerCase().includes(search.toLowerCase()));
 
 	return (
 		<View>
+			<Modal
+				transparent
+				visible={opened}
+				animationType='fade'
+				onRequestClose={() => open(false)}
+			>
+				<SafeAreaView style={styles.container}>
+					<TouchableWithoutFeedback onPress={() => open(false)}>
+						<View style={[styles.backdrop, { backgroundColor: `${ themes[theme].backdropColor }50` }]} />
+					</TouchableWithoutFeedback>
+					<View style={styles.content}>
+						<View style={[styles.inputContent, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+							<TextInput
+								value={search}
+								onChangeText={onSearchChange}
+								placeholder={placeholder.text}
+								style={[styles.searchInput, { color: themes[theme].titleText }]}
+								theme={theme}
+							/>
+						</View>
+						<View keyboardShouldPersistTaps='always' style={styles.items}>
+							<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
+						</View>
+					</View>
+				</SafeAreaView>
+			</Modal>
 			<RCButton
 				title={`${ selected.length } selecteds`}
 				onPress={() => open(true)}
-				theme='light'
+				onRequestClose={() => open(false)}
+				theme={theme}
 			/>
-			<Modal isVisible={opened}>
-				<View style={styles.modal}>
-					<View style={styles.content}>
-						<Selected selected={selected} onSelect={onSelect} theme={theme} />
-						<SelectModal values={values} onSelect={onSelect} theme={theme} />
-					</View>
-				</View>
-			</Modal>
 		</View>
 	);
 });

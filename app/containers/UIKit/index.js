@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
+import { Text } from 'react-native';
 import {
 	uiKitMessage,
 	UiKitParserMessage,
@@ -40,7 +41,7 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	text({ text } = { text: '' }) {
-		return text;
+		return <Text>{text}</Text>;
 	}
 
 	section(args) {
