@@ -426,6 +426,7 @@ const ModalSwitch = createSwitchNavigator({
 	SidebarStack,
 	RoomActionsStack,
 	SettingsStack,
+	ModalBlockStack,
 	AuthLoading: () => null
 },
 {
