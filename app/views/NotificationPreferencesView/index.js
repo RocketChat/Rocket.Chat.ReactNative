@@ -153,6 +153,7 @@ class NotificationPreferencesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
+		this.pickerValues = {};
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 		this.state = {
@@ -196,7 +197,10 @@ class NotificationPreferencesView extends React.Component {
 		const params = {
 			[key]: value.toString()
 		};
+		const { room } = this.state;
+		room[key] = value;
 		try {
+			await this.setState(room);
 			await RocketChat.saveNotificationSettings(this.rid, params);
 		} catch (e) {
 			log(e);
@@ -204,13 +208,13 @@ class NotificationPreferencesView extends React.Component {
 	}
 
 	renderPicker = (key) => {
-		const { room } = this.state;
 		const { theme } = this.props;
+		const { room } = this.state;
 		return (
 			<RNPickerSelect
 				testID={key}
-				style={{ viewContainer: styles.viewContainer }}
 				value={room[key]}
+				style={{ viewContainer: styles.viewContainer }}
 				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
