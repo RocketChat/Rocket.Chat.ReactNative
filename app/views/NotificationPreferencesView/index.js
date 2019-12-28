@@ -153,7 +153,6 @@ class NotificationPreferencesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.pickerValues = {};
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 		this.state = {
