@@ -27,7 +27,7 @@ export default () => (
 				},
 				accessory: {
 					type: 'image',
-					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
+					imageUrl: 'https://s2.glbimg.com/_JdtjUvVM5XV7IOXLOTrjE-BS1o=/top/i.glbimg.com/og/ig/infoglobo1/f/original/2018/02/20/2018-02-19-photo-00000502.jpg',
 					altText: 'plants'
 				}
 			}]}
@@ -75,6 +75,26 @@ export default () => (
 								text: 'second button'
 							}
 						}]
+				}
+			}]}
+		/>
+
+		<Separator title='Section + DatePicker' />
+		<UiKitMessage
+			blocks={[{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: 'Section + DatePicker'
+				},
+				accessory: {
+					type: 'datepicker',
+					initial_date: '1990-04-28',
+					placeholder: {
+						type: 'plain_text',
+						text: 'Select a date',
+						emoji: true
+					}
 				}
 			}]}
 		/>
@@ -127,7 +147,7 @@ export default () => (
 					text: 'Example Image',
 					emoji: true
 				},
-				imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
+				imageUrl: 'https://s2.glbimg.com/_JdtjUvVM5XV7IOXLOTrjE-BS1o=/top/i.glbimg.com/og/ig/infoglobo1/f/original/2018/02/20/2018-02-19-photo-00000502.jpg',
 				altText: 'Example Image'
 			}]}
 		/>
@@ -143,7 +163,7 @@ export default () => (
 						text: 'Example Image',
 						emoji: true
 					},
-					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
+					imageUrl: 'https://s2.glbimg.com/_JdtjUvVM5XV7IOXLOTrjE-BS1o=/top/i.glbimg.com/og/ig/infoglobo1/f/original/2018/02/20/2018-02-19-photo-00000502.jpg',
 					altText: 'Example Image'
 				},
 				{

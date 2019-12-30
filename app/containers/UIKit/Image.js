@@ -1,37 +1,52 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
+import { Image as MessageImage } from '../message/Image';
+
 const styles = StyleSheet.create({
+	image: {
+		borderRadius: 2
+	},
 	mediaContext: {
 		marginRight: 8
 	}
 });
 
-const MediaContext = args => <View style={styles.mediaContext}><Media size={20} {...args} /></View>;
+const ThumbContext = args => <View style={styles.mediaContext}><Thumb size={20} {...args} /></View>;
 
-const Media = ({ element, size = 88 }) => (
-	<Image
-		style={{ width: size, height: size }}
+export const Thumb = ({ element, size = 88 }) => (
+	<FastImage
+		style={[{ width: size, height: size }, styles.image]}
 		source={{ uri: element.imageUrl }}
 	/>
 );
-Media.propTypes = {
+Thumb.propTypes = {
 	element: PropTypes.object,
 	size: PropTypes.number
 };
 
+export const Media = ({ element }) => (
+	<MessageImage
+		img={element.imageUrl}
+		theme='light'
+	/>
+);
+Media.propTypes = {
+	element: PropTypes.object
+};
+
 const genericImage = (element, context) => {
-	// eslint-disable-next-line default-case
 	switch (context) {
 		case BLOCK_CONTEXT.SECTION:
-			return <Media element={element} />;
+			return <Thumb element={element} />;
 		case BLOCK_CONTEXT.CONTEXT:
-			return <MediaContext element={element} />;
+			return <ThumbContext element={element} />;
+		default:
+			return <Media element={element} />;
 	}
 };
 
-export const ModalImage = ({ element, context }) => genericImage(element, context) || <Media element={element} />;
-
-export const MessageImage = ({ element, context }) => genericImage(element, context) || <Media element={element} />;
+export const Image = ({ element, context }) => genericImage(element, context);

@@ -28,7 +28,7 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-const Image = React.memo(({ img, theme }) => (
+export const Image = React.memo(({ img, theme }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}

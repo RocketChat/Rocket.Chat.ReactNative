@@ -1,11 +1,10 @@
 import React from 'react';
-import {
-	View, Text, StyleSheet, Image
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { Block } from './Block';
+import { Thumb } from './Image';
 
 import { themes } from '../../constants/colors';
 
@@ -20,11 +19,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		lineHeight: 22
-	},
-	image: {
-		right: 0,
-		width: 72,
-		height: 72
 	}
 });
 
@@ -53,7 +47,7 @@ export const Section = ({
 			<View style={[styles.content, sectionWithImage && styles.row]}>
 				{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
 				{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
-				{sectionWithImage ? <Image source={{ uri: accessory.imageUrl }} style={styles.image} /> : null}
+				{sectionWithImage ? <Thumb size={72} element={accessory} /> : null}
 			</View>
 			{accessory && !sectionWithImage ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
 		</Block>

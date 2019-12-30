@@ -16,11 +16,12 @@ import { useBlockContext } from './utils';
 import { Divider } from './Divider';
 import { Section } from './Section';
 import { Actions } from './Actions';
-import { MessageImage, ModalImage } from './Image';
+import { Image } from './Image';
 import { StaticSelect } from './StaticSelect';
 import { Context } from './Context';
 import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
+import { DatePicker } from './DatePicker';
 
 const theme = 'light';
 
@@ -54,12 +55,13 @@ class MessageParser extends UiKitParserMessage {
 		return <Actions {...args} parser={this} />;
 	}
 
-	datePicker() {
-		return null;
+	datePicker(element, context) {
+		const [, action] = useBlockContext(element, context);
+		return <DatePicker element={element} action={action} />;
 	}
 
 	image(element, context) {
-		return <MessageImage element={element} context={context} />;
+		return <Image element={element} context={context} />;
 	}
 
 	context(args) {
@@ -102,7 +104,7 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	image(element, context) {
-		return <ModalImage element={element} context={context} />;
+		return <Image element={element} context={context} />;
 	}
 
 	plainInput(element, context) {
