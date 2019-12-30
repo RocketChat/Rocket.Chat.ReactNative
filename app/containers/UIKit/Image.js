@@ -1,9 +1,15 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-const MediaContext = args => <Media size={20} {...args} />;
+const styles = StyleSheet.create({
+	mediaContext: {
+		marginRight: 8
+	}
+});
+
+const MediaContext = args => <View style={styles.mediaContext}><Media size={20} {...args} /></View>;
 
 const Media = ({ element, size = 88 }) => (
 	<Image

@@ -11,7 +11,7 @@ import { extractText } from './utils';
 const styles = StyleSheet.create({
 	viewContainer: {
 		padding: 16,
-		borderWidth: 1,
+		borderWidth: 2,
 		borderRadius: 2,
 		justifyContent: 'center'
 	},
@@ -34,8 +34,8 @@ export const StaticSelect = ({
 			useNativeAndroidPickerStyle={false}
 			onValueChange={value => onChange({ value })}
 			style={{ viewContainer: { ...styles.viewContainer, borderColor: themes[theme].auxiliaryTintColor } }}
-			Icon={() => <CustomIcon size={22} name='arrow-down' />}
-			textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
+			Icon={() => <CustomIcon size={22} name='arrow-down' color={themes[theme].auxiliaryText} />}
+			textInputProps={{ style: { ...styles.pickerText, color: themes[theme].auxiliaryText } }}
 		/>
 	);
 };
@@ -44,14 +44,3 @@ StaticSelect.propTypes = {
 	onChange: PropTypes.func,
 	theme: PropTypes.string
 };
-
-// export const MultiStaticSelect = ({
-//   options,
-//   onChange,
-//   parser,
-//   placeholder = { text: 'select a option' },
-// }) => (
-//   <MultiSelect
-//     options={options.map((option) => [option.value, parser.text(option.text)])}
-//     onChange={(value) => onChange({ target: { value } })}
-//     placeholder={parser.text(placeholder)} />);

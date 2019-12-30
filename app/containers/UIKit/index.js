@@ -22,6 +22,8 @@ import { Context } from './Context';
 import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
 
+const theme = 'light';
+
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
 		const { text, value } = element;
@@ -31,7 +33,7 @@ class MessageParser extends UiKitParserMessage {
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
-				theme='light'
+				theme={theme}
 			/>
 		);
 	}

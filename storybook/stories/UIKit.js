@@ -10,7 +10,8 @@ const Separator = ({ title }) => <StoriesSeparator title={title} theme='light' /
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#efeff4'
+		backgroundColor: '#efeff4',
+		paddingHorizontal: 16
 	}
 });
 
