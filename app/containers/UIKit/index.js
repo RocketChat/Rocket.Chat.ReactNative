@@ -5,13 +5,15 @@ import {
 	uiKitMessage,
 	UiKitParserMessage,
 	uiKitModal,
-	UiKitParserModal
+	UiKitParserModal,
+	BLOCK_CONTEXT
 } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
 import TextInput from '../TextInput';
 
 import { useBlockContext } from './utils';
+import { themes } from '../../constants/colors';
 
 import { Divider } from './Divider';
 import { Section } from './Section';
@@ -46,8 +48,9 @@ class MessageParser extends UiKitParserMessage {
 		return <Divider />;
 	}
 
-	text({ text } = { text: '' }) {
-		return <Text>{text}</Text>;
+	text({ text } = { text: '' }, context) {
+		const isContext = context === BLOCK_CONTEXT.CONTEXT;
+		return <Text style={isContext && { color: themes.light.auxiliaryText }}>{text}</Text>;
 	}
 
 	section(args) {
