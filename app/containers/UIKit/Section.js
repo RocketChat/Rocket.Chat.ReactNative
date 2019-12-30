@@ -62,5 +62,5 @@ Section.propTypes = {
 	fields: PropTypes.array,
 	accessory: PropTypes.any,
 	theme: PropTypes.string,
-	parser: PropTypes.any
+	parser: PropTypes.object
 };

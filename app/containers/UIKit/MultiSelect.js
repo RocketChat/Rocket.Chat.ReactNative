@@ -11,7 +11,6 @@ import TextInput from '../../presentation/TextInput';
 import Check from '../Check';
 
 import { extractText } from './utils';
-import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
@@ -78,7 +77,7 @@ const Items = ({
 	/>
 );
 
-export const MultiSelect = withTheme(({
+export const MultiSelect = ({
 	options = [],
 	onChange,
 	placeholder = { text: 'Search' },
@@ -138,4 +137,4 @@ export const MultiSelect = withTheme(({
 			/>
 		</View>
 	);
-});
+};

@@ -28,25 +28,26 @@ Thumb.propTypes = {
 	size: PropTypes.number
 };
 
-export const Media = ({ element }) => (
+export const Media = ({ element, theme }) => (
 	<MessageImage
 		img={element.imageUrl}
-		theme='light'
+		theme={theme}
 	/>
 );
 Media.propTypes = {
-	element: PropTypes.object
+	element: PropTypes.object,
+	theme: PropTypes.string
 };
 
-const genericImage = (element, context) => {
+const genericImage = (element, context, theme) => {
 	switch (context) {
 		case BLOCK_CONTEXT.SECTION:
 			return <Thumb element={element} />;
 		case BLOCK_CONTEXT.CONTEXT:
 			return <ThumbContext element={element} />;
 		default:
-			return <Media element={element} />;
+			return <Media element={element} theme={theme} />;
 	}
 };
 
-export const Image = ({ element, context }) => genericImage(element, context);
+export const Image = ({ element, context, theme = 'light' }) => genericImage(element, context, theme);

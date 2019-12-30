@@ -16,11 +16,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Option = ({ option: { text, value }, onOptionPress, parser }) => (
+const Option = ({
+	option: { text, value }, onOptionPress, parser, theme
+}) => (
 	<Touch
 		onPress={() => onOptionPress({ value })}
 		style={styles.option}
-		theme='light'
+		theme={theme}
 	>
 		<Text>{parser.text(text)}</Text>
 	</Touch>
@@ -28,26 +30,32 @@ const Option = ({ option: { text, value }, onOptionPress, parser }) => (
 Option.propTypes = {
 	option: PropTypes.object,
 	onOptionPress: PropTypes.func,
-	parser: PropTypes.object
+	parser: PropTypes.object,
+	theme: PropTypes.string
 };
 
-const Options = ({ options, onOptionPress, parser }) => (
+const Options = ({
+	options, onOptionPress, parser, theme
+}) => (
 	<FlatList
 		data={options}
-		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} />}
+		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} theme={theme} />}
 		keyExtractor={keyExtractor}
-		ItemSeparatorComponent={() => <Separator theme='light' />}
+		ItemSeparatorComponent={() => <Separator theme={theme} />}
 	/>
 );
 Options.propTypes = {
 	options: PropTypes.array,
 	onOptionPress: PropTypes.func,
-	parser: PropTypes.object
+	parser: PropTypes.object,
+	theme: PropTypes.string
 };
 
 let touchable;
 
-export const Overflow = ({ element, action, parser }) => {
+export const Overflow = ({
+	element, action, parser, theme = 'light'
+}) => {
 	const { options } = element;
 	const [show, onShow] = useState(false);
 
@@ -61,7 +69,7 @@ export const Overflow = ({ element, action, parser }) => {
 			<Touch
 				ref={ref => touchable = ref}
 				onPress={() => onShow(!show)}
-				theme='light'
+				theme={theme}
 			>
 				<CustomIcon size={18} name='menu' />
 			</Touch>
@@ -70,7 +78,7 @@ export const Overflow = ({ element, action, parser }) => {
 				fromView={touchable}
 				onRequestClose={() => onShow(false)}
 			>
-				<Options options={options} onOptionPress={onOptionPress} parser={parser} />
+				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />
 			</Popover>
 		</>
 	);
@@ -78,5 +86,6 @@ export const Overflow = ({ element, action, parser }) => {
 Overflow.propTypes = {
 	element: PropTypes.any,
 	action: PropTypes.func,
-	parser: PropTypes.object
+	parser: PropTypes.object,
+	theme: PropTypes.string
 };

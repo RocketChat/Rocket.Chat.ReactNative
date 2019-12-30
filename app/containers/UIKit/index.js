@@ -24,8 +24,6 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 
-const theme = 'light';
-
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
 		const {
@@ -39,7 +37,7 @@ class MessageParser extends UiKitParserMessage {
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
-				theme={theme}
+				theme='light'
 			/>
 		);
 	}

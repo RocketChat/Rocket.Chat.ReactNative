@@ -13,5 +13,5 @@ export const Input = ({ label, element, parser }) => (
 Input.propTypes = {
 	label: PropTypes.string,
 	element: PropTypes.object,
-	parser: PropTypes.any
+	parser: PropTypes.object
 };

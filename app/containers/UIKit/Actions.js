@@ -7,7 +7,7 @@ import { Block } from './Block';
 import Button from '../Button';
 
 export const Actions = ({
-	blockId, appId, elements, parser
+	blockId, appId, elements, parser, theme = 'light'
 }) => {
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements.length > 5);
 	const renderedElements = showMoreVisible ? elements.slice(0, 5) : elements;
@@ -18,7 +18,7 @@ export const Actions = ({
 	return (
 		<Block>
 			<Elements />
-			{showMoreVisible && (<Button theme='light' title='Show more..' onPress={() => setShowMoreVisible(false)} />)}
+			{showMoreVisible && (<Button theme={theme} title='Show more..' onPress={() => setShowMoreVisible(false)} />)}
 		</Block>
 	);
 };
@@ -27,5 +27,6 @@ Actions.propTypes = {
 	blockId: PropTypes.string,
 	appId: PropTypes.string,
 	elements: PropTypes.array,
-	parser: PropTypes.any
+	parser: PropTypes.object,
+	theme: PropTypes.string
 };
