@@ -6,7 +6,7 @@ import Separator from '../Separator';
 
 const styles = StyleSheet.create({
 	separator: {
-		width: '90%',
+		width: '100%',
 		alignSelf: 'center'
 	}
 });
