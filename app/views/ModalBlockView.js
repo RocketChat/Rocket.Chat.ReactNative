@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 16
 	},
+	content: {
+		paddingVertical: 16
+	},
 	submit: {
 		...sharedStyles.textSemibold,
 		fontSize: 16
@@ -120,8 +123,8 @@ class ModalBlockView extends React.Component {
 		const { blocks } = view;
 
 		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				<ScrollView>
+			<ScrollView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={styles.content}>
 					{
 						React.createElement(modalBlockWithContext({
 							action: ({
@@ -138,8 +141,8 @@ class ModalBlockView extends React.Component {
 							appId: data.appId
 						}), { blocks })
 					}
-				</ScrollView>
-			</View>
+				</View>
+			</ScrollView>
 		);
 	}
 }

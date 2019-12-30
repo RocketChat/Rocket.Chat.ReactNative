@@ -1,15 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
-const styles = StyleSheet.create({
-	margin: {
-		marginVertical: 8
-	}
-});
-
 export const Block = ({ children, flexDirection }) => (
-	<View style={[styles.margin, flexDirection && { flexDirection }]}>{children}</View>
+	<View style={flexDirection && { flexDirection }}>{children}</View>
 );
 Block.propTypes = {
 	children: PropTypes.node,
