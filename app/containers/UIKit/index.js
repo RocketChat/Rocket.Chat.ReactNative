@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import {
 	uiKitMessage,
 	UiKitParserMessage,
@@ -25,6 +25,12 @@ import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
+
+const styles = StyleSheet.create({
+	multiline: {
+		height: 130
+	}
+});
 
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
@@ -138,6 +144,7 @@ class ModalParser extends UiKitParserModal {
 				multiline={multiline}
 				onChangeText={value => action({ value })}
 				placeholder={this.text(placeholder)}
+				inputStyle={multiline && styles.multiline}
 			/>
 		);
 	}
