@@ -449,8 +449,7 @@ export default () => (
 					elements: [
 						{
 							type: 'image',
-							imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
-							alt_text: 'oi'
+							imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
 						},
 						{
 							type: 'mrkdwn',
@@ -462,7 +461,55 @@ export default () => (
 					type: 'section',
 					text: {
 						type: 'mrkdwn',
-						text: '*Next stop, Mars!* Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
+						text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
+					}
+				}
+			]}
+		/>
+
+		<Separator title='Modal - Section Accessories' />
+		<UiKitModal
+			blocks={[
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Bruno Quadros*,\nPlease review your details for your *travel expense*.\nExpense no. DA921.'
+					},
+					accessory: {
+						type: 'image',
+						imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
+					}
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Date:*\n11/02/2020'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Category:*\nTravel'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Cost:*\n$150.00 USD'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Notes:*\nWebSummit Conference'
 					}
 				}
 			]}
