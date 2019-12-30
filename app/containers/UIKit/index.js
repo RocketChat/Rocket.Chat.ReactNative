@@ -27,10 +27,11 @@ const theme = 'light';
 
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
-		const { text, value } = element;
+		const { text, value, actionId } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
 		return (
 			<Button
+				key={actionId}
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
