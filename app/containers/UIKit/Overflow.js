@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-	View,
-	Text,
-	FlatList,
-	StyleSheet
-} from 'react-native';
+import { Text, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Popover from 'react-native-popover-view';
 
@@ -62,7 +57,7 @@ export const Overflow = ({ element, action, parser }) => {
 	};
 
 	return (
-		<View>
+		<>
 			<Touch
 				ref={ref => touchable = ref}
 				onPress={() => onShow(!show)}
@@ -77,7 +72,7 @@ export const Overflow = ({ element, action, parser }) => {
 			>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} />
 			</Popover>
-		</View>
+		</>
 	);
 };
 Overflow.propTypes = {
