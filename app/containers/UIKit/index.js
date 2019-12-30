@@ -110,10 +110,13 @@ class ModalParser extends UiKitParserModal {
 
 	plainInput(element, context) {
 		const [, action] = useBlockContext(element, context);
-		const { multiline, actionId, placeholder } = element;
+		const {
+			multiline, actionId, placeholder, label
+		} = element;
 		return (
 			<TextInput
 				id={actionId}
+				label={label}
 				onInput={action}
 				multiline={multiline}
 				onChangeText={value => action({ value })}
