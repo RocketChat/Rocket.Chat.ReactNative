@@ -22,16 +22,20 @@ import { Context } from './Context';
 import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
 import { DatePicker } from './DatePicker';
+import { Overflow } from './Overflow';
 
 const theme = 'light';
 
 class MessageParser extends UiKitParserMessage {
 	button(element, context) {
-		const { text, value, actionId } = element;
+		const {
+			text, value, actionId, style
+		} = element;
 		const [{ loading }, action] = useBlockContext(element, context);
 		return (
 			<Button
 				key={actionId}
+				type={style}
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
@@ -54,6 +58,10 @@ class MessageParser extends UiKitParserMessage {
 
 	actions(args) {
 		return <Actions {...args} parser={this} />;
+	}
+
+	overflow(element, context) {
+		return <Overflow element={element} context={context} />;
 	}
 
 	datePicker(element, context) {

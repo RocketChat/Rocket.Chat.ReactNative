@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { Block } from './Block';
-import { Thumb } from './Image';
 
 import { themes } from '../../constants/colors';
 
@@ -38,21 +37,24 @@ const Fields = ({ fields, parser, theme }) => fields.map(field => (
 	</View>
 ));
 
+const accessoriesRight = ['image', 'overflow'];
+
 export const Section = ({
 	blockId, appId, text, fields, accessory, parser, theme = 'light'
-}) => {
-	const sectionWithImage = accessory && accessory.type === 'image';
-	return (
-		<Block>
-			<View style={[styles.content, sectionWithImage && styles.row]}>
-				{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
-				{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
-				{sectionWithImage ? <Thumb size={72} element={accessory} /> : null}
-			</View>
-			{accessory && !sectionWithImage ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
-		</Block>
-	);
-};
+}) => (
+	<Block>
+		<View
+			style={[
+				styles.content,
+				accessory && accessoriesRight.includes(accessory.type) && styles.row
+			]}
+		>
+			{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
+			{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
+			{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
+		</View>
+	</Block>
+);
 Section.propTypes = {
 	blockId: PropTypes.string,
 	appId: PropTypes.string,
