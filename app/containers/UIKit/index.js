@@ -61,7 +61,15 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	overflow(element, context) {
-		return <Overflow element={element} context={context} />;
+		const [, action] = useBlockContext(element, context);
+		return (
+			<Overflow
+				element={element}
+				context={context}
+				action={action}
+				parser={this}
+			/>
+		);
 	}
 
 	datePicker(element, context) {
