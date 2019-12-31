@@ -97,7 +97,7 @@ class MessageParser extends UiKitParserMessage {
 
 	multiStaticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <MultiSelect {...element} onChange={action} />;
+		return <MultiSelect {...element} onChange={action} context={context} />;
 	}
 
 	staticSelect(element, context) {

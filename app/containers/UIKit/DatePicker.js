@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 	},
 	inputText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 14
 	},
 	icon: {
 		right: 16,

@@ -1,17 +1,21 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import {
 	View, StyleSheet, TouchableWithoutFeedback, Modal, SafeAreaView, Text, FlatList
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { RectButton } from 'react-native-gesture-handler';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import RCButton from '../Button';
+import Button from '../Button';
 import Separator from '../Separator';
 import TextInput from '../../presentation/TextInput';
 import Check from '../Check';
 
 import { extractText } from './utils';
 import { themes } from '../../constants/colors';
+import { CustomIcon } from '../../lib/Icons';
+
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -46,6 +50,21 @@ const styles = StyleSheet.create({
 	inputContent: {
 		flexDirection: 'row',
 		padding: 5
+	},
+	input: {
+		padding: 16,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: 2,
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	inputText: {
+		...sharedStyles.textRegular,
+		fontSize: 14
+	},
+	icon: {
+		position: 'absolute',
+		right: 16
 	}
 });
 
@@ -64,6 +83,12 @@ const Item = ({
 		{selected ? <Check theme={theme} /> : null}
 	</RectButton>
 );
+Item.propTypes = {
+	item: PropTypes.object,
+	selected: PropTypes.bool,
+	onSelect: PropTypes.func,
+	theme: PropTypes.string
+};
 
 const Items = ({
 	items, selected, onSelect, theme
@@ -73,14 +98,22 @@ const Items = ({
 		style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 		contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
+		keyExtractor={item => item.value}
 		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
 	/>
 );
+Items.propTypes = {
+	items: PropTypes.array,
+	selected: PropTypes.array,
+	onSelect: PropTypes.func,
+	theme: PropTypes.string
+};
 
 export const MultiSelect = ({
 	options = [],
 	onChange,
 	placeholder = { text: 'Search' },
+	context,
 	theme = 'light'
 }) => {
 	const [selected, select] = useState([]);
@@ -101,8 +134,42 @@ export const MultiSelect = ({
 
 	const items = options.filter(option => extractText(option.text).toLowerCase().includes(search.toLowerCase()));
 
+	let button = (
+		<Button
+			title={`${ selected.length } selecteds`}
+			onPress={() => open(true)}
+			onRequestClose={() => open(false)}
+			theme={theme}
+		/>
+	);
+
+	if (context === BLOCK_CONTEXT.FORM) {
+		button = (
+			<RectButton
+				style={[
+					styles.input,
+					{
+						backgroundColor: themes[theme].backgroundColor,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
+				onPress={() => open(!opened)}
+			>
+				<Text
+					style={[
+						styles.inputText,
+						{ color: themes[theme].titleText }
+					]}
+				>
+					{`${ selected.length } selecteds`}
+				</Text>
+				<CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+			</RectButton>
+		);
+	}
+
 	return (
-		<View>
+		<>
 			<Modal
 				transparent
 				visible={opened}
@@ -129,12 +196,14 @@ export const MultiSelect = ({
 					</View>
 				</SafeAreaView>
 			</Modal>
-			<RCButton
-				title={`${ selected.length } selecteds`}
-				onPress={() => open(true)}
-				onRequestClose={() => open(false)}
-				theme={theme}
-			/>
-		</View>
+			{button}
+		</>
 	);
+};
+MultiSelect.propTypes = {
+	options: PropTypes.array,
+	onChange: PropTypes.func,
+	placeholder: PropTypes.object,
+	context: PropTypes.number,
+	theme: PropTypes.string
 };
