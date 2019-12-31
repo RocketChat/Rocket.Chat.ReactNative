@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-import { View, Modal, StyleSheet } from 'react-native';
+import {
+	View, Modal, StyleSheet, Text
+} from 'react-native';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Button from '../Button';
 import { extractText } from './utils';
 import { defaultTheme } from '../../utils/theme';
 import { themes } from '../../constants/colors';
+
+import sharedStyles from '../../views/Styles';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	overlay: {
@@ -17,10 +24,28 @@ const styles = StyleSheet.create({
 	modal: {
 		height: 260,
 		width: '100%'
+	},
+	input: {
+		height: 48,
+		paddingLeft: 16,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: 2,
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	inputText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
+	},
+	icon: {
+		right: 16,
+		position: 'absolute'
 	}
 });
 
-export const DatePicker = ({ element, action, theme = 'light' }) => {
+export const DatePicker = ({
+	element, action, context, theme = 'light'
+}) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
 
@@ -30,13 +55,42 @@ export const DatePicker = ({ element, action, theme = 'light' }) => {
 		action({ value: date.toJSON().slice(0, 10) });
 	};
 
+	let button = (
+		<Button
+			title={extractText(placeholder)}
+			onPress={() => onShow(!show)}
+			theme={theme}
+		/>
+	);
+
+	if (context === BLOCK_CONTEXT.FORM) {
+		button = (
+			<RectButton
+				style={[
+					styles.input,
+					{
+						backgroundColor: themes[theme].backgroundColor,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
+				onPress={() => onShow(!show)}
+			>
+				<Text
+					style={[
+						styles.inputText,
+						{ color: themes[theme].titleText }
+					]}
+				>
+					{new Date(initial_date).toLocaleDateString('en-US')}
+				</Text>
+				<CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
+			</RectButton>
+		);
+	}
+
 	return (
 		<>
-			<Button
-				title={extractText(placeholder)}
-				onPress={() => onShow(!show)}
-				theme={theme}
-			/>
+			{button}
 			<Modal
 				animationType='slide'
 				transparent
@@ -67,5 +121,6 @@ export const DatePicker = ({ element, action, theme = 'light' }) => {
 DatePicker.propTypes = {
 	element: PropTypes.object,
 	action: PropTypes.func,
+	context: PropTypes.number,
 	theme: PropTypes.string
 };

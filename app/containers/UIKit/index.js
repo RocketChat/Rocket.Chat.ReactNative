@@ -84,7 +84,7 @@ class MessageParser extends UiKitParserMessage {
 
 	datePicker(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <DatePicker element={element} action={action} />;
+		return <DatePicker element={element} action={action} context={context} />;
 	}
 
 	image(element, context) {
