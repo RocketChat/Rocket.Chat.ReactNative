@@ -514,5 +514,62 @@ export default () => (
 				}
 			]}
 		/>
+
+		<Separator title='Modal - Form TextArea' />
+		<UiKitModal
+			blocks={[
+				{
+					type: 'context',
+					elements: [{
+						type: 'mrkdwn',
+						text: 'Task: ZOL-994'
+					}]
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: 'Update Spec final assets'
+					},
+					accessory: {
+						type: 'button',
+						text: {
+							type: 'plain_text',
+							text: 'Change'
+						}
+					}
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'input',
+					element: {
+						type: 'plain_text_input',
+						multiline: true
+					},
+					placeholder: {
+						type: 'plain_text',
+						text: 'Write Something',
+						emoji: true
+					},
+					label: {
+						type: 'plain_text',
+						text: 'Notes',
+						emoji: true
+					},
+					hint: {
+						type: 'plain_text',
+						text: 'Please take the time to compose something short',
+						emoji: true
+					},
+					description: {
+						type: 'plain_text',
+						text: 'Describe your update',
+						emoji: true
+					}
+				}
+			]}
+		/>
 	</ScrollView>
 );

@@ -56,7 +56,10 @@ class MessageParser extends UiKitParserMessage {
 
 	text({ text } = { text: '' }, context) {
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		return <Text style={isContext && { color: themes.light.auxiliaryText }}>{text}</Text>;
+		if (!isContext) {
+			return text;
+		}
+		return <Text style={{ color: themes.light.auxiliaryText }}>{text}</Text>;
 	}
 
 	section(args) {
@@ -116,13 +119,17 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	input({
-		element, label, blockId, appId
+		element, blockId, appId, ...otherProps
 	}) {
 		return (
 			<Input
 				parser={this}
-				element={{ ...element, appId, blockId }}
-				label={this.text(label)}
+				element={{
+					...element,
+					...otherProps,
+					appId,
+					blockId
+				}}
 			/>
 		);
 	}
@@ -134,16 +141,18 @@ class ModalParser extends UiKitParserModal {
 	plainInput(element, context) {
 		const [, action] = useBlockContext(element, context);
 		const {
-			multiline, actionId, placeholder, label
+			multiline, actionId, placeholder, label, hint, description
 		} = element;
 		return (
 			<TextInput
 				id={actionId}
-				label={label}
+				hint={this.text(hint)}
+				label={this.text(label)}
+				description={this.text(description)}
+				placeholder={this.text(placeholder)}
 				onInput={action}
 				multiline={multiline}
 				onChangeText={value => action({ value })}
-				placeholder={this.text(placeholder)}
 				inputStyle={multiline && styles.multiline}
 			/>
 		);
