@@ -51,12 +51,14 @@ Options.propTypes = {
 	theme: PropTypes.string
 };
 
-let touchable;
+// it can has a weird behaviour on storybook
+// but works fine on app
+const touchable = {};
 
 export const Overflow = ({
 	element, action, parser, theme = 'light'
 }) => {
-	const { options } = element;
+	const { options, blockId } = element;
 	const [show, onShow] = useState(false);
 
 	const onOptionPress = ({ value }) => {
@@ -67,7 +69,7 @@ export const Overflow = ({
 	return (
 		<>
 			<Touch
-				ref={ref => touchable = ref}
+				ref={ref => touchable[blockId] = ref}
 				onPress={() => onShow(!show)}
 				theme={theme}
 			>
@@ -75,7 +77,7 @@ export const Overflow = ({
 			</Touch>
 			<Popover
 				isVisible={show}
-				fromView={touchable}
+				fromView={touchable[blockId]}
 				onRequestClose={() => onShow(false)}
 			>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />

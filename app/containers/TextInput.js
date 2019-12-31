@@ -21,16 +21,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
-	description: {
-		marginBottom: 10,
-		fontSize: 15,
-		...sharedStyles.textRegular
-	},
-	hint: {
-		marginTop: 10,
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
 	input: {
 		...sharedStyles.textRegular,
 		height: 48,
@@ -65,8 +55,6 @@ const styles = StyleSheet.create({
 export default class RCTextInput extends React.PureComponent {
 	static propTypes = {
 		label: PropTypes.string,
-		description: PropTypes.string,
-		hint: PropTypes.string,
 		error: PropTypes.object,
 		secureTextEntry: PropTypes.bool,
 		containerStyle: PropTypes.any,
@@ -121,7 +109,7 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, description, hint, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
+			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
 		return (
@@ -137,19 +125,6 @@ export default class RCTextInput extends React.PureComponent {
 						]}
 					>
 						{label}
-					</Text>
-				) : null}
-				{description ? (
-					<Text
-						contentDescription={null}
-						accessibilityLabel={null}
-						style={[
-							styles.description,
-							{ color: themes[theme].auxiliaryText },
-							error.error && { color: dangerColor }
-						]}
-					>
-						{description}
 					</Text>
 				) : null}
 				<View style={styles.wrap}>
@@ -185,7 +160,6 @@ export default class RCTextInput extends React.PureComponent {
 					{secureTextEntry ? this.iconPassword : null}
 				</View>
 				{error.error ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
-				{hint ? <Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{hint}</Text> : null}
 			</View>
 		);
 	}

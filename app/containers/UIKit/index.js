@@ -119,17 +119,15 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	input({
-		element, blockId, appId, ...otherProps
+		element, blockId, appId, label, description, hint
 	}) {
 		return (
 			<Input
 				parser={this}
-				element={{
-					...element,
-					...otherProps,
-					appId,
-					blockId
-				}}
+				element={{ ...element, appId, blockId }}
+				label={this.text(label)}
+				description={this.text(description)}
+				hint={this.text(hint)}
 			/>
 		);
 	}
