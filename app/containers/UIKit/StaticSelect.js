@@ -11,7 +11,7 @@ import { extractText } from './utils';
 const styles = StyleSheet.create({
 	viewContainer: {
 		padding: 16,
-		borderWidth: 2,
+		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		justifyContent: 'center'
 	},

@@ -571,5 +571,124 @@ export default () => (
 				}
 			]}
 		/>
+
+		<Separator title='Modal - Actions' />
+		<UiKitModal
+			blocks={[{
+				type: 'input',
+				element: {
+					type: 'plain_text_input'
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Title',
+					emoji: true
+				}
+			},
+			{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: 'Details'
+				}
+			},
+			{
+				type: 'section',
+				accessory: {
+					type: 'static_select',
+					options: [
+						{
+							value: 1,
+							text: {
+								type: 'plain_text',
+								text: 'TypeL Task'
+							}
+						}, {
+							value: 2,
+							text: {
+								type: 'plain_text',
+								text: 'second button'
+							}
+						}]
+				}
+			},
+			{
+				type: 'section',
+				accessory: {
+					type: 'static_select',
+					options: [
+						{
+							value: 1,
+							text: {
+								type: 'plain_text',
+								text: 'Project: Space (winter)'
+							}
+						}, {
+							value: 2,
+							text: {
+								type: 'plain_text',
+								text: 'second button'
+							}
+						}]
+				}
+			},
+			{
+				type: 'section',
+				accessory: {
+					type: 'static_select',
+					options: [
+						{
+							value: 1,
+							text: {
+								type: 'plain_text',
+								text: 'Priority (optional)'
+							}
+						}, {
+							value: 2,
+							text: {
+								type: 'plain_text',
+								text: 'second button'
+							}
+						}]
+				}
+			},
+			{
+				type: 'section',
+				accessory: {
+					type: 'static_select',
+					options: [
+						{
+							value: 1,
+							text: {
+								type: 'plain_text',
+								text: 'Assinee (optional)'
+							}
+						}, {
+							value: 2,
+							text: {
+								type: 'plain_text',
+								text: 'second button'
+							}
+						}]
+				}
+			},
+			{
+				type: 'input',
+				element: {
+					type: 'plain_text_input',
+					multiline: true
+				},
+				placeholder: {
+					type: 'plain_text',
+					text: 'Write Something',
+					emoji: true
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Description',
+					emoji: true
+				}
+			}]}
+		/>
 	</ScrollView>
 );
