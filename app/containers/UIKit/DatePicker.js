@@ -49,11 +49,13 @@ export const DatePicker = ({
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
+	const [currentDate, onChangeDate] = useState(new Date(initial_date));
 
-	const onChange = ({ nativeEvent: { timestamp } }) => {
-		const date = new Date(timestamp);
-		date.setHours(0);
-		action({ value: date.toJSON().slice(0, 10) });
+	const onChange = ({ nativeEvent: { timestamp } }, date) => {
+		const newDate = date || new Date(timestamp);
+		onChangeDate(newDate);
+		newDate.setHours(0);
+		action({ value: newDate.toJSON().slice(0, 10) });
 		if (isAndroid) {
 			onShow(false);
 		}
@@ -80,7 +82,7 @@ export const DatePicker = ({
 							{ color: themes[theme].titleText }
 						]}
 					>
-						{new Date(initial_date).toLocaleDateString('en-US')}
+						{currentDate.toLocaleDateString('en-US')}
 					</Text>
 					<CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
 				</View>
@@ -92,7 +94,7 @@ export const DatePicker = ({
 		<DateTimePicker
 			mode='date'
 			display='default'
-			value={new Date(initial_date)}
+			value={currentDate}
 			onChange={onChange}
 		/>
 	) : null;
