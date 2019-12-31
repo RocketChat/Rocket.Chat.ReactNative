@@ -37,7 +37,8 @@ export const StaticSelect = ({
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
-		borderColor: themes[theme].auxiliaryTintColor
+		borderColor: themes[theme].auxiliaryTintColor,
+		backgroundColor: themes[theme].backgroundColor
 	};
 	return (
 		<RNPickerSelect

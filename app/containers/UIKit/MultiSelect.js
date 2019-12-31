@@ -148,6 +148,7 @@ export const MultiSelect = ({
 		button = (
 			<Touch
 				onPress={() => open(!opened)}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				theme={theme}
 			>
 				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>

@@ -73,6 +73,7 @@ export const DatePicker = ({
 		button = (
 			<Touch
 				onPress={() => onShow(!show)}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				theme={theme}
 			>
 				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
