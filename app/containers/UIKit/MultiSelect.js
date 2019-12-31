@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import {
-	View, StyleSheet, TouchableWithoutFeedback, Modal, SafeAreaView, Text, FlatList
+	View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, SafeAreaView, Text, FlatList
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
@@ -16,6 +15,7 @@ import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
 import sharedStyles from '../../views/Styles';
+import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
 	}
 });
 
+// RectButton doesn't work on modal (Android)
 const Item = ({
 	item, selected, onSelect, theme
 }) => (
-	<RectButton
+	<TouchableOpacity
 		key={item}
 		onPress={() => onSelect(item)}
 		style={[
@@ -81,7 +82,7 @@ const Item = ({
 	>
 		<Text style={{ color: themes[theme].titleText }}>{extractText(item.text)}</Text>
 		{selected ? <Check theme={theme} /> : null}
-	</RectButton>
+	</TouchableOpacity>
 );
 Item.propTypes = {
 	item: PropTypes.object,
@@ -145,26 +146,22 @@ export const MultiSelect = ({
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (
-			<RectButton
-				style={[
-					styles.input,
-					{
-						backgroundColor: themes[theme].backgroundColor,
-						borderColor: themes[theme].separatorColor
-					}
-				]}
+			<Touch
 				onPress={() => open(!opened)}
+				theme={theme}
 			>
-				<Text
-					style={[
-						styles.inputText,
-						{ color: themes[theme].titleText }
-					]}
-				>
-					{`${ selected.length } selecteds`}
-				</Text>
-				<CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
-			</RectButton>
+				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
+					<Text
+						style={[
+							styles.inputText,
+							{ color: themes[theme].titleText }
+						]}
+					>
+						{`${ selected.length } selecteds`}
+					</Text>
+					<CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+				</View>
+			</Touch>
 		);
 	}
 

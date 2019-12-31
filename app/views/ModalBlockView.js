@@ -116,11 +116,71 @@ class ModalBlockView extends React.Component {
 		const { data } = this.state;
 		const { theme } = this.props;
 		const {
-			view,
+			// view,
 			rid,
 			mid
 		} = data;
-		const { blocks } = view;
+		// const { blocks } = view;
+
+		const blocks = [
+			{
+				type: 'input',
+				element: {
+					type: 'plain_text_input'
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Outgoing Title',
+					emoji: true
+				},
+				hint: {
+					type: 'plain_text',
+					text: 'Pick something unique!',
+					emoji: true
+				}
+			},
+			{
+				type: 'input',
+				element: {
+					type: 'datepicker',
+					initial_date: '1990-04-28',
+					placeholder: {
+						type: 'plain_text',
+						text: 'Select a date',
+						emoji: true
+					}
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Set a date',
+					emoji: true
+				}
+			},
+			{
+				type: 'input',
+				element: {
+					type: 'multi_static_select',
+					options: [{
+						text: {
+							type: 'plain_text',
+							text: 'John'
+						},
+						value: 1
+					}, {
+						text: {
+							type: 'plain_text',
+							text: 'Dog'
+						},
+						value: 2
+					}]
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Share with...',
+					emoji: true
+				}
+			}
+		];
 
 		return (
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>

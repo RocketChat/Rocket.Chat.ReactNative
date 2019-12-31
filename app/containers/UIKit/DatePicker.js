@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
-import { RectButton } from 'react-native-gesture-handler';
 
 import Button from '../Button';
 import { extractText } from './utils';
@@ -14,6 +13,8 @@ import { themes } from '../../constants/colors';
 
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import Touch from '../../utils/touch';
 
 const styles = StyleSheet.create({
 	overlay: {
@@ -53,6 +54,9 @@ export const DatePicker = ({
 		const date = new Date(timestamp);
 		date.setHours(0);
 		action({ value: date.toJSON().slice(0, 10) });
+		if (isAndroid) {
+			onShow(false);
+		}
 	};
 
 	let button = (
@@ -65,32 +69,36 @@ export const DatePicker = ({
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (
-			<RectButton
-				style={[
-					styles.input,
-					{
-						backgroundColor: themes[theme].backgroundColor,
-						borderColor: themes[theme].separatorColor
-					}
-				]}
+			<Touch
 				onPress={() => onShow(!show)}
+				theme={theme}
 			>
-				<Text
-					style={[
-						styles.inputText,
-						{ color: themes[theme].titleText }
-					]}
-				>
-					{new Date(initial_date).toLocaleDateString('en-US')}
-				</Text>
-				<CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
-			</RectButton>
+				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
+					<Text
+						style={[
+							styles.inputText,
+							{ color: themes[theme].titleText }
+						]}
+					>
+						{new Date(initial_date).toLocaleDateString('en-US')}
+					</Text>
+					<CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
+				</View>
+			</Touch>
 		);
 	}
 
-	return (
-		<>
-			{button}
+	let content = show ? (
+		<DateTimePicker
+			mode='date'
+			display='default'
+			value={new Date(initial_date)}
+			onChange={onChange}
+		/>
+	) : null;
+
+	if (isIOS) {
+		content = (
 			<Modal
 				animationType='slide'
 				transparent
@@ -106,15 +114,17 @@ export const DatePicker = ({
 							theme={theme}
 							style={{ margin: 0 }}
 						/>
-						<DateTimePicker
-							mode='date'
-							display='default'
-							value={new Date(initial_date)}
-							onChange={onChange}
-						/>
+						{content}
 					</View>
 				</View>
 			</Modal>
+		);
+	}
+
+	return (
+		<>
+			{button}
+			{content}
 		</>
 	);
 };
