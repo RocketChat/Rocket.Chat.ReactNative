@@ -467,6 +467,115 @@ export default () => (
 			]}
 		/>
 
+		<Separator title='Modal - Section and Selects' />
+		<UiKitModal
+			blocks={[
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Rocket.Chat is free, unlimited and open source* 🚀\nIf you have any doubt ask to @rocketcat'
+					}
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Text 1*\nDescription, Mussum Ipsum, cacilds vidis litro'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Text 2*\nDescription, Mussum Ipsum, cacilds vidis litro'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Text 3*\nDescription, Mussum Ipsum, cacilds vidis litro'
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*Text 4*\nDescription, Mussum Ipsum, cacilds vidis litro'
+					}
+				}
+			]}
+		/>
+
+		<Separator title='Modal - Form Input' />
+		<UiKitModal
+			blocks={[
+				{
+					type: 'input',
+					element: {
+						type: 'plain_text_input'
+					},
+					label: {
+						type: 'plain_text',
+						text: 'Outgoing Title',
+						emoji: true
+					},
+					hint: {
+						type: 'plain_text',
+						text: 'Pick something unique!',
+						emoji: true
+					}
+				},
+				{
+					type: 'input',
+					accessory: {
+						type: 'datepicker',
+						initial_date: '1990-04-28',
+						placeholder: {
+							type: 'plain_text',
+							text: 'Select a date',
+							emoji: true
+						}
+					}
+				},
+				{
+					type: 'input',
+					accessory: {
+						type: 'multi_static_select',
+						options: [{
+							text: {
+								type: 'plain_text',
+								text: 'John'
+							},
+							value: 1
+						}, {
+							text: {
+								type: 'plain_text',
+								text: 'Dog'
+							},
+							value: 2
+						}, {
+							text: {
+								type: 'plain_text',
+								text: 'Little Dog'
+							},
+							value: 3
+						}, {
+							text: {
+								type: 'plain_text',
+								text: 'Love Dog'
+							},
+							value: 4
+						}]
+					}
+				}
+			]}
+		/>
+
 		<Separator title='Modal - Section Accessories' />
 		<UiKitModal
 			blocks={[
@@ -689,6 +798,106 @@ export default () => (
 					emoji: true
 				}
 			}]}
+		/>
+
+		<Separator title='Modal - Contexts and Dividers' />
+		<UiKitModal
+			blocks={[
+				{
+					type: 'context',
+					elements: [{
+						type: 'mrkdwn',
+						text: 'Due today'
+					}]
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: 'Finish interface componests (3 hours)'
+					},
+					accessory: {
+						type: 'overflow',
+						options: [
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Details',
+									emoji: true
+								},
+								value: 'value-0'
+							},
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Remove',
+									emoji: true
+								},
+								value: 'value-1'
+							}
+						]
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: 'English Class (1 hour)'
+					},
+					accessory: {
+						type: 'overflow',
+						options: [
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Details',
+									emoji: true
+								},
+								value: 'value-0'
+							},
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Remove',
+									emoji: true
+								},
+								value: 'value-1'
+							}
+						]
+					}
+				},
+				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: 'Send an email to John (15min)'
+					},
+					accessory: {
+						type: 'overflow',
+						options: [
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Details',
+									emoji: true
+								},
+								value: 'value-0'
+							},
+							{
+								text: {
+									type: 'plain_text',
+									text: 'Remove',
+									emoji: true
+								},
+								value: 'value-1'
+							}
+						]
+					}
+				}
+			]}
 		/>
 	</ScrollView>
 );
