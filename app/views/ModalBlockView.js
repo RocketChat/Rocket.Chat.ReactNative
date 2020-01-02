@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { uiKitText } from '@rocket.chat/ui-kit';
 
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
@@ -26,7 +27,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const parseText = ({ text }) => text;
+const textParser = uiKitText(new class {
+	plain_text = ({ text }) => text;
+
+	text = ({ text }) => text;
+}());
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -35,13 +40,13 @@ class ModalBlockView extends React.Component {
 		const { view } = data;
 		const { title, submit } = view;
 		return {
-			title: parseText(title),
+			title: textParser([title]).pop(),
 			...themedHeader(theme),
 			headerLeft: <CloseModalButton testID='close-generic-view' navigation={navigation} />,
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item
-						title={parseText(submit.text)}
+						title={textParser([submit.text]).pop()}
 						style={styles.submit}
 						onPress={navigation.getParam('submit', () => {})}
 						testID='submit-modal-uikit'

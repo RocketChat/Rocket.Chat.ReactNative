@@ -11,7 +11,7 @@ import TextInput from '../../presentation/TextInput';
 import Check from '../Check';
 import ActivityIndicator from '../ActivityIndicator';
 
-import { extractText } from './utils';
+import { textParser } from './utils';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 		right: 16
 	},
 	chips: {
-		marginRight: 36
+		alignItems: 'center'
 	},
 	chip: {
 		flexDirection: 'row',
@@ -102,7 +102,7 @@ const Item = ({
 			{ backgroundColor: themes[theme].auxiliaryBackground }
 		]}
 	>
-		<Text style={{ color: themes[theme].titleText }}>{extractText(item.text)}</Text>
+		<Text style={{ color: themes[theme].titleText }}>{textParser([item.text]).pop()}</Text>
 		{selected ? <Check theme={theme} /> : null}
 	</TouchableOpacity>
 );
@@ -140,7 +140,7 @@ export const Chip = ({ item, onSelect, theme }) => (
 		theme={theme}
 	>
 		{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
-		<Text style={[styles.chipText, { color: themes[theme].titleText }]}>{extractText(item.text)}</Text>
+		<Text style={[styles.chipText, { color: themes[theme].titleText }]}>{textParser([item.text]).pop()}</Text>
 		<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryColor} />
 	</Touch>
 );
@@ -151,14 +151,16 @@ Chip.propTypes = {
 };
 
 export const Chips = ({ items, onSelect, theme }) => (
-	<FlatList
-		data={items}
-		style={styles.chips}
-		keyExtractor={item => item.value}
-		renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
-		showsHorizontalScrollIndicator={false}
-		horizontal
-	/>
+	<View>
+		<FlatList
+			data={items}
+			keyExtractor={item => item.value}
+			contentContainerStyle={styles.chips}
+			renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
+			showsHorizontalScrollIndicator={false}
+			horizontal
+		/>
+	</View>
 );
 Chips.propTypes = {
 	items: PropTypes.array,
@@ -190,7 +192,7 @@ export const MultiSelect = ({
 		onChange({ value: newSelect });
 	};
 
-	const items = options.filter(option => extractText(option.text).toLowerCase().includes(search.toLowerCase()));
+	const items = options.filter(option => textParser([option.text]).pop().toLowerCase().includes(search.toLowerCase()));
 
 	let button = (
 		<Button

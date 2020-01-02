@@ -57,13 +57,14 @@ class MessageParser extends UiKitParserMessage {
 		return <Divider theme={theme} />;
 	}
 
-	text({ text } = { text: '' }, context) {
+	text({ text, type } = { text: '' }, context) {
 		const { theme } = useContext(ThemeContext);
-		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		if (!isContext) {
+		if (type !== 'mrkdwn') {
 			return text;
 		}
-		return <Text style={{ color: themes[theme].auxiliaryText }}>{text}</Text>;
+
+		const isContext = context === BLOCK_CONTEXT.CONTEXT;
+		return <Text style={[isContext && { color: themes[theme].auxiliaryText }]}>{text}</Text>;
 	}
 
 	section(args) {

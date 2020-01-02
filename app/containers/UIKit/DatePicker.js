@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
-import { extractText } from './utils';
+import { textParser } from './utils';
 import { defaultTheme } from '../../utils/theme';
 import { themes } from '../../constants/colors';
 
@@ -67,7 +67,7 @@ export const DatePicker = ({
 
 	let button = (
 		<Button
-			title={extractText(placeholder)}
+			title={textParser([placeholder]).pop()}
 			onPress={() => onShow(!show)}
 			loading={loading}
 			theme={theme}

@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
-import { extractText } from './utils';
+import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
 
@@ -39,7 +39,7 @@ export const Select = ({
 	loading,
 	theme
 }) => {
-	const items = options.map(option => ({ label: extractText(option.text), value: option.value }));
+	const items = options.map(option => ({ label: textParser([option.text]).pop(), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
@@ -56,7 +56,7 @@ export const Select = ({
 	return (
 		<RNPickerSelect
 			items={items}
-			placeholder={placeholder ? { label: extractText(placeholder), value: null } : {}}
+			placeholder={placeholder ? { label: textParser([placeholder]).pop(), value: null } : {}}
 			useNativeAndroidPickerStyle={false}
 			onValueChange={value => onChange({ value })}
 			style={{
