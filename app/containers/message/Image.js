@@ -28,7 +28,7 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-export const Image = React.memo(({ img, theme }) => (
+export const MessageImage = React.memo(({ img, theme }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
@@ -54,7 +54,7 @@ const ImageContainer = React.memo(({
 		return (
 			<Button split={split} theme={theme} onPress={onPress}>
 				<View>
-					<Image img={img} theme={theme} />
+					<MessageImage img={img} theme={theme} />
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 				</View>
 			</Button>
@@ -63,7 +63,7 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button split={split} theme={theme} onPress={onPress}>
-			<Image img={img} theme={theme} />
+			<MessageImage img={img} theme={theme} />
 		</Button>
 	);
 }, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
@@ -80,7 +80,7 @@ ImageContainer.propTypes = {
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
-Image.propTypes = {
+MessageImage.propTypes = {
 	img: PropTypes.string,
 	theme: PropTypes.string
 };
