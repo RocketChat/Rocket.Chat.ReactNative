@@ -35,31 +35,29 @@ export default () => (
 					},
 					{
 						type: 'section',
-						text: {
-							type: 'mrkdwn',
-							text: '*Text 1*\nDescription, Mussum Ipsum, cacilds vidis litro'
-						}
+						fields: [
+							{
+								type: 'mrkdwn',
+								text: '*Text 1*\nDescription, Mussum Ipsum, cacilds vidis litro'
+							},
+							{
+								type: 'mrkdwn',
+								text: '*Text 2*\nDescription, Mussum Ipsum, cacilds vidis litro'
+							}
+						]
 					},
 					{
 						type: 'section',
-						text: {
-							type: 'mrkdwn',
-							text: '*Text 2*\nDescription, Mussum Ipsum, cacilds vidis litro'
-						}
-					},
-					{
-						type: 'section',
-						text: {
-							type: 'mrkdwn',
-							text: '*Text 3*\nDescription, Mussum Ipsum, cacilds vidis litro'
-						}
-					},
-					{
-						type: 'section',
-						text: {
-							type: 'mrkdwn',
-							text: '*Text 4*\nDescription, Mussum Ipsum, cacilds vidis litro'
-						}
+						fields: [
+							{
+								type: 'mrkdwn',
+								text: '*Text 3*\nDescription, Mussum Ipsum, cacilds vidis litro'
+							},
+							{
+								type: 'mrkdwn',
+								text: '*Text 4*\nDescription, Mussum Ipsum, cacilds vidis litro'
+							}
+						]
 					}
 				])
 			}
@@ -71,7 +69,7 @@ export default () => (
 						type: 'section',
 						text: {
 							type: 'mrkdwn',
-							text: '*Bruno Quadros*,\nPlease review your details for your *travel expense*.\nExpense no. DA921.'
+							text: '*Bruno Quadros*,\nPlease review your details for your *travel expense*.\nExpense no. *DA921*.'
 						},
 						accessory: {
 							type: 'image',

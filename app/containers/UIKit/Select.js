@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 16
 	},
 	viewContainer: {
+		marginVertical: 4,
 		paddingHorizontal: 16,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,

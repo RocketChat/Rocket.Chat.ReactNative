@@ -7,15 +7,24 @@ import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	content: {
+		minHeight: 48,
 		marginBottom: 8
 	},
 	row: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	column: {
+		justifyContent: 'center'
 	},
 	text: {
 		flex: 1,
+		minHeight: 24,
 		fontSize: 16,
 		lineHeight: 22
+	},
+	field: {
+		marginVertical: 6
 	}
 });
 
@@ -28,11 +37,9 @@ const Accessory = ({
 );
 
 const Fields = ({ fields, parser, theme }) => fields.map(field => (
-	<>
-		<Text style={[styles.text, { color: themes[theme].bodyText }]}>
-			{parser.text(field)}
-		</Text>
-	</>
+	<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>
+		{parser.text(field)}
+	</Text>
 ));
 
 const accessoriesRight = ['image', 'overflow', 'datepicker'];
@@ -43,7 +50,7 @@ export const Section = ({
 	<View
 		style={[
 			styles.content,
-			accessory && accessoriesRight.includes(accessory.type) && styles.row
+			accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column
 		]}
 	>
 		{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
