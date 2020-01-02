@@ -19,7 +19,7 @@ import { Divider } from './Divider';
 import { Section } from './Section';
 import { Actions } from './Actions';
 import { Image } from './Image';
-import { StaticSelect } from './StaticSelect';
+import { Select } from './Select';
 import { Context } from './Context';
 import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
@@ -102,11 +102,12 @@ class MessageParser extends UiKitParserMessage {
 
 	staticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <StaticSelect {...element} onChange={action} />;
+		return <Select {...element} onChange={action} />;
 	}
 
-	selectInput() {
-		return null;
+	selectInput(element, context) {
+		const [, action] = useBlockContext(element, context);
+		return <Select {...element} onChange={action} />;
 	}
 }
 

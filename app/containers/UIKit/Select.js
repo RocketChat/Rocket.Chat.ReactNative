@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const StaticSelect = ({
-	options,
+export const Select = ({
+	options = [],
+	placeholder,
 	onChange,
 	theme = 'light'
 }) => {
@@ -43,7 +44,7 @@ export const StaticSelect = ({
 	return (
 		<RNPickerSelect
 			items={items}
-			placeholder={{}}
+			placeholder={placeholder ? { label: extractText(placeholder), value: null } : {}}
 			useNativeAndroidPickerStyle={false}
 			onValueChange={value => onChange({ value })}
 			style={{
@@ -55,8 +56,9 @@ export const StaticSelect = ({
 		/>
 	);
 };
-StaticSelect.propTypes = {
+Select.propTypes = {
 	options: PropTypes.array,
+	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	theme: PropTypes.string
 };
