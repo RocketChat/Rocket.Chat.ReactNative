@@ -10,6 +10,7 @@ import { themes } from '../constants/colors';
 import { CloseModalButton, CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
+import ActivityIndicator from '../containers/ActivityIndicator';
 
 import sharedStyles from './Styles';
 
@@ -69,7 +70,7 @@ class ModalBlockView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		const data = navigation.getParam('data');
-		this.state = { data };
+		this.state = { data, loading: false };
 		this.keys = {};
 	}
 
@@ -96,6 +97,7 @@ class ModalBlockView extends React.Component {
 		const { data } = this.state;
 		const { navigation } = this.props;
 		const { appId, viewId } = data;
+		this.setState({ loading: true });
 		try {
 			await RocketChat.triggerSubmitView({
 				viewId,
@@ -114,11 +116,12 @@ class ModalBlockView extends React.Component {
 		} catch (e) {
 			// do nothing
 		}
+		this.setState({ loading: false });
 		navigation.pop();
 	};
 
 	render() {
-		const { data } = this.state;
+		const { data, loading } = this.state;
 		const { theme } = this.props;
 		const {
 			view,
@@ -147,6 +150,7 @@ class ModalBlockView extends React.Component {
 						}), { blocks })
 					}
 				</View>
+				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</ScrollView>
 		);
 	}
