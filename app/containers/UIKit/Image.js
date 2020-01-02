@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { Image as MessageImage } from '../message/Image';
+import { MessageImage } from '../message/Image';
 
 const styles = StyleSheet.create({
 	image: {
