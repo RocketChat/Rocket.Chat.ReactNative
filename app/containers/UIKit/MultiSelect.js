@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, SafeAreaView, Text, FlatList
+	View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Modal, SafeAreaView, Text, FlatList, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -52,19 +52,40 @@ const styles = StyleSheet.create({
 		padding: 5
 	},
 	input: {
-		padding: 16,
+		height: 48,
+		paddingHorizontal: 16,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
-	inputText: {
-		...sharedStyles.textRegular,
-		fontSize: 14
-	},
 	icon: {
 		position: 'absolute',
 		right: 16
+	},
+	chips: {
+		marginRight: 36
+	},
+	chip: {
+		flexDirection: 'row',
+		borderRadius: 2,
+		height: 28,
+		alignItems: 'center',
+		paddingRight: 4,
+		marginRight: 8,
+		maxWidth: 100
+	},
+	chipText: {
+		maxWidth: 64,
+		paddingHorizontal: 8,
+		...sharedStyles.textMedium,
+		fontSize: 14
+	},
+	chipImage: {
+		marginLeft: 4,
+		borderRadius: 2,
+		width: 20,
+		height: 20
 	}
 });
 
@@ -86,7 +107,7 @@ const Item = ({
 );
 Item.propTypes = {
 	item: PropTypes.object,
-	selected: PropTypes.bool,
+	selected: PropTypes.number,
 	onSelect: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -106,6 +127,40 @@ const Items = ({
 Items.propTypes = {
 	items: PropTypes.array,
 	selected: PropTypes.array,
+	onSelect: PropTypes.func,
+	theme: PropTypes.string
+};
+
+export const Chip = ({ item, onSelect, theme }) => (
+	<Touch
+		key={item.value}
+		onPress={() => onSelect(item)}
+		style={[styles.chip, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		theme={theme}
+	>
+		{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
+		<Text style={[styles.chipText, { color: themes[theme].titleText }]}>{extractText(item.text)}</Text>
+		<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryColor} />
+	</Touch>
+);
+Chip.propTypes = {
+	item: PropTypes.object,
+	onSelect: PropTypes.func,
+	theme: PropTypes.string
+};
+
+export const Chips = ({ items, onSelect, theme }) => (
+	<FlatList
+		data={items}
+		style={styles.chips}
+		keyExtractor={item => item.value}
+		renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
+		showsHorizontalScrollIndicator={false}
+		horizontal
+	/>
+);
+Chips.propTypes = {
+	items: PropTypes.array,
 	onSelect: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -152,14 +207,7 @@ export const MultiSelect = ({
 				theme={theme}
 			>
 				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
-					<Text
-						style={[
-							styles.inputText,
-							{ color: themes[theme].titleText }
-						]}
-					>
-						{`${ selected.length } selecteds`}
-					</Text>
+					<Chips items={options.filter(option => selected.includes(option.value))} onSelect={onSelect} theme={theme} />
 					<CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
 				</View>
 			</Touch>
