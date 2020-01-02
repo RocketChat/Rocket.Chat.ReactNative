@@ -167,6 +167,7 @@ export default {
 	Disable_notifications: 'Disable notifications',
 	Discussions: 'Discussions',
 	Dont_Have_An_Account: 'Don\'t have an account?',
+	Done: 'Done',
 	Do_you_have_a_certificate: 'Do you have a certificate?',
 	Do_you_really_want_to_key_this_room_question_mark: 'Do you really want to {{key}} this room?',
 	edit: 'edit',
