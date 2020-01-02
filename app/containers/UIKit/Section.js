@@ -3,8 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { Block } from './Block';
-
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
@@ -30,11 +28,11 @@ const Accessory = ({
 );
 
 const Fields = ({ fields, parser, theme }) => fields.map(field => (
-	<View>
+	<>
 		<Text style={[styles.text, { color: themes[theme].bodyText }]}>
 			{parser.text(field)}
 		</Text>
-	</View>
+	</>
 ));
 
 const accessoriesRight = ['image', 'overflow', 'datepicker'];
@@ -42,18 +40,16 @@ const accessoriesRight = ['image', 'overflow', 'datepicker'];
 export const Section = ({
 	blockId, appId, text, fields, accessory, parser, theme = 'light'
 }) => (
-	<Block>
-		<View
-			style={[
-				styles.content,
-				accessory && accessoriesRight.includes(accessory.type) && styles.row
-			]}
-		>
-			{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
-			{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
-			{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
-		</View>
-	</Block>
+	<View
+		style={[
+			styles.content,
+			accessory && accessoriesRight.includes(accessory.type) && styles.row
+		]}
+	>
+		{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
+		{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
+		{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
+	</View>
 );
 Section.propTypes = {
 	blockId: PropTypes.string,

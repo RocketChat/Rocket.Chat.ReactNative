@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { Block } from './Block';
-
 import Button from '../Button';
 
 export const Actions = ({
@@ -16,10 +14,10 @@ export const Actions = ({
 		.map(element => parser.renderActions({ blockId, appId, ...element }, BLOCK_CONTEXT.ACTION, parser));
 
 	return (
-		<Block>
+		<>
 			<Elements />
 			{showMoreVisible && (<Button theme={theme} title='Show more..' onPress={() => setShowMoreVisible(false)} />)}
-		</Block>
+		</>
 	);
 };
 

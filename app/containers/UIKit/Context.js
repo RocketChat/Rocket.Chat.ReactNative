@@ -1,13 +1,18 @@
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { Block } from './Block';
+const styles = StyleSheet.create({
+	row: {
+		flexDirection: 'row'
+	}
+});
 
 export const Context = ({ elements, parser }) => (
-	<Block flexDirection='row'>
+	<View style={styles.row}>
 		{elements.map(element => parser.renderContext(element, BLOCK_CONTEXT.CONTEXT, parser))}
-	</Block>
+	</View>
 );
 Context.propTypes = {
 	elements: PropTypes.array,
