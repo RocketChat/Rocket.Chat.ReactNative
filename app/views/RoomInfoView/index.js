@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView } from 'react-native';
+import {
+	View, Text, ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
@@ -12,6 +14,7 @@ import sharedStyles from '../Styles';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
+import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -141,6 +144,11 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
+	goRoom = ({ rid, name, t }) => {
+		const { navigation } = this.props;
+		navigation.navigate('RoomView', { rid, name, t });
+	}
+
 	isDirect = () => this.t === 'd'
 
 	renderItem = (key, room) => {
@@ -259,6 +267,23 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
+	renderButton = () => {
+		const { room, roomUser } = this.state;
+		const { rid } = this;
+		const { theme } = this.props;
+
+		return (
+			<Button
+				title={I18n.t('Message')}
+				type='primary'
+				onPress={() => this.goRoom({ rid, name: room.name || roomUser.username, t: 'd' })}
+				disabled={false}
+				loading={false}
+				theme={theme}
+			/>
+		);
+	}
+
 	renderChannel = () => {
 		const { room } = this.state;
 		return (
@@ -271,16 +296,14 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderDirect = () => {
-		const { roomUser } = this.state;
-		return (
-			<>
-				{this.renderRoles()}
-				{this.renderTimezone()}
-				{this.renderCustomFields(roomUser._id)}
-			</>
-		);
-	}
+	renderDirect = () => (
+		<>
+			{this.renderButton()}
+			{this.renderRoles()}
+			{this.renderTimezone()}
+			{this.renderCustomFields()}
+		</>
+	)
 
 	render() {
 		const { room, roomUser } = this.state;
