@@ -131,7 +131,7 @@ class ModalBlockView extends React.Component {
 		const { blocks } = view;
 
 		return (
-			<ScrollView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
 					{
 						React.createElement(modalBlockWithContext({
