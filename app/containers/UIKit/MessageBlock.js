@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
 	UiKitMessage,
@@ -9,13 +9,16 @@ import {
 } from './index';
 import { KitContext } from './utils';
 import Markdown from '../markdown';
+import { ThemeContext } from '../../theme';
+
 
 messageParser.text = ({ text, type } = {}) => {
+	const { theme } = useContext(ThemeContext);
 	if (type !== 'mrkdwn') {
 		return text;
 	}
 
-	return <Markdown msg={text} theme='light' />;
+	return <Markdown msg={text} theme={theme} />;
 };
 
 modalParser.text = messageParser.text;
