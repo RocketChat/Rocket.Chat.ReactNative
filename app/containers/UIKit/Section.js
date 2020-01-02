@@ -7,7 +7,6 @@ import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	content: {
-		minHeight: 48,
 		marginBottom: 8
 	},
 	row: {
@@ -19,7 +18,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		flex: 1,
-		minHeight: 24,
+		paddingVertical: 8,
+		textAlignVertical: 'center',
 		fontSize: 16,
 		lineHeight: 22
 	},
