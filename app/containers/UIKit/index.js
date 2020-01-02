@@ -77,12 +77,13 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	overflow(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
 			<Overflow
 				element={element}
 				context={context}
+				loading={loading}
 				action={action}
 				theme={theme}
 				parser={this}
@@ -91,9 +92,17 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	datePicker(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return <DatePicker element={element} theme={theme} action={action} context={context} />;
+		return (
+			<DatePicker
+				element={element}
+				theme={theme}
+				action={action}
+				context={context}
+				loading={loading}
+			/>
+		);
 	}
 
 	image(element, context) {
@@ -107,21 +116,43 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	multiStaticSelect(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return <MultiSelect {...element} theme={theme} onChange={action} context={context} />;
+		return (
+			<MultiSelect
+				{...element}
+				theme={theme}
+				onChange={action}
+				context={context}
+				loading={loading}
+			/>
+		);
 	}
 
 	staticSelect(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return <Select {...element} theme={theme} onChange={action} />;
+		return (
+			<Select
+				{...element}
+				theme={theme}
+				onChange={action}
+				loading={loading}
+			/>
+		);
 	}
 
 	selectInput(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return <Select {...element} theme={theme} onChange={action} />;
+		return (
+			<Select
+				{...element}
+				theme={theme}
+				onChange={action}
+				loading={loading}
+			/>
+		);
 	}
 }
 
@@ -155,7 +186,7 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	plainInput(element, context) {
-		const [, action] = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		const {
 			multiline, actionId, placeholder, label, hint, description
@@ -169,6 +200,7 @@ class ModalParser extends UiKitParserModal {
 				placeholder={this.text(placeholder)}
 				onInput={action}
 				multiline={multiline}
+				loading={loading}
 				onChangeText={value => action({ value })}
 				inputStyle={multiline && styles.multiline}
 				theme={theme}

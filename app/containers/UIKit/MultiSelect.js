@@ -9,6 +9,7 @@ import Button from '../Button';
 import Separator from '../Separator';
 import TextInput from '../../presentation/TextInput';
 import Check from '../Check';
+import ActivityIndicator from '../ActivityIndicator';
 
 import { extractText } from './utils';
 import { themes } from '../../constants/colors';
@@ -170,6 +171,7 @@ export const MultiSelect = ({
 	onChange,
 	placeholder = { text: 'Search' },
 	context,
+	loading,
 	theme
 }) => {
 	const [selected, select] = useState([]);
@@ -195,6 +197,7 @@ export const MultiSelect = ({
 			title={`${ selected.length } selecteds`}
 			onPress={() => open(true)}
 			onRequestClose={() => open(false)}
+			loading={loading}
 			theme={theme}
 		/>
 	);
@@ -208,7 +211,11 @@ export const MultiSelect = ({
 			>
 				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
 					<Chips items={options.filter(option => selected.includes(option.value))} onSelect={onSelect} theme={theme} />
-					<CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+					{
+						loading
+							? <ActivityIndicator style={[styles.loading, styles.icon]} />
+							: <CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+					}
 				</View>
 			</Touch>
 		);
@@ -251,5 +258,6 @@ MultiSelect.propTypes = {
 	onChange: PropTypes.func,
 	placeholder: PropTypes.object,
 	context: PropTypes.number,
+	loading: PropTypes.bool,
 	theme: PropTypes.string
 };

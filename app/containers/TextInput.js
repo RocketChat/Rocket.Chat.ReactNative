@@ -7,6 +7,7 @@ import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
 import { themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
+import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
 	error: {
@@ -56,6 +57,7 @@ export default class RCTextInput extends React.PureComponent {
 	static propTypes = {
 		label: PropTypes.string,
 		error: PropTypes.object,
+		loading: PropTypes.bool,
 		secureTextEntry: PropTypes.bool,
 		containerStyle: PropTypes.any,
 		inputStyle: PropTypes.object,
@@ -102,6 +104,11 @@ export default class RCTextInput extends React.PureComponent {
 		);
 	}
 
+	get loading() {
+		const { theme } = this.props;
+		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight, { color: themes[theme].bodyText }]} />;
+	}
+
 	tooglePassword = () => {
 		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	}
@@ -112,6 +119,7 @@ export default class RCTextInput extends React.PureComponent {
 			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
+		const loading = true;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
@@ -158,6 +166,7 @@ export default class RCTextInput extends React.PureComponent {
 					/>
 					{iconLeft ? this.iconLeft : null}
 					{secureTextEntry ? this.iconPassword : null}
+					{loading ? this.loading : null}
 				</View>
 				{error.error ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>

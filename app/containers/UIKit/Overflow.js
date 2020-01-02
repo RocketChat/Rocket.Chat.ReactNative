@@ -6,6 +6,7 @@ import Popover from 'react-native-popover-view';
 import { CustomIcon } from '../../lib/Icons';
 import Touch from '../../utils/touch';
 import Separator from '../Separator';
+import ActivityIndicator from '../ActivityIndicator';
 
 const keyExtractor = item => item.value;
 
@@ -13,6 +14,9 @@ const styles = StyleSheet.create({
 	option: {
 		padding: 8,
 		minHeight: 32
+	},
+	loading: {
+		padding: 0
 	}
 });
 
@@ -56,7 +60,7 @@ Options.propTypes = {
 const touchable = {};
 
 export const Overflow = ({
-	element, action, parser, theme
+	element, loading, action, parser, theme
 }) => {
 	const { options, blockId } = element;
 	const [show, onShow] = useState(false);
@@ -73,7 +77,7 @@ export const Overflow = ({
 				onPress={() => onShow(!show)}
 				theme={theme}
 			>
-				<CustomIcon size={18} name='menu' />
+				{!loading ? <CustomIcon size={18} name='menu' /> : <ActivityIndicator style={styles.loading} />}
 			</Touch>
 			<Popover
 				isVisible={show}
@@ -88,6 +92,7 @@ export const Overflow = ({
 Overflow.propTypes = {
 	element: PropTypes.any,
 	action: PropTypes.func,
+	loading: PropTypes.bool,
 	parser: PropTypes.object,
 	theme: PropTypes.string
 };

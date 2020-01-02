@@ -8,6 +8,7 @@ import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { extractText } from './utils';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	iosPadding: {
@@ -25,6 +26,9 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		right: 16
+	},
+	loading: {
+		padding: 0
 	}
 });
 
@@ -32,6 +36,7 @@ export const Select = ({
 	options = [],
 	placeholder,
 	onChange,
+	loading,
 	theme
 }) => {
 	const items = options.map(option => ({ label: extractText(option.text), value: option.value }));
@@ -41,6 +46,13 @@ export const Select = ({
 		borderColor: themes[theme].auxiliaryTintColor,
 		backgroundColor: themes[theme].backgroundColor
 	};
+
+	const Icon = () => (
+		loading
+			? <ActivityIndicator style={styles.loading} />
+			: <CustomIcon size={22} name='arrow-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />
+	);
+
 	return (
 		<RNPickerSelect
 			items={items}
@@ -51,7 +63,7 @@ export const Select = ({
 				viewContainer: pickerStyle,
 				inputAndroidContainer: pickerStyle
 			}}
-			Icon={() => <CustomIcon size={22} name='arrow-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />}
+			Icon={Icon}
 			textInputProps={{ style: { ...styles.pickerText, color: themes[theme].auxiliaryText } }}
 		/>
 	);
@@ -60,5 +72,6 @@ Select.propTypes = {
 	options: PropTypes.array,
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
+	loading: PropTypes.bool,
 	theme: PropTypes.string
 };

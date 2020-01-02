@@ -15,6 +15,7 @@ import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import Touch from '../../utils/touch';
+import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	overlay: {
@@ -41,11 +42,14 @@ const styles = StyleSheet.create({
 	icon: {
 		right: 16,
 		position: 'absolute'
+	},
+	loading: {
+		padding: 0
 	}
 });
 
 export const DatePicker = ({
-	element, action, context, theme
+	element, action, context, loading, theme
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
@@ -65,6 +69,7 @@ export const DatePicker = ({
 		<Button
 			title={extractText(placeholder)}
 			onPress={() => onShow(!show)}
+			loading={loading}
 			theme={theme}
 		/>
 	);
@@ -85,7 +90,11 @@ export const DatePicker = ({
 					>
 						{currentDate.toLocaleDateString('en-US')}
 					</Text>
-					<CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
+					{
+						loading
+							? <ActivityIndicator style={[styles.loading, styles.icon]} />
+							: <CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
+					}
 				</View>
 			</Touch>
 		);
@@ -135,5 +144,6 @@ DatePicker.propTypes = {
 	element: PropTypes.object,
 	action: PropTypes.func,
 	context: PropTypes.number,
+	loading: PropTypes.bool,
 	theme: PropTypes.string
 };
