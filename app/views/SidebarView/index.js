@@ -60,6 +60,10 @@ class Sidebar extends Component {
 		};
 	}
 
+	componentWillMount() {
+		this.setIsAdmin();
+	}
+
 	componentDidMount() {
 		this.setStatus();
 		this.setIsAdmin();
