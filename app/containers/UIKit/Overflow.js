@@ -56,7 +56,7 @@ Options.propTypes = {
 const touchable = {};
 
 export const Overflow = ({
-	element, action, parser, theme = 'light'
+	element, action, parser, theme
 }) => {
 	const { options, blockId } = element;
 	const [show, onShow] = useState(false);

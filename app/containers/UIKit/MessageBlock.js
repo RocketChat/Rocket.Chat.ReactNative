@@ -27,13 +27,13 @@ const contextDefault = {
 
 export const messageBlockWithContext = context => ({ blocks }) => (
 	<KitContext.Provider value={context}>
-		<UiKitMessage blocks={blocks} />
+		{UiKitMessage(blocks)}
 	</KitContext.Provider>
 );
 
 export const modalBlockWithContext = context => ({ blocks }) => (
 	<KitContext.Provider value={context}>
-		<UiKitModal blocks={blocks} />
+		{UiKitModal(blocks)}
 	</KitContext.Provider>
 );
 

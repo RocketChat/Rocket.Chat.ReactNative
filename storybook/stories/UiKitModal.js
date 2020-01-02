@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 export default () => (
 	<ScrollView style={styles.container}>
 		<Separator title='Modal - Section and Selects' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'section',
 					text: {
@@ -58,12 +58,12 @@ export default () => (
 						text: '*Text 4*\nDescription, Mussum Ipsum, cacilds vidis litro'
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Modal - Section Accessories' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'section',
 					text: {
@@ -106,12 +106,12 @@ export default () => (
 						text: '*Notes:*\nWebSummit Conference'
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Modal - Form Input' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'input',
 					element: {
@@ -169,12 +169,12 @@ export default () => (
 						emoji: true
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Modal - Form TextArea' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'context',
 					elements: [{
@@ -226,12 +226,12 @@ export default () => (
 						emoji: true
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Modal - Images' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'image',
 					title: {
@@ -269,12 +269,12 @@ export default () => (
 						text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Modal - Actions' />
-		<UiKitModal
-			blocks={[{
+		{
+			UiKitModal([{
 				type: 'input',
 				element: {
 					type: 'plain_text_input'
@@ -388,12 +388,12 @@ export default () => (
 					text: 'Description',
 					emoji: true
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Modal - Contexts and Dividers' />
-		<UiKitModal
-			blocks={[
+		{
+			UiKitModal([
 				{
 					type: 'context',
 					elements: [{
@@ -488,7 +488,7 @@ export default () => (
 						]
 					}
 				}
-			]}
-		/>
+			])
+		}
 	</ScrollView>
 );

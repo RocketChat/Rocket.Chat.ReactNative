@@ -170,7 +170,7 @@ export const MultiSelect = ({
 	onChange,
 	placeholder = { text: 'Search' },
 	context,
-	theme = 'light'
+	theme
 }) => {
 	const [selected, select] = useState([]);
 	const [opened, open] = useState(false);

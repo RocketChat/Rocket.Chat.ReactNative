@@ -32,7 +32,7 @@ export const Select = ({
 	options = [],
 	placeholder,
 	onChange,
-	theme = 'light'
+	theme
 }) => {
 	const items = options.map(option => ({ label: extractText(option.text), value: option.value }));
 	const pickerStyle = {

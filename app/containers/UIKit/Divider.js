@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Divider = ({ theme = 'light' }) => <Separator style={styles.separator} theme={theme} />;
+export const Divider = ({ theme }) => <Separator style={styles.separator} theme={theme} />;
 Divider.propTypes = {
 	theme: PropTypes.string
 };

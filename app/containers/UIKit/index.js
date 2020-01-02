@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
 	uiKitMessage,
@@ -25,6 +25,7 @@ import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
+import { ThemeContext } from '../../theme';
 
 const styles = StyleSheet.create({
 	multiline: {
@@ -38,6 +39,7 @@ class MessageParser extends UiKitParserMessage {
 			text, value, actionId, style
 		} = element;
 		const [{ loading }, action] = useBlockContext(element, context);
+		const { theme } = useContext(ThemeContext);
 		return (
 			<Button
 				key={actionId}
@@ -45,38 +47,44 @@ class MessageParser extends UiKitParserMessage {
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
-				theme='light'
+				theme={theme}
 			/>
 		);
 	}
 
 	divider() {
-		return <Divider />;
+		const { theme } = useContext(ThemeContext);
+		return <Divider theme={theme} />;
 	}
 
 	text({ text } = { text: '' }, context) {
+		const { theme } = useContext(ThemeContext);
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
 		if (!isContext) {
 			return text;
 		}
-		return <Text style={{ color: themes.light.auxiliaryText }}>{text}</Text>;
+		return <Text style={{ color: themes[theme].auxiliaryText }}>{text}</Text>;
 	}
 
 	section(args) {
-		return <Section {...args} parser={this} />;
+		const { theme } = useContext(ThemeContext);
+		return <Section {...args} theme={theme} parser={this} />;
 	}
 
 	actions(args) {
-		return <Actions {...args} parser={this} />;
+		const { theme } = useContext(ThemeContext);
+		return <Actions {...args} theme={theme} parser={this} />;
 	}
 
 	overflow(element, context) {
 		const [, action] = useBlockContext(element, context);
+		const { theme } = useContext(ThemeContext);
 		return (
 			<Overflow
 				element={element}
 				context={context}
 				action={action}
+				theme={theme}
 				parser={this}
 			/>
 		);
@@ -84,30 +92,36 @@ class MessageParser extends UiKitParserMessage {
 
 	datePicker(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <DatePicker element={element} action={action} context={context} />;
+		const { theme } = useContext(ThemeContext);
+		return <DatePicker element={element} theme={theme} action={action} context={context} />;
 	}
 
 	image(element, context) {
-		return <Image element={element} context={context} />;
+		const { theme } = useContext(ThemeContext);
+		return <Image element={element} theme={theme} context={context} />;
 	}
 
 	context(args) {
-		return <Context {...args} parser={this} />;
+		const { theme } = useContext(ThemeContext);
+		return <Context {...args} theme={theme} parser={this} />;
 	}
 
 	multiStaticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <MultiSelect {...element} onChange={action} context={context} />;
+		const { theme } = useContext(ThemeContext);
+		return <MultiSelect {...element} theme={theme} onChange={action} context={context} />;
 	}
 
 	staticSelect(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <Select {...element} onChange={action} />;
+		const { theme } = useContext(ThemeContext);
+		return <Select {...element} theme={theme} onChange={action} />;
 	}
 
 	selectInput(element, context) {
 		const [, action] = useBlockContext(element, context);
-		return <Select {...element} onChange={action} />;
+		const { theme } = useContext(ThemeContext);
+		return <Select {...element} theme={theme} onChange={action} />;
 	}
 }
 
@@ -122,6 +136,7 @@ class ModalParser extends UiKitParserModal {
 	input({
 		element, blockId, appId, label, description, hint
 	}) {
+		const { theme } = useContext(ThemeContext);
 		return (
 			<Input
 				parser={this}
@@ -129,16 +144,19 @@ class ModalParser extends UiKitParserModal {
 				label={this.text(label)}
 				description={this.text(description)}
 				hint={this.text(hint)}
+				theme={theme}
 			/>
 		);
 	}
 
 	image(element, context) {
-		return <Image element={element} context={context} />;
+		const { theme } = useContext(ThemeContext);
+		return <Image element={element} theme={theme} context={context} />;
 	}
 
 	plainInput(element, context) {
 		const [, action] = useBlockContext(element, context);
+		const { theme } = useContext(ThemeContext);
 		const {
 			multiline, actionId, placeholder, label, hint, description
 		} = element;
@@ -153,6 +171,7 @@ class ModalParser extends UiKitParserModal {
 				multiline={multiline}
 				onChangeText={value => action({ value })}
 				inputStyle={multiline && styles.multiline}
+				theme={theme}
 			/>
 		);
 	}

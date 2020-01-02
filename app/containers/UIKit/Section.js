@@ -38,7 +38,7 @@ const Fields = ({ fields, parser, theme }) => fields.map(field => (
 const accessoriesRight = ['image', 'overflow', 'datepicker'];
 
 export const Section = ({
-	blockId, appId, text, fields, accessory, parser, theme = 'light'
+	blockId, appId, text, fields, accessory, parser, theme
 }) => (
 	<View
 		style={[

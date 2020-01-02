@@ -5,7 +5,7 @@ import { UiKitMessage } from '../../app/containers/UIKit';
 import StoriesSeparator from './StoriesSeparator';
 
 // eslint-disable-next-line react/prop-types
-const Separator = ({ title }) => <StoriesSeparator title={title} theme='light' />;
+const Separator = ({ theme }) => ({ title }) => <StoriesSeparator title={title} theme={theme} />;
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,19 +18,19 @@ const styles = StyleSheet.create({
 export default () => (
 	<ScrollView style={styles.container}>
 		<Separator title='Section' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
 					text: 'Section'
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Section + Overflow' />
-		<UiKitMessage
-			blocks={[
+		{
+			UiKitMessage([
 				{
 					type: 'section',
 					text: {
@@ -75,12 +75,12 @@ export default () => (
 						]
 					}
 				}
-			]}
-		/>
+			])
+		}
 
 		<Separator title='Section + image' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
@@ -91,12 +91,12 @@ export default () => (
 					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
 					altText: 'plants'
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Section + button' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
@@ -109,12 +109,12 @@ export default () => (
 						text: 'button'
 					}
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Section + Select' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
@@ -137,12 +137,12 @@ export default () => (
 							}
 						}]
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Section + DatePicker' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
@@ -157,12 +157,12 @@ export default () => (
 						emoji: true
 					}
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Section + Multi Select' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'section',
 				text: {
 					type: 'mrkdwn',
@@ -196,12 +196,12 @@ export default () => (
 						value: 4
 					}]
 				}
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Image' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'image',
 				title: {
 					type: 'plain_text',
@@ -210,12 +210,12 @@ export default () => (
 				},
 				imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
 				altText: 'Example Image'
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Context' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'context',
 				elements: [{
 					type: 'image',
@@ -232,12 +232,12 @@ export default () => (
 					text: 'context'
 				}
 				]
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Action - Buttons' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'actions',
 				elements: [
 					{
@@ -311,12 +311,12 @@ export default () => (
 						value: 'click_me_123'
 					}
 				]
-			}]}
-		/>
+			}])
+		}
 
 		<Separator title='Fields' />
-		<UiKitMessage
-			blocks={[
+		{
+			UiKitMessage([
 				{
 					type: 'section',
 					fields: [
@@ -346,12 +346,12 @@ export default () => (
 							emoji: true
 						}
 					]
-				}]}
-		/>
+				}])
+		}
 
 		<Separator title='Action - Select' />
-		<UiKitMessage
-			blocks={[{
+		{
+			UiKitMessage([{
 				type: 'actions',
 				elements: [
 					{
@@ -421,7 +421,7 @@ export default () => (
 						]
 					}
 				]
-			}]}
-		/>
+			}])
+		}
 	</ScrollView>
 );

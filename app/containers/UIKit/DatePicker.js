@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 export const DatePicker = ({
-	element, action, context, theme = 'light'
+	element, action, context, theme
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;

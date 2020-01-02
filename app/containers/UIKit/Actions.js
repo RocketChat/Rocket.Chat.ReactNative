@@ -5,7 +5,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import Button from '../Button';
 
 export const Actions = ({
-	blockId, appId, elements, parser, theme = 'light'
+	blockId, appId, elements, parser, theme
 }) => {
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements.length > 5);
 	const renderedElements = showMoreVisible ? elements.slice(0, 5) : elements;

@@ -50,4 +50,4 @@ const genericImage = (element, context, theme) => {
 	}
 };
 
-export const Image = ({ element, context, theme = 'light' }) => genericImage(element, context, theme);
+export const Image = ({ element, context, theme }) => genericImage(element, context, theme);

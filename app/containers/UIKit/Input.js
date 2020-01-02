@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 export const Input = ({
-	element, parser, label, description, hint, theme = 'light'
+	element, parser, label, description, hint, theme
 }) => (
 	<>
 		{label ? <Text style={[styles.label, { color: themes[theme].titleText }]}>{label}</Text> : null}
