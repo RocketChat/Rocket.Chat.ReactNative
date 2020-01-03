@@ -112,7 +112,7 @@ class DirectoryView extends React.Component {
 	}
 
 	changeType = (type) => {
-		this.setState({ type, data: [] }, () => this.search());
+		this.setState({ type, data: [], showOptionsDropdown: false }, () => this.search());
 	}
 
 	toggleWorkspace = () => {
