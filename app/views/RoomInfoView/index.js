@@ -144,9 +144,14 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	goRoom = ({ rid, name, t }) => {
+	goRoom = async({ name }) => {
 		const { navigation } = this.props;
-		navigation.navigate('RoomView', { rid, name, t });
+		const result = await RocketChat.createDirectMessage(name);
+		if (result.success) {
+			await navigation.navigate('RoomsListView');
+			const rid = result.room._id;
+			navigation.navigate('RoomView', { rid, name, t: 'd' });
+		}
 	}
 
 	isDirect = () => this.t === 'd'
@@ -267,16 +272,14 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
-	renderButton = () => {
-		const { room, roomUser } = this.state;
-		const { rid } = this;
+	renderMessageButton = () => {
+		const { roomUser } = this.state;
 		const { theme } = this.props;
-
 		return (
 			<Button
 				title={I18n.t('Message')}
 				type='primary'
-				onPress={() => this.goRoom({ rid, name: room.name || roomUser.username, t: 'd' })}
+				onPress={() => this.goRoom({ name: roomUser.username })}
 				disabled={false}
 				loading={false}
 				theme={theme}
@@ -298,7 +301,7 @@ class RoomInfoView extends React.Component {
 
 	renderDirect = () => (
 		<>
-			{this.renderButton()}
+			{this.renderMessageButton()}
 			{this.renderRoles()}
 			{this.renderTimezone()}
 			{this.renderCustomFields()}
