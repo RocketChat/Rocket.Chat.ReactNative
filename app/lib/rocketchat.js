@@ -984,10 +984,10 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
-	runSlashCommand(command, roomId, params) {
+	runSlashCommand(command, roomId, params, triggerId) {
 		// RC 0.60.2
 		return this.sdk.post('commands.run', {
-			command, roomId, params
+			command, roomId, params, triggerId
 		});
 	},
 	getCommandPreview(command, roomId, params) {

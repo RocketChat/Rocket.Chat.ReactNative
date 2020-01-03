@@ -27,9 +27,10 @@ const invalidateTriggerId = (id) => {
 	return appId;
 };
 
-const generateTriggerId = (appId) => {
+export const generateTriggerId = (appId) => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
+	setTimeout(invalidateTriggerId, TRIGGER_TIMEOUT, triggerId);
 	return triggerId;
 };
 
@@ -71,39 +72,41 @@ const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	}
 };
 
-export async function triggerAction({
+export function triggerAction({
 	type, actionId, appId, rid, mid, ...rest
 }) {
-	const triggerId = generateTriggerId(appId);
+	return new Promise(async(resolve, reject) => {
+		const triggerId = generateTriggerId(appId);
 
-	const payload = rest.payload || rest;
+		const payload = rest.payload || rest;
 
-	setTimeout(invalidateTriggerId, TRIGGER_TIMEOUT, triggerId);
+		setTimeout(reject, TRIGGER_TIMEOUT, triggerId);
 
-	const server = await RNUserDefaults.get('currentServer');
-	const id = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-	const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ id }`);
+		const server = await RNUserDefaults.get('currentServer');
+		const id = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ id }`);
 
-	const result = await fetch(`${ server }/api/apps/uikit/${ appId }/`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-Auth-Token': token,
-			'X-User-Id': id
-		},
-		body: JSON.stringify({
-			type,
-			actionId,
-			payload,
-			mid,
-			rid,
-			triggerId
-		})
+		const result = await fetch(`${ server }/api/apps/uikit/${ appId }/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': token,
+				'X-User-Id': id
+			},
+			body: JSON.stringify({
+				type,
+				actionId,
+				payload,
+				mid,
+				rid,
+				triggerId
+			})
+		});
+
+		const { type: interactionType, ...data } = await result.json();
+
+		return resolve(handlePayloadUserInteraction(interactionType, data));
 	});
-
-	const { type: interactionType, ...data } = await result.json();
-
-	handlePayloadUserInteraction(interactionType, data);
 }
 
 export default function triggerBlockAction(options) {

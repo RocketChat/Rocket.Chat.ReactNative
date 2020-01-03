@@ -9,6 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
+import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -668,7 +669,8 @@ class MessageBox extends Component {
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
+					const triggerId = generateTriggerId();
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId);
 				} catch (e) {
 					log(e);
 				}
