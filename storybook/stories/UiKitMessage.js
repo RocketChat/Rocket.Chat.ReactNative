@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 export default () => (
 	<SafeAreaView style={styles.container}>
-		<ScrollView style={[styles.container, styles.padding]}>
+		<ScrollView style={[styles.container, styles.padding]} keyboardShouldPersistTaps='always'>
 			<Separator title='Section' />
 			{
 				UiKitMessage([{
