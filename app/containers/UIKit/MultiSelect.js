@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import {
-	View, StyleSheet, TouchableOpacity, Text, FlatList, Image
+	View, StyleSheet, TouchableOpacity, Text, FlatList, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Modal from 'react-native-modal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
@@ -22,26 +21,33 @@ import Touch from '../../utils/touch';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		margin: 0,
+		alignItems: 'center',
 		justifyContent: 'flex-end'
 	},
-	content: {
-		height: 400,
+	modal: {
+		height: 300,
 		width: '100%',
 		borderTopRightRadius: 16,
 		borderTopLeftRadius: 16,
-		padding: 16,
 		overflow: 'hidden'
 	},
-	modal: {
-		padding: 0,
-		margin: 0,
-		flex: 1
+	content: {
+		padding: 16
+	},
+	keyboardView: {
+		width: '100%'
+	},
+	pickerText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
 	},
 	item: {
 		height: 48,
 		alignItems: 'center',
 		flexDirection: 'row'
+	},
+	margin: {
+		marginVertical: 4
 	},
 	input: {
 		height: 48,
@@ -81,6 +87,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+const keyExtractor = item => item.value.toString();
+
 // RectButton doesn't work on modal (Android)
 const Item = ({
 	item, selected, onSelect, theme
@@ -111,8 +119,9 @@ const Items = ({
 		data={items}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
-		keyExtractor={item => `${ item.value }`}
+		keyExtractor={keyExtractor}
 		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
 	/>
 );
@@ -145,7 +154,7 @@ export const Chips = ({ items, onSelect, theme }) => (
 	<View>
 		<FlatList
 			data={items}
-			keyExtractor={item => `${ item.value }`}
+			keyExtractor={keyExtractor}
 			contentContainerStyle={styles.chips}
 			renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
 			showsHorizontalScrollIndicator={false}
@@ -165,6 +174,7 @@ export const MultiSelect = ({
 	placeholder = { text: 'Search' },
 	context,
 	loading,
+	multiselect = false,
 	theme
 }) => {
 	const [selected, select] = useState([]);
@@ -172,21 +182,25 @@ export const MultiSelect = ({
 	const [search, onSearchChange] = useState('');
 
 	const onSelect = (item) => {
-		open(false);
 		const { value } = item;
-		let newSelect = [];
-		if (!selected.includes(value)) {
-			newSelect = [...selected, value];
+		if (multiselect) {
+			let newSelect = [];
+			if (!selected.includes(value)) {
+				newSelect = [...selected, value];
+			} else {
+				newSelect = selected.filter(s => s !== value);
+			}
+			select(newSelect);
+			onChange({ value: newSelect });
 		} else {
-			newSelect = selected.filter(s => s !== value);
+			onChange({ value });
+			open(false);
 		}
-		select(newSelect);
-		onChange({ value: newSelect });
 	};
 
 	const items = options.filter(option => textParser([option.text]).pop().toLowerCase().includes(search.toLowerCase()));
 
-	let button = (
+	let button = multiselect ? (
 		<Button
 			title={`${ selected.length } selecteds`}
 			onPress={() => open(true)}
@@ -194,6 +208,21 @@ export const MultiSelect = ({
 			loading={loading}
 			theme={theme}
 		/>
+	) : (
+		<Touch
+			onPress={() => open(!opened)}
+			style={[styles.margin, { backgroundColor: themes[theme].backgroundColor }]}
+			theme={theme}
+		>
+			<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
+				<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{`${ selected.length } selecteds`}</Text>
+				{
+					loading
+						? <ActivityIndicator style={[styles.loading, styles.icon]} />
+						: <CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+				}
+			</View>
+		</Touch>
 	);
 
 	if (context === BLOCK_CONTEXT.FORM) {
@@ -218,22 +247,27 @@ export const MultiSelect = ({
 	return (
 		<>
 			<Modal
-				isVisible={opened}
-				// swipeDirection='down'
-				style={styles.modal}
-				// onSwipeThreshold={1}
-				// onSwipe={() => open(false)}
+				animationType='slide'
+				transparent
+				visible={opened}
+				onRequestClose={() => open(false)}
 			>
-				<View style={styles.container}>
-					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
-						<TextInput
-							onChangeText={onSearchChange}
-							placeholder={placeholder.text}
-							theme={theme}
-						/>
-						<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
+				<TouchableWithoutFeedback onPress={() => open(false)}>
+					<View style={[styles.container, { backgroundColor: `${ themes[theme].backdropColor }30` }]}>
+						<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
+							<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
+								<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
+									<TextInput
+										onChangeText={onSearchChange}
+										placeholder={placeholder.text}
+										theme={theme}
+									/>
+									<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
+								</View>
+							</View>
+						</KeyboardAvoidingView>
 					</View>
-				</View>
+				</TouchableWithoutFeedback>
 			</Modal>
 			{button}
 		</>
@@ -245,5 +279,6 @@ MultiSelect.propTypes = {
 	placeholder: PropTypes.object,
 	context: PropTypes.number,
 	loading: PropTypes.bool,
+	multiselect: PropTypes.bool,
 	theme: PropTypes.string
 };

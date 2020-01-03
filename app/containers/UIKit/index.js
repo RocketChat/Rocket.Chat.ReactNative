@@ -126,6 +126,7 @@ class MessageParser extends UiKitParserMessage {
 				onChange={action}
 				context={context}
 				loading={loading}
+				multiselect
 			/>
 		);
 	}
@@ -147,10 +148,11 @@ class MessageParser extends UiKitParserMessage {
 		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
-			<Select
+			<MultiSelect
 				{...element}
 				theme={theme}
 				onChange={action}
+				context={context}
 				loading={loading}
 			/>
 		);
