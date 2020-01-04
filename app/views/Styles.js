@@ -22,20 +22,25 @@ export default StyleSheet.create({
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},
 	modal: {
-		// Following UIModalPresentationFormSheet size
-		// this not change on different iPad sizes
-		width: 540,
-		height: 620,
 		alignSelf: 'center',
 		borderRadius: 10,
 		overflow: 'hidden'
+	},
+	modalFormSheet: {
+		// Following UIModalPresentationFormSheet size
+		// this not change on different iPad sizes
+		width: 540,
+		height: 620
+	},
+	modalPageSheet: {
+		width: '100%',
+		height: '100%'
 	},
 	status: {
 		position: 'absolute',
 		bottom: -3,
 		right: -3,
-		borderWidth: 3,
-		borderColor: '#fff'
+		borderWidth: 3
 	},
 	textAlignCenter: {
 		textAlign: 'center'

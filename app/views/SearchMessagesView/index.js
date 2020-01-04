@@ -115,7 +115,7 @@ class SearchMessagesView extends React.Component {
 				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isEdited={!!item.editedAt}
 				isHeader
-				onOpenFileModal={() => {}}
+				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
 				theme={theme}
 			/>

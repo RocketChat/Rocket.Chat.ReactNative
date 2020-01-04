@@ -106,7 +106,7 @@ Readme will guide you on how to config.
 | Settings -> Review the App                                    	| ❌    	|
 | Settings -> Default Browser                                   	| ❌    	|
 | Admin panel                                                   	| ✅    	|
-| Reply message from notification                               	| ❌    	|
+| Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
 | E2E Encryption                                                 	| ❌    	|
 | Join a Protected Room                                         	| ❌    	|
