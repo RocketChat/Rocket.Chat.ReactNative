@@ -122,7 +122,6 @@ class RoomMembersView extends React.Component {
 			if (query.length) {
 				const [room] = query;
 				this.goRoom({ rid: room.rid, name: item.username, room });
-				this.goRoom({ rid: room.rid, name: item.username, room });
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
