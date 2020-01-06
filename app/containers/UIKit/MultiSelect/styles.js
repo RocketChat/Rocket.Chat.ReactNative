@@ -30,12 +30,10 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
-	margin: {
-		marginVertical: 4
-	},
 	input: {
 		height: 48,
 		paddingHorizontal: 16,
+		marginVertical: 4,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',

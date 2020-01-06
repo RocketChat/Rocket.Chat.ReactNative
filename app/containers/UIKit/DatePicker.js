@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import Button from '../Button';
+import Button from './Button';
 import { textParser } from './utils';
 import { defaultTheme } from '../../utils/theme';
 import { themes } from '../../constants/colors';

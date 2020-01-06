@@ -6,8 +6,8 @@ import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
 // import Message from './Message';
-// import UiKitMessage from './UiKitMessage';
-// import UiKitModal from './UiKitModal';
+import UiKitMessage from './UiKitMessage';
+import UiKitModal from './UiKitModal';
 // import RoomViewHeader from './RoomViewHeader';
 
 // Change here to see themed storybook
@@ -31,10 +31,10 @@ storiesOf('RoomItem', module)
 // storiesOf('Message', module)
 // 	.add('list message', () => <Message theme={theme} />);
 
-// storiesOf('UiKitMessage', module)
-// 	.add('list uikitmessage', () => <UiKitMessage />);
-// storiesOf('UiKitModal', module)
-// 	.add('list UiKitModal', () => <UiKitModal />);
+storiesOf('UiKitMessage', module)
+	.add('list uikitmessage', () => <UiKitMessage />);
+storiesOf('UiKitModal', module)
+	.add('list UiKitModal', () => <UiKitModal />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
