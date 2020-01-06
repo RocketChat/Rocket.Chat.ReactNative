@@ -51,7 +51,7 @@ const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	}
 
 	if ([MODAL_ACTIONS.UPDATE].includes(type)) {
-		EventEmitter.emit(viewId, {
+		return EventEmitter.emit(viewId, {
 			triggerId,
 			viewId,
 			appId,
@@ -61,7 +61,7 @@ const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 
 
 	if ([MODAL_ACTIONS.OPEN].includes(type)) {
-		Navigation.navigate('ModalBlockView', {
+		return Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
 				viewId,
