@@ -62,7 +62,7 @@ export default class Button extends React.PureComponent {
 			>
 				{
 					loading
-						? <ActivityIndicator color={isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor} />
+						? <ActivityIndicator color={isPrimary ? themes[theme].buttonText : themes[theme].bodyText} />
 						: (
 							<Text
 								style={[

@@ -7,7 +7,7 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import EventEmitter from '../utils/events';
 import { themes } from '../constants/colors';
-import { CloseModalButton, CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
@@ -39,11 +39,20 @@ class ModalBlockView extends React.Component {
 		const { theme } = screenProps;
 		const data = navigation.getParam('data');
 		const { view } = data;
-		const { title, submit } = view;
+		const { title, submit, close } = view;
 		return {
 			title: textParser([title]).pop(),
 			...themedHeader(theme),
-			headerLeft: <CloseModalButton testID='close-generic-view' navigation={navigation} />,
+			headerLeft: (
+				<CustomHeaderButtons>
+					<Item
+						title={textParser([close.text]).pop()}
+						style={styles.submit}
+						onPress={() => navigation.pop()}
+						testID='close-modal-uikit'
+					/>
+				</CustomHeaderButtons>
+			),
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item
