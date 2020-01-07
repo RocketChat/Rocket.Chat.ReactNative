@@ -250,9 +250,8 @@ class LoginSignupView extends React.Component {
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
 		const {	provider } = clientConfig;
-		const ssoToken = random(17);
-		const url = `${ server }/_saml/authorize/${ provider }/${ ssoToken }`;
-		this.openOAuth({ url, ssoToken, authType: 'saml' });
+		const url = `${ server }/_saml/authorize/${ provider }/`;
+		this.openOAuth({ url, authType: 'saml' });
 	}
 
 	onPressCas = () => {
