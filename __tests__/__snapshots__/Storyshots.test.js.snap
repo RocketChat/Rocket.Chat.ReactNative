@@ -19,7 +19,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -39,7 +39,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -60,7 +60,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -84,7 +84,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -112,7 +112,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
