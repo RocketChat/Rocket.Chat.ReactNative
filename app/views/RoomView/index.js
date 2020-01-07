@@ -813,6 +813,7 @@ class RoomView extends React.Component {
 				tmid={this.tmid}
 				roomType={room.t}
 				isFocused={navigation.isFocused}
+				theme={theme}
 				message={selectedMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
