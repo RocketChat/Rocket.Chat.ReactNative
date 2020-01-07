@@ -43,7 +43,6 @@ import {
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
-import { withTheme } from '../../theme';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -890,4 +889,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withTheme(MessageBox));
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
