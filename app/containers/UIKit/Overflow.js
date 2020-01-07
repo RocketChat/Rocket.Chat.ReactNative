@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Text, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Popover from 'react-native-popover-view';
+import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
-import Touch from '../../utils/touch';
 import Separator from '../Separator';
 import ActivityIndicator from '../ActivityIndicator';
+import { themes } from '../../constants/colors';
 
 const keyExtractor = item => item.value;
 
@@ -23,13 +24,13 @@ const styles = StyleSheet.create({
 const Option = ({
 	option: { text, value }, onOptionPress, parser, theme
 }) => (
-	<Touch
+	<Touchable
 		onPress={() => onOptionPress({ value })}
+		background={Touchable.Ripple(themes[theme].bannerBackground)}
 		style={styles.option}
-		theme={theme}
 	>
 		<Text>{parser.text(text)}</Text>
-	</Touch>
+	</Touchable>
 );
 Option.propTypes = {
 	option: PropTypes.object,
@@ -72,13 +73,13 @@ export const Overflow = ({
 
 	return (
 		<>
-			<Touch
+			<Touchable
 				ref={ref => touchable[blockId] = ref}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
-				theme={theme}
 			>
 				{!loading ? <CustomIcon size={18} name='menu' /> : <ActivityIndicator style={styles.loading} />}
-			</Touch>
+			</Touchable>
 			<Popover
 				isVisible={show}
 				fromView={touchable[blockId]}

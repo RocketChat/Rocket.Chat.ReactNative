@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../../lib/Icons';
-import Touch from '../../../utils/touch';
 import { themes } from '../../../constants/colors';
 import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
@@ -11,10 +11,10 @@ import styles from './styles';
 const Input = ({
 	children, open, theme, loading
 }) => (
-	<Touch
+	<Touchable
 		onPress={() => open(true)}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
-		theme={theme}
+		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
 			{children}
@@ -24,7 +24,7 @@ const Input = ({
 					: <CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
 			}
 		</View>
-	</Touch>
+	</Touchable>
 );
 Input.propTypes = {
 	children: PropTypes.node,

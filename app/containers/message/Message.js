@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
-
-import Touch from '../../utils/touch';
+import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import styles from './styles';
@@ -97,12 +95,6 @@ const Message = React.memo((props) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props) => {
-	const longPress = ({ nativeEvent }) => {
-		if (nativeEvent.state === State.ACTIVE) {
-			props.onLongPress();
-		}
-	};
-
 	if (props.hasError) {
 		return (
 			<View>
@@ -111,20 +103,15 @@ const MessageTouchable = React.memo((props) => {
 		);
 	}
 	return (
-		<LongPressGestureHandler
-			onHandlerStateChange={longPress}
-			minDurationMs={800}
+		<Touchable
+			onLongPress={props.onLongPress}
+			onPress={props.onPress}
+			disabled={props.isInfo || props.archived || props.isTemp}
 		>
-			<Touch
-				onPress={props.onPress}
-				enabled={!(props.isInfo || props.archived || props.isTemp)}
-				theme={props.theme}
-			>
-				<View>
-					<Message {...props} />
-				</View>
-			</Touch>
-		</LongPressGestureHandler>
+			<View>
+				<Message {...props} />
+			</View>
+		</Touchable>
 	);
 });
 MessageTouchable.displayName = 'MessageTouchable';
@@ -135,8 +122,7 @@ MessageTouchable.propTypes = {
 	isTemp: PropTypes.bool,
 	archived: PropTypes.bool,
 	onLongPress: PropTypes.func,
-	onPress: PropTypes.func,
-	theme: PropTypes.string
+	onPress: PropTypes.func
 };
 
 Message.propTypes = {

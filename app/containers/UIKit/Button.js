@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
@@ -47,9 +47,9 @@ export default class Button extends React.PureComponent {
 		} = this.props;
 		const isPrimary = type === 'primary';
 		return (
-			<RectButton
+			<Touchable
 				onPress={onPress}
-				enabled={!(disabled || loading)}
+				disabled={disabled || loading}
 				style={[
 					styles.container,
 					backgroundColor
@@ -58,6 +58,7 @@ export default class Button extends React.PureComponent {
 					disabled && { backgroundColor: themes[theme].borderColor },
 					style
 				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				{...otherProps}
 			>
 				{
@@ -74,7 +75,7 @@ export default class Button extends React.PureComponent {
 							</Text>
 						)
 				}
-			</RectButton>
+			</Touchable>
 		);
 	}
 }

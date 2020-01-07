@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from './Button';
@@ -14,7 +15,6 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
-import Touch from '../../utils/touch';
 import ActivityIndicator from '../ActivityIndicator';
 import I18n from '../../i18n';
 
@@ -89,10 +89,10 @@ export const DatePicker = ({
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (
-			<Touch
+			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				theme={theme}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
 					<Text
@@ -109,7 +109,7 @@ export const DatePicker = ({
 							: <CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
 					}
 				</View>
-			</Touch>
+			</Touchable>
 		);
 	}
 
