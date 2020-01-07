@@ -18,12 +18,6 @@ function normalizeAttachments(msg) {
 }
 
 export default (msg) => {
-	/**
-	 * 2019-03-29: Realm object properties are *always* optional, but `u.username` is required
-	 * https://realm.io/docs/javascript/latest/#to-one-relationships
-	 */
-	if (!msg || !msg.u || !msg.u.username) { return; }
-
 	msg = normalizeAttachments(msg);
 	msg.reactions = msg.reactions || [];
 	msg.unread = msg.unread || false;
