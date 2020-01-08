@@ -1098,7 +1098,12 @@ const RocketChat = {
 	},
 	translateMessage(message, targetLanguage) {
 		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
-	}
+	},
+
+	validateInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('validateInviteToken', { token });
+	},
 };
 
 export default RocketChat;

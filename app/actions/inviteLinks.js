@@ -1,14 +1,27 @@
 import * as types from './actionsTypes';
 
-export function inviteLinksInit(token) {
+export function inviteLinksSetToken(token) {
 	return {
-		type: types.INVITE_LINKS.INIT,
+		type: types.INVITE_LINKS.SET_TOKEN,
 		token
 	};
 }
 
-export function inviteLinksFinish() {
+export function inviteLinksRequest(token) {
 	return {
-		type: types.INVITE_LINKS.FINISH
+		type: types.INVITE_LINKS.REQUEST,
+		token
+	};
+}
+
+export function inviteLinksSuccess() {
+	return {
+		type: types.INVITE_LINKS.SUCCESS
+	};
+}
+
+export function inviteLinksFailure() {
+	return {
+		type: types.INVITE_LINKS.FAILURE
 	};
 }
