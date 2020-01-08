@@ -3,17 +3,35 @@ import {
 } from 'redux-saga/effects';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
-// import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
+import { inviteLinksSuccess, inviteLinksFailure } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
+import log from '../utils/log';
+import Navigation from '../lib/Navigation';
 
 const handleRequest = function* handleRequest({ token }) {
 	try {
-		const result = yield RocketChat.validateInviteToken(token);
-    console.log('TCL: handleRequest -> result', result);
-		// yield put(createChannelSuccess(result));
-	} catch (err) {
-		alert(err)
-		// yield put(createChannelFailure(err));
+		const validateResult = yield RocketChat.validateInviteToken(token);
+		if (!validateResult.valid) {
+			yield put(inviteLinksFailure());
+		}
+
+		const result = yield RocketChat.useInviteToken(token);
+		if (!result.success) {
+			yield put(inviteLinksFailure());
+		}
+
+		if (result.room && result.room.rid) {
+			yield Navigation.navigate('RoomsListView');
+			const { room } = result;
+			Navigation.navigate('RoomView', {
+				rid: room.rid,
+				name: RocketChat.getRoomTitle(room),
+				t: room.t
+			});
+		}
+	} catch (e) {
+		yield put(inviteLinksFailure());
+		log(e);
 	}
 };
 

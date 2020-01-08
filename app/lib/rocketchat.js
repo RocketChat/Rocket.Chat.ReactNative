@@ -1099,11 +1099,19 @@ const RocketChat = {
 	translateMessage(message, targetLanguage) {
 		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	},
+	getRoomTitle(room) {
+		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
 
 	validateInviteToken(token) {
 		// RC 2.4.0
 		return this.sdk.post('validateInviteToken', { token });
 	},
+	useInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('useInviteToken', { token });
+	}
 };
 
 export default RocketChat;
