@@ -1,6 +1,4 @@
-import {
-	select, put, call, take, takeLatest
-} from 'redux-saga/effects';
+import { put, takeLatest, delay } from 'redux-saga/effects';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksSuccess, inviteLinksFailure } from '../actions/inviteLinks';
@@ -13,14 +11,17 @@ const handleRequest = function* handleRequest({ token }) {
 		const validateResult = yield RocketChat.validateInviteToken(token);
 		if (!validateResult.valid) {
 			yield put(inviteLinksFailure());
+			return;
 		}
 
 		const result = yield RocketChat.useInviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
+			return;
 		}
 
 		if (result.room && result.room.rid) {
+			yield delay(1000);
 			yield Navigation.navigate('RoomsListView');
 			const { room } = result;
 			Navigation.navigate('RoomView', {
@@ -29,6 +30,8 @@ const handleRequest = function* handleRequest({ token }) {
 				t: room.t
 			});
 		}
+
+		yield put(inviteLinksSuccess());
 	} catch (e) {
 		yield put(inviteLinksFailure());
 		log(e);
