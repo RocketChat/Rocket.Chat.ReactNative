@@ -486,10 +486,7 @@ class RoomsListView extends React.Component {
 		});
 	}, 300);
 
-	getRoomTitle = (item) => {
-		const { useRealName } = this.props;
-		return ((item.prid || useRealName) && item.fname) || item.name;
-	};
+	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
