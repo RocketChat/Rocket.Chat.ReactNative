@@ -18,6 +18,9 @@ function normalizeAttachments(msg) {
 }
 
 export default (msg) => {
+	if (!msg) {
+		return null;
+	}
 	msg = normalizeAttachments(msg);
 	msg.reactions = msg.reactions || [];
 	msg.unread = msg.unread || false;
