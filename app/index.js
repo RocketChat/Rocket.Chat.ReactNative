@@ -49,7 +49,7 @@ if (isIOS) {
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
+		const regex = /^((room|auth)\?|[?])/;
 		if (url.match(regex)) {
 			url = url.replace(regex, '').trim();
 			if (url) {

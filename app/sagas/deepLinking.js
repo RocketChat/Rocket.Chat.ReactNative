@@ -6,6 +6,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
+import { inviteLinksInit } from '../actions/inviteLinks';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
@@ -82,6 +83,9 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield RocketChat.connect({ server: host, user: { token: params.token } });
+		} else if (params.path && params.path.startsWith('invite/')) {
+			const token = params.path.replace('invite/', '');
+			yield put(inviteLinksInit(token));
 		}
 	}
 };
