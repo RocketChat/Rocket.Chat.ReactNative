@@ -1,10 +1,12 @@
 import { put, takeLatest, delay } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksSuccess, inviteLinksFailure } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
+import I18n from '../i18n';
 
 const handleRequest = function* handleRequest({ token }) {
 	try {
@@ -38,8 +40,13 @@ const handleRequest = function* handleRequest({ token }) {
 	}
 };
 
+const handleFailure = function handleFailure() {
+	Alert.alert(I18n.t('Oops'), I18n.t('Invalid_or_expired_invite_token'));
+};
+
 const root = function* root() {
 	yield takeLatest(INVITE_LINKS.REQUEST, handleRequest);
+	yield takeLatest(INVITE_LINKS.FAILURE, handleFailure);
 };
 
 export default root;

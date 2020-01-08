@@ -208,6 +208,7 @@ export default {
 	is_a_valid_RocketChat_instance: 'is a valid Rocket.Chat instance',
 	is_not_a_valid_RocketChat_instance: 'is not a valid Rocket.Chat instance',
 	is_typing: 'is typing',
+	Invalid_or_expired_invite_token: 'Invalid or expired invite token',
 	Invalid_server_version: 'The server you\'re trying to connect is using a version that\'s not supported by the app anymore: {{currentVersion}}.\n\nWe require version {{minVersion}}',
 	Join_the_community: 'Join the community',
 	Join: 'Join',

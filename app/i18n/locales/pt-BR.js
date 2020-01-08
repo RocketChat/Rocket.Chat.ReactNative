@@ -196,6 +196,7 @@ export default {
 	Invisible: 'Invisível',
 	Invite: 'Convidar',
 	is_typing: 'está digitando',
+	Invalid_or_expired_invite_token: 'Token de convite inválido ou vencido',
 	Invalid_server_version: 'O servidor que você está conectando não é suportado mais por esta versão do aplicativo: {{currentVersion}}.\n\nEsta versão do aplicativo requer a versão {{minVersion}} do servidor para funcionar corretamente.',
 	Join_the_community: 'Junte-se à comunidade',
 	Join: 'Entrar',
