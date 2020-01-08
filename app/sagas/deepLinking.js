@@ -77,7 +77,7 @@ const handleOpen = function* handleOpen({ params }) {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
 				yield put(selectServerRequest(host));
-				yield take(types.SERVER.SELECT_SUCCESS);
+				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });
 				return;
 			}
