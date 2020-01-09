@@ -161,7 +161,6 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		useRealName: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
