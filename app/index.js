@@ -150,6 +150,9 @@ const ChatsStack = createStackNavigator({
 	InviteUsersView: {
 		getScreen: () => require('./views/InviteUsersView').default
 	},
+	InviteUsersEditView: {
+		getScreen: () => require('./views/InviteUsersEditView').default
+	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
 	},

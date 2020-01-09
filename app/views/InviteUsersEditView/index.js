@@ -7,8 +7,10 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
 
 import RCTextInput from '../../containers/TextInput';
+import ListItem from '../../containers/ListItem';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import RocketChat from '../../lib/rocketchat';
@@ -20,6 +22,45 @@ import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+
+const OPTIONS = {
+	days: [{
+		label: 'Never', value: 0
+	},
+	{
+		label: '1', value: 1
+	},
+	{
+		label: '7', value: 7
+	},
+	{
+		label: '15', value: 15
+	},
+	{
+		label: '30', value: 30
+	}],
+	maxUses: [{
+		label: 'No limit', value: 0
+	},
+	{
+		label: '1', value: 1
+	},
+	{
+		label: '5', value: 5
+	},
+	{
+		label: '10', value: 10
+	},
+	{
+		label: '25', value: 25
+	},
+	{
+		label: '50', value: 50
+	},
+	{
+		label: '100', value: 100
+	}]
+};
 
 class InviteUsersView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -42,10 +83,6 @@ class InviteUsersView extends React.Component {
 			expires: null
 		};
 		this.rid = props.navigation.getParam('rid');
-	}
-
-	componentDidMount() {
-		this.findOrCreateInvite();
 	}
 
 	// shouldComponentUpdate(nextProps, nextState) {
@@ -89,14 +126,28 @@ class InviteUsersView extends React.Component {
 		}
 	}
 
-	share = () => {
-		const { url } = this.state;
-		Share.share({ message: url });
-	}
+	// onValueChangePicker = async(key, value) => {
+	// 	const params = {
+	// 		[key]: value.toString()
+	// 	};
+	// 	this.setState()
+	// }
 
-	edit = () => {
-		const { navigation } = this.props;
-		navigation.navigate('InviteUsersEditView');
+	renderPicker = (key) => {
+		// const { room } = this.state;
+		const { state } = this;
+		const { theme } = this.props;
+		return (
+			<RNPickerSelect
+				style={{ viewContainer: styles.viewContainer }}
+				value={state[key]}
+				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
+				useNativeAndroidPickerStyle={false}
+				placeholder={{}}
+				// onValueChange={value => this.onValueChangePicker(key, value)}
+				items={OPTIONS[key]}
+			/>
+		);
 	}
 
 	render() {
@@ -112,28 +163,24 @@ class InviteUsersView extends React.Component {
 					testID='notification-preference-view-list'
 				>
 					<StatusBar theme={theme} />
-					<View style={styles.innerContainer}>
-						<RCTextInput
-							label={I18n.t('Invite_Link')}
-							theme={theme}
-							value={url}
-							editable={false}
-						/>
-						<Markdown msg={I18n.t('Your_invite_will_expire_on', { date: moment(expires).format(timeDateFormat) })} username='' baseUrl='' theme={theme} />
-						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
-						<Button
-							title={I18n.t('Share_Link')}
-							type='primary'
-							onPress={this.share}
-							theme={theme}
-						/>
-						<Button
-							title={I18n.t('Edit_Invite')}
-							type='secondary'
-							onPress={this.edit}
-							theme={theme}
-						/>
-					</View>
+					<ListItem
+						title={I18n.t('Expiration_Days')}
+						testID='notification-preference-view-alert'
+						right={() => this.renderPicker('days')}
+						theme={theme}
+					/>
+					<ListItem
+						title={I18n.t('Max_number_of_uses')}
+						testID='notification-preference-view-alert'
+						right={() => this.renderPicker('maxUses')}
+						theme={theme}
+					/>
+					<Button
+						title={I18n.t('Edit_Invite')}
+						type='primary'
+						onPress={this.resetPassword}
+						theme={theme}
+					/>
 				</ScrollView>
 			</SafeAreaView>
 		);
