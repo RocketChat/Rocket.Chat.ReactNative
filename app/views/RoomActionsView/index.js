@@ -325,13 +325,11 @@ class RoomActionsView extends React.Component {
 				actions.push({
 					icon: 'user-plus',
 					name: I18n.t('Invite_users'),
-					route: 'SelectedUsersView',
+					route: 'InviteUsersView',
 					params: {
-						nextActionID: 'ADD_USER',
-						rid,
-						title: I18n.t('Add_user')
+						rid
 					},
-					testID: 'room-actions-add-user'
+					testID: 'room-actions-invite-user'
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];

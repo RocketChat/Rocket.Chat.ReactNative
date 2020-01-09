@@ -1104,6 +1104,10 @@ const RocketChat = {
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 
+	findOrCreateInvite({ rid, days, maxUses }) {
+		// RC 2.4.0
+		return this.sdk.post('findOrCreateInvite', { rid, days, maxUses });
+	},
 	validateInviteToken(token) {
 		// RC 2.4.0
 		return this.sdk.post('validateInviteToken', { token });
