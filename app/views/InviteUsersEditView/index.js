@@ -76,12 +76,6 @@ class InviteUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			url: '',
-			days: 1,
-			maxUses: 0,
-			expires: null
-		};
 		this.rid = props.navigation.getParam('rid');
 	}
 
@@ -107,25 +101,6 @@ class InviteUsersView extends React.Component {
 	// 	this.search.stop();
 	// }
 
-	findOrCreateInvite = async() => {
-		const { days, maxUses } = this.state;
-
-		try {
-			const result = await RocketChat.findOrCreateInvite({ rid: this.rid, days, maxUses });
-			console.log('TCL: findOrCreateInvite -> result', result);
-			if (!result.success) {
-				Alert.alert(I18n.t('Oops'), 'ERROR');
-				return;
-			}
-
-			this.setState({
-				url: result.url, days: result.days, maxUses: result.maxUses, expires: result.expires
-			});
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	// onValueChangePicker = async(key, value) => {
 	// 	const params = {
 	// 		[key]: value.toString()
@@ -134,13 +109,12 @@ class InviteUsersView extends React.Component {
 	// }
 
 	renderPicker = (key) => {
-		// const { room } = this.state;
-		const { state } = this;
-		const { theme } = this.props;
+		const { props } = this;
+		const { theme } = props;
 		return (
 			<RNPickerSelect
 				style={{ viewContainer: styles.viewContainer }}
-				value={state[key]}
+				value={props[key]}
 				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
@@ -151,7 +125,6 @@ class InviteUsersView extends React.Component {
 	}
 
 	render() {
-		const { url, expires } = this.state;
 		const { theme, timeDateFormat } = this.props;
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
@@ -178,7 +151,7 @@ class InviteUsersView extends React.Component {
 					<Button
 						title={I18n.t('Edit_Invite')}
 						type='primary'
-						onPress={this.resetPassword}
+						// onPress={this.resetPassword}
 						theme={theme}
 					/>
 				</ScrollView>
@@ -188,7 +161,8 @@ class InviteUsersView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat
+	days: state.inviteLinks.days,
+	maxUses: state.inviteLinks.maxUses
 });
 
 export default connect(mapStateToProps)(withTheme(InviteUsersView));

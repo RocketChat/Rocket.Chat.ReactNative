@@ -8,6 +8,7 @@ import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
+import { inviteLinksCreate as inviteLinksCreateAction } from '../../actions/inviteLinks';
 import RCTextInput from '../../containers/TextInput';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
@@ -35,17 +36,12 @@ class InviteUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			url: '',
-			days: 1,
-			maxUses: 0,
-			expires: null
-		};
 		this.rid = props.navigation.getParam('rid');
 	}
 
 	componentDidMount() {
-		this.findOrCreateInvite();
+		const { createInviteLink } = this.props;
+		createInviteLink(this.rid);
 	}
 
 	// shouldComponentUpdate(nextProps, nextState) {
@@ -70,27 +66,8 @@ class InviteUsersView extends React.Component {
 	// 	this.search.stop();
 	// }
 
-	findOrCreateInvite = async() => {
-		const { days, maxUses } = this.state;
-
-		try {
-			const result = await RocketChat.findOrCreateInvite({ rid: this.rid, days, maxUses });
-			console.log('TCL: findOrCreateInvite -> result', result);
-			if (!result.success) {
-				Alert.alert(I18n.t('Oops'), 'ERROR');
-				return;
-			}
-
-			this.setState({
-				url: result.url, days: result.days, maxUses: result.maxUses, expires: result.expires
-			});
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	share = () => {
-		const { url } = this.state;
+		const { url } = this.props;
 		Share.share({ message: url });
 	}
 
@@ -100,8 +77,9 @@ class InviteUsersView extends React.Component {
 	}
 
 	render() {
-		const { url, expires } = this.state;
-		const { theme, timeDateFormat } = this.props;
+		const {
+			theme, timeDateFormat, url, expires
+		} = this.props;
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
 				<ScrollView
@@ -141,7 +119,15 @@ class InviteUsersView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat
+	timeDateFormat: state.settings.Message_TimeAndDateFormat,
+	days: state.inviteLinks.days,
+	maxUses: state.inviteLinks.maxUses,
+	url: state.inviteLinks.url,
+	expires: state.inviteLinks.expires
 });
 
-export default connect(mapStateToProps)(withTheme(InviteUsersView));
+const mapDispatchToProps = dispatch => ({
+	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));

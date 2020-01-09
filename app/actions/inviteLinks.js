@@ -25,3 +25,26 @@ export function inviteLinksFailure() {
 		type: types.INVITE_LINKS.FAILURE
 	};
 }
+
+export function inviteLinksCreate(rid) {
+	return {
+		type: types.INVITE_LINKS.CREATE,
+		rid
+	};
+}
+
+export function inviteLinksSetParams(days, maxUses) {
+	return {
+		type: types.INVITE_LINKS.SET_PARAMS,
+		days,
+		maxUses
+	};
+}
+
+export function inviteLinksSetInviteUrl(url, expires) {
+	return {
+		type: types.INVITE_LINKS.SET_INVITE_URL,
+		url,
+		expires
+	};
+}

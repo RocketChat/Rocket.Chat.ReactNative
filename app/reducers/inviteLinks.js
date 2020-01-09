@@ -1,7 +1,11 @@
 import { INVITE_LINKS } from '../actions/actionsTypes';
 
 const initialState = {
-	token: ''
+	token: '',
+	days: 1,
+	maxUses: 0,
+	url: null,
+	expires: null
 };
 
 export default (state = initialState, action) => {
@@ -9,6 +13,18 @@ export default (state = initialState, action) => {
 		case INVITE_LINKS.SET_TOKEN:
 			return {
 				token: action.token
+			};
+		case INVITE_LINKS.SET_PARAMS:
+			return {
+				...state,
+				days: action.days,
+				maxUses: action.maxUses
+			};
+		case INVITE_LINKS.SET_INVITE_URL:
+			return {
+				...state,
+				url: action.url,
+				expires: action.maxUses
 			};
 		case INVITE_LINKS.REQUEST:
 			return state;

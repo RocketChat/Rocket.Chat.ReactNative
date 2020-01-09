@@ -1,8 +1,10 @@
-import { put, takeLatest, delay } from 'redux-saga/effects';
+import {
+	put, takeLatest, delay, select
+} from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
-import { inviteLinksSuccess, inviteLinksFailure } from '../actions/inviteLinks';
+import { inviteLinksSuccess, inviteLinksFailure, inviteLinksSetInviteUrl } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
@@ -44,9 +46,27 @@ const handleFailure = function handleFailure() {
 	Alert.alert(I18n.t('Oops'), I18n.t('Invalid_or_expired_invite_token'));
 };
 
+const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
+	try {
+		const inviteLinks = yield select(state => state.inviteLinks);
+		const result = yield RocketChat.findOrCreateInvite({
+			rid, days: inviteLinks.days, maxUses: inviteLinks.maxUses
+		});
+		if (!result.success) {
+			Alert.alert(I18n.t('Oops'), 'ERROR');
+			return;
+		}
+
+		yield put(inviteLinksSetInviteUrl(result.url, result.expires));
+	} catch (e) {
+		log(e);
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(INVITE_LINKS.REQUEST, handleRequest);
 	yield takeLatest(INVITE_LINKS.FAILURE, handleFailure);
+	yield takeLatest(INVITE_LINKS.CREATE, handleCreateInviteLink);
 };
 
 export default root;
