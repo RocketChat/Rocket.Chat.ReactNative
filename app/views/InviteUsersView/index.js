@@ -8,10 +8,8 @@ import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import KeyboardView from '../../presentation/KeyboardView';
 import RCTextInput from '../../containers/TextInput';
 import styles from './styles';
-import sharedStyles from '../Styles';
 import Markdown from '../../containers/markdown';
 import RocketChat from '../../lib/rocketchat';
 import Button from '../../containers/Button';
@@ -34,7 +32,8 @@ class InviteUsersView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		timeDateFormat: PropTypes.string
 	}
 
 	constructor(props) {
@@ -112,7 +111,7 @@ class InviteUsersView extends React.Component {
 							value={url}
 							editable={false}
 						/>
-						<Markdown msg={`Your invite link will expire on ${ moment(expires).format(timeDateFormat) }`} username='' baseUrl='' theme={theme} />
+						<Markdown msg={I18n.t('Your_invite_will_expire_on', { date: moment(expires).format(timeDateFormat) })} username='' baseUrl='' theme={theme} />
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
 							title={I18n.t('Share_Link')}

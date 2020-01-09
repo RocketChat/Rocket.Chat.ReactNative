@@ -454,6 +454,7 @@ export default {
 	You: 'You',
 	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'You need to access at least one Rocket.Chat server to share something.',
 	Your_certificate: 'Your Certificate',
+	Your_invite_will_expire_on: 'Your invite link will expire on {{date}}',
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	Change_Language: 'Change Language',
