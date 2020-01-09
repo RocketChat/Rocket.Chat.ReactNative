@@ -22,7 +22,7 @@ import Separator from '../../containers/Separator';
 
 const OPTIONS = {
 	days: [{
-		label: 'Never', value: 0
+		label: I18n.t('Never'), value: 0
 	},
 	{
 		label: '1', value: 1
@@ -37,7 +37,7 @@ const OPTIONS = {
 		label: '30', value: 30
 	}],
 	maxUses: [{
-		label: 'No limit', value: 0
+		label: I18n.t('No_limit'), value: 0
 	},
 	{
 		label: '1', value: 1
