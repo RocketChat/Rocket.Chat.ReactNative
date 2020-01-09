@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import moment from 'moment';
+import { connect } from 'react-redux';
 
 import KeyboardView from '../../presentation/KeyboardView';
 import RCTextInput from '../../containers/TextInput';
@@ -40,10 +42,10 @@ class InviteUsersView extends React.Component {
 		this.state = {
 			url: '',
 			days: 1,
-			maxUses: 0
+			maxUses: 0,
+			expires: null
 		};
 		this.rid = props.navigation.getParam('rid');
-    console.log('TCL: constructor -> this.rid', this.rid);
 	}
 
 	componentDidMount() {
@@ -73,7 +75,6 @@ class InviteUsersView extends React.Component {
 	// }
 
 	findOrCreateInvite = async() => {
-		// this.setState({ searchText, loading: true, messages: [] });
 		const { days, maxUses } = this.state;
 
 		try {
@@ -84,16 +85,10 @@ class InviteUsersView extends React.Component {
 				return;
 			}
 
-			this.setState({ url: result.url });
-
-			// if (result.success) {
-			// 	this.setState({
-			// 		messages: result.messages || [],
-			// 		loading: false
-			// 	});
-			// }
+			this.setState({
+				url: result.url, days: result.days, maxUses: result.maxUses, expires: result.expires
+			});
 		} catch (e) {
-			// this.setState({ loading: false });
 			log(e);
 		}
 	}
@@ -104,8 +99,8 @@ class InviteUsersView extends React.Component {
 	}
 
 	render() {
-		const { url } = this.state;
-		const { theme } = this.props;
+		const { url, expires } = this.state;
+		const { theme, timeDateFormat } = this.props;
 		return (
 			<ScrollView {...scrollPersistTaps} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
@@ -117,7 +112,7 @@ class InviteUsersView extends React.Component {
 							value={url}
 							editable={false}
 						/>
-						<Markdown msg={'Your invite link will expire on 9 de Janeiro de 2020 às 17:39.'} username='' baseUrl='' theme={theme} />
+						<Markdown msg={`Your invite link will expire on ${ moment(expires).format(timeDateFormat) }`} username='' baseUrl='' theme={theme} />
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
 							title={I18n.t('Share_Link')}
@@ -138,4 +133,8 @@ class InviteUsersView extends React.Component {
 	}
 }
 
-export default withTheme(InviteUsersView);
+const mapStateToProps = state => ({
+	timeDateFormat: state.settings.Message_TimeAndDateFormat
+});
+
+export default connect(mapStateToProps)(withTheme(InviteUsersView));
