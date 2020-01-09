@@ -49,6 +49,7 @@ class DirectoryView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.timeout = 0;
 		this.state = {
 			data: [],
 			loading: false,
@@ -66,6 +67,7 @@ class DirectoryView extends React.Component {
 
 	onSearchChangeText = (text) => {
 		this.setState({ text });
+		setTimeout(() => { this.load({ newSearch: true })}, 300);
 	}
 
 	// eslint-disable-next-line react/sort-comp
