@@ -29,6 +29,8 @@ export default (state = initialState, action) => {
 			return initialState;
 		case INVITE_LINKS.FAILURE:
 			return initialState;
+		case INVITE_LINKS.CLEAR:
+			return initialState;
 		default:
 			return state;
 	}

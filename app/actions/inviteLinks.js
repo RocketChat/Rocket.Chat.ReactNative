@@ -26,6 +26,13 @@ export function inviteLinksFailure() {
 	};
 }
 
+export function inviteLinksClear() {
+	return {
+		type: types.INVITE_LINKS.CLEAR
+	};
+}
+
+
 export function inviteLinksCreate(rid) {
 	return {
 		type: types.INVITE_LINKS.CREATE,

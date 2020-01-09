@@ -53,7 +53,7 @@ const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 			rid, days: inviteLinks.days, maxUses: inviteLinks.maxUses
 		});
 		if (!result.success) {
-			Alert.alert(I18n.t('Oops'), 'ERROR');
+			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_invite') }));
 			return;
 		}
 

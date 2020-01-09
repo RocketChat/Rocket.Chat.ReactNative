@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Share, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { inviteLinksCreate as inviteLinksCreateAction } from '../../actions/inviteLinks';
+import {
+	inviteLinksCreate as inviteLinksCreateAction,
+	inviteLinksClear as inviteLinksClearAction
+} from '../../actions/inviteLinks';
 import RCTextInput from '../../containers/TextInput';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
@@ -14,7 +16,6 @@ import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
@@ -30,7 +31,8 @@ class InviteUsersView extends React.Component {
 		theme: PropTypes.string,
 		timeDateFormat: PropTypes.string,
 		invite: PropTypes.object,
-		createInviteLink: PropTypes.func
+		createInviteLink: PropTypes.func,
+		clearInviteLink: PropTypes.func
 	}
 
 	constructor(props) {
@@ -43,27 +45,10 @@ class InviteUsersView extends React.Component {
 		createInviteLink(this.rid);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { loading, searchText, messages } = this.state;
-	// 	const { theme } = this.props;
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.loading !== loading) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.searchText !== searchText) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.messages, messages)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	// componentWillUnmount() {
-	// 	this.search.stop();
-	// }
+	componentWillUnmount() {
+		const { clearInviteLink } = this.props;
+		clearInviteLink();
+	}
 
 	share = () => {
 		const { invite } = this.props;
@@ -160,7 +145,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid))
+	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid)),
+	clearInviteLink: () => dispatch(inviteLinksClearAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));

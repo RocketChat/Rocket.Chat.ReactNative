@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -16,10 +15,10 @@ import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import Separator from '../../containers/Separator';
 
 const OPTIONS = {
 	days: [{
@@ -79,28 +78,6 @@ class InviteUsersView extends React.Component {
 		this.rid = props.navigation.getParam('rid');
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { loading, searchText, messages } = this.state;
-	// 	const { theme } = this.props;
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.loading !== loading) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.searchText !== searchText) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.messages, messages)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	// componentWillUnmount() {
-	// 	this.search.stop();
-	// }
-
 	onValueChangePicker = (key, value) => {
 		const { inviteLinksSetParams } = this.props;
 		const params = {
@@ -143,24 +120,30 @@ class InviteUsersView extends React.Component {
 					testID='notification-preference-view-list'
 				>
 					<StatusBar theme={theme} />
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Expiration_Days')}
 						testID='notification-preference-view-alert'
 						right={() => this.renderPicker('days')}
 						theme={theme}
 					/>
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Max_number_of_uses')}
 						testID='notification-preference-view-alert'
 						right={() => this.renderPicker('maxUses')}
 						theme={theme}
 					/>
-					<Button
-						title={I18n.t('CREATE')}
-						type='primary'
-						onPress={this.createInviteLink}
-						theme={theme}
-					/>
+					<Separator theme={theme} />
+					<View style={[styles.innerContainer, { paddingTop: 0 }]}>
+						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+						<Button
+							title={I18n.t('Generate_New_Link')}
+							type='primary'
+							onPress={this.createInviteLink}
+							theme={theme}
+						/>
+					</View>
 				</ScrollView>
 			</SafeAreaView>
 		);
