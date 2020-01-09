@@ -4,7 +4,7 @@ import {
 import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
-import { inviteLinksSuccess, inviteLinksFailure, inviteLinksSetInviteUrl } from '../actions/inviteLinks';
+import { inviteLinksSuccess, inviteLinksFailure, inviteLinksSetInvite } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
@@ -57,7 +57,7 @@ const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 			return;
 		}
 
-		yield put(inviteLinksSetInviteUrl(result.url, result.expires));
+		yield put(inviteLinksSetInvite(result));
 	} catch (e) {
 		log(e);
 	}

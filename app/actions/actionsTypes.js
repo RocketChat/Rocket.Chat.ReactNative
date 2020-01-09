@@ -57,7 +57,7 @@ export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE',
 export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'SET_TOKEN',
 	'SET_PARAMS',
-	'SET_INVITE_URL',
+	'SET_INVITE',
 	'CREATE',
 	'CLEAR',
 	...defaultTypes

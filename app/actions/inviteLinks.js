@@ -33,18 +33,16 @@ export function inviteLinksCreate(rid) {
 	};
 }
 
-export function inviteLinksSetParams(days, maxUses) {
+export function inviteLinksSetParams(params) {
 	return {
 		type: types.INVITE_LINKS.SET_PARAMS,
-		days,
-		maxUses
+		params
 	};
 }
 
-export function inviteLinksSetInviteUrl(url, expires) {
+export function inviteLinksSetInvite(invite) {
 	return {
-		type: types.INVITE_LINKS.SET_INVITE_URL,
-		url,
-		expires
+		type: types.INVITE_LINKS.SET_INVITE,
+		invite
 	};
 }

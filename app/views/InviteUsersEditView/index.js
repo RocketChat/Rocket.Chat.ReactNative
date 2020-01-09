@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Alert, Share, ScrollView
-} from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import RCTextInput from '../../containers/TextInput';
+import {
+	inviteLinksSetParams as inviteLinksSetParamsAction,
+	inviteLinksCreate as inviteLinksCreateAction
+} from '../../actions/inviteLinks';
 import ListItem from '../../containers/ListItem';
 import styles from './styles';
-import Markdown from '../../containers/markdown';
-import RocketChat from '../../lib/rocketchat';
 import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -71,7 +69,9 @@ class InviteUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
-		timeDateFormat: PropTypes.string
+		timeDateFormat: PropTypes.string,
+		createInviteLink: PropTypes.func,
+		inviteLinksSetParams: PropTypes.func
 	}
 
 	constructor(props) {
@@ -101,12 +101,19 @@ class InviteUsersView extends React.Component {
 	// 	this.search.stop();
 	// }
 
-	// onValueChangePicker = async(key, value) => {
-	// 	const params = {
-	// 		[key]: value.toString()
-	// 	};
-	// 	this.setState()
-	// }
+	onValueChangePicker = (key, value) => {
+		const { inviteLinksSetParams } = this.props;
+		const params = {
+			[key]: value
+		};
+		inviteLinksSetParams(params);
+	}
+
+	createInviteLink = () => {
+		const { createInviteLink, navigation } = this.props;
+		createInviteLink(this.rid);
+		navigation.pop();
+	}
 
 	renderPicker = (key) => {
 		const { props } = this;
@@ -118,14 +125,14 @@ class InviteUsersView extends React.Component {
 				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
-				// onValueChange={value => this.onValueChangePicker(key, value)}
+				onValueChange={value => this.onValueChangePicker(key, value)}
 				items={OPTIONS[key]}
 			/>
 		);
 	}
 
 	render() {
-		const { theme, timeDateFormat } = this.props;
+		const { theme } = this.props;
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
 				<ScrollView
@@ -149,9 +156,9 @@ class InviteUsersView extends React.Component {
 						theme={theme}
 					/>
 					<Button
-						title={I18n.t('Edit_Invite')}
+						title={I18n.t('CREATE')}
 						type='primary'
-						// onPress={this.resetPassword}
+						onPress={this.createInviteLink}
 						theme={theme}
 					/>
 				</ScrollView>
@@ -165,4 +172,9 @@ const mapStateToProps = state => ({
 	maxUses: state.inviteLinks.maxUses
 });
 
-export default connect(mapStateToProps)(withTheme(InviteUsersView));
+const mapDispatchToProps = dispatch => ({
+	inviteLinksSetParams: params => dispatch(inviteLinksSetParamsAction(params)),
+	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));

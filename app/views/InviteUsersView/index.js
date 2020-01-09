@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Alert, Share, ScrollView
-} from 'react-native';
+import { View, Share, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
@@ -12,7 +10,6 @@ import { inviteLinksCreate as inviteLinksCreateAction } from '../../actions/invi
 import RCTextInput from '../../containers/TextInput';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
-import RocketChat from '../../lib/rocketchat';
 import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -31,7 +28,9 @@ class InviteUsersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
-		timeDateFormat: PropTypes.string
+		timeDateFormat: PropTypes.string,
+		invite: PropTypes.object,
+		createInviteLink: PropTypes.func
 	}
 
 	constructor(props) {
@@ -67,18 +66,53 @@ class InviteUsersView extends React.Component {
 	// }
 
 	share = () => {
-		const { url } = this.props;
-		Share.share({ message: url });
+		const { invite } = this.props;
+		if (!invite) {
+			return;
+		}
+		Share.share({ message: invite.url });
 	}
 
 	edit = () => {
 		const { navigation } = this.props;
-		navigation.navigate('InviteUsersEditView');
+		navigation.navigate('InviteUsersEditView', { rid: this.rid });
+	}
+
+	linkExpirationText = () => {
+		const { timeDateFormat, invite } = this.props;
+
+		if (!invite || !invite.url) {
+			return null;
+		}
+
+		if (invite.expires) {
+			const expiration = new Date(invite.expires);
+
+			if (invite.maxUses) {
+				const usesLeft = invite.maxUses - invite.uses;
+				return I18n.t('Your_invite_link_will_expire_on__date__or_after__usesLeft__uses', { date: moment(expiration).format(timeDateFormat), usesLeft });
+			}
+
+			return I18n.t('Your_invite_link_will_expire_on__date__', { date: moment(expiration).format(timeDateFormat) });
+		}
+
+		if (invite.maxUses) {
+			const usesLeft = invite.maxUses - invite.uses;
+			return I18n.t('Your_invite_link_will_expire_after__usesLeft__uses', { usesLeft });
+		}
+
+		return I18n.t('Your_invite_link_will_never_expire');
+	}
+
+	renderExpiration = () => {
+		const { theme } = this.props;
+		const expirationMessage = this.linkExpirationText();
+		return <Markdown msg={expirationMessage} username='' baseUrl='' theme={theme} />;
 	}
 
 	render() {
 		const {
-			theme, timeDateFormat, url, expires
+			theme, invite
 		} = this.props;
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
@@ -94,10 +128,10 @@ class InviteUsersView extends React.Component {
 						<RCTextInput
 							label={I18n.t('Invite_Link')}
 							theme={theme}
-							value={url}
+							value={invite && invite.url}
 							editable={false}
 						/>
-						<Markdown msg={I18n.t('Your_invite_will_expire_on', { date: moment(expires).format(timeDateFormat) })} username='' baseUrl='' theme={theme} />
+						{this.renderExpiration()}
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
 							title={I18n.t('Share_Link')}
@@ -122,8 +156,7 @@ const mapStateToProps = state => ({
 	timeDateFormat: state.settings.Message_TimeAndDateFormat,
 	days: state.inviteLinks.days,
 	maxUses: state.inviteLinks.maxUses,
-	url: state.inviteLinks.url,
-	expires: state.inviteLinks.expires
+	invite: state.inviteLinks.invite
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -4,8 +4,7 @@ const initialState = {
 	token: '',
 	days: 1,
 	maxUses: 0,
-	url: null,
-	expires: null
+	invite: {}
 };
 
 export default (state = initialState, action) => {
@@ -17,14 +16,12 @@ export default (state = initialState, action) => {
 		case INVITE_LINKS.SET_PARAMS:
 			return {
 				...state,
-				days: action.days,
-				maxUses: action.maxUses
+				...action.params
 			};
-		case INVITE_LINKS.SET_INVITE_URL:
+		case INVITE_LINKS.SET_INVITE:
 			return {
 				...state,
-				url: action.url,
-				expires: action.maxUses
+				invite: action.invite
 			};
 		case INVITE_LINKS.REQUEST:
 			return state;
