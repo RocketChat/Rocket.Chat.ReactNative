@@ -130,6 +130,8 @@ class RegisterView extends React.Component {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
 		this.setState({ saving: false });
+		const { navigation } = this.props;
+		navigation.navigate('RoomsListView');
 	}
 
 	renderCustomFields = () => {
