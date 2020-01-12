@@ -6,8 +6,11 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 
 const UnreadBadge = React.memo(({
-	theme, unread, userMentions, type
+	theme, unread, userMentions, type, hideUnreadStatus
 }) => {
+	if (hideUnreadStatus) {
+		return;
+	}
 	if (!unread || unread <= 0) {
 		return;
 	}
@@ -38,7 +41,8 @@ UnreadBadge.propTypes = {
 	theme: PropTypes.string,
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
-	type: PropTypes.string
+	type: PropTypes.string,
+	hideUnreadStatus: PropTypes.bool
 };
 
 export default UnreadBadge;

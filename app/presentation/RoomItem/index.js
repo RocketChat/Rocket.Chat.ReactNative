@@ -151,6 +151,7 @@ const RoomItem = React.memo(({
 							userMentions={userMentions}
 							type={type}
 							theme={theme}
+							hideUnreadStatus={hideUnreadStatus}
 						/>
 					</View>
 				</View>
