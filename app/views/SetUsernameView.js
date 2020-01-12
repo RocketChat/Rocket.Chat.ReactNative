@@ -98,8 +98,6 @@ class SetUsernameView extends React.Component {
 			log(e);
 		}
 		this.setState({ saving: false });
-		const { navigation } = this.props;
-		navigation.navigate('RoomsListView');
 	}
 
 	render() {
