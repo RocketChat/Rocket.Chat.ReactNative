@@ -213,6 +213,10 @@ class DirectoryView extends React.Component {
 		);
 	}
 
+	renderEmptyList = () => (
+		<Text style={styles.emptyList}>No search results found</Text>
+	)
+
 	render = () => {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
@@ -232,6 +236,7 @@ class DirectoryView extends React.Component {
 					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListEmptyComponent={this.renderEmptyList}
 					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown
