@@ -130,6 +130,15 @@ class RegisterView extends React.Component {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
 		this.setState({ saving: false });
+		const { navigation } = this.props;
+		Alert.alert(
+			I18n.t('Congrats'),
+			I18n.t('Verify_your_email'),
+			[{
+				text: I18n.t('Close'),
+				onPress: (() => { navigation.navigate('LoginView'); })
+			}]
+		);
 	}
 
 	renderCustomFields = () => {
