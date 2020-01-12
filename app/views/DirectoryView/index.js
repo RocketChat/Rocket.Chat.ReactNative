@@ -214,7 +214,7 @@ class DirectoryView extends React.Component {
 	}
 
 	renderEmptyList = () => (
-		<Text style={styles.emptyList}>No search results found</Text>
+		<Text style={styles.emptyList}>{I18n.t('no_search_result_found')}</Text>
 	)
 
 	render = () => {
