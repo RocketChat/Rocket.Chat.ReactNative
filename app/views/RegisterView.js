@@ -119,13 +119,11 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest } = this.props;
 
 		try {
 			await RocketChat.register({
 				name, email, pass: password, username, ...customFields
 			});
-			await loginRequest({ user: email, password });
 			const { navigation } = this.props;
 			Alert.alert(
 				I18n.t('Congrats'),
