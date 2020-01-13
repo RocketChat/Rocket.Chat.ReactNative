@@ -67,7 +67,7 @@ class DirectoryView extends React.Component {
 
 	onSearchChangeText = (text) => {
 		this.setState({ text });
-		setTimeout(() => { this.load({ newSearch: true })}, 300);
+		setTimeout(() => { this.load({ newSearch: true }); }, 500);
 	}
 
 	// eslint-disable-next-line react/sort-comp
