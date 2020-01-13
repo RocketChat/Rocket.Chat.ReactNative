@@ -10,8 +10,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.app.Person;
 
 import com.google.gson.*;
 import com.bumptech.glide.Glide;
@@ -30,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Date;
+import java.lang.System;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
@@ -41,7 +45,7 @@ public class CustomPushNotification extends PushNotification {
         reactApplicationContext = new ReactApplicationContext(context);
     }
 
-    private static Map<String, List<String>> notificationMessages = new HashMap<String, List<String>>();
+    private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();
     public static String KEY_REPLY = "KEY_REPLY";
     public static String NOTIFICATION_ID = "NOTIFICATION_ID";
 
@@ -57,9 +61,18 @@ public class CustomPushNotification extends PushNotification {
         String message = bundle.getString("message");
 
         if (notificationMessages.get(notId) == null) {
-            notificationMessages.put(notId, new ArrayList<String>());
+            notificationMessages.put(notId, new ArrayList<Bundle>());
         }
-        notificationMessages.get(notId).add(message);
+
+        Gson gson = new Gson();
+        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+
+        bundle.putLong("time", new Date().getTime());
+        bundle.putString("username", ejson.sender.username);
+        bundle.putString("senderId", ejson.sender._id);
+        bundle.putString("avatarUri", ejson.getAvatarUri());
+
+        notificationMessages.get(notId).add(bundle);
 
         super.postNotification(notId != null ? Integer.parseInt(notId) : 1);
 
@@ -128,8 +141,7 @@ public class CustomPushNotification extends PushNotification {
         Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
-            .setSmallIcon(smallIconResId)
-            .setLargeIcon(getAvatar(ejson.getAvatarUri()));
+            .setSmallIcon(smallIconResId);
     }
 
     private void notificationChannel(Notification.Builder notification) {
@@ -149,15 +161,54 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notificationStyle(Notification.Builder notification, int notId, Bundle bundle) {
-        Notification.InboxStyle messageStyle = new Notification.InboxStyle();
-        List<String> messages = notificationMessages.get(Integer.toString(notId));
-        if (messages != null) {
-            for (int i = 0; i < messages.size(); i++) {
-                messageStyle.addLine(messages.get(i));
+        Notification.MessagingStyle messageStyle;
+        String title = bundle.getString("title");
+
+        Gson gson = new Gson();
+        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            messageStyle = new Notification.MessagingStyle("");
+        } else {
+            Person sender = new Person.Builder()
+                .setKey("")
+                .setName("")
+                .build();
+            messageStyle = new Notification.MessagingStyle(sender);
+        }
+
+        if (!ejson.type.equals("d")) {
+            messageStyle.setConversationTitle(title);
+            messageStyle.setGroupConversation(true);
+        }
+
+        List<Bundle> bundles = notificationMessages.get(Integer.toString(notId));
+
+        if (bundles != null) {
+            for (int i = 0; i < bundles.size(); i++) {
+                Bundle data = bundles.get(i);
+
+                long timestamp = data.getLong("time");
+                String message = data.getString("message");
+                String username = data.getString("username");
+                String senderId = data.getString("senderId");
+                String avatarUri = data.getString("avatarUri");
+
+                int pos = message.indexOf(":");
+                int start = pos == -1 ? 0 : pos + 2;
+                String m = ejson.type.equals("d") ? message : message.substring(start, message.length());
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                    messageStyle.addMessage(m, timestamp, username);
+                } else {
+                    Person sender = new Person.Builder()
+                        .setKey(senderId)
+                        .setName(username)
+                        .setIcon(Icon.createWithBitmap(getAvatar(avatarUri)))
+                        .build();
+                    messageStyle.addMessage(m, timestamp, sender);
+                }
             }
-            String summary = bundle.getString("summaryText");
-            messageStyle.setSummaryText(summary.replace("%n%", Integer.toString(messages.size())));
-            notification.setNumber(messages.size());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
