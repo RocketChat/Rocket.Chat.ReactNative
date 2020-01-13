@@ -8,10 +8,7 @@ import { themes } from '../../constants/colors';
 const UnreadBadge = React.memo(({
 	theme, unread, userMentions, type, hideUnreadStatus
 }) => {
-	if (hideUnreadStatus) {
-		return;
-	}
-	if (!unread || unread <= 0) {
+	if (hideUnreadStatus || !unread || unread <= 0) {
 		return;
 	}
 	if (unread >= 1000) {
