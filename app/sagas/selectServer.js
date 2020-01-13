@@ -4,6 +4,7 @@ import {
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import semver from 'semver';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -35,18 +36,20 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
+		const validVersion = semver.coerce(serverInfo.version);
+
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
 		yield serversDB.action(async() => {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = serverInfo.version;
+					record.version = validVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = serverInfo.version;
+					record.version = validVersion;
 				});
 			}
 		});
