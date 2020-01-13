@@ -126,12 +126,12 @@ class RegisterView extends React.Component {
 				name, email, pass: password, username, ...customFields
 			});
 			await loginRequest({ user: email, password });
+			const { navigation } = this.props;
+			navigation.navigate('RoomsListView');
 		} catch (e) {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
 		this.setState({ saving: false });
-		const { navigation } = this.props;
-		navigation.navigate('RoomsListView');
 	}
 
 	renderCustomFields = () => {

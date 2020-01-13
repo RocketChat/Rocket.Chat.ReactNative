@@ -94,12 +94,12 @@ class SetUsernameView extends React.Component {
 		try {
 			await RocketChat.setUsername(username);
 			await loginRequest({ resume: token });
+			const { navigation } = this.props;
+			navigation.navigate('RoomsListView');
 		} catch (e) {
 			log(e);
 		}
 		this.setState({ saving: false });
-		const { navigation } = this.props;
-		navigation.navigate('RoomsListView');
 	}
 
 	render() {
