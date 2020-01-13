@@ -264,7 +264,6 @@ export default {
 	No_messages_yet: 'No messages yet',
 	No_Reactions: 'No Reactions',
 	No_Read_Receipts: 'No Read Receipts',
-	no_search_result_found: 'No search results found',
 	Not_logged: 'Not logged',
 	Not_RC_Server: 'This is not a Rocket.Chat server.\n{{contact}}',
 	Nothing: 'Nothing',

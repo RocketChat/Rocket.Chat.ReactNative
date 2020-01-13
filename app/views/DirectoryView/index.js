@@ -213,9 +213,13 @@ class DirectoryView extends React.Component {
 		);
 	}
 
-	renderEmptyList = () => (
-		<Text style={styles.emptyList}>{I18n.t('no_search_result_found')}</Text>
-	)
+	renderEmptyList = () => {
+		// eslint-disable-next-line no-unused-vars
+		const { isFederationEnabled, theme } = this.props;
+		return (
+			<Text style={[styles.emptyList, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+		);
+	};
 
 	render = () => {
 		const {

@@ -67,11 +67,11 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	emptyList: {
-		fontSize: 20,
+		fontSize: 14,
 		flex: 1,
 		marginTop: 10,
 		textAlign: 'center',
-		...sharedStyles.textRegular
+		...sharedStyles.textBold
 	},
 	dropdownToggleText: {
 		fontSize: 15,
