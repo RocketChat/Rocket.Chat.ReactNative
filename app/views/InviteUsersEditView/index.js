@@ -117,25 +117,22 @@ class InviteUsersView extends React.Component {
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
-					testID='notification-preference-view-list'
 				>
 					<StatusBar theme={theme} />
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Expiration_Days')}
-						testID='notification-preference-view-alert'
 						right={() => this.renderPicker('days')}
 						theme={theme}
 					/>
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Max_number_of_uses')}
-						testID='notification-preference-view-alert'
 						right={() => this.renderPicker('maxUses')}
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<View style={[styles.innerContainer, { paddingTop: 0 }]}>
+					<View style={styles.innerContainer}>
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
 							title={I18n.t('Generate_New_Link')}

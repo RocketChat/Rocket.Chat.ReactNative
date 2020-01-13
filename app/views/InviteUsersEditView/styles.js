@@ -7,8 +7,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	innerContainer: {
-		padding: 20,
-		paddingBottom: 0
+		paddingHorizontal: 20
 	},
 	divider: {
 		width: '100%',

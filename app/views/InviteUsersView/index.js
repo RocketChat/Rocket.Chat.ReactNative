@@ -106,7 +106,6 @@ class InviteUsersView extends React.Component {
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
-					testID='notification-preference-view-list'
 				>
 					<StatusBar theme={theme} />
 					<View style={styles.innerContainer}>
