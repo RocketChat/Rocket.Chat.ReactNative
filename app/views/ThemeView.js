@@ -18,6 +18,7 @@ import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 
+
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
 
@@ -92,6 +93,15 @@ class ThemeView extends React.Component {
 		}
 	}
 
+	isDisabled = (item) => {
+		const { group } = item;
+		const lightTheme = THEMES[0];
+		if (group === DARK_GROUP && this.isSelected(lightTheme)) {
+			return true;
+		}
+		return false;
+	}
+
 	onClick = (item) => {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
@@ -127,14 +137,15 @@ class ThemeView extends React.Component {
 		const { theme } = this.props;
 		const { label, value } = item;
 		const isFirst = index === 0;
+
 		return (
 			<>
 				{item.separator || isFirst ? this.renderSectionHeader(item.header) : null}
 				<ListItem
 					title={label}
-					onPress={() => this.onClick(item)}
+					onPress={this.isDisabled(item) ? null : () => this.onClick(item)}
 					testID={`theme-view-${ value }`}
-					right={this.isSelected(item) ? this.renderIcon : null}
+					right={!this.isDisabled(item) && this.isSelected(item) ? this.renderIcon : null}
 					theme={theme}
 				/>
 			</>
