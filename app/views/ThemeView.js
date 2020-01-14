@@ -102,6 +102,14 @@ class ThemeView extends React.Component {
 		return false;
 	}
 
+	showDisabled = (header) => {
+		const lightTheme = THEMES[0];
+		if (header === I18n.t('Dark_level') && this.isSelected(lightTheme)) {
+			return true;
+		}
+		return false;
+	}
+
 	onClick = (item) => {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
@@ -154,10 +162,11 @@ class ThemeView extends React.Component {
 
 	renderSectionHeader = (header = I18n.t('Theme')) => {
 		const { theme } = this.props;
+
 		return (
 			<>
 				<View style={styles.info}>
-					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{header}</Text>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{this.showDisabled(header) ? `${ header } (Disabled)` : `${ header }` }</Text>
 				</View>
 				{this.renderSeparator()}
 			</>
