@@ -6,7 +6,9 @@ import {
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
-
+import Separator from '../../containers/Separator';
+import ListItem from '../../containers/ListItem';
+import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -14,7 +16,6 @@ import sharedStyles from '../Styles';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
-import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -144,7 +145,9 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	goRoom = async({ name }) => {
+	goRoom = async() => {
+		const { roomUser } = this.state;
+		const { username: name } = roomUser;
 		const { navigation } = this.props;
 		const result = await RocketChat.createDirectMessage(name);
 		if (result.success) {
@@ -272,18 +275,28 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureImage theme={theme} />;
+	}
+
+
 	renderMessageButton = () => {
-		const { roomUser } = this.state;
 		const { theme } = this.props;
 		return (
-			<Button
-				title={I18n.t('Message')}
-				type='primary'
-				onPress={() => this.goRoom({ name: roomUser.username })}
-				disabled={false}
-				loading={false}
-				theme={theme}
-			/>
+			<>
+				<Separator theme={theme} />
+
+				<ListItem
+					title={I18n.t('Send_message')}
+					onPress={this.goRoom}
+					showActionIndicator
+					right={this.renderDisclosure}
+					theme={theme}
+				/>
+
+				<Separator theme={theme} />
+			</>
 		);
 	}
 
