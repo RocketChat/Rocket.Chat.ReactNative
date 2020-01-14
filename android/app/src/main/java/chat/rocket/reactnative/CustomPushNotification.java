@@ -14,6 +14,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
+import android.util.Log;
 
 import com.google.gson.*;
 import com.bumptech.glide.Glide;
@@ -57,8 +58,8 @@ public class CustomPushNotification extends PushNotification {
     public void onReceived() throws InvalidNotificationException {
         final Bundle bundle = mNotificationProps.asBundle();
 
-        String notId = bundle.getString("notId");
-        String message = bundle.getString("message");
+        String notId = bundle.getString("notId", "1");
+        String title = bundle.getString("title");
 
         if (notificationMessages.get(notId) == null) {
             notificationMessages.put(notId, new ArrayList<Bundle>());
@@ -67,9 +68,11 @@ public class CustomPushNotification extends PushNotification {
         Gson gson = new Gson();
         Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
+        boolean hasSender = ejson.sender != null;
+
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", ejson.sender.username);
-        bundle.putString("senderId", ejson.sender._id);
+        bundle.putString("username", hasSender ? ejson.sender.username : title);
+        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         bundle.putString("avatarUri", ejson.getAvatarUri());
 
         notificationMessages.get(notId).add(bundle);
@@ -127,7 +130,11 @@ public class CustomPushNotification extends PushNotification {
                 .submit(100, 100)
                 .get();
         } catch (final ExecutionException | InterruptedException e) {
-            return null;
+            final Resources res = mContext.getResources();
+            String packageName = mContext.getPackageName();
+            int largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+            Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
+            return largeIconBitmap;
         }
     }
 
@@ -177,7 +184,7 @@ public class CustomPushNotification extends PushNotification {
             messageStyle = new Notification.MessagingStyle(sender);
         }
 
-        if (!ejson.type.equals("d")) {
+        if (ejson.type != null && !ejson.type.equals("d")) {
             messageStyle.setConversationTitle(title);
             messageStyle.setGroupConversation(true);
         }
@@ -196,7 +203,7 @@ public class CustomPushNotification extends PushNotification {
 
                 int pos = message.indexOf(":");
                 int start = pos == -1 ? 0 : pos + 2;
-                String m = ejson.type.equals("d") ? message : message.substring(start, message.length());
+                String m = ejson.type == null || ejson.type.equals("d") ? message : message.substring(start, message.length());
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                     messageStyle.addMessage(m, timestamp, username);
