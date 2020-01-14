@@ -14,7 +14,6 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
-import android.util.Log;
 
 import com.google.gson.*;
 import com.bumptech.glide.Glide;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Date;
-import java.lang.System;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
@@ -77,7 +75,7 @@ public class CustomPushNotification extends PushNotification {
 
         notificationMessages.get(notId).add(bundle);
 
-        super.postNotification(notId != null ? Integer.parseInt(notId) : 1);
+        super.postNotification(Integer.parseInt(notId));
 
         notifyReceivedToJS();
     }
@@ -85,7 +83,7 @@ public class CustomPushNotification extends PushNotification {
     @Override
     public void onOpened() {
         Bundle bundle = mNotificationProps.asBundle();
-        final String notId = bundle.getString("notId");
+        final String notId = bundle.getString("notId", "1");
         notificationMessages.remove(notId);
         digestNotification();
     }
@@ -95,19 +93,16 @@ public class CustomPushNotification extends PushNotification {
         final Notification.Builder notification = new Notification.Builder(mContext);
 
         Bundle bundle = mNotificationProps.asBundle();
-        String title = bundle.getString("title");
-        String message = bundle.getString("message");
-        String notId = bundle.getString("notId");
+        String notId = bundle.getString("notId", "1");
 
         notification
             .setContentIntent(intent)
-            .setContentTitle(title)
-            .setContentText(message)
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
             .setAutoCancel(true);
 
-        Integer notificationId = notId != null ? Integer.parseInt(notId) : 1;
+        Integer notificationId = Integer.parseInt(notId);
+        notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
         notificationStyle(notification, notificationId, bundle);
@@ -130,12 +125,16 @@ public class CustomPushNotification extends PushNotification {
                 .submit(100, 100)
                 .get();
         } catch (final ExecutionException | InterruptedException e) {
-            final Resources res = mContext.getResources();
-            String packageName = mContext.getPackageName();
-            int largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
-            Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
-            return largeIconBitmap;
+            return largeIcon();
         }
+    }
+
+    private Bitmap largeIcon() {
+        final Resources res = mContext.getResources();
+        String packageName = mContext.getPackageName();
+        int largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+        Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
+        return largeIconBitmap;
     }
 
     private void notificationIcons(Notification.Builder notification, Bundle bundle) {
@@ -143,9 +142,6 @@ public class CustomPushNotification extends PushNotification {
         String packageName = mContext.getPackageName();
 
         int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
-
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
             .setSmallIcon(smallIconResId);
@@ -164,6 +160,21 @@ public class CustomPushNotification extends PushNotification {
             notificationManager.createNotificationChannel(channel);
 
             notification.setChannelId(CHANNEL_ID);
+        }
+    }
+
+    private String extractMessage(String message, Ejson ejson) {
+        if (ejson.type != null && !ejson.type.equals("d")) {
+            int pos = message.indexOf(":");
+            int start = pos == -1 ? 0 : pos + 2;
+            return message.substring(start, message.length());
+        }
+        return message;
+    }
+
+    private void notificationColor(Notification.Builder notification) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            notification.setColor(mContext.getColor(R.color.notification_text));
         }
     }
 
@@ -201,9 +212,7 @@ public class CustomPushNotification extends PushNotification {
                 String senderId = data.getString("senderId");
                 String avatarUri = data.getString("avatarUri");
 
-                int pos = message.indexOf(":");
-                int start = pos == -1 ? 0 : pos + 2;
-                String m = ejson.type == null || ejson.type.equals("d") ? message : message.substring(start, message.length());
+                String m = extractMessage(message, ejson);
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                     messageStyle.addMessage(m, timestamp, username);
@@ -216,10 +225,6 @@ public class CustomPushNotification extends PushNotification {
                     messageStyle.addMessage(m, timestamp, sender);
                 }
             }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            notification.setColor(mContext.getColor(R.color.notification_text));
         }
 
         notification.setStyle(messageStyle);
