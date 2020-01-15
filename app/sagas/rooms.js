@@ -25,17 +25,13 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
-		const db = database.active;
-		yield db.action(async() => {
-			if (!subscriptions.length) {
-				return;
-			}
-
+		if (subscriptions.length) {
+			const db = database.active;
 			const subCollection = db.collections.get('subscriptions');
 			// const messagesCollection = db.collections.get('messages');
 
 			const subsIds = subscriptions.map(sub => sub.rid);
-			const existingSubs = await subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
+			const existingSubs = yield subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			// TODO: subsToDelete?
@@ -72,23 +68,15 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 				// })
 			];
 
-			try {
+			yield db.action(async() => {
 				await db.batch(...allRecords);
-			} catch (e) {
-				log(e);
-			}
-			return allRecords.length;
-		});
-
-		yield serversDB.action(async() => {
-			try {
-				await serverRecord.update((record) => {
-					record.roomsUpdatedAt = newRoomsUpdatedAt;
+				await serversDB.action(async() => {
+					await serverRecord.update((record) => {
+						record.roomsUpdatedAt = newRoomsUpdatedAt;
+					});
 				});
-			} catch (e) {
-				log(e);
-			}
-		});
+			});
+		}
 
 		yield put(roomsSuccess());
 	} catch (e) {
