@@ -106,6 +106,9 @@ class RegisterView extends React.Component {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
 		});
+		if (password.trim().length < 6) {
+			return false;
+		}
 		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
 	}
 
