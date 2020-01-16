@@ -53,4 +53,5 @@ export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
+export const SET_USERNAME = 'SET_USERNAME';
 export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE', 'CLEAR']);

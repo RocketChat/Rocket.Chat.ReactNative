@@ -1,5 +1,5 @@
 import {
-	put, call, takeLatest, select, take, fork, cancel
+	put, call, takeLatest, select, take, fork, cancel, race
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -10,7 +10,7 @@ import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import {
-	loginFailure, loginSuccess, setUser, logout
+	loginFailure, loginSuccess, setUser, logout, setUsername
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
@@ -116,7 +116,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		EventEmitter.emit('connected');
 
 		if (!user.username) {
-			yield put(appStart('setUsername'));
+			yield put(setUsername());
 		} else if (adding) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
@@ -166,15 +166,23 @@ const handleSetUser = function handleSetUser({ user }) {
 	}
 };
 
+const handleSetUsername = function* handleSetUsername() {
+	yield put(appStart('setUsername'));
+};
+
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
+	yield takeLatest(types.SET_USERNAME, handleSetUsername);
 
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		yield take(types.SERVER.SELECT_REQUEST);
+		yield race({
+			selectRequest: take(types.SERVER.SELECT_REQUEST),
+			setUsername: take(types.SET_USERNAME)
+		});
 		yield cancel(loginSuccessTask);
 	}
 };

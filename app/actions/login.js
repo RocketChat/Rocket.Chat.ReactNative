@@ -48,3 +48,9 @@ export function setPreference(preference) {
 		preference
 	};
 }
+
+export function setUsername() {
+	return {
+		type: types.SET_USERNAME
+	};
+}
