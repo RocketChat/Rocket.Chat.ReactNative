@@ -118,6 +118,12 @@ class ProfileView extends React.Component {
 		});
 	}
 
+	validPassword = (password) => {
+		if ((password.length < 7) || (/(.)\1/.test(password)) || !((/[a-z]/).test(password)) || !((/^(?!.*(.).*\1.*\1.*\1).*/).test(password))) {
+			return true;
+		}
+	}
+
 	formIsChanged = () => {
 		const {
 			name, username, email, newPassword, avatar, customFields
@@ -125,7 +131,7 @@ class ProfileView extends React.Component {
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
-		if (newPassword === null || newPassword.length < 6) {
+		if (this.validPassword(newPassword) || newPassword === null) {
 			return false;
 		}
 		const customFieldsKeys = Object.keys(customFields);
