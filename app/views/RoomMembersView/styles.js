@@ -16,5 +16,11 @@ export default StyleSheet.create({
 	separator: {
 		height: StyleSheet.hairlineWidth,
 		marginLeft: 60
+	},
+	emptyList: {
+		fontSize: 14,
+		flex: 1,
+		marginTop: 10,
+		textAlign: 'center'
 	}
 });

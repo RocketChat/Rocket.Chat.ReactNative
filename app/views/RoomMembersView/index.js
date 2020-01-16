@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -254,6 +254,13 @@ class RoomMembersView extends React.Component {
 		);
 	}
 
+	renderEmptyList = () => {
+		const { theme } = this.props;
+		return (
+			<Text style={[styles.emptyList, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+		);
+	}
+
 	render() {
 		const {
 			filtering, members, membersFiltered, isLoading
@@ -275,6 +282,7 @@ class RoomMembersView extends React.Component {
 						}
 						return null;
 					}}
+					ListEmptyComponent={this.renderEmptyList}
 					onEndReachedThreshold={0.1}
 					onEndReached={this.fetchMembers}
 					maxToRenderPerBatch={5}
