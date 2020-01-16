@@ -46,6 +46,8 @@ class MessageActions extends React.Component {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
+		const isDirectMessage = room.t === 'd';
+
 		// Cancel
 		this.options = [I18n.t('Cancel')];
 		this.CANCEL_INDEX = 0;
@@ -87,7 +89,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Pin
-		if (Message_AllowPinning) {
+		if (Message_AllowPinning && !isDirectMessage) {
 			this.options.push(I18n.t(message.pinned ? 'Unpin' : 'Pin'));
 			this.PIN_INDEX = this.options.length - 1;
 		}
