@@ -96,10 +96,19 @@ class RegisterView extends React.Component {
 		navigation.setParams({ title });
 	}
 
+	validPassword = (password) => {
+		if ((password.length < 7) || (/(.)\1/.test(password)) || !((/[a-z]/).test(password)) || !((/^(?!.*(.).*\1.*\1.*\1).*/).test(password))) {
+			return true;
+		}
+	}
+
 	valid = () => {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
+		if ((this.validPassword(password))) {
+			return false;
+		}
 		let requiredCheck = true;
 		Object.keys(this.parsedCustomFields).forEach((key) => {
 			if (this.parsedCustomFields[key].required) {
