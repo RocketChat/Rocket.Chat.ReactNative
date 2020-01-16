@@ -125,6 +125,9 @@ class ProfileView extends React.Component {
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
+		if (newPassword === null || newPassword.length < 6) {
+			return false;
+		}
 		const customFieldsKeys = Object.keys(customFields);
 		if (customFieldsKeys.length) {
 			customFieldsKeys.forEach((key) => {
