@@ -178,6 +178,7 @@ class RoomActionsView extends React.Component {
 		const {
 			rid, t, blocker
 		} = room;
+		const isDirectRoom = room.t === 'd';
 
 		const notificationsAction = {
 			icon: 'bell',
@@ -250,17 +251,11 @@ class RoomActionsView extends React.Component {
 					name: I18n.t('Share'),
 					event: this.handleShare,
 					testID: 'room-actions-share'
-				},
-				{
-					icon: 'pin',
-					name: I18n.t('Pinned'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Pinned' },
-					testID: 'room-actions-pinned'
 				}
 			],
 			renderItem: this.renderItem
 		}];
+
 
 		if (canAutoTranslate) {
 			sections[2].data.push({
@@ -269,6 +264,15 @@ class RoomActionsView extends React.Component {
 				route: 'AutoTranslateView',
 				params: { rid, room },
 				testID: 'room-actions-auto-translate'
+			});
+		}
+		if (!isDirectRoom) {
+			sections[2].data.push({
+				icon: 'pin',
+				name: I18n.t('Pinned'),
+				route: 'MessagesView',
+				params: { rid, t, name: 'Pinned' },
+				testID: 'room-actions-pinned'
 			});
 		}
 
