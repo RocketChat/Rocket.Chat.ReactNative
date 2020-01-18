@@ -34,7 +34,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 		const serverRecord = yield serversCollection.find(server);
 		const { roomsUpdatedAt } = serverRecord;
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
-		const { subscriptions = [] } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
+		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
@@ -80,9 +80,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			];
 
 			yield db.action(async() => {
-				if (subscriptions.length) {
-					await db.batch(...allRecords);
-				}
+				await db.batch(...allRecords);
 				await updateRooms({ server });
 			});
 		} else {
