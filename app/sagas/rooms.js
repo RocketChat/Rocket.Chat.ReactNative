@@ -13,23 +13,34 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 // import buildMessage from '../lib/methods/helpers/buildMessage';
 
+const updateRooms = async({ server }) => {
+	const serversDB = database.servers;
+	const serversCollection = serversDB.collections.get('servers');
+	const serverRecord = await serversCollection.find(server);
+	const newRoomsUpdatedAt = new Date();
+	return serversDB.action(async() => {
+		await serverRecord.update((record) => {
+			record.roomsUpdatedAt = newRoomsUpdatedAt;
+		});
+	});
+};
+
 const handleRoomsRequest = function* handleRoomsRequest() {
 	try {
 		const serversDB = database.servers;
 		yield RocketChat.subscribeRooms();
-		const newRoomsUpdatedAt = new Date();
 		const server = yield select(state => state.server.server);
 		const serversCollection = serversDB.collections.get('servers');
 		const serverRecord = yield serversCollection.find(server);
 		const { roomsUpdatedAt } = serverRecord;
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
-		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
+		const { subscriptions = [] } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
+
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
+		// const messagesCollection = db.collections.get('messages');
 
 		if (subscriptions.length) {
-			const db = database.active;
-			const subCollection = db.collections.get('subscriptions');
-			// const messagesCollection = db.collections.get('messages');
-
 			const subsIds = subscriptions.map(sub => sub.rid);
 			const existingSubs = yield subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
@@ -69,13 +80,13 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			];
 
 			yield db.action(async() => {
-				await db.batch(...allRecords);
-				await serversDB.action(async() => {
-					await serverRecord.update((record) => {
-						record.roomsUpdatedAt = newRoomsUpdatedAt;
-					});
-				});
+				if (subscriptions.length) {
+					await db.batch(...allRecords);
+				}
+				await updateRooms({ server });
 			});
+		} else {
+			yield updateRooms({ server });
 		}
 
 		yield put(roomsSuccess());
