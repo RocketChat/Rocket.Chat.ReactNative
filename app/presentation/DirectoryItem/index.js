@@ -35,6 +35,7 @@ const DirectoryItem = ({
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
+				theme={theme}
 			/>
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>

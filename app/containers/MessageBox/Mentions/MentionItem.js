@@ -46,6 +46,7 @@ const MentionItem = ({
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
+				theme={theme}
 			/>
 			<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.username || item.name || item }</Text>
 		</>

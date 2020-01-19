@@ -103,6 +103,7 @@ class ReadReceiptView extends React.Component {
 					baseUrl={baseUrl}
 					userId={userId}
 					token={token}
+					theme={theme}
 				/>
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>

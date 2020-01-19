@@ -84,6 +84,7 @@ const RoomItem = React.memo(({
 					style={styles.avatar}
 					userId={userId}
 					token={token}
+					theme={theme}
 				/>
 				<View
 					style={[

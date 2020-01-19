@@ -287,6 +287,7 @@ class Sidebar extends Component {
 							baseUrl={baseUrl}
 							userId={user.id}
 							token={user.token}
+							theme={theme}
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>

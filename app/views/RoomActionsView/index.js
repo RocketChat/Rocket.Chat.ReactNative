@@ -412,6 +412,7 @@ class RoomActionsView extends React.Component {
 					baseUrl={baseUrl}
 					userId={user.id}
 					token={user.token}
+					theme={theme}
 				>
 					{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 				</Avatar>,

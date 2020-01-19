@@ -211,7 +211,7 @@ class NotificationBadge extends React.Component {
 					background={Touchable.SelectableBackgroundBorderless()}
 				>
 					<>
-						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<Avatar theme={theme} text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 						<View style={styles.inner}>
 							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
 							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>

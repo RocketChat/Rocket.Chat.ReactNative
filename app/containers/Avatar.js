@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touch from '../utils/touch';
+import { themes } from '../constants/colors';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
@@ -11,10 +12,19 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 const Avatar = React.memo(({
 	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme
 }) => {
+	const [preImage, setPreImage] = useState(true);
+	const togglePreImage = () => {
+		setPreImage(!preImage);
+	};
 	const avatarStyle = {
 		width: size,
 		height: size,
 		borderRadius
+	};
+	const preImageStyle = {
+		width: size,
+		height: size,
+		backgroundColor: themes[theme].bannerBackground
 	};
 
 	if (!text && !avatar) {
@@ -47,7 +57,12 @@ const Avatar = React.memo(({
 				uri,
 				priority: FastImage.priority.high
 			}}
-		/>
+			onLoadEnd={togglePreImage}
+		>
+			{preImage ? <View style={preImageStyle} /> : null}
+
+
+		</FastImage>
 	);
 
 	if (onPress) {
