@@ -46,8 +46,6 @@ class MessageActions extends React.Component {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
-		const isDirectMessage = room.t === 'd';
-
 		// Cancel
 		this.options = [I18n.t('Cancel')];
 		this.CANCEL_INDEX = 0;
@@ -89,7 +87,7 @@ class MessageActions extends React.Component {
 		}
 
 		// Pin
-		if (Message_AllowPinning && !isDirectMessage) {
+		if (Message_AllowPinning && this.hasPinPermission) {
 			this.options.push(I18n.t(message.pinned ? 'Unpin' : 'Pin'));
 			this.PIN_INDEX = this.options.length - 1;
 		}
@@ -130,11 +128,12 @@ class MessageActions extends React.Component {
 	async setPermissions() {
 		try {
 			const { room } = this.props;
-			const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
+			const permissions = ['edit-message', 'delete-message', 'force-delete-message', 'pin-message'];
 			const result = await RocketChat.hasPermission(permissions, room.rid);
 			this.hasEditPermission = result[permissions[0]];
 			this.hasDeletePermission = result[permissions[1]];
 			this.hasForceDeletePermission = result[permissions[2]];
+			this.hasPinPermission = result[permissions[3]];
 		} catch (e) {
 			log(e);
 		}
