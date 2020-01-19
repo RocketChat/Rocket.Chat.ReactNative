@@ -89,6 +89,9 @@ class Sidebar extends Component {
 		if (nextProps.Site_Name !== Site_Name) {
 			return true;
 		}
+		if (nextProps.user.statusText !== user.statusText) {
+			return true;
+		}
 		if (nextProps.baseUrl !== baseUrl) {
 			return true;
 		}
@@ -139,6 +142,7 @@ class Sidebar extends Component {
 		});
 	}
 
+
 	async setIsAdmin() {
 		const db = database.active;
 		const { user } = this.props;
@@ -156,6 +160,22 @@ class Sidebar extends Component {
 			log(e);
 		}
 	}
+
+	renderStatusText = () => {
+		const { activeItemKey, user } = this.props;
+		return (
+			<>
+				<SidebarItem
+					text={user.statusText || I18n.t('Set_custom_status')}
+					left={<CustomIcon name='edit' size={20} color='white' />}
+					onPress={() => this.sidebarNavigate('RoomsListView')}
+					testID='sidebar-status'
+					current={activeItemKey === 'StatusStack'}
+				/>
+			</>
+		);
+	}
+
 
 	logout = () => {
 		const { logout } = this.props;
@@ -299,8 +319,9 @@ class Sidebar extends Component {
 					</Touch>
 
 					{!split || showStatus ? <Separator theme={theme} /> : null}
-
+					{this.renderStatusText()}
 					{!showStatus && !split ? this.renderNavigation() : null}
+
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
 			</SafeAreaView>
@@ -314,6 +335,7 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		language: state.login.user && state.login.user.language,
 		status: state.login.user && state.login.user.status,
+		statusText: state.login.user && state.login.user.statusText,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token,
 		roles: state.login.user && state.login.user.roles

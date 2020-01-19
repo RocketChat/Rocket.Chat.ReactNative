@@ -65,7 +65,8 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: {},
+		statusText: null
 	}
 
 	async componentDidMount() {
@@ -103,7 +104,7 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields
+			name, username, emails, customFields, statusText
 		} = user || userProps;
 
 		this.setState({
@@ -114,13 +115,14 @@ class ProfileView extends React.Component {
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
-			customFields: customFields || {}
+			customFields: customFields || {},
+			statusText
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields
+			name, username, email, newPassword, avatar, customFields, statusText
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -140,6 +142,7 @@ class ProfileView extends React.Component {
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
 			&& !customFieldsChanged
+			&& user.statusText === statusText
 		);
 	}
 
@@ -168,10 +171,14 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
+			name, username, email, newPassword, currentPassword, avatar, customFields, statusText
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
+		// Status Text
+		if (user.statusText !== statusText) {
+			params.statusText = statusText;
+		}
 
 		// Name
 		if (user.name !== name) {
@@ -377,7 +384,8 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert, statusText
+
 		} = this.state;
 		const {
 			baseUrl, user, theme, Accounts_CustomFields
@@ -415,6 +423,15 @@ class ProfileView extends React.Component {
 							onSubmitEditing={() => { this.username.focus(); }}
 							testID='profile-view-name'
 							theme={theme}
+						/>
+						<RCTextInput
+							inputRef={(e) => { this.statusText = e; }}
+							label={I18n.t('Status')}
+							placeholder={I18n.t('Status')}
+							value={statusText}
+							onChangeText={value => this.setState({ statusText: value })}
+							onSubmitEditing={() => { this.statusText.focus(); }}
+							testID='profile-view-status'
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.username = e; }}
@@ -503,7 +520,8 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		customFields: state.login.user && state.login.user.customFields,
 		emails: state.login.user && state.login.user.emails,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''

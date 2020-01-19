@@ -299,7 +299,10 @@ class RoomInfoView extends React.Component {
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
+						{this.t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{roomUser.statusText}</Text> : null }
+
 					</View>
+
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
 			</ScrollView>
@@ -311,7 +314,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	user: {
 		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });

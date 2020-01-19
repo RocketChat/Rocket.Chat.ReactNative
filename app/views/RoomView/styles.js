@@ -12,6 +12,17 @@ export default StyleSheet.create({
 	list: {
 		flex: 1
 	},
+	statusTextContainer: {
+		padding: 10,
+		backgroundColor: '#292929',
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+	statusText: {
+		fontSize: 14,
+		color: 'white',
+		...sharedStyles.textMedium
+	},
 	contentContainer: {
 		paddingTop: 10
 	},

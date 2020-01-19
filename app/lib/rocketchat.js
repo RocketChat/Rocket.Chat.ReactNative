@@ -244,9 +244,9 @@ const RocketChat = {
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id,, status] = userStatus;
+					const [id,, status, statusText] = userStatus;
 					this.activeUsers[id] = STATUSES[status];
-
+					this.activeUsers[statusText] = statusText;
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
 						reduxStore.dispatch(setUser({ status: STATUSES[status] }));
@@ -381,6 +381,7 @@ const RocketChat = {
 				name: result.me.name,
 				language: result.me.language,
 				status: result.me.status,
+				statusText: result.me.statusText,
 				customFields: result.me.customFields,
 				emails: result.me.emails,
 				roles: result.me.roles

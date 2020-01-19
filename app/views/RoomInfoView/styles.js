@@ -66,5 +66,11 @@ export default StyleSheet.create({
 	role: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	statusText: {
+		paddingTop: 10,
+		fontSize: 18,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textMedium
 	}
 });

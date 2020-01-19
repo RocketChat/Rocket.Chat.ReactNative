@@ -58,5 +58,11 @@ export default StyleSheet.create({
 	roomTitleRow: {
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	statusText: {
+		paddingTop: 5,
+		fontSize: 14,
+		...sharedStyles.textColorDescription,
+		...sharedStyles.textMedium
 	}
 });

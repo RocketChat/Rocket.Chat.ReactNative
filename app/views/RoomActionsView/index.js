@@ -42,7 +42,8 @@ class RoomActionsView extends React.Component {
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusText: PropTypes.string
 		}),
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
@@ -426,6 +427,8 @@ class RoomActionsView extends React.Component {
 						)
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
+					{t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={1}>{user.statusText}</Text> : null }
+
 				</View>,
 				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 			], item)
@@ -500,7 +503,8 @@ class RoomActionsView extends React.Component {
 const mapStateToProps = state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	jitsiEnabled: state.settings.Jitsi_Enabled || false

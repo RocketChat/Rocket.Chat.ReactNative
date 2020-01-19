@@ -126,7 +126,9 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
+			token: PropTypes.string.isRequired,
+
+			statusText: PropTypes.string
 		}),
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -140,6 +142,7 @@ class RoomView extends React.Component {
 		useMarkdown: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
+
 	};
 
 	constructor(props) {
@@ -885,6 +888,12 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
+				{this.t === 'd' && user && user.statusText ? (
+
+					<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
+						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text>
+					</View>
+				) : null }
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -923,7 +932,8 @@ const mapStateToProps = state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
