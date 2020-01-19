@@ -161,22 +161,6 @@ class Sidebar extends Component {
 		}
 	}
 
-	renderStatusText = () => {
-		const { activeItemKey, user } = this.props;
-		return (
-			<>
-				<SidebarItem
-					text={user.statusText || I18n.t('Set_custom_status')}
-					left={<CustomIcon name='edit' size={20} color='white' />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
-					testID='sidebar-status'
-					current={activeItemKey === 'StatusStack'}
-				/>
-			</>
-		);
-	}
-
-
 	logout = () => {
 		const { logout } = this.props;
 		logout();
@@ -215,9 +199,18 @@ class Sidebar extends Component {
 
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey, theme } = this.props;
+		const { activeItemKey, theme, user } = this.props;
 		return (
 			<>
+
+				<SidebarItem
+					text={user.statusText || I18n.t('Set_custom_status')}
+					left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate('RoomsListView')}
+					testID='sidebar-status'
+					current={activeItemKey === 'StatusStack'}
+				/>
+
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
@@ -319,7 +312,7 @@ class Sidebar extends Component {
 					</Touch>
 
 					{!split || showStatus ? <Separator theme={theme} /> : null}
-					{this.renderStatusText()}
+
 					{!showStatus && !split ? this.renderNavigation() : null}
 
 					{showStatus ? this.renderStatus() : null}
