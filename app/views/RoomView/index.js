@@ -887,12 +887,6 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
-				{this.t === 'd' && user && user.statusText ? (
-
-					<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
-						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{room.statusText}</Text>
-					</View>
-				) : null }
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -931,8 +925,7 @@ const mapStateToProps = state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token,
-		statusText: state.login.user && state.login.user.statusText
+		token: state.login.user && state.login.user.token
 	},
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,

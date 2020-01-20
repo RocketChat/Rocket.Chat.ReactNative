@@ -96,8 +96,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		connecting: state.meteor.connecting,
 		usersTyping: state.usersTyping,
-		status,
-		statusText: state.login.user && state.login.user.statusText
+		status
 	};
 };
 
