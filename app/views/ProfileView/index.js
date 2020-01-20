@@ -433,6 +433,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ statusText: value })}
 							onSubmitEditing={() => { this.statusText.focus(); }}
 							testID='profile-view-status'
+							theme={theme}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.username = e; }}

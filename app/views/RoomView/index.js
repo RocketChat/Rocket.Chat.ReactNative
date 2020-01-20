@@ -172,7 +172,8 @@ class RoomView extends React.Component {
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
-			reacting: false
+			reacting: false,
+			statusText: null
 		};
 
 		if (room && room.observe) {
@@ -327,6 +328,13 @@ class RoomView extends React.Component {
 		try {
 			this.setState({ loading: true });
 			const { room, joined } = this.state;
+
+			if (room && room.t === 'd') {
+				const { user } = this.props;
+				const roomUserId = await RocketChat.getRoomMemberId(this.rid, user.id);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				this.setState({ statusText: result.user.statusText });
+			}
 			if (this.tmid) {
 				await this.getThreadMessages();
 			} else {
@@ -771,6 +779,20 @@ class RoomView extends React.Component {
 		return message;
 	}
 
+	renderStatusText = () => {
+		const { theme } = this.props;
+		const { statusText } = this.state;
+		if (this.t === 'd') {
+			return (
+				<View style={[styles.statusTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status'>
+					<Text style={[styles.statusText, { color: themes[theme].titleText }]} ellipsizeMode='tail' numberOfLines={2}>{statusText || ''}</Text>
+				</View>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -887,6 +909,7 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
+				{this.renderStatusText()}
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
