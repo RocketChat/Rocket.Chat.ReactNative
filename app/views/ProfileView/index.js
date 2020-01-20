@@ -175,14 +175,15 @@ class ProfileView extends React.Component {
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
-		// Status Text
-		if (user.statusText !== statusText) {
-			params.statusText = statusText;
-		}
 
 		// Name
 		if (user.name !== name) {
 			params.name = name;
+		}
+
+		// Status Text
+		if (user.statusText !== statusText) {
+			params.statusText = statusText;
 		}
 
 		// Username

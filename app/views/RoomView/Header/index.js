@@ -9,6 +9,7 @@ import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
 import RoomHeaderLeft from './RoomHeaderLeft';
 
+
 class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
@@ -62,7 +63,6 @@ class RoomHeaderView extends Component {
 		const {
 			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView, theme
 		} = this.props;
-
 		return (
 			<Header
 				prid={prid}
@@ -96,7 +96,8 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		connecting: state.meteor.connecting,
 		usersTyping: state.usersTyping,
-		status
+		status,
+		statusText: state.login.user && state.login.user.statusText
 	};
 };
 

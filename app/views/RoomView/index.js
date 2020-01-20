@@ -877,7 +877,6 @@ class RoomView extends React.Component {
 		} = this.state;
 		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
-
 		return (
 			<SafeAreaView
 				style={[
@@ -891,7 +890,7 @@ class RoomView extends React.Component {
 				{this.t === 'd' && user && user.statusText ? (
 
 					<View style={styles.statusTextContainer} key='room-user-status' testID='room-user-status'>
-						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{user.statusText}</Text>
+						<Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{room.statusText}</Text>
 					</View>
 				) : null }
 				<List

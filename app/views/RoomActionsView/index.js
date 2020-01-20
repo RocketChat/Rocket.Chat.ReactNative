@@ -63,7 +63,8 @@ class RoomActionsView extends React.Component {
 			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
-			canAddUser: false
+			canAddUser: false,
+			userStatusText: null
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -91,7 +92,16 @@ class RoomActionsView extends React.Component {
 				log(e);
 			}
 		}
-
+		if (room && room.t === 'd') {
+			const { user } = this.props;
+			try {
+				const roomUserId = await RocketChat.getRoomMemberId(this.rid, user.id);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				this.setState({ userStatusText: result.user.statusText });
+			} catch (e) {
+				log(e);
+			}
+		}
 		if (room && room.t !== 'd' && this.canViewMembers()) {
 			try {
 				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
@@ -398,7 +408,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderRoomInfo = ({ item }) => {
-		const { room, member } = this.state;
+		const { room, member, userStatusText } = this.state;
 		const { name, t, topic } = room;
 		const { baseUrl, user, theme } = this.props;
 
@@ -427,7 +437,7 @@ class RoomActionsView extends React.Component {
 						)
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
-					{t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={1}>{user.statusText}</Text> : null }
+					{t === 'd' ? <Text style={[styles.statusText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{userStatusText}</Text> : null }
 
 				</View>,
 				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
