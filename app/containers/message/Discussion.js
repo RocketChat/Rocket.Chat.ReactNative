@@ -8,31 +8,32 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
+import { themes } from '../../constants/colors';
 
 const Discussion = React.memo(({
-	msg, dcount, dlm, onDiscussionPress
+	msg, dcount, dlm, onDiscussionPress, theme
 }) => {
 	const time = formatLastMessage(dlm);
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	return (
-		<React.Fragment>
-			<Text style={styles.startedDiscussion}>{I18n.t('Started_discussion')}</Text>
-			<Text style={styles.text}>{msg}</Text>
+		<>
+			<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{msg}</Text>
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={onDiscussionPress}
-					background={Touchable.Ripple('#fff')}
-					style={[styles.button, styles.smallButton]}
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
-					<React.Fragment>
-						<CustomIcon name='chat' size={20} style={styles.buttonIcon} />
-						<Text style={styles.buttonText}>{buttonText}</Text>
-					</React.Fragment>
+					<>
+						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
+					</>
 				</Touchable>
-				<Text style={styles.time}>{time}</Text>
+				<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 			</View>
-		</React.Fragment>
+		</>
 	);
 }, (prevProps, nextProps) => {
 	if (prevProps.msg !== nextProps.msg) {
@@ -44,6 +45,9 @@ const Discussion = React.memo(({
 	if (prevProps.dlm !== nextProps.dlm) {
 		return false;
 	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
 	return true;
 });
 
@@ -51,6 +55,7 @@ Discussion.propTypes = {
 	msg: PropTypes.string,
 	dcount: PropTypes.number,
 	dlm: PropTypes.string,
+	theme: PropTypes.string,
 	onDiscussionPress: PropTypes.func
 };
 Discussion.displayName = 'MessageDiscussion';

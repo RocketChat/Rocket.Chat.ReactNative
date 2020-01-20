@@ -1,4 +1,4 @@
-import database from '../realm';
+import database from '../database';
 
 const restTypes = {
 	channel: 'channels', direct: 'im', group: 'groups'
@@ -18,18 +18,26 @@ async function open({ type, rid }) {
 }
 
 export default async function canOpenRoom({ rid, path }) {
-	const [type] = path.split('/');
-	if (type === 'channel') {
-		return true;
-	}
-
-	const room = database.objects('subscriptions').filtered('rid == $0', rid);
-	if (room.length) {
-		return true;
-	}
-
 	try {
-		return await open.call(this, { type, rid });
+		const db = database.active;
+		const subsCollection = db.collections.get('subscriptions');
+		const [type] = path.split('/');
+		if (type === 'channel') {
+			return true;
+		}
+
+		try {
+			await subsCollection.find(rid);
+			return true;
+		} catch (error) {
+			// Do nothing
+		}
+
+		try {
+			return await open.call(this, { type, rid });
+		} catch (e) {
+			return false;
+		}
 	} catch (e) {
 		return false;
 	}

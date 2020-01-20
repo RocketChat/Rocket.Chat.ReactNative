@@ -1,14 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_WHITE } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 
 export const ROW_HEIGHT = 54;
 
 export default StyleSheet.create({
 	directoryItemButton: {
-		height: ROW_HEIGHT,
-		backgroundColor: COLOR_WHITE
+		height: ROW_HEIGHT
 	},
 	directoryItemContainer: {
 		flex: 1,
@@ -32,18 +30,15 @@ export default StyleSheet.create({
 	directoryItemName: {
 		flex: 1,
 		fontSize: 17,
-		...sharedStyles.textMedium,
-		...sharedStyles.textColorNormal
+		...sharedStyles.textMedium
 	},
 	directoryItemUsername: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
 	},
 	directoryItemLabel: {
 		fontSize: 14,
 		paddingLeft: 10,
-		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription
+		...sharedStyles.textRegular
 	}
 });

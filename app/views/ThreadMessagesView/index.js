@@ -6,57 +6,70 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
+import orderBy from 'lodash/orderBy';
+import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import styles from './styles';
 import Message from '../../containers/message';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
+import ModalNavigation from '../../lib/ModalNavigation';
 
-const Separator = React.memo(() => <View style={styles.separator} />);
+const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
+Separator.propTypes = {
+	theme: PropTypes.string
+};
+
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = ({ screenProps }) => ({
+		...themedHeader(screenProps.theme),
 		title: I18n.t('Threads')
-	}
+	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		theme: PropTypes.string,
+		customEmojis: PropTypes.object,
+		screenProps: PropTypes.object
 	}
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		this.messages = database.objects('threads').filtered('rid = $0', this.rid).sorted('ts', true);
-		safeAddListener(this.messages, this.updateMessages);
 		this.state = {
 			loading: false,
 			end: false,
-			messages: this.messages
+			messages: []
 		};
-		this.mounted = false;
+		this.subscribeData();
 	}
 
 	componentDidMount() {
+		this.mounted = true;
 		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
 			this.init();
-			this.mounted = true;
 		});
 	}
 
 	componentWillUnmount() {
-		this.messages.removeAllListeners();
 		if (this.mountInteraction && this.mountInteraction.cancel) {
 			this.mountInteraction.cancel();
 		}
@@ -66,36 +79,113 @@ class ThreadMessagesView extends React.Component {
 		if (this.syncInteraction && this.syncInteraction.cancel) {
 			this.syncInteraction.cancel();
 		}
+		if (this.subSubscription && this.subSubscription.unsubscribe) {
+			this.subSubscription.unsubscribe();
+		}
+		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+			this.messagesSubscription.unsubscribe();
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	updateMessages = debounce(() => {
-		this.setState({ messages: this.messages });
-	}, 300)
+	subscribeData = () => {
+		try {
+			const db = database.active;
+			this.subObservable = db.collections
+				.get('subscriptions')
+				.findAndObserve(this.rid);
+			this.subSubscription = this.subObservable
+				.subscribe((data) => {
+					this.subscription = data;
+				});
+			this.messagesObservable = db.collections
+				.get('threads')
+				.query(
+					Q.where('rid', this.rid),
+					Q.where('t', Q.notEq('rm'))
+				)
+				.observeWithColumns(['updated_at']);
+			this.messagesSubscription = this.messagesObservable
+				.subscribe((data) => {
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages });
+					} else {
+						this.state.messages = messages;
+					}
+				});
+		} catch (e) {
+			log(e);
+		}
+	}
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
-		const [room] = this.rooms;
-
-		// if there's not room at this point, it's better to show nothing
-		if (!room) {
+		if (!this.subscription) {
 			return;
 		}
-
-		const lastThreadSync = new Date();
-		if (room.lastThreadSync) {
-			this.sync(room.lastThreadSync);
-		} else {
-			this.load();
+		try {
+			const lastThreadSync = new Date();
+			if (this.subscription.lastThreadSync) {
+				this.sync(this.subscription.lastThreadSync);
+			} else {
+				this.load(lastThreadSync);
+			}
+		} catch (e) {
+			log(e);
 		}
-		database.write(() => {
-			room.lastThreadSync = lastThreadSync;
-		});
+	}
+
+	updateThreads = async({ update, remove, lastThreadSync }) => {
+		try {
+			const db = database.active;
+			const threadsCollection = db.collections.get('threads');
+			const allThreadsRecords = await this.subscription.threads.fetch();
+			let threadsToCreate = [];
+			let threadsToUpdate = [];
+			let threadsToDelete = [];
+
+			if (update && update.length) {
+				update = update.map(m => buildMessage(m));
+				// filter threads
+				threadsToCreate = update.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
+				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+				threadsToCreate = threadsToCreate.map(thread => threadsCollection.prepareCreate(protectedFunction((t) => {
+					t._raw = sanitizedRaw({ id: thread._id }, threadsCollection.schema);
+					t.subscription.set(this.subscription);
+					Object.assign(t, thread);
+				})));
+				threadsToUpdate = threadsToUpdate.map((thread) => {
+					const newThread = update.find(t => t._id === thread.id);
+					return thread.prepareUpdate(protectedFunction((t) => {
+						Object.assign(t, newThread);
+					}));
+				});
+			}
+
+			if (remove && remove.length) {
+				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
+			}
+
+			await db.action(async() => {
+				await db.batch(
+					...threadsToCreate,
+					...threadsToUpdate,
+					...threadsToDelete,
+					this.subscription.prepareUpdate((s) => {
+						s.lastThreadSync = lastThreadSync;
+					})
+				);
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	load = debounce(async() => {
-		const { loading, end } = this.state;
+	load = debounce(async(lastThreadSync) => {
+		const { loading, end, messages } = this.state;
 		if (end || loading || !this.mounted) {
 			return;
 		}
@@ -104,17 +194,11 @@ class ThreadMessagesView extends React.Component {
 
 		try {
 			const result = await RocketChat.getThreadsList({
-				rid: this.rid, count: API_FETCH_COUNT, offset: this.messages.length
+				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length
 			});
 			if (result.success) {
 				this.loadInteraction = InteractionManager.runAfterInteractions(() => {
-					database.write(() => result.threads.forEach((message) => {
-						try {
-							database.create('threads', buildMessage(message), true);
-						} catch (e) {
-							log(e);
-						}
-					}));
+					this.updateThreads({ update: result.threads, lastThreadSync });
 
 					this.setState({
 						loading: false,
@@ -139,36 +223,12 @@ class ThreadMessagesView extends React.Component {
 			if (result.success && result.threads) {
 				this.syncInteraction = InteractionManager.runAfterInteractions(() => {
 					const { update, remove } = result.threads;
-					database.write(() => {
-						if (update && update.length) {
-							update.forEach((message) => {
-								try {
-									database.create('threads', buildMessage(message), true);
-								} catch (e) {
-									log(e);
-								}
-							});
-						}
-
-						if (remove && remove.length) {
-							remove.forEach((message) => {
-								const oldMessage = database.objectForPrimaryKey('threads', message._id);
-								if (oldMessage) {
-									try {
-										database.delete(oldMessage);
-									} catch (e) {
-										log(e);
-									}
-								}
-							});
-						}
-					});
-
-					this.setState({
-						loading: false
-					});
+					this.updateThreads({ update, remove, lastThreadSync: updatedSince });
 				});
 			}
+			this.setState({
+				loading: false
+			});
 		} catch (e) {
 			log(e);
 			this.setState({ loading: false });
@@ -184,77 +244,97 @@ class ThreadMessagesView extends React.Component {
 		}) : null
 	)
 
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
+	}
+
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
-		if (item.tmid) {
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item.tmid, name: item.tmsg, t: 'thread'
-			});
-		} else if (item.tlm) {
-			const title = item.msg || (item.attachments && item.attachments.length && item.attachments[0].title);
-			navigation.push('RoomView', {
-				rid: item.rid, tmid: item._id, name: title, t: 'thread'
-			});
-		}
+		navigation.push('RoomView', {
+			rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
+		});
 	}, 1000, true)
 
-	renderSeparator = () => <Separator />
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <Separator theme={theme} />;
+	}
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID='thread-messages-view'>
-			<Text style={styles.noDataFound}>{I18n.t('No_thread_messages')}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID='thread-messages-view'>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_thread_messages')}</Text>
+			</View>
+		);
+	}
+
+	navToRoomInfo = (navParam) => {
+		const { navigation, user, screenProps } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		if (screenProps && screenProps.split) {
+			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
+			ModalNavigation.navigate('RoomInfoView', navParam);
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
+	}
 
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
 		} = this.props;
-		if (item.isValid && item.isValid()) {
-			return (
-				<Message
-					key={item._id}
-					item={item}
-					user={user}
-					archived={false}
-					broadcast={false}
-					status={item.status}
-					_updatedAt={item._updatedAt}
-					navigation={navigation}
-					timeFormat='MMM D'
-					customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-					onThreadPress={this.onThreadPress}
-					baseUrl={baseUrl}
-					useRealName={useRealName}
-				/>
-			);
-		}
-		return null;
+		return (
+			<Message
+				key={item.id}
+				item={item}
+				user={user}
+				archived={false}
+				broadcast={false}
+				status={item.status}
+				navigation={navigation}
+				timeFormat='MMM D'
+				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
+				onThreadPress={this.onThreadPress}
+				baseUrl={baseUrl}
+				useRealName={useRealName}
+				getCustomEmoji={this.getCustomEmoji}
+				navToRoomInfo={this.navToRoomInfo}
+			/>
+		);
 	}
 
 	render() {
 		const { loading, messages } = this.state;
+		const { theme } = this.props;
 
-		if (!loading && this.messages.length === 0) {
+		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
 
 		return (
 			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={messages}
 					extraData={this.state}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					contentContainerStyle={styles.contentContainer}
-					keyExtractor={item => item._id}
+					keyExtractor={item => item.id}
 					onEndReached={this.load}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
 					initialNumToRender={1}
 					ItemSeparatorComponent={this.renderSeparator}
-					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
 			</SafeAreaView>
 		);
@@ -268,7 +348,8 @@ const mapStateToProps = state => ({
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
 	},
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(ThreadMessagesView);
+export default connect(mapStateToProps)(withTheme(ThreadMessagesView));

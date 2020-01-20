@@ -6,6 +6,10 @@ import {
 	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
+import { withTheme } from '../../../theme';
+import EventEmitter from '../../../utils/events';
+import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
+import { isTablet } from '../../../utils/deviceInfo';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -15,10 +19,29 @@ class RoomsListHeaderView extends PureComponent {
 		serverName: PropTypes.string,
 		connecting: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		theme: PropTypes.string,
 		open: PropTypes.func,
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
+	}
+
+	componentDidMount() {
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	componentWillUnmount() {
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
+		}
+	}
+
+	handleCommands = ({ event }) => {
+		if (handleCommandOpenServerDropdown(event)) {
+			this.onPress();
+		}
 	}
 
 	onSearchChangeText = (text) => {
@@ -44,11 +67,12 @@ class RoomsListHeaderView extends PureComponent {
 
 	render() {
 		const {
-			serverName, showServerDropdown, showSearchHeader, connecting, isFetching
+			serverName, showServerDropdown, showSearchHeader, connecting, isFetching, theme
 		} = this.props;
 
 		return (
 			<Header
+				theme={theme}
 				serverName={serverName}
 				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
@@ -77,4 +101,4 @@ const mapDispatchtoProps = dispatch => ({
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 });
 
-export default connect(mapStateToProps, mapDispatchtoProps)(RoomsListHeaderView);
+export default connect(mapStateToProps, mapDispatchtoProps)(withTheme(RoomsListHeaderView));

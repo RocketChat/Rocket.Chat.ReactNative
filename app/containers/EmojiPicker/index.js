@@ -1,124 +1,141 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import map from 'lodash/map';
-import { emojify } from 'react-emojione';
 import equal from 'deep-equal';
+import { connect } from 'react-redux';
+import orderBy from 'lodash/orderBy';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
+import log from '../../utils/log';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
 	keyboardDismissMode: 'none'
 };
 
-export default class EmojiPicker extends Component {
+class EmojiPicker extends Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
+		customEmojis: PropTypes.object,
 		onEmojiSelected: PropTypes.func,
 		tabEmojiStyle: PropTypes.object,
-		emojisPerRow: PropTypes.number,
-		width: PropTypes.number
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
-		this.frequentlyUsed = database.objects('frequentlyUsedEmoji').sorted('count', true);
-		this.customEmojis = database.objects('customEmojis');
+		const customEmojis = Object.keys(props.customEmojis)
+			.filter(item => item === props.customEmojis[item].name)
+			.map(item => ({
+				content: props.customEmojis[item].name,
+				extension: props.customEmojis[item].extension,
+				isCustom: true
+			}));
 		this.state = {
 			frequentlyUsed: [],
-			customEmojis: [],
-			show: false
+			customEmojis,
+			show: false,
+			width: null
 		};
-		this.updateFrequentlyUsed = this.updateFrequentlyUsed.bind(this);
-		this.updateCustomEmojis = this.updateCustomEmojis.bind(this);
 	}
 
-	componentDidMount() {
-		this.updateFrequentlyUsed();
-		this.updateCustomEmojis();
-		requestAnimationFrame(() => this.setState({ show: true }));
-		safeAddListener(this.frequentlyUsed, this.updateFrequentlyUsed);
-		safeAddListener(this.customEmojis, this.updateCustomEmojis);
+	async componentDidMount() {
+		await this.updateFrequentlyUsed();
+		this.setState({ show: true });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { frequentlyUsed, customEmojis, show } = this.state;
-		const { width } = this.props;
+		const { frequentlyUsed, show, width } = this.state;
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
 		if (nextState.show !== show) {
 			return true;
 		}
-		if (nextProps.width !== width) {
+		if (nextState.width !== width) {
 			return true;
 		}
 		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
 			return true;
 		}
-		if (!equal(nextState.customEmojis, customEmojis)) {
-			return true;
-		}
 		return false;
 	}
 
-	componentWillUnmount() {
-		this.frequentlyUsed.removeAllListeners();
-		this.customEmojis.removeAllListeners();
-	}
-
-	onEmojiSelected(emoji) {
-		const { onEmojiSelected } = this.props;
-		if (emoji.isCustom) {
-			const count = this._getFrequentlyUsedCount(emoji.content);
-			this._addFrequentlyUsed({
-				content: emoji.content, extension: emoji.extension, count, isCustom: true
-			});
-			onEmojiSelected(`:${ emoji.content }:`);
-		} else {
-			const content = emoji;
-			const count = this._getFrequentlyUsedCount(content);
-			this._addFrequentlyUsed({ content, count, isCustom: false });
-			const shortname = `:${ emoji }:`;
-			onEmojiSelected(emojify(shortname, { output: 'unicode' }), shortname);
+	onEmojiSelected = (emoji) => {
+		try {
+			const { onEmojiSelected } = this.props;
+			if (emoji.isCustom) {
+				this._addFrequentlyUsed({
+					content: emoji.content, extension: emoji.extension, isCustom: true
+				});
+				onEmojiSelected(`:${ emoji.content }:`);
+			} else {
+				const content = emoji;
+				this._addFrequentlyUsed({ content, isCustom: false });
+				const shortname = `:${ emoji }:`;
+				onEmojiSelected(shortnameToUnicode(shortname), shortname);
+			}
+		} catch (e) {
+			log(e);
 		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	_addFrequentlyUsed = protectedFunction((emoji) => {
-		database.write(() => {
-			database.create('frequentlyUsedEmoji', emoji, true);
+	_addFrequentlyUsed = protectedFunction(async(emoji) => {
+		const db = database.active;
+		const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+		let freqEmojiRecord;
+		try {
+			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
+		} catch (error) {
+			// Do nothing
+		}
+
+		await db.action(async() => {
+			if (freqEmojiRecord) {
+				await freqEmojiRecord.update((f) => {
+					f.count += 1;
+				});
+			} else {
+				await freqEmojiCollection.create((f) => {
+					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
+					Object.assign(f, emoji);
+					f.count = 1;
+				});
+			}
 		});
 	})
 
-	_getFrequentlyUsedCount = (content) => {
-		const emojiRow = this.frequentlyUsed.filtered('content == $0', content);
-		return emojiRow.length ? emojiRow[0].count + 1 : 1;
-	}
-
-	updateFrequentlyUsed() {
-		const frequentlyUsed = map(this.frequentlyUsed.slice(), (item) => {
+	updateFrequentlyUsed = async() => {
+		const db = database.active;
+		const frequentlyUsedRecords = await db.collections.get('frequently_used_emojis').query().fetch();
+		let frequentlyUsed = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		frequentlyUsed = frequentlyUsed.map((item) => {
 			if (item.isCustom) {
-				return item;
+				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
-			return emojify(`${ item.content }`, { output: 'unicode' });
+			return shortnameToUnicode(`${ item.content }`);
 		});
 		this.setState({ frequentlyUsed });
 	}
 
-	updateCustomEmojis() {
-		const customEmojis = map(this.customEmojis.slice(), item => ({ content: item.name, extension: item.extension, isCustom: true }));
-		this.setState({ customEmojis });
-	}
+	onLayout = ({ nativeEvent: { layout: { width } } }) => this.setState({ width });
 
-	renderCategory(category, i) {
-		const { frequentlyUsed, customEmojis } = this.state;
-		const { emojisPerRow, width, baseUrl } = this.props;
+	renderCategory(category, i, label) {
+		const { frequentlyUsed, customEmojis, width } = this.state;
+		const { baseUrl } = this.props;
 
 		let emojis = [];
 		if (i === 0) {
@@ -133,41 +150,42 @@ export default class EmojiPicker extends Component {
 				emojis={emojis}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
-				size={emojisPerRow}
 				width={width}
 				baseUrl={baseUrl}
+				tabLabel={label}
 			/>
 		);
 	}
 
 	render() {
 		const { show, frequentlyUsed } = this.state;
-		const { tabEmojiStyle } = this.props;
+		const { tabEmojiStyle, theme } = this.props;
 
 		if (!show) {
 			return null;
 		}
 		return (
-			<ScrollableTabView
-				renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
-				contentProps={scrollProps}
-				style={styles.background}
-			>
-				{
-					categories.tabs.map((tab, i) => (
-						(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
-							: (
-								<ScrollView
-									key={tab.category}
-									tabLabel={tab.tabLabel}
-									style={styles.background}
-									{...scrollProps}
-								>
-									{this.renderCategory(tab.category, i)}
-								</ScrollView>
-							)))
-				}
-			</ScrollableTabView>
+			<View onLayout={this.onLayout} style={{ flex: 1 }}>
+				<ScrollableTabView
+					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
+					contentProps={scrollProps}
+					style={{ backgroundColor: themes[theme].focusedBackground }}
+				>
+					{
+						categories.tabs.map((tab, i) => (
+							(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
+								: (
+									this.renderCategory(tab.category, i, tab.tabLabel)
+								)))
+					}
+				</ScrollableTabView>
+			</View>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	customEmojis: state.customEmojis
+});
+
+export default connect(mapStateToProps)(withTheme(EmojiPicker));

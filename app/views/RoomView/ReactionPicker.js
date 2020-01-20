@@ -6,58 +6,72 @@ import Modal from 'react-native-modal';
 import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { toggleReactionPicker as toggleReactionPickerAction } from '../../actions/messages';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
+import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
-const tabEmojiStyle = { fontSize: 15 };
+const maxSize = 400;
 
 class ReactionPicker extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		window: PropTypes.any,
-		showReactionPicker: PropTypes.bool,
-		toggleReactionPicker: PropTypes.func,
-		onEmojiSelected: PropTypes.func
+		message: PropTypes.object,
+		show: PropTypes.bool,
+		reactionClose: PropTypes.func,
+		onEmojiSelected: PropTypes.func,
+		split: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { showReactionPicker, window } = this.props;
-		return nextProps.showReactionPicker !== showReactionPicker || window.width !== nextProps.window.width;
+		const { show, window, split } = this.props;
+		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
 	}
 
-	onEmojiSelected(emoji, shortname) {
+	onEmojiSelected = (emoji, shortname) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
-		const { onEmojiSelected } = this.props;
-		onEmojiSelected(shortname || emoji);
+		const { onEmojiSelected, message } = this.props;
+		onEmojiSelected(shortname || emoji, message.id);
 	}
 
 	render() {
 		const {
-			window: { width, height }, showReactionPicker, baseUrl, toggleReactionPicker
+			window: { width, height }, show, baseUrl, reactionClose, split
 		} = this.props;
 
-		return (showReactionPicker
+		let widthStyle = width - margin;
+		let heightStyle = Math.min(width, height) - (margin * 2);
+		if (split) {
+			widthStyle = maxSize;
+			heightStyle = maxSize;
+		}
+
+		return (show
 			? (
 				<Modal
-					isVisible={showReactionPicker}
+					isVisible={show}
 					style={{ alignItems: 'center' }}
-					onBackdropPress={() => toggleReactionPicker()}
-					onBackButtonPress={() => toggleReactionPicker()}
+					onBackdropPress={reactionClose}
+					onBackButtonPress={reactionClose}
 					animationIn='fadeIn'
 					animationOut='fadeOut'
 				>
 					<View
-						style={[styles.reactionPickerContainer, { width: width - margin, height: Math.min(width, height) - (margin * 2) }]}
+						style={[
+							styles.reactionPickerContainer,
+							{
+								width: widthStyle,
+								height: heightStyle
+							}
+						]}
 						testID='reaction-picker'
 					>
 						<EmojiPicker
-							tabEmojiStyle={tabEmojiStyle}
-							width={Math.min(width, height) - margin}
-							onEmojiSelected={(emoji, shortname) => this.onEmojiSelected(emoji, shortname)}
+							// tabEmojiStyle={tabEmojiStyle}
+							onEmojiSelected={this.onEmojiSelected}
 							baseUrl={baseUrl}
 						/>
 					</View>
@@ -69,12 +83,7 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	showReactionPicker: state.messages.showReactionPicker,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });
 
-const mapDispatchToProps = dispatch => ({
-	toggleReactionPicker: message => dispatch(toggleReactionPickerAction(message))
-});
-
-export default responsive(connect(mapStateToProps, mapDispatchToProps)(ReactionPicker));
+export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));

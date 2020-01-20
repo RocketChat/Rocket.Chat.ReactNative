@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
 import styles from './styles';
+import { themes } from '../../constants/colors';
 import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
-	children, link
+	children, link, preview, theme
 }) => {
 	const handlePress = () => {
 		if (!link) {
 			return;
 		}
-		openLink(link);
+		openLink(link, theme);
 	};
 
 	const childLength = React.Children.toArray(children).filter(o => o).length;
@@ -20,8 +21,12 @@ const Link = React.memo(({
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
 		<Text
-			onPress={handlePress}
-			style={styles.link}
+			onPress={preview ? undefined : handlePress}
+			style={
+				!preview
+					? { ...styles.link, color: themes[theme].actionTintColor }
+					: { color: themes[theme].bodyText }
+			}
 		>
 			{ childLength !== 0 ? children : link }
 		</Text>
@@ -30,7 +35,9 @@ const Link = React.memo(({
 
 Link.propTypes = {
 	children: PropTypes.node,
-	link: PropTypes.string
+	link: PropTypes.string,
+	theme: PropTypes.string,
+	preview: PropTypes.bool
 };
 
 export default Link;

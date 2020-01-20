@@ -8,25 +8,32 @@ import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message/Message';
-import RCActivityIndicator from '../../containers/ActivityIndicator';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
-import FileModal from '../../containers/FileModal';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
+import { themedHeader } from '../../utils/navigation';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		title: navigation.state.params.name
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		title: navigation.state.params.name,
+		...themedHeader(screenProps.theme)
 	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		customEmojis: PropTypes.object,
+		theme: PropTypes.string,
+		split: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -34,8 +41,6 @@ class MessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			messages: [],
-			selectedAttachment: {},
-			photoModalVisible: false,
 			fileLoading: true
 		};
 		this.rid = props.navigation.getParam('rid');
@@ -49,12 +54,13 @@ class MessagesView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			loading, messages, photoModalVisible, fileLoading
+			loading, messages, fileLoading
 		} = this.state;
-		if (nextState.loading !== loading) {
+		const { theme } = this.props;
+		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (nextState.photoModalVisible !== photoModalVisible) {
+		if (nextState.loading !== loading) {
 			return true;
 		}
 		if (!equal(nextState.messages, messages)) {
@@ -69,7 +75,7 @@ class MessagesView extends React.Component {
 
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
-		const { user, baseUrl } = this.props;
+		const { user, baseUrl, theme } = this.props;
 
 		const renderItemCommonProps = item => ({
 			baseUrl,
@@ -80,7 +86,8 @@ class MessagesView extends React.Component {
 			isEdited: !!item.editedAt,
 			isHeader: true,
 			attachments: item.attachments || [],
-			onOpenFileModal: this.onOpenFileModal
+			showAttachment: this.showAttachment,
+			getCustomEmoji: this.getCustomEmoji
 		});
 
 		return ({
@@ -104,6 +111,7 @@ class MessagesView extends React.Component {
 								description: item.description,
 								...url
 							}]}
+							theme={theme}
 						/>
 					);
 				}
@@ -123,6 +131,7 @@ class MessagesView extends React.Component {
 					<Message
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
+						theme={theme}
 					/>
 				)
 			},
@@ -142,10 +151,11 @@ class MessagesView extends React.Component {
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
 						onLongPress={() => this.onLongPress(item)}
+						theme={theme}
 					/>
 				),
 				actionTitle: I18n.t('Unstar'),
-				handleActionPress: message => RocketChat.toggleStarMessage(message)
+				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
@@ -158,10 +168,11 @@ class MessagesView extends React.Component {
 						{...renderItemCommonProps(item)}
 						msg={item.msg}
 						onLongPress={() => this.onLongPress(item)}
+						theme={theme}
 					/>
 				),
 				actionTitle: I18n.t('Unpin'),
-				handleActionPress: message => RocketChat.togglePinMessage(message)
+				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
 	}
@@ -191,12 +202,22 @@ class MessagesView extends React.Component {
 		}
 	}
 
-	onOpenFileModal = (attachment) => {
-		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
+	getCustomEmoji = (name) => {
+		const { customEmojis } = this.props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
 	}
 
-	onCloseFileModal = () => {
-		this.setState({ selectedAttachment: {}, photoModalVisible: false });
+	showAttachment = (attachment) => {
+		const { navigation, split } = this.props;
+		let params = { attachment };
+		if (split) {
+			params = { ...params, from: 'MessagesView' };
+		}
+		navigation.navigate('AttachmentView', params);
 	}
 
 	onLongPress = (message) => {
@@ -236,43 +257,48 @@ class MessagesView extends React.Component {
 		this.setState({ fileLoading });
 	}
 
-	renderEmpty = () => (
-		<View style={styles.listEmptyContainer} testID={this.content.testID}>
-			<Text style={styles.noDataFound}>{this.content.noDataMsg}</Text>
-		</View>
-	)
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View
+				style={[
+					styles.listEmptyContainer,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				testID={this.content.testID}
+			>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
+			</View>
+		);
+	}
 
 	renderItem = ({ item }) => this.content.renderItem(item)
 
 	render() {
-		const {
-			messages, loading, selectedAttachment, photoModalVisible, fileLoading
-		} = this.state;
-		const { user, baseUrl } = this.props;
+		const { messages, loading } = this.state;
+		const { theme } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID={this.content.testID} forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+			<SafeAreaView
+				style={[
+					styles.list,
+					{ backgroundColor: themes[theme].backgroundColor }
+				]}
+				forceInset={{ vertical: 'never' }}
+				testID={this.content.testID}
+			>
+				<StatusBar theme={theme} />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
-					ListFooterComponent={loading ? <RCActivityIndicator /> : null}
-				/>
-				<FileModal
-					attachment={selectedAttachment}
-					isVisible={photoModalVisible}
-					onClose={this.onCloseFileModal}
-					user={user}
-					baseUrl={baseUrl}
-					loading={fileLoading}
-					setLoading={this.setFileLoading}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
 			</SafeAreaView>
 		);
@@ -285,7 +311,8 @@ const mapStateToProps = state => ({
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
 		token: state.login.user && state.login.user.token
-	}
+	},
+	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(MessagesView);
+export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));

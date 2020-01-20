@@ -1,69 +1,29 @@
 import EJSON from 'ejson';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { InteractionManager } from 'react-native';
 
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import database from '../../realm';
+import database from '../../database';
+import reduxStore from '../../createStore';
+import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+const unsubscribe = (subscriptions = []) => Promise.all(subscriptions.map(sub => sub.unsubscribe));
 const removeListener = listener => listener.stop();
 
+let promises;
+let connectedListener;
+let disconnectedListener;
+let notifyRoomListener;
+let messageReceivedListener;
+
 export default function subscribeRoom({ rid }) {
-	let promises;
-	let connectedListener;
-	let disconnectedListener;
-	let notifyRoomListener;
-	let messageReceivedListener;
-	const typingTimeouts = {};
+	console.log(`[RCRN] Subscribed to room ${ rid }`);
 
 	const handleConnection = () => {
-		this.loadMissedMessages({ rid });
-	};
-
-	const getUserTyping = username => (
-		database
-			.memoryDatabase.objects('usersTyping')
-			.filtered('rid = $0 AND username = $1', rid, username)
-	);
-
-	const removeUserTyping = (username) => {
-		const userTyping = getUserTyping(username);
-		try {
-			database.memoryDatabase.write(() => {
-				database.memoryDatabase.delete(userTyping);
-			});
-
-			if (typingTimeouts[username]) {
-				clearTimeout(typingTimeouts[username]);
-				typingTimeouts[username] = null;
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const addUserTyping = (username) => {
-		const userTyping = getUserTyping(username);
-		// prevent duplicated
-		if (userTyping.length === 0) {
-			try {
-				database.memoryDatabase.write(() => {
-					database.memoryDatabase.create('usersTyping', { rid, username });
-				});
-
-				if (typingTimeouts[username]) {
-					clearTimeout(typingTimeouts[username]);
-					typingTimeouts[username] = null;
-				}
-
-				typingTimeouts[username] = setTimeout(() => {
-					removeUserTyping(username);
-				}, 10000);
-			} catch (e) {
-				log(e);
-			}
-		}
+		this.loadMissedMessages({ rid }).catch(e => console.log(e));
 	};
 
 	const handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
@@ -74,94 +34,202 @@ export default function subscribeRoom({ rid }) {
 		if (ev === 'typing') {
 			const [username, typing] = ddpMessage.fields.args;
 			if (typing) {
-				addUserTyping(username);
+				reduxStore.dispatch(addUserTyping(username));
 			} else {
-				removeUserTyping(username);
+				reduxStore.dispatch(removeUserTyping(username));
 			}
 		} else if (ev === 'deleteMessage') {
-			database.write(() => {
+			InteractionManager.runAfterInteractions(async() => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-					const { _id } = ddpMessage.fields.args[0];
-					const message = database.objects('messages').filtered('_id = $0', _id);
-					database.delete(message);
-					const thread = database.objects('threads').filtered('_id = $0', _id);
-					database.delete(thread);
-					const threadMessage = database.objects('threadMessages').filtered('_id = $0', _id);
-					database.delete(threadMessage);
-					const cleanTmids = database.objects('messages').filtered('tmid = $0', _id).snapshot();
-					if (cleanTmids && cleanTmids.length) {
-						cleanTmids.forEach((m) => {
-							m.tmid = null;
+					try {
+						const { _id } = ddpMessage.fields.args[0];
+						const db = database.active;
+						const msgCollection = db.collections.get('messages');
+						const threadsCollection = db.collections.get('threads');
+						const threadMessagesCollection = db.collections.get('thread_messages');
+						let deleteMessage;
+						let deleteThread;
+						let deleteThreadMessage;
+
+						// Delete message
+						try {
+							const m = await msgCollection.find(_id);
+							deleteMessage = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+
+						// Delete thread
+						try {
+							const m = await threadsCollection.find(_id);
+							deleteThread = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+
+						// Delete thread message
+						try {
+							const m = await threadMessagesCollection.find(_id);
+							deleteThreadMessage = m.prepareDestroyPermanently();
+						} catch (e) {
+							// Do nothing
+						}
+						await db.action(async() => {
+							await db.batch(
+								deleteMessage, deleteThread, deleteThreadMessage
+							);
 						});
+					} catch (e) {
+						log(e);
 					}
 				}
 			});
 		}
 	});
 
-	const read = debounce(() => {
-		const [room] = database.objects('subscriptions').filtered('rid = $0', rid);
-		if (room && room._id) {
-			this.readMessages(rid);
-		}
+	const read = debounce((lastOpen) => {
+		this.readMessages(rid, lastOpen);
 	}, 300);
 
 	const handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		const lastOpen = new Date();
 		if (rid !== message.rid) {
 			return;
 		}
-		requestAnimationFrame(() => {
-			try {
-				database.write(() => {
-					database.create('messages', message, true);
-					// if it's a thread "header"
-					if (message.tlm) {
-						database.create('threads', message, true);
-					} else if (message.tmid) {
-						message.rid = message.tmid;
-						database.create('threadMessages', message, true);
-					}
-				});
+		InteractionManager.runAfterInteractions(async() => {
+			const db = database.active;
+			const batch = [];
+			const msgCollection = db.collections.get('messages');
+			const threadsCollection = db.collections.get('threads');
+			const threadMessagesCollection = db.collections.get('thread_messages');
+			let messageRecord;
+			let threadRecord;
+			let threadMessageRecord;
 
-				read();
+			// Create or update message
+			try {
+				messageRecord = await msgCollection.find(message._id);
+			} catch (error) {
+				// Do nothing
+			}
+			if (messageRecord) {
+				try {
+					const update = messageRecord.prepareUpdate((m) => {
+						Object.assign(m, message);
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
+			} else {
+				batch.push(
+					msgCollection.prepareCreate(protectedFunction((m) => {
+						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+						m.subscription.id = rid;
+						Object.assign(m, message);
+					}))
+				);
+			}
+
+			// Create or update thread
+			if (message.tlm) {
+				try {
+					threadRecord = await threadsCollection.find(message._id);
+				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadRecord) {
+					batch.push(
+						threadRecord.prepareUpdate(protectedFunction((t) => {
+							Object.assign(t, message);
+						}))
+					);
+				} else {
+					batch.push(
+						threadsCollection.prepareCreate(protectedFunction((t) => {
+							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
+							t.subscription.id = rid;
+							Object.assign(t, message);
+						}))
+					);
+				}
+			}
+
+			// Create or update thread message
+			if (message.tmid) {
+				try {
+					threadMessageRecord = await threadMessagesCollection.find(message._id);
+				} catch (error) {
+					// Do nothing
+				}
+
+				if (threadMessageRecord) {
+					batch.push(
+						threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
+							Object.assign(tm, message);
+							tm.rid = message.tmid;
+							delete tm.tmid;
+						}))
+					);
+				} else {
+					batch.push(
+						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
+							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
+							Object.assign(tm, message);
+							tm.subscription.id = rid;
+							tm.rid = message.tmid;
+							delete tm.tmid;
+						}))
+					);
+				}
+			}
+
+			read(lastOpen);
+
+			try {
+				await db.action(async() => {
+					await db.batch(...batch);
+				});
 			} catch (e) {
-				console.warn('handleMessageReceived', e);
+				log(e);
 			}
 		});
 	});
 
-	const stop = () => {
+	const stop = async() => {
+		let params;
 		if (promises) {
-			promises.then(unsubscribe);
+			try {
+				params = await promises;
+				await unsubscribe(params);
+			} catch (error) {
+				// Do nothing
+			}
 			promises = false;
 		}
 		if (connectedListener) {
-			connectedListener.then(removeListener);
+			params = await connectedListener;
+			removeListener(params);
 			connectedListener = false;
 		}
 		if (disconnectedListener) {
-			disconnectedListener.then(removeListener);
+			params = await disconnectedListener;
+			removeListener(params);
 			disconnectedListener = false;
 		}
 		if (notifyRoomListener) {
-			notifyRoomListener.then(removeListener);
+			params = await notifyRoomListener;
+			removeListener(params);
 			notifyRoomListener = false;
 		}
 		if (messageReceivedListener) {
-			messageReceivedListener.then(removeListener);
+			params = await messageReceivedListener;
+			removeListener(params);
 			messageReceivedListener = false;
 		}
-		Object.keys(typingTimeouts).forEach((key) => {
-			if (typingTimeouts[key]) {
-				clearTimeout(typingTimeouts[key]);
-				typingTimeouts[key] = null;
-			}
-		});
-		database.memoryDatabase.write(() => {
-			const usersTyping = database.memoryDatabase.objects('usersTyping').filtered('rid == $0', rid);
-			database.memoryDatabase.delete(usersTyping);
-		});
+		reduxStore.dispatch(clearUserTyping());
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnection);
@@ -169,11 +237,7 @@ export default function subscribeRoom({ rid }) {
 	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
 	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
 
-	try {
-		promises = this.sdk.subscribeRoom(rid);
-	} catch (e) {
-		log(e);
-	}
+	promises = this.sdk.subscribeRoom(rid);
 
 	return {
 		stop: () => stop()

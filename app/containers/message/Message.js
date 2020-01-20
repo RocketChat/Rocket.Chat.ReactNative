@@ -5,7 +5,6 @@ import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
 import styles from './styles';
-import sharedStyles from '../../views/Styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
@@ -16,18 +15,28 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
+import CallButton from './CallButton';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
 		return (
-			<React.Fragment>
+			<>
 				<User {...props} />
 				<Discussion {...props} />
-			</React.Fragment>
+			</>
+		);
+	}
+	if (props.type === 'jitsi_call_started') {
+		return (
+			<>
+				<User {...props} />
+				<Content {...props} isInfo />
+				<CallButton {...props} />
+			</>
 		);
 	}
 	return (
-		<React.Fragment>
+		<>
 			<User {...props} />
 			<Content {...props} />
 			<Attachments {...props} />
@@ -35,18 +44,18 @@ const MessageInner = React.memo((props) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
-		</React.Fragment>
+		</>
 	);
 });
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
-		const thread = props.isThreadReply ? <RepliedThread isTemp={props.isTemp} {...props} /> : null;
+		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={[styles.flex, sharedStyles.alignItemsCenter]}>
+				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[
@@ -75,6 +84,7 @@ const Message = React.memo((props) => {
 				<ReadReceipt
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					unread={props.unread}
+					theme={props.theme}
 				/>
 			</View>
 		</View>
@@ -124,7 +134,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	onPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
-	unread: PropTypes.bool
+	unread: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 MessageInner.propTypes = {

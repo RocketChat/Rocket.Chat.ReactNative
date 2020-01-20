@@ -1,23 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
-import database, { safeAddListener } from '../../../lib/realm';
-
-const styles = StyleSheet.create({
-	more: {
-		marginHorizontal: 0,
-		marginLeft: 0,
-		marginRight: 5
-	},
-	thread: {
-		marginHorizontal: 0,
-		marginLeft: 0,
-		marginRight: 15
-	}
-});
+import database from '../../../lib/database';
 
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
@@ -32,42 +18,46 @@ class RightButtonsContainer extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-		if (props.tmid) {
-			// FIXME: it may be empty if the thread header isn't fetched yet
-			this.thread = database.objectForPrimaryKey('messages', props.tmid);
-		}
 		this.state = {
 			isFollowingThread: true
 		};
 	}
 
-	componentDidMount() {
-		if (this.thread) {
-			safeAddListener(this.thread, this.updateThread);
+	async componentDidMount() {
+		const { tmid } = this.props;
+		if (tmid) {
+			const db = database.active;
+			try {
+				const threadRecord = await db.collections.get('messages').find(tmid);
+				this.observeThead(threadRecord);
+			} catch (e) {
+				console.log('Can\'t find message to observe.');
+			}
 		}
 	}
 
 	componentWillUnmount() {
-		if (this.thread && this.thread.removeAllListeners) {
-			this.thread.removeAllListeners();
+		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
+			this.threadSubscription.unsubscribe();
 		}
 	}
 
-	updateThread = () => {
+	observeThead = (threadRecord) => {
+		const threadObservable = threadRecord.observe();
+		this.threadSubscription = threadObservable
+			.subscribe(thread => this.updateThread(thread));
+	}
+
+	updateThread = (thread) => {
 		const { userId } = this.props;
 		this.setState({
-			isFollowingThread: this.thread.replies && !!this.thread.replies.find(t => t === userId)
+			isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
 		});
 	}
 
 	goThreadsView = () => {
 		const { rid, t, navigation } = this.props;
 		navigation.navigate('ThreadMessagesView', { rid, t });
-	}
-
-	goRoomActionsView = () => {
-		const { rid, t, navigation } = this.props;
-		navigation.navigate('RoomActionsView', { rid, t });
 	}
 
 	toggleFollowThread = () => {
@@ -104,16 +94,8 @@ class RightButtonsContainer extends React.PureComponent {
 						iconName='thread'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
-						buttonStyle={styles.thread}
 					/>
 				) : null}
-				<Item
-					title='more'
-					iconName='menu'
-					onPress={this.goRoomActionsView}
-					testID='room-view-header-actions'
-					buttonStyle={styles.more}
-				/>
 			</CustomHeaderButtons>
 		);
 	}

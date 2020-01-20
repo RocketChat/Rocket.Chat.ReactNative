@@ -1,32 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ActionSheet from 'react-native-action-sheet';
 
-import { errorActionsHide as errorActionsHideAction } from '../actions/messages';
 import RocketChat from '../lib/rocketchat';
-import database from '../lib/realm';
+import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 class MessageErrorActions extends React.Component {
 	static propTypes = {
-		errorActionsHide: PropTypes.func.isRequired,
-		actionMessage: PropTypes.object
+		actionsHide: PropTypes.func.isRequired,
+		message: PropTypes.object,
+		tmid: PropTypes.string
 	};
-
-	handleResend = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		RocketChat.resendMessage(actionMessage._id);
-	});
-
-	handleDelete = protectedFunction(() => {
-		const { actionMessage } = this.props;
-		database.write(() => {
-			const msg = database.objects('messages').filtered('_id = $0', actionMessage._id);
-			database.delete(msg);
-		});
-	})
 
 	// eslint-disable-next-line react/sort-comp
 	constructor(props) {
@@ -41,6 +28,68 @@ class MessageErrorActions extends React.Component {
 		});
 	}
 
+	handleResend = protectedFunction(async() => {
+		const { message, tmid } = this.props;
+		await RocketChat.resendMessage(message, tmid);
+	});
+
+	handleDelete = async() => {
+		try {
+			const { message, tmid } = this.props;
+			const db = database.active;
+			const deleteBatch = [];
+			const msgCollection = db.collections.get('messages');
+			const threadCollection = db.collections.get('threads');
+
+			// Delete the object (it can be Message or ThreadMessage instance)
+			deleteBatch.push(message.prepareDestroyPermanently());
+
+			// If it's a thread, we find and delete the whole tree, if necessary
+			if (tmid) {
+				try {
+					const msg = await msgCollection.find(message.id);
+					deleteBatch.push(msg.prepareDestroyPermanently());
+				} catch (error) {
+					// Do nothing: message not found
+				}
+
+				try {
+					// Find the thread header and update it
+					const msg = await msgCollection.find(tmid);
+					if (msg.tcount <= 1) {
+						deleteBatch.push(
+							msg.prepareUpdate((m) => {
+								m.tcount = null;
+								m.tlm = null;
+							})
+						);
+
+						try {
+							// If the whole thread was removed, delete the thread
+							const thread = await threadCollection.find(tmid);
+							deleteBatch.push(thread.prepareDestroyPermanently());
+						} catch (error) {
+							// Do nothing: thread not found
+						}
+					} else {
+						deleteBatch.push(
+							msg.prepareUpdate((m) => {
+								m.tcount -= 1;
+							})
+						);
+					}
+				} catch (error) {
+					// Do nothing: message not found
+				}
+			}
+			await db.action(async() => {
+				await db.batch(...deleteBatch);
+			});
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	showActionSheet = () => {
 		ActionSheet.showActionSheetWithOptions({
 			options: this.options,
@@ -53,7 +102,7 @@ class MessageErrorActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { errorActionsHide } = this.props;
+		const { actionsHide } = this.props;
 		switch (actionIndex) {
 			case this.RESEND_INDEX:
 				this.handleResend();
@@ -64,7 +113,7 @@ class MessageErrorActions extends React.Component {
 			default:
 				break;
 		}
-		errorActionsHide();
+		actionsHide();
 	}
 
 	render() {
@@ -74,12 +123,4 @@ class MessageErrorActions extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	actionMessage: state.messages.actionMessage
-});
-
-const mapDispatchToProps = dispatch => ({
-	errorActionsHide: () => dispatch(errorActionsHideAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageErrorActions);
+export default MessageErrorActions;

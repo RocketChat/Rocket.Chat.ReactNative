@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { STATUS_COLORS, COLOR_TEXT_DESCRIPTION, COLOR_WHITE } from '../../../constants/colors';
+import { STATUS_COLORS, themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isAndroid } from '../../../utils/deviceInfo';
 
 const ICON_SIZE = 18;
 
@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
 	type: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-		marginRight: 8,
-		color: isIOS ? COLOR_TEXT_DESCRIPTION : COLOR_WHITE
+		marginRight: 8
 	},
 	status: {
 		marginLeft: 4,
@@ -22,9 +21,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Icon = React.memo(({ type, status }) => {
+const Icon = React.memo(({ type, status, theme }) => {
 	if (type === 'd') {
 		return <Status size={10} style={styles.status} status={status} />;
+	}
+
+	let colorStyle = {};
+	if (type === 'd') {
+		colorStyle = { color: STATUS_COLORS[status] };
+	} else {
+		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
 	}
 
 	let icon;
@@ -47,7 +53,7 @@ const Icon = React.memo(({ type, status }) => {
 					width: ICON_SIZE * 1,
 					height: ICON_SIZE * 1
 				},
-				type === 'd' && { color: STATUS_COLORS[status] }
+				colorStyle
 			]}
 		/>
 	);
@@ -55,6 +61,7 @@ const Icon = React.memo(({ type, status }) => {
 
 Icon.propTypes = {
 	type: PropTypes.string,
-	status: PropTypes.string
+	status: PropTypes.string,
+	theme: PropTypes.string
 };
 export default Icon;

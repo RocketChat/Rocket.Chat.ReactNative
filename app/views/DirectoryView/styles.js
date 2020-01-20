@@ -1,13 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { COLOR_WHITE, COLOR_SEPARATOR, COLOR_PRIMARY } from '../../constants/colors';
-import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	safeAreaView: {
-		flex: 1,
-		backgroundColor: isIOS ? '#F7F8FA' : '#E1E5E8'
+		flex: 1
 	},
 	list: {
 		flex: 1
@@ -19,46 +16,38 @@ export default StyleSheet.create({
 		marginLeft: 60
 	},
 	toggleDropdownContainer: {
-		height: 47,
-		backgroundColor: COLOR_WHITE,
+		height: 46,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	toggleDropdownIcon: {
-		color: COLOR_PRIMARY,
 		marginLeft: 20,
 		marginRight: 17
 	},
 	toggleDropdownText: {
 		flex: 1,
-		color: COLOR_PRIMARY,
 		fontSize: 17,
 		...sharedStyles.textRegular
 	},
 	toggleDropdownArrow: {
-		...sharedStyles.textColorDescription,
 		marginRight: 15
 	},
 	dropdownContainer: {
-		backgroundColor: COLOR_WHITE,
 		width: '100%',
 		position: 'absolute',
 		top: 0
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill,
-		backgroundColor: '#000000'
+		...StyleSheet.absoluteFill
 	},
 	dropdownContainerHeader: {
-		height: 47,
+		height: 46,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderColor: COLOR_SEPARATOR,
 		alignItems: 'center',
-		backgroundColor: isIOS ? COLOR_WHITE : '#54585E',
 		flexDirection: 'row'
 	},
 	dropdownItemButton: {
-		height: 57,
+		height: 46,
 		justifyContent: 'center'
 	},
 	dropdownItemContainer: {
@@ -69,32 +58,27 @@ export default StyleSheet.create({
 	dropdownItemText: {
 		fontSize: 18,
 		flex: 1,
-		...sharedStyles.textColorNormal,
 		...sharedStyles.textRegular
 	},
 	dropdownItemDescription: {
 		fontSize: 14,
 		flex: 1,
 		marginTop: 2,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	dropdownToggleText: {
 		fontSize: 15,
 		flex: 1,
 		marginLeft: 15,
-		...sharedStyles.textColorDescription,
 		...sharedStyles.textRegular
 	},
 	dropdownItemIcon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15,
-		...sharedStyles.textColorDescription
+		marginHorizontal: 15
 	},
 	dropdownSeparator: {
 		height: StyleSheet.hairlineWidth,
-		backgroundColor: COLOR_SEPARATOR,
 		marginHorizontal: 15,
 		flex: 1
 	},

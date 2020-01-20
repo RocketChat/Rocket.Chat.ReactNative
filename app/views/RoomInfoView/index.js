@@ -9,33 +9,37 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name) => (type === 'd'
-	? <Text testID='room-info-view-name' style={styles.roomTitle}>{name}</Text>
+const getRoomTitle = (room, type, name, theme) => (type === 'd'
+	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' />
-			<Text testID='room-info-view-name' style={styles.roomTitle} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
 		</View>
 	)
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
 		return {
 			title: I18n.t('Room_Info'),
+			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
@@ -53,20 +57,19 @@ class RoomInfoView extends React.Component {
 			token: PropTypes.string
 		}),
 		baseUrl: PropTypes.string,
-		Message_TimeFormat: PropTypes.string
+		Message_TimeFormat: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
+		const room = props.navigation.getParam('room');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
-		this.roles = database.objects('roles');
-		this.sub = {
-			unsubscribe: () => {}
-		};
 		this.state = {
-			room: {},
-			roomUser: {}
+			room: room || {},
+			roomUser: {},
+			parsedRoles: []
 		};
 	}
 
@@ -77,19 +80,29 @@ class RoomInfoView extends React.Component {
 			try {
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ roomUser: result.user });
+					const { roles } = result.user;
+					let parsedRoles = [];
+					if (roles && roles.length) {
+						parsedRoles = await Promise.all(roles.map(async(role) => {
+							const description = await this.getRoleDescription(role);
+							return description;
+						}));
+					}
+					this.setState({ roomUser: result.user, parsedRoles });
 				}
 			} catch (e) {
 				log(e);
 			}
 			return;
 		}
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', this.rid);
-		safeAddListener(this.rooms, this.updateRoom);
-		let room = {};
-		if (this.rooms.length > 0) {
-			this.setState({ room: this.rooms[0] });
-			[room] = this.rooms;
+		const { navigation } = this.props;
+		let room = navigation.getParam('room');
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					this.setState({ room: changes });
+				});
 		} else {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);
@@ -102,46 +115,54 @@ class RoomInfoView extends React.Component {
 				log(e);
 			}
 		}
-		const permissions = RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			const { navigation } = this.props;
 			navigation.setParams({ showEdit: true });
 		}
 	}
 
-	getRoleDescription = (id) => {
-		const role = database.objectForPrimaryKey('roles', id);
-		if (role) {
-			return role.description;
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
-		return null;
+	}
+
+	getRoleDescription = async(id) => {
+		const db = database.active;
+		try {
+			const rolesCollection = db.collections.get('roles');
+			const role = await rolesCollection.find(id);
+			if (role) {
+				return role.description;
+			}
+			return null;
+		} catch (e) {
+			return null;
+		}
 	}
 
 	isDirect = () => this.t === 'd'
 
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			this.setState({ room: JSON.parse(JSON.stringify(this.rooms[0])) });
-		}
+	renderItem = (key, room) => {
+		const { theme } = this.props;
+		return (
+			<View style={styles.item}>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
+				<Text
+					style={[styles.itemContent, !room[key] && styles.itemContent__empty, { color: themes[theme].auxiliaryText }]}
+					testID={`room-info-view-${ key }`}
+				>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
+				</Text>
+			</View>
+		);
 	}
 
-	renderItem = (key, room) => (
-		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{I18n.t(camelize(key))}</Text>
-			<Text
-				style={[styles.itemContent, !room[key] && styles.itemContent__empty]}
-				testID={`room-info-view-${ key }`}
-			>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
-			</Text>
-		</View>
-	);
-
-	renderRole = (role) => {
-		const description = this.getRoleDescription(role);
+	renderRole = (description) => {
+		const { theme } = this.props;
 		if (description) {
 			return (
-				<View style={styles.roleBadge} key={role}>
-					<Text style={styles.role}>{ this.getRoleDescription(role) }</Text>
+				<View style={[styles.roleBadge, { backgroundColor: themes[theme].focusedBackground }]} key={description}>
+					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
 		}
@@ -149,13 +170,13 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
-		const { roomUser } = this.state;
-		if (roomUser && roomUser.roles && roomUser.roles.length) {
+		const { parsedRoles } = this.state;
+		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
 					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
-						{roomUser.roles.map(role => this.renderRole(role))}
+						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
 				</View>
 			);
@@ -165,7 +186,7 @@ class RoomInfoView extends React.Component {
 
 	renderTimezone = () => {
 		const { roomUser } = this.state;
-		const { Message_TimeFormat } = this.props;
+		const { Message_TimeFormat, theme } = this.props;
 
 		if (roomUser) {
 			const { utcOffset } = roomUser;
@@ -175,8 +196,8 @@ class RoomInfoView extends React.Component {
 			}
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>{I18n.t('Timezone')}</Text>
-					<Text style={styles.itemContent}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
+					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Timezone')}</Text>
+					<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
 				</View>
 			);
 		}
@@ -184,7 +205,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<Avatar
@@ -196,7 +217,7 @@ class RoomInfoView extends React.Component {
 				userId={user.id}
 				token={user.token}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}
@@ -241,38 +262,43 @@ class RoomInfoView extends React.Component {
 	renderChannel = () => {
 		const { room } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderItem('description', room)}
 				{this.renderItem('topic', room)}
 				{this.renderItem('announcement', room)}
 				{room.broadcast ? this.renderBroadcast() : null}
-			</React.Fragment>
+			</>
 		);
 	}
 
 	renderDirect = () => {
 		const { roomUser } = this.state;
 		return (
-			<React.Fragment>
+			<>
 				{this.renderRoles()}
 				{this.renderTimezone()}
 				{this.renderCustomFields(roomUser._id)}
-			</React.Fragment>
+			</>
 		);
 	}
 
 	render() {
 		const { room, roomUser } = this.state;
+		const { theme } = this.props;
 		if (!room) {
 			return <View />;
 		}
 		return (
-			<ScrollView style={styles.scroll}>
-				<StatusBar />
-				<SafeAreaView style={styles.container} testID='room-info-view' forceInset={{ vertical: 'never' }}>
+			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
+				<StatusBar theme={theme} />
+				<SafeAreaView
+					style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
+					forceInset={{ vertical: 'never' }}
+					testID='room-info-view'
+				>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
 						{this.t === 'd' ? <Text style={styles.statusText} ellipsizeMode='tail' numberOfLines={2}>{roomUser.statusText}</Text> : null }
 					</View>
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
@@ -292,4 +318,4 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
-export default connect(mapStateToProps)(RoomInfoView);
+export default connect(mapStateToProps)(withTheme(RoomInfoView));

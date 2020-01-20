@@ -1,70 +1,169 @@
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import messagesStatus from '../../constants/messagesStatus';
-import buildMessage from './helpers/buildMessage';
-import database from '../realm';
+import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-export const getMessage = (rid, msg = '', tmid, user) => {
-	const _id = random(17);
-	const { id, username } = user;
-	const message = {
-		_id,
-		rid,
-		msg,
-		tmid,
-		ts: new Date(),
-		_updatedAt: new Date(),
-		status: messagesStatus.TEMP,
-		u: {
-			_id: id || '1',
-			username
-		}
-	};
+const changeMessageStatus = async(id, tmid, status) => {
+	const db = database.active;
+	const msgCollection = db.collections.get('messages');
+	const threadMessagesCollection = db.collections.get('thread_messages');
+	const successBatch = [];
+	const messageRecord = await msgCollection.find(id);
+	successBatch.push(
+		messageRecord.prepareUpdate((m) => {
+			m.status = status;
+		})
+	);
+
+	if (tmid) {
+		const threadMessageRecord = await threadMessagesCollection.find(id);
+		successBatch.push(
+			threadMessageRecord.prepareUpdate((tm) => {
+				tm.status = status;
+			})
+		);
+	}
+
 	try {
-		database.write(() => {
-			database.create('messages', message, true);
+		await db.action(async() => {
+			await db.batch(...successBatch);
 		});
 	} catch (error) {
-		console.warn('getMessage', error);
+		// Do nothing
 	}
-	return message;
 };
 
 export async function sendMessageCall(message) {
 	const {
-		_id, rid, msg, tmid
+		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
-	// RC 0.60.0
-	const data = await this.sdk.post('chat.sendMessage', {
-		message: {
-			_id, rid, msg, tmid
-		}
-	});
-	return data;
+	try {
+		const sdk = this.shareSDK || this.sdk;
+		// RC 0.60.0
+		await sdk.post('chat.sendMessage', {
+			message: {
+				_id, rid, msg, tmid
+			}
+		});
+		await changeMessageStatus(_id, tmid, messagesStatus.SENT);
+	} catch (e) {
+		await changeMessageStatus(_id, tmid, messagesStatus.ERROR);
+	}
 }
 
 export default async function(rid, msg, tmid, user) {
 	try {
-		const message = getMessage(rid, msg, tmid, user);
-		const [room] = database.objects('subscriptions').filtered('rid == $0', rid);
+		const db = database.active;
+		const subsCollection = db.collections.get('subscriptions');
+		const msgCollection = db.collections.get('messages');
+		const threadCollection = db.collections.get('threads');
+		const threadMessagesCollection = db.collections.get('thread_messages');
+		const messageId = random(17);
+		const batch = [];
+		const message = {
+			id: messageId, subscription: { id: rid }, msg, tmid
+		};
+		const messageDate = new Date();
+		let tMessageRecord;
 
-		if (room) {
-			database.write(() => {
-				room.draftMessage = null;
-			});
+		// If it's replying to a thread
+		if (tmid) {
+			try {
+				// Find thread message header in Messages collection
+				tMessageRecord = await msgCollection.find(tmid);
+				batch.push(
+					tMessageRecord.prepareUpdate((m) => {
+						m.tlm = messageDate;
+						m.tcount += 1;
+					})
+				);
+
+				try {
+					// Find thread message header in Threads collection
+					await threadCollection.find(tmid);
+				} catch (error) {
+					// If there's no record, create one
+					batch.push(
+						threadCollection.prepareCreate((tm) => {
+							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
+							tm.subscription.id = rid;
+							tm.tmid = tmid;
+							tm.msg = tMessageRecord.msg;
+							tm.ts = tMessageRecord.ts;
+							tm._updatedAt = messageDate;
+							tm.status = messagesStatus.SENT; // Original message was sent already
+							tm.u = tMessageRecord.u;
+						})
+					);
+				}
+
+				// Create the message sent in ThreadMessages collection
+				batch.push(
+					threadMessagesCollection.prepareCreate((tm) => {
+						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
+						tm.subscription.id = rid;
+						tm.rid = tmid;
+						tm.msg = msg;
+						tm.ts = messageDate;
+						tm._updatedAt = messageDate;
+						tm.status = messagesStatus.TEMP;
+						tm.u = {
+							_id: user.id || '1',
+							username: user.username
+						};
+					})
+				);
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		// Create the message sent in Messages collection
+		batch.push(
+			msgCollection.prepareCreate((m) => {
+				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
+				m.subscription.id = rid;
+				m.msg = msg;
+				m.ts = messageDate;
+				m._updatedAt = messageDate;
+				m.status = messagesStatus.TEMP;
+				m.u = {
+					_id: user.id || '1',
+					username: user.username
+				};
+				if (tmid) {
+					m.tmid = tmid;
+					m.tlm = messageDate;
+					m.tmsg = tMessageRecord.msg;
+				}
+			})
+		);
+
+		try {
+			const room = await subsCollection.find(rid);
+			if (room.draftMessage) {
+				batch.push(
+					room.prepareUpdate((r) => {
+						r.draftMessage = null;
+					})
+				);
+			}
+		} catch (e) {
+			// Do nothing
 		}
 
 		try {
-			const ret = await sendMessageCall.call(this, message);
-			database.write(() => {
-				database.create('messages', buildMessage({ ...message, ...ret }), true);
+			await db.action(async() => {
+				await db.batch(...batch);
 			});
 		} catch (e) {
-			database.write(() => {
-				message.status = messagesStatus.ERROR;
-				database.create('messages', message, true);
-			});
+			log(e);
+			return;
 		}
+
+		await sendMessageCall.call(this, message);
 	} catch (e) {
 		log(e);
 	}

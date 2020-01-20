@@ -8,26 +8,31 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { DrawerButton } from '../../containers/HeaderButton';
 import styles from '../Styles';
+import { themedHeader } from '../../utils/navigation';
+import { withTheme } from '../../theme';
+import { themes } from '../../constants/colors';
 
 class AdminPanelView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		...themedHeader(screenProps.theme),
 		headerLeft: <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		authToken: PropTypes.string
+		authToken: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	render() {
-		const { baseUrl, authToken } = this.props;
+		const { baseUrl, authToken, theme } = this.props;
 		if (!baseUrl) {
 			return null;
 		}
 		return (
-			<SafeAreaView style={styles.container} testID='terms-view'>
-				<StatusBar />
+			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='terms-view'>
+				<StatusBar theme={theme} />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}
@@ -42,4 +47,4 @@ const mapStateToProps = state => ({
 	authToken: state.login.user && state.login.user.token
 });
 
-export default connect(mapStateToProps)(AdminPanelView);
+export default connect(mapStateToProps)(withTheme(AdminPanelView));

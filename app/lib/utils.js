@@ -1,3 +1,9 @@
-export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => (
-	encodeURI(attachmentUrl.includes('http') ? attachmentUrl : `${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`)
-);
+export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
+	if (attachmentUrl.startsWith('http')) {
+		if (attachmentUrl.includes('rc_token')) {
+			return encodeURI(attachmentUrl);
+		}
+		return encodeURI(`${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
+	}
+	return encodeURI(`${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
+};

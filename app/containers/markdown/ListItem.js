@@ -6,6 +6,8 @@ import {
 	View
 } from 'react-native';
 
+import { themes } from '../../constants/colors';
+
 const style = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
@@ -21,7 +23,7 @@ const style = StyleSheet.create({
 });
 
 const ListItem = React.memo(({
-	children, level, bulletWidth, continue: _continue, ordered, index
+	children, level, bulletWidth, continue: _continue, ordered, index, theme
 }) => {
 	let bullet;
 	if (_continue) {
@@ -37,7 +39,7 @@ const ListItem = React.memo(({
 	return (
 		<View style={style.container}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
-				<Text>
+				<Text style={{ color: themes[theme].bodyText }}>
 					{bullet}
 				</Text>
 			</View>
@@ -54,6 +56,7 @@ ListItem.propTypes = {
 	level: PropTypes.number,
 	ordered: PropTypes.bool,
 	continue: PropTypes.bool,
+	theme: PropTypes.string,
 	index: PropTypes.number
 };
 

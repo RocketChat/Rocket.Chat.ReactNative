@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-keycommands/ios/KeyCommands/RCTKeyCommandsManager.h

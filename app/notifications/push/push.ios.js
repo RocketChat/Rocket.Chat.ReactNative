@@ -1,6 +1,17 @@
-import NotificationsIOS from 'react-native-notifications';
+import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
 import reduxStore from '../../lib/createStore';
+import I18n from '../../i18n';
+
+const replyAction = new NotificationAction({
+	activationMode: 'background',
+	title: I18n.t('Reply'),
+	textInput: {
+		buttonTitle: I18n.t('Reply'),
+		placeholder: I18n.t('Type_message')
+	},
+	identifier: 'REPLY_ACTION'
+});
 
 class PushNotification {
 	constructor() {
@@ -20,7 +31,12 @@ class PushNotification {
 			completion();
 		});
 
-		NotificationsIOS.requestPermissions();
+		const actions = [];
+		actions.push(new NotificationCategory({
+			identifier: 'MESSAGE',
+			actions: [replyAction]
+		}));
+		NotificationsIOS.requestPermissions(actions);
 	}
 
 	getDeviceToken() {

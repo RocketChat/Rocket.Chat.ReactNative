@@ -46,7 +46,7 @@ jobs:
 
   e2e-test:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -197,7 +197,8 @@ jobs:
             npx jetify
             cd android
             if [[ $KEYSTORE ]]; then
-              ./gradlew bundleRelease
+              # TODO: enable app bundle again
+              ./gradlew assembleRelease
             else
               ./gradlew assembleDebug
             fi
@@ -223,7 +224,7 @@ jobs:
 
   ios-build:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     environment:
       BASH_ENV: "~/.nvm/nvm.sh"
@@ -257,7 +258,8 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            sudo bundle install
+            echo "ruby-2.6.4" > ~/.ruby-version
+            bundle install
           working_directory: ios
 
       - run:
@@ -319,7 +321,7 @@ jobs:
 
   ios-testflight:
     macos:
-      xcode: "10.2.1"
+      xcode: "11.2.1"
 
     steps:
       - checkout
@@ -334,7 +336,8 @@ jobs:
       - run:
           name: Update Fastlane
           command: |
-            sudo bundle install
+            echo "ruby-2.4" > ~/.ruby-version
+            bundle install
           working_directory: ios
 
       - run:

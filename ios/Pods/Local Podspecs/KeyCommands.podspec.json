@@ -1,0 +1,21 @@
+{
+  "name": "KeyCommands",
+  "version": "2.0.3",
+  "summary": "iOS UIKeyCommands.",
+  "description": "iOS UIKeyCommands.",
+  "license": "MIT",
+  "authors": "djorkaeffalexandre",
+  "homepage": "https://github.com/RocketChat/react-native-keycommands",
+  "source": {
+    "git": "https://github.com/RocketChat/react-native-keycommands.git"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

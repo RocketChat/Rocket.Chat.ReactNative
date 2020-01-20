@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { emojify } from 'react-emojione';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import I18n from '../../i18n';
 import styles from './styles';
+import Markdown from '../../containers/markdown';
+import { themes } from '../../constants/colors';
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username
@@ -13,14 +14,18 @@ const formatMsg = ({
 	if (!showLastMessage) {
 		return '';
 	}
-	if (!lastMessage || lastMessage.pinned) {
+	if (!lastMessage || !lastMessage.u || lastMessage.pinned) {
 		return I18n.t('No_Message');
+	}
+	if (lastMessage.t === 'jitsi_call_started') {
+		const { u } = lastMessage;
+		return I18n.t('Started_call', { userBy: u.username });
 	}
 
 	let prefix = '';
 	const isLastMessageSentByMe = lastMessage.u.username === username;
 
-	if (!lastMessage.msg && Object.keys(lastMessage.attachments).length) {
+	if (!lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length) {
 		const user = isLastMessageSentByMe ? I18n.t('You') : lastMessage.u.username;
 		return I18n.t('User_sent_an_attachment', { user });
 	}
@@ -33,7 +38,7 @@ const formatMsg = ({
 
 	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
 	if (msg) {
-		msg = emojify(msg, { output: 'unicode' });
+		msg = shortnameToUnicode(msg);
 	}
 	return msg;
 };
@@ -41,16 +46,22 @@ const formatMsg = ({
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert
+	lastMessage, type, showLastMessage, username, alert, theme
 }) => (
-	<Text style={[styles.markdownText, alert && styles.markdownTextAlert]} numberOfLines={2}>
-		{formatMsg({
+	<Markdown
+		msg={formatMsg({
 			lastMessage, type, showLastMessage, username
 		})}
-	</Text>
+		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
+		customEmojis={false}
+		numberOfLines={2}
+		preview
+		theme={theme}
+	/>
 ), arePropsEqual);
 
 LastMessage.propTypes = {
+	theme: PropTypes.string,
 	lastMessage: PropTypes.object,
 	type: PropTypes.string,
 	showLastMessage: PropTypes.bool,

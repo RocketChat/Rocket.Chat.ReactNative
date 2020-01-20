@@ -1,33 +1,34 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import removeMarkdown from 'remove-markdown';
-import { emojify } from 'react-emojione';
 import PropTypes from 'prop-types';
 
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
+import { themes } from '../../constants/colors';
 
 const RepliedThread = React.memo(({
-	tmid, tmsg, isHeader, isTemp, fetchThreadName
+	tmid, tmsg, isHeader, fetchThreadName, id, theme
 }) => {
-	if (!tmid || !isHeader || isTemp) {
+	if (!tmid || !isHeader) {
 		return null;
 	}
 
 	if (!tmsg) {
-		fetchThreadName(tmid);
+		fetchThreadName(tmid, id);
 		return null;
 	}
 
-	let msg = emojify(tmsg, { output: 'unicode' });
+	let msg = shortnameToUnicode(tmsg);
 	msg = removeMarkdown(msg);
 
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-			<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} />
-			<Text style={styles.repliedThreadName} numberOfLines={1}>{msg}</Text>
-			<DisclosureIndicator />
+			<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
+			<Text style={[styles.repliedThreadName, { color: themes[theme].tintColor }]} numberOfLines={1}>{msg}</Text>
+			<DisclosureIndicator theme={theme} />
 		</View>
 	);
 }, (prevProps, nextProps) => {
@@ -40,7 +41,7 @@ const RepliedThread = React.memo(({
 	if (prevProps.isHeader !== nextProps.isHeader) {
 		return false;
 	}
-	if (prevProps.isTemp !== nextProps.isTemp) {
+	if (prevProps.theme !== nextProps.theme) {
 		return false;
 	}
 	return true;
@@ -49,8 +50,9 @@ const RepliedThread = React.memo(({
 RepliedThread.propTypes = {
 	tmid: PropTypes.string,
 	tmsg: PropTypes.string,
+	id: PropTypes.string,
 	isHeader: PropTypes.bool,
-	isTemp: PropTypes.bool,
+	theme: PropTypes.string,
 	fetchThreadName: PropTypes.func
 };
 RepliedThread.displayName = 'MessageRepliedThread';

@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { themes } from '../../app/constants/colors';
+
 const styles = StyleSheet.create({
 	separator: {
 		marginTop: 30,
@@ -11,10 +13,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Separator = ({ title, style }) => <Text style={[styles.separator, style]}>{title}</Text>;
+const Separator = ({ title, style, theme }) => (
+	<Text
+		style={[
+			styles.separator,
+			{
+				color: themes[theme].titleText,
+				backgroundColor: themes[theme].auxiliaryBackground
+			},
+			style
+		]}
+	>
+		{title}
+	</Text>
+);
 
 Separator.propTypes = {
 	title: PropTypes.string.isRequired,
+	theme: PropTypes.string,
 	style: PropTypes.object
 };
 

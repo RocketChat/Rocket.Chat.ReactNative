@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import equal from 'deep-equal';
 import * as Haptics from 'expo-haptics';
+import { Q } from '@nozbe/watermelondb';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
-import database, { safeAddListener } from '../../lib/realm';
+import database from '../../lib/database';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
@@ -20,16 +20,21 @@ import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
+import { themes } from '../../constants/colors';
 
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ navigation }) => {
+	static navigationOptions = ({ navigation, screenProps }) => {
 		const toggleStatus = navigation.getParam('toggleStatus', () => {});
 		const allUsers = navigation.getParam('allUsers');
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
+			...themedHeader(screenProps.theme),
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
@@ -47,18 +52,18 @@ class RoomMembersView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-
+		this.mounted = false;
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
-		this.rooms = database.objects('subscriptions').filtered('rid = $0', rid);
-		this.permissions = RocketChat.hasPermission(['mute-user'], rid);
+		const room = props.navigation.getParam('room');
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -67,53 +72,36 @@ class RoomMembersView extends React.Component {
 			members: [],
 			membersFiltered: [],
 			userLongPressed: {},
-			room: this.rooms[0] || {},
-			options: [],
+			room: room || {},
 			end: false
 		};
+		if (room && room.observe) {
+			this.roomObservable = room.observe();
+			this.subscription = this.roomObservable
+				.subscribe((changes) => {
+					if (this.mounted) {
+						this.setState({ room: changes });
+					} else {
+						this.state.room = changes;
+					}
+				});
+		}
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		this.mounted = true;
 		this.fetchMembers();
-		safeAddListener(this.rooms, this.updateRoom);
 
 		const { navigation } = this.props;
+		const { rid } = navigation.state.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			allUsers, filtering, members, membersFiltered, userLongPressed, room, options, isLoading
-		} = this.state;
-		if (nextState.allUsers !== allUsers) {
-			return true;
-		}
-		if (nextState.filtering !== filtering) {
-			return true;
-		}
-		if (!equal(nextState.members, members)) {
-			return true;
-		}
-		if (!equal(nextState.options, options)) {
-			return true;
-		}
-		if (!equal(nextState.membersFiltered, membersFiltered)) {
-			return true;
-		}
-		if (!equal(nextState.userLongPressed, userLongPressed)) {
-			return true;
-		}
-		if (!equal(nextState.room.muted, room.muted)) {
-			return true;
-		}
-		if (isLoading !== nextState.isLoading) {
-			return true;
-		}
-		return false;
+		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
 	componentWillUnmount() {
-		this.rooms.removeAllListeners();
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	onSearchChangeText = protectedFunction((text) => {
@@ -128,9 +116,12 @@ class RoomMembersView extends React.Component {
 
 	onPressUser = async(item) => {
 		try {
-			const subscriptions = database.objects('subscriptions').filtered('name = $0', item.username);
-			if (subscriptions.length) {
-				this.goRoom({ rid: subscriptions[0].rid, name: item.username });
+			const db = database.active;
+			const subsCollection = db.collections.get('subscriptions');
+			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
+			if (query.length) {
+				const [room] = query;
+				this.goRoom({ rid: room.rid, name: item.username, room });
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
@@ -150,7 +141,7 @@ class RoomMembersView extends React.Component {
 		const { muted } = room;
 
 		this.actionSheetOptions = [I18n.t('Cancel')];
-		const userIsMuted = !!muted.find(m => m === user.username);
+		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));
@@ -209,17 +200,12 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	updateRoom = () => {
-		if (this.rooms.length > 0) {
-			const [room] = this.rooms;
-			this.setState({ room });
-		}
-	}
-
-	goRoom = async({ rid, name }) => {
+	goRoom = async({ rid, name, room }) => {
 		const { navigation } = this.props;
 		await navigation.popToTop();
-		navigation.navigate('RoomView', { rid, name, t: 'd' });
+		navigation.navigate('RoomView', {
+			rid, name, t: 'd', room
+		});
 	}
 
 	handleMute = async() => {
@@ -246,10 +232,13 @@ class RoomMembersView extends React.Component {
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
-	renderSeparator = () => <View style={styles.separator} />;
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
 
 	renderItem = ({ item }) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<UserItem
@@ -260,6 +249,7 @@ class RoomMembersView extends React.Component {
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
 				user={user}
+				theme={theme}
 			/>
 		);
 	}
@@ -268,22 +258,20 @@ class RoomMembersView extends React.Component {
 		const {
 			filtering, members, membersFiltered, isLoading
 		} = this.state;
-		// if (isLoading) {
-		// 	return <ActivityIndicator style={styles.loading} />;
-		// }
+		const { theme } = this.props;
 		return (
 			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
-				<StatusBar />
+				<StatusBar theme={theme} />
 				<FlatList
 					data={filtering ? membersFiltered : members}
 					renderItem={this.renderItem}
-					style={styles.list}
+					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={this.renderSeparator}
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator style={styles.loading} />;
+							return <ActivityIndicator theme={theme} />;
 						}
 						return null;
 					}}
@@ -306,4 +294,4 @@ const mapStateToProps = state => ({
 	}
 });
 
-export default connect(mapStateToProps)(RoomMembersView);
+export default connect(mapStateToProps)(withTheme(RoomMembersView));

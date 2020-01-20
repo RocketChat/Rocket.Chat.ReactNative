@@ -1,25 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
+import { isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
-import { COLOR_PRIMARY, COLOR_BORDER, COLOR_WHITE } from '../../constants/colors';
-
-const colors = {
-	backgroundPrimary: COLOR_PRIMARY,
-	backgroundSecondary: 'white',
-
-	textColorPrimary: 'white',
-	textColorSecondary: COLOR_PRIMARY,
-
-	borderColorPrimary: COLOR_PRIMARY,
-	borderColorSecondary: COLOR_BORDER
-};
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: COLOR_WHITE
+		justifyContent: isTablet ? 'center' : 'flex-start'
 	},
 	onboarding: {
 		alignSelf: 'center',
@@ -32,7 +21,6 @@ export default StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		...sharedStyles.textColorNormal,
 		letterSpacing: 0,
 		fontSize: moderateScale(24),
 		alignSelf: 'center',
@@ -68,7 +56,6 @@ export default StyleSheet.create({
 	},
 	buttonSubtitle: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textColorDescription,
 		fontSize: 15
 	},
 	buttonIconContainer: {
@@ -83,20 +70,6 @@ export default StyleSheet.create({
 	},
 	buttonActive: {
 		opacity: 0.5
-	},
-	button_container_primary: {
-		backgroundColor: colors.backgroundPrimary,
-		borderColor: colors.borderColorPrimary
-	},
-	button_container_secondary: {
-		backgroundColor: colors.backgroundSecondary,
-		borderColor: colors.borderColorSecondary
-	},
-	button_text_primary: {
-		color: colors.textColorPrimary
-	},
-	button_text_secondary: {
-		color: colors.textColorSecondary
 	},
 	closeModal: {
 		position: 'absolute',
