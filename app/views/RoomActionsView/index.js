@@ -437,8 +437,8 @@ class RoomActionsView extends React.Component {
 						)
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
-					{t === 'd' ? <Text style={[styles.statusText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{userStatusText}</Text> : null }
 
+					{t === 'd' ? <Text style={[styles.statusText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{userStatusText}</Text> : null }
 				</View>,
 				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 			], item)

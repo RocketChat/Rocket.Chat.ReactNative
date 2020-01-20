@@ -176,6 +176,11 @@ class ProfileView extends React.Component {
 		const { user, setUser } = this.props;
 		const params = {};
 
+		// Status Text
+		if (user.statusText !== statusText) {
+			params.statusText = statusText;
+		}
+
 		// Name
 		if (user.name !== name) {
 			params.name = name;
@@ -386,7 +391,6 @@ class ProfileView extends React.Component {
 	render() {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert, statusText
-
 		} = this.state;
 		const {
 			baseUrl, user, theme, Accounts_CustomFields
@@ -415,6 +419,15 @@ class ProfileView extends React.Component {
 								token={user.token}
 							/>
 						</View>
+						<RCTextInput
+							inputRef={(e) => { this.statusText = e; }}
+							label={I18n.t('Status')}
+							placeholder={I18n.t('Status')}
+							value={statusText}
+							onChangeText={value => this.setState({ statusText: value })}
+							onSubmitEditing={() => { this.statusText.focus(); }}
+							testID='profile-view-status'
+						/>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}

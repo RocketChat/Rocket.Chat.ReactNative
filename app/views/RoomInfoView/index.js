@@ -300,7 +300,6 @@ class RoomInfoView extends React.Component {
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
 						{this.t === 'd' ? <Text style={[styles.statusText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={2}>{roomUser.statusText}</Text> : null }
-
 					</View>
 
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}

@@ -117,6 +117,9 @@ class Sidebar extends Component {
 			if (nextProps.user.status !== user.status) {
 				return true;
 			}
+			if (nextProps.user.statusText !== user.statusText) {
+				return true;
+			}
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
@@ -275,6 +278,21 @@ class Sidebar extends Component {
 		);
 	}
 
+	renderStatusText = () => {
+		const { activeItemKey, user } = this.props;
+		return (
+			<React.Fragment>
+				<SidebarItem
+					text={user.statusText || I18n.t('Set_custom_status')}
+					left={<CustomIcon name='edit' size={20} color={COLOR_TEXT} />}
+					onPress={() => this.sidebarNavigate('RoomsListView')}
+					testID='sidebar-status'
+					current={activeItemKey === 'StatusStack'}
+				/>
+			</React.Fragment>
+		);
+	}
+
 	renderStatus = () => {
 		const { status } = this.state;
 		const { user } = this.props;
@@ -335,6 +353,8 @@ class Sidebar extends Component {
 					</Touch>
 
 					{!split || showStatus ? <Separator theme={theme} /> : null}
+
+					{this.renderStatusText()}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 

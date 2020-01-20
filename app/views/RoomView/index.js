@@ -127,7 +127,6 @@ class RoomView extends React.Component {
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired,
-
 			statusText: PropTypes.string
 		}),
 		appState: PropTypes.string,
@@ -922,6 +921,7 @@ class RoomView extends React.Component {
 					loading={loading}
 					animated={this.beginAnimating}
 				/>
+
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
@@ -948,7 +948,8 @@ const mapStateToProps = state => ({
 	user: {
 		id: state.login.user && state.login.user.id,
 		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
+		token: state.login.user && state.login.user.token,
+		statusText: state.login.user && state.login.user.statusText
 	},
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,

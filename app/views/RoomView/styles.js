@@ -54,6 +54,18 @@ export default StyleSheet.create({
 	},
 	previewMode: {
 		fontSize: 16,
+		...sharedStyles.textMedium,
+		...sharedStyles.textColorNormal
+	},
+	statusTextContainer: {
+		padding: 10,
+		backgroundColor: '#292929',
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+	statusText: {
+		fontSize: 14,
+		color: COLOR_WHITE,
 		...sharedStyles.textMedium
 	}
 });
