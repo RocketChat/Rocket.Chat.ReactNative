@@ -197,7 +197,7 @@ class Audio extends React.Component {
 						onValueChange={this.onValueChange}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
-					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
+					{paused ? <Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text> : <Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{formatTime(currentTime)}</Text>}
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
 			</>
