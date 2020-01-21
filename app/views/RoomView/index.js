@@ -441,7 +441,11 @@ class RoomView extends React.Component {
 		}
 	}
 
-	onReplyInit = (message, mention) => {
+	onReplyInit = async(message, mention) => {
+		const { replying } = this.state;
+		if (replying) {
+			await this.setState({ replying: false });
+		}
 		this.setState({
 			selectedMessage: message, replying: true, showActions: false, replyWithMention: mention
 		});
