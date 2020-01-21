@@ -78,16 +78,19 @@ class Sort extends PureComponent {
 	toggleGroupByType = () => {
 		const { groupByType } = this.props;
 		this.setSortPreference({ groupByType: !groupByType });
+		this.close();
 	}
 
 	toggleGroupByFavorites = () => {
 		const { showFavorites } = this.props;
 		this.setSortPreference({ showFavorites: !showFavorites });
+		this.close();
 	}
 
 	toggleUnread = () => {
 		const { showUnread } = this.props;
 		this.setSortPreference({ showUnread: !showUnread });
+		this.close();
 	}
 
 	close = () => {
