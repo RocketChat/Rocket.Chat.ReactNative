@@ -394,7 +394,7 @@ class MessageActions extends React.Component {
 			}
 		}
 		const { actionsHide } = this.props;
-		actionsHide();
+		actionsHide(true);
 	}
 
 	render() {

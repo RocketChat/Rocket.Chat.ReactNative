@@ -412,9 +412,9 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: message, showErrorActions: true });
 	}
 
-	onActionsHide = () => {
+	onActionsHide = (hideAction = false) => {
 		const { editing, replying, reacting } = this.state;
-		if (editing || replying || reacting) {
+		if ((editing || replying || reacting) && !hideAction) {
 			return;
 		}
 		this.setState({ selectedMessage: {}, showActions: false });
@@ -845,7 +845,7 @@ class RoomView extends React.Component {
 							room={room}
 							user={user}
 							message={selectedMessage}
-							actionsHide={this.onActionsHide}
+							actionsHide={hideAction => this.onActionsHide(hideAction)}
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
