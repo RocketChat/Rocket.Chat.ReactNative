@@ -271,9 +271,9 @@ class MessageActions extends React.Component {
 		const { message } = this.props;
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
-			if(message.starred){
+			if (message.starred) {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Message_starred') });
-			}else{
+			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Message_unstar') });
 			}
 		} catch (e) {
@@ -292,9 +292,9 @@ class MessageActions extends React.Component {
 		const { message } = this.props;
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
-			if(message.pinned){
+			if (message.pinned) {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Message_pinned') });
-			}else{
+			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Message_unpinned') });
 			}
 		} catch (e) {
