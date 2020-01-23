@@ -20,6 +20,7 @@ class List extends React.Component {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
+		onScroll: PropTypes.func,
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
@@ -192,7 +193,7 @@ class List extends React.Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
 		const { messages } = this.state;
-		const { theme } = this.props;
+		const { theme, onScroll } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
@@ -208,10 +209,12 @@ class List extends React.Component {
 					inverted
 					removeClippedSubviews={isIOS}
 					initialNumToRender={7}
-					onEndReached={this.onEndReached}
+					onEndReached={[this.onEndReached, onScroll]}
 					onEndReachedThreshold={5}
 					maxToRenderPerBatch={5}
 					windowSize={10}
+
+					onLayout={onScroll}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>

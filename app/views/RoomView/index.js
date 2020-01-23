@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, InteractionManager } from 'react-native';
+import {
+	Text, View, InteractionManager, Animated, TouchableHighlight
+} from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
@@ -10,6 +12,7 @@ import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
+// import { TouchableHighlight } from 'react-native-gesture-handler';
 import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
@@ -47,6 +50,7 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { CustomIcon } from '../../lib/Icons';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -153,6 +157,7 @@ class RoomView extends React.Component {
 		const selectedMessage = props.navigation.getParam('message');
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
+		this.scrollButtonY = new Animated.Value(300);
 		this.state = {
 			joined: true,
 			room: room || {
@@ -532,6 +537,49 @@ class RoomView extends React.Component {
 		}
 	}, 1000, true)
 
+	showScrollButton = () => {
+		this.isScrollButtonVisible = true;
+		const { scrollButtonY } = this;
+		Animated.timing(
+			// Animate value over time
+			scrollButtonY, // The value to drive
+			{
+				toValue: 0, // Animate to final value of 1,
+				duration: 100,
+				useNativeDriver: true
+			}
+		).start();
+	}
+
+	hideScrollButton = () => {
+		this.isScrollButtonVisible = false;
+		const { scrollButtonY } = this;
+		Animated.timing(
+			// Animate value over time
+			scrollButtonY, // The value to drive
+			{
+				toValue: 300, // Animate to final value of 1
+				duration: 100,
+				useNativeDriver: true
+			}
+		).start();
+	}
+
+	scrollToBottom = () => {
+		this.hideScrollButton();
+		this.flatList.scrollToIndex({ animated: true, index: 0 });
+	}
+
+	onScroll = (e) => {
+		console.info(e, 'hi');
+		// const { y } = e.nativeEvent.contentOffset;
+		// if (y > 60 && !this.isScrollButtonVisible) {
+		// 	this.showScrollButton();
+		// } else if (y <= 60 && this.isScrollButtonVisible) {
+		// 	this.hideScrollButton();
+		// }
+	}
+
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
@@ -768,6 +816,24 @@ class RoomView extends React.Component {
 		return message;
 	}
 
+	renderScrollButton = () => {
+		const {
+			scrollButtonY
+		} = this;
+		const { theme } = this.props;
+		return (
+			<TouchableHighlight onPress={this.scrollToBottom}>
+
+				<Animated.View style={{
+					position: 'absolute', bottom: 80, right: 20, height: 50, width: 50, borderRadius: 25, backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonY }], alignItems: 'center', justifyContent: 'center', zIndex: 2
+				}}
+				>
+					<CustomIcon name='arrow-down' size={30} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
+				</Animated.View>
+			</TouchableHighlight>
+		);
+	}
+
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -896,7 +962,9 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					animated={this.beginAnimating}
+					onScroll={this.onScroll}
 				/>
+				{this.renderScrollButton()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
