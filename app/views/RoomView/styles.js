@@ -46,5 +46,16 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	scrollButton: {
+		position: 'absolute',
+		bottom: 70,
+		right: 20,
+		height: 50,
+		width: 50,
+		borderRadius: 25,
+		alignItems: 'center',
+		justifyContent: 'center',
+		zIndex: 0
 	}
 });

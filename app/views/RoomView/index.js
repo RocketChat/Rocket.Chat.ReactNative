@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, InteractionManager, Animated, TouchableHighlight
+	Text, View, InteractionManager, Animated, TouchableNativeFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -12,7 +12,6 @@ import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
-// import { TouchableHighlight } from 'react-native-gesture-handler';
 import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
@@ -541,10 +540,9 @@ class RoomView extends React.Component {
 		this.isScrollButtonVisible = true;
 		const { scrollButtonY } = this;
 		Animated.timing(
-			// Animate value over time
-			scrollButtonY, // The value to drive
+			scrollButtonY,
 			{
-				toValue: 0, // Animate to final value of 1,
+				toValue: 0,
 				duration: 100,
 				useNativeDriver: true
 			}
@@ -555,10 +553,9 @@ class RoomView extends React.Component {
 		this.isScrollButtonVisible = false;
 		const { scrollButtonY } = this;
 		Animated.timing(
-			// Animate value over time
-			scrollButtonY, // The value to drive
+			scrollButtonY,
 			{
-				toValue: 300, // Animate to final value of 1
+				toValue: 300,
 				duration: 100,
 				useNativeDriver: true
 			}
@@ -571,13 +568,12 @@ class RoomView extends React.Component {
 	}
 
 	onScroll = (e) => {
-		console.info(e, 'hi');
-		// const { y } = e.nativeEvent.contentOffset;
-		// if (y > 60 && !this.isScrollButtonVisible) {
-		// 	this.showScrollButton();
-		// } else if (y <= 60 && this.isScrollButtonVisible) {
-		// 	this.hideScrollButton();
-		// }
+		const { y } = e.nativeEvent.contentOffset;
+		if (y > 60 && !this.isScrollButtonVisible) {
+			this.showScrollButton();
+		} else if (y <= 60 && this.isScrollButtonVisible) {
+			this.hideScrollButton();
+		}
 	}
 
 	replyBroadcast = (message) => {
@@ -817,20 +813,14 @@ class RoomView extends React.Component {
 	}
 
 	renderScrollButton = () => {
-		const {
-			scrollButtonY
-		} = this;
+		const { scrollButtonY } = this;
 		const { theme } = this.props;
 		return (
-			<TouchableHighlight onPress={this.scrollToBottom}>
-
-				<Animated.View style={{
-					position: 'absolute', bottom: 80, right: 20, height: 50, width: 50, borderRadius: 25, backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonY }], alignItems: 'center', justifyContent: 'center', zIndex: 2
-				}}
-				>
+			<TouchableNativeFeedback onPress={this.scrollToBottom}>
+				<Animated.View style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonY }] }]}>
 					<CustomIcon name='arrow-down' size={30} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 				</Animated.View>
-			</TouchableHighlight>
+			</TouchableNativeFeedback>
 		);
 	}
 

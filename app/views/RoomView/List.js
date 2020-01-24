@@ -209,12 +209,13 @@ class List extends React.Component {
 					inverted
 					removeClippedSubviews={isIOS}
 					initialNumToRender={7}
-					onEndReached={[this.onEndReached, onScroll]}
+					onEndReached={this.onEndReached}
 					onEndReachedThreshold={5}
 					maxToRenderPerBatch={5}
 					windowSize={10}
-
-					onLayout={onScroll}
+					scrollEventThrottle={20}
+					onScroll={onScroll}
+					onScrollEndDrag={onScroll}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
