@@ -20,9 +20,12 @@ import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import database from '../../lib/database';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
+import StatusModal from '../../containers/StatusModal';
 
 const keyExtractor = item => item.id;
 
@@ -56,7 +59,8 @@ class Sidebar extends Component {
 		this.state = {
 			showStatus: false,
 			isAdmin: false,
-			status: []
+			status: [],
+			showStatusModal: false
 		};
 	}
 
@@ -76,17 +80,25 @@ class Sidebar extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus, isAdmin } = this.state;
+		const {
+			status, showStatus, isAdmin, showStatusModal
+		} = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey, split, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
 		}
+		if (nextState.showStatusModal !== showStatusModal) {
+			return true;
+		}
 		if (nextProps.Site_Name !== Site_Name) {
 			return true;
 		}
 		if (nextProps.Site_Name !== Site_Name) {
+			return true;
+		}
+		if (nextProps.user.statusText !== user.statusText) {
 			return true;
 		}
 		if (nextProps.baseUrl !== baseUrl) {
@@ -142,6 +154,17 @@ class Sidebar extends Component {
 		});
 	}
 
+	setStatusText = async(statusText) => {
+		const result = await RocketChat.saveUserProfile({ statusText }, {});
+		if (result.success) {
+			EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+		} else {
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+		}
+		this.setState({ showStatusModal: false });
+	}
+
+
 	async setIsAdmin() {
 		const db = database.active;
 		const { user } = this.props;
@@ -158,6 +181,10 @@ class Sidebar extends Component {
 		} catch (e) {
 			log(e);
 		}
+	}
+
+	setStatusModal = () => {
+		this.setState({ showStatusModal: true });
 	}
 
 	logout = () => {
@@ -201,6 +228,7 @@ class Sidebar extends Component {
 		const { activeItemKey, theme } = this.props;
 		return (
 			<>
+				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
@@ -243,13 +271,13 @@ class Sidebar extends Component {
 	}
 
 	renderStatusText = () => {
-		const { activeItemKey, user } = this.props;
+		const { activeItemKey, theme, user } = this.props;
 		return (
 			<React.Fragment>
 				<SidebarItem
 					text={user.statusText || I18n.t('Set_custom_status')}
-					left={<CustomIcon name='edit' size={20} color={COLOR_TEXT} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+					onPress={this.setStatusModal}
 					testID='sidebar-status'
 					current={activeItemKey === 'StatusStack'}
 				/>
@@ -271,7 +299,7 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		const { showStatus } = this.state;
+		const { showStatus, showStatusModal } = this.state;
 		const {
 			user, Site_Name, baseUrl, split, theme
 		} = this.props;
@@ -324,6 +352,12 @@ class Sidebar extends Component {
 
 					{showStatus ? this.renderStatus() : null}
 				</ScrollView>
+				<StatusModal
+					isVisible={showStatusModal}
+					close={() => this.setState({ showStatusModal: false })}
+					statusText={user.statusText}
+					submit={statusText => this.setStatusText(statusText)}
+				/>
 			</SafeAreaView>
 		);
 	}
