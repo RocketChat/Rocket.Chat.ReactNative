@@ -23,14 +23,17 @@ import { themedHeader } from '../../utils/navigation';
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name, theme) => (type === 'd'
-	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
-	: (
-		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
-		</View>
-	)
+const getRoomTitle = (room, type, name, username, theme) => (type === 'd' ? (
+	<View>
+		<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
+		<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>@{username}</Text>
+	</View>
+) : (
+	<View style={styles.roomTitleRow}>
+		<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
+		<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
+	</View>
+)
 );
 
 class RoomInfoView extends React.Component {
@@ -157,6 +160,19 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
+	renderUser = (key, value) => {
+		const { theme } = this.props;
+		return (
+			<View style={styles.item}>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(key)}</Text>
+				<Text
+					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
+				>{ value }
+				</Text>
+			</View>
+		);
+	}
+
 	renderRole = (description) => {
 		const { theme } = this.props;
 		if (description) {
@@ -170,11 +186,12 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
+		const { theme } = this.props;
 		const { parsedRoles } = this.state;
 		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
 						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
@@ -298,9 +315,17 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={styles.avatarContainer}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser.username, theme) }</View>
 					</View>
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
+					{this.t === 'd' && roomUser._id ? (
+						<View>
+							{this.renderUser('Email', roomUser.emails[0].address)}
+							{this.renderUser('CreatedAt', moment(roomUser.createdAt).format('MMM Do YYYY, h:mm:ss a'))}
+							{this.renderUser('LastLogin', moment(roomUser.lastLogin).format('MMM Do YYYY, h:mm:ss a'))}
+							{this.renderUser('UpdatedAt', moment(roomUser._updatedAt).format('MMM Do YYYY, h:mm:ss a'))}
+						</View>
+					) : null}
 				</SafeAreaView>
 			</ScrollView>
 		);

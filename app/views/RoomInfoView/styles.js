@@ -66,5 +66,11 @@ export default StyleSheet.create({
 	role: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	username: {
+		fontSize: 16,
+		textAlign: 'center',
+		marginTop: 10,
+		...sharedStyles.textRegular
 	}
 });
