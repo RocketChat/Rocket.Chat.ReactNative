@@ -225,17 +225,9 @@ class Sidebar extends Component {
 
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey, theme, user } = this.props;
+		const { activeItemKey, theme } = this.props;
 		return (
 			<>
-
-				<SidebarItem
-					text={user.statusText || I18n.t('Set_custom_status')}
-					left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-					onPress={this.setStatusModal}
-					testID='sidebar-status'
-					current={activeItemKey === 'StatusStack'}
-				/>
 				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Chats')}
@@ -279,13 +271,13 @@ class Sidebar extends Component {
 	}
 
 	renderStatusText = () => {
-		const { activeItemKey, user } = this.props;
+		const { activeItemKey, theme, user } = this.props;
 		return (
 			<React.Fragment>
 				<SidebarItem
 					text={user.statusText || I18n.t('Set_custom_status')}
-					left={<CustomIcon name='edit' size={20} color={COLOR_TEXT} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+					onPress={this.setStatusModal}
 					testID='sidebar-status'
 					current={activeItemKey === 'StatusStack'}
 				/>

@@ -186,11 +186,6 @@ class ProfileView extends React.Component {
 			params.name = name;
 		}
 
-		// Status Text
-		if (user.statusText !== statusText) {
-			params.statusText = statusText;
-		}
-
 		// Username
 		if (user.username !== username) {
 			params.username = username;
@@ -427,6 +422,7 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ statusText: value })}
 							onSubmitEditing={() => { this.statusText.focus(); }}
 							testID='profile-view-status'
+							theme={theme}
 						/>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
@@ -436,16 +432,6 @@ class ProfileView extends React.Component {
 							onChangeText={value => this.setState({ name: value })}
 							onSubmitEditing={() => { this.username.focus(); }}
 							testID='profile-view-name'
-							theme={theme}
-						/>
-						<RCTextInput
-							inputRef={(e) => { this.statusText = e; }}
-							label={I18n.t('Status')}
-							placeholder={I18n.t('Status')}
-							value={statusText}
-							onChangeText={value => this.setState({ statusText: value })}
-							onSubmitEditing={() => { this.statusText.focus(); }}
-							testID='profile-view-status'
 							theme={theme}
 						/>
 						<RCTextInput

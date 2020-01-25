@@ -381,7 +381,6 @@ export default {
 	Starred: 'Starred',
 	Start_of_conversation: 'Start of conversation',
 	Started_discussion: 'Started a discussion:',
-	Status: 'Status',
 	Started_call: 'Call started by {{userBy}}',
 	Status: 'Status',
 	Submit: 'Submit',
