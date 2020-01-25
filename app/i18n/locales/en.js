@@ -421,6 +421,7 @@ export default {
 	Users: 'Users',
 	User_added_by: 'User {{userAdded}} added by {{userBy}}',
 	User_has_been_key: 'User has been {{key}}!',
+	User_Info: 'User Info',
 	User_is_no_longer_role_by_: '{{user}} is no longer {{role}} by {{userBy}}',
 	User_muted_by: 'User {{userMuted}} muted by {{userBy}}',
 	User_removed_by: 'User {{userRemoved}} removed by {{userBy}}',

@@ -58,10 +58,10 @@ export default StyleSheet.create({
 		flexWrap: 'wrap'
 	},
 	roleBadge: {
-		padding: 6,
+		padding: 1,
 		borderRadius: 2,
 		marginRight: 6,
-		marginBottom: 6
+		marginBottom: 2
 	},
 	role: {
 		fontSize: 14,
