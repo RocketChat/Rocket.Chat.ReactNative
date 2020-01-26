@@ -798,6 +798,13 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
+		if (room.archived) {
+			return (
+				<View style={styles.readOnly}>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_has_been_archived')}</Text>
+				</View>
+			);
+		}
 		if (isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>

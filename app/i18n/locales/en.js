@@ -390,6 +390,7 @@ export default {
 	There_was_an_error_while_action: 'There was an error while {{action}}!',
 	This_room_is_blocked: 'This room is blocked',
 	This_room_is_read_only: 'This room is read only',
+	This_room_has_been_archived: 'This room has been archived',
 	Thread: 'Thread',
 	Threads: 'Threads',
 	Timezone: 'Timezone',
