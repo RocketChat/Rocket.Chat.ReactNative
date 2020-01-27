@@ -23,8 +23,6 @@ PODS:
   - EXPermissions (6.0.0):
     - UMCore
     - UMPermissionsInterface
-  - EXStoreReview (2.0.1):
-    - UMCore
   - EXWebBrowser (6.0.0):
     - UMCore
   - Fabric (1.10.2)
@@ -424,7 +422,6 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
-  - EXStoreReview (from `../node_modules/expo-store-review/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -541,9 +538,6 @@ EXTERNAL SOURCES:
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
-  EXStoreReview:
-    :path: !ruby/object:Pathname
-    path: "../node_modules/expo-store-review/ios"
   EXWebBrowser:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-web-browser/ios"
@@ -708,7 +702,6 @@ SPEC CHECKSUMS:
   EXFileSystem: 091907902fcec9f9182b656fdead41a82f30986a
   EXHaptics: f84c93d605e0905c47654e4a6e5dfbff78ed6906
   EXPermissions: 99e52dc3e5f8e55153f1958004f6df2a30a1f2f5
-  EXStoreReview: 9f36516a91fabb789b5f93f84e5959ce59e14d6e
   EXWebBrowser: def838b95aa9d396f9ce71ace4e614ee16e7ee30
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBLazyVector: 5bc5b1606fc9a7ac6956de049f6e30901ed31c49
