@@ -1,9 +1,10 @@
 import { Alert, Linking } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import * as StoreReview from 'expo-store-review';
-import { isIOS, getBundleId } from './deviceInfo';
+import { isIOS, getBundleId, getReadableVersion } from './deviceInfo';
 
 const lastReviewKey = 'lastReviewKey';
+const appVersionKey = 'appVersionKey';
 const popupDelay = 2000;
 
 const daysBetween = (date1, date2) => {
@@ -14,7 +15,8 @@ const daysBetween = (date1, date2) => {
 	return Math.round(difference_ms / one_day);
 };
 
-const onPress = () => {
+const onPress = async() => {
+	await RNUserDefaults.set(appVersionKey, getReadableVersion);
 	if (isIOS) {
 		StoreReview.requestReview();
 	} else {
@@ -36,8 +38,9 @@ const handlePositiveEvent = () => {
 export const review = async() => {
 	const lastReview = await RNUserDefaults.get(lastReviewKey) || '0';
 	const lastReviewDate = new Date(parseInt(lastReview, 10));
+	const appVersion = await RNUserDefaults.get(appVersionKey) || '0';
 
-	if (daysBetween(lastReviewDate, new Date()) >= 1) {
+	if (daysBetween(lastReviewDate, new Date()) >= 1 && appVersion !== getReadableVersion) {
 		setTimeout(handlePositiveEvent, popupDelay);
 	}
 };
