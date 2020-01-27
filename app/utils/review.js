@@ -10,7 +10,7 @@ const store = isIOS ? 'App' : 'Play';
 const reviewKey = 'reviewKey';
 const popupDelay = 2000;
 const numberOfDays = 7;
-const positiveEvent = 5;
+const numberOfPositiveEvent = 5;
 
 // handle official and experimental app
 const id = getBundleId.includes('reactnative') ? '1272915472' : '1148741252';
@@ -50,18 +50,27 @@ const handlePositiveEvent = () => Alert.alert(
 	]
 );
 
-export const review = async() => {
+const tryReview = async() => {
 	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || {};
-	const { lastReview = 0, doneReview = false, positiveEventCount = 0 } = reviewData;
+	const { lastReview = 0, doneReview = false } = reviewData;
 	const lastReviewDate = new Date(lastReview);
 
-	const newPositiveEventCount = positiveEventCount + 1;
-	RNUserDefaults.setObjectForKey(reviewKey, { ...reviewData, positiveEventCount: newPositiveEventCount });
-
 	// if ask me later was pressed, we only can show again after {{numberOfDays}} days
-	// if {{positiveEvents}} events was triggered
 	// if review wasn't done yet or wasn't cancelled
-	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && newPositiveEventCount >= positiveEvent && !doneReview) {
+	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && !doneReview) {
 		setTimeout(handlePositiveEvent, popupDelay);
 	}
 };
+
+class ReviewTheApp {
+	positiveEventCount = 0;
+
+	pushEvent = () => {
+		this.positiveEventCount += 1;
+		if (this.positiveEventCount === numberOfPositiveEvent) {
+			tryReview();
+		}
+	}
+}
+
+export const Review = new ReviewTheApp();
