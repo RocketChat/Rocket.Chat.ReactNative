@@ -405,6 +405,7 @@ export default {
 	Try_again: 'Try again',
 	Two_Factor_Authentication: 'Two-factor Authentication',
 	Type_the_channel_name_here: 'Type the channel name here',
+	Unable_to_open_store: 'Unable to open {{store}} Store',
 	unarchive: 'unarchive',
 	UNARCHIVE: 'UNARCHIVE',
 	Unblock_user: 'Unblock user',
