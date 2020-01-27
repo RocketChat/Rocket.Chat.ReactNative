@@ -21,35 +21,36 @@ const daysBetween = (date1, date2) => {
 	return Math.round(difference_ms / one_day);
 };
 
-const onPress = async() => {
-	await RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true });
+const onCancelPress = () => RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true });
+
+const onSurePress = () => {
+	onCancelPress();
 	Linking.openURL(link);
 };
 
-const handlePositiveEvent = () => {
-	Alert.alert(
-		I18n.t('Are_you_enjoying_this_app'),
-		I18n.t('Give_us_some_love_on_the_store', { store: isIOS ? 'App' : 'Play' }),
-		[
-			{ text: I18n.t('Ask_me_later'), onPress: () => RNUserDefaults.setObjectForKey(reviewKey, { lastReview: new Date().getTime() }) },
-			{
-				text: I18n.t('Cancel'),
-				onPress: () => RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true }),
-				style: 'Cancel'
-			},
-			{ text: I18n.t('Sure'), onPress }
-		]
-	);
-};
+const onAskMeLaterPress = () => RNUserDefaults.setObjectForKey(reviewKey, { lastReview: new Date().getTime() });
+
+const handlePositiveEvent = () => Alert.alert(
+	I18n.t('Are_you_enjoying_this_app'),
+	I18n.t('Give_us_some_love_on_the_store', { store: isIOS ? 'App' : 'Play' }),
+	[
+		{ text: I18n.t('Ask_me_later'), onPress: onAskMeLaterPress },
+		{ text: I18n.t('Cancel'), onPress: onCancelPress, style: 'Cancel' },
+		{ text: I18n.t('Sure'), onPress: onSurePress }
+	]
+);
 
 export const review = async() => {
-	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || { lastReview: 0, doneReview: false, positiveEventCount: 0 };
-	const { lastReview, doneReview, positiveEventCount } = reviewData;
-	const lastReviewDate = new Date(lastReview || 0);
+	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || {};
+	const { lastReview = 0, doneReview = false, positiveEventCount = 0 } = reviewData;
+	const lastReviewDate = new Date(lastReview);
 
-	const newPositiveEventCount = (positiveEventCount || 0) + 1;
+	const newPositiveEventCount = positiveEventCount + 1;
 	RNUserDefaults.setObjectForKey(reviewKey, { ...reviewData, positiveEventCount: newPositiveEventCount });
 
+	// if ask me later was pressed, we only can show again after {{numberOfDays}} days
+	// if {{positiveEvents}} events was triggered
+	// if review wasn't done yet or wasn't cancelled
 	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && newPositiveEventCount >= positiveEvent && !doneReview) {
 		setTimeout(handlePositiveEvent, popupDelay);
 	}
