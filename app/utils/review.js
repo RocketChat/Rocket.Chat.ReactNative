@@ -23,7 +23,7 @@ const daysBetween = (date1, date2) => {
 
 const onCancelPress = () => RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true });
 
-const onSurePress = () => {
+export const onReviewPress = () => {
 	onCancelPress();
 	Linking.openURL(link);
 };
@@ -36,7 +36,7 @@ const handlePositiveEvent = () => Alert.alert(
 	[
 		{ text: I18n.t('Ask_me_later'), onPress: onAskMeLaterPress },
 		{ text: I18n.t('Cancel'), onPress: onCancelPress, style: 'Cancel' },
-		{ text: I18n.t('Sure'), onPress: onSurePress }
+		{ text: I18n.t('Sure'), onPress: onReviewPress }
 	]
 );
 

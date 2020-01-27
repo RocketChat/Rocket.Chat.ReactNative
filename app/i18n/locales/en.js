@@ -325,6 +325,7 @@ export default {
 	Reset_password: 'Reset password',
 	resetting_password: 'resetting password',
 	RESET: 'RESET',
+	Review_this_app: 'Review this app',
 	Roles: 'Roles',
 	Room_actions: 'Room actions',
 	Room_changed_announcement: 'Room announcement changed to: {{announcement}} by {{userBy}}',
