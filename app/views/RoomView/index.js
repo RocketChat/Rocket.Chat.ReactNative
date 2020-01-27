@@ -47,6 +47,7 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { review } from '../../utils/review';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -557,6 +558,7 @@ class RoomView extends React.Component {
 			}
 			this.setLastOpen(null);
 		});
+		review();
 	};
 
 	getRoomTitle = (room) => {
