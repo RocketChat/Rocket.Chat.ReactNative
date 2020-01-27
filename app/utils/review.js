@@ -6,6 +6,8 @@ import I18n from '../i18n';
 
 const reviewKey = 'reviewKey';
 const popupDelay = 2000;
+const numberOfDays = 7;
+const positiveEvent = 5;
 
 // handle official and experimental app
 const id = getBundleId.includes('reactnative') ? '1272915472' : '1148741252';
@@ -29,7 +31,7 @@ const handlePositiveEvent = () => {
 		I18n.t('Are_you_enjoying_this_app'),
 		I18n.t('Give_us_some_love_on_the_store', { store: isIOS ? 'App' : 'Play' }),
 		[
-			{ text: I18n.t('Ask_me_later'), onPress: () => RNUserDefaults.setObjectForKey(reviewKey, { lastReview: new Date().getTime().toString() }) },
+			{ text: I18n.t('Ask_me_later'), onPress: () => RNUserDefaults.setObjectForKey(reviewKey, { lastReview: new Date().getTime() }) },
 			{
 				text: I18n.t('Cancel'),
 				onPress: () => RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true }),
@@ -41,11 +43,14 @@ const handlePositiveEvent = () => {
 };
 
 export const review = async() => {
-	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || { lastReview: '0', doneReview: false };
-	const { lastReview, doneReview } = reviewData;
-	const lastReviewDate = new Date(parseInt(lastReview, 10));
+	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || { lastReview: 0, doneReview: false, positiveEventCount: 0 };
+	const { lastReview, doneReview, positiveEventCount } = reviewData;
+	const lastReviewDate = new Date(lastReview || 0);
 
-	if (daysBetween(lastReviewDate, new Date()) >= 1 && !doneReview) {
+	const newPositiveEventCount = (positiveEventCount || 0) + 1;
+	RNUserDefaults.setObjectForKey(reviewKey, { ...reviewData, positiveEventCount: newPositiveEventCount });
+
+	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && newPositiveEventCount >= positiveEvent && !doneReview) {
 		setTimeout(handlePositiveEvent, popupDelay);
 	}
 };
