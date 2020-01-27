@@ -4,7 +4,6 @@ import messagesStatus from '../../constants/messagesStatus';
 import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
-import { review } from '../../utils/review';
 
 const changeMessageStatus = async(id, tmid, status) => {
 	const db = database.active;
@@ -41,7 +40,6 @@ export async function sendMessageCall(message) {
 		id: _id, subscription: { id: rid }, msg, tmid
 	} = message;
 	try {
-		review();
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
 		await sdk.post('chat.sendMessage', {
