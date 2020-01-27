@@ -23,6 +23,8 @@ PODS:
   - EXPermissions (6.0.0):
     - UMCore
     - UMPermissionsInterface
+  - EXStoreReview (2.0.1):
+    - UMCore
   - EXWebBrowser (6.0.0):
     - UMCore
   - Fabric (1.10.2)
@@ -290,7 +292,7 @@ PODS:
     - React
   - react-native-document-picker (3.2.4):
     - React
-  - react-native-jitsi-meet (2.0.3):
+  - react-native-jitsi-meet (2.0.4):
     - JitsiMeetSDK
     - React
   - react-native-keyboard-input (5.3.1):
@@ -422,6 +424,7 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXStoreReview (from `../node_modules/expo-store-review/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -538,6 +541,9 @@ EXTERNAL SOURCES:
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
+  EXStoreReview:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-store-review/ios"
   EXWebBrowser:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-web-browser/ios"
@@ -702,6 +708,7 @@ SPEC CHECKSUMS:
   EXFileSystem: 091907902fcec9f9182b656fdead41a82f30986a
   EXHaptics: f84c93d605e0905c47654e4a6e5dfbff78ed6906
   EXPermissions: 99e52dc3e5f8e55153f1958004f6df2a30a1f2f5
+  EXStoreReview: 9f36516a91fabb789b5f93f84e5959ce59e14d6e
   EXWebBrowser: def838b95aa9d396f9ce71ace4e614ee16e7ee30
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBLazyVector: 5bc5b1606fc9a7ac6956de049f6e30901ed31c49
@@ -736,7 +743,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
-  react-native-jitsi-meet: 1ca89538b8ef3158bfd306d60325d7f11ca1451a
+  react-native-jitsi-meet: 5bc06e8b65a7d04fd3705d5720f3b2ec66e49a29
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
   react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1

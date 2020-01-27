@@ -19,6 +19,7 @@ import {
 import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { review } from '../utils/review';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -101,6 +102,7 @@ const restore = function* restore() {
 			]);
 			yield put(actions.appStart('outside'));
 		} else {
+			review();
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 			const serverObj = yield serverCollections.find(server);

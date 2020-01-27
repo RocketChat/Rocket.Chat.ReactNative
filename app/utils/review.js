@@ -1,23 +1,34 @@
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
+import * as StoreReview from 'expo-store-review';
 
-const eventPositiveKey = 'eventPositiveKey';
+const lastReviewKey = 'lastReviewKey';
+const popupDelay = 2000;
 
-export const review = async(options = { handleEventCount: 3 }) => {
-	const { handleEventCount } = options;
-	const eventPositiveCount = await RNUserDefaults.get(eventPositiveKey) || 0;
-	const parseEventPositive = parseInt(eventPositiveCount, 10);
+const daysBetween = (date1, date2) => {
+	const one_day = 1000 * 60 * 60 * 24;
+	const date1_ms = date1.getTime();
+	const date2_ms = date2.getTime();
+	const difference_ms = date2_ms - date1_ms;
+	return Math.round(difference_ms / one_day);
+};
 
-	if (parseEventPositive === handleEventCount) {
-		Alert.alert(
-			'Are you enjoying this app?',
-			'Give us some love on the Play Store',
-			[
-				{ text: 'Ask me later', onPress: () => RNUserDefaults.clear(eventPositiveKey) },
-				{ text: 'Sure!' }
-			]
-		);
-	} else if (parseEventPositive < handleEventCount) {
-		await RNUserDefaults.set(eventPositiveKey, (parseEventPositive + 1).toString());
+const handlePositiveEvent = () => {
+	Alert.alert(
+		'Are you enjoying this app?',
+		'Give us some love on the Play Store',
+		[
+			{ text: 'Ask me later', onPress: () => RNUserDefaults.set(lastReviewKey, new Date().getTime().toString()) },
+			{ text: 'Sure!', onPress: StoreReview.requestReview }
+		]
+	);
+};
+
+export const review = async() => {
+	const lastReview = await RNUserDefaults.get(lastReviewKey) || 0;
+	const lastReviewDate = new Date(parseInt(lastReview, 10));
+
+	if (daysBetween(lastReviewDate, new Date()) >= 1) {
+		setTimeout(handlePositiveEvent, popupDelay);
 	}
 };

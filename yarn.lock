@@ -4368,6 +4368,11 @@ expo-permissions@~6.0.0:
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-6.0.0.tgz#2943f1aa98de833b88cea73cf03d18d08957cb68"
   integrity sha512-O+RdyfGiq7i+5Vi9fE38DgKn436lNWiqhnS5/Z7CC00bmKahhjVMNDbZvNn/nrdRGyaPneJk1Co1s1sexSnv0A==
 
+expo-store-review@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/expo-store-review/-/expo-store-review-2.0.1.tgz#692757de2b81100e0aa828f55134380c7e82c4f2"
+  integrity sha512-4uYOIcx9hH8cDI26U1FRNPdqsmilwj4Nmx9beU4r/oEkpACr0GQmZbB1//FkVFX24GjC5NjhWb0NMndhn+76Rg==
+
 expo-web-browser@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-6.0.0.tgz#63a59d4c02cd7ba47faa6a2eb04decb1a1ab2a32"
