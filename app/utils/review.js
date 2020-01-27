@@ -1,6 +1,7 @@
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import * as StoreReview from 'expo-store-review';
+import { isIOS, getBundleId } from './deviceInfo';
 
 const lastReviewKey = 'lastReviewKey';
 const popupDelay = 2000;
@@ -13,19 +14,27 @@ const daysBetween = (date1, date2) => {
 	return Math.round(difference_ms / one_day);
 };
 
+const onPress = () => {
+	if (isIOS) {
+		StoreReview.requestReview();
+	} else {
+		Linking.openURL(`market://details?id=${ getBundleId }`);
+	}
+};
+
 const handlePositiveEvent = () => {
 	Alert.alert(
 		'Are you enjoying this app?',
 		'Give us some love on the Play Store',
 		[
 			{ text: 'Ask me later', onPress: () => RNUserDefaults.set(lastReviewKey, new Date().getTime().toString()) },
-			{ text: 'Sure!', onPress: StoreReview.requestReview }
+			{ text: 'Sure!', onPress }
 		]
 	);
 };
 
 export const review = async() => {
-	const lastReview = await RNUserDefaults.get(lastReviewKey) || 0;
+	const lastReview = await RNUserDefaults.get(lastReviewKey) || '0';
 	const lastReviewDate = new Date(parseInt(lastReview, 10));
 
 	if (daysBetween(lastReviewDate, new Date()) >= 1) {
