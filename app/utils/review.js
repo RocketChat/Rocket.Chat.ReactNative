@@ -1,7 +1,9 @@
 import { Alert, Linking } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import * as StoreReview from 'expo-store-review';
+
 import { isIOS, getBundleId, getReadableVersion } from './deviceInfo';
+import I18n from '../i18n';
 
 const lastReviewKey = 'lastReviewKey';
 const appVersionKey = 'appVersionKey';
@@ -26,11 +28,16 @@ const onPress = async() => {
 
 const handlePositiveEvent = () => {
 	Alert.alert(
-		'Are you enjoying this app?',
-		'Give us some love on the Play Store',
+		I18n.t('Are_you_enjoying_this_app'),
+		I18n.t('Give_us_some_love_on_the_store', { store: isIOS ? 'App' : 'Play' }),
 		[
-			{ text: 'Ask me later', onPress: () => RNUserDefaults.set(lastReviewKey, new Date().getTime().toString()) },
-			{ text: 'Sure!', onPress }
+			{ text: I18n.t('Ask_me_later'), onPress: () => RNUserDefaults.set(lastReviewKey, new Date().getTime().toString()) },
+			{
+				text: I18n.t('Cancel'),
+				onPress: () => RNUserDefaults.set(appVersionKey, getReadableVersion),
+				style: 'Cancel'
+			},
+			{ text: I18n.t('Sure'), onPress }
 		]
 	);
 };
