@@ -59,6 +59,9 @@ export default {
 	Message_TimeFormat: {
 		type: 'valueAsString'
 	},
+	Message_TimeAndDateFormat: {
+		type: 'valueAsString'
+	},
 	Site_Name: {
 		type: 'valueAsString'
 	},

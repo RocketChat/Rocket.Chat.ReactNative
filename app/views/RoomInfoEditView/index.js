@@ -425,9 +425,11 @@ class RoomInfoEditView extends React.Component {
 								style={[
 									styles.buttonContainer_inverted,
 									styles.buttonInverted,
-									{ flex: 1, borderColor: themes[theme].auxiliaryText }
+									{ flex: 1, borderColor: themes[theme].auxiliaryText },
+									!this.formIsChanged() && styles.buttonContainerDisabled
 								]}
 								onPress={this.reset}
+								disabled={!this.formIsChanged()}
 								testID='room-info-edit-view-reset'
 							>
 								<Text

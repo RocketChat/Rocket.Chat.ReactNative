@@ -14,7 +14,7 @@ const formatMsg = ({
 	if (!showLastMessage) {
 		return '';
 	}
-	if (!lastMessage || lastMessage.pinned) {
+	if (!lastMessage || !lastMessage.u || lastMessage.pinned) {
 		return I18n.t('No_Message');
 	}
 	if (lastMessage.t === 'jitsi_call_started') {
