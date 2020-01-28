@@ -428,6 +428,7 @@ export default {
 	Upload_file_question_mark: 'Upload file?',
 	Users: 'Users',
 	User_added_by: 'User {{userAdded}} added by {{userBy}}',
+	User_Info: 'User Info',
 	User_has_been_key: 'User has been {{key}}!',
 	User_is_no_longer_role_by_: '{{user}} is no longer {{role}} by {{userBy}}',
 	User_muted_by: 'User {{userMuted}} muted by {{userBy}}',
