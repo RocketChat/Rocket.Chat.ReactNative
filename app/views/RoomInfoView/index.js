@@ -37,8 +37,9 @@ class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
+		const t = navigation.getParam('t');
 		return {
-			title: I18n.t('Room_Info'),
+			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
