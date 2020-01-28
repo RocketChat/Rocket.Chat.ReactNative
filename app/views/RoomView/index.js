@@ -791,7 +791,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly) {
+		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
