@@ -253,6 +253,11 @@ class ThreadMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -307,6 +312,7 @@ class ThreadMessagesView extends React.Component {
 				useRealName={useRealName}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				showAttachment={this.showAttachment}
 			/>
 		);
 	}
