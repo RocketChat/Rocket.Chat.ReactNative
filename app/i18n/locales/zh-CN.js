@@ -80,7 +80,7 @@ export default {
 	Activity: '按活动排序',
 	Add_Reaction: '增加回复',
 	Add_Server: '添加服务器',
-	Add_user: '添加用户',
+	Add_users: '添加用户',
 	Alert: '警告',
 	alert: '警告',
 	alerts: '警告',

@@ -15,6 +15,7 @@ import crashReport from './crashReport';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import usersTyping from './usersTyping';
+import inviteLinks from './inviteLinks';
 
 export default combineReducers({
 	settings,
@@ -32,5 +33,6 @@ export default combineReducers({
 	crashReport,
 	customEmojis,
 	activeUsers,
-	usersTyping
+	usersTyping,
+	inviteLinks
 });
