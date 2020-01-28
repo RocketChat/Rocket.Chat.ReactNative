@@ -34,6 +34,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'slash_commands',
+					columns: [
+						{ name: 'app_id', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

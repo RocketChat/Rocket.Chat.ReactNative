@@ -668,7 +668,8 @@ class MessageBox extends Component {
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					const triggerId = generateTriggerId();
+					const [{ appId }] = slashCommand;
+					const triggerId = generateTriggerId(appId);
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId);
 				} catch (e) {
 					log(e);
