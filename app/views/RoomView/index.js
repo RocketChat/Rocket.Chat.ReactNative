@@ -179,11 +179,13 @@ class RoomView extends React.Component {
 		}
 
 		this.beginAnimating = false;
-		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			this.mounted = true;
+			this.beginAnimating = true;
+		});
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
-		this.willFocusListener = props.navigation.addListener('willFocus', () => this.mounted = true);
 		this.mounted = false;
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
@@ -299,9 +301,6 @@ class RoomView extends React.Component {
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
-		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
 		}
 		if (this.subSubscription && this.subSubscription.unsubscribe) {
 			this.subSubscription.unsubscribe();
