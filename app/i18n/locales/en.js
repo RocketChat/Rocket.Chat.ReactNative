@@ -236,7 +236,6 @@ export default {
 	Message_removed: 'Message removed',
 	Message_starred: 'Message starred',
 	Message_unstar: 'Message unstarred',
-	Message_unpinned: 'Message unpinned',
 	message: 'message',
 	messages: 'messages',
 	Messages: 'Messages',

@@ -288,7 +288,6 @@ class MessageActions extends React.Component {
 		const { message } = this.props;
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
-			EventEmitter.emit(LISTENER, { message: message.pinned ? I18n.t('Message_pinned') : I18n.t('Message_unpinned') });
 		} catch (e) {
 			log(e);
 		}
