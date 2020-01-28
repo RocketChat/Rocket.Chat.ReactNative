@@ -246,17 +246,17 @@ class RoomActionsView extends React.Component {
 					testID: 'room-actions-search'
 				},
 				{
+					icon: 'share',
+					name: I18n.t('Share'),
+					event: this.handleShare,
+					testID: 'room-actions-share'
+				},
+				{
 					icon: 'pin',
 					name: I18n.t('Pinned'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Pinned' },
 					testID: 'room-actions-pinned'
-				},
-				{
-					icon: 'share',
-					name: I18n.t('Share'),
-					event: this.handleShare,
-					testID: 'room-actions-share'
 				}
 			],
 			renderItem: this.renderItem
