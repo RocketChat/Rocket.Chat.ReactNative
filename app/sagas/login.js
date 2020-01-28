@@ -20,6 +20,7 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
+import { inviteLinksRequest } from '../actions/inviteLinks';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -115,15 +116,25 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
+		let currentRoot;
 		if (!user.username) {
 			yield put(appStart('setUsername'));
 		} else if (adding) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
 		} else {
-			const currentRoot = yield select(state => state.app.root);
+			currentRoot = yield select(state => state.app.root);
 			if (currentRoot !== 'inside') {
 				yield put(appStart('inside'));
+			}
+		}
+
+		// after a successful login, check if it's been invited via invite link
+		currentRoot = yield select(state => state.app.root);
+		if (currentRoot === 'inside') {
+			const inviteLinkToken = yield select(state => state.inviteLinks.token);
+			if (inviteLinkToken) {
+				yield put(inviteLinksRequest(inviteLinkToken));
 			}
 		}
 	} catch (e) {
