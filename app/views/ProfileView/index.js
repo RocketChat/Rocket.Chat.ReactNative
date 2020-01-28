@@ -59,7 +59,7 @@ class ProfileView extends React.Component {
 		saving: false,
 		name: null,
 		username: null,
-		initialUsername: null,
+		avatarText: null,
 		email: null,
 		newPassword: null,
 		currentPassword: null,
@@ -110,7 +110,7 @@ class ProfileView extends React.Component {
 		this.setState({
 			name,
 			username,
-			initialUsername: username,
+			avatarText: username,
 			email: emails ? emails[0].address : null,
 			newPassword: null,
 			currentPassword: null,
@@ -379,7 +379,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert, initialUsername
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert, avatarText
 		} = this.state;
 		const {
 			baseUrl, user, theme, Accounts_CustomFields
@@ -400,7 +400,7 @@ class ProfileView extends React.Component {
 					>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
-								text={initialUsername}
+								text={avatarText}
 								avatar={avatar && avatar.url}
 								size={100}
 								baseUrl={baseUrl}
