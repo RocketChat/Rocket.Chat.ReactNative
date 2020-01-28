@@ -990,16 +990,16 @@ const RocketChat = {
 			command, roomId, params, triggerId
 		});
 	},
-	getCommandPreview(command, roomId, params) {
+	getCommandPreview(command, roomId, params, triggerId) {
 		// RC 0.65.0
 		return this.sdk.get('commands.preview', {
-			command, roomId, params
+			command, roomId, params, triggerId
 		});
 	},
-	executeCommandPreview(command, params, roomId, previewItem) {
+	executeCommandPreview(command, params, roomId, previewItem, triggerId) {
 		// RC 0.65.0
 		return this.sdk.post('commands.preview', {
-			command, params, roomId, previewItem
+			command, params, roomId, previewItem, triggerId
 		});
 	},
 	_setUser(ddpMessage) {
