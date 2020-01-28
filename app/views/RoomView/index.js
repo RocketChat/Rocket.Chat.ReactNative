@@ -640,7 +640,7 @@ class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}
