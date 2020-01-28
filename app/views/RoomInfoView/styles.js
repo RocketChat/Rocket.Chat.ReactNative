@@ -8,11 +8,11 @@ export default StyleSheet.create({
 	},
 	scroll: {
 		flex: 1,
-		flexDirection: 'column',
-		padding: 10
+		flexDirection: 'column'
 	},
 	item: {
-		padding: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		justifyContent: 'center'
 	},
 	avatarContainer: {

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, ScrollView
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
@@ -25,7 +23,6 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 const getRoomTitle = (room, type, name, theme) => (type === 'd'
 	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
@@ -280,13 +277,11 @@ class RoomInfoView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-
 	renderMessageButton = () => {
 		const { theme } = this.props;
 		return (
 			<>
 				<Separator theme={theme} />
-
 				<ListItem
 					title={I18n.t('Send_message')}
 					onPress={this.goRoom}
@@ -294,7 +289,6 @@ class RoomInfoView extends React.Component {
 					right={this.renderDisclosure}
 					theme={theme}
 				/>
-
 				<Separator theme={theme} />
 			</>
 		);
