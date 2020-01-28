@@ -239,18 +239,18 @@ class RoomActionsView extends React.Component {
 					testID: 'room-actions-starred'
 				},
 				{
-					icon: 'pin',
-					name: I18n.t('Pinned'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Pinned' },
-					testID: 'room-actions-pinned'
-				},
-				{
 					icon: 'magnifier',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
 					testID: 'room-actions-search'
+				},
+				{
+					icon: 'pin',
+					name: I18n.t('Pinned'),
+					route: 'MessagesView',
+					params: { rid, t, name: 'Pinned' },
+					testID: 'room-actions-pinned'
 				},
 				{
 					icon: 'share',
