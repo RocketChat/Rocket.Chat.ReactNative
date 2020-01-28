@@ -120,3 +120,11 @@ export function triggerSubmitView({ viewId, ...options }) {
 		console.log(e);
 	}
 }
+
+export function triggerCancel({ viewId, ...options }) {
+	try {
+		return triggerAction.call(this, { type: ACTION_TYPES.CANCEL, viewId, ...options });
+	} catch (e) {
+		console.log(e);
+	}
+}

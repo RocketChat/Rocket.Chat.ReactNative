@@ -13,6 +13,7 @@ import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
 
 import sharedStyles from './Styles';
+import { triggerCancel } from '../lib/methods/actions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +39,7 @@ class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
 		const data = navigation.getParam('data');
-		const { view } = data;
+		const { view, appId, viewId } = data;
 		const { title, submit, close } = view;
 		return {
 			title: textParser([title]).pop(),
@@ -48,7 +49,10 @@ class ModalBlockView extends React.Component {
 					<Item
 						title={textParser([close.text]).pop()}
 						style={styles.submit}
-						onPress={() => navigation.pop()}
+						onPress={() => {
+							triggerCancel({ appId, viewId });
+							navigation.pop();
+						}}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
