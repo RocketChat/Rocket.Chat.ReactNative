@@ -14,7 +14,7 @@ public class Ejson {
     private SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
 
     public String getAvatarUri() {
-        if (!type.equals("d")) {
+        if (type == null || !type.equals("d")) {
             return null;
         }
         return serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token() + "&rc_uid=" + userId();
