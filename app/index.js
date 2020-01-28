@@ -49,7 +49,7 @@ if (isIOS) {
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
+		const regex = /^(room|auth|invite)\?/;
 		if (url.match(regex)) {
 			url = url.replace(regex, '').trim();
 			if (url) {
@@ -145,6 +145,12 @@ const ChatsStack = createStackNavigator({
 	},
 	SelectedUsersView: {
 		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	InviteUsersView: {
+		getScreen: () => require('./views/InviteUsersView').default
+	},
+	InviteUsersEditView: {
+		getScreen: () => require('./views/InviteUsersEditView').default
 	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
