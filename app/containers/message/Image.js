@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
+import { createImageProgress } from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import Markdown from '../markdown';
 import styles from './styles';
@@ -11,6 +13,8 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+
+const ImageProgress = createImageProgress(FastImage);
 
 const Button = React.memo(({
 	children, onPress, split, theme
@@ -25,22 +29,26 @@ const Button = React.memo(({
 ));
 
 const Image = React.memo(({ img, theme }) => (
-	<FastImage
+	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
+		indicator={Progress.Pie}
+		indicatorProps={{
+			color: themes[theme].actionTintColor
+		}}
 	/>
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, split, theme
+	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, split, theme
 }) => {
 	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}
 
-	const onPress = () => onOpenFileModal(file);
+	const onPress = () => showAttachment(file);
 
 	if (file.description) {
 		return (
@@ -65,7 +73,7 @@ ImageContainer.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
-	onOpenFileModal: PropTypes.func,
+	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
 	split: PropTypes.bool

@@ -286,6 +286,8 @@ PODS:
     - React
   - react-native-background-timer (2.1.1):
     - React
+  - react-native-cameraroll (1.3.0):
+    - React
   - react-native-document-picker (3.2.4):
     - React
   - react-native-jitsi-meet (2.0.3):
@@ -343,6 +345,8 @@ PODS:
     - React-cxxreact (= 0.61.3)
     - React-jsi (= 0.61.3)
     - ReactCommon/jscallinvoker (= 0.61.3)
+  - ReactNativeART (1.0.4):
+    - React
   - rn-extensions-share (2.3.10):
     - React
   - rn-fetch-blob (0.11.2):
@@ -438,6 +442,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-appearance (from `../node_modules/react-native-appearance`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-keyboard-input (from `../node_modules/react-native-keyboard-input`)
@@ -458,6 +463,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudio (from `../node_modules/react-native-audio`)
@@ -569,6 +575,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-appearance"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-jitsi-meet:
@@ -607,6 +615,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeART:
+    :path: "../node_modules/@react-native-community/art"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
   rn-fetch-blob:
@@ -724,6 +734,7 @@ SPEC CHECKSUMS:
   React-jsinspector: a8939cc6909607eb5e8a5ecfff7c6226984e174d
   react-native-appearance: 368f9d1160e3f1d7ecb5945e704affe018deef46
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
+  react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-jitsi-meet: 1ca89538b8ef3158bfd306d60325d7f11ca1451a
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
@@ -743,6 +754,7 @@ SPEC CHECKSUMS:
   React-RCTText: b8f895b94aa0e7778fef28d13f3d71eed4a10c3d
   React-RCTVibration: 262588c97551b0b1c675468cda857466ba5af18f
   ReactCommon: c2c63d9290b422ca6ad5b3663073a015dd892ae9
+  ReactNativeART: 95d7eeb535cbdcb79f190042834ab3446e15d876
   rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
+import parse from 'url-parse';
 
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
@@ -10,6 +11,7 @@ import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import debounce from '../utils/debounce';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -41,6 +43,12 @@ class AuthenticationWebView extends React.PureComponent {
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
+	componentWillUnmount() {
+		if (this.debouncedLogin && this.debouncedLogin.stop) {
+			this.debouncedLogin.stop();
+		}
+	}
+
 	dismiss = () => {
 		const { navigation } = this.props;
 		navigation.pop();
@@ -63,24 +71,25 @@ class AuthenticationWebView extends React.PureComponent {
 		this.dismiss();
 	}
 
+	// eslint-disable-next-line react/sort-comp
+	debouncedLogin = debounce(params => this.login(params), 3000);
+
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
 		if (this.authType === 'saml' || this.authType === 'cas') {
 			const { navigation } = this.props;
 			const ssoToken = navigation.getParam('ssoToken');
-			if (url.includes('ticket') || url.includes('validate')) {
+			if (url.includes('ticket') || url.includes('validate') || url.includes('saml_idp_credentialToken')) {
 				let payload;
-				const credentialToken = { credentialToken: ssoToken };
 				if (this.authType === 'saml') {
+					const parsedUrl = parse(url, true);
+					const token = (parsedUrl.query && parsedUrl.query.saml_idp_credentialToken) || ssoToken;
+					const credentialToken = { credentialToken: token };
 					payload = { ...credentialToken, saml: true };
 				} else {
-					payload = { cas: credentialToken };
+					payload = { cas: { credentialToken: ssoToken } };
 				}
-				// We need to set a timeout when the login is done with SSO in order to make it work on our side.
-				// It is actually due to the SSO server processing the response.
-				setTimeout(() => {
-					this.login(payload);
-				}, 3000);
+				this.debouncedLogin(payload);
 			}
 		}
 

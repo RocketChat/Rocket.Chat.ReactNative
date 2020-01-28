@@ -61,7 +61,7 @@ public class CustomPushNotification extends PushNotification {
         }
         notificationMessages.get(notId).add(message);
 
-        super.postNotification(Integer.parseInt(notId));
+        super.postNotification(notId != null ? Integer.parseInt(notId) : 1);
 
         notifyReceivedToJS();
     }
@@ -91,7 +91,7 @@ public class CustomPushNotification extends PushNotification {
             .setDefaults(Notification.DEFAULT_ALL)
             .setAutoCancel(true);
 
-        Integer notificationId = Integer.parseInt(notId);
+        Integer notificationId = notId != null ? Integer.parseInt(notId) : 1;
         notificationChannel(notification);
         notificationIcons(notification, bundle);
         notificationStyle(notification, notificationId, bundle);
