@@ -14,7 +14,7 @@ const ACTION_TYPES = {
 };
 
 const MODAL_ACTIONS = {
-	OPEN: 'modal',
+	OPEN: 'modal.open',
 	CLOSE: 'modal.close',
 	UPDATE: 'modal.update'
 };
@@ -34,7 +34,7 @@ export const generateTriggerId = (appId) => {
 	return triggerId;
 };
 
-const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
+export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	if (!triggersId.has(triggerId)) {
 		return;
 	}

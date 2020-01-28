@@ -9,6 +9,7 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
+import { handlePayloadUserInteraction } from '../actions';
 
 const removeListener = listener => listener.stop();
 
@@ -242,6 +243,10 @@ export default function subscribeRooms() {
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
 			store.dispatch(notificationReceived(notification));
+		}
+		if (/uiInteraction/.test(ev)) {
+			const { type: eventType, ...args } = type;
+			handlePayloadUserInteraction(eventType, args);
 		}
 	});
 
