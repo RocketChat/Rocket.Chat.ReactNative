@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
 });
 
 export const DatePicker = ({
-	element, action, context, theme, loading
+	element, action, context, theme, loading, value
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
-	const [currentDate, onChangeDate] = useState(new Date(initial_date));
+	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
 
 	const onChange = ({ nativeEvent: { timestamp } }, date) => {
 		const newDate = date || new Date(timestamp);
@@ -167,5 +167,6 @@ DatePicker.propTypes = {
 	action: PropTypes.func,
 	context: PropTypes.number,
 	loading: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	value: PropTypes.string
 };
