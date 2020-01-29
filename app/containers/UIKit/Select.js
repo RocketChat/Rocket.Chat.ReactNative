@@ -42,7 +42,7 @@ export const Select = ({
 	value: values,
 	theme
 }) => {
-	const [initial] = values || [null];
+	const [initial] = values || [!placeholder];
 	const [selected, setSelected] = useState(initial);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {

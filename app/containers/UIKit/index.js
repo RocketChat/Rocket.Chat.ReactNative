@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import React, { useContext } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
 	uiKitMessage,
 	UiKitParserMessage,
@@ -9,6 +9,7 @@ import {
 	BLOCK_CONTEXT
 } from '@rocket.chat/ui-kit';
 
+import Markdown from '../markdown';
 import Button from './Button';
 import TextInput from '../TextInput';
 
@@ -33,7 +34,26 @@ const styles = StyleSheet.create({
 	}
 });
 
+const plainText = ({ text } = { text: '' }) => text;
+
 class MessageParser extends UiKitParserMessage {
+	text({ text, type } = { text: '' }, context) {
+		const { theme } = useContext(ThemeContext);
+		if (type !== 'mrkdwn') {
+			return text;
+		}
+
+		const isContext = context === BLOCK_CONTEXT.CONTEXT;
+		return (
+			<Markdown
+				msg={text}
+				theme={theme}
+				style={[isContext && { color: themes[theme].auxiliaryText }]}
+				preview={isContext}
+			/>
+		);
+	}
+
 	button(element, context) {
 		const {
 			text, value, actionId, style
@@ -55,16 +75,6 @@ class MessageParser extends UiKitParserMessage {
 	divider() {
 		const { theme } = useContext(ThemeContext);
 		return <Divider theme={theme} />;
-	}
-
-	text({ text, type } = { text: '' }, context) {
-		const { theme } = useContext(ThemeContext);
-		if (type !== 'mrkdwn') {
-			return text;
-		}
-
-		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		return <Text style={[isContext && { color: themes[theme].auxiliaryText }]}>{text}</Text>;
 	}
 
 	section(args) {
@@ -179,9 +189,9 @@ class ModalParser extends UiKitParserModal {
 			<Input
 				parser={this}
 				element={{ ...element, appId, blockId }}
-				label={this.text(label)}
-				description={this.text(description)}
-				hint={this.text(hint)}
+				label={plainText(label)}
+				description={plainText(description)}
+				hint={plainText(hint)}
 				theme={theme}
 			/>
 		);
@@ -195,16 +205,11 @@ class ModalParser extends UiKitParserModal {
 	plainInput(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		const {
-			multiline, actionId, placeholder, label, hint, description
-		} = element;
+		const { multiline, actionId, placeholder } = element;
 		return (
 			<TextInput
 				id={actionId}
-				hint={this.text(hint)}
-				label={this.text(label)}
-				description={this.text(description)}
-				placeholder={this.text(placeholder)}
+				placeholder={plainText(placeholder)}
 				onInput={action}
 				multiline={multiline}
 				loading={loading}
