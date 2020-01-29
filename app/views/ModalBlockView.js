@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
@@ -88,6 +89,16 @@ class ModalBlockView extends React.Component {
 		navigation.setParams({ submit: this.submit });
 
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
+	}
+
+	componentDidUpdate(prevProps) {
+		/* TODO: CHANGE THIS LOGIC */
+		const { navigation } = this.props;
+		const oldData = prevProps.navigation.getParam('data', {});
+		const newData = navigation.getParam('data', {});
+		if (!isEqual(oldData, newData)) {
+			navigation.push('ModalBlockView', { data: newData });
+		}
 	}
 
 	componentWillUnmount() {

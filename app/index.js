@@ -280,6 +280,7 @@ const ModalBlockStack = createStackNavigator({
 		getScreen: () => require('./views/ModalBlockView').default
 	}
 }, {
+	mode: 'modal',
 	defaultNavigationOptions: defaultHeader,
 	cardStyle
 });
