@@ -15,7 +15,10 @@ export const defaultContext = {
 
 export const KitContext = React.createContext(defaultContext);
 
-export const useBlockContext = ({ blockId, actionId, appId }, context) => {
+export const useBlockContext = ({
+	blockId, actionId, appId, initialValue
+}, context) => {
+	const [initial, setInitial] = useState(initialValue);
 	const [loading, setLoading] = useState(false);
 	const { action, appId: appIdFromContext, state } = useContext(KitContext);
 	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
@@ -35,7 +38,8 @@ export const useBlockContext = ({ blockId, actionId, appId }, context) => {
 		}];
 	}
 
-	return [{ loading, setLoading }, async({ value }) => {
+	return [{ loading, setLoading, initial }, async({ value }) => {
+		setInitial(initial);
 		setLoading(true);
 		try {
 			await state({

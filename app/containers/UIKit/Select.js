@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
@@ -40,11 +40,12 @@ export const Select = ({
 	loading,
 	theme
 }) => {
+	const [selected, setSelected] = useState(null);
 	const items = options.map(option => ({ label: textParser([option.text]).pop(), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
-		borderColor: themes[theme].auxiliaryTintColor,
+		borderColor: themes[theme].borderColor,
 		backgroundColor: themes[theme].backgroundColor
 	};
 
@@ -59,13 +60,16 @@ export const Select = ({
 			items={items}
 			placeholder={placeholder ? { label: textParser([placeholder]).pop(), value: null } : {}}
 			useNativeAndroidPickerStyle={false}
-			onValueChange={value => onChange({ value })}
+			onValueChange={(value) => {
+				onChange({ value });
+				setSelected(value);
+			}}
 			style={{
 				viewContainer: pickerStyle,
 				inputAndroidContainer: pickerStyle
 			}}
 			Icon={Icon}
-			textInputProps={{ style: { ...styles.pickerText, color: themes[theme].auxiliaryText } }}
+			textInputProps={{ style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText } }}
 		/>
 	);
 };
