@@ -20,9 +20,11 @@ const Chip = ({ item, onSelect, theme }) => (
 		style={[styles.chip, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
-		{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
-		<Text style={[styles.chipText, { color: themes[theme].titleText }]}>{textParser([item.text]).pop()}</Text>
-		<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryColor} />
+		<>
+			{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
+			<Text style={[styles.chipText, { color: themes[theme].titleText }]}>{textParser([item.text]).pop()}</Text>
+			<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryTextColor} />
+		</>
 	</Touchable>
 );
 Chip.propTypes = {
