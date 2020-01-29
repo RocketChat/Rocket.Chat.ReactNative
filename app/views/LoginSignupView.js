@@ -232,6 +232,17 @@ class LoginSignupView extends React.Component {
 		this.openOAuth({ url });
 	}
 
+	onPressWordpress = () => {
+		const { services, server } = this.props;
+		const { clientId, serverURL } = services.wordpress;
+		const endpoint = `${ serverURL }/oauth/authorize`;
+		const redirect_uri = `${ server }/_oauth/wordpress?close`;
+		const scope = 'openid';
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
+		this.openOAuth({ url: `${ endpoint }${ params }` });
+	}
+
 	onPressCustomOAuth = (loginService) => {
 		const { server } = this.props;
 		const {
@@ -314,7 +325,8 @@ class LoginSignupView extends React.Component {
 			google: this.onPressGoogle,
 			linkedin: this.onPressLinkedin,
 			'meteor-developer': this.onPressMeteor,
-			twitter: this.onPressTwitter
+			twitter: this.onPressTwitter,
+			wordpress: this.onPressWordpress
 		};
 		return oauthProviders[name];
 	}
