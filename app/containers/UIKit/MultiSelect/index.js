@@ -50,7 +50,7 @@ export const MultiSelect = ({
 		}
 	};
 
-	const items = options.filter(option => textParser([option.text]).pop().toLowerCase().includes(search.toLowerCase()));
+	const items = options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
 	let button = multiselect ? (
 		<Button

@@ -33,7 +33,7 @@ export default StyleSheet.create({
 	input: {
 		height: 48,
 		paddingHorizontal: 16,
-		marginVertical: 4,
+		paddingVertical: 4,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',

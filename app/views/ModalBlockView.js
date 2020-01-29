@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { uiKitText } from '@rocket.chat/ui-kit';
 
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
@@ -14,6 +13,7 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 
 import sharedStyles from './Styles';
 import { triggerCancel } from '../lib/methods/actions';
+import { textParser } from '../containers/UIKit/utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,12 +29,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const textParser = uiKitText(new class {
-	plain_text = ({ text }) => text;
-
-	text = ({ text }) => text;
-}());
-
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
@@ -42,12 +36,12 @@ class ModalBlockView extends React.Component {
 		const { view, appId, viewId } = data;
 		const { title, submit, close } = view;
 		return {
-			title: textParser([title]).pop(),
+			title: textParser([title]),
 			...themedHeader(theme),
 			headerLeft: (
 				<CustomHeaderButtons>
 					<Item
-						title={textParser([close.text]).pop()}
+						title={textParser([close.text])}
 						style={styles.submit}
 						onPress={() => {
 							triggerCancel({ appId, viewId });
@@ -60,7 +54,7 @@ class ModalBlockView extends React.Component {
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item
-						title={textParser([submit.text]).pop()}
+						title={textParser([submit.text])}
 						style={styles.submit}
 						onPress={navigation.getParam('submit', () => {})}
 						testID='submit-modal-uikit'

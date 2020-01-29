@@ -80,7 +80,7 @@ export const DatePicker = ({
 
 	let button = (
 		<Button
-			title={textParser([placeholder]).pop()}
+			title={textParser([placeholder])}
 			onPress={() => onShow(!show)}
 			loading={loading}
 			theme={theme}

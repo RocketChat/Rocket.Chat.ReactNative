@@ -24,7 +24,7 @@ const Item = ({
 			{ backgroundColor: themes[theme].backgroundColor }
 		]}
 	>
-		<Text style={{ color: themes[theme].titleText }}>{textParser([item.text]).pop()}</Text>
+		<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
 		{selected ? <Check theme={theme} /> : null}
 	</TouchableOpacity>
 );

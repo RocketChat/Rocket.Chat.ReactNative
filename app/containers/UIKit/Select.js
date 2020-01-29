@@ -12,7 +12,8 @@ import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	iosPadding: {
-		paddingVertical: 16
+		height: 48,
+		justifyContent: 'center'
 	},
 	viewContainer: {
 		marginVertical: 4,
@@ -43,11 +44,11 @@ export const Select = ({
 }) => {
 	const [initial] = values || [null];
 	const [selected, setSelected] = useState(initial);
-	const items = options.map(option => ({ label: textParser([option.text]).pop(), value: option.value }));
+	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
-		borderColor: themes[theme].borderColor,
+		borderColor: themes[theme].separatorColor,
 		backgroundColor: themes[theme].backgroundColor
 	};
 
@@ -60,7 +61,7 @@ export const Select = ({
 	return (
 		<RNPickerSelect
 			items={items}
-			placeholder={placeholder ? { label: textParser([placeholder]).pop(), value: null } : {}}
+			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
 			useNativeAndroidPickerStyle={false}
 			value={selected}
 			onValueChange={(value) => {
