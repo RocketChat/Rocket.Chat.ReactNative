@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
 
+import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { themes } from '../../constants/colors';
 
@@ -25,7 +25,7 @@ const Emoji = React.memo(({
 	return (
 		<Text
 			style={[
-				{ color: themes[theme].titleText },
+				{ color: themes[theme].bodyText },
 				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
 				...style
 			]}

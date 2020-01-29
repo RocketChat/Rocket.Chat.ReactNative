@@ -37,8 +37,9 @@ class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
+		const t = navigation.getParam('t');
 		return {
-			title: I18n.t('Room_Info'),
+			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
@@ -205,7 +206,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl, user } = this.props;
+		const { baseUrl, user, theme } = this.props;
 
 		return (
 			<Avatar
@@ -217,7 +218,7 @@ class RoomInfoView extends React.Component {
 				userId={user.id}
 				token={user.token}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
 		);
 	}

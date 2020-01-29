@@ -119,7 +119,7 @@ class RoomMembersView extends React.Component {
 			const db = database.active;
 			const subsCollection = db.collections.get('subscriptions');
 			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
-			if (query) {
+			if (query.length) {
 				const [room] = query;
 				this.goRoom({ rid: room.rid, name: item.username, room });
 			} else {

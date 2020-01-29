@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
@@ -31,7 +32,6 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
-import FileModal from '../../containers/FileModal';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isReadOnly, isBlocked } from '../../utils/room';
@@ -51,7 +51,6 @@ import ModalNavigation from '../../lib/ModalNavigation';
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
-	'photoModalVisible',
 	'reactionsModalVisible',
 	'canAutoTranslate',
 	'showActions',
@@ -161,9 +160,7 @@ class RoomView extends React.Component {
 			},
 			roomUpdate: {},
 			lastOpen: null,
-			photoModalVisible: false,
 			reactionsModalVisible: false,
-			selectedAttachment: {},
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
@@ -249,15 +246,11 @@ class RoomView extends React.Component {
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				this.init();
 				// Fire List.init() just to keep observables working
 				if (this.list && this.list.current) {
 					this.list.current.init();
 				}
 			});
-		}
-		if (appState === 'background' && appState !== prevProps.appState) {
-			this.unsubscribe();
 		}
 	}
 
@@ -290,7 +283,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		this.unsubscribe();
+		await this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -327,38 +320,41 @@ class RoomView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	init = () => {
+	init = async() => {
 		try {
 			this.setState({ loading: true });
-			this.initInteraction = InteractionManager.runAfterInteractions(async() => {
-				const { room, joined } = this.state;
-				if (this.tmid) {
-					await this.getThreadMessages();
-				} else {
-					const newLastOpen = new Date();
-					await this.getMessages(room);
+			const { room, joined } = this.state;
+			if (this.tmid) {
+				await this.getThreadMessages();
+			} else {
+				const newLastOpen = new Date();
+				await this.getMessages(room);
 
-					// if room is joined
-					if (joined) {
-						if (room.alert || room.unread || room.userMentions) {
-							this.setLastOpen(room.ls);
-						} else {
-							this.setLastOpen(null);
-						}
-						RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-						this.unsubscribe();
-						this.sub = await RocketChat.subscribeRoom(room);
+				// if room is joined
+				if (joined) {
+					if (room.alert || room.unread || room.userMentions) {
+						this.setLastOpen(room.ls);
+					} else {
+						this.setLastOpen(null);
 					}
+					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					await this.unsubscribe();
+					this.sub = RocketChat.subscribeRoom(room);
 				}
+			}
 
-				// We run `canAutoTranslate` again in order to refetch auto translate permission
-				// in case of a missing connection or poor connection on room open
-				const canAutoTranslate = await RocketChat.canAutoTranslate();
-				this.setState({ canAutoTranslate, loading: false });
-			});
+			// We run `canAutoTranslate` again in order to refetch auto translate permission
+			// in case of a missing connection or poor connection on room open
+			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			this.setState({ canAutoTranslate, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			log(e);
+			this.retryInit = this.retryInit + 1 || 1;
+			if (this.retryInit <= 1) {
+				this.retryInitTimeout = setTimeout(() => {
+					this.init();
+				}, 300);
+			}
 		}
 	}
 
@@ -389,9 +385,9 @@ class RoomView extends React.Component {
 		}
 	}
 
-	unsubscribe = () => {
+	unsubscribe = async() => {
 		if (this.sub && this.sub.stop) {
-			this.sub.stop();
+			await this.sub.stop();
 		}
 	}
 
@@ -467,12 +463,9 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: message, showActions: true });
 	}
 
-	onOpenFileModal = (attachment) => {
-		this.setState({ selectedAttachment: attachment, photoModalVisible: true });
-	}
-
-	onCloseFileModal = () => {
-		this.setState({ selectedAttachment: {}, photoModalVisible: false });
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onReactionPress = async(shortname, messageId) => {
@@ -571,27 +564,16 @@ class RoomView extends React.Component {
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	}
 
-	getMessages = async() => {
+	getMessages = () => {
 		const { room } = this.state;
-		try {
-			if (room.lastOpen) {
-				await RocketChat.loadMissedMessages(room);
-			} else {
-				await RocketChat.loadMessagesForRoom(room);
-			}
-			return Promise.resolve();
-		} catch (e) {
-			log(e);
+		if (room.lastOpen) {
+			return RocketChat.loadMissedMessages(room);
+		} else {
+			return RocketChat.loadMessagesForRoom(room);
 		}
 	}
 
-	getThreadMessages = () => {
-		try {
-			return RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid });
-		} catch (e) {
-			log(e);
-		}
-	}
+	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
 
 	getCustomEmoji = (name) => {
 		const { customEmojis } = this.props;
@@ -658,7 +640,7 @@ class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}
@@ -752,7 +734,7 @@ class RoomView extends React.Component {
 				onLongPress={this.onMessageLongPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
-				onOpenFileModal={this.onOpenFileModal}
+				showAttachment={this.showAttachment}
 				reactionInit={this.onReactionInit}
 				replyBroadcast={this.replyBroadcast}
 				errorActionsShow={this.errorActionsShow}
@@ -809,7 +791,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly) {
+		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
@@ -831,6 +813,7 @@ class RoomView extends React.Component {
 				tmid={this.tmid}
 				roomType={room.t}
 				isFocused={navigation.isFocused}
+				theme={theme}
 				message={selectedMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
@@ -887,7 +870,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, photoModalVisible, reactionsModalVisible, selectedAttachment, selectedMessage, loading, reacting
+			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
 		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
@@ -923,13 +906,6 @@ class RoomView extends React.Component {
 					reactionClose={this.onReactionClose}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
-				<FileModal
-					attachment={selectedAttachment}
-					isVisible={photoModalVisible}
-					onClose={this.onCloseFileModal}
-					user={user}
-					baseUrl={baseUrl}
-				/>
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}

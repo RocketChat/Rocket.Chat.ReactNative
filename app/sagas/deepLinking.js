@@ -6,14 +6,25 @@ import RNUserDefaults from 'rn-user-defaults';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
+import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
-import { isIOS } from '../utils/deviceInfo';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p'
+};
+
+const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
+	if (params.path && params.path.startsWith('invite/')) {
+		const token = params.path.replace('invite/', '');
+		if (requireLogin) {
+			yield put(inviteLinksSetToken(token));
+		} else {
+			yield put(inviteLinksRequest(token));
+		}
+	}
 };
 
 const navigate = function* navigate({ params }) {
@@ -25,16 +36,14 @@ const navigate = function* navigate({ params }) {
 			yield Navigation.navigate('RoomsListView');
 			Navigation.navigate('RoomView', { rid: params.rid, name, t: roomTypes[type] });
 		}
+	} else {
+		yield handleInviteLink({ params });
 	}
 };
 
 const handleOpen = function* handleOpen({ params }) {
 	if (!params.host) {
 		return;
-	}
-
-	if (isIOS) {
-		yield RNUserDefaults.setName('group.ios.chat.rocket');
 	}
 
 	let { host } = params;
@@ -68,7 +77,7 @@ const handleOpen = function* handleOpen({ params }) {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
 				yield put(selectServerRequest(host));
-				yield take(types.SERVER.SELECT_SUCCESS);
+				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });
 				return;
 			}
@@ -87,10 +96,9 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield RocketChat.connect({ server: host, user: { token: params.token } });
+		} else {
+			yield handleInviteLink({ params, requireLogin: true });
 		}
-		Navigation.navigate('OnboardingView', { previousServer: server });
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
 	}
 };
 

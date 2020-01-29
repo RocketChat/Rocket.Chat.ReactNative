@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 30
 	},
 	safeArea: {
-		paddingBottom: 30
+		paddingBottom: 30,
+		flex: 1
 	},
 	serviceButton: {
 		borderRadius: 2,
@@ -231,6 +232,17 @@ class LoginSignupView extends React.Component {
 		this.openOAuth({ url });
 	}
 
+	onPressWordpress = () => {
+		const { services, server } = this.props;
+		const { clientId, serverURL } = services.wordpress;
+		const endpoint = `${ serverURL }/oauth/authorize`;
+		const redirect_uri = `${ server }/_oauth/wordpress?close`;
+		const scope = 'openid';
+		const state = this.getOAuthState();
+		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
+		this.openOAuth({ url: `${ endpoint }${ params }` });
+	}
+
 	onPressCustomOAuth = (loginService) => {
 		const { server } = this.props;
 		const {
@@ -313,7 +325,8 @@ class LoginSignupView extends React.Component {
 			google: this.onPressGoogle,
 			linkedin: this.onPressLinkedin,
 			'meteor-developer': this.onPressMeteor,
-			twitter: this.onPressTwitter
+			twitter: this.onPressTwitter,
+			wordpress: this.onPressWordpress
 		};
 		return oauthProviders[name];
 	}
@@ -421,18 +434,22 @@ class LoginSignupView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<ScrollView
-				style={[
-					sharedStyles.containerScrollView,
-					sharedStyles.container,
-					styles.container,
-					{ backgroundColor: themes[theme].backgroundColor },
-					isTablet && sharedStyles.tabletScreenContent
-				]}
-				{...scrollPersistTaps}
+			<SafeAreaView
+				testID='welcome-view'
+				forceInset={{ vertical: 'never' }}
+				style={[styles.safeArea, { backgroundColor: themes[theme].backgroundColor }]}
 			>
-				<StatusBar theme={theme} />
-				<SafeAreaView testID='welcome-view' forceInset={{ vertical: 'never' }} style={styles.safeArea}>
+				<ScrollView
+					style={[
+						sharedStyles.containerScrollView,
+						sharedStyles.container,
+						styles.container,
+						{ backgroundColor: themes[theme].backgroundColor },
+						isTablet && sharedStyles.tabletScreenContent
+					]}
+					{...scrollPersistTaps}
+				>
+					<StatusBar theme={theme} />
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
 					<Button
@@ -449,8 +466,8 @@ class LoginSignupView extends React.Component {
 						theme={theme}
 						testID='welcome-view-register'
 					/>
-				</SafeAreaView>
-			</ScrollView>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }

@@ -903,6 +903,8 @@ const RocketChat = {
 			name, custom, showButton = true, service
 		} = services;
 
+		const authName = name || service;
+
 		if (custom && showButton) {
 			return 'oauth_custom';
 		}
@@ -916,8 +918,8 @@ const RocketChat = {
 		}
 
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
-		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
-		return availableOAuth.includes(name) ? 'oauth' : 'not_supported';
+		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
+		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
 	},
 	getUsernameSuggestion() {
 		// RC 0.65.0
@@ -1098,6 +1100,23 @@ const RocketChat = {
 	},
 	translateMessage(message, targetLanguage) {
 		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
+	},
+	getRoomTitle(room) {
+		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
+
+	findOrCreateInvite({ rid, days, maxUses }) {
+		// RC 2.4.0
+		return this.sdk.post('findOrCreateInvite', { rid, days, maxUses });
+	},
+	validateInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('validateInviteToken', { token });
+	},
+	useInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('useInviteToken', { token });
 	}
 };
 

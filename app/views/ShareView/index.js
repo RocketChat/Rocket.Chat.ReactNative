@@ -86,9 +86,12 @@ class ShareView extends React.Component {
 	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
 
 	_sendMessage = async() => {
-		const { isMedia } = this.state;
-		this.setState({ loading: true });
+		const { isMedia, loading } = this.state;
+		if (loading) {
+			return;
+		}
 
+		this.setState({ loading: true });
 		if (isMedia) {
 			await this.sendMediaMessage();
 		} else {

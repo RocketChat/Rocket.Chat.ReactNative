@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const Video = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, theme
+	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, theme
 }) => {
 	if (!baseUrl) {
 		return null;
@@ -35,7 +35,7 @@ const Video = React.memo(({
 
 	const onPress = () => {
 		if (isTypeSupported(file.video_type)) {
-			return onOpenFileModal(file);
+			return showAttachment(file);
 		}
 		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 		openLink(uri, theme);
@@ -64,7 +64,7 @@ Video.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
-	onOpenFileModal: PropTypes.func,
+	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string
 };
