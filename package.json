@@ -29,7 +29,7 @@
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/slider": "2.0.5",
     "@rocket.chat/sdk": "1.0.0-alpha.31",
-    "@rocket.chat/ui-kit": "^0.2.0-alpha.19",
+    "@rocket.chat/ui-kit": "0.2.0-alpha.19",
     "bugsnag-react-native": "2.23.2",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
