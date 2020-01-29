@@ -14,6 +14,7 @@ const ACTION_TYPES = {
 };
 
 const MODAL_ACTIONS = {
+	MODAL: 'modal',
 	OPEN: 'modal.open',
 	CLOSE: 'modal.close',
 	UPDATE: 'modal.update'
@@ -60,7 +61,7 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	}
 
 
-	if ([MODAL_ACTIONS.OPEN].includes(type)) {
+	if ([MODAL_ACTIONS.OPEN].includes(type) || [MODAL_ACTIONS.MODAL].includes(type)) {
 		return Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
