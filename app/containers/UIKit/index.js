@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
 	uiKitMessage,
@@ -194,6 +194,7 @@ class ModalParser extends UiKitParserModal {
 
 	plainInput(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
+		const [value, setValue] = useState(initial);
 		const { theme } = useContext(ThemeContext);
 		const {
 			multiline, actionId, placeholder, label, hint, description
@@ -208,9 +209,12 @@ class ModalParser extends UiKitParserModal {
 				onInput={action}
 				multiline={multiline}
 				loading={loading}
-				onChangeText={value => action({ value })}
+				onChangeText={(txt) => {
+					action({ value: txt });
+					setValue(txt);
+				}}
 				inputStyle={multiline && styles.multiline}
-				defaultValue={initial}
+				value={value}
 				theme={theme}
 			/>
 		);
