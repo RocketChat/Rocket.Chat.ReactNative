@@ -1,11 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { uiKitText, BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-export const textParser = uiKitText(new class {
-	plain_text = ({ text }) => text;
-
-	text = ({ text }) => text;
-}());
+export const textParser = ([{ text }]) => text;
 
 export const defaultContext = {
 	action: (...args) => console.log(args),
