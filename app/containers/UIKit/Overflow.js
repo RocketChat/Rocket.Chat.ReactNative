@@ -12,6 +12,9 @@ import { themes } from '../../constants/colors';
 const keyExtractor = item => item.value;
 
 const styles = StyleSheet.create({
+	menu: {
+		justifyContent: 'center'
+	},
 	option: {
 		padding: 8,
 		minHeight: 32
@@ -77,6 +80,7 @@ export const Overflow = ({
 				ref={ref => touchable[blockId] = ref}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
+				style={styles.menu}
 			>
 				{!loading ? <CustomIcon size={18} name='menu' /> : <ActivityIndicator style={styles.loading} />}
 			</Touchable>

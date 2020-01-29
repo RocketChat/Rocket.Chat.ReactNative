@@ -41,7 +41,7 @@ export const Select = ({
 	value: values,
 	theme
 }) => {
-	const [initial] = values;
+	const [initial] = values || [null];
 	const [selected, setSelected] = useState(initial);
 	const items = options.map(option => ({ label: textParser([option.text]).pop(), value: option.value }));
 	const pickerStyle = {

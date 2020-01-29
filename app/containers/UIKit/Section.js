@@ -10,15 +10,14 @@ const styles = StyleSheet.create({
 		marginBottom: 8
 	},
 	row: {
-		flexDirection: 'row',
-		alignItems: 'center'
+		flexDirection: 'row'
 	},
 	column: {
 		justifyContent: 'center'
 	},
 	text: {
 		flex: 1,
-		paddingVertical: 8,
+		padding: 4,
 		textAlignVertical: 'center',
 		fontSize: 16,
 		lineHeight: 22
