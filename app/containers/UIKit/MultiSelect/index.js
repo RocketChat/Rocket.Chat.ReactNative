@@ -23,10 +23,11 @@ export const MultiSelect = ({
 	placeholder = { text: 'Search' },
 	context,
 	loading,
+	value: values,
 	multiselect = false,
 	theme
 }) => {
-	const [selected, select] = useState([]);
+	const [selected, select] = useState(values || []);
 	const [opened, open] = useState(false);
 	const [search, onSearchChange] = useState('');
 	const [current, onChangeCurrent] = useState('');
@@ -117,5 +118,6 @@ MultiSelect.propTypes = {
 	context: PropTypes.number,
 	loading: PropTypes.bool,
 	multiselect: PropTypes.bool,
+	value: PropTypes.array,
 	theme: PropTypes.string
 };

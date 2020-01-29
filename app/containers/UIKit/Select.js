@@ -38,10 +38,11 @@ export const Select = ({
 	placeholder,
 	onChange,
 	loading,
-	value: initialValue,
+	value: values,
 	theme
 }) => {
-	const [selected, setSelected] = useState(initialValue);
+	const [initial] = values;
+	const [selected, setSelected] = useState(initial);
 	const items = options.map(option => ({ label: textParser([option.text]).pop(), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
@@ -80,6 +81,6 @@ Select.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	loading: PropTypes.bool,
-	value: PropTypes.string,
+	value: PropTypes.array,
 	theme: PropTypes.string
 };
