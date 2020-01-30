@@ -16,8 +16,12 @@ let connectedListener;
 let disconnectedListener;
 let streamListener;
 let subServer;
+let subQueue = {};
+let subTimer = null;
+let roomQueue = {};
+let roomTimer = null;
+const WINDOW_TIME = 1000;
 
-// TODO: batch execution
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
 		const db = database.active;
@@ -162,6 +166,36 @@ const createOrUpdateSubscription = async(subscription, room) => {
 	}
 };
 
+const debouncedUpdateSub = (subscription) => {
+	if (!subTimer) {
+		subTimer = setTimeout(() => {
+			const subBatch = subQueue;
+			subQueue = {};
+			Object.keys(subBatch).forEach((key) => {
+				createOrUpdateSubscription(subBatch[key]);
+			});
+			subTimer = null;
+			subQueue = {};
+		}, WINDOW_TIME);
+	}
+	subQueue[subscription.rid] = subscription;
+};
+
+const debouncedUpdateRoom = (room) => {
+	if (!roomTimer) {
+		roomTimer = setTimeout(() => {
+			const roomBatch = roomQueue;
+			roomQueue = {};
+			Object.keys(roomBatch).forEach((key) => {
+				createOrUpdateSubscription(null, roomBatch[key]);
+			});
+			roomTimer = null;
+			roomQueue = {};
+		}, WINDOW_TIME);
+	}
+	roomQueue[room._id] = room;
+};
+
 export default function subscribeRooms() {
 	const handleConnection = () => {
 		store.dispatch(roomsRequest());
@@ -202,12 +236,12 @@ export default function subscribeRooms() {
 					log(e);
 				}
 			} else {
-				await createOrUpdateSubscription(data);
+				debouncedUpdateSub(data);
 			}
 		}
 		if (/rooms/.test(ev)) {
 			if (type === 'updated' || type === 'inserted') {
-				await createOrUpdateSubscription(null, data);
+				debouncedUpdateRoom(data);
 			}
 		}
 		if (/message/.test(ev)) {
@@ -256,6 +290,16 @@ export default function subscribeRooms() {
 		if (streamListener) {
 			streamListener.then(removeListener);
 			streamListener = false;
+		}
+		subQueue = {};
+		roomQueue = {};
+		if (subTimer) {
+			clearTimeout(subTimer);
+			subTimer = false;
+		}
+		if (roomTimer) {
+			clearTimeout(roomTimer);
+			roomTimer = false;
 		}
 	};
 
