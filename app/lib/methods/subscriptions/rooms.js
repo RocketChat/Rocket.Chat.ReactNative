@@ -9,6 +9,7 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
+import buildMessage from '../helpers/buildMessage';
 
 const removeListener = listener => listener.stop();
 
@@ -132,32 +133,32 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				}
 			}
 
-			// if (tmp.lastMessage) {
-			// 	const lastMessage = buildMessage(tmp.lastMessage);
-			// 	const messagesCollection = db.collections.get('messages');
-			// 	let messageRecord;
-			// 	try {
-			// 		messageRecord = await messagesCollection.find(lastMessage._id);
-			// 	} catch (error) {
-			// 		// Do nothing
-			// 	}
+			if (tmp.lastMessage) {
+				const lastMessage = buildMessage(tmp.lastMessage);
+				const messagesCollection = db.collections.get('messages');
+				let messageRecord;
+				try {
+					messageRecord = await messagesCollection.find(lastMessage._id);
+				} catch (error) {
+					// Do nothing
+				}
 
-			// 	if (messageRecord) {
-			// 		batch.push(
-			// 			messageRecord.prepareUpdate(() => {
-			// 				Object.assign(messageRecord, lastMessage);
-			// 			})
-			// 		);
-			// 	} else {
-			// 		batch.push(
-			// 			messagesCollection.prepareCreate((m) => {
-			// 				m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-			// 				m.subscription.id = lastMessage.rid;
-			// 				return Object.assign(m, lastMessage);
-			// 			})
-			// 		);
-			// 	}
-			// }
+				if (messageRecord) {
+					batch.push(
+						messageRecord.prepareUpdate(() => {
+							Object.assign(messageRecord, lastMessage);
+						})
+					);
+				} else {
+					batch.push(
+						messagesCollection.prepareCreate((m) => {
+							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+							m.subscription.id = lastMessage.rid;
+							return Object.assign(m, lastMessage);
+						})
+					);
+				}
+			}
 
 			await db.batch(...batch);
 		});
