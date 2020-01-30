@@ -164,6 +164,7 @@ class RoomView extends React.Component {
 			selectedMessage: selectedMessage || {},
 			replyMessage: {},
 			editMessage: {},
+			reactionMessage: {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
@@ -420,7 +421,7 @@ class RoomView extends React.Component {
 			return;
 		}
 		this.setState({
-			replyMessage: {}, editMessage: {}, selectedMessage: {}, showActions: false
+			reactionMessage: {}, replyMessage: {}, editMessage: {}, selectedMessage: {}, showActions: false
 		});
 	}
 
@@ -458,11 +459,13 @@ class RoomView extends React.Component {
 	}
 
 	onReactionInit = (message) => {
-		this.setState({ selectedMessage: message, reacting: true, showActions: false });
+		this.setState({
+			reactionMessage: message, selectedMessage: {}, reacting: true, showActions: false
+		});
 	}
 
 	onReactionClose = () => {
-		this.setState({ selectedMessage: {}, reacting: false });
+		this.setState({ reactionMessage: {}, reacting: false });
 	}
 
 	onMessageLongPress = (message) => {
@@ -484,12 +487,12 @@ class RoomView extends React.Component {
 	};
 
 	onReactionLongPress = (message) => {
-		this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		this.setState({ reactionMessage: message, reactionsModalVisible: true });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	}
 
 	onCloseReactionsModal = () => {
-		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
+		this.setState({ reactionMessage: {}, reactionsModalVisible: false });
 	}
 
 	onDiscussionPress = debounce((item) => {
@@ -878,7 +881,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, reactionsModalVisible, selectedMessage, loading, reacting
+			room, reactionsModalVisible, reactionMessage, loading, reacting
 		} = this.state;
 		const { user, baseUrl, theme } = this.props;
 		const { rid, t } = room;
@@ -909,13 +912,13 @@ class RoomView extends React.Component {
 				{this.renderActions()}
 				<ReactionPicker
 					show={reacting}
-					message={selectedMessage}
+					message={reactionMessage}
 					onEmojiSelected={this.onReactionPress}
 					reactionClose={this.onReactionClose}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
 				<ReactionsModal
-					message={selectedMessage}
+					message={reactionMessage}
 					isVisible={reactionsModalVisible}
 					user={user}
 					baseUrl={baseUrl}
