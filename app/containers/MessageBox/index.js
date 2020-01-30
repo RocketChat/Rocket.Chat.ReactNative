@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
-
+import isEqual from 'lodash/isEqual';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -69,6 +69,7 @@ class MessageBox extends Component {
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
 		replyMessage: PropTypes.object,
+		editMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
@@ -177,12 +178,14 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { isFocused, editing, replying } = this.props;
+		const {
+			isFocused, editing, replying, editMessage
+		} = this.props;
 		if (!isFocused()) {
 			return;
 		}
-		if (editing !== nextProps.editing && nextProps.editing) {
-			this.setInput(nextProps.message.msg);
+		if ((editing !== nextProps.editing || !isEqual(editMessage, nextProps.editMessage)) && nextProps.editing) {
+			this.setInput(nextProps.editMessage.msg);
 			if (this.text) {
 				this.setShowSend(true);
 			}
@@ -199,7 +202,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, theme, replyMessage
+			roomType, replying, editing, isFocused, theme, replyMessage, editMessage
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -216,7 +219,10 @@ class MessageBox extends Component {
 		if (nextProps.editing !== editing) {
 			return true;
 		}
-		if (nextProps.replyMessage !== replyMessage) {
+		if (!isEqual(nextProps.editMessage, editMessage)) {
+			return true;
+		}
+		if (!isEqual(nextProps.replyMessage, replyMessage)) {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
@@ -681,7 +687,7 @@ class MessageBox extends Component {
 		}
 		// Edit
 		if (editing) {
-			const { message: editingMessage, editRequest } = this.props;
+			const { editMessage: editingMessage, editRequest } = this.props;
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 

@@ -163,6 +163,7 @@ class RoomView extends React.Component {
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
 			replyMessage: {},
+			editMessage: {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
@@ -418,7 +419,9 @@ class RoomView extends React.Component {
 		if (editing || replying || reacting) {
 			return;
 		}
-		this.setState({ selectedMessage: {}, showActions: false });
+		this.setState({
+			replyMessage: {}, editMessage: {}, selectedMessage: {}, showActions: false
+		});
 	}
 
 	onErrorActionsHide = () => {
@@ -426,15 +429,17 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
-		this.setState({ selectedMessage: message, editing: true, showActions: false });
+		this.setState({
+			editMessage: message, selectedMessage: {}, editing: true, showActions: false
+		});
 	}
 
 	onEditCancel = () => {
-		this.setState({ selectedMessage: {}, editing: false });
+		this.setState({ editMessage: {}, editing: false });
 	}
 
 	onEditRequest = async(message) => {
-		this.setState({ selectedMessage: {}, editing: false });
+		this.setState({ editMessage: {}, selectedMessage: {}, editing: false });
 		try {
 			await RocketChat.editMessage(message);
 		} catch (e) {
@@ -771,7 +776,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention, replyMessage
+			joined, room, selectedMessage, editing, replying, replyWithMention, replyMessage, editMessage
 		} = this.state;
 		const { navigation, theme } = this.props;
 
@@ -817,6 +822,7 @@ class RoomView extends React.Component {
 				theme={theme}
 				message={selectedMessage}
 				replyMessage={replyMessage}
+				editMessage={editMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
 				editCancel={this.onEditCancel}
