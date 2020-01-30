@@ -1,9 +1,6 @@
-import RNUserDefaults from 'rn-user-defaults';
-
 import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
-import RocketChat from '../rocketchat';
 
 const TRIGGER_TIMEOUT = 5000;
 
@@ -83,16 +80,16 @@ export function triggerAction({
 
 		setTimeout(reject, TRIGGER_TIMEOUT, triggerId);
 
-		const server = await RNUserDefaults.get('currentServer');
-		const id = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ id }`);
+		const { userId, authToken } = this.sdk.currentLogin;
+		const { host } = this.sdk.client;
 
-		const result = await fetch(`${ server }/api/apps/uikit/${ appId }/`, {
+		// we need to use fetch because this.sdk.post add /v1 to url
+		const result = await fetch(`${ host }/api/apps/uikit/${ appId }/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Auth-Token': token,
-				'X-User-Id': id
+				'X-Auth-Token': authToken,
+				'X-User-Id': userId
 			},
 			body: JSON.stringify({
 				type,
