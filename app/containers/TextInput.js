@@ -79,14 +79,6 @@ export default class RCTextInput extends React.PureComponent {
 		showPassword: false
 	}
 
-	// handle initial value cases
-	componentDidMount() {
-		const { onChangeText, defaultValue } = this.props;
-		if (onChangeText && defaultValue && defaultValue.length) {
-			onChangeText(defaultValue);
-		}
-	}
-
 	get iconLeft() {
 		const { testID, iconLeft, theme } = this.props;
 		return (
