@@ -29,6 +29,46 @@ const styles = StyleSheet.create({
 	}
 });
 
+class Blocks extends React.Component {
+	static propTypes = {
+		blocks: PropTypes.array,
+		rid: PropTypes.string,
+		mid: PropTypes.string,
+		appId: PropTypes.string,
+		keys: PropTypes.object
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const { blocks } = this.props;
+		if (!isEqual(nextProps.blocks, blocks)) {
+			return true;
+		}
+		return false;
+	}
+
+	render() {
+		const {
+			blocks, rid, mid, appId, keys
+		} = this.props;
+
+		return (
+			React.createElement(
+				modalBlockWithContext({
+					action: (...args) => RocketChat.triggerBlockAction({ ...args, rid, mid }),
+					state: ({ actionId, value, blockId = 'default' }) => {
+						keys[actionId] = {
+							blockId,
+							value
+						};
+					},
+					appId
+				}),
+				{ blocks }
+			)
+		);
+	}
+}
+
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme } = screenProps;
@@ -140,32 +180,19 @@ class ModalBlockView extends React.Component {
 	render() {
 		const { data, loading } = this.state;
 		const { theme } = this.props;
+		const { keys } = this;
 		const {
 			view,
 			rid,
-			mid
+			mid,
+			appId
 		} = data;
 		const { blocks } = view;
 
 		return (
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
-					{
-						React.createElement(modalBlockWithContext({
-							action: ({
-								actionId, appId, value, blockId
-							}) => RocketChat.triggerBlockAction({
-								actionId, appId, value, blockId, rid, mid
-							}),
-							state: ({ actionId, value, blockId = 'default' }) => {
-								this.keys[actionId] = {
-									blockId,
-									value
-								};
-							},
-							appId: data.appId
-						}), { blocks })
-					}
+					<Blocks blocks={blocks} rid={rid} mid={mid} appId={appId} keys={keys} />
 				</View>
 				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</ScrollView>
