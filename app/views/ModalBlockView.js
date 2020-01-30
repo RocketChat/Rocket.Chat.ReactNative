@@ -46,21 +46,29 @@ class Blocks extends React.Component {
 		return false;
 	}
 
+	action = ({ actionId, value, blockId }) => {
+		const { rid, mid, appId } = this.props;
+		return RocketChat.triggerBlockAction({
+			actionId, appId, value, blockId, rid, mid
+		});
+	}
+
+	changeState = ({ actionId, value, blockId = 'default' }) => {
+		const { keys } = this.props;
+		keys[actionId] = {
+			blockId,
+			value
+		};
+	}
+
 	render() {
-		const {
-			blocks, rid, mid, appId, keys
-		} = this.props;
+		const { blocks, appId } = this.props;
 
 		return (
 			React.createElement(
 				modalBlockWithContext({
-					action: (...args) => RocketChat.triggerBlockAction({ ...args, rid, mid }),
-					state: ({ actionId, value, blockId = 'default' }) => {
-						keys[actionId] = {
-							blockId,
-							value
-						};
-					},
+					action: this.action,
+					state: this.changeState,
 					appId
 				}),
 				{ blocks }
