@@ -68,6 +68,7 @@ class MessageBox extends Component {
 		rid: PropTypes.string.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		message: PropTypes.object,
+		replyMessage: PropTypes.object,
 		replying: PropTypes.bool,
 		editing: PropTypes.bool,
 		threadsEnabled: PropTypes.bool,
@@ -198,7 +199,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, theme
+			roomType, replying, editing, isFocused, theme, replyMessage
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -213,6 +214,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextProps.replyMessage !== replyMessage) {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
@@ -684,7 +688,7 @@ class MessageBox extends Component {
 		// Reply
 		} else if (replying) {
 			const {
-				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+				replyMessage: replyingMessage, replyCancel, threadsEnabled, replyWithMention
 			} = this.props;
 
 			// Thread
@@ -766,7 +770,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme
+			editing, replying, replyCancel, user, getCustomEmoji, theme, replyMessage
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -784,7 +788,7 @@ class MessageBox extends Component {
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
 					<ReplyPreview
-						message={message}
+						message={replyMessage}
 						close={replyCancel}
 						username={user.username}
 						replying={replying}

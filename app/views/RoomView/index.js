@@ -162,6 +162,7 @@ class RoomView extends React.Component {
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
+			replyMessage: {},
 			canAutoTranslate: false,
 			loading: true,
 			showActions: false,
@@ -441,18 +442,14 @@ class RoomView extends React.Component {
 		}
 	}
 
-	onReplyInit = async(message, mention) => {
-		const { replying } = this.state;
-		if (replying) {
-			await this.setState({ replying: false });
-		}
+	onReplyInit = (message, mention) => {
 		this.setState({
-			selectedMessage: message, replying: true, showActions: false, replyWithMention: mention
+			replyMessage: message, replying: true, showActions: false, replyWithMention: mention, selectedMessage: {}
 		});
 	}
 
 	onReplyCancel = () => {
-		this.setState({ selectedMessage: {}, replying: false });
+		this.setState({ replyMessage: {}, replying: false });
 	}
 
 	onReactionInit = (message) => {
@@ -774,7 +771,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention
+			joined, room, selectedMessage, editing, replying, replyWithMention, replyMessage
 		} = this.state;
 		const { navigation, theme } = this.props;
 
@@ -819,6 +816,7 @@ class RoomView extends React.Component {
 				isFocused={navigation.isFocused}
 				theme={theme}
 				message={selectedMessage}
+				replyMessage={replyMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
 				editCancel={this.onEditCancel}
