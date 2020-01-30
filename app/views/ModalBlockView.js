@@ -13,7 +13,6 @@ import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
 
 import sharedStyles from './Styles';
-import { triggerCancel } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 
 const styles = StyleSheet.create({
@@ -45,7 +44,7 @@ class ModalBlockView extends React.Component {
 						title={textParser([close.text])}
 						style={styles.submit}
 						onPress={() => {
-							triggerCancel({ appId, viewId });
+							RocketChat.triggerCancel({ appId, viewId });
 							navigation.pop();
 						}}
 						testID='close-modal-uikit'

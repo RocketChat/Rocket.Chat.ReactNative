@@ -10,7 +10,7 @@ const TRIGGER_TIMEOUT = 5000;
 const ACTION_TYPES = {
 	ACTION: 'blockAction',
 	SUBMIT: 'viewSubmit',
-	CANCEL: 'viewCancel'
+	CLOSED: 'viewClosed'
 };
 
 const MODAL_ACTIONS = {
@@ -104,9 +104,14 @@ export function triggerAction({
 			})
 		});
 
-		const { type: interactionType, ...data } = await result.json();
+		try {
+			const { type: interactionType, ...data } = await result.json();
+			return resolve(handlePayloadUserInteraction(interactionType, data));
+		} catch (e) {
+			// do nothing
+		}
 
-		return resolve(handlePayloadUserInteraction(interactionType, data));
+		return resolve();
 	});
 }
 
@@ -115,17 +120,9 @@ export default function triggerBlockAction(options) {
 }
 
 export function triggerSubmitView({ viewId, ...options }) {
-	try {
-		return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
-	} catch (e) {
-		console.log(e);
-	}
+	return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
 }
 
 export function triggerCancel({ viewId, ...options }) {
-	try {
-		return triggerAction.call(this, { type: ACTION_TYPES.CANCEL, viewId, ...options });
-	} catch (e) {
-		console.log(e);
-	}
+	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, viewId, ...options });
 }
