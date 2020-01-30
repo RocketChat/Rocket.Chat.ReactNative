@@ -172,11 +172,10 @@ const debouncedUpdateSub = (subscription) => {
 		subTimer = setTimeout(() => {
 			const subBatch = subQueue;
 			subQueue = {};
+			subTimer = null;
 			Object.keys(subBatch).forEach((key) => {
 				createOrUpdateSubscription(subBatch[key]);
 			});
-			subTimer = null;
-			subQueue = {};
 		}, WINDOW_TIME);
 	}
 	subQueue[subscription.rid] = subscription;
@@ -187,11 +186,10 @@ const debouncedUpdateRoom = (room) => {
 		roomTimer = setTimeout(() => {
 			const roomBatch = roomQueue;
 			roomQueue = {};
+			roomTimer = null;
 			Object.keys(roomBatch).forEach((key) => {
 				createOrUpdateSubscription(null, roomBatch[key]);
 			});
-			roomTimer = null;
-			roomQueue = {};
 		}, WINDOW_TIME);
 	}
 	roomQueue[room._id] = room;
