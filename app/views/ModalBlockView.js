@@ -29,53 +29,38 @@ const styles = StyleSheet.create({
 	}
 });
 
-class Blocks extends React.Component {
-	static propTypes = {
-		blocks: PropTypes.array,
-		rid: PropTypes.string,
-		mid: PropTypes.string,
-		appId: PropTypes.string,
-		keys: PropTypes.object
-	}
+const Blocks = React.memo(({
+	blocks, rid, mid, appId, keys
+}) => {
+	const action = ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
+		actionId, appId, value, blockId, rid, mid
+	});
 
-	shouldComponentUpdate(nextProps) {
-		const { blocks } = this.props;
-		if (!isEqual(nextProps.blocks, blocks)) {
-			return true;
-		}
-		return false;
-	}
-
-	action = ({ actionId, value, blockId }) => {
-		const { rid, mid, appId } = this.props;
-		return RocketChat.triggerBlockAction({
-			actionId, appId, value, blockId, rid, mid
-		});
-	}
-
-	changeState = ({ actionId, value, blockId = 'default' }) => {
-		const { keys } = this.props;
+	const state = ({ actionId, value, blockId = 'default' }) => {
 		keys[actionId] = {
 			blockId,
 			value
 		};
-	}
+	};
 
-	render() {
-		const { blocks, appId } = this.props;
-
-		return (
-			React.createElement(
-				modalBlockWithContext({
-					action: this.action,
-					state: this.changeState,
-					appId
-				}),
-				{ blocks }
-			)
-		);
-	}
-}
+	return (
+		React.createElement(
+			modalBlockWithContext({
+				action,
+				state,
+				appId
+			}),
+			{ blocks }
+		)
+	);
+}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks));
+Blocks.propTypes = {
+	blocks: PropTypes.array,
+	rid: PropTypes.string,
+	mid: PropTypes.string,
+	appId: PropTypes.string,
+	keys: PropTypes.object
+};
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
