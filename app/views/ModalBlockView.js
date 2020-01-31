@@ -163,11 +163,11 @@ class ModalBlockView extends React.Component {
 					}
 				}
 			});
+			navigation.pop();
 		} catch (e) {
 			// do nothing
 		}
 		this.setState({ loading: false });
-		navigation.pop();
 	};
 
 	render() {

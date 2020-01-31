@@ -109,6 +109,7 @@ export function triggerAction({
 		} catch (e) {
 			if (result.status !== 200) {
 				showErrorAlert(I18n.t('Oops'));
+				return reject();
 			}
 		}
 
