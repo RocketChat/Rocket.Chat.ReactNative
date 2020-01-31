@@ -32,12 +32,7 @@ export default schemaMigrations({
 					columns: [
 						{ name: 'blocks', type: 'string', isOptional: true }
 					]
-				})
-			]
-		},
-		{
-			toVersion: 5,
-			steps: [
+				}),
 				addColumns({
 					table: 'slash_commands',
 					columns: [
