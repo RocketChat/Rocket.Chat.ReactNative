@@ -53,7 +53,7 @@ const Blocks = React.memo(({
 			{ blocks }
 		)
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks));
+}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks) && isEqual(prevProps.keys, nextProps.keys));
 Blocks.propTypes = {
 	blocks: PropTypes.array,
 	rid: PropTypes.string,
