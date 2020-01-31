@@ -1,20 +1,16 @@
-import { Alert, Linking } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
+import { Alert, Linking, AsyncStorage } from 'react-native';
 
-import { isIOS, getBundleId } from './deviceInfo';
+import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
 import { showErrorAlert } from './info';
+import { STORE_REVIEW_LINK } from '../constants/links';
 
 const store = isIOS ? 'App' : 'Play';
 
 const reviewKey = 'reviewKey';
-const popupDelay = 2000;
+const reviewDelay = 2000;
 const numberOfDays = 7;
 const numberOfPositiveEvent = 5;
-
-// handle official and experimental app
-const id = getBundleId.includes('reactnative') ? '1272915472' : '1148741252';
-const link = isIOS ? `itms-apps://itunes.apple.com/app/id${ id }?action=write-review` : `market://details?id=${ getBundleId }`;
 
 const daysBetween = (date1, date2) => {
 	const one_day = 1000 * 60 * 60 * 24;
@@ -24,23 +20,37 @@ const daysBetween = (date1, date2) => {
 	return Math.round(difference_ms / one_day);
 };
 
-const onCancelPress = () => RNUserDefaults.setObjectForKey(reviewKey, { doneReview: true });
+const onCancelPress = () => {
+	try {
+		const data = JSON.stringify({ doneReview: true });
+		return AsyncStorage.setItem(reviewKey, data);
+	} catch (e) {
+		// do nothing
+	}
+};
 
 export const onReviewPress = async() => {
 	await onCancelPress();
 	try {
-		const supported = await Linking.canOpenURL(link);
+		const supported = await Linking.canOpenURL(STORE_REVIEW_LINK);
 		if (supported) {
-			Linking.openURL(link);
+			Linking.openURL(STORE_REVIEW_LINK);
 		}
 	} catch (e) {
 		showErrorAlert(I18n.t('Unable_to_open_store', { store }));
 	}
 };
 
-const onAskMeLaterPress = () => RNUserDefaults.setObjectForKey(reviewKey, { lastReview: new Date().getTime() });
+const onAskMeLaterPress = () => {
+	try {
+		const data = JSON.stringify({ lastReview: new Date().getTime() });
+		return AsyncStorage.setItem(reviewKey, data);
+	} catch (e) {
+		// do nothing
+	}
+};
 
-const handlePositiveEvent = () => Alert.alert(
+const askReview = () => Alert.alert(
 	I18n.t('Are_you_enjoying_this_app'),
 	I18n.t('Give_us_some_love_on_the_store', { store }),
 	[
@@ -51,21 +61,25 @@ const handlePositiveEvent = () => Alert.alert(
 );
 
 const tryReview = async() => {
-	const reviewData = await RNUserDefaults.objectForKey(reviewKey) || {};
+	const data = await AsyncStorage.getItem(reviewKey) || '{}';
+	const reviewData = JSON.parse(data);
 	const { lastReview = 0, doneReview = false } = reviewData;
 	const lastReviewDate = new Date(lastReview);
 
-	// if ask me later was pressed, we only can show again after {{numberOfDays}} days
-	// if review wasn't done yet or wasn't cancelled
+	// if ask me later was pressed earlier, we can ask for review only after {{numberOfDays}} days
+	// if there's no review and it wasn't dismissed by the user
 	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && !doneReview) {
-		setTimeout(handlePositiveEvent, popupDelay);
+		setTimeout(askReview, reviewDelay);
 	}
 };
 
-class ReviewTheApp {
+class ReviewApp {
 	positiveEventCount = 0;
 
-	pushEvent = () => {
+	pushPositiveEvent = () => {
+		if (this.positiveEventCount >= numberOfPositiveEvent) {
+			return;
+		}
 		this.positiveEventCount += 1;
 		if (this.positiveEventCount === numberOfPositiveEvent) {
 			tryReview();
@@ -73,4 +87,4 @@ class ReviewTheApp {
 	}
 }
 
-export const Review = new ReviewTheApp();
+export const Review = new ReviewApp();

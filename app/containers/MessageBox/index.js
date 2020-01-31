@@ -507,7 +507,7 @@ class MessageBox extends Component {
 		};
 		try {
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-			Review.pushEvent();
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}

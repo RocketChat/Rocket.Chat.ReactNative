@@ -473,7 +473,7 @@ class RoomView extends React.Component {
 		try {
 			await RocketChat.setReaction(shortname, messageId);
 			this.onReactionClose();
-			Review.pushEvent();
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}
@@ -558,7 +558,7 @@ class RoomView extends React.Component {
 				this.list.current.update();
 			}
 			this.setLastOpen(null);
-			Review.pushEvent();
+			Review.pushPositiveEvent();
 		});
 	};
 

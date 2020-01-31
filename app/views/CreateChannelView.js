@@ -203,7 +203,7 @@ class CreateChannelView extends React.Component {
 			name: channelName, users, type, readOnly, broadcast
 		});
 
-		Review.pushEvent();
+		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {
