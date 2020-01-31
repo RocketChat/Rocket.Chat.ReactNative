@@ -465,6 +465,9 @@ class CustomModalStack extends React.Component {
 			closeModal();
 			return true;
 		}
+		if (state && state.routes[state.index] && state.routes[state.index].routes.length > 1) {
+			navigation.goBack();
+		}
 		return false;
 	}
 
@@ -486,7 +489,7 @@ class CustomModalStack extends React.Component {
 				avoidKeyboard
 			>
 				<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
-					<ModalSwitch navigation={navigation} screenProps={screenProps} />
+					<ModalSwitch navigation={navigation} screenProps={{ ...screenProps, closeModal: this.closeModal }} />
 				</View>
 			</Modal>
 		);

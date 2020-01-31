@@ -64,7 +64,7 @@ Blocks.propTypes = {
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const { theme } = screenProps;
+		const { theme, closeModal } = screenProps;
 		const data = navigation.getParam('data');
 		const { view, appId, viewId } = data;
 		const { title, submit, close } = view;
@@ -78,7 +78,12 @@ class ModalBlockView extends React.Component {
 						style={styles.submit}
 						onPress={() => {
 							RocketChat.triggerCancel({ appId, viewId });
-							navigation.pop();
+							// handle tablet case
+							if (closeModal) {
+								closeModal();
+							} else {
+								navigation.pop();
+							}
 						}}
 						testID='close-modal-uikit'
 					/>
