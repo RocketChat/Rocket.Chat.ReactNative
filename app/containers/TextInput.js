@@ -65,8 +65,6 @@ export default class RCTextInput extends React.PureComponent {
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
 		placeholder: PropTypes.string,
-		onChangeText: PropTypes.func,
-		defaultValue: PropTypes.string,
 		theme: PropTypes.string
 	}
 
