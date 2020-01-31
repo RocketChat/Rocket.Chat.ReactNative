@@ -195,8 +195,8 @@ public class CustomPushNotification extends PushNotification {
             messageStyle = new Notification.MessagingStyle(sender);
         }
 
+        messageStyle.setConversationTitle(title);
         if (ejson.type != null && !ejson.type.equals("d")) {
-            messageStyle.setConversationTitle(title);
             messageStyle.setGroupConversation(true);
         }
 
