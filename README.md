@@ -118,7 +118,7 @@ Readme will guide you on how to config.
 | Accessibility (Medium)                                        	| ❌    	|
 | Accessibility (Advanced)                                      	| ❌    	|
 | Authentication via Meteor                                     	| ❌    	|
-| Authentication via Wordpress                                  	| ❌    	|
+| Authentication via Wordpress                                  	| ✅    	|
 | Authentication via Custom OAuth                               	| ✅    	|
 | Add user to the room                                          	| ✅    	|
 | Send message                                                  	| ✅    	|
