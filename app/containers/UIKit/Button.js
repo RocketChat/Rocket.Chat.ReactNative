@@ -7,7 +7,6 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-/* eslint-disable react-native/no-unused-styles */
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 15,

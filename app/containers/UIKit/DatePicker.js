@@ -9,7 +9,6 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from './Button';
 import { textParser } from './utils';
-import { defaultTheme } from '../../utils/theme';
 import { themes } from '../../constants/colors';
 
 import sharedStyles from '../../views/Styles';
@@ -119,11 +118,9 @@ export const DatePicker = ({
 			display='default'
 			value={currentDate}
 			onChange={onChange}
+			textColor={themes[theme].titleText}
 		/>
 	) : null;
-
-	// unfortunately we can't change datepicker text color, then we use background based on system theme
-	const modalTheme = defaultTheme();
 
 	if (isIOS) {
 		content = (
@@ -135,16 +132,16 @@ export const DatePicker = ({
 			>
 				<TouchableWithoutFeedback onPress={() => onShow(false)}>
 					<View style={styles.container}>
-						<View style={[styles.modal, { backgroundColor: themes[modalTheme].backgroundColor }]}>
+						<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 							<View
 								style={[
 									styles.modalHeader,
-									{ backgroundColor: themes[modalTheme].bannerBackground, borderColor: themes[modalTheme].separatorColor }
+									{ backgroundColor: themes[theme].bannerBackground, borderColor: themes[theme].separatorColor }
 								]}
 							>
 								{/* RectButton doesn't work on Android Modal */}
 								<TouchableOpacity onPress={() => onShow(false)}>
-									<Text style={[styles.modalText, { color: themes[modalTheme].actionTintColor }]}>{I18n.t('Done')}</Text>
+									<Text style={[styles.modalText, { color: themes[theme].actionTintColor }]}>{I18n.t('Done')}</Text>
 								</TouchableOpacity>
 							</View>
 							{content}
