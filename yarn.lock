@@ -10243,7 +10243,7 @@ rimraf@~2.4.0:
   dependencies:
     glob "^6.0.1"
 
-rn-extensions-share@2.3.10:
+rn-extensions-share@^2.3.10:
   version "2.3.10"
   resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.10.tgz#17b9cf101b325cfe4c150f4c2585ca1e78f965a5"
   integrity sha512-gff32w15VXnuKdGG9QfrysI+Cga4beSWT8xdp1DvVJ1HezJ7XsDR1ELj3Wajij5OlW31VAunO8g91HgUfplmSQ==
