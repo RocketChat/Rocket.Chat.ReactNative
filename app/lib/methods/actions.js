@@ -1,6 +1,8 @@
 import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
+import { showErrorAlert } from '../../utils/info';
+import I18n from '../../i18n';
 
 const TRIGGER_TIMEOUT = 5000;
 
@@ -105,7 +107,9 @@ export function triggerAction({
 			const { type: interactionType, ...data } = await result.json();
 			return resolve(handlePayloadUserInteraction(interactionType, data));
 		} catch (e) {
-			// do nothing
+			if (result.status !== 200) {
+				showErrorAlert(I18n.t('Oops'));
+			}
 		}
 
 		return resolve();
