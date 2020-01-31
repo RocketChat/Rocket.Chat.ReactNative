@@ -34,8 +34,17 @@ export const useBlockContext = ({
 		}];
 	}
 
+	if (state) {
+		state({
+			blockId,
+			appId,
+			actionId,
+			value: initial
+		});
+	}
+
 	return [{ loading, setLoading, initial }, async({ value }) => {
-		setInitial(initial);
+		setInitial(value);
 		setLoading(true);
 		try {
 			await state({

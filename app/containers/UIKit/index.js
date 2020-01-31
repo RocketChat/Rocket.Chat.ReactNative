@@ -215,7 +215,7 @@ class ModalParser extends UiKitParserModal {
 				loading={loading}
 				onChangeText={value => action({ value })}
 				inputStyle={multiline && styles.multiline}
-				defaultValue={initial}
+				value={initial}
 				theme={theme}
 			/>
 		);
