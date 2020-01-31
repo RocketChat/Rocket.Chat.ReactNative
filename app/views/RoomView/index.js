@@ -729,7 +729,7 @@ class RoomView extends React.Component {
 			<Message
 				item={item}
 				user={user}
-				rid={this.rid}
+				rid={room.rid}
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}

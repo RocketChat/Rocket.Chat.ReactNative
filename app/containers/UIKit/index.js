@@ -28,6 +28,9 @@ import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
 
+// make it work on storybook
+const themeContext = useContext(ThemeContext) || { theme: 'light' };
+
 const styles = StyleSheet.create({
 	multiline: {
 		height: 130
@@ -38,7 +41,7 @@ const plainText = ({ text } = { text: '' }) => text;
 
 class MessageParser extends UiKitParserMessage {
 	text({ text, type } = { text: '' }, context) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		if (type !== 'mrkdwn') {
 			return text;
 		}
@@ -59,7 +62,7 @@ class MessageParser extends UiKitParserMessage {
 			text, value, actionId, style
 		} = element;
 		const [{ loading }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<Button
 				key={actionId}
@@ -73,23 +76,23 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	divider() {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Divider theme={theme} />;
 	}
 
 	section(args) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Section {...args} theme={theme} parser={this} />;
 	}
 
 	actions(args) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Actions {...args} theme={theme} parser={this} />;
 	}
 
 	overflow(element, context) {
 		const [{ loading }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<Overflow
 				element={element}
@@ -104,7 +107,7 @@ class MessageParser extends UiKitParserMessage {
 
 	datePicker(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<DatePicker
 				element={element}
@@ -118,18 +121,18 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	image(element, context) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Image element={element} theme={theme} context={context} />;
 	}
 
 	context(args) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Context {...args} theme={theme} parser={this} />;
 	}
 
 	multiStaticSelect(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<MultiSelect
 				{...element}
@@ -145,7 +148,7 @@ class MessageParser extends UiKitParserMessage {
 
 	staticSelect(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<Select
 				{...element}
@@ -159,7 +162,7 @@ class MessageParser extends UiKitParserMessage {
 
 	selectInput(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<MultiSelect
 				{...element}
@@ -184,7 +187,7 @@ class ModalParser extends UiKitParserModal {
 	input({
 		element, blockId, appId, label, description, hint
 	}) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return (
 			<Input
 				parser={this}
@@ -198,13 +201,13 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	image(element, context) {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		return <Image element={element} theme={theme} context={context} />;
 	}
 
 	plainInput(element, context) {
 		const [{ loading, initial }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = themeContext;
 		const { multiline, actionId, placeholder } = element;
 		return (
 			<TextInput
