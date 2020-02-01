@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, InteractionManager, Animated, TouchableNativeFeedback
+	Text, View, InteractionManager, Animated
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -64,6 +64,8 @@ const stateAttrsUpdate = [
 	'reacting'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
+
+const AnimatedTouch = Animated.createAnimatedComponent(Touch);
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -156,7 +158,8 @@ class RoomView extends React.Component {
 		const selectedMessage = props.navigation.getParam('message');
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
-		this.scrollButtonY = new Animated.Value(300);
+		this.contentOffsetY = 0;
+		this.scrollButtonTranslateY = new Animated.Value(300);
 		this.state = {
 			joined: true,
 			room: room || {
@@ -536,44 +539,31 @@ class RoomView extends React.Component {
 		}
 	}, 1000, true)
 
-	showScrollButton = () => {
-		this.isScrollButtonVisible = true;
-		const { scrollButtonY } = this;
+	handleScrollButtonAnimation = (isVisible, toValue) => {
+		this.isScrollButtonVisible = isVisible;
 		Animated.timing(
-			scrollButtonY,
+			this.scrollButtonTranslateY,
 			{
-				toValue: 0,
-				duration: 100,
+				toValue,
+				duration: 200,
 				useNativeDriver: true
 			}
 		).start();
 	}
 
-	hideScrollButton = () => {
-		this.isScrollButtonVisible = false;
-		const { scrollButtonY } = this;
-		Animated.timing(
-			scrollButtonY,
-			{
-				toValue: 300,
-				duration: 100,
-				useNativeDriver: true
-			}
-		).start();
+	toggleScrollToBottomButton = (e) => {
+		const { y } = e.nativeEvent.contentOffset;
+		this.contentOffsetY = y;
+		if (y > 200 && !this.isScrollButtonVisible) {
+			this.handleScrollButtonAnimation(true, 0);
+		} else if (y <= 200 && this.isScrollButtonVisible) {
+			this.handleScrollButtonAnimation(false, 300);
+		}
 	}
 
 	scrollToBottom = () => {
-		this.hideScrollButton();
-		this.flatList.scrollToIndex({ animated: true, index: 0 });
-	}
-
-	onScroll = (e) => {
-		const { y } = e.nativeEvent.contentOffset;
-		if (y > 60 && !this.isScrollButtonVisible) {
-			this.showScrollButton();
-		} else if (y <= 60 && this.isScrollButtonVisible) {
-			this.hideScrollButton();
-		}
+		this.flatList.scrollToIndex({ animated: this.contentOffsetY < 1500, index: 0 });
+		this.handleScrollButtonAnimation(false, 300);
 	}
 
 	replyBroadcast = (message) => {
@@ -813,14 +803,12 @@ class RoomView extends React.Component {
 	}
 
 	renderScrollButton = () => {
-		const { scrollButtonY } = this;
+		const { scrollButtonTranslateY, scrollToBottom } = this;
 		const { theme } = this.props;
 		return (
-			<TouchableNativeFeedback onPress={this.scrollToBottom}>
-				<Animated.View style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonY }] }]}>
-					<CustomIcon name='arrow-down' size={30} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
-				</Animated.View>
-			</TouchableNativeFeedback>
+			<AnimatedTouch theme={theme} onPress={scrollToBottom} style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonTranslateY }] }]}>
+				<CustomIcon name='arrow-down' size={30} style={{ color: themes[theme].auxiliaryTintColor }} />
+			</AnimatedTouch>
 		);
 	}
 
@@ -952,7 +940,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					animated={this.beginAnimating}
-					onScroll={this.onScroll}
+					toggleScrollToBottomButton={this.toggleScrollToBottomButton}
 				/>
 				{this.renderScrollButton()}
 				{this.renderFooter()}

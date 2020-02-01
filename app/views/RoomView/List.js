@@ -20,7 +20,7 @@ class List extends React.Component {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
-		onScroll: PropTypes.func,
+		toggleScrollToBottomButton: PropTypes.func,
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
@@ -193,7 +193,7 @@ class List extends React.Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
 		const { messages } = this.state;
-		const { theme, onScroll } = this.props;
+		const { theme, toggleScrollToBottomButton } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
@@ -214,8 +214,8 @@ class List extends React.Component {
 					maxToRenderPerBatch={5}
 					windowSize={10}
 					scrollEventThrottle={20}
-					onScroll={onScroll}
-					onScrollEndDrag={onScroll}
+					onScroll={toggleScrollToBottomButton}
+					onScrollEndDrag={toggleScrollToBottomButton}
 					ListFooterComponent={this.renderFooter}
 					{...scrollPersistTaps}
 				/>
