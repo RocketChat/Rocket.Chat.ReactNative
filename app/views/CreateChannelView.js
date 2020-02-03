@@ -22,6 +22,7 @@ import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { Review } from '../utils/review';
 
 const styles = StyleSheet.create({
 	container: {
@@ -201,6 +202,8 @@ class CreateChannelView extends React.Component {
 		create({
 			name: channelName, users, type, readOnly, broadcast
 		});
+
+		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {

@@ -33,6 +33,7 @@ import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
+import { onReviewPress } from '../../utils/review';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -251,6 +252,15 @@ class SettingsView extends React.Component {
 						onPress={() => this.navigateToRoom('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Review_this_app')}
+						showActionIndicator
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
