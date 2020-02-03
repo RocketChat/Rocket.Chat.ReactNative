@@ -294,9 +294,6 @@ class RoomView extends React.Component {
 		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
 			this.onForegroundInteraction.cancel();
 		}
-		if (this.initInteraction && this.initInteraction.cancel) {
-			this.initInteraction.cancel();
-		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}

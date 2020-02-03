@@ -10,8 +10,22 @@ import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 
-const unsubscribe = (subscriptions = []) => Promise.all(subscriptions.map(sub => sub.unsubscribe));
-const removeListener = listener => listener.stop();
+const unsubscribe = async(promise) => {
+	try {
+		const subscriptions = await promise || [];
+		await Promise.all(subscriptions.map(sub => sub.unsubscribe));
+	} catch (e) {
+		// do nothing
+	}
+};
+const removeListener = async(promise) => {
+	try {
+		const listener = await promise;
+		listener.stop();
+	} catch (e) {
+		// do nothing
+	}
+};
 
 let promises;
 let connectedListener;
@@ -199,34 +213,24 @@ export default function subscribeRoom({ rid }) {
 	});
 
 	const stop = async() => {
-		let params;
 		if (promises) {
-			try {
-				params = await promises;
-				await unsubscribe(params);
-			} catch (error) {
-				// Do nothing
-			}
+			await unsubscribe(promises);
 			promises = false;
 		}
 		if (connectedListener) {
-			params = await connectedListener;
-			removeListener(params);
+			await removeListener(connectedListener);
 			connectedListener = false;
 		}
 		if (disconnectedListener) {
-			params = await disconnectedListener;
-			removeListener(params);
+			await removeListener(disconnectedListener);
 			disconnectedListener = false;
 		}
 		if (notifyRoomListener) {
-			params = await notifyRoomListener;
-			removeListener(params);
+			await removeListener(notifyRoomListener);
 			notifyRoomListener = false;
 		}
 		if (messageReceivedListener) {
-			params = await messageReceivedListener;
-			removeListener(params);
+			await removeListener(messageReceivedListener);
 			messageReceivedListener = false;
 		}
 		reduxStore.dispatch(clearUserTyping());
