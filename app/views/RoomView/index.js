@@ -47,6 +47,7 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { Review } from '../../utils/review';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -472,6 +473,7 @@ class RoomView extends React.Component {
 		try {
 			await RocketChat.setReaction(shortname, messageId);
 			this.onReactionClose();
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}
@@ -556,6 +558,7 @@ class RoomView extends React.Component {
 				this.list.current.update();
 			}
 			this.setLastOpen(null);
+			Review.pushPositiveEvent();
 		});
 	};
 
