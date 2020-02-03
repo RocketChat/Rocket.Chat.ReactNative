@@ -105,7 +105,7 @@ export const DatePicker = ({
 					{
 						loading
 							? <ActivityIndicator style={[styles.loading, styles.icon]} />
-							: <CustomIcon name='calendar' size={20} color={themes[theme].auxiliaryText} style={styles.icon} />
+							: <CustomIcon name='calendar' size={20} color={error ? themes[theme].dangerColor : themes[theme].auxiliaryText} style={styles.icon} />
 					}
 				</View>
 			</Touchable>

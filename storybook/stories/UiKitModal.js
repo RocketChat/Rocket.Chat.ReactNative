@@ -511,6 +511,51 @@ export default () => (
 					}]}
 				/>
 			</KitContext.Provider>
+
+			<Separator title='Modal - Multilne with error' />
+			<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
+				<UiKitComponent
+					render={UiKitModal}
+					blocks={[{
+						type: 'input',
+						element: {
+							type: 'plain_text_input',
+							multiline: true,
+							actionId: 'input-test'
+						},
+						label: {
+							type: 'plain_text',
+							text: 'Label',
+							emoji: true
+						}
+					}]}
+				/>
+			</KitContext.Provider>
+
+			<Separator title='Modal - DatePicker with error' />
+			<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
+				<UiKitComponent
+					render={UiKitModal}
+					blocks={[{
+						type: 'input',
+						element: {
+							type: 'datepicker',
+							initial_date: '1990-04-28',
+							actionId: 'input-test',
+							placeholder: {
+								type: 'plain_text',
+								text: 'Select a date',
+								emoji: true
+							}
+						},
+						label: {
+							type: 'plain_text',
+							text: 'Label',
+							emoji: true
+						}
+					}]}
+				/>
+			</KitContext.Provider>
 		</ScrollView>
 	</SafeAreaView>
 );
