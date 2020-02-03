@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import Button from './Button';
+import Button from '../Button';
 
 export const Actions = ({
 	blockId, appId, elements, parser, theme

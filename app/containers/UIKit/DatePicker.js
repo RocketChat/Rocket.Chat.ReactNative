@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import Button from './Button';
+import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../constants/colors';
 

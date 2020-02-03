@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import Button from '../Button';
+import Button from '../../Button';
 import TextInput from '../../TextInput';
 
 import { textParser } from '../utils';
