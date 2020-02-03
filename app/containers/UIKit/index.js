@@ -10,7 +10,7 @@ import {
 } from '@rocket.chat/ui-kit';
 
 import Markdown from '../markdown';
-import Button from './Button';
+import Button from '../Button';
 import TextInput from '../TextInput';
 
 import { useBlockContext } from './utils';
@@ -219,7 +219,7 @@ class ModalParser extends UiKitParserModal {
 				onChangeText={value => action({ value })}
 				inputStyle={multiline && styles.multiline}
 				value={initial}
-				error={{ error }}
+				error={{ error, reason: error }}
 				theme={theme}
 			/>
 		);
