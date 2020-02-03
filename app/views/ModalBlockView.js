@@ -11,6 +11,7 @@ import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
+import { MODAL_ACTIONS } from '../lib/methods/actions';
 
 import sharedStyles from './Styles';
 import { textParser } from '../containers/UIKit/utils';
@@ -144,8 +145,13 @@ class ModalBlockView extends React.Component {
 		EventEmitter.removeListener(viewId);
 	}
 
-	handleUpdate = (data) => {
-		this.setState({ data });
+	handleUpdate = ({ type, ...data }) => {
+		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
+			const { errors } = data;
+			this.setState({ errors });
+		} else {
+			this.setState({ data });
+		}
 	};
 
 	submit = async() => {
@@ -176,7 +182,7 @@ class ModalBlockView extends React.Component {
 	};
 
 	render() {
-		const { data, loading } = this.state;
+		const { data, loading, errors } = this.state;
 		const { theme } = this.props;
 		const { keys } = this;
 		const {
@@ -186,6 +192,7 @@ class ModalBlockView extends React.Component {
 			appId
 		} = data;
 		const { blocks } = view;
+		console.log(errors);
 
 		return (
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>

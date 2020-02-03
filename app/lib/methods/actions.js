@@ -12,11 +12,12 @@ const ACTION_TYPES = {
 	CLOSED: 'viewClosed'
 };
 
-const MODAL_ACTIONS = {
+export const MODAL_ACTIONS = {
 	MODAL: 'modal',
 	OPEN: 'modal.open',
 	CLOSE: 'modal.close',
-	UPDATE: 'modal.update'
+	UPDATE: 'modal.update',
+	ERRORS: 'errors'
 };
 
 const triggersId = new Map();
@@ -50,8 +51,19 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 		return;
 	}
 
+	if ([MODAL_ACTIONS.ERRORS].includes(type)) {
+		return EventEmitter.emit(viewId, {
+			type,
+			triggerId,
+			viewId,
+			appId,
+			...data
+		});
+	}
+
 	if ([MODAL_ACTIONS.UPDATE].includes(type)) {
 		return EventEmitter.emit(viewId, {
+			type,
 			triggerId,
 			viewId,
 			appId,

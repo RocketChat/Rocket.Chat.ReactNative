@@ -6,7 +6,8 @@ export const textParser = ([{ text }]) => text;
 export const defaultContext = {
 	action: (...args) => console.log(args),
 	state: console.log,
-	appId: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+	appId: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
+	errors: {}
 };
 
 export const KitContext = React.createContext(defaultContext);
