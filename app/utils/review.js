@@ -50,14 +50,16 @@ const onAskMeLaterPress = () => {
 	}
 };
 
+const onReviewButton = { text: I18n.t('Review_app_yes'), onPress: onReviewPress };
+const onAskMeLaterButton = { text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress };
+const onCancelButton = { text: I18n.t('Review_app_no'), onPress: onCancelPress };
+
 const askReview = () => Alert.alert(
 	I18n.t('Review_app_title'),
 	I18n.t('Review_app_desc', { store }),
-	[
-		{ text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress },
-		{ text: I18n.t('Review_app_no'), onPress: onCancelPress, style: 'cancel' },
-		{ text: I18n.t('Review_app_yes'), onPress: onReviewPress }
-	],
+	isIOS
+		? [onReviewButton, onAskMeLaterButton, onCancelButton]
+		: [onAskMeLaterButton, onCancelButton, onReviewButton],
 	{
 		cancelable: true,
 		onDismiss: onAskMeLaterPress
