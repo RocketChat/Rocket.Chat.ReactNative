@@ -29769,6 +29769,63 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
       >
         Modal - Contexts and Dividers
       </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Input with error
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Multilne with error
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - DatePicker with error
+      </Text>
     </View>
   </RCTScrollView>
 </RCTSafeAreaView>
