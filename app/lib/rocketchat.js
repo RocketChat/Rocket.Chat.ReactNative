@@ -993,10 +993,10 @@ const RocketChat = {
 			command, roomId, params, triggerId
 		});
 	},
-	getCommandPreview(command, roomId, params, triggerId) {
+	getCommandPreview(command, roomId, params) {
 		// RC 0.65.0
 		return this.sdk.get('commands.preview', {
-			command, roomId, params, triggerId
+			command, roomId, params
 		});
 	},
 	executeCommandPreview(command, params, roomId, previewItem, triggerId) {
