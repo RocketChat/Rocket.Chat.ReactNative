@@ -5,7 +5,7 @@ import I18n from '../i18n';
 import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
 
-const store = isIOS ? 'App' : 'Play';
+const store = isIOS ? 'App Store' : 'Google Play';
 
 const reviewKey = 'reviewKey';
 const reviewDelay = 2000;
@@ -37,7 +37,7 @@ export const onReviewPress = async() => {
 			Linking.openURL(STORE_REVIEW_LINK);
 		}
 	} catch (e) {
-		showErrorAlert(I18n.t('Unable_to_open_store', { store }));
+		showErrorAlert(I18n.t('Review_app_unable_store', { store }));
 	}
 };
 
@@ -51,12 +51,12 @@ const onAskMeLaterPress = () => {
 };
 
 const askReview = () => Alert.alert(
-	I18n.t('Are_you_enjoying_this_app'),
-	I18n.t('Give_us_some_love_on_the_store', { store }),
+	I18n.t('Review_app_title'),
+	I18n.t('Review_app_desc', { store }),
 	[
-		{ text: I18n.t('Ask_me_later'), onPress: onAskMeLaterPress },
-		{ text: I18n.t('Cancel'), onPress: onCancelPress, style: 'Cancel' },
-		{ text: I18n.t('Sure'), onPress: onReviewPress }
+		{ text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress },
+		{ text: I18n.t('Review_app_no'), onPress: onCancelPress, style: 'cancel' },
+		{ text: I18n.t('Review_app_yes'), onPress: onReviewPress }
 	]
 );
 
