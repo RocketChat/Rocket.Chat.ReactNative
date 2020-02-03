@@ -345,7 +345,7 @@ class MessageBox extends Component {
 		const { text } = this;
 		const name = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.setState({ commandPreview: [], showCommandPreview: false });
+		this.setState({ commandPreview: [], showCommandPreview: false, command: {} });
 		this.stopTrackingMention();
 		this.clearInput();
 		this.handleTyping(false);
