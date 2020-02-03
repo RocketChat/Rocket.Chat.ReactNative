@@ -57,7 +57,11 @@ const askReview = () => Alert.alert(
 		{ text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress },
 		{ text: I18n.t('Review_app_no'), onPress: onCancelPress, style: 'cancel' },
 		{ text: I18n.t('Review_app_yes'), onPress: onReviewPress }
-	]
+	],
+	{
+		cancelable: true,
+		onDismiss: onAskMeLaterPress
+	}
 );
 
 const tryReview = async() => {
