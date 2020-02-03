@@ -49,7 +49,7 @@ export default class Button extends React.PureComponent {
 		return (
 			<Touchable
 				onPress={onPress}
-				disabeld={!(disabled || loading)}
+				disabled={disabled || loading}
 				style={[
 					styles.container,
 					backgroundColor
