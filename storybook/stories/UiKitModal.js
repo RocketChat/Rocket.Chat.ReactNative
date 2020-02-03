@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 
-import { UiKitModal } from '../../app/containers/UIKit';
+import { UiKitModal, UiKitComponent } from '../../app/containers/UIKit';
+import { KitContext, defaultContext } from '../../app/containers/UIKit/utils';
 import StoriesSeparator from './StoriesSeparator';
 
 // eslint-disable-next-line react/prop-types
@@ -491,6 +492,25 @@ export default () => (
 					}
 				])
 			}
+
+			<Separator title='Modal - Input with error' />
+			<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
+				<UiKitComponent
+					render={UiKitModal}
+					blocks={[{
+						type: 'input',
+						element: {
+							type: 'plain_text_input',
+							actionId: 'input-test'
+						},
+						label: {
+							type: 'plain_text',
+							text: 'Label',
+							emoji: true
+						}
+					}]}
+				/>
+			</KitContext.Provider>
 		</ScrollView>
 	</SafeAreaView>
 );

@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		...sharedStyles.textRegular
 	},
+	error: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
+	},
 	hint: {
 		fontSize: 14,
 		...sharedStyles.textRegular
@@ -24,12 +29,13 @@ const styles = StyleSheet.create({
 });
 
 export const Input = ({
-	element, parser, label, description, hint, theme
+	element, parser, label, description, error, hint, theme
 }) => (
 	<>
-		{label ? <Text style={[styles.label, { color: themes[theme].titleText }]}>{label}</Text> : null}
+		{label ? <Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text> : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{description}</Text> : null}
 		{parser.renderInputs({ ...element }, BLOCK_CONTEXT.FORM, parser)}
+		{error ? <Text style={[styles.error, { color: themes[theme].dangerColor }]}>{error}</Text> : null}
 		{hint ? <Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{hint}</Text> : null}
 	</>
 );
@@ -39,6 +45,7 @@ Input.propTypes = {
 	parser: PropTypes.object,
 	label: PropTypes.string,
 	description: PropTypes.string,
+	error: PropTypes.string,
 	hint: PropTypes.string,
 	theme: PropTypes.string
 };

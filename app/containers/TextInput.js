@@ -138,16 +138,16 @@ export default class RCTextInput extends React.PureComponent {
 					<TextInput
 						style={[
 							styles.input,
-							error.error && {
-								color: dangerColor,
-								borderColor: dangerColor
-							},
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
+							},
+							error.error && {
+								color: dangerColor,
+								borderColor: dangerColor
 							},
 							inputStyle
 						]}
@@ -167,7 +167,7 @@ export default class RCTextInput extends React.PureComponent {
 					{secureTextEntry ? this.iconPassword : null}
 					{loading ? this.loading : null}
 				</View>
-				{error.error ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
+				{error && error.reason ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>
 		);
 	}

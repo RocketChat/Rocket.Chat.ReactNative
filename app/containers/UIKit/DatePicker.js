@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 });
 
 export const DatePicker = ({
-	element, action, context, theme, loading, value
+	element, action, context, theme, loading, value, error
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
@@ -93,11 +93,11 @@ export const DatePicker = ({
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
-				<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
+				<View style={[styles.input, { borderColor: error ? themes[theme].dangerColor : themes[theme].separatorColor }]}>
 					<Text
 						style={[
 							styles.inputText,
-							{ color: themes[theme].titleText }
+							{ color: error ? themes[theme].dangerColor : themes[theme].titleText }
 						]}
 					>
 						{currentDate.toLocaleDateString('en-US')}
@@ -165,5 +165,6 @@ DatePicker.propTypes = {
 	context: PropTypes.number,
 	loading: PropTypes.bool,
 	theme: PropTypes.string,
-	value: PropTypes.string
+	value: PropTypes.string,
+	error: PropTypes.string
 };

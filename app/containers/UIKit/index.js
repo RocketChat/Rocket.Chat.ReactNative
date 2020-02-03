@@ -103,7 +103,7 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	datePicker(element, context) {
-		const [{ loading, initial }, action] = useBlockContext(element, context);
+		const [{ loading, initial, error }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
 			<DatePicker
@@ -113,6 +113,7 @@ class MessageParser extends UiKitParserMessage {
 				action={action}
 				context={context}
 				loading={loading}
+				error={error}
 			/>
 		);
 	}
@@ -183,7 +184,8 @@ class ModalParser extends UiKitParserModal {
 
 	input({
 		element, blockId, appId, label, description, hint
-	}) {
+	}, context) {
+		const [{ error }] = useBlockContext({ ...element, appId, blockId }, context);
 		const { theme } = useContext(ThemeContext);
 		return (
 			<Input
@@ -192,6 +194,7 @@ class ModalParser extends UiKitParserModal {
 				label={plainText(label)}
 				description={plainText(description)}
 				hint={plainText(hint)}
+				error={error}
 				theme={theme}
 			/>
 		);
@@ -203,7 +206,7 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	plainInput(element, context) {
-		const [{ loading, initial }, action] = useBlockContext(element, context);
+		const [{ loading, initial, error }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
@@ -216,6 +219,7 @@ class ModalParser extends UiKitParserModal {
 				onChangeText={value => action({ value })}
 				inputStyle={multiline && styles.multiline}
 				value={initial}
+				error={{ error }}
 				theme={theme}
 			/>
 		);
@@ -227,3 +231,5 @@ export const modalParser = new ModalParser();
 
 export const UiKitMessage = uiKitMessage(messageParser);
 export const UiKitModal = uiKitModal(modalParser);
+
+export const UiKitComponent = ({ render, blocks }) => render(blocks);
