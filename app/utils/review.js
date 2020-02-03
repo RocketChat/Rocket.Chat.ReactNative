@@ -5,7 +5,7 @@ import I18n from '../i18n';
 import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
 
-const store = isIOS ? 'App Store' : 'Google Play';
+const store = isIOS ? 'App Store' : 'Play Store';
 
 const reviewKey = 'reviewKey';
 const reviewDelay = 2000;
