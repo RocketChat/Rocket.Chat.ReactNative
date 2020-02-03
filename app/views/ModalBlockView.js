@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 const Blocks = React.memo(({
-	blocks, rid, mid, appId, keys
+	blocks, errors, rid, mid, appId, keys
 }) => {
 	const action = ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
 		actionId, appId, value, blockId, rid, mid
@@ -51,16 +51,17 @@ const Blocks = React.memo(({
 				state,
 				appId
 			}),
-			{ blocks }
+			{ blocks, errors }
 		)
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks) && isEqual(prevProps.keys, nextProps.keys));
+}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks) && isEqual(prevProps.keys, nextProps.keys) && isEqual(prevProps.errors, nextProps.errors));
 Blocks.propTypes = {
 	blocks: PropTypes.array,
 	rid: PropTypes.string,
 	mid: PropTypes.string,
 	appId: PropTypes.string,
-	keys: PropTypes.object
+	keys: PropTypes.object,
+	errors: PropTypes.object
 };
 
 class ModalBlockView extends React.Component {
@@ -130,7 +131,6 @@ class ModalBlockView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		/* TODO: CHANGE THIS LOGIC */
 		const { navigation } = this.props;
 		const oldData = prevProps.navigation.getParam('data', {});
 		const newData = navigation.getParam('data', {});
@@ -192,12 +192,18 @@ class ModalBlockView extends React.Component {
 			appId
 		} = data;
 		const { blocks } = view;
-		console.log(errors);
 
 		return (
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
-					<Blocks blocks={blocks} rid={rid} mid={mid} appId={appId} keys={keys} />
+					<Blocks
+						blocks={blocks}
+						errors={errors}
+						appId={appId}
+						keys={keys}
+						rid={rid}
+						mid={mid}
+					/>
 				</View>
 				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</ScrollView>
