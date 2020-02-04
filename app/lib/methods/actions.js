@@ -45,8 +45,13 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 		return;
 	}
 
-	// TODO: not sure this will always have 'view.id'
-	const { view: { id: viewId } = { id: '' } } = data;
+	const { view } = data;
+	let { viewId } = data;
+
+	if (view && view.id) {
+		viewId = view.id;
+	}
+
 	if (!viewId) {
 		return;
 	}
@@ -117,7 +122,13 @@ export function triggerAction({
 
 		try {
 			const { type: interactionType, ...data } = await result.json();
-			return resolve(handlePayloadUserInteraction(interactionType, data));
+			handlePayloadUserInteraction(interactionType, data);
+
+			if (data.success) {
+				return resolve();
+			}
+
+			return reject();
 		} catch (e) {
 			if (result.status !== 200) {
 				showErrorAlert(I18n.t('Oops'));
