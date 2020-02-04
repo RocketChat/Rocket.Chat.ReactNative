@@ -38,6 +38,10 @@ const Blocks = React.memo(({
 	});
 
 	const state = ({ actionId, value, blockId = 'default' }) => {
+		const block = blocks.find(b => b.element && b.element.actionId === actionId);
+		if (block.element) {
+			block.element.initialValue = value;
+		}
 		keys[actionId] = {
 			blockId,
 			value
