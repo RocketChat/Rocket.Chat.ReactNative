@@ -166,7 +166,9 @@ class List extends React.Component {
 				if (tmid) {
 					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
 				} else {
-					await RocketChat.loadMissedMessages({ rid, lastOpen: messages[0].ts });
+					const date = new Date();
+					date.setDate(date.getDate() - 7);
+					await RocketChat.loadMissedMessages({ rid, lastOpen: date });
 				}
 			} catch (e) {
 				log(e);
