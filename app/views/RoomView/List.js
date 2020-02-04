@@ -157,7 +157,7 @@ class List extends React.Component {
 		}
 	}, 300)
 
-	onRefresh = () => this.setState({ refreshing: true }, debounce(async() => {
+	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;
 		const { rid, tmid } = this.props;
 
@@ -174,7 +174,7 @@ class List extends React.Component {
 		}
 
 		this.setState({ refreshing: false });
-	}, 300))
+	})
 
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
