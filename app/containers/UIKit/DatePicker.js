@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 export const DatePicker = ({
-	element, action, context, theme, loading, value, error
+	element, language, action, context, theme, loading, value, error
 }) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
@@ -81,7 +81,7 @@ export const DatePicker = ({
 							{ color: error ? themes[theme].dangerColor : themes[theme].titleText }
 						]}
 					>
-						{currentDate.toLocaleDateString('en')}
+						{currentDate.toLocaleDateString(language)}
 					</Text>
 					{
 						loading
@@ -112,6 +112,7 @@ export const DatePicker = ({
 };
 DatePicker.propTypes = {
 	element: PropTypes.object,
+	language: PropTypes.string,
 	action: PropTypes.func,
 	context: PropTypes.number,
 	loading: PropTypes.bool,

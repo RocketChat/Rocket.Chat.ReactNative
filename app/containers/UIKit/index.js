@@ -103,11 +103,14 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	datePicker(element, context) {
-		const [{ loading, initial, error }, action] = useBlockContext(element, context);
+		const [{
+			loading, initial, error, language
+		}, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
 			<DatePicker
 				element={element}
+				language={language}
 				theme={theme}
 				value={initial}
 				action={action}

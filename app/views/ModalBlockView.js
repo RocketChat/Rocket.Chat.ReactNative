@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 const Blocks = React.memo(({
-	blocks, errors, rid, mid, appId, keys
+	language, blocks, errors, rid, mid, appId, keys
 }) => {
 	const action = ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
 		actionId, appId, value, blockId, rid, mid
@@ -55,11 +56,12 @@ const Blocks = React.memo(({
 				state,
 				appId
 			}),
-			{ blocks, errors }
+			{ blocks, errors, language }
 		)
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks) && isEqual(prevProps.keys, nextProps.keys) && isEqual(prevProps.errors, nextProps.errors));
 Blocks.propTypes = {
+	language: PropTypes.string,
 	blocks: PropTypes.array,
 	rid: PropTypes.string,
 	mid: PropTypes.string,
@@ -111,6 +113,7 @@ class ModalBlockView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
+		language: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -187,7 +190,7 @@ class ModalBlockView extends React.Component {
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { theme } = this.props;
+		const { theme, language } = this.props;
 		const { keys } = this;
 		const {
 			view,
@@ -201,6 +204,7 @@ class ModalBlockView extends React.Component {
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
 					<Blocks
+						language={language}
 						blocks={blocks}
 						errors={errors}
 						appId={appId}
@@ -215,4 +219,8 @@ class ModalBlockView extends React.Component {
 	}
 }
 
-export default withTheme(ModalBlockView);
+const mapStateToProps = state => ({
+	language: state.login.user && state.login.user.language
+});
+
+export default connect(mapStateToProps)(withTheme(ModalBlockView));

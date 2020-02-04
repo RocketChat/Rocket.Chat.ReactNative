@@ -18,12 +18,14 @@ export const useBlockContext = ({
 	const [initial, setInitial] = useState(initialValue);
 	const [loading, setLoading] = useState(false);
 	const {
-		action, appId: appIdFromContext, state, errors
+		action, appId: appIdFromContext, state, errors, language
 	} = useContext(KitContext);
 	const error = errors && actionId && errors[actionId];
 
 	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
-		return [{ loading, setLoading, error }, async({ value }) => {
+		return [{
+			loading, setLoading, error, language
+		}, async({ value }) => {
 			setLoading(true);
 			try {
 				await action({
@@ -49,7 +51,7 @@ export const useBlockContext = ({
 	}
 
 	return [{
-		loading, setLoading, initial, error
+		loading, setLoading, initial, error, language
 	}, async({ value }) => {
 		setInitial(value);
 		setLoading(true);
