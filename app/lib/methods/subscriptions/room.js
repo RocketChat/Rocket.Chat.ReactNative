@@ -13,7 +13,7 @@ import debounce from '../../../utils/debounce';
 const unsubscribe = async(promise) => {
 	try {
 		const subscriptions = await promise || [];
-		await Promise.all(subscriptions.map(sub => sub.unsubscribe));
+		await Promise.all(subscriptions.map(sub => sub.unsubscribe()));
 	} catch (e) {
 		// do nothing
 	}
