@@ -37,7 +37,8 @@ class List extends React.Component {
 		this.state = {
 			loading: true,
 			end: false,
-			messages: []
+			messages: [],
+			refreshing: false
 		};
 		this.init();
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -102,7 +103,7 @@ class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end } = this.state;
+		const { loading, end, refreshing } = this.state;
 		const { theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -111,6 +112,9 @@ class List extends React.Component {
 			return true;
 		}
 		if (end !== nextState.end) {
+			return true;
+		}
+		if (refreshing !== nextState.refreshing) {
 			return true;
 		}
 		return false;
@@ -153,6 +157,25 @@ class List extends React.Component {
 		}
 	}, 300)
 
+	onRefresh = () => this.setState({ refreshing: true }, debounce(async() => {
+		const { messages } = this.state;
+		const { rid, tmid } = this.props;
+
+		if (messages.length) {
+			try {
+				if (tmid) {
+					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+				} else {
+					await RocketChat.loadMissedMessages({ rid, lastOpen: messages[0].ts });
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		this.setState({ refreshing: false });
+	}, 300))
+
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
 		animateNextTransition();
@@ -191,7 +214,7 @@ class List extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
-		const { messages } = this.state;
+		const { messages, refreshing } = this.state;
 		const { theme } = this.props;
 		return (
 			<>
@@ -213,6 +236,8 @@ class List extends React.Component {
 					maxToRenderPerBatch={5}
 					windowSize={10}
 					ListFooterComponent={this.renderFooter}
+					onRefresh={this.onRefresh}
+					refreshing={refreshing}
 					{...scrollPersistTaps}
 				/>
 			</>
