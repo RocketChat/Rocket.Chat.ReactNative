@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-	View, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
@@ -13,19 +11,14 @@ import { themes } from '../../constants/colors';
 
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
-import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'flex-end'
-	},
-	modal: {
-		height: 260,
-		width: '100%'
 	},
 	input: {
 		height: 48,
@@ -45,18 +38,6 @@ const styles = StyleSheet.create({
 	},
 	loading: {
 		padding: 0
-	},
-	modalHeader: {
-		width: '100%',
-		paddingHorizontal: 16,
-		height: 46,
-		borderTopWidth: StyleSheet.hairlineWidth,
-		justifyContent: 'center',
-		alignItems: 'flex-end'
-	},
-	modalText: {
-		...sharedStyles.textBold,
-		fontSize: 16
 	}
 });
 
@@ -100,7 +81,7 @@ export const DatePicker = ({
 							{ color: error ? themes[theme].dangerColor : themes[theme].titleText }
 						]}
 					>
-						{currentDate.toLocaleDateString('en-US')}
+						{currentDate.toLocaleDateString('en')}
 					</Text>
 					{
 						loading
@@ -112,7 +93,7 @@ export const DatePicker = ({
 		);
 	}
 
-	let content = show ? (
+	const content = show ? (
 		<DateTimePicker
 			mode='date'
 			display='default'
@@ -121,36 +102,6 @@ export const DatePicker = ({
 			textColor={themes[theme].titleText}
 		/>
 	) : null;
-
-	if (isIOS) {
-		content = (
-			<Modal
-				animationType='slide'
-				transparent
-				visible={show}
-				onRequestClose={() => onShow(false)}
-			>
-				<TouchableWithoutFeedback onPress={() => onShow(false)}>
-					<View style={styles.container}>
-						<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
-							<View
-								style={[
-									styles.modalHeader,
-									{ backgroundColor: themes[theme].bannerBackground, borderColor: themes[theme].separatorColor }
-								]}
-							>
-								{/* RectButton doesn't work on Android Modal */}
-								<TouchableOpacity onPress={() => onShow(false)}>
-									<Text style={[styles.modalText, { color: themes[theme].actionTintColor }]}>{I18n.t('Done')}</Text>
-								</TouchableOpacity>
-							</View>
-							{content}
-						</View>
-					</View>
-				</TouchableWithoutFeedback>
-			</Modal>
-		);
-	}
 
 	return (
 		<>
