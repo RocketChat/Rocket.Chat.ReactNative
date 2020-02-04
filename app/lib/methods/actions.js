@@ -45,7 +45,7 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 		return;
 	}
 
-	// TODO not sure this will always have 'view.id'
+	// TODO: not sure this will always have 'view.id'
 	const { view: { id: viewId } = { id: '' } } = data;
 	if (!viewId) {
 		return;

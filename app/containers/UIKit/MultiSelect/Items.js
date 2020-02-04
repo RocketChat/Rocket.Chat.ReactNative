@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, FlatList } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
+import Touchable from 'react-native-platform-touchable';
 
 import Separator from '../../Separator';
 import Check from '../../Check';
@@ -16,7 +17,7 @@ const keyExtractor = item => item.value.toString();
 const Item = ({
 	item, selected, onSelect, theme
 }) => (
-	<TouchableOpacity
+	<Touchable
 		key={item}
 		onPress={() => onSelect(item)}
 		style={[
@@ -24,9 +25,11 @@ const Item = ({
 			{ backgroundColor: themes[theme].backgroundColor }
 		]}
 	>
-		<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
-		{selected ? <Check theme={theme} /> : null}
-	</TouchableOpacity>
+		<>
+			<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
+			{selected ? <Check theme={theme} /> : null}
+		</>
+	</Touchable>
 );
 Item.propTypes = {
 	item: PropTypes.object,

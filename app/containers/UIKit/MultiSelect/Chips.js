@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	View, Text, FlatList, Image
-} from 'react-native';
+import { Text, FlatList, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
@@ -34,17 +32,15 @@ Chip.propTypes = {
 };
 
 const Chips = ({ items, onSelect, theme }) => (
-	<View>
-		<FlatList
-			data={items}
-			keyExtractor={keyExtractor}
-			contentContainerStyle={styles.chips}
-			renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
-			keyboardShouldPersistTaps='always'
-			showsHorizontalScrollIndicator={false}
-			horizontal
-		/>
-	</View>
+	<FlatList
+		data={items}
+		keyExtractor={keyExtractor}
+		contentContainerStyle={styles.chips}
+		renderItem={({ item }) => <Chip item={item} onSelect={onSelect} theme={theme} />}
+		keyboardShouldPersistTaps='always'
+		showsHorizontalScrollIndicator={false}
+		horizontal
+	/>
 );
 Chips.propTypes = {
 	items: PropTypes.array,

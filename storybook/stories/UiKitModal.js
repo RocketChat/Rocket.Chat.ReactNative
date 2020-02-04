@@ -413,6 +413,7 @@ export default () => (
 							text: 'Finish interface componests (3 hours)'
 						},
 						accessory: {
+							blockId: 'overflow-1',
 							type: 'overflow',
 							options: [
 								{
@@ -441,6 +442,7 @@ export default () => (
 							text: 'English Class (1 hour)'
 						},
 						accessory: {
+							blockId: 'overflow-2',
 							type: 'overflow',
 							options: [
 								{
@@ -469,6 +471,7 @@ export default () => (
 							text: 'Send an email to John (15min)'
 						},
 						accessory: {
+							blockId: 'overflow-3',
 							type: 'overflow',
 							options: [
 								{

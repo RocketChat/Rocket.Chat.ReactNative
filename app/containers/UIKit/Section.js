@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	content: {
@@ -18,9 +19,10 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		padding: 4,
-		textAlignVertical: 'center',
 		fontSize: 16,
-		lineHeight: 22
+		lineHeight: 22,
+		textAlignVertical: 'center',
+		...sharedStyles.textRegular
 	},
 	field: {
 		marginVertical: 6

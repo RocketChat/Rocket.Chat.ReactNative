@@ -8,6 +8,7 @@ import { CustomIcon } from '../../lib/Icons';
 import Separator from '../Separator';
 import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '../../constants/colors';
+import { BUTTON_HIT_SLOP } from '../message/utils';
 
 const keyExtractor = item => item.value;
 
@@ -59,8 +60,6 @@ Options.propTypes = {
 	theme: PropTypes.string
 };
 
-// it can has a weird behaviour on storybook
-// but works fine on app
 const touchable = {};
 
 export const Overflow = ({
@@ -80,6 +79,7 @@ export const Overflow = ({
 				ref={ref => touchable[blockId] = ref}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
+				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}
 			>
 				{!loading ? <CustomIcon size={18} name='menu' /> : <ActivityIndicator style={styles.loading} />}

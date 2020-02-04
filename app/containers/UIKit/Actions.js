@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
+import I18n from '../../i18n';
 
 export const Actions = ({
 	blockId, appId, elements, parser, theme
@@ -16,7 +17,7 @@ export const Actions = ({
 	return (
 		<>
 			<Elements />
-			{showMoreVisible && (<Button theme={theme} title='Show more..' onPress={() => setShowMoreVisible(false)} />)}
+			{showMoreVisible && (<Button theme={theme} title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />)}
 		</>
 	);
 };
