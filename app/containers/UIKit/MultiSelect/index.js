@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView
+	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -17,6 +17,13 @@ import Input from './Input';
 
 import styles from './styles';
 
+const ANIMATION_DURATION = 0;
+const ANIMATION_PROPS = {
+	duration: ANIMATION_DURATION,
+	easing: Easing.inOut(Easing.quad),
+	useNativeDriver: true
+};
+
 export const MultiSelect = ({
 	options = [],
 	onChange,
@@ -31,6 +38,18 @@ export const MultiSelect = ({
 	const [opened, open] = useState(false);
 	const [search, onSearchChange] = useState('');
 	const [current, onChangeCurrent] = useState('');
+
+	const animatedValue = new Animated.Value(0);
+
+	const onShow = () => {
+		Animated.timing(
+			animatedValue,
+			{
+				toValue: opened ? 1 : 0,
+				...ANIMATION_PROPS
+			}
+		).start();
+	};
 
 	const onSelect = (item) => {
 		const { value } = item;
@@ -82,6 +101,11 @@ export const MultiSelect = ({
 		);
 	}
 
+	const backdropOpacity = animatedValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, 0.3]
+	});
+
 	return (
 		<>
 			<Modal
@@ -89,9 +113,11 @@ export const MultiSelect = ({
 				transparent
 				visible={opened}
 				onRequestClose={() => open(false)}
+				onShow={onShow}
 			>
 				<TouchableWithoutFeedback onPress={() => open(false)}>
-					<View style={[styles.container, { backgroundColor: `${ themes[theme].backdropColor }30` }]}>
+					<View style={styles.container}>
+						<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 						<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
 							<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 								<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>

@@ -8,6 +8,9 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	},
+	backdrop: {
+		...StyleSheet.absoluteFill
+	},
 	modal: {
 		height: 300,
 		width: '100%',
