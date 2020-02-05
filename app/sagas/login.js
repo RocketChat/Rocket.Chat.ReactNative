@@ -5,6 +5,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
+import { Alert } from 'react-native';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -19,7 +20,6 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
-import Navigation from '../lib/Navigation';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 
 const getServer = state => state.server.server;
@@ -38,7 +38,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		return yield put(loginSuccess(result));
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
-			yield put(logout());
+			yield put(logout(true));
 		} else {
 			yield put(loginFailure(e));
 		}
@@ -142,27 +142,35 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
-const handleLogout = function* handleLogout() {
-	Navigation.navigate('AuthLoading');
+const handleLogout = function* handleLogout({ forcedByServer }) {
+	yield put(appStart('loading'));
 	const server = yield select(getServer);
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.collections.get('servers');
-			const servers = yield serversCollection.query().fetch();
 
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				const newServer = servers[0].id;
-				const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-				if (token) {
-					return yield put(selectServerRequest(newServer));
+			// if the user was logged out by the server
+			if (forcedByServer) {
+				yield put(appStart('outside'));
+				Alert.alert(I18n.t('Oops'), I18n.t('Logged_out_by_server'));
+				EventEmitter.emit('NewServer', { server });
+			} else {
+				const serversDB = database.servers;
+				// all servers
+				const serversCollection = serversDB.collections.get('servers');
+				const servers = yield serversCollection.query().fetch();
+
+				// see if there're other logged in servers and selects first one
+				if (servers.length > 0) {
+					const newServer = servers[0].id;
+					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					if (token) {
+						return yield put(selectServerRequest(newServer));
+					}
 				}
+				// if there's no servers, go outside
+				yield put(appStart('outside'));
 			}
-			// if there's no servers, go outside
-			yield put(appStart('outside'));
 		} catch (e) {
 			yield put(appStart('outside'));
 			log(e);

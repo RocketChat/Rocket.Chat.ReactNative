@@ -147,7 +147,7 @@ export default {
 	Copy: 'Copy',
 	Permalink: 'Permalink',
 	Certificate_password: 'Certificate Password',
-	Clear_cache: 'Clear cache',
+	Clear_cache: 'Clear local server cache',
 	Whats_the_password_for_your_certificate: 'What\'s the password for your certificate?',
 	Create_account: 'Create an account',
 	Create_Channel: 'Create Channel',

@@ -102,7 +102,7 @@ class SettingsView extends React.Component {
 		} = this.props;
 		await appStart('loading');
 		await RocketChat.clearCache({ server });
-		await loginRequest({ resume: token });
+		await loginRequest({ resume: token }, true);
 	}
 
 	toggleMarkdown = (value) => {
@@ -177,23 +177,6 @@ class SettingsView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	renderLogout = () => {
-		const { theme } = this.props;
-		return (
-			<>
-				<ListItem
-					title={I18n.t('Logout')}
-					testID='settings-logout'
-					onPress={this.logout}
-					right={this.renderDisclosure}
-					color={themes[theme].dangerColor}
-					theme={theme}
-				/>
-				<Separator theme={theme} />
-			</>
-		);
-	}
-
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
 		return (
@@ -222,6 +205,7 @@ class SettingsView extends React.Component {
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				testID='settings-view'
+				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
 				<ScrollView
@@ -351,7 +335,15 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					{ split ? this.renderLogout() : null }
+					<ListItem
+						title={I18n.t('Logout')}
+						testID='settings-logout'
+						onPress={this.logout}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -367,7 +359,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	loginRequest: params => dispatch(loginRequestAction(params)),
+	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	appStart: params => dispatch(appStartAction(params))
