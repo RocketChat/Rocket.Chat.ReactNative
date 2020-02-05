@@ -128,7 +128,7 @@ export default class RoomSubscription {
 	});
 
 	read = debounce((lastOpen) => {
-		this.readMessages(this.rid, lastOpen);
+		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
 	handleMessageReceived = protectedFunction((ddpMessage) => {
