@@ -284,11 +284,11 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</Touch>
 
-					{!split || showStatus ? <Separator theme={theme} /> : null}
+					{!split ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
-					<Separator theme={theme} />
+					{!split ? <Separator theme={theme} /> : null}
 				</ScrollView>
 			</SafeAreaView>
 		);
