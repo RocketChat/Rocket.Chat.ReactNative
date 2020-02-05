@@ -1,5 +1,5 @@
 import {
-	put, call, takeLatest, select, take, fork, cancel
+	put, call, takeLatest, select, take, fork, cancel, race, delay
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -185,7 +185,12 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		yield take(types.SERVER.SELECT_REQUEST);
+		// yield take(types.SERVER.SELECT_REQUEST);
+		yield race({
+			selectRequest: take(types.SERVER.SELECT_REQUEST),
+			timeout: delay(2000)
+		});
+		console.log('AOISDUHASOUDHASOIDHAISUHDASIOUDH')
 		yield cancel(loginSuccessTask);
 	}
 };

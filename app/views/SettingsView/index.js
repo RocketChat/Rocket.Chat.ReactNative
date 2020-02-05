@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
 
-import { logout as logoutAction } from '../../actions/login';
+import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -15,7 +16,7 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
+import RocketChat, { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
@@ -33,6 +34,7 @@ import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
+import { appStart as appStartAction } from '../../actions';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -88,6 +90,22 @@ class SettingsView extends React.Component {
 			Navigation.navigate('RoomView');
 		}
 		logout();
+	}
+
+	clearCache = async() => {
+		const { server: { server }, loginRequest, token, appStart } = this.props;
+		// if (split) {
+		// 	Navigation.navigate('RoomView');
+		// }
+		// logout();
+		// await Navigation.navigate('AuthLoading');
+		await appStart('loading');
+		// setTimeout(async() => {
+		await RocketChat.clearCache({ server });
+		await loginRequest({ resume: token });
+		// await Navigation.navigate('RoomsListView');
+
+		// }, 1000)
 	}
 
 	toggleMarkdown = (value) => {
@@ -208,6 +226,7 @@ class SettingsView extends React.Component {
 		return (
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				forceInset={{ vertical: 'never' }}
 				testID='settings-view'
 			>
 				<StatusBar theme={theme} />
@@ -309,9 +328,7 @@ class SettingsView extends React.Component {
 						right={() => this.renderMarkdownSwitch()}
 						theme={theme}
 					/>
-
-					<SectionSeparator theme={theme} />
-
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
@@ -324,6 +341,15 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 
+					<ListItem
+						title={I18n.t('Clear_cache')}
+						testID='settings-clear-cache'
+						onPress={this.clearCache}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+
 					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
@@ -333,14 +359,17 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
+	token: state.login.user && state.login.user.token,
 	useMarkdown: state.markdown.useMarkdown,
 	allowCrashReport: state.crashReport.allowCrashReport
 });
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
+	loginRequest: params => dispatch(loginRequestAction(params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
-	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
+	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));

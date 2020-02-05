@@ -455,6 +455,47 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
+	async clearCache({ server }) {
+    console.log('TCL: clearCache -> server', server);
+		// if (this.roomsSub) {
+		// 	this.roomsSub.stop();
+		// }
+
+		// const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
+
+		try {
+			const serversDB = database.servers;
+      console.log('TCL: clearCache -> serversDB', serversDB);
+			await serversDB.action(async() => {
+				// const usersCollection = serversDB.collections.get('users');
+				// const userRecord = await usersCollection.find(userId);
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+        console.log('TCL: clearCache -> serverRecord', serverRecord);
+				// await serversDB.batch(
+				// 	// userRecord.prepareDestroyPermanently(),
+				// 	serverRecord.prepareDestroyPermanently()
+				// );
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+		} catch (error) {
+			// Do nothing
+			alert(error)
+		}
+
+		// await RNUserDefaults.clear('currentServer');
+		// await RNUserDefaults.clear(TOKEN_KEY);
+		// await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
+
+		// try {
+		// 	const db = database.active;
+		// 	await db.action(() => db.unsafeResetDatabase());
+		// } catch (error) {
+		// 	console.log(error);
+		// }
+	},
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();

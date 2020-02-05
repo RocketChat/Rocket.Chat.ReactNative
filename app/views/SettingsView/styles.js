@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	infoContainer: {
 		padding: 15,
-		marginBottom: 40
+		// marginBottom: 40
 	},
 	infoText: {
 		fontSize: 14,
