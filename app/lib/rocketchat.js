@@ -453,6 +453,27 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
+	async clearCache({ server }) {
+		try {
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+		} catch (e) {
+			// Do nothing
+		}
+
+		try {
+			const db = database.active;
+			await db.action(() => db.unsafeResetDatabase());
+		} catch (e) {
+			// Do nothing
+		}
+	},
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();
