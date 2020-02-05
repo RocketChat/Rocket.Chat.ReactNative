@@ -7,12 +7,11 @@ export default StyleSheet.create({
 		...sharedStyles.separatorVertical,
 		height: 36
 	},
-	listWithoutBorderBottom: {
-		borderBottomWidth: 0
+	listPadding: {
+		paddingVertical: 36
 	},
 	infoContainer: {
-		padding: 15,
-		marginBottom: 40
+		padding: 15
 	},
 	infoText: {
 		fontSize: 14,
