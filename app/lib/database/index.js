@@ -60,7 +60,7 @@ class DB {
 	}
 
 	setShareDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({
@@ -83,7 +83,7 @@ class DB {
 	}
 
 	setActiveDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({
