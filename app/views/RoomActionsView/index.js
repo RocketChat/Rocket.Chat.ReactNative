@@ -389,6 +389,9 @@ class RoomActionsView extends React.Component {
 	handleShare = () => {
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
+		if (!permalink) {
+			return;
+		}
 		Share.share({
 			message: permalink
 		});
