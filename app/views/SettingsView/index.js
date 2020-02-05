@@ -101,7 +101,7 @@ class SettingsView extends React.Component {
 			server: { server }, loginRequest, token, appStart
 		} = this.props;
 		await appStart('loading');
-		await RocketChat.clearCache({ server });
+		await RocketChat.clearCache({ server, credentials: { resume: token } });
 		await loginRequest({ resume: token }, true);
 	}
 
@@ -181,7 +181,6 @@ class SettingsView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<>
-				<Separator theme={theme} />
 				<ListItem
 					title={I18n.t('Logout')}
 					testID='settings-logout'
@@ -191,7 +190,6 @@ class SettingsView extends React.Component {
 					theme={theme}
 				/>
 				<Separator theme={theme} />
-				<ItemInfo theme={theme} />
 			</>
 		);
 	}
@@ -234,6 +232,7 @@ class SettingsView extends React.Component {
 				>
 					{split ? (
 						<>
+							<Separator theme={theme} />
 							<SidebarView theme={theme} />
 							<SectionSeparator theme={theme} />
 							<ListItem
