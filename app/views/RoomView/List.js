@@ -3,6 +3,7 @@ import { FlatList, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import moment from 'moment';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -166,9 +167,7 @@ class List extends React.Component {
 				if (tmid) {
 					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
 				} else {
-					const date = new Date();
-					date.setDate(date.getDate() - 7);
-					await RocketChat.loadMissedMessages({ rid, lastOpen: date });
+					await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 				}
 			} catch (e) {
 				log(e);
