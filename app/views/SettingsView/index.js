@@ -35,6 +35,7 @@ import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction } from '../../actions';
+import { onReviewPress } from '../../utils/review';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -275,6 +276,15 @@ class SettingsView extends React.Component {
 					/>
 					<Separator theme={theme} />
 					<ListItem
+						title={I18n.t('Review_this_app')}
+						showActionIndicator
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
 						title={I18n.t('Share_this_app')}
 						showActionIndicator
 						onPress={this.shareApp}
@@ -349,7 +359,7 @@ class SettingsView extends React.Component {
 						color={themes[theme].dangerColor}
 						theme={theme}
 					/>
-
+					<SectionSeparator theme={theme} />
 					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
