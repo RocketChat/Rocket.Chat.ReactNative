@@ -31,9 +31,9 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	input: {
-		height: 48,
-		paddingHorizontal: 16,
-		paddingVertical: 4,
+		minHeight: 48,
+		padding: 8,
+		paddingBottom: 0,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',
@@ -44,14 +44,17 @@ export default StyleSheet.create({
 		right: 16
 	},
 	chips: {
-		alignItems: 'center'
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		marginRight: 16
 	},
 	chip: {
 		flexDirection: 'row',
 		borderRadius: 2,
 		height: 28,
 		alignItems: 'center',
-		paddingRight: 4,
+		paddingHorizontal: 4,
+		marginBottom: 8,
 		marginRight: 8,
 		maxWidth: 100
 	},
