@@ -101,8 +101,8 @@ class SettingsView extends React.Component {
 			server: { server }, loginRequest, token, appStart
 		} = this.props;
 		await appStart('loading');
-		await RocketChat.clearCache({ server, credentials: { resume: token } });
-		await loginRequest({ resume: token }, true);
+		await RocketChat.clearCache({ server });
+		await loginRequest({ resume: token });
 	}
 
 	toggleMarkdown = (value) => {
@@ -367,7 +367,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
+	loginRequest: params => dispatch(loginRequestAction(params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	appStart: params => dispatch(appStartAction(params))

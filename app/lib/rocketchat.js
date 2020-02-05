@@ -47,8 +47,6 @@ import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
-import Navigation from './Navigation';
-import { showErrorAlert } from '../utils/info';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -457,7 +455,7 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
-	async clearCache({ server, credentials }) {
+	async clearCache({ server }) {
 		try {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
@@ -476,15 +474,6 @@ const RocketChat = {
 			await db.action(() => db.unsafeResetDatabase());
 		} catch (e) {
 			// Do nothing
-		}
-
-		try {
-			await this.login(credentials);
-		} catch (e) {
-			if (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
-				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
-				Navigation.navigate('LoginView');
-			}
 		}
 	},
 	registerPushToken() {
