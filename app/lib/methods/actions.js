@@ -103,7 +103,7 @@ export function triggerAction({
 		const { host } = this.sdk.client;
 
 		// we need to use fetch because this.sdk.post add /v1 to url
-		const result = await fetch(`${ host }/api/apps/uikit/${ appId }/`, {
+		const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
