@@ -39,7 +39,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		return yield put(loginSuccess(result));
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
-			showErrorAlert(e.data.message);
+			showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 			yield put(logout());
 		} else {
 			yield put(loginFailure(e));

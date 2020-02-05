@@ -467,6 +467,7 @@ export default {
 	you_were_mentioned: 'you were mentioned',
 	you: 'you',
 	You: 'You',
+	Logged_out_by_server: 'You\'ve been logged out by the server. Please log in again.',
 	You_need_to_access_at_least_one_RocketChat_server_to_share_something: 'You need to access at least one Rocket.Chat server to share something.',
 	Your_certificate: 'Your Certificate',
 	Your_invite_link_will_expire_after__usesLeft__uses: 'Your invite link will expire after {{usesLeft}} uses.',

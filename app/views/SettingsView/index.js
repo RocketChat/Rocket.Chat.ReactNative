@@ -102,7 +102,7 @@ class SettingsView extends React.Component {
 		} = this.props;
 		await appStart('loading');
 		await RocketChat.clearCache({ server });
-		await loginRequest({ resume: token });
+		await loginRequest({ resume: token }, true);
 	}
 
 	toggleMarkdown = (value) => {
@@ -228,11 +228,7 @@ class SettingsView extends React.Component {
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						styles.listWithoutBorderBottom,
-						{ borderColor: themes[theme].separatorColor }
-					]}
+					contentContainerStyle={styles.listPadding}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
@@ -248,10 +244,10 @@ class SettingsView extends React.Component {
 								right={this.renderDisclosure}
 								theme={theme}
 							/>
-							<Separator theme={theme} />
 						</>
 					) : null}
 
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
@@ -318,16 +314,6 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 
 					<ListItem
-						title={I18n.t('Clear_cache')}
-						testID='settings-clear-cache'
-						onPress={this.clearCache}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-
-					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
 						onPress={this.copyServerVersion}
 						subtitle={`${ server.server.split('//')[1] }`}
@@ -355,6 +341,17 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 						theme={theme}
 					/>
+
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Clear_cache')}
+						testID='settings-clear-cache'
+						onPress={this.clearCache}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
 					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>
@@ -371,7 +368,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	loginRequest: params => dispatch(loginRequestAction(params)),
+	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	appStart: params => dispatch(appStartAction(params))
