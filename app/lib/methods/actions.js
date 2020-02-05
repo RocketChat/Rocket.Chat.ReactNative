@@ -57,28 +57,30 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	}
 
 	if ([MODAL_ACTIONS.ERRORS].includes(type)) {
-		return EventEmitter.emit(viewId, {
+		EventEmitter.emit(viewId, {
 			type,
 			triggerId,
 			viewId,
 			appId,
 			...data
 		});
+		return MODAL_ACTIONS.ERRORS;
 	}
 
 	if ([MODAL_ACTIONS.UPDATE].includes(type)) {
-		return EventEmitter.emit(viewId, {
+		EventEmitter.emit(viewId, {
 			type,
 			triggerId,
 			viewId,
 			appId,
 			...data
 		});
+		return MODAL_ACTIONS.UPDATE;
 	}
 
 
 	if ([MODAL_ACTIONS.OPEN].includes(type) || [MODAL_ACTIONS.MODAL].includes(type)) {
-		return Navigation.navigate('ModalBlockView', {
+		Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
 				viewId,
@@ -86,11 +88,14 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 				...data
 			}
 		});
+		return MODAL_ACTIONS.OPEN;
 	}
+
+	return MODAL_ACTIONS.CLOSE;
 };
 
 export function triggerAction({
-	type, actionId, appId, rid, mid, ...rest
+	type, actionId, appId, rid, mid, viewId, ...rest
 }) {
 	return new Promise(async(resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
@@ -116,7 +121,8 @@ export function triggerAction({
 				payload,
 				mid,
 				rid,
-				triggerId
+				triggerId,
+				viewId
 			})
 		});
 
@@ -148,6 +154,6 @@ export function triggerSubmitView({ viewId, ...options }) {
 	return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
 }
 
-export function triggerCancel({ viewId, ...options }) {
-	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, viewId, ...options });
+export function triggerCancel({ view, ...options }) {
+	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
 }

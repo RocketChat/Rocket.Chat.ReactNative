@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 const Blocks = React.memo(({
-	language, blocks, errors, rid, mid, appId, keys
+	language, blocks, errors, rid, mid, appId, keys, navigation
 }) => {
 	const action = ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
 		actionId, appId, value, blockId, rid, mid
@@ -47,6 +47,7 @@ const Blocks = React.memo(({
 			blockId,
 			value
 		};
+		navigation.setParams({ keys });
 	};
 
 	return (
@@ -67,13 +68,22 @@ Blocks.propTypes = {
 	mid: PropTypes.string,
 	appId: PropTypes.string,
 	keys: PropTypes.object,
-	errors: PropTypes.object
+	errors: PropTypes.object,
+	navigation: PropTypes.object
 };
+
+const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
+	obj[blockId] = obj[blockId] || {};
+	obj[blockId][key] = value;
+	return obj;
+};
+const groupStateByBlockId = obj => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme, closeModal } = screenProps;
 		const data = navigation.getParam('data');
+		const keys = navigation.getParam('keys');
 		const { view, appId, viewId } = data;
 		const { title, submit, close } = view;
 		return {
@@ -85,7 +95,16 @@ class ModalBlockView extends React.Component {
 						title={textParser([close.text])}
 						style={styles.submit}
 						onPress={() => {
-							RocketChat.triggerCancel({ appId, viewId });
+							RocketChat.triggerCancel({
+								appId,
+								viewId,
+								view: {
+									...view,
+									id: viewId,
+									state: groupStateByBlockId(keys)
+								},
+								isCleared: true
+							});
 							// handle tablet case
 							if (closeModal) {
 								closeModal();
@@ -173,11 +192,7 @@ class ModalBlockView extends React.Component {
 				payload: {
 					view: {
 						id: viewId,
-						state: Object.entries(this.keys).reduce((obj, [key, { blockId, value }]) => {
-							obj[blockId] = obj[blockId] || {};
-							obj[blockId][key] = value;
-							return obj;
-						}, {})
+						state: groupStateByBlockId(this.keys)
 					}
 				}
 			});
@@ -190,7 +205,7 @@ class ModalBlockView extends React.Component {
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { theme, language } = this.props;
+		const { theme, language, navigation } = this.props;
 		const { keys } = this;
 		const {
 			view,
@@ -204,6 +219,7 @@ class ModalBlockView extends React.Component {
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
 					<Blocks
+						navigation={navigation}
 						language={language}
 						blocks={blocks}
 						errors={errors}
