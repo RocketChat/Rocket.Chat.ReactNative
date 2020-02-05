@@ -11,6 +11,8 @@ import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
+import buildMessage from '../lib/methods/helpers/buildMessage';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -38,6 +40,7 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
+		const messagesCollection = db.collections.get('messages');
 
 		if (subscriptions.length) {
 			const subsIds = subscriptions.map(sub => sub.rid);
@@ -45,6 +48,14 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			// TODO: subsToDelete?
+
+			const lastMessages = subscriptions
+				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
+				.filter(lm => lm);
+			const lastMessagesIds = lastMessages.map(lm => lm._id);
+			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
+			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));
+			const messagesToCreate = lastMessages.filter(i1 => !existingMessages.find(i2 => i1._id === i2.id));
 
 			const allRecords = [
 				...subsToCreate.map(subscription => subCollection.prepareCreate((s) => {
@@ -56,6 +67,17 @@ const handleRoomsRequest = function* handleRoomsRequest() {
 					return subscription.prepareUpdate(() => {
 						Object.assign(subscription, newSub);
 					});
+				}),
+				...messagesToCreate.map(message => messagesCollection.prepareCreate(protectedFunction((m) => {
+					m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
+					m.subscription.id = message.rid;
+					return Object.assign(m, message);
+				}))),
+				...messagesToUpdate.map((message) => {
+					const newMessage = lastMessages.find(m => m._id === message.id);
+					return message.prepareUpdate(protectedFunction(() => {
+						Object.assign(message, newMessage);
+					}));
 				})
 			];
 
