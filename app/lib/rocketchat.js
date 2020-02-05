@@ -21,7 +21,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -73,7 +72,6 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	subscribeRoom,
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
@@ -668,6 +666,9 @@ const RocketChat = {
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
+	},
+	subscribeRoom(...args) {
+		return this.sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
