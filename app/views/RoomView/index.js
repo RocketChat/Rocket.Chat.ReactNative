@@ -47,6 +47,8 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { Review } from '../../utils/review';
+import RoomClass from '../../lib/methods/subscriptions/room';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -184,6 +186,7 @@ class RoomView extends React.Component {
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
+		this.sub = new RoomClass(this.rid);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -283,7 +286,7 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		await this.unsubscribe();
+		this.unsubscribe();
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
@@ -292,9 +295,6 @@ class RoomView extends React.Component {
 		}
 		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
 			this.onForegroundInteraction.cancel();
-		}
-		if (this.initInteraction && this.initInteraction.cancel) {
-			this.initInteraction.cancel();
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
@@ -338,8 +338,7 @@ class RoomView extends React.Component {
 						this.setLastOpen(null);
 					}
 					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-					await this.unsubscribe();
-					this.sub = RocketChat.subscribeRoom(room);
+					this.sub.subscribe();
 				}
 			}
 
@@ -386,9 +385,10 @@ class RoomView extends React.Component {
 	}
 
 	unsubscribe = async() => {
-		if (this.sub && this.sub.stop) {
-			await this.sub.stop();
+		if (this.sub && this.sub.unsubscribe) {
+			await this.sub.unsubscribe();
 		}
+		delete this.sub;
 	}
 
 	observeRoom = (room) => {
@@ -472,6 +472,7 @@ class RoomView extends React.Component {
 		try {
 			await RocketChat.setReaction(shortname, messageId);
 			this.onReactionClose();
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}
@@ -556,6 +557,7 @@ class RoomView extends React.Component {
 				this.list.current.update();
 			}
 			this.setLastOpen(null);
+			Review.pushPositiveEvent();
 		});
 	};
 
@@ -640,7 +642,7 @@ class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}
@@ -791,7 +793,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly) {
+		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>

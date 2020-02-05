@@ -262,6 +262,9 @@ class MessageActions extends React.Component {
 	handleShare = async() => {
 		const { message } = this.props;
 		const permalink = await this.getPermalink(message);
+		if (!permalink) {
+			return;
+		}
 		Share.share({
 			message: permalink
 		});

@@ -80,7 +80,7 @@ export default {
 	Activity: 'Actividade',
 	Add_Reaction: 'Adicionar Reacção',
 	Add_Server: 'Adicionar Servidor',
-	Add_user: 'Adicionar utilizador',
+	Add_users: 'Adicionar utilizadores',
 	Alert: 'Alerta',
 	alert: 'alerta',
 	alerts: 'alertas',

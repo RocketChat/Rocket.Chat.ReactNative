@@ -21,7 +21,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -73,7 +72,6 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	subscribeRoom,
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
@@ -455,6 +453,27 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
+	async clearCache({ server }) {
+		try {
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+		} catch (e) {
+			// Do nothing
+		}
+
+		try {
+			const db = database.active;
+			await db.action(() => db.unsafeResetDatabase());
+		} catch (e) {
+			// Do nothing
+		}
+	},
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();
@@ -668,6 +687,9 @@ const RocketChat = {
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
+	},
+	subscribeRoom(...args) {
+		return this.sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
@@ -903,6 +925,8 @@ const RocketChat = {
 			name, custom, showButton = true, service
 		} = services;
 
+		const authName = name || service;
+
 		if (custom && showButton) {
 			return 'oauth_custom';
 		}
@@ -916,8 +940,8 @@ const RocketChat = {
 		}
 
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
-		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter'];
-		return availableOAuth.includes(name) ? 'oauth' : 'not_supported';
+		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
+		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
 	},
 	getUsernameSuggestion() {
 		// RC 0.65.0
@@ -1098,6 +1122,23 @@ const RocketChat = {
 	},
 	translateMessage(message, targetLanguage) {
 		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
+	},
+	getRoomTitle(room) {
+		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
+
+	findOrCreateInvite({ rid, days, maxUses }) {
+		// RC 2.4.0
+		return this.sdk.post('findOrCreateInvite', { rid, days, maxUses });
+	},
+	validateInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('validateInviteToken', { token });
+	},
+	useInviteToken(token) {
+		// RC 2.4.0
+		return this.sdk.post('useInviteToken', { token });
 	}
 };
 
