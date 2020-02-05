@@ -82,7 +82,10 @@ class SettingsView extends React.Component {
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
-		logout: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired,
+		loginRequest: PropTypes.func,
+		token: PropTypes.string,
+		appStart: PropTypes.func
 	}
 
 	logout = () => {
@@ -94,19 +97,12 @@ class SettingsView extends React.Component {
 	}
 
 	clearCache = async() => {
-		const { server: { server }, loginRequest, token, appStart } = this.props;
-		// if (split) {
-		// 	Navigation.navigate('RoomView');
-		// }
-		// logout();
-		// await Navigation.navigate('AuthLoading');
+		const {
+			server: { server }, loginRequest, token, appStart
+		} = this.props;
 		await appStart('loading');
-		// setTimeout(async() => {
 		await RocketChat.clearCache({ server });
 		await loginRequest({ resume: token });
-		// await Navigation.navigate('RoomsListView');
-
-		// }, 1000)
 	}
 
 	toggleMarkdown = (value) => {
@@ -227,7 +223,6 @@ class SettingsView extends React.Component {
 		return (
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
 				testID='settings-view'
 			>
 				<StatusBar theme={theme} />
@@ -323,6 +318,16 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 
 					<ListItem
+						title={I18n.t('Clear_cache')}
+						testID='settings-clear-cache'
+						onPress={this.clearCache}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+
+					<ListItem
 						title={I18n.t('Server_version', { version: server.version })}
 						onPress={this.copyServerVersion}
 						subtitle={`${ server.server.split('//')[1] }`}
@@ -350,16 +355,6 @@ class SettingsView extends React.Component {
 						info={I18n.t('Crash_report_disclaimer')}
 						theme={theme}
 					/>
-
-					<ListItem
-						title={I18n.t('Clear_cache')}
-						testID='settings-clear-cache'
-						onPress={this.clearCache}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<SectionSeparator theme={theme} />
 					{ split ? this.renderLogout() : null }
 				</ScrollView>
 			</SafeAreaView>

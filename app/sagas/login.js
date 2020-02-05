@@ -21,6 +21,7 @@ import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
 import { inviteLinksRequest } from '../actions/inviteLinks';
+import { showErrorAlert } from '../utils/info';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -38,6 +39,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		return yield put(loginSuccess(result));
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
+			showErrorAlert(e.data.message);
 			yield put(logout());
 		} else {
 			yield put(loginFailure(e));
@@ -190,7 +192,6 @@ const root = function* root() {
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)
 		});
-		console.log('AOISDUHASOUDHASOIDHAISUHDASIOUDH')
 		yield cancel(loginSuccessTask);
 	}
 };
