@@ -22,9 +22,10 @@ export function loginFailure(err) {
 	};
 }
 
-export function logout() {
+export function logout(forcedByServer = false) {
 	return {
-		type: types.LOGOUT
+		type: types.LOGOUT,
+		forcedByServer
 	};
 }
 

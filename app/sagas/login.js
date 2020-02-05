@@ -1,5 +1,5 @@
 import {
-	put, call, takeLatest, select, take, fork, cancel
+	put, call, takeLatest, select, take, fork, cancel, race, delay
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -19,8 +19,8 @@ import log from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
-import Navigation from '../lib/Navigation';
 import { inviteLinksRequest } from '../actions/inviteLinks';
+import { showErrorAlert } from '../utils/info';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -38,7 +38,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		return yield put(loginSuccess(result));
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
-			yield put(logout());
+			yield put(logout(true));
 		} else {
 			yield put(loginFailure(e));
 		}
@@ -142,27 +142,35 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
-const handleLogout = function* handleLogout() {
-	Navigation.navigate('AuthLoading');
+const handleLogout = function* handleLogout({ forcedByServer }) {
+	yield put(appStart('loading'));
 	const server = yield select(getServer);
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.collections.get('servers');
-			const servers = yield serversCollection.query().fetch();
 
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				const newServer = servers[0].id;
-				const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-				if (token) {
-					return yield put(selectServerRequest(newServer));
+			// if the user was logged out by the server
+			if (forcedByServer) {
+				yield put(appStart('outside'));
+				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
+				EventEmitter.emit('NewServer', { server });
+			} else {
+				const serversDB = database.servers;
+				// all servers
+				const serversCollection = serversDB.collections.get('servers');
+				const servers = yield serversCollection.query().fetch();
+
+				// see if there're other logged in servers and selects first one
+				if (servers.length > 0) {
+					const newServer = servers[0].id;
+					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					if (token) {
+						return yield put(selectServerRequest(newServer));
+					}
 				}
+				// if there's no servers, go outside
+				yield put(appStart('outside'));
 			}
-			// if there's no servers, go outside
-			yield put(appStart('outside'));
 		} catch (e) {
 			yield put(appStart('outside'));
 			log(e);
@@ -185,7 +193,11 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		yield take(types.SERVER.SELECT_REQUEST);
+		// yield take(types.SERVER.SELECT_REQUEST);
+		yield race({
+			selectRequest: take(types.SERVER.SELECT_REQUEST),
+			timeout: delay(2000)
+		});
 		yield cancel(loginSuccessTask);
 	}
 };
