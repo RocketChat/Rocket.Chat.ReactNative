@@ -287,7 +287,6 @@ class RoomView extends React.Component {
 			}
 		}
 		this.unsubscribe();
-		delete this.sub;
 		if (this.didFocusListener && this.didFocusListener.remove) {
 			this.didFocusListener.remove();
 		}
