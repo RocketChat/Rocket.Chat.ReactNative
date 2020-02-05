@@ -52,7 +52,7 @@ class InviteUsersView extends React.Component {
 
 	share = () => {
 		const { invite } = this.props;
-		if (!invite) {
+		if (!invite || !invite.url) {
 			return;
 		}
 		Share.share({ message: invite.url });

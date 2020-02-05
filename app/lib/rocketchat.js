@@ -21,7 +21,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -74,7 +73,6 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	subscribeRoom,
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
@@ -456,6 +454,27 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
+	async clearCache({ server }) {
+		try {
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+		} catch (e) {
+			// Do nothing
+		}
+
+		try {
+			const db = database.active;
+			await db.action(() => db.unsafeResetDatabase());
+		} catch (e) {
+			// Do nothing
+		}
+	},
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();
@@ -672,6 +691,9 @@ const RocketChat = {
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
+	},
+	subscribeRoom(...args) {
+		return this.sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
