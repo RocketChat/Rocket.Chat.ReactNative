@@ -5,7 +5,6 @@ import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
-import { Alert } from 'react-native';
 
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions';
@@ -21,6 +20,7 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
+import { showErrorAlert } from '../utils/info';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -152,7 +152,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 			// if the user was logged out by the server
 			if (forcedByServer) {
 				yield put(appStart('outside'));
-				Alert.alert(I18n.t('Oops'), I18n.t('Logged_out_by_server'));
+				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				EventEmitter.emit('NewServer', { server });
 			} else {
 				const serversDB = database.servers;
