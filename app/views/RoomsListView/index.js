@@ -381,7 +381,6 @@ class RoomsListView extends React.Component {
 			.query(
 				Q.where('archived', false),
 				Q.where('open', true)
-				// Q.where('t', Q.notEq('l'))
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
