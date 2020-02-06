@@ -180,9 +180,20 @@ class ModalBlockView extends React.Component {
 
 	action = ({ actionId, value, blockId }) => {
 		const { data } = this.state;
-		const { rid, mid, appId } = data;
+		const {
+			rid, mid, appId, viewId
+		} = data;
 		RocketChat.triggerBlockAction({
-			actionId, appId, value, blockId, rid, mid
+			container: {
+				type: 'view',
+				id: viewId
+			},
+			actionId,
+			appId,
+			value,
+			blockId,
+			rid,
+			mid
 		});
 	}
 

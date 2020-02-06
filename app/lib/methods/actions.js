@@ -95,7 +95,7 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 };
 
 export function triggerAction({
-	type, actionId, appId, rid, mid, viewId, ...rest
+	type, actionId, appId, rid, mid, viewId, container, ...rest
 }) {
 	return new Promise(async(resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
@@ -119,6 +119,7 @@ export function triggerAction({
 				type,
 				actionId,
 				payload,
+				container,
 				mid,
 				rid,
 				triggerId,
