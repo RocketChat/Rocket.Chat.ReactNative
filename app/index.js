@@ -41,6 +41,9 @@ import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
 
+import RoomsListView from './views/RoomsListView';
+import RoomView from './views/RoomView';
+
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
 	RNScreens.useScreens();
@@ -109,9 +112,7 @@ const OutsideStackModal = createStackNavigator({
 });
 
 const RoomRoutes = {
-	RoomView: {
-		getScreen: () => require('./views/RoomView').default
-	},
+	RoomView,
 	ThreadMessagesView: {
 		getScreen: () => require('./views/ThreadMessagesView').default
 	},
@@ -125,9 +126,7 @@ const RoomRoutes = {
 
 // Inside
 const ChatsStack = createStackNavigator({
-	RoomsListView: {
-		getScreen: () => require('./views/RoomsListView').default
-	},
+	RoomsListView,
 	RoomActionsView: {
 		getScreen: () => require('./views/RoomActionsView').default
 	},
