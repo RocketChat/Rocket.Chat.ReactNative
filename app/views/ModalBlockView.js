@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 	}
 });
 
+Object.fromEntries = Object.fromEntries || (arr => arr.reduce((acc, [k, v]) => ((acc[k] = v, acc)), {}));
 const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
@@ -87,7 +88,7 @@ class ModalBlockView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		const data = navigation.getParam('data');
-		this.keys = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState)) || {};
+		this.keys = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState));
 		this.state = {
 			data,
 			loading: false
