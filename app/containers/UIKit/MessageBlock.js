@@ -1,17 +1,27 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { UiKitMessage, UiKitModal } from './index';
 import { KitContext } from './utils';
 
-export const messageBlockWithContext = context => ({ blocks }) => (
+export const messageBlockWithContext = context => props => (
 	<KitContext.Provider value={context}>
-		{UiKitMessage(blocks)}
+		<MessageBlock {...props} />
 	</KitContext.Provider>
 );
 
-export const modalBlockWithContext = context => ({ blocks, ...data }) => (
+const MessageBlock = ({ blocks }) => UiKitMessage(blocks);
+MessageBlock.propTypes = {
+	blocks: PropTypes.any
+};
+
+export const modalBlockWithContext = context => data => (
 	<KitContext.Provider value={{ ...context, ...data }}>
-		{UiKitModal(blocks)}
+		<ModalBlock {...data} />
 	</KitContext.Provider>
 );
+
+const ModalBlock = ({ blocks }) => UiKitModal(blocks);
+ModalBlock.propTypes = {
+	blocks: PropTypes.any
+};
