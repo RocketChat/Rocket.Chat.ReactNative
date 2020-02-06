@@ -350,8 +350,7 @@ class RoomActionsView extends React.Component {
 				});
 			}
 		} else if (t === 'l') {
-			sections[2].data = [];
-			sections[2].data.push(notificationsAction);
+			sections[2].data = [notificationsAction];
 		}
 
 		return sections;
