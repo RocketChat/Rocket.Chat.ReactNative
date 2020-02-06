@@ -292,17 +292,16 @@ class MessageBox extends Component {
 				const { start, end } = this.component._lastNativeSelection;
 				const cursor = Math.max(start, end);
 				const lastNativeText = this.component._lastNativeText || '';
-				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-					if (slash) {
-						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+				const mentionWithSearch = lastNativeText.substr(0, cursor).match(regexp);
+				if (!mentionWithSearch) {
+					const mentionWithOutSearch = lastNativeText.match(/(#|@|:|^\/)$/);
+					if (mentionWithOutSearch) {
+						return this.identifyMentionKeyword('a', mentionWithOutSearch[0]);
 					}
 					return this.stopTrackingMention();
 				}
-				const [, lastChar, name] = result;
+				const [, lastChar, name] = mentionWithSearch;
 				this.identifyMentionKeyword(name, lastChar);
 			} catch (e) {
 				log(e);
