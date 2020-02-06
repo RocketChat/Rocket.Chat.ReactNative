@@ -36,7 +36,8 @@ class DB {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: `${ appGroupPath }default.db`,
-				schema: serversSchema
+				schema: serversSchema,
+				synchronous: true
 			}),
 			modelClasses: [Server, User],
 			actionsEnabled: true
@@ -66,7 +67,8 @@ class DB {
 		const adapter = new SQLiteAdapter({
 			dbName,
 			schema: appSchema,
-			migrations
+			migrations,
+			synchronous: true
 		});
 
 		this.databases.shareDB = new Database({
@@ -89,7 +91,8 @@ class DB {
 		const adapter = new SQLiteAdapter({
 			dbName,
 			schema: appSchema,
-			migrations
+			migrations,
+			synchronous: true
 		});
 
 		this.databases.activeDB = new Database({
