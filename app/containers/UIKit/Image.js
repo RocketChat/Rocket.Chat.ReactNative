@@ -4,7 +4,8 @@ import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { MessageImage } from '../message/Image';
+import ImageContainer from '../message/Image';
+import Navigation from '../../lib/Navigation';
 
 const styles = StyleSheet.create({
 	image: {
@@ -28,12 +29,19 @@ Thumb.propTypes = {
 	size: PropTypes.number
 };
 
-export const Media = ({ element, theme }) => (
-	<MessageImage
-		img={element.imageUrl}
-		theme={theme}
-	/>
-);
+export const Media = ({ element, theme }) => {
+	const showAttachment = attachment => Navigation.navigate('AttachmentView', { attachment });
+	const { imageUrl } = element;
+
+	return (
+		<ImageContainer
+			file={{ image_url: imageUrl }}
+			imageUrl={imageUrl}
+			showAttachment={showAttachment}
+			theme={theme}
+		/>
+	);
+};
 Media.propTypes = {
 	element: PropTypes.object,
 	theme: PropTypes.string

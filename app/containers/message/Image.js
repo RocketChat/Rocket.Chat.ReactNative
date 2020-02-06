@@ -41,9 +41,9 @@ export const MessageImage = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, split, theme
+	file, imageUrl, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, split, theme
 }) => {
-	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}
@@ -70,6 +70,7 @@ const ImageContainer = React.memo(({
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
+	imageUrl: PropTypes.string,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	useMarkdown: PropTypes.bool,
