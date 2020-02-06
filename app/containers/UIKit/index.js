@@ -31,6 +31,10 @@ import { ThemeContext } from '../../theme';
 const styles = StyleSheet.create({
 	multiline: {
 		height: 130
+	},
+	button: {
+		marginBottom: 8,
+		marginVertical: 8
 	}
 });
 
@@ -67,6 +71,7 @@ class MessageParser extends UiKitParserMessage {
 				title={this.text(text)}
 				loading={loading}
 				onPress={() => action({ value })}
+				style={styles.button}
 				theme={theme}
 			/>
 		);
