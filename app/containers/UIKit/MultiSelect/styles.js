@@ -22,6 +22,9 @@ export default StyleSheet.create({
 	content: {
 		padding: 16
 	},
+	animatedContent: {
+		width: '100%'
+	},
 	keyboardView: {
 		width: '100%'
 	},
