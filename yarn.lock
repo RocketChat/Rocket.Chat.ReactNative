@@ -1640,10 +1640,10 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
-"@rocket.chat/ui-kit@^0.2.0-alpha.19":
-  version "0.2.0-alpha.19"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.19.tgz#4eca86023dd6269217a9c0e43f5905a05891f853"
-  integrity sha512-KnebYMhy+yAVcM0yTB/EiQQv9TLb7oSKoSmMDz3O12wApAmx8hhr3EP5FEidUprT2ybl8th8uD4VljyXjwRnTg==
+"@rocket.chat/ui-kit@^0.2.0-alpha.21":
+  version "0.2.0-alpha.21"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.21.tgz#47154f5d44d2b136e8c9cff9eb8a3d928f0ccdd6"
+  integrity sha512-Kdn0zCxcfxHiKUIzu8rJ5gyw+HLP/6ke5mRoHMUR3h8sBlPz2gJ8RVLu0gjvaQKmElJOccBVviUXLJNmqg/uyw==
 
 "@snyk/composer-lockfile-parser@1.0.3":
   version "1.0.3"
@@ -10266,7 +10266,7 @@ rn-root-view@^1.0.3:
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
 
-rn-user-defaults@^1.7.0:
+rn-user-defaults@1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.7.0.tgz#8d1b79657dec3977e8f8983814b8591821f77236"
   integrity sha512-Qo6sIH8wldmQ0oOMMvljec4WOa/a1Up1pdatoXZGaPG1gl8OKgKH5HPKyddcABYtxPeBUTPVzCxP/6S6wPCqGQ==

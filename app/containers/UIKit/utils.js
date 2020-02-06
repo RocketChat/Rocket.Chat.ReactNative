@@ -41,15 +41,6 @@ export const useBlockContext = ({
 		}];
 	}
 
-	if (state) {
-		state({
-			blockId,
-			appId,
-			actionId,
-			value: initial
-		});
-	}
-
 	return [{
 		loading, setLoading, initial, error, language
 	}, async({ value }) => {

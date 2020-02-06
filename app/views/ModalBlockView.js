@@ -31,60 +31,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Blocks = React.memo(({
-	language, blocks, errors, rid, mid, appId, keys, navigation
-}) => {
-	const action = ({ actionId, value, blockId }) => RocketChat.triggerBlockAction({
-		actionId, appId, value, blockId, rid, mid
-	});
-
-	const state = ({ actionId, value, blockId = 'default' }) => {
-		const block = blocks.find(b => b.element && b.element.actionId === actionId);
-		if (block.element) {
-			block.element.initialValue = value;
-		}
-		keys[actionId] = {
-			blockId,
-			value
-		};
-		navigation.setParams({ keys });
-	};
-
-	return (
-		React.createElement(
-			modalBlockWithContext({
-				action,
-				state,
-				appId
-			}),
-			{ blocks, errors, language }
-		)
-	);
-}, (prevProps, nextProps) => isEqual(prevProps.blocks, nextProps.blocks) && isEqual(prevProps.keys, nextProps.keys) && isEqual(prevProps.errors, nextProps.errors));
-Blocks.propTypes = {
-	language: PropTypes.string,
-	blocks: PropTypes.array,
-	rid: PropTypes.string,
-	mid: PropTypes.string,
-	appId: PropTypes.string,
-	keys: PropTypes.object,
-	errors: PropTypes.object,
-	navigation: PropTypes.object
-};
-
 const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
 	return obj;
 };
 const groupStateByBlockId = obj => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
+const filterInputFields = ({ type, element }) => type === 'input' && element.initialValue;
+const mapElementToState = ({ element, blockId }) => [element.actionId, { value: element.initialValue, blockId }];
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { theme, closeModal } = screenProps;
 		const data = navigation.getParam('data');
-		const keys = navigation.getParam('keys');
-		const { view, appId, viewId } = data;
+		const cancel = navigation.getParam('cancel', () => {});
+		const { view } = data;
 		const { title, submit, close } = view;
 		return {
 			title: textParser([title]),
@@ -94,24 +55,7 @@ class ModalBlockView extends React.Component {
 					<Item
 						title={textParser([close.text])}
 						style={styles.submit}
-						onPress={() => {
-							RocketChat.triggerCancel({
-								appId,
-								viewId,
-								view: {
-									...view,
-									id: viewId,
-									state: groupStateByBlockId(keys)
-								},
-								isCleared: true
-							});
-							// handle tablet case
-							if (closeModal) {
-								closeModal();
-							} else {
-								navigation.pop();
-							}
-						}}
+						onPress={() => cancel({ closeModal })}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
@@ -143,17 +87,30 @@ class ModalBlockView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		const data = navigation.getParam('data');
-		this.state = { data, loading: false };
-		this.keys = {};
+		this.keys = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState)) || {};
+		this.state = {
+			data,
+			loading: false
+		};
 	}
 
 	componentDidMount() {
 		const { data } = this.state;
 		const { navigation } = this.props;
 		const { viewId } = data;
-		navigation.setParams({ submit: this.submit });
+		navigation.setParams({ submit: this.submit, cancel: this.cancel });
 
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const { navigation } = this.props;
+
+		if (!isEqual(navigation, nextProps.navigation)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -180,6 +137,34 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
+	cancel = async({ closeModal }) => {
+		const { data } = this.state;
+		const { navigation } = this.props;
+		const { appId, viewId, view } = data;
+		this.setState({ loading: true });
+		try {
+			await RocketChat.triggerCancel({
+				appId,
+				viewId,
+				view: {
+					...view,
+					id: viewId,
+					state: groupStateByBlockId(this.keys)
+				},
+				isCleared: true
+			});
+		} catch (e) {
+			// do nothing
+		}
+		// handle tablet case
+		if (closeModal) {
+			closeModal();
+		} else {
+			navigation.pop();
+		}
+		this.setState({ loading: false });
+	}
+
 	submit = async() => {
 		const { data } = this.state;
 		const { navigation } = this.props;
@@ -203,31 +188,53 @@ class ModalBlockView extends React.Component {
 		this.setState({ loading: false });
 	};
 
+	action = ({ actionId, value, blockId }) => {
+		const { data } = this.state;
+		const { rid, mid, appId } = data;
+		RocketChat.triggerBlockAction({
+			actionId, appId, value, blockId, rid, mid
+		});
+	}
+
+	changeState = ({ actionId, value, blockId = 'default' }) => {
+		const { data } = this.state;
+		const { navigation } = this.props;
+		const { view } = data;
+		const { blocks } = view;
+
+		// we need to do this because when the component is re-render we lose the value
+		const block = blocks.find(b => b.element && b.element.actionId === actionId);
+		if (block.element) {
+			block.element.initialValue = value;
+		}
+
+		this.keys[actionId] = {
+			blockId,
+			value
+		};
+
+		navigation.setParams({ keys: this.keys });
+	};
+
 	render() {
 		const { data, loading, errors } = this.state;
-		const { theme, language, navigation } = this.props;
-		const { keys } = this;
-		const {
-			view,
-			rid,
-			mid,
-			appId
-		} = data;
+		const { theme, language } = this.props;
+		const { view, appId } = data;
 		const { blocks } = view;
 
 		return (
 			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.content}>
-					<Blocks
-						navigation={navigation}
-						language={language}
-						blocks={blocks}
-						errors={errors}
-						appId={appId}
-						keys={keys}
-						rid={rid}
-						mid={mid}
-					/>
+					{
+						React.createElement(
+							modalBlockWithContext({
+								action: this.action,
+								state: this.changeState,
+								appId
+							}),
+							{ blocks, errors, language }
+						)
+					}
 				</View>
 				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</ScrollView>
