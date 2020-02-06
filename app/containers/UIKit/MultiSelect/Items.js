@@ -43,7 +43,7 @@ const Items = ({
 }) => (
 	<FlatList
 		data={items}
-		style={{ backgroundColor: themes[theme].backgroundColor }}
+		style={[styles.items, { backgroundColor: themes[theme].backgroundColor }]}
 		contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
