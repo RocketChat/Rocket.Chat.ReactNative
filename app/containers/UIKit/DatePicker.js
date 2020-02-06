@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import moment from 'moment';
 
 import Button from '../Button';
 import { textParser } from './utils';
@@ -51,8 +52,7 @@ export const DatePicker = ({
 	const onChange = ({ nativeEvent: { timestamp } }, date) => {
 		const newDate = date || new Date(timestamp);
 		onChangeDate(newDate);
-		newDate.setHours(0);
-		action({ value: newDate.toJSON().slice(0, 10) });
+		action({ value: moment(newDate).format('YYYY-MM-DD') });
 		if (isAndroid) {
 			onShow(false);
 		}
