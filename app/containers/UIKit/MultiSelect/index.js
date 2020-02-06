@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing
 } from 'react-native';
@@ -17,41 +17,72 @@ import Input from './Input';
 
 import styles from './styles';
 
-const ANIMATION_DURATION = 0;
+const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
 	duration: ANIMATION_DURATION,
 	easing: Easing.inOut(Easing.quad),
 	useNativeDriver: true
 };
 
-export const MultiSelect = ({
-	options = [],
-	onChange,
-	placeholder = { text: 'Search' },
-	context,
-	loading,
-	value: values,
-	multiselect = false,
-	theme
-}) => {
-	const [selected, select] = useState(values || []);
-	const [opened, open] = useState(false);
-	const [search, onSearchChange] = useState('');
-	const [current, onChangeCurrent] = useState('');
+export class MultiSelect extends React.Component {
+	static propTypes = {
+		options: PropTypes.array,
+		onChange: PropTypes.func,
+		placeholder: PropTypes.object,
+		context: PropTypes.number,
+		loading: PropTypes.bool,
+		multiselect: PropTypes.bool,
+		value: PropTypes.array,
+		theme: PropTypes.string
+	}
 
-	const animatedValue = new Animated.Value(0);
+	static defaultProps = {
+		options: [],
+		placeholder: { text: 'Search' }
+	}
 
-	const onShow = () => {
+	constructor(props) {
+		super(props);
+		const { value } = props;
+		this.state = {
+			showContent: true,
+			selected: value || [],
+			open: false,
+			search: '',
+			current: ''
+		};
+		this.animatedValue = new Animated.Value(0);
+	}
+
+	onShow = () => {
 		Animated.timing(
-			animatedValue,
+			this.animatedValue,
 			{
-				toValue: opened ? 1 : 0,
+				toValue: 1,
 				...ANIMATION_PROPS
 			}
 		).start();
-	};
+		this.setState({ showContent: true, open: true });
+	}
 
-	const onSelect = (item) => {
+	onHide = () => {
+		Animated.timing(
+			this.animatedValue,
+			{
+				toValue: 0,
+				...ANIMATION_PROPS
+			}
+		).start(() => {
+			this.setState(
+				{ showContent: false },
+				() => this.setState({ open: false })
+			);
+		});
+	}
+
+	onSelect = (item) => {
+		const { selected } = this.state;
+		const { onChange, multiselect } = this.props;
 		const { value } = item;
 		if (multiselect) {
 			let newSelect = [];
@@ -60,90 +91,105 @@ export const MultiSelect = ({
 			} else {
 				newSelect = selected.filter(s => s !== value);
 			}
-			select(newSelect);
+			this.setState({ selected: newSelect });
 			onChange({ value: newSelect });
 		} else {
 			onChange({ value });
-			onChangeCurrent(value);
-			open(false);
+			this.setState({ current: value, open: false });
 		}
 	};
 
-	const items = options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
+	renderContent = () => {
+		const { selected, search } = this.state;
+		const { theme, options, placeholder } = this.props;
 
-	let button = multiselect ? (
-		<Button
-			title={`${ selected.length } selecteds`}
-			onPress={() => open(true)}
-			onRequestClose={() => open(false)}
-			loading={loading}
-			theme={theme}
-		/>
-	) : (
-		<Input
-			open={open}
-			theme={theme}
-			loading={loading}
-		>
-			<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{current}</Text>
-		</Input>
-	);
+		const items = options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
-	if (context === BLOCK_CONTEXT.FORM) {
-		button = (
-			<Input
-				open={open}
-				theme={theme}
-				loading={loading}
-			>
-				<Chips items={options.filter(option => selected.includes(option.value))} onSelect={onSelect} theme={theme} />
-			</Input>
+		return (
+			<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
+				<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
+					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
+						<TextInput
+							onChangeText={text => this.setState({ search: text })}
+							placeholder={placeholder.text}
+							theme={theme}
+						/>
+						<Items items={items} selected={selected} onSelect={this.onSelect} theme={theme} />
+					</View>
+				</View>
+			</KeyboardAvoidingView>
 		);
 	}
 
-	const backdropOpacity = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, 0.3]
-	});
+	render() {
+		const {
+			open,
+			current,
+			selected,
+			showContent
+		} = this.state;
+		const {
+			theme,
+			loading,
+			options,
+			context,
+			multiselect
+		} = this.props;
 
-	return (
-		<>
-			<Modal
-				animationType='slide'
-				transparent
-				visible={opened}
-				onRequestClose={() => open(false)}
-				onShow={onShow}
+		const translateY = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: [600, 0]
+		});
+
+		let button = multiselect ? (
+			<Button
+				title={`${ selected.length } selecteds`}
+				onPress={this.onShow}
+				loading={loading}
+				theme={theme}
+			/>
+		) : (
+			<Input
+				open={this.onShow}
+				theme={theme}
+				loading={loading}
 			>
-				<TouchableWithoutFeedback onPress={() => open(false)}>
-					<View style={styles.container}>
-						<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
-						<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
-							<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
-								<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
-									<TextInput
-										onChangeText={onSearchChange}
-										placeholder={placeholder.text}
-										theme={theme}
-									/>
-									<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
-								</View>
-							</View>
-						</KeyboardAvoidingView>
-					</View>
-				</TouchableWithoutFeedback>
-			</Modal>
-			{button}
-		</>
-	);
-};
-MultiSelect.propTypes = {
-	options: PropTypes.array,
-	onChange: PropTypes.func,
-	placeholder: PropTypes.object,
-	context: PropTypes.number,
-	loading: PropTypes.bool,
-	multiselect: PropTypes.bool,
-	value: PropTypes.array,
-	theme: PropTypes.string
-};
+				<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{current}</Text>
+			</Input>
+		);
+
+		if (context === BLOCK_CONTEXT.FORM) {
+			button = (
+				<Input
+					open={this.onShow}
+					theme={theme}
+					loading={loading}
+				>
+					<Chips items={options.filter(option => selected.includes(option.value))} onSelect={this.onSelect} theme={theme} />
+				</Input>
+			);
+		}
+
+		return (
+			<>
+				<Modal
+					animationType='fade'
+					transparent
+					visible={open}
+					onRequestClose={this.onHide}
+					onShow={this.onShow}
+				>
+					<TouchableWithoutFeedback onPress={this.onHide}>
+						<View style={styles.container}>
+							<View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor }]} />
+							<Animated.View style={{ width: '100%', transform: [{ translateY }] }}>
+								{ showContent ? this.renderContent() : null }
+							</Animated.View>
+						</View>
+					</TouchableWithoutFeedback>
+				</Modal>
+				{button}
+			</>
+		);
+	}
+}

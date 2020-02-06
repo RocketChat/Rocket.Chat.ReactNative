@@ -9,7 +9,8 @@ export default StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill
+		...StyleSheet.absoluteFill,
+		opacity: 0.3
 	},
 	modal: {
 		height: 300,
