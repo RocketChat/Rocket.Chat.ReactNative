@@ -65,11 +65,9 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 4,
 		marginBottom: 8,
-		marginRight: 8,
-		maxWidth: 100
+		marginRight: 8
 	},
 	chipText: {
-		maxWidth: 64,
 		paddingHorizontal: 8,
 		...sharedStyles.textMedium,
 		fontSize: 14
