@@ -488,7 +488,7 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
-	goRoom(item) {
+	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
 		this.item = item;

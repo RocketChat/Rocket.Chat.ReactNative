@@ -308,13 +308,13 @@ class RoomView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	goRoomActionsView() {
+	// eslint-disable-next-line react/sort-comp
+	goRoomActionsView = () => {
 		const { room } = this.state;
 		const { navigation } = this.props;
 		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			this.setState({ loading: true });
