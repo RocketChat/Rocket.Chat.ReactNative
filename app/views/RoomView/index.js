@@ -704,7 +704,16 @@ class RoomView extends React.Component {
 	blockAction = ({
 		actionId, appId, value, blockId, rid, mid
 	}) => RocketChat.triggerBlockAction({
-		actionId, appId, value, blockId, rid, mid
+		blockId,
+		actionId,
+		value,
+		mid,
+		rid,
+		appId,
+		container: {
+			type: 'message',
+			id: mid
+		}
 	});
 
 	renderItem = (item, previousItem) => {
