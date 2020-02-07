@@ -88,7 +88,7 @@ class ModalBlockView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		const data = navigation.getParam('data');
-		this.keys = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState));
+		this.values = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState));
 		this.state = {
 			data,
 			loading: false
@@ -140,7 +140,7 @@ class ModalBlockView extends React.Component {
 				view: {
 					...view,
 					id: viewId,
-					state: groupStateByBlockId(this.keys)
+					state: groupStateByBlockId(this.values)
 				},
 				isCleared: true
 			});
@@ -168,7 +168,7 @@ class ModalBlockView extends React.Component {
 				payload: {
 					view: {
 						id: viewId,
-						state: groupStateByBlockId(this.keys)
+						state: groupStateByBlockId(this.values)
 					}
 				}
 			});
@@ -193,21 +193,12 @@ class ModalBlockView extends React.Component {
 			blockId,
 			mid
 		});
+		// TODO: remove
 		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
-		const { data } = this.state;
-		const { view } = data;
-		const { blocks } = view;
-
-		// we need to do this because when the component is re-render we lose the value
-		const block = blocks.find(b => b.element && b.element.actionId === actionId);
-		if (block && block.element && block.element.initialValue) {
-			block.element.initialValue = value;
-		}
-
-		this.keys[actionId] = {
+		this.values[actionId] = {
 			blockId,
 			value
 		};
@@ -216,6 +207,7 @@ class ModalBlockView extends React.Component {
 	render() {
 		const { data, loading, errors } = this.state;
 		const { theme, language } = this.props;
+		const { values } = this;
 		const { view, appId } = data;
 		const { blocks } = view;
 
@@ -229,7 +221,12 @@ class ModalBlockView extends React.Component {
 								state: this.changeState,
 								appId
 							}),
-							{ blocks, errors, language }
+							{
+								blocks,
+								errors,
+								language,
+								values
+							}
 						)
 					}
 				</View>

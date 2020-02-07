@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useContext, useState } from 'react';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -15,47 +16,39 @@ export const KitContext = React.createContext(defaultContext);
 export const useBlockContext = ({
 	blockId, actionId, appId, initialValue
 }, context) => {
-	const [initial, setInitial] = useState(initialValue);
-	const [loading, setLoading] = useState(false);
 	const {
-		action, appId: appIdFromContext, state, errors, language
+		action, appId: appIdFromContext, viewId, state, errors, values = {}
 	} = useContext(KitContext);
+	const { value = initialValue } = values[actionId] || {};
+
+	const [loading, setLoading] = useState(false);
+
 	const error = errors && actionId && errors[actionId];
 
 	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
-		return [{
-			loading, setLoading, error, language
-		}, async({ value }) => {
+		return [{ loading, setLoading, error }, async({ value }) => {
 			setLoading(true);
-			try {
-				await action({
-					blockId,
-					appId: appId || appIdFromContext,
-					actionId,
-					value
-				});
-			} catch (e) {
-				// do nothing
-			}
+			await action({
+				blockId,
+				appId: appId || appIdFromContext,
+				actionId,
+				value,
+				viewId
+			});
 			setLoading(false);
 		}];
 	}
 
 	return [{
-		loading, setLoading, initial, error, language
+		loading, setLoading, value, error
 	}, async({ value }) => {
-		setInitial(value);
 		setLoading(true);
-		try {
-			await state({
-				blockId,
-				appId,
-				actionId,
-				value
-			});
-		} catch (e) {
-			// do nothing
-		}
+		await state({
+			blockId,
+			appId,
+			actionId,
+			value
+		});
 		setLoading(false);
 	}];
 };
