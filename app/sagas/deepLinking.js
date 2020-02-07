@@ -13,7 +13,7 @@ import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
 
 const roomTypes = {
-	channel: 'c', direct: 'd', group: 'p'
+	channel: 'c', direct: 'd', group: 'p', channels: 'l'
 };
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
