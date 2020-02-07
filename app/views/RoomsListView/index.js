@@ -338,9 +338,9 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
-	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
 		if (this.animated) {
 			animateNextTransition();
@@ -488,7 +488,7 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
-	goRoom = (item) => {
+	goRoom(item) {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
 		this.item = item;
@@ -499,7 +499,7 @@ class RoomsListView extends React.Component {
 			prid: item.prid,
 			room: item
 		});
-	};
+	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
