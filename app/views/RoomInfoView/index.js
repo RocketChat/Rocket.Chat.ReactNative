@@ -286,7 +286,6 @@ class RoomInfoView extends React.Component {
 				<ListItem
 					title={I18n.t('Send_message')}
 					onPress={this.goRoom}
-					showActionIndicator
 					right={this.renderDisclosure}
 					theme={theme}
 				/>
