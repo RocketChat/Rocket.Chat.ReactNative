@@ -949,7 +949,7 @@ const RocketChat = {
 	},
 	roomTypeToApiType(t) {
 		const types = {
-			c: 'channels', d: 'im', p: 'groups'
+			c: 'channels', d: 'im', p: 'groups', l: 'channels'
 		};
 		return types[t];
 	},

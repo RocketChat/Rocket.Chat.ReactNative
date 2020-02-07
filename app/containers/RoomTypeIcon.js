@@ -32,6 +32,8 @@ const RoomTypeIcon = React.memo(({
 		return <Image source={{ uri: 'hashtag' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;
 	} if (type === 'd') {
 		return <CustomIcon name='at' size={13} style={[styles.style, styles.discussion, { color }]} />;
+	} if (type === 'l') {
+		return <CustomIcon name='livechat' size={13} style={[styles.style, styles.discussion, { color }]} />;
 	}
 	return <Image source={{ uri: 'lock' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;
 });
