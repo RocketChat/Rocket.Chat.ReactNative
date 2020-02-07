@@ -161,7 +161,6 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		useRealName: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -381,8 +380,7 @@ class RoomsListView extends React.Component {
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
-				Q.where('open', true),
-				Q.where('t', Q.notEq('l'))
+				Q.where('open', true)
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
@@ -486,10 +484,7 @@ class RoomsListView extends React.Component {
 		});
 	}, 300);
 
-	getRoomTitle = (item) => {
-		const { useRealName } = this.props;
-		return ((item.prid || useRealName) && item.fname) || item.name;
-	};
+	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();

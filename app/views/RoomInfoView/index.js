@@ -38,8 +38,9 @@ class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
 		const rid = navigation.getParam('rid');
+		const t = navigation.getParam('t');
 		return {
-			title: I18n.t('Room_Info'),
+			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
@@ -117,7 +118,7 @@ class RoomInfoView extends React.Component {
 			}
 		}
 		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid && this.t !== 'l') {
 			navigation.setParams({ showEdit: true });
 		}
 	}
