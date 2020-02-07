@@ -181,9 +181,7 @@ class ModalBlockView extends React.Component {
 
 	action = ({ actionId, value, blockId }) => {
 		const { data } = this.state;
-		const {
-			rid, mid, appId, viewId
-		} = data;
+		const { mid, appId, viewId } = data;
 		RocketChat.triggerBlockAction({
 			container: {
 				type: 'view',
@@ -193,9 +191,9 @@ class ModalBlockView extends React.Component {
 			appId,
 			value,
 			blockId,
-			rid,
 			mid
 		});
+		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
@@ -205,7 +203,7 @@ class ModalBlockView extends React.Component {
 
 		// we need to do this because when the component is re-render we lose the value
 		const block = blocks.find(b => b.element && b.element.actionId === actionId);
-		if (block.element) {
+		if (block && block.element && block.element.initialValue) {
 			block.element.initialValue = value;
 		}
 
