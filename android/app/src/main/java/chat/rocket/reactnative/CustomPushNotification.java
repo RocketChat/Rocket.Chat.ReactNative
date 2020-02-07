@@ -196,9 +196,6 @@ public class CustomPushNotification extends PushNotification {
         }
 
         messageStyle.setConversationTitle(title);
-        if (ejson.type != null && !ejson.type.equals("d")) {
-            messageStyle.setGroupConversation(true);
-        }
 
         List<Bundle> bundles = notificationMessages.get(Integer.toString(notId));
 
