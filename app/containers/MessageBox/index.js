@@ -297,7 +297,7 @@ class MessageBox extends Component {
 				if (!mentionWithSearch) {
 					const mentionWithOutSearch = lastNativeText.match(/(#|@|:|^\/)$/);
 					if (mentionWithOutSearch) {
-						return this.identifyMentionKeyword('a', mentionWithOutSearch[0]);
+						return this.identifyMentionKeyword('', mentionWithOutSearch[0]);
 					}
 					return this.stopTrackingMention();
 				}

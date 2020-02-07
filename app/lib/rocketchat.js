@@ -540,11 +540,6 @@ const RocketChat = {
 			this.oldPromise('cancel');
 		}
 
-		if (searchText === '') {
-			delete this.oldPromise;
-			return [];
-		}
-
 		const db = database.active;
 		let data = await db.collections.get('subscriptions').query(
 			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
