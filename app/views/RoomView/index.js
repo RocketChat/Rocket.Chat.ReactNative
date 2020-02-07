@@ -181,7 +181,6 @@ class RoomView extends React.Component {
 		}
 
 		this.beginAnimating = false;
-		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
@@ -287,9 +286,6 @@ class RoomView extends React.Component {
 			}
 		}
 		this.unsubscribe();
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -875,7 +871,9 @@ class RoomView extends React.Component {
 		const {
 			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, navigation
+		} = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -899,6 +897,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					animated={this.beginAnimating}
+					navigation={navigation}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
