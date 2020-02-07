@@ -465,6 +465,13 @@ class ProfileView extends React.Component {
 						/>
 						{this.renderAvatarButtons()}
 						<Button
+							title={I18n.t('RESET')}
+							type='primary'
+							onPress={this.init}
+							disabled={!this.formIsChanged()}
+							theme={theme}
+						/>
+						<Button
 							title={I18n.t('Save_Changes')}
 							type='primary'
 							onPress={this.submit}
