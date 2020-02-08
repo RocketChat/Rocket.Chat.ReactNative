@@ -65,7 +65,7 @@ export const Select = ({
 			useNativeAndroidPickerStyle={false}
 			value={selected}
 			onValueChange={(value) => {
-				onChange({ value });
+				onChange({ value: [value] });
 				setSelected(value);
 			}}
 			style={{
