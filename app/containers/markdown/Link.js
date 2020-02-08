@@ -25,6 +25,11 @@ const Link = React.memo(({
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
+	const onLongPress = () => {
+		Clipboard.setString(link);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+	};
+
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
 		<Text
