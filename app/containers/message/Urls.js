@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, Clipboard } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Clipboard,
+	ToastAndroid,
+	Platform,
+	Vibration,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import isEqual from 'lodash/isEqual';
-
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -82,9 +89,14 @@ const Url = React.memo(({
 
 	const onPress = () => openLink(url.url, theme);
 	const onLongPress = () => {
-		console.log(url.url)
-		Clipboard.setString(url.url)
-	}
+		Clipboard.setString(url.url);
+		if(Platform.os === 'ios'){
+			Vibration.vibrate();
+		} else{
+			Vibration.vibrate(200);
+			ToastAndroid.show('Link copied', ToastAndroid.SHORT);	
+		}	
+	};
 	return (
 		<Touchable
 			onPress={onPress}
