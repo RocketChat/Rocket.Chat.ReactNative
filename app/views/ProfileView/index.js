@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import {
+	View,
+	ScrollView,
+	Keyboard,
+	Alert
+} from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -180,7 +185,26 @@ class ProfileView extends React.Component {
 
 		// Username
 		if (user.username !== username) {
-			params.username = username;
+			if (!username.match(/[$&+,:;=?@#|'.<>^* ()%!]/g)) {
+				params.username = username;
+			} else {
+				this.setState({
+					saving: false,
+					currentPassword: null
+				});
+				Alert.alert(
+					'Incorrect Username',
+					'Username can only have letters, numbers, dots, hyphens and underscores.',
+					[
+						{
+							text: 'OK',
+							onPress: () => this.setState({ showPasswordAlert: false })
+						}
+					],
+					{ cancelable: false }
+				);
+				return;
+			}
 		}
 
 		// Email
