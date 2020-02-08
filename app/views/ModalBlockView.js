@@ -206,6 +206,7 @@ class ModalBlockView extends React.Component {
 			blockId,
 			mid
 		});
+		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
@@ -219,7 +220,7 @@ class ModalBlockView extends React.Component {
 		const { data, loading, errors } = this.state;
 		const { theme, language } = this.props;
 		const { values } = this;
-		const { view, appId } = data;
+		const { view } = data;
 		const { blocks } = view;
 
 		return (
@@ -230,7 +231,7 @@ class ModalBlockView extends React.Component {
 							modalBlockWithContext({
 								action: this.action,
 								state: this.changeState,
-								appId
+								...data
 							}),
 							{
 								blocks,
