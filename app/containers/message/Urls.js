@@ -2,11 +2,7 @@ import React from 'react';
 import {
 	View,
 	Text,
-	StyleSheet,
-	Clipboard,
-	ToastAndroid,
-	Platform,
-	Vibration
+	StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
@@ -88,19 +84,9 @@ const Url = React.memo(({
 	}
 
 	const onPress = () => openLink(url.url, theme);
-	const onLongPress = () => {
-		Clipboard.setString(url.url);
-		if (Platform.os === 'ios') {
-			Vibration.vibrate();
-		} else {
-			Vibration.vibrate(200);
-			ToastAndroid.show('Link copied', ToastAndroid.SHORT);
-		}
-	};
 	return (
 		<Touchable
 			onPress={onPress}
-			onLongPress={onLongPress}
 			style={[
 				styles.button,
 				index > 0 && styles.marginTop,
