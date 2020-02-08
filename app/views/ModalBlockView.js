@@ -38,8 +38,21 @@ const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
 	return obj;
 };
 const groupStateByBlockId = obj => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
-const filterInputFields = ({ type, element }) => type === 'input' && element.initialValue;
-const mapElementToState = ({ element, blockId }) => [element.actionId, { value: element.initialValue, blockId }];
+const filterInputFields = ({ element, elements = [] }) => {
+	if (element && element.initialValue) {
+		return true;
+	}
+	if (elements.length && elements.map(e => ({ element: e })).filter(filterInputFields).length) {
+		return true;
+	}
+};
+const mapElementToState = ({ element, blockId, elements = [] }) => {
+	if (elements.length) {
+		return elements.map(e => ({ element: e, blockId })).filter(filterInputFields).map(mapElementToState);
+	}
+	return [element.actionId, { value: element.initialValue, blockId }];
+};
+const reduceState = (obj, el) => (Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] });
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -88,7 +101,7 @@ class ModalBlockView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		const data = navigation.getParam('data');
-		this.values = Object.fromEntries(data.view.blocks.filter(filterInputFields).map(mapElementToState));
+		this.values = data.view.blocks.filter(filterInputFields).map(mapElementToState).reduce(reduceState, {});
 		this.state = {
 			data,
 			loading: false
@@ -193,8 +206,6 @@ class ModalBlockView extends React.Component {
 			blockId,
 			mid
 		});
-		// TODO: remove
-		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
