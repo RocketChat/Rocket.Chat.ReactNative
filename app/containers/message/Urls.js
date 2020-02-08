@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
@@ -81,10 +81,14 @@ const Url = React.memo(({
 	}
 
 	const onPress = () => openLink(url.url, theme);
-
+	const onLongPress = () => {
+		console.log(url.url)
+		Clipboard.setString(url.url)
+	}
 	return (
 		<Touchable
 			onPress={onPress}
+			onLongPress={onLongPress}
 			style={[
 				styles.button,
 				index > 0 && styles.marginTop,
