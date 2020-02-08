@@ -6,7 +6,7 @@ import {
 	Clipboard,
 	ToastAndroid,
 	Platform,
-	Vibration,
+	Vibration
 } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
@@ -90,12 +90,12 @@ const Url = React.memo(({
 	const onPress = () => openLink(url.url, theme);
 	const onLongPress = () => {
 		Clipboard.setString(url.url);
-		if(Platform.os === 'ios'){
+		if (Platform.os === 'ios') {
 			Vibration.vibrate();
-		} else{
+		} else {
 			Vibration.vibrate(200);
-			ToastAndroid.show('Link copied', ToastAndroid.SHORT);	
-		}	
+			ToastAndroid.show('Link copied', ToastAndroid.SHORT);
+		}
 	};
 	return (
 		<Touchable
