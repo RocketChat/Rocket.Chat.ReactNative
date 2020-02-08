@@ -20,6 +20,11 @@ export const MODAL_ACTIONS = {
 	ERRORS: 'errors'
 };
 
+export const CONTAINER_TYPES = {
+	VIEW: 'view',
+	MESSAGE: 'message'
+};
+
 const triggersId = new Map();
 
 const invalidateTriggerId = (id) => {

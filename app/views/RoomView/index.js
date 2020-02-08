@@ -49,6 +49,7 @@ import {
 import ModalNavigation from '../../lib/ModalNavigation';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
+import { CONTAINER_TYPES } from '../../lib/methods/actions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -711,7 +712,7 @@ class RoomView extends React.Component {
 		rid,
 		appId,
 		container: {
-			type: 'message',
+			type: CONTAINER_TYPES.MESSAGE,
 			id: mid
 		}
 	});

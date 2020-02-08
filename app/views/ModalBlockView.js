@@ -12,7 +12,7 @@ import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { MODAL_ACTIONS } from '../lib/methods/actions';
+import { MODAL_ACTIONS, CONTAINER_TYPES } from '../lib/methods/actions';
 
 import sharedStyles from './Styles';
 import { textParser } from '../containers/UIKit/utils';
@@ -129,7 +129,7 @@ class ModalBlockView extends React.Component {
 	componentWillUnmount() {
 		const { data } = this.state;
 		const { viewId } = data;
-		EventEmitter.removeListener(viewId);
+		EventEmitter.removeListener(viewId, this.handleUpdate);
 	}
 
 	handleUpdate = ({ type, ...data }) => {
@@ -197,7 +197,7 @@ class ModalBlockView extends React.Component {
 		const { mid, appId, viewId } = data;
 		RocketChat.triggerBlockAction({
 			container: {
-				type: 'view',
+				type: CONTAINER_TYPES.VIEW,
 				id: viewId
 			},
 			actionId,
