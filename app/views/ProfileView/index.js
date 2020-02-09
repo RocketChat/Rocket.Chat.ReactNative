@@ -49,6 +49,7 @@ class ProfileView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
+		Accounts_AllowUsernameChange: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
@@ -380,7 +381,7 @@ class ProfileView extends React.Component {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
 		const {
-			baseUrl, user, theme, Accounts_CustomFields
+			baseUrl, user, theme, Accounts_AllowUsernameChange, Accounts_CustomFields
 		} = this.props;
 
 		return (
@@ -417,6 +418,10 @@ class ProfileView extends React.Component {
 							theme={theme}
 						/>
 						<RCTextInput
+							editable={Accounts_AllowUsernameChange}
+							inputStyle={[
+								!Accounts_AllowUsernameChange && styles.disabled
+							]}
 							inputRef={(e) => { this.username = e; }}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
@@ -505,6 +510,7 @@ const mapStateToProps = state => ({
 		emails: state.login.user && state.login.user.emails,
 		token: state.login.user && state.login.user.token
 	},
+	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
 });

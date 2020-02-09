@@ -1,4 +1,7 @@
 export default {
+	Accounts_AllowUsernameChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
