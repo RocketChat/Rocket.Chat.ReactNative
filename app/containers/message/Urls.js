@@ -92,7 +92,7 @@ const Url = React.memo(({
 	const onPress = () => openLink(url.url, theme);
 	const onLongPress = () => {
 		Clipboard.setString(url.url);
-		EventEmitter.emit( LISTENER, { message: 'Copied_to_clipboard' });
+		EventEmitter.emit(LISTENER, { message: 'Copied_to_clipboard' });
 	};
 	return (
 		<Touchable
