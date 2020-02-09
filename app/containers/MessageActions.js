@@ -14,6 +14,7 @@ import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
+import { showConfirmationAlert } from '../utils/info';
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -224,27 +225,17 @@ class MessageActions extends React.Component {
 
 	handleDelete = () => {
 		const { message } = this.props;
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
+		showConfirmationAlert(
 			I18n.t('You_will_not_be_able_to_recover_this_message'),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: 'delete' }),
-					style: 'destructive',
-					onPress: async() => {
-						try {
-							await RocketChat.deleteMessage(message.id, message.subscription.id);
-						} catch (e) {
-							log(e);
-						}
-					}
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Delete'),
+			async() => {
+				try {
+					await RocketChat.deleteMessage(message.id, message.subscription.id);
+				} catch (e) {
+					log(e);
 				}
-			],
-			{ cancelable: false }
+			}
 		);
 	}
 
