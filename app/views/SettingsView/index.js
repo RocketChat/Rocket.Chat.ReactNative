@@ -89,26 +89,24 @@ class SettingsView extends React.Component {
 	}
 
 	handleLogout = () => {
-		showConfirmationAlert(
-			I18n.t('You_will_be_logged_out_of_this_application'),
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Logout'),
-			() => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_be_logged_out_of_this_application'),
+			callToAction: I18n.t('Logout'),
+			onPress: () => {
 				const { logout, split } = this.props;
 				if (split) {
 					Navigation.navigate('RoomView');
 				}
 				logout();
 			}
-		);
+		});
 	}
 
 	handleClearCache = () => {
-		showConfirmationAlert(
-			I18n.t('This_will_clear_all_your_offline_data'),
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Clear'),
-			async() => {
+		showConfirmationAlert({
+			message: I18n.t('This_will_clear_all_your_offline_data'),
+			callToAction: I18n.t('Clear'),
+			onPress: async() => {
 				const {
 					server: { server }, loginRequest, token, appStart
 				} = this.props;
@@ -116,7 +114,7 @@ class SettingsView extends React.Component {
 				await RocketChat.clearCache({ server });
 				await loginRequest({ resume: token }, true);
 			}
-		);
+		});
 	}
 
 	toggleMarkdown = (value) => {

@@ -224,19 +224,18 @@ class MessageActions extends React.Component {
 	}
 
 	handleDelete = () => {
-		const { message } = this.props;
-		showConfirmationAlert(
-			I18n.t('You_will_not_be_able_to_recover_this_message'),
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Delete'),
-			async() => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
+			callToAction: I18n.t('Delete'),
+			onPress: async() => {
+				const { message } = this.props;
 				try {
 					await RocketChat.deleteMessage(message.id, message.subscription.id);
 				} catch (e) {
 					log(e);
 				}
 			}
-		);
+		});
 	}
 
 	handleEdit = () => {

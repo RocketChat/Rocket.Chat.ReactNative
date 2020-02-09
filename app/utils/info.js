@@ -3,9 +3,9 @@ import I18n from '../i18n';
 
 export const showErrorAlert = (message, title, onPress = () => {}) => Alert.alert(title, message, [{ text: 'OK', onPress }], { cancelable: true });
 
-export const showConfirmationAlert = (message, title, CTA, onPress = () => {}) => (
+export const showConfirmationAlert = ({ message, callToAction, onPress }) => (
 	Alert.alert(
-		title,
+		I18n.t('Are_you_sure_question_mark'),
 		message,
 		[
 			{
@@ -13,11 +13,11 @@ export const showConfirmationAlert = (message, title, CTA, onPress = () => {}) =
 				style: 'cancel'
 			},
 			{
-				text: CTA,
+				text: callToAction,
 				style: 'destructive',
 				onPress
 			}
 		],
-		{ cancelable: true }
+		{ cancelable: false }
 	)
 );
