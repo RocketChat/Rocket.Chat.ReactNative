@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	viewContainer: {
-		marginVertical: 4,
+		marginBottom: 16,
 		paddingHorizontal: 16,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,

@@ -29,12 +29,14 @@ import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
 
 const styles = StyleSheet.create({
+	input: {
+		marginBottom: 0
+	},
 	multiline: {
 		height: 130
 	},
 	button: {
-		marginBottom: 8,
-		marginVertical: 8
+		marginBottom: 16
 	}
 });
 
@@ -226,6 +228,7 @@ class ModalParser extends UiKitParserModal {
 				loading={loading}
 				onChangeText={text => action({ value: text })}
 				inputStyle={multiline && styles.multiline}
+				containerStyle={styles.input}
 				value={value}
 				error={{ error }}
 				theme={theme}

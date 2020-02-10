@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 	separator: {
 		width: '100%',
 		alignSelf: 'center',
-		marginVertical: 8
+		marginBottom: 16
 	}
 });
 
