@@ -16,11 +16,6 @@ import { isAndroid } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'flex-end'
-	},
 	input: {
 		height: 48,
 		paddingLeft: 16,

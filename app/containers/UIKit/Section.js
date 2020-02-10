@@ -43,7 +43,7 @@ const Fields = ({ fields, parser, theme }) => fields.map(field => (
 	</Text>
 ));
 
-const accessoriesRight = ['image', 'overflow', 'datepicker'];
+const accessoriesRight = ['image', 'overflow'];
 
 export const Section = ({
 	blockId, appId, text, fields, accessory, parser, theme
