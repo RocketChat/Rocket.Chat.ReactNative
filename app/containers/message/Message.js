@@ -36,6 +36,16 @@ const MessageInner = React.memo((props) => {
 			</>
 		);
 	}
+	if (props.blocks && props.blocks.length) {
+		return (
+			<>
+				<User {...props} />
+				<Blocks {...props} />
+				<Thread {...props} />
+				<Reactions {...props} />
+			</>
+		);
+	}
 	return (
 		<>
 			<User {...props} />
@@ -45,7 +55,6 @@ const MessageInner = React.memo((props) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
-			<Blocks {...props} />
 		</>
 	);
 });
@@ -141,7 +150,8 @@ Message.propTypes = {
 };
 
 MessageInner.propTypes = {
-	type: PropTypes.string
+	type: PropTypes.string,
+	blocks: PropTypes.array
 };
 
 export default MessageTouchable;

@@ -192,10 +192,10 @@ class ModalBlockView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	action = ({ actionId, value, blockId }) => {
+	action = async({ actionId, value, blockId }) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		RocketChat.triggerBlockAction({
+		await RocketChat.triggerBlockAction({
 			container: {
 				type: CONTAINER_TYPES.VIEW,
 				id: viewId
@@ -206,7 +206,6 @@ class ModalBlockView extends React.Component {
 			blockId,
 			mid
 		});
-		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
