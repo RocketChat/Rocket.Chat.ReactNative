@@ -48,7 +48,7 @@ class ShareView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		baseUrl: PropTypes.string.isRequired
+		server: PropTypes.string
 	};
 
 	constructor(props) {
