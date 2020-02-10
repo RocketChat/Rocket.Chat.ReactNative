@@ -39,10 +39,11 @@ export const Select = ({
 	placeholder,
 	onChange,
 	loading,
+	disabled,
 	value: values,
 	theme
 }) => {
-	const [initial] = values || [!placeholder];
+	const initial = values || !placeholder;
 	const [selected, setSelected] = useState(initial);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
@@ -64,8 +65,9 @@ export const Select = ({
 			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
 			useNativeAndroidPickerStyle={false}
 			value={selected}
+			disabled={disabled}
 			onValueChange={(value) => {
-				onChange({ value: [value] });
+				onChange({ value });
 				setSelected(value);
 			}}
 			style={{
@@ -82,6 +84,7 @@ Select.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	loading: PropTypes.bool,
+	disabled: PropTypes.bool,
 	value: PropTypes.array,
 	theme: PropTypes.string
 };
