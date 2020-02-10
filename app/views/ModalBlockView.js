@@ -206,6 +206,7 @@ class ModalBlockView extends React.Component {
 			blockId,
 			mid
 		});
+		this.changeState({ actionId, value, blockId });
 	}
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
