@@ -30,6 +30,9 @@ const LANGUAGES = [
 		label: 'English',
 		value: 'en'
 	}, {
+		label: 'Español (ES)',
+		value: 'es-ES'
+	}, {
 		label: 'Français',
 		value: 'fr'
 	}, {
