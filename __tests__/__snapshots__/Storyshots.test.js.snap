@@ -29623,6 +29623,7 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
   }
 >
   <RCTScrollView
+    keyboardShouldPersistTaps="always"
     style={
       Array [
         Object {
