@@ -22,7 +22,7 @@ import {
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
@@ -88,21 +88,33 @@ class SettingsView extends React.Component {
 		appStart: PropTypes.func
 	}
 
-	logout = () => {
-		const { logout, split } = this.props;
-		if (split) {
-			Navigation.navigate('RoomView');
-		}
-		logout();
+	handleLogout = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_be_logged_out_of_this_application'),
+			callToAction: I18n.t('Logout'),
+			onPress: () => {
+				const { logout, split } = this.props;
+				if (split) {
+					Navigation.navigate('RoomView');
+				}
+				logout();
+			}
+		});
 	}
 
-	clearCache = async() => {
-		const {
-			server: { server }, loginRequest, token, appStart
-		} = this.props;
-		await appStart('loading');
-		await RocketChat.clearCache({ server });
-		await loginRequest({ resume: token }, true);
+	handleClearCache = () => {
+		showConfirmationAlert({
+			message: I18n.t('This_will_clear_all_your_offline_data'),
+			callToAction: I18n.t('Clear'),
+			onPress: async() => {
+				const {
+					server: { server }, loginRequest, token, appStart
+				} = this.props;
+				await appStart('loading');
+				await RocketChat.clearCache({ server });
+				await loginRequest({ resume: token }, true);
+			}
+		});
 	}
 
 	toggleMarkdown = (value) => {
@@ -329,7 +341,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Clear_cache')}
 						testID='settings-clear-cache'
-						onPress={this.clearCache}
+						onPress={this.handleClearCache}
 						right={this.renderDisclosure}
 						color={themes[theme].dangerColor}
 						theme={theme}
@@ -338,7 +350,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Logout')}
 						testID='settings-logout'
-						onPress={this.logout}
+						onPress={this.handleLogout}
 						right={this.renderDisclosure}
 						color={themes[theme].dangerColor}
 						theme={theme}
