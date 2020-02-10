@@ -23,6 +23,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	container: {
@@ -371,10 +372,7 @@ const mapStateToProps = state => ({
 	isFetching: state.createChannel.isFetching,
 	result: state.createChannel.result,
 	users: state.selectedUsers.users,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

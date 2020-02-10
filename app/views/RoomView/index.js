@@ -49,6 +49,7 @@ import {
 import ModalNavigation from '../../lib/ModalNavigation';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
+import { getUserSelector } from '../../selectors/login';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -922,11 +923,7 @@ class RoomView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,

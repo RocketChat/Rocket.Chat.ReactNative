@@ -25,6 +25,7 @@ import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -308,10 +309,7 @@ const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

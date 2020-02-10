@@ -36,6 +36,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction } from '../../actions';
 import { onReviewPress } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -364,7 +365,7 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	token: state.login.user && state.login.user.token,
+	token: getUserSelector(state).token,
 	useMarkdown: state.markdown.useMarkdown,
 	allowCrashReport: state.crashReport.allowCrashReport
 });

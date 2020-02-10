@@ -24,6 +24,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
+import { getUserSelector } from '../../selectors/login';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -523,10 +524,7 @@ class RoomActionsView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
 	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });

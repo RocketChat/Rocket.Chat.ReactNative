@@ -19,6 +19,7 @@ import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	container: {
@@ -143,10 +144,7 @@ class AttachmentView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(AttachmentView));

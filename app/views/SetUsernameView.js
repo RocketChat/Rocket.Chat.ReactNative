@@ -21,6 +21,7 @@ import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -161,7 +162,7 @@ class SetUsernameView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	token: state.login.user && state.login.user.token
+	token: getUserSelector(state).token
 });
 
 const mapDispatchToProps = dispatch => ({
