@@ -570,7 +570,7 @@ export default class Root extends React.Component {
 
 	init = async() => {
 		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
+			await RNUserDefaults.setName('group.ios.social.football');
 		}
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
