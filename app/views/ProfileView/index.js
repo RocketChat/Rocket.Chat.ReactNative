@@ -81,7 +81,7 @@ class ProfileView extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
-		if (user !== nextProps.user) {
+		if (!equal(user, nextProps.user)) {
 			this.init(nextProps.user);
 		}
 	}

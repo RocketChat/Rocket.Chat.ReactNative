@@ -44,6 +44,9 @@ const LANGUAGES = [
 	}, {
 		label: 'Russian',
 		value: 'ru'
+	}, {
+		label: 'Nederlands',
+		value: 'nl'
 	}
 ];
 

@@ -148,8 +148,6 @@ jobs:
       - run:
           name: Configure Gradle
           command: |
-            cd android
-
             echo -e "" > ./gradle.properties
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
@@ -165,6 +163,7 @@ jobs:
 
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+          working_directory: android
 
       - run:
           name: Set Google Services
@@ -194,8 +193,6 @@ jobs:
       - run:
           name: Build Android App
           command: |
-            npx jetify
-            cd android
             if [[ $KEYSTORE ]]; then
               # TODO: enable app bundle again
               ./gradlew assembleRelease
@@ -206,6 +203,7 @@ jobs:
             mkdir -p /tmp/build
 
             mv app/build/outputs /tmp/build/
+          working_directory: android
 
       - store_artifacts:
           path: /tmp/build/outputs
