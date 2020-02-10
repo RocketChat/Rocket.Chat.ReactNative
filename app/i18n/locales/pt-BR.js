@@ -346,6 +346,7 @@ export default {
 	Settings_succesfully_changed: 'Configurações salvas com sucesso!',
 	Share: 'Compartilhar',
 	Share_Link: 'Share Link',
+	Show_more: 'Mostrar mais..',
 	Sign_in_your_server: 'Entrar no seu servidor',
 	Sign_Up: 'Registrar',
 	Some_field_is_invalid_or_empty: 'Algum campo está inválido ou vazio',

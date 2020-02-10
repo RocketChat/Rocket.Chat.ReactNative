@@ -224,7 +224,13 @@ class ModalBlockView extends React.Component {
 		const { blocks } = view;
 
 		return (
-			<ScrollView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<ScrollView
+				style={[
+					styles.container,
+					{ backgroundColor: themes[theme].auxiliaryBackground }
+				]}
+				keyboardShouldPersistTaps='always'
+			>
 				<View style={styles.content}>
 					{
 						React.createElement(
@@ -242,7 +248,7 @@ class ModalBlockView extends React.Component {
 						)
 					}
 				</View>
-				{loading ? <ActivityIndicator absolute size='large' /> : null}
+				{loading ? <ActivityIndicator absolute size='large' theme={theme} /> : null}
 			</ScrollView>
 		);
 	}
