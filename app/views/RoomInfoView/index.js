@@ -310,7 +310,7 @@ class RoomInfoView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });

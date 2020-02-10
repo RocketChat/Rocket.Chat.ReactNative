@@ -254,7 +254,7 @@ class DirectoryView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled
 });

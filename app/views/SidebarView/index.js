@@ -299,7 +299,7 @@ class Sidebar extends Component {
 const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
 	user: getUserSelector(state),
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	loadingServer: state.server.loading
 });
 

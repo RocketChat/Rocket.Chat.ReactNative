@@ -500,7 +500,7 @@ class ProfileView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.server.server
 });
 
 const mapDispatchToProps = dispatch => ({

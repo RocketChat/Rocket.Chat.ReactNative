@@ -154,7 +154,6 @@ class RoomsListView extends React.Component {
 			username: PropTypes.string,
 			token: PropTypes.string
 		}),
-		baseUrl: PropTypes.string,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
@@ -708,7 +707,7 @@ class RoomsListView extends React.Component {
 				username,
 				token
 			},
-			baseUrl,
+			server,
 			StoreLastMessage,
 			theme,
 			split
@@ -735,7 +734,7 @@ class RoomsListView extends React.Component {
 				token={token}
 				rid={item.rid}
 				type={item.t}
-				baseUrl={baseUrl}
+				baseUrl={server}
 				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
@@ -822,7 +821,6 @@ class RoomsListView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.server.server,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,

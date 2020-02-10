@@ -525,7 +525,7 @@ class RoomActionsView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 

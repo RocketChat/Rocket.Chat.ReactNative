@@ -931,7 +931,7 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
 

@@ -366,7 +366,7 @@ class CreateChannelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	error: state.createChannel.error,
 	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,

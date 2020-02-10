@@ -44,7 +44,7 @@ class AdminPanelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	token: getUserSelector(state).token
 });
 

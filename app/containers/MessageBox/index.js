@@ -875,7 +875,7 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
