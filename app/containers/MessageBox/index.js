@@ -339,7 +339,7 @@ class MessageBox extends Component {
 	}
 
 	onPressCommandPreview = (item) => {
-		const { rid } = this.props;
+		const { rid, tmid } = this.props;
 		const { text } = this;
 		const command = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
@@ -348,7 +348,7 @@ class MessageBox extends Component {
 		this.clearInput();
 		this.handleTyping(false);
 		try {
-			RocketChat.executeCommandPreview(command, params, rid, item);
+			RocketChat.executeCommandPreview(command, params, rid, item, tmid);
 		} catch (e) {
 			log(e);
 		}
@@ -641,7 +641,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId
+			onSubmit, rid: roomId, tmid
 		} = this.props;
 		const message = this.text;
 
@@ -669,7 +669,7 @@ class MessageBox extends Component {
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, tmid);
 				} catch (e) {
 					log(e);
 				}
