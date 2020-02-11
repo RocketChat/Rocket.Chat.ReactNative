@@ -178,10 +178,23 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 	}
 };
 
-const handleSetUser = function handleSetUser({ user }) {
+const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
+
+		const serversDB = database.servers;
+		const usersCollection = serversDB.collections.get('users');
+		yield serversDB.action(async() => {
+			try {
+				const userRecord = await usersCollection.find(user.id);
+				await userRecord.update((record) => {
+					record.language = user.language;
+				});
+			} catch (e) {
+				// do nothing
+			}
+		});
 	}
 };
 

@@ -114,7 +114,7 @@ class LanguageView extends React.Component {
 
 		try {
 			await RocketChat.saveUserPreferences(params);
-			setUser({ language: params.language });
+			setUser({ id: user.id, language: params.language });
 
 			await appStart('loading');
 			await appStart('inside');
