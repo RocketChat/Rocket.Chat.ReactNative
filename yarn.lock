@@ -1549,6 +1549,13 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
+"@react-native-community/datetimepicker@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.1.0.tgz#4e3413462cbbe5c48fab6cebd422835031cdf7b9"
+  integrity sha512-InktUrx0/4JTy1YsgswljgID7oB3L8wkFobRhnLGWPExSsNHeecGW2/nBP31ZaOPHcjVWhpOQMZt0zDpKfGE/Q==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/slider@2.0.5":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-2.0.5.tgz#2efd009ff083e4321fc9f0ebf380a3d3f5d8121f"
@@ -1622,16 +1629,21 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/sdk@1.0.0-alpha.31":
-  version "1.0.0-alpha.31"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.31.tgz#d810645f0894d384d27737efe6ee18955db7c9a7"
-  integrity sha512-+ScMW4+Ik8n0WK1suqAI03ZFivwzwyJZeLnOXtX9hDzpRN4UOXCGh/dAhlTjS3/oaF3lmwjF00s4+UUMZBN51w==
+"@rocket.chat/sdk@1.0.0-alpha.41":
+  version "1.0.0-alpha.41"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.41.tgz#8fcae2885786bec56a56b6d9a8cccaa365b77364"
+  integrity sha512-jQ+/exEQMOv+bwH+yzPTC0oJGIKj/AlMc95IvWAn/vHDLjjS3aGzpIpZhBwsMOBVvb/5N8rnq6kEleCkEJk28g==
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
     mem "^4.0.0"
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
+
+"@rocket.chat/ui-kit@^0.2.0-alpha.25":
+  version "0.2.0-alpha.26"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.26.tgz#139e337bc8e751ecd5e61e7a07e563792c37d002"
+  integrity sha512-UBsuntc/W/s545WJGUZlG2TyrrCI59REhRWcgIR/Ueb3qkh/DuhdtK6zjVH1y0M+tLlkrIgtEAsoatj55nkWVA==
 
 "@snyk/composer-lockfile-parser@1.0.3":
   version "1.0.3"
@@ -9430,6 +9442,11 @@ react-native-modal@^9.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
 
+react-native-modalize@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-1.3.6.tgz#1a8651f673dbaccb9ebef908688bbd72b7790470"
+  integrity sha512-omYD+bPpugO7XPZ4pvPIaltw8d4Es0ZcRfu8VVslYAJT74t5IxSd6NrtL3nw/i+TKZo+CTdK4d0hbgBiyt+mMw==
+
 react-native-navigation-bar-color@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-1.0.0.tgz#04ff752a58049af93ceea9ccf266b8d3fbc6514a"
@@ -9460,6 +9477,13 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
+react-native-popover-view@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-2.0.5.tgz#402767a7ef791cb5ec5c035f51755e579b0eaee3"
+  integrity sha512-F/GJxaRdmpHPX/rXBgeGkKRB3t7v8rS5ysEclSNcXtBe00rkhCNq74h0WKomQDPM1LYPETZ76mXIfHylEU7Awg==
+  dependencies:
+    react-native-safe-area-view "^0.14.6"
+
 react-native-progress@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.0.3.tgz#0020a9ce9fa5cb14c7aac8f993b31f27a7ff2150"
@@ -9480,7 +9504,7 @@ react-native-responsive-ui@^1.1.1:
   dependencies:
     lodash "^4.17.4"
 
-react-native-safe-area-view@^0.14.1:
+react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"
   integrity sha512-MtRSIcZNstxv87Jet+UsPhEd1tpGe8cVskDXlP657x6rHpSrbrc+y13ZNXrwAgGNNhqQNX7UJT68ZIq//ZRmvw==
@@ -10242,7 +10266,7 @@ rn-root-view@^1.0.3:
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
 
-rn-user-defaults@^1.7.0:
+rn-user-defaults@1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.7.0.tgz#8d1b79657dec3977e8f8983814b8591821f77236"
   integrity sha512-Qo6sIH8wldmQ0oOMMvljec4WOa/a1Up1pdatoXZGaPG1gl8OKgKH5HPKyddcABYtxPeBUTPVzCxP/6S6wPCqGQ==
