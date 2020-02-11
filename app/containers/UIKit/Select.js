@@ -40,11 +40,10 @@ export const Select = ({
 	onChange,
 	loading,
 	disabled,
-	value: values,
+	value: initialValue,
 	theme
 }) => {
-	const initial = values || !placeholder;
-	const [selected, setSelected] = useState(initial);
+	const [selected, setSelected] = useState(!Array.isArray(initialValue) && initialValue);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
