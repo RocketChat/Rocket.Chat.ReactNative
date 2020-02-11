@@ -49,6 +49,8 @@ import {
 import ModalNavigation from '../../lib/ModalNavigation';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
+import { getUserSelector } from '../../selectors/login';
+import { CONTAINER_TYPES } from '../../lib/methods/actions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -701,6 +703,21 @@ class RoomView extends React.Component {
 		return isReadOnly(room, user);
 	}
 
+	blockAction = ({
+		actionId, appId, value, blockId, rid, mid
+	}) => RocketChat.triggerBlockAction({
+		blockId,
+		actionId,
+		value,
+		mid,
+		rid,
+		appId,
+		container: {
+			type: CONTAINER_TYPES.MESSAGE,
+			id: mid
+		}
+	});
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -725,6 +742,7 @@ class RoomView extends React.Component {
 			<Message
 				item={item}
 				user={user}
+				rid={room.rid}
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
@@ -751,6 +769,7 @@ class RoomView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
+				blockAction={this.blockAction}
 			/>
 		);
 
@@ -922,11 +941,7 @@ class RoomView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
@@ -934,7 +949,7 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
 

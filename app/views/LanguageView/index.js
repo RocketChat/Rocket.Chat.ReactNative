@@ -18,6 +18,7 @@ import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 const LANGUAGES = [
 	{
@@ -29,6 +30,9 @@ const LANGUAGES = [
 	}, {
 		label: 'English',
 		value: 'en'
+	}, {
+		label: 'Español (ES)',
+		value: 'es-ES'
 	}, {
 		label: 'Français',
 		value: 'fr'
@@ -182,7 +186,7 @@ class LanguageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userLanguage: state.login.user && state.login.user.language
+	userLanguage: getUserSelector(state).language
 });
 
 const mapDispatchToProps = dispatch => ({

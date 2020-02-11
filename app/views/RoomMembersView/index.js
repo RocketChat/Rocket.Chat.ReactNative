@@ -24,6 +24,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
+import { getUserSelector } from '../../selectors/login';
 
 const PAGE_SIZE = 25;
 
@@ -287,11 +288,8 @@ class RoomMembersView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	baseUrl: state.server.server,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(RoomMembersView));
