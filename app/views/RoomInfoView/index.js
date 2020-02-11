@@ -19,6 +19,7 @@ import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 
@@ -309,11 +310,8 @@ class RoomInfoView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
