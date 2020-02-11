@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
-import { setUser as setUserAction, loginRequest as loginRequestAction } from '../../actions/login';
+import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
@@ -62,7 +62,6 @@ class LanguageView extends React.Component {
 		user: PropTypes.object,
 		setUser: PropTypes.func,
 		appStart: PropTypes.func,
-		loginRequest: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -104,9 +103,7 @@ class LanguageView extends React.Component {
 
 		this.setState({ saving: true });
 
-		const {
-			user, setUser, appStart, loginRequest
-		} = this.props;
+		const { user, setUser, appStart } = this.props;
 
 		const params = {};
 
@@ -120,7 +117,7 @@ class LanguageView extends React.Component {
 			setUser({ language: params.language });
 
 			await appStart('loading');
-			await loginRequest({ resume: user.token }, true);
+			await appStart('inside');
 		} catch (e) {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
@@ -191,7 +188,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params)),
-	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
 	appStart: params => dispatch(appStartAction(params))
 });
 
