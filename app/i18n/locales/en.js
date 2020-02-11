@@ -382,6 +382,7 @@ export default {
 	Share: 'Share',
 	Share_Link: 'Share Link',
 	Share_this_app: 'Share this app',
+	Show_more: 'Show more..',
 	Show_Unread_Counter: 'Show Unread Counter',
 	Show_Unread_Counter_Info: 'Unread counter is displayed as a badge on the right of the channel, in the list',
 	Sign_in_your_server: 'Sign in your server',

@@ -20,7 +20,7 @@ index 5b7dc21..49f1af5 100644
          set: function (obj) {
              this._headers = obj;
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
-index e3510c7..e951959 100644
+index e3510c7..e3216cc 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 @@ -110,6 +110,7 @@ tiny_events_1.EventEmitter.prototype.removeAllListeners = function (event) {
@@ -50,11 +50,14 @@ index 99eb828..8c99307 100644
  export declare let department: string;
 +export declare let customHeaders: object;
 diff --git a/node_modules/@rocket.chat/sdk/lib/settings.js b/node_modules/@rocket.chat/sdk/lib/settings.js
-index 822c286..15f2688 100644
+index 822c286..ce8f805 100644
 --- a/node_modules/@rocket.chat/sdk/lib/settings.js
 +++ b/node_modules/@rocket.chat/sdk/lib/settings.js
-@@ -30,3 +30,4 @@ exports.token = process.env.LIVECHAT_TOKEN || '';
+@@ -29,4 +29,6 @@ exports.dmCacheMaxAge = 1000 * parseInt(process.env.DM_ROOM_CACHE_MAX_AGE || '10
+ exports.token = process.env.LIVECHAT_TOKEN || '';
  exports.rid = process.env.LIVECHAT_ROOM || '';
  exports.department = process.env.LIVECHAT_DEPARTMENT || '';
- //# sourceMappingURL=settings.js.map
++// Headers settings
 +exports.customHeaders = {};
+ //# sourceMappingURL=settings.js.map
+\ No newline at end of file
