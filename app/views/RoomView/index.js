@@ -49,6 +49,7 @@ import {
 import ModalNavigation from '../../lib/ModalNavigation';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
+import { CONTAINER_TYPES } from '../../lib/methods/actions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -701,6 +702,21 @@ class RoomView extends React.Component {
 		return isReadOnly(room, user);
 	}
 
+	blockAction = ({
+		actionId, appId, value, blockId, rid, mid
+	}) => RocketChat.triggerBlockAction({
+		blockId,
+		actionId,
+		value,
+		mid,
+		rid,
+		appId,
+		container: {
+			type: CONTAINER_TYPES.MESSAGE,
+			id: mid
+		}
+	});
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -725,6 +741,7 @@ class RoomView extends React.Component {
 			<Message
 				item={item}
 				user={user}
+				rid={room.rid}
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
@@ -751,6 +768,7 @@ class RoomView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
+				blockAction={this.blockAction}
 			/>
 		);
 

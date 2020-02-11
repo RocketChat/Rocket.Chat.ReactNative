@@ -19,7 +19,7 @@ const Separator = ({ title, style, theme }) => (
 			styles.separator,
 			{
 				color: themes[theme].titleText,
-				backgroundColor: themes[theme].auxiliaryBackground
+				backgroundColor: themes[theme].backgroundColor
 			},
 			style
 		]}
