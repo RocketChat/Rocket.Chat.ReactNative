@@ -343,7 +343,9 @@ class MessageBox extends Component {
 
 	onPressCommandPreview = (item) => {
 		const { command } = this.state;
-		const { rid } = this.props;
+		const {
+			rid, tmid, message: { id: messageTmid }, replyCancel
+		} = this.props;
 		const { text } = this;
 		const name = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
@@ -354,7 +356,8 @@ class MessageBox extends Component {
 		try {
 			const { appId } = command;
 			const triggerId = generateTriggerId(appId);
-			RocketChat.executeCommandPreview(name, params, rid, item, triggerId);
+			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			replyCancel();
 		} catch (e) {
 			log(e);
 		}
@@ -500,7 +503,7 @@ class MessageBox extends Component {
 
 	sendMediaMessage = async(file) => {
 		const {
-			rid, tmid, baseUrl: server, user
+			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
@@ -512,7 +515,8 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+			replyCancel();
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
 			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
@@ -647,7 +651,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId
+			onSubmit, rid: roomId, tmid
 		} = this.props;
 		const message = this.text;
 
@@ -661,7 +665,7 @@ class MessageBox extends Component {
 		}
 
 		const {
-			editing, replying
+			editing, replying, message: { id: messageTmid }, replyCancel
 		} = this.props;
 
 		// Slash command
@@ -677,7 +681,8 @@ class MessageBox extends Component {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					replyCancel();
 				} catch (e) {
 					log(e);
 				}
@@ -694,7 +699,7 @@ class MessageBox extends Component {
 		// Reply
 		} else if (replying) {
 			const {
-				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+				message: replyingMessage, threadsEnabled, replyWithMention
 			} = this.props;
 
 			// Thread
