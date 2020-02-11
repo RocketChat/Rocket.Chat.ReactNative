@@ -20,6 +20,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { appStart as appStartAction } from '../../actions';
 import { getUserSelector } from '../../selectors/login';
+import database from '../../lib/database';
 
 const LANGUAGES = [
 	{
@@ -114,7 +115,20 @@ class LanguageView extends React.Component {
 
 		try {
 			await RocketChat.saveUserPreferences(params);
-			setUser({ id: user.id, language: params.language });
+			setUser({ language: params.language });
+
+			const serversDB = database.servers;
+			const usersCollection = serversDB.collections.get('users');
+			await serversDB.action(async() => {
+				try {
+					const userRecord = await usersCollection.find(user.id);
+					await userRecord.update((record) => {
+						record.language = params.language;
+					});
+				} catch (e) {
+					// do nothing
+				}
+			});
 
 			await appStart('loading');
 			await appStart('inside');
