@@ -29,7 +29,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 	try {
 		const serversDB = database.servers;
-		yield RocketChat.subscribeRooms();
+		RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
