@@ -119,19 +119,14 @@ class LanguageView extends React.Component {
 			await RocketChat.saveUserPreferences(params);
 			setUser({ language: params.language });
 
-			this.setState({ saving: false });
-
-			setTimeout(async() => {
-				await appStart('loading');
-				await loginRequest({ resume: token }, true);
-			}, 300);
+			await appStart('loading');
+			await loginRequest({ resume: token }, true);
 		} catch (e) {
-			this.setState({ saving: false });
-			setTimeout(() => {
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log(e);
-			}, 300);
+			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
+			log(e);
 		}
+
+		this.setState({ saving: false });
 	}
 
 	renderSeparator = () => {
