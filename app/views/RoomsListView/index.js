@@ -87,7 +87,8 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split'
+	'split',
+	'isFetching'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -162,6 +163,7 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		isFetching: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -185,7 +187,6 @@ class RoomsListView extends React.Component {
 			searching: false,
 			search: [],
 			loading: true,
-			refreshing: false,
 			allChats: [],
 			chats: [],
 			width
@@ -673,10 +674,8 @@ class RoomsListView extends React.Component {
 	};
 
 	onRefresh = () => {
-		this.setState({ refreshing: true });
 		const { roomsRequest } = this.props;
 		roomsRequest({ allData: true });
-		this.setState({ refreshing: false });
 	}
 
 	getScrollRef = ref => (this.scroll = ref);
@@ -763,9 +762,9 @@ class RoomsListView extends React.Component {
 
 	renderScroll = () => {
 		const {
-			loading, chats, search, refreshing
+			loading, chats, search
 		} = this.state;
-		const { theme } = this.props;
+		const { theme, isFetching } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -787,7 +786,7 @@ class RoomsListView extends React.Component {
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={(
 					<RefreshControl
-						refreshing={refreshing}
+						refreshing={isFetching}
 						onRefresh={this.onRefresh}
 						tintColor={themes[theme].auxiliaryText}
 					/>
@@ -842,6 +841,7 @@ const mapStateToProps = state => ({
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
+	isFetching: state.rooms.isFetching,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
