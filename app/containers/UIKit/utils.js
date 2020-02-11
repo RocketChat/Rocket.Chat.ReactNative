@@ -29,13 +29,17 @@ export const useBlockContext = ({
 			loading, setLoading, error, value, language
 		}, async({ value }) => {
 			setLoading(true);
-			await action({
-				blockId,
-				appId: appId || appIdFromContext,
-				actionId,
-				value,
-				viewId
-			});
+			try {
+				await action({
+					blockId,
+					appId: appId || appIdFromContext,
+					actionId,
+					value,
+					viewId
+				});
+			} catch (e) {
+				// do nothing
+			}
 			setLoading(false);
 		}];
 	}
@@ -44,12 +48,16 @@ export const useBlockContext = ({
 		loading, setLoading, value, error, language
 	}, async({ value }) => {
 		setLoading(true);
-		await state({
-			blockId,
-			appId,
-			actionId,
-			value
-		});
+		try {
+			await state({
+				blockId,
+				appId,
+				actionId,
+				value
+			});
+		} catch (e) {
+			// do nothing
+		}
 		setLoading(false);
 	}];
 };
