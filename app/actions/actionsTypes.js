@@ -22,6 +22,7 @@ export const SHARE = createRequestTypes('SHARE', [
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
+	'REFRESH',
 	'SET_SEARCH',
 	'CLOSE_SERVER_DROPDOWN',
 	'TOGGLE_SERVER_DROPDOWN',
