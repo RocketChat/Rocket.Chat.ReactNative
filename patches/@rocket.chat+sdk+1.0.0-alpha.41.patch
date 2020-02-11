@@ -40,16 +40,6 @@ index e3510c7..e3216cc 100644
                                  connection.onerror = reject;
                              }
                              catch (err) {
-@@ -608,7 +609,8 @@ var DDPDriver = /** @class */ (function (_super) {
-                 'webrtc',
-                 'notification',
-                 'rooms-changed',
--                'subscriptions-changed'
-+                'subscriptions-changed',
-+                'uiInteraction'
-             ].map(function (event) { return _this.subscribe(topic, _this.userId + "/" + event, false); }));
-         };
-         _this.subscribeRoom = function (rid) {
 diff --git a/node_modules/@rocket.chat/sdk/lib/settings.d.ts b/node_modules/@rocket.chat/sdk/lib/settings.d.ts
 index 99eb828..8c99307 100644
 --- a/node_modules/@rocket.chat/sdk/lib/settings.d.ts

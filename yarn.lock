@@ -1629,10 +1629,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/sdk@1.0.0-alpha.31":
-  version "1.0.0-alpha.31"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.31.tgz#d810645f0894d384d27737efe6ee18955db7c9a7"
-  integrity sha512-+ScMW4+Ik8n0WK1suqAI03ZFivwzwyJZeLnOXtX9hDzpRN4UOXCGh/dAhlTjS3/oaF3lmwjF00s4+UUMZBN51w==
+"@rocket.chat/sdk@1.0.0-alpha.41":
+  version "1.0.0-alpha.41"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.41.tgz#8fcae2885786bec56a56b6d9a8cccaa365b77364"
+  integrity sha512-jQ+/exEQMOv+bwH+yzPTC0oJGIKj/AlMc95IvWAn/vHDLjjS3aGzpIpZhBwsMOBVvb/5N8rnq6kEleCkEJk28g==
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
