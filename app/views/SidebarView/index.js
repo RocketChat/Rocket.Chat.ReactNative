@@ -22,6 +22,7 @@ import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
+import { getUserSelector } from '../../selectors/login';
 
 const keyExtractor = item => item.id;
 
@@ -297,15 +298,8 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
-	user: {
-		id: state.login.user && state.login.user.id,
-		language: state.login.user && state.login.user.language,
-		status: state.login.user && state.login.user.status,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token,
-		roles: state.login.user && state.login.user.roles
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	loadingServer: state.server.loading
 });
 

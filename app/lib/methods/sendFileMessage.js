@@ -28,13 +28,9 @@ export async function cancelUpload(item) {
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.collections.get('servers');
-			const serverInfo = await serversCollection.find(server);
-			const { id: Site_Url } = serverInfo;
 			const { id, token } = user;
 
-			const uploadUrl = `${ Site_Url }/api/v1/rooms.upload/${ rid }`;
+			const uploadUrl = `${ server }/api/v1/rooms.upload/${ rid }`;
 
 			const xhr = new XMLHttpRequest();
 			const formData = new FormData();
