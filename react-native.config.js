@@ -16,5 +16,6 @@ module.exports = {
 				ios: null
 			}
 		}
-	}
+	},
+	assets: ['./modules/social-football/src/assets/fonts/']
 };

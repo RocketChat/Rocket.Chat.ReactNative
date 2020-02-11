@@ -1,0 +1,20 @@
+{
+  "name": "social-football",
+  "version": "1.0.0",
+  "description": "A module that runs on top of Rocket.Chat for the Social.Football application.",
+  "main": "index.js",
+  "repository": "https://github.com/RocketChat/Rocket.Chat.ReactNative",
+  "author": "TOP team",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "rocket-chat-reactnative": "./../..",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.8.3",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "typescript": "^3.7.5"
+  }
+}

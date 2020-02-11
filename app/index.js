@@ -10,6 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
 
+import { SocialFootballModule } from 'social-football/src';
 import {
 	defaultTheme,
 	newThemeState,
@@ -627,7 +628,7 @@ export default class Root extends React.Component {
 		const { split, themePreferences, theme } = this.state;
 
 		let content = (
-			<App
+			<SocialFootballModule
 				ref={(navigatorRef) => {
 					Navigation.setTopLevelNavigator(navigatorRef);
 				}}

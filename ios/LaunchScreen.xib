@@ -14,8 +14,12 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Football Logo" translatesAutoresizingMaskIntoConstraints="NO" id="agl-F1-dn3">
-                    <rect key="frame" x="80" y="321" width="200" height="170"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Football Logo" translatesAutoresizingMaskIntoConstraints="NO" id="agl-F1-dn3">
+                    <rect key="frame" x="87.666666666666686" y="321" width="200" height="170"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="81c-kG-QQA"/>
+                        <constraint firstAttribute="height" constant="170" id="g0v-zP-js5"/>
+                    </constraints>
                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                 </imageView>
             </subviews>
