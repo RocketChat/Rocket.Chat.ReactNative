@@ -1,8 +1,6 @@
 import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
-import { showErrorAlert } from '../../utils/info';
-import I18n from '../../i18n';
 
 const TRIGGER_TIMEOUT = 5000;
 
@@ -112,43 +110,41 @@ export function triggerAction({
 		const { userId, authToken } = this.sdk.currentLogin;
 		const { host } = this.sdk.client;
 
-		// we need to use fetch because this.sdk.post add /v1 to url
-		const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': authToken,
-				'X-User-Id': userId
-			},
-			body: JSON.stringify({
-				type,
-				actionId,
-				payload,
-				container,
-				mid,
-				rid,
-				triggerId,
-				viewId
-			})
-		});
-
 		try {
-			const { type: interactionType, ...data } = await result.json();
-			handlePayloadUserInteraction(interactionType, data);
+			// we need to use fetch because this.sdk.post add /v1 to url
+			const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Auth-Token': authToken,
+					'X-User-Id': userId
+				},
+				body: JSON.stringify({
+					type,
+					actionId,
+					payload,
+					container,
+					mid,
+					rid,
+					triggerId,
+					viewId
+				})
+			});
 
-			if (data.success) {
-				return resolve();
+			try {
+				const { type: interactionType, ...data } = await result.json();
+				return resolve(handlePayloadUserInteraction(interactionType, data));
+			} catch (e) {
+				// modal.close has no body, so result.json will fail
+				// but it returns ok status
+				if (result.ok) {
+					return resolve();
+				}
 			}
-
-			return reject();
 		} catch (e) {
-			if (result.status !== 200) {
-				showErrorAlert(I18n.t('Oops'));
-				return reject();
-			}
+			// do nothing
 		}
-
-		return resolve();
+		return reject();
 	});
 }
 
