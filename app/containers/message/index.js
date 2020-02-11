@@ -40,7 +40,7 @@ class MessageContainer extends React.Component {
 		replyBroadcast: PropTypes.func,
 		reactionInit: PropTypes.func,
 		fetchThreadName: PropTypes.func,
-		onOpenFileModal: PropTypes.func,
+		showAttachment: PropTypes.func,
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
@@ -212,7 +212,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, onOpenFileModal, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, theme
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
@@ -275,7 +275,7 @@ class MessageContainer extends React.Component {
 				replyBroadcast={this.replyBroadcast}
 				reactionInit={this.reactionInit}
 				onDiscussionPress={this.onDiscussionPress}
-				onOpenFileModal={onOpenFileModal}
+				showAttachment={showAttachment}
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				callJitsi={callJitsi}

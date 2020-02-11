@@ -25,7 +25,9 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import NotificationBadge from './notifications/inApp';
-import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
+import {
+	defaultHeader, onNavigationStateChange, cardStyle, getActiveRouteName
+} from './utils/navigation';
 import { loggerConfig, analytics } from './utils/log';
 import Toast from './containers/Toast';
 import { ThemeContext } from './theme';
@@ -47,7 +49,7 @@ if (isIOS) {
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
+		const regex = /^(room|auth|invite)\?/;
 		if (url.match(regex)) {
 			url = url.replace(regex, '').trim();
 			if (url) {
@@ -143,6 +145,12 @@ const ChatsStack = createStackNavigator({
 	},
 	SelectedUsersView: {
 		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	InviteUsersView: {
+		getScreen: () => require('./views/InviteUsersView').default
+	},
+	InviteUsersEditView: {
+		getScreen: () => require('./views/InviteUsersEditView').default
 	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
@@ -258,9 +266,19 @@ const NewMessageStack = createStackNavigator({
 	cardStyle
 });
 
+const AttachmentStack = createStackNavigator({
+	AttachmentView: {
+		getScreen: () => require('./views/AttachmentView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
+	AttachmentStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -388,6 +406,9 @@ const RoomActionsStack = createStackNavigator({
 	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
+	},
+	AttachmentView: {
+		getScreen: () => require('./views/AttachmentView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -439,6 +460,10 @@ class CustomModalStack extends React.Component {
 		const {
 			navigation, showModal, closeModal, screenProps
 		} = this.props;
+
+		const pageSheetViews = ['AttachmentView'];
+		const pageSheet = pageSheetViews.includes(getActiveRouteName(navigation.state));
+
 		return (
 			<Modal
 				useNativeDriver
@@ -448,7 +473,7 @@ class CustomModalStack extends React.Component {
 				hideModalContentWhileAnimating
 				avoidKeyboard
 			>
-				<View style={sharedStyles.modal}>
+				<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
 					<ModalSwitch navigation={navigation} screenProps={screenProps} />
 				</View>
 			</Modal>

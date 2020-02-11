@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
-import { shortnameToUnicode } from 'emoji-toolkit';
 import removeMarkdown from 'remove-markdown';
 
+import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isAndroid, isTablet } from '../../../utils/deviceInfo';

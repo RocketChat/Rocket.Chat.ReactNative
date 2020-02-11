@@ -57,6 +57,12 @@ export const MoreButton = React.memo(({ onPress, testID }) => (
 	</CustomHeaderButtons>
 ));
 
+export const SaveButton = React.memo(({ onPress, testID }) => (
+	<CustomHeaderButtons>
+		<Item title='save' iconName='Download' onPress={onPress} testID={testID} />
+	</CustomHeaderButtons>
+));
+
 export const LegalButton = React.memo(({ navigation, testID }) => (
 	<MoreButton onPress={() => navigation.navigate('LegalView')} testID={testID} />
 ));
@@ -77,6 +83,10 @@ CloseShareExtensionButton.propTypes = {
 	testID: PropTypes.string.isRequired
 };
 MoreButton.propTypes = {
+	onPress: PropTypes.func.isRequired,
+	testID: PropTypes.string.isRequired
+};
+SaveButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired
 };

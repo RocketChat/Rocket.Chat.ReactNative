@@ -25,7 +25,7 @@ const Link = React.memo(({
 			style={
 				!preview
 					? { ...styles.link, color: themes[theme].actionTintColor }
-					: { color: themes[theme].titleText }
+					: { color: themes[theme].bodyText }
 			}
 		>
 			{ childLength !== 0 ? children : link }

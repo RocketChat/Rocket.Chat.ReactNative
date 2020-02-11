@@ -50,6 +50,11 @@ export const initTabletNav = (setState) => {
 				setState({ showModal: true });
 				return null;
 			}
+			if (routeName === 'AttachmentView') {
+				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+				setState({ showModal: true });
+				return null;
+			}
 		}
 		if (action.type === 'Navigation/RESET' && isSplited()) {
 			const { params } = action.actions[action.index];

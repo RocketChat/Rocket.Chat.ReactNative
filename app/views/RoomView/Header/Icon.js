@@ -40,6 +40,8 @@ const Icon = React.memo(({ type, status, theme }) => {
 		icon = 'thread';
 	} else if (type === 'c') {
 		icon = 'hashtag';
+	} else if (type === 'l') {
+		icon = 'livechat';
 	} else {
 		icon = 'lock';
 	}

@@ -9,25 +9,66 @@ import database from '../../database';
 import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
+import RocketChat from '../../rocketchat';
 
-const unsubscribe = subscriptions => subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
-const removeListener = listener => listener.stop();
+export default class RoomSubscription {
+	constructor(rid) {
+		this.rid = rid;
+		this.isAlive = true;
+	}
 
-export default function subscribeRoom({ rid }) {
-	console.log(`[RCRN] Subscribed to room ${ rid }`);
-	let promises;
-	let connectedListener;
-	let disconnectedListener;
-	let notifyRoomListener;
-	let messageReceivedListener;
+	subscribe = async() => {
+		console.log(`[RCRN] Subscribing to room ${ this.rid }`);
+		if (this.promises) {
+			await this.unsubscribe();
+		}
+		this.promises = RocketChat.subscribeRoom(this.rid);
 
-	const handleConnection = () => {
-		this.loadMissedMessages({ rid }).catch(e => console.log(e));
+		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
+		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
+		if (!this.isAlive) {
+			this.unsubscribe();
+		}
+	}
+
+	unsubscribe = async() => {
+		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
+		this.isAlive = false;
+		if (this.promises) {
+			try {
+				const subscriptions = await this.promises || [];
+				subscriptions.map(sub => sub.unsubscribe());
+			} catch (e) {
+				// do nothing
+			}
+		}
+		this.removeListener(this.connectedListener);
+		this.removeListener(this.disconnectedListener);
+		this.removeListener(this.notifyRoomListener);
+		this.removeListener(this.messageReceivedListener);
+		reduxStore.dispatch(clearUserTyping());
+	}
+
+	removeListener = async(promise) => {
+		if (promise) {
+			try {
+				const listener = await promise;
+				listener.stop();
+			} catch (e) {
+				// do nothing
+			}
+		}
 	};
 
-	const handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
+	handleConnection = () => {
+		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
+	};
+
+	handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-		if (rid !== _rid) {
+		if (this.rid !== _rid) {
 			return;
 		}
 		if (ev === 'typing') {
@@ -86,14 +127,14 @@ export default function subscribeRoom({ rid }) {
 		}
 	});
 
-	const read = debounce((lastOpen) => {
-		this.readMessages(rid, lastOpen);
+	read = debounce((lastOpen) => {
+		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
-	const handleMessageReceived = protectedFunction((ddpMessage) => {
+	handleMessageReceived = protectedFunction((ddpMessage) => {
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
 		const lastOpen = new Date();
-		if (rid !== message.rid) {
+		if (this.rid !== message.rid) {
 			return;
 		}
 		InteractionManager.runAfterInteractions(async() => {
@@ -125,7 +166,7 @@ export default function subscribeRoom({ rid }) {
 				batch.push(
 					msgCollection.prepareCreate(protectedFunction((m) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-						m.subscription.id = rid;
+						m.subscription.id = this.rid;
 						Object.assign(m, message);
 					}))
 				);
@@ -149,7 +190,7 @@ export default function subscribeRoom({ rid }) {
 					batch.push(
 						threadsCollection.prepareCreate(protectedFunction((t) => {
 							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
-							t.subscription.id = rid;
+							t.subscription.id = this.rid;
 							Object.assign(t, message);
 						}))
 					);
@@ -177,7 +218,7 @@ export default function subscribeRoom({ rid }) {
 						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 							Object.assign(tm, message);
-							tm.subscription.id = rid;
+							tm.subscription.id = this.rid;
 							tm.rid = message.tmid;
 							delete tm.tmid;
 						}))
@@ -185,7 +226,7 @@ export default function subscribeRoom({ rid }) {
 				}
 			}
 
-			read(lastOpen);
+			this.read(lastOpen);
 
 			try {
 				await db.action(async() => {
@@ -196,43 +237,4 @@ export default function subscribeRoom({ rid }) {
 			}
 		});
 	});
-
-	const stop = () => {
-		if (promises) {
-			promises.then(unsubscribe);
-			promises = false;
-		}
-		if (connectedListener) {
-			connectedListener.then(removeListener);
-			connectedListener = false;
-		}
-		if (disconnectedListener) {
-			disconnectedListener.then(removeListener);
-			disconnectedListener = false;
-		}
-		if (notifyRoomListener) {
-			notifyRoomListener.then(removeListener);
-			notifyRoomListener = false;
-		}
-		if (messageReceivedListener) {
-			messageReceivedListener.then(removeListener);
-			messageReceivedListener = false;
-		}
-		reduxStore.dispatch(clearUserTyping());
-	};
-
-	connectedListener = this.sdk.onStreamData('connected', handleConnection);
-	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
-	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
-	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
-
-	try {
-		promises = this.sdk.subscribeRoom(rid);
-	} catch (e) {
-		log(e);
-	}
-
-	return {
-		stop: () => stop()
-	};
 }
