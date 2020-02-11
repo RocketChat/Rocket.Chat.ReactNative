@@ -672,15 +672,12 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	onRefresh = () => this.setState({ refreshing: true }, async() => {
-		try {
-			await RocketChat.getRooms();
-		} catch (e) {
-			log(e);
-		}
-
+	onRefresh = () => {
+		this.setState({ refreshing: true });
+		const { roomsRequest } = this.props;
+		roomsRequest({ allData: true });
 		this.setState({ refreshing: false });
-	})
+	}
 
 	getScrollRef = ref => (this.scroll = ref);
 
@@ -859,7 +856,7 @@ const mapDispatchToProps = dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction()),
+	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });

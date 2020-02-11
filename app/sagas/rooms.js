@@ -26,15 +26,18 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	});
 };
 
-const handleRoomsRequest = function* handleRoomsRequest() {
+const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 	try {
 		const serversDB = database.servers;
 		yield RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
+		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
-		const serversCollection = serversDB.collections.get('servers');
-		const serverRecord = yield serversCollection.find(server);
-		const { roomsUpdatedAt } = serverRecord;
+		if (!params.allData) {
+			const serversCollection = serversDB.collections.get('servers');
+			const serverRecord = yield serversCollection.find(server);
+			({ roomsUpdatedAt } = serverRecord);
+		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
