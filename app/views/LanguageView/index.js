@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView, NavigationActions } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
-import { setUser as setUserAction } from '../../actions/login';
+import { setUser as setUserAction, loginRequest as loginRequestAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
@@ -18,6 +18,7 @@ import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { appStart as appStartAction } from '../../actions';
 
 const LANGUAGES = [
 	{
@@ -58,8 +59,10 @@ class LanguageView extends React.Component {
 
 	static propTypes = {
 		userLanguage: PropTypes.string,
-		navigation: PropTypes.object,
 		setUser: PropTypes.func,
+		appStart: PropTypes.func,
+		loginRequest: PropTypes.func,
+		token: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -101,7 +104,9 @@ class LanguageView extends React.Component {
 
 		this.setState({ saving: true });
 
-		const { userLanguage, setUser, navigation } = this.props;
+		const {
+			userLanguage, token, setUser, appStart, loginRequest
+		} = this.props;
 
 		const params = {};
 
@@ -115,9 +120,10 @@ class LanguageView extends React.Component {
 			setUser({ language: params.language });
 
 			this.setState({ saving: false });
-			setTimeout(() => {
-				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
-				navigation.navigate('RoomsListView');
+
+			setTimeout(async() => {
+				await appStart('loading');
+				await loginRequest({ resume: token }, true);
 			}, 300);
 		} catch (e) {
 			this.setState({ saving: false });
@@ -185,11 +191,14 @@ class LanguageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userLanguage: state.login.user && state.login.user.language
+	userLanguage: state.login.user && state.login.user.language,
+	token: state.login.user && state.login.user.token
 });
 
 const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+	setUser: params => dispatch(setUserAction(params)),
+	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));
