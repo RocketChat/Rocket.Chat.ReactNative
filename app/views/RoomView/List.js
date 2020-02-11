@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager } from 'react-native';
+import { FlatList, InteractionManager, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -15,6 +15,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
+import { themes } from '../../constants/colors';
 
 class List extends React.Component {
 	static propTypes = {
@@ -237,8 +238,13 @@ class List extends React.Component {
 					maxToRenderPerBatch={5}
 					windowSize={10}
 					ListFooterComponent={this.renderFooter}
-					onRefresh={this.onRefresh}
-					refreshing={refreshing}
+					refreshControl={(
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={this.onRefresh}
+							tintColor={themes[theme].auxiliaryText}
+						/>
+					)}
 					{...scrollPersistTaps}
 				/>
 			</>

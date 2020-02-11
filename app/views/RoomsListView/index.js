@@ -6,7 +6,8 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions
+	Dimensions,
+	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
@@ -184,6 +185,7 @@ class RoomsListView extends React.Component {
 			searching: false,
 			search: [],
 			loading: true,
+			refreshing: false,
 			allChats: [],
 			chats: [],
 			width
@@ -670,6 +672,16 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	onRefresh = () => this.setState({ refreshing: true }, async() => {
+		try {
+			await RocketChat.getRooms();
+		} catch (e) {
+			log(e);
+		}
+
+		this.setState({ refreshing: false });
+	})
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
@@ -753,7 +765,9 @@ class RoomsListView extends React.Component {
 	}
 
 	renderScroll = () => {
-		const { loading, chats, search } = this.state;
+		const {
+			loading, chats, search, refreshing
+		} = this.state;
 		const { theme } = this.props;
 
 		if (loading) {
@@ -774,6 +788,13 @@ class RoomsListView extends React.Component {
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={(
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={this.onRefresh}
+						tintColor={themes[theme].auxiliaryText}
+					/>
+				)}
 				windowSize={9}
 			/>
 		);
