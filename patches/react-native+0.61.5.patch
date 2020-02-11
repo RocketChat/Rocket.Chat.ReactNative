@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index e72e943..ec0a0ba 100644
+index e72e943..71d277a 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -55,6 +55,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
@@ -42,20 +42,20 @@ index e72e943..ec0a0ba 100644
 +    if ((status == errSecSuccess) && ([items count]>0)) {
 +        firstItem = items[0];
 +    }
-+    
++
 +    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
 +    SecCertificateRef certificate = NULL;
 +    if (identity) {
 +        SecIdentityCopyCertificate(identity, &certificate);
 +        if (certificate) { CFRelease(certificate); }
 +    }
-+    
++
 +    NSMutableArray *certificates = [[NSMutableArray alloc] init];
 +    [certificates addObject:CFBridgingRelease(certificate)];
-+    
++
 +    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 +  }
-+    
++
 +  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +}
 +
@@ -69,7 +69,7 @@ index e72e943..ec0a0ba 100644
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
-+  NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.chat.rocket"] objectForKey:host];
++  NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.social.football"] objectForKey:host];
 +
 +  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +
@@ -84,7 +84,7 @@ index e72e943..ec0a0ba 100644
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index a134d2e..a88c099 100644
+index a134d2e..9c07d45 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -481,6 +481,29 @@ - (void)didConnect
@@ -92,7 +92,7 @@ index a134d2e..a88c099 100644
  }
  
 +- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
-+{    
++{
 +    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
 +    {
 +      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
@@ -122,7 +122,7 @@ index a134d2e..a88c099 100644
  #endif
  
 +    // SSL Pinning
-+    NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.chat.rocket"] objectForKey:host];
++    NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.social.football"] objectForKey:host];
 +    if (clientSSL != (id)[NSNull null]) {
 +      NSString *path = [clientSSL objectForKey:@"path"];
 +      NSString *password = [clientSSL objectForKey:@"password"];
@@ -301,3 +301,10 @@ index ef2ae93..2795802 100644
        return true;
      } catch (ClassNotFoundException ignored) {
        return false;
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081

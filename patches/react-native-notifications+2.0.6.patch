@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..aeb5eaa 100644
+index edc4fd4..ff3430b 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -28,9 +28,92 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
@@ -54,7 +54,7 @@ index edc4fd4..aeb5eaa 100644
 +        NSString *msg = [(UNTextInputNotificationResponse *)response userText];
 +
 +        // get credentials
-+        NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.ios.chat.rocket"];
++        NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.ios.social.football"];
 +        NSString *TOKEN_KEY = @"reactnativemeteor_usertoken";
 +        NSString *userId = [userDefaults stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, [self serverURL:host]]];
 +        NSString *token = [userDefaults stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, userId]];
@@ -97,3 +97,28 @@ index edc4fd4..aeb5eaa 100644
  }
  
  @end
+diff --git a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
+index 8fb5f01..0d4a1a2 100644
+--- a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
++++ b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
+@@ -5,7 +5,7 @@ import android.app.Application;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.v4.app.NotificationManagerCompat;
++import androidx.core.app.NotificationManagerCompat;
+ import android.util.Log;
+ 
+ import com.facebook.react.bridge.ActivityEventListener;
+diff --git a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/InitialNotificationHolder.java b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/InitialNotificationHolder.java
+index 3636f41..ae9ffc4 100644
+--- a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/InitialNotificationHolder.java
++++ b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/InitialNotificationHolder.java
+@@ -1,6 +1,6 @@
+ package com.wix.reactnativenotifications.core;
+ 
+-import android.support.annotation.Nullable;
++import androidx.annotation.Nullable;
+ 
+ import com.wix.reactnativenotifications.core.notification.PushNotificationProps;
+ 

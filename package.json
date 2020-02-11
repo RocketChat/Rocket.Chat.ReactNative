@@ -178,5 +178,11 @@
         "name": "iPhone 7"
       }
     }
+  },
+  "workspaces": [
+    "modules/social-football"
+  ],
+  "peerDependencies": {
+    "social-football": "*"
   }
 }

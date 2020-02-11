@@ -78,7 +78,7 @@ class Root extends React.Component {
 
 	init = async() => {
 		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
+			await RNUserDefaults.setName('group.ios.social.football');
 		}
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
