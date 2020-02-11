@@ -15,6 +15,7 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
+import { getUserSelector } from '../../selectors/login';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -26,8 +27,7 @@ class ReadReceiptView extends React.Component {
 		navigation: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		baseUrl: PropTypes.string,
-		userId: PropTypes.string,
-		token: PropTypes.string,
+		user: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -92,7 +92,7 @@ class ReadReceiptView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const {
-			Message_TimeFormat, userId, baseUrl, token, theme
+			Message_TimeFormat, user: { id: userId, token }, baseUrl, theme
 		} = this.props;
 		const time = moment(item.ts).format(Message_TimeFormat);
 		return (
@@ -167,9 +167,8 @@ class ReadReceiptView extends React.Component {
 
 const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	userId: state.login.user && state.login.user.id,
-	token: state.login.user && state.login.user.token
+	baseUrl: state.server.server,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

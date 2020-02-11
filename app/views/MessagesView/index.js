@@ -17,6 +17,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -306,12 +307,8 @@ class MessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	customEmojis: state.customEmojis
 });
 

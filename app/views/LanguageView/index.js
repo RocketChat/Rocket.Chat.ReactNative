@@ -19,6 +19,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { appStart as appStartAction } from '../../actions';
+import { getUserSelector } from '../../selectors/login';
 
 const LANGUAGES = [
 	{
@@ -58,25 +59,24 @@ class LanguageView extends React.Component {
 	})
 
 	static propTypes = {
-		userLanguage: PropTypes.string,
+		user: PropTypes.object,
 		setUser: PropTypes.func,
 		appStart: PropTypes.func,
 		loginRequest: PropTypes.func,
-		token: PropTypes.string,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			language: props.userLanguage ? props.userLanguage : 'en',
+			language: props.user ? props.user.language : 'en',
 			saving: false
 		};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { language, saving } = this.state;
-		const { userLanguage, theme } = this.props;
+		const { user, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -86,15 +86,15 @@ class LanguageView extends React.Component {
 		if (nextState.saving !== saving) {
 			return true;
 		}
-		if (nextProps.userLanguage !== userLanguage) {
+		if (nextProps.user.language !== user.language) {
 			return true;
 		}
 		return false;
 	}
 
 	formIsChanged = (language) => {
-		const { userLanguage } = this.props;
-		return (userLanguage !== language);
+		const { user } = this.props;
+		return (user.language !== language);
 	}
 
 	submit = async(language) => {
@@ -105,13 +105,13 @@ class LanguageView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			userLanguage, token, setUser, appStart, loginRequest
+			user, setUser, appStart, loginRequest
 		} = this.props;
 
 		const params = {};
 
 		// language
-		if (userLanguage !== language) {
+		if (user.language !== language) {
 			params.language = language;
 		}
 
@@ -120,7 +120,7 @@ class LanguageView extends React.Component {
 			setUser({ language: params.language });
 
 			await appStart('loading');
-			await loginRequest({ resume: token }, true);
+			await loginRequest({ resume: user.token }, true);
 		} catch (e) {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
@@ -186,8 +186,7 @@ class LanguageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userLanguage: state.login.user && state.login.user.language,
-	token: state.login.user && state.login.user.token
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({
