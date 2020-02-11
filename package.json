@@ -100,6 +100,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-saga": "1.1.3",
     "remove-markdown": "^0.3.0",
+    "reselect": "^4.0.0",
     "rn-extensions-share": "^2.3.10",
     "rn-fetch-blob": "0.11.2",
     "rn-root-view": "^1.0.3",

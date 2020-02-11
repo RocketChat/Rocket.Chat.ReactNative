@@ -92,7 +92,7 @@ ReplyPreview.propTypes = {
 const mapStateToProps = state => ({
 	useMarkdown: state.markdown.useMarkdown,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.server.server
 });
 
 export default connect(mapStateToProps)(ReplyPreview);

@@ -44,6 +44,7 @@ import {
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -881,13 +882,9 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
