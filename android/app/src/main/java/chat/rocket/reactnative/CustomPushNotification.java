@@ -94,8 +94,12 @@ public class CustomPushNotification extends PushNotification {
 
         Bundle bundle = mNotificationProps.asBundle();
         String notId = bundle.getString("notId", "1");
+        String title = bundle.getString("title");
+        String message = bundle.getString("message");
 
         notification
+            .setContentTitle(title)
+            .setContentText(message)
             .setContentIntent(intent)
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
@@ -143,8 +147,14 @@ public class CustomPushNotification extends PushNotification {
 
         int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
 
-        notification
-            .setSmallIcon(smallIconResId);
+        Gson gson = new Gson();
+        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+
+        notification.setSmallIcon(smallIconResId);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            notification.setLargeIcon(getAvatar(ejson.getAvatarUri()));
+        }
     }
 
     private void notificationChannel(Notification.Builder notification) {
@@ -179,52 +189,66 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notificationStyle(Notification.Builder notification, int notId, Bundle bundle) {
-        Notification.MessagingStyle messageStyle;
-        String title = bundle.getString("title");
-
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            messageStyle = new Notification.MessagingStyle("");
-        } else {
-            Person sender = new Person.Builder()
-                .setKey("")
-                .setName("")
-                .build();
-            messageStyle = new Notification.MessagingStyle(sender);
-        }
-
-        messageStyle.setConversationTitle(title);
-
         List<Bundle> bundles = notificationMessages.get(Integer.toString(notId));
 
-        if (bundles != null) {
-            for (int i = 0; i < bundles.size(); i++) {
-                Bundle data = bundles.get(i);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            Notification.InboxStyle messageStyle = new Notification.InboxStyle();
+            if (bundles != null) {
+                for (int i = 0; i < bundles.size(); i++) {
+                    Bundle data = bundles.get(i);
+                    String message = data.getString("message");
 
-                long timestamp = data.getLong("time");
-                String message = data.getString("message");
-                String username = data.getString("username");
-                String senderId = data.getString("senderId");
-                String avatarUri = data.getString("avatarUri");
-
-                String m = extractMessage(message, ejson);
-
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                    messageStyle.addMessage(m, timestamp, username);
-                } else {
-                    Person sender = new Person.Builder()
-                        .setKey(senderId)
-                        .setName(username)
-                        .setIcon(Icon.createWithBitmap(getAvatar(avatarUri)))
-                        .build();
-                    messageStyle.addMessage(m, timestamp, sender);
+                    messageStyle.addLine(message);
                 }
             }
-        }
 
-        notification.setStyle(messageStyle);
+            notification.setStyle(messageStyle);
+        } else {
+            Notification.MessagingStyle messageStyle;
+
+            Gson gson = new Gson();
+            Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                messageStyle = new Notification.MessagingStyle("");
+            } else {
+                Person sender = new Person.Builder()
+                    .setKey("")
+                    .setName("")
+                    .build();
+                messageStyle = new Notification.MessagingStyle(sender);
+            }
+
+            String title = bundle.getString("title");
+            messageStyle.setConversationTitle(title);
+
+            if (bundles != null) {
+                for (int i = 0; i < bundles.size(); i++) {
+                    Bundle data = bundles.get(i);
+
+                    long timestamp = data.getLong("time");
+                    String message = data.getString("message");
+                    String username = data.getString("username");
+                    String senderId = data.getString("senderId");
+                    String avatarUri = data.getString("avatarUri");
+
+                    String m = extractMessage(message, ejson);
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                        messageStyle.addMessage(m, timestamp, username);
+                    } else {
+                        Person sender = new Person.Builder()
+                            .setKey(senderId)
+                            .setName(username)
+                            .setIcon(Icon.createWithBitmap(getAvatar(avatarUri)))
+                            .build();
+                        messageStyle.addMessage(m, timestamp, sender);
+                    }
+                }
+            }
+
+            notification.setStyle(messageStyle);
+        }
     }
 
     private void notificationReply(Notification.Builder notification, int notificationId, Bundle bundle) {
