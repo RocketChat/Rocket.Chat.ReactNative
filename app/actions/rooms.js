@@ -21,6 +21,12 @@ export function roomsFailure(err) {
 	};
 }
 
+export function roomsRefresh() {
+	return {
+		type: types.ROOMS.REFRESH
+	};
+}
+
 export function setSearch(searchText) {
 	return {
 		type: types.ROOMS.SET_SEARCH,

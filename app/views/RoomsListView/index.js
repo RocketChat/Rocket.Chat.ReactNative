@@ -88,7 +88,7 @@ const shouldUpdateProps = [
 	'appState',
 	'theme',
 	'split',
-	'isFetching'
+	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -163,7 +163,7 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		isFetching: PropTypes.bool,
+		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -764,7 +764,7 @@ class RoomsListView extends React.Component {
 		const {
 			loading, chats, search
 		} = this.state;
-		const { theme, isFetching } = this.props;
+		const { theme, refreshing } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -786,7 +786,7 @@ class RoomsListView extends React.Component {
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={(
 					<RefreshControl
-						refreshing={isFetching}
+						refreshing={refreshing}
 						onRefresh={this.onRefresh}
 						tintColor={themes[theme].auxiliaryText}
 					/>
@@ -841,7 +841,7 @@ const mapStateToProps = state => ({
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
-	isFetching: state.rooms.isFetching,
+	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,

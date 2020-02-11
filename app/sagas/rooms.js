@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
-import { roomsSuccess, roomsFailure } from '../actions/rooms';
+import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
@@ -33,7 +33,9 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const newRoomsUpdatedAt = new Date();
 		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
-		if (!params.allData) {
+		if (params.allData) {
+			yield put(roomsRefresh());
+		} else {
 			const serversCollection = serversDB.collections.get('servers');
 			const serverRecord = yield serversCollection.find(server);
 			({ roomsUpdatedAt } = serverRecord);
