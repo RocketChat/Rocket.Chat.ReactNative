@@ -17,11 +17,6 @@
     "generate-source-maps-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-release.bundle --sourcemap-output android-release.bundle.map",
     "postinstall": "patch-package && jetify"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
-  },
   "dependencies": {
     "@nozbe/watermelondb": "0.15.0",
     "@react-native-community/art": "^1.0.4",
