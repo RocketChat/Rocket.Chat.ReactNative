@@ -16,6 +16,7 @@ import { removeNotification as removeNotificationAction } from '../../actions/no
 import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { withTheme } from '../../theme';
+import { getUserSelector } from '../../selectors/login';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -72,8 +73,7 @@ class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
-		token: PropTypes.string,
-		userId: PropTypes.string,
+		user: PropTypes.object,
 		notification: PropTypes.object,
 		window: PropTypes.object,
 		removeNotification: PropTypes.func,
@@ -173,7 +173,7 @@ class NotificationBadge extends React.Component {
 
 	render() {
 		const {
-			baseUrl, token, userId, notification, window, theme
+			baseUrl, user: { id: userId, token }, notification, window, theme
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
@@ -227,9 +227,8 @@ class NotificationBadge extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userId: state.login.user && state.login.user.id,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	token: state.login.user && state.login.user.token,
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	notification: state.notification
 });
 

@@ -48,7 +48,7 @@ class ShareView extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		baseUrl: PropTypes.string.isRequired
+		server: PropTypes.string
 	};
 
 	constructor(props) {
@@ -104,7 +104,7 @@ class ShareView extends React.Component {
 
 	sendMediaMessage = async() => {
 		const { rid, fileInfo, file } = this.state;
-		const { baseUrl: server, user } = this.props;
+		const { server, user } = this.props;
 		const { name, description } = file;
 		const fileMessage = {
 			name,
@@ -293,7 +293,7 @@ const mapStateToProps = (({ share }) => ({
 		username: share.user && share.user.username,
 		token: share.user && share.user.token
 	},
-	baseUrl: share ? share.server : ''
+	server: share.server
 }));
 
 export default connect(mapStateToProps)(withTheme(ShareView));
