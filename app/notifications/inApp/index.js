@@ -165,7 +165,7 @@ class NotificationBadge extends React.Component {
 			return;
 		}
 		const name = type === 'd' ? payload.sender.username : payload.name;
-		// if not has sub on database, title will be null, so we use payload from notification
+		// if sub is not on local database, title will be null, so we use payload from notification
 		const { title = name } = notification;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
@@ -181,7 +181,7 @@ class NotificationBadge extends React.Component {
 		const { message, payload } = notification;
 		const { type } = payload;
 		const name = type === 'd' ? payload.sender.username : payload.name;
-		// if not has sub on database, title and avatar will be null, so we use payload from notification
+		// if sub is not on local database, title and avatar will be null, so we use payload from notification
 		const { title = name, avatar = name } = notification;
 
 		let top = 0;
