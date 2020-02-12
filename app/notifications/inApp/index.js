@@ -158,15 +158,18 @@ class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = async() => {
-		const { notification: { payload }, navigation, baseUrl } = this.props;
+		const { notification, navigation, baseUrl } = this.props;
+		const { payload } = notification;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
 		}
 		const name = type === 'd' ? payload.sender.username : payload.name;
+		// if sub is not on local database, title will be null, so we use payload from notification
+		const { title = name } = notification;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name, t: type, prid, baseUrl
+			rid, name: title, t: type, prid, baseUrl
 		});
 		this.hide();
 	}
@@ -178,6 +181,8 @@ class NotificationBadge extends React.Component {
 		const { message, payload } = notification;
 		const { type } = payload;
 		const name = type === 'd' ? payload.sender.username : payload.name;
+		// if sub is not on local database, title and avatar will be null, so we use payload from notification
+		const { title = name, avatar = name } = notification;
 
 		let top = 0;
 		if (isIOS) {
@@ -211,9 +216,9 @@ class NotificationBadge extends React.Component {
 					background={Touchable.SelectableBackgroundBorderless()}
 				>
 					<>
-						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 						<View style={styles.inner}>
-							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
+							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
