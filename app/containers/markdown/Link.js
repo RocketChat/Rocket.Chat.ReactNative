@@ -28,7 +28,7 @@ const Link = React.memo(({
 	return (
 		<Text
 			onPress={preview ? undefined : handlePress}
-			onLongPress={onLongPress}
+			onLongPress={preview ? undefined : onLongPress}
 			style={
 				!preview
 					? { ...styles.link, color: themes[theme].actionTintColor }
