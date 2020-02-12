@@ -2,11 +2,7 @@ import React from 'react';
 import {
 	View,
 	Text,
-	StyleSheet,
-	Clipboard,
-	ToastAndroid,
-	Platform,
-	Vibration
+	StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
@@ -17,8 +13,6 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
-import { LISTENER } from '../Toast';
-import EventEmitter from '../../utils/events';
 
 const styles = StyleSheet.create({
 	button: {
@@ -90,14 +84,9 @@ const Url = React.memo(({
 	}
 
 	const onPress = () => openLink(url.url, theme);
-	const onLongPress = () => {
-		Clipboard.setString(url.url);
-		EventEmitter.emit(LISTENER, { message: 'Copied_to_clipboard' });
-	};
 	return (
 		<Touchable
 			onPress={onPress}
-			onLongPress={onLongPress}
 			style={[
 				styles.button,
 				index > 0 && styles.marginTop,
