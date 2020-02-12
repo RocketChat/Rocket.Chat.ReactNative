@@ -82,7 +82,7 @@
     "react-native-progress": "^4.0.3",
     "react-native-reanimated": "1.4.0",
     "react-native-responsive-ui": "^1.1.1",
-    "react-native-screens": "^2.0.0-alpha.3",
+    "react-native-screens": "kmagiera/react-native-screens#master",
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-slowlog": "^1.0.2",
     "react-native-unimodules": "0.5.3",

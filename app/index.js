@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import { enableScreens } from 'react-native-screens';
 
 import {
 	defaultTheme,
@@ -41,10 +42,7 @@ import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
 
-if (isIOS) {
-	const RNScreens = require('react-native-screens');
-	RNScreens.useScreens();
-}
+enableScreens();
 
 const parseDeepLinking = (url) => {
 	if (url) {
