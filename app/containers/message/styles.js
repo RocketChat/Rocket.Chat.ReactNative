@@ -161,5 +161,9 @@ export default StyleSheet.create({
 	},
 	readReceipt: {
 		lineHeight: 20
+	},
+	username: {
+		marginLeft: 8,
+		color: '#333'
 	}
 });

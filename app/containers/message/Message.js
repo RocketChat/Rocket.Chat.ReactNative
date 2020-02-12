@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import User from './User';
@@ -63,11 +63,15 @@ MessageInner.displayName = 'MessageInner';
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
+		const { username } = props.author;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
+					<Text style={styles.username}>
+						{`${ username.substring(0, 11) }${ username.length > 11 ? '...' : '' }`}
+					</Text>
 					<View
 						style={[
 							styles.messageContent,
@@ -146,7 +150,8 @@ Message.propTypes = {
 	onPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	author: PropTypes.object
 };
 
 MessageInner.propTypes = {
