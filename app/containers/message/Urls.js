@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-	View,
-	Text,
-	StyleSheet
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import isEqual from 'lodash/isEqual';
+
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -84,6 +81,7 @@ const Url = React.memo(({
 	}
 
 	const onPress = () => openLink(url.url, theme);
+
 	return (
 		<Touchable
 			onPress={onPress}
