@@ -1,84 +1,66 @@
-# JavaScript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
-version: 2.1
-
-orbs:
-  rn: react-native-community/react-native@2.0.1
-
+version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
+    working_directory: ~/project
+    docker: 
       - image: circleci/node:8
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn test
-      - save_cache:
+      - run: yarn
+      - run: yarn run test
+      - persist_to_workspace:
+          root: ~/project
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-  functional-test:
-    build:
-      branches:
-        only:
-          - develop
-        
+      - store_test_results:
+          path: ~/project/junit.xml
+
+  android: 
+    working_directory: ~/project/android
+    docker:
+      -image: circleci/android:api-27-api-node8-alpha
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
+      - run: bundle install
+      - run: bundle exec fastlane test
+      - store_test_results:
+          path: ~/project/android/reports
+
+  ios:
+    macos:
+      xcode: "9.0"
+    workspace: /Users/distiller/project/ios
+    environment:
+      FL_OUTPUT_DIR: /Users/distiller/project/output
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout:
+          path: /Users/distiller/project
+      - run:
+          name: Set Ruby Version
+          command: echo "ruby-2.4" >~/.ruby-version
+      - run: yarn
+      - run: bundle install
+      - run: bundle exec fastlane test
+      - run:
+          command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
+          when: always
+      - store_artifacts:
+          path: /Users/distiller/project/output
+      - store_test_results:
+          path: /Users/distiller/project/output/scan
+
 workflows:
   version: 2
-  build-and-lint:
+  node-android-ios:
     jobs:
       - build
-
-  functional-test:
-      - checkout_code
-      # Build the Android app in debug mode
-      - rn/android_build:
-          name: build_android_debug
-          project_path: "android"
-          build_type: debug
-
-      # Build and test the Android app in release mode
-      # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
-      - rn/android_build:
-          name: build_android_release
-          project_path: "android"
-          build_type: release
-
-      - rn/android_test:
-          detox_configuration: "android.emu.release"
+      - android:
           requires:
-            - build_android_release
-
-
-      # Build the iOS app in release mode and do not run tests
-      - rn/ios_build:
-          name: build_ios_release
-          project_path: ios/Example.xcodeproj
-          device: "iPhone X"
-          build_configuration: Release
-          scheme: Example
-
-      # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          project_path: "ios/Example.xcodeproj"
-          device: "iPhone X"
-          build_configuration: "Release"
-          scheme: "Example"
-          detox_configuration: "ios.sim.release"
+            - build
+      - ios:
+          requires:
+            - build
