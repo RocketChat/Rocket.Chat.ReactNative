@@ -15360,22 +15360,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -15389,6 +15373,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -15648,22 +15690,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -15677,6 +15703,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -15936,22 +16020,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -15965,6 +16033,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -16224,22 +16350,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -16253,6 +16363,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -16512,22 +16680,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -16541,6 +16693,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -16768,22 +16978,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -16797,6 +16991,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -17024,22 +17276,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -17053,6 +17289,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   style={
@@ -17523,22 +17817,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -17552,6 +17830,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -17728,22 +18064,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -17757,6 +18077,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -17901,22 +18279,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -17930,6 +18292,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   style={
@@ -18168,22 +18588,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -18197,6 +18601,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -18373,22 +18835,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -18402,6 +18848,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -18562,22 +19066,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -18591,6 +19079,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   numberOfLines={1}
@@ -18735,22 +19281,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -18764,6 +19294,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <View>
                 <Text
                   style={
@@ -23858,22 +24446,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -23887,6 +24459,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24041,22 +24671,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24070,6 +24684,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24224,22 +24896,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24253,6 +24909,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24407,22 +25121,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24436,6 +25134,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24590,22 +25346,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24619,6 +25359,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24773,22 +25571,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24802,6 +25584,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -24956,22 +25796,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -24985,6 +25809,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -25139,22 +26021,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -25168,6 +26034,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -25322,22 +26246,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -25351,6 +26259,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -25505,22 +26471,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -25534,6 +26484,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -25688,22 +26696,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -25717,6 +26709,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -25871,22 +26921,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -25900,6 +26934,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -26054,22 +27146,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -26083,6 +27159,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -26237,22 +27371,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -26266,6 +27384,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [
@@ -26420,22 +27596,6 @@ exports[`Storyshots Message list message 1`] = `
                 </View>
               </View>
             </View>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "marginLeft": 8,
-                    "width": 100,
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              diego.mello
-            </Text>
             <View
               style={
                 Array [
@@ -26449,6 +27609,64 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "300",
+                        "lineHeight": 22,
+                        "paddingLeft": 10,
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
               <Text
                 style={
                   Array [

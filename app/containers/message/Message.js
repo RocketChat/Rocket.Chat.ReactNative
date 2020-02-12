@@ -69,15 +69,8 @@ const Message = React.memo((props) => {
 				{thread}
 				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
-					<Text style={[styles.username, { color: themes[props.theme].titleText }]} numberOfLines={1}>
-						{ props.author.username }
-					</Text>
-					<View
-						style={[
-							styles.messageContent,
-							props.isHeader && styles.messageContentWithHeader
-						]}
-					>
+					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+						<User {...props} />
 						<Content {...props} />
 					</View>
 				</View>
