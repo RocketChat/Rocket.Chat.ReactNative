@@ -6,7 +6,8 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions
+	Dimensions,
+	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
@@ -87,7 +88,8 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split'
+	'split',
+	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -163,6 +165,7 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -488,6 +491,8 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
@@ -672,6 +677,11 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	onRefresh = () => {
+		const { roomsRequest } = this.props;
+		roomsRequest({ allData: true });
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
@@ -723,7 +733,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
-				avatar={item.name}
+				avatar={this.getRoomAvatar(item)}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
@@ -757,8 +767,10 @@ class RoomsListView extends React.Component {
 	}
 
 	renderScroll = () => {
-		const { loading, chats, search } = this.state;
-		const { theme } = this.props;
+		const {
+			loading, chats, search
+		} = this.state;
+		const { theme, refreshing } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -778,6 +790,13 @@ class RoomsListView extends React.Component {
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={(
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={this.onRefresh}
+						tintColor={themes[theme].auxiliaryText}
+					/>
+				)}
 				windowSize={9}
 			/>
 		);
@@ -825,6 +844,7 @@ const mapStateToProps = state => ({
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
+	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
@@ -839,7 +859,7 @@ const mapDispatchToProps = dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction()),
+	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });

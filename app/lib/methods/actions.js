@@ -133,7 +133,11 @@ export function triggerAction({
 
 			try {
 				const { type: interactionType, ...data } = await result.json();
-				return resolve(handlePayloadUserInteraction(interactionType, data));
+				handlePayloadUserInteraction(interactionType, data);
+
+				if (data.success) {
+					return resolve();
+				}
 			} catch (e) {
 				// modal.close has no body, so result.json will fail
 				// but it returns ok status
