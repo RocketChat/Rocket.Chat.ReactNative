@@ -1131,6 +1131,9 @@ const RocketChat = {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
+	getRoomAvatar(room) {
+		return room.prid ? room.fname : room.name;
+	},
 
 	findOrCreateInvite({ rid, days, maxUses }) {
 		// RC 2.4.0

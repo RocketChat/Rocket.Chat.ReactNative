@@ -491,6 +491,8 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
@@ -731,7 +733,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
-				avatar={item.name}
+				avatar={this.getRoomAvatar(item)}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
