@@ -18,7 +18,7 @@ jobs:
   android: 
     working_directory: ~/project/android
     docker:
-      -image: circleci/android:api-27-api-node8-alpha
+      - image: circleci/android:api-27-api-node8-alpha
     steps:
       - checkout:
           path: ~/project
