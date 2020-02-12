@@ -17,6 +17,7 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
+import { themes } from '../../constants/colors';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
@@ -63,14 +64,13 @@ MessageInner.displayName = 'MessageInner';
 const Message = React.memo((props) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
-		const { username } = props.author;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={[styles.flex, styles.center]}>
 					<MessageAvatar small {...props} />
-					<Text style={styles.username}>
-						{`${ username.substring(0, 11) }${ username.length > 11 ? '...' : '' }`}
+					<Text style={[styles.username, { color: themes[props.theme].titleText }]} numberOfLines={1}>
+						{ props.author.username }
 					</Text>
 					<View
 						style={[

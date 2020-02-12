@@ -164,6 +164,6 @@ export default StyleSheet.create({
 	},
 	username: {
 		marginLeft: 8,
-		color: '#333'
+		width: 100
 	}
 });
