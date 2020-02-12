@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Separator from '../../containers/Separator';
 import ListItem from '../../containers/ListItem';
+import { CustomIcon } from '../../lib/Icons';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -155,6 +158,8 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
+	videoCall = () => RocketChat.callJitsi(this.rid)
+
 	isDirect = () => this.t === 'd'
 
 	renderItem = (key, room) => {
@@ -282,14 +287,32 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<>
-				<Separator theme={theme} />
-				<ListItem
-					title={I18n.t('Send_message')}
-					onPress={this.goRoom}
-					right={this.renderDisclosure}
-					theme={theme}
-				/>
-				<Separator theme={theme} />
+				<View style={{
+					flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: 40, paddingBottom: 30, marginBottom: 20, backgroundColor: themes[theme].bannerBackground
+				}}
+				>
+					<TouchableOpacity onPress={this.goRoom}>
+						<View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+							<CustomIcon
+								name='message'
+								size={30}
+								color={themes[theme].actionTintColor}
+							/>
+							<Text style={{ color: themes[theme].actionTintColor }}>Message</Text>
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.videoCall}>
+						<View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+							<CustomIcon
+								name='video'
+								size={30}
+								color={themes[theme].actionTintColor}
+							/>
+							<Text style={{ color: themes[theme].actionTintColor }}>Video Call</Text>
+						</View>
+					</TouchableOpacity>
+				</View>
+
 			</>
 		);
 	}
@@ -329,7 +352,7 @@ class RoomInfoView extends React.Component {
 					forceInset={{ vertical: 'never' }}
 					testID='room-info-view'
 				>
-					<View style={styles.avatarContainer}>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].bannerBackground }]}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
 					</View>
