@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { CustomIcon } from '../../lib/Icons';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -29,7 +28,7 @@ const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 	? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
-			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{ `@${ username }` }</Text>}
+			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{`@${ username }`}</Text>}
 		</>
 	)
 	: (
@@ -153,15 +152,19 @@ class RoomInfoView extends React.Component {
 		const { roomUser } = this.state;
 		const { username: name } = roomUser;
 		const { navigation } = this.props;
-		const result = await RocketChat.createDirectMessage(name);
-		if (result.success) {
-			await navigation.navigate('RoomsListView');
-			const rid = result.room._id;
-			navigation.navigate('RoomView', { rid, name, t: 'd' });
+		try {
+			const result = await RocketChat.createDirectMessage(name);
+			if (result.success) {
+				await navigation.navigate('RoomsListView');
+				const rid = result.room._id;
+				navigation.navigate('RoomView', { rid, name, t: 'd' });
+			}
+		} catch (e) {
+			// do nothing
 		}
 	}
 
-	makeVideoCall = () => RocketChat.callJitsi(this.rid)
+	videoCall = () => RocketChat.callJitsi(this.rid)
 
 	isDirect = () => this.t === 'd'
 
@@ -183,7 +186,7 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		if (description) {
 			return (
-				<View style={[styles.roleBadge, { backgroundColor: themes[theme].focusedBackground }]} key={description}>
+				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={description}>
 					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
@@ -282,31 +285,27 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
-	}
-
 	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
 		return (
-			<TouchableOpacity onPress={onPress}>
-				<View style={styles.roomButton}>
-					<CustomIcon
-						name={iconName}
-						size={30}
-						color={themes[theme].actionTintColor}
-					/>
-					<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
-				</View>
-			</TouchableOpacity>
+			<BorderlessButton
+				onPress={onPress}
+				style={styles.roomButton}
+			>
+				<CustomIcon
+					name={iconName}
+					size={30}
+					color={themes[theme].actionTintColor}
+				/>
+				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			</BorderlessButton>
 		);
 	}
 
 	renderButtons = () => (
 		<View style={styles.roomButtonsContainer}>
 			{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-			{this.renderButton(this.makeVideoCall, 'video', I18n.t('Video_call'))}
+			{this.renderButton(this.videoCall, 'video', I18n.t('Video_call'))}
 		</View>
 	)
 

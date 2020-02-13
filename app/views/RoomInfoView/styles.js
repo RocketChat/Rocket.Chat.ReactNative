@@ -23,7 +23,7 @@ export default StyleSheet.create({
 		marginBottom: 20
 	},
 	avatarContainerDirectRoom: {
-		height: 340
+		height: 320
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -37,7 +37,8 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
-		fontSize: 18
+		fontSize: 18,
+		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
