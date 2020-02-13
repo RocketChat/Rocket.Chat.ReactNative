@@ -6,7 +6,8 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions
+	Dimensions,
+	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
@@ -59,6 +60,7 @@ import {
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
+import { getUserSelector } from '../../selectors/login';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -86,7 +88,8 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split'
+	'split',
+	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -148,10 +151,11 @@ class RoomsListView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		userId: PropTypes.string,
-		username: PropTypes.string,
-		token: PropTypes.string,
-		baseUrl: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
@@ -161,6 +165,7 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -486,6 +491,8 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+
 	goRoom = (item) => {
 		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
@@ -670,6 +677,11 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	onRefresh = () => {
+		const { roomsRequest } = this.props;
+		roomsRequest({ allData: true });
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
@@ -700,10 +712,12 @@ class RoomsListView extends React.Component {
 
 		const { width } = this.state;
 		const {
-			userId,
-			username,
-			token,
-			baseUrl,
+			user: {
+				id: userId,
+				username,
+				token
+			},
+			server,
 			StoreLastMessage,
 			theme,
 			split
@@ -719,7 +733,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
-				avatar={item.name}
+				avatar={this.getRoomAvatar(item)}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
@@ -730,7 +744,7 @@ class RoomsListView extends React.Component {
 				token={token}
 				rid={item.rid}
 				type={item.t}
-				baseUrl={baseUrl}
+				baseUrl={server}
 				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
@@ -753,8 +767,10 @@ class RoomsListView extends React.Component {
 	}
 
 	renderScroll = () => {
-		const { loading, chats, search } = this.state;
-		const { theme } = this.props;
+		const {
+			loading, chats, search
+		} = this.state;
+		const { theme, refreshing } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -774,6 +790,13 @@ class RoomsListView extends React.Component {
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={(
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={this.onRefresh}
+						tintColor={themes[theme].auxiliaryText}
+					/>
+				)}
 				windowSize={9}
 			/>
 		);
@@ -815,15 +838,13 @@ class RoomsListView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token,
+	user: getUserSelector(state),
 	server: state.server.server,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
+	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
@@ -838,7 +859,7 @@ const mapDispatchToProps = dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction()),
+	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });

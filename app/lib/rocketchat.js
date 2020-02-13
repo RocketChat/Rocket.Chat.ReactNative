@@ -32,6 +32,7 @@ import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
+import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
@@ -598,6 +599,9 @@ const RocketChat = {
 		}
 		return this.sdk.post('channels.join', { roomId });
 	},
+	triggerBlockAction,
+	triggerSubmitView,
+	triggerCancel,
 	sendFileMessage,
 	cancelUpload,
 	isUploadActive,
@@ -1000,10 +1004,10 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
-	runSlashCommand(command, roomId, params) {
+	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
 		return this.sdk.post('commands.run', {
-			command, roomId, params
+			command, roomId, params, triggerId, tmid
 		});
 	},
 	getCommandPreview(command, roomId, params) {
@@ -1012,10 +1016,10 @@ const RocketChat = {
 			command, roomId, params
 		});
 	},
-	executeCommandPreview(command, params, roomId, previewItem) {
+	executeCommandPreview(command, params, roomId, previewItem, triggerId, tmid) {
 		// RC 0.65.0
 		return this.sdk.post('commands.preview', {
-			command, params, roomId, previewItem
+			command, params, roomId, previewItem, triggerId, tmid
 		});
 	},
 	_setUser(ddpMessage) {
@@ -1121,6 +1125,9 @@ const RocketChat = {
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
+	getRoomAvatar(room) {
+		return room.prid ? room.fname : room.name;
 	},
 
 	findOrCreateInvite({ rid, days, maxUses }) {

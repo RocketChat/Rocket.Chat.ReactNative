@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Message list 1`] = `
+exports[`Storyshots Message list message 1`] = `
 <RCTScrollView
   style={
     Object {
@@ -19,7 +19,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -261,7 +261,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -503,7 +503,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1373,7 +1373,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1489,7 +1489,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1987,7 +1987,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2229,7 +2229,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2793,7 +2793,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3241,7 +3241,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3605,7 +3605,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4025,7 +4025,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4267,7 +4267,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4509,7 +4509,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4914,7 +4914,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -5161,7 +5161,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -5408,7 +5408,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -5782,7 +5782,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -6030,7 +6030,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -6309,7 +6309,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -6609,7 +6609,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -6851,7 +6851,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -7433,7 +7433,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -8456,7 +8456,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -9358,7 +9358,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -10506,7 +10506,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -11154,7 +11154,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -11696,7 +11696,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -12786,7 +12786,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -13624,7 +13624,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -14526,7 +14526,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -16975,7 +16975,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -17804,7 +17804,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -18574,7 +18574,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -19862,7 +19862,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -20697,7 +20697,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -21309,7 +21309,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -22003,7 +22003,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -22327,7 +22327,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -22569,7 +22569,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -23023,7 +23023,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -23271,7 +23271,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -23513,7 +23513,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -23680,7 +23680,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -23847,7 +23847,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24014,7 +24014,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24181,7 +24181,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24348,7 +24348,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24515,7 +24515,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24682,7 +24682,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -24849,7 +24849,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25016,7 +25016,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25183,7 +25183,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25350,7 +25350,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25517,7 +25517,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25684,7 +25684,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -25851,7 +25851,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -26018,7 +26018,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -26265,7 +26265,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -26814,7 +26814,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -27234,7 +27234,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -27727,7 +27727,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -27957,7 +27957,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -28304,7 +28304,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -28578,7 +28578,7 @@ exports[`Storyshots Message list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -29223,7 +29223,7 @@ exports[`Storyshots Message list 1`] = `
 </RCTScrollView>
 `;
 
-exports[`Storyshots RoomItem list 1`] = `
+exports[`Storyshots RoomItem list roomitem 1`] = `
 <RCTScrollView
   style={
     Object {
@@ -29242,7 +29242,7 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -29262,7 +29262,7 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -29283,7 +29283,7 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -29307,7 +29307,7 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -29335,7 +29335,7 @@ exports[`Storyshots RoomItem list 1`] = `
             "marginTop": 30,
           },
           Object {
-            "backgroundColor": "#efeff4",
+            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           undefined,
@@ -29352,4 +29352,482 @@ exports[`Storyshots RoomItem list 1`] = `
     View
   </View>
 </RCTScrollView>
+`;
+
+exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  style={
+    Object {
+      "backgroundColor": "#fff",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#fff",
+          "flex": 1,
+        },
+        Object {
+          "paddingHorizontal": 16,
+        },
+      ]
+    }
+  >
+    <View>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + Overflow
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + image
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + button
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + Select
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + DatePicker
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Section + Multi Select
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Image
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Context
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Action - Buttons
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Fields
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Action - Select
+      </Text>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
+
+exports[`Storyshots UiKitModal list UiKitModal 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  style={
+    Object {
+      "backgroundColor": "#fff",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#fff",
+          "flex": 1,
+        },
+        Object {
+          "paddingHorizontal": 16,
+        },
+      ]
+    }
+  >
+    <View>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Section and Selects
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Section Accessories
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Form Input
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Form TextArea
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Images
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Actions
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Contexts and Dividers
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Input with error
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - Multilne with error
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modal - DatePicker with error
+      </Text>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
 `;
