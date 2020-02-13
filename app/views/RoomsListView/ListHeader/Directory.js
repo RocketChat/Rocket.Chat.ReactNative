@@ -36,7 +36,7 @@ const Directory = React.memo(({ goDirectory, theme, searching }) => {
 });
 
 Directory.propTypes = {
-	searching: PropTypes.number,
+	searching: PropTypes.bool,
 	goDirectory: PropTypes.func,
 	theme: PropTypes.string
 };

@@ -10,7 +10,6 @@ import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
-import debounce from '../../../utils/debounce';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {

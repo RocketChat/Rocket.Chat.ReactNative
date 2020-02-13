@@ -36,7 +36,7 @@ const Sort = React.memo(({
 });
 
 Sort.propTypes = {
-	searching: PropTypes.number,
+	searching: PropTypes.bool,
 	sortBy: PropTypes.string,
 	theme: PropTypes.string,
 	toggleSort: PropTypes.func

@@ -29,12 +29,14 @@ const ListHeader = React.memo(({
 ));
 
 ListHeader.propTypes = {
-	searching: PropTypes.number,
+	searching: PropTypes.bool,
 	sortBy: PropTypes.string,
 	onChangeSearchText: PropTypes.func,
 	toggleSort: PropTypes.func,
 	goDirectory: PropTypes.func,
-	inputRef: PropTypes.func
+	inputRef: PropTypes.func,
+	onCancelSearchPress: PropTypes.func,
+	onSearchFocus: PropTypes.func
 };
 
 export default ListHeader;
