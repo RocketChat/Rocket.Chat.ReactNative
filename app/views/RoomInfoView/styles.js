@@ -16,21 +16,28 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	avatarContainer: {
-		height: 250,
+		height: 240,
 		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginBottom: 20
+	},
+	avatarContainerDirectRoom: {
+		height: 340
 	},
 	avatar: {
 		marginHorizontal: 10
 	},
 	roomTitleContainer: {
 		paddingTop: 20,
-		flexDirection: 'row'
+		alignItems: 'center'
 	},
 	roomTitle: {
-		fontSize: 18,
+		fontSize: 20,
 		...sharedStyles.textMedium
+	},
+	roomUsername: {
+		fontSize: 18
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
@@ -66,5 +73,17 @@ export default StyleSheet.create({
 	role: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	roomButtonsContainer: {
+		flexDirection: 'row',
+		paddingTop: 30
+	},
+	roomButton: {
+		alignItems: 'center',
+		paddingHorizontal: 20,
+		justifyContent: 'space-between'
+	},
+	roomButtonText: {
+		marginTop: 5
 	}
 });

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
@@ -6,8 +5,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Separator from '../../containers/Separator';
-import ListItem from '../../containers/ListItem';
 import { CustomIcon } from '../../lib/Icons';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Status from '../../containers/Status';
@@ -27,8 +24,13 @@ import { themedHeader } from '../../utils/navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name, theme) => (type === 'd'
-	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
+const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
+	? (
+		<>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
+			<Text testID='room-info-view-name' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{ username && `@${ username }` }</Text>
+		</>
+	)
 	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
@@ -158,7 +160,7 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	videoCall = () => RocketChat.callJitsi(this.rid)
+	makeVideoCall = () => RocketChat.callJitsi(this.rid)
 
 	isDirect = () => this.t === 'd'
 
@@ -283,39 +285,28 @@ class RoomInfoView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	renderMessageButton = () => {
+	renderButton = (onPressHandler, iconName, text) => {
 		const { theme } = this.props;
 		return (
-			<>
-				<View style={{
-					flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: 40, paddingBottom: 30, marginBottom: 20, backgroundColor: themes[theme].bannerBackground
-				}}
-				>
-					<TouchableOpacity onPress={this.goRoom}>
-						<View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-							<CustomIcon
-								name='message'
-								size={30}
-								color={themes[theme].actionTintColor}
-							/>
-							<Text style={{ color: themes[theme].actionTintColor }}>Message</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.videoCall}>
-						<View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-							<CustomIcon
-								name='video'
-								size={30}
-								color={themes[theme].actionTintColor}
-							/>
-							<Text style={{ color: themes[theme].actionTintColor }}>Video Call</Text>
-						</View>
-					</TouchableOpacity>
+			<TouchableOpacity onPress={onPressHandler}>
+				<View style={styles.roomButton}>
+					<CustomIcon
+						name={iconName}
+						size={30}
+						color={themes[theme].actionTintColor}
+					/>
+					<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
 				</View>
-
-			</>
+			</TouchableOpacity>
 		);
 	}
+
+	renderButtons = () => (
+		<View style={styles.roomButtonsContainer}>
+			{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+			{this.renderButton(this.makeVideoCall, 'video', I18n.t('Video_call'))}
+		</View>
+	)
 
 	renderChannel = () => {
 		const { room } = this.state;
@@ -331,7 +322,6 @@ class RoomInfoView extends React.Component {
 
 	renderDirect = () => (
 		<>
-			{this.renderMessageButton()}
 			{this.renderRoles()}
 			{this.renderTimezone()}
 			{this.renderCustomFields()}
@@ -341,6 +331,7 @@ class RoomInfoView extends React.Component {
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+		const isDirect = this.isDirect();
 		if (!room) {
 			return <View />;
 		}
@@ -352,11 +343,12 @@ class RoomInfoView extends React.Component {
 					forceInset={{ vertical: 'never' }}
 					testID='room-info-view'
 				>
-					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].bannerBackground }]}>
+					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
+						{isDirect ? this.renderButtons() : null}
 					</View>
-					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
+					{isDirect ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
 			</ScrollView>
 		);
