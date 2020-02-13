@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com</string>
+	<string>176458656030-hop4f607131isq6dujg0bevpkp8uqc5e.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>673693445664-k0mvosdjoe5dbvqce3b377ckabb5dgu8.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.176458656030-hop4f607131isq6dujg0bevpkp8uqc5e</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDL4sXxk8DeGYzacSib0GDQ3BoGACP0VDM</string>
+	<string>AIzaSyDDSQAp3Gex-kpZhk1NSf1upHOywIla1UE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>673693445664</string>
+	<string>176458656030</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>chat.rocket.reactnative</string>
+	<string>football.connected.rewards</string>
 	<key>PROJECT_ID</key>
-	<string>rocketchat-9e9be</string>
+	<string>sep-v4f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>rocketchat-9e9be.appspot.com</string>
+	<string>sep-v4f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:673693445664:ios:8be27b1f7c42a2ed</string>
+	<string>1:176458656030:ios:fa7203d2c6994f8ee4010f</string>
 	<key>DATABASE_URL</key>
-	<string>https://rocketchat-9e9be.firebaseio.com</string>
+	<string>https://sep-v4f.firebaseio.com</string>
 </dict>
 </plist>
