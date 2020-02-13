@@ -21,11 +21,19 @@ import MarkdownTableCell from './TableCell';
 
 import styles from './styles';
 
-// Support <http://link|Text>
-const formatText = text => text.replace(
-	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-	(match, url, title) => `[${ title }](${ url })`
-);
+const formatText = text => {
+
+	// Support <http://link|Text>
+	text = text.replace(
+		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+		(match, url, title) => `[${ title }](${ url })`
+	);
+
+	// Convert consecutive \n breaks to commonmark-compatible line breaks to be rendered.
+	text = text.replace(/\n(?=\n)/g, "\n&nbsp;");
+
+	return text;
+}
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
