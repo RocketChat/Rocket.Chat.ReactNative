@@ -25,7 +25,6 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication;
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
-import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -54,7 +53,6 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new RNFirebaseCrashlyticsPackage());
       packages.add(new RNFirebaseAnalyticsPackage());
       packages.add(new RNFirebasePerformancePackage());
-      packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
