@@ -1,1 +1,0 @@
-../../../QBImagePickerController/QBImagePicker/QBCheckmarkView.h
