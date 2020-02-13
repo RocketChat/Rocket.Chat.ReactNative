@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/project
     docker: 
-      - image: circleci/node:8
+      - image: circleci/node:latest
     steps:
       - checkout
       - run: yarn
@@ -18,7 +18,7 @@ jobs:
   android: 
     working_directory: ~/project/android
     docker:
-      - image: circleci/android:api-27-api-node8-alpha
+      - image: circleci/android:api-29
     steps:
       - checkout:
           path: ~/project
