@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
@@ -224,7 +225,7 @@ class ModalBlockView extends React.Component {
 		const { blocks } = view;
 
 		return (
-			<ScrollView
+			<KeyboardAwareScrollView
 				style={[
 					styles.container,
 					{ backgroundColor: themes[theme].auxiliaryBackground }
@@ -249,7 +250,7 @@ class ModalBlockView extends React.Component {
 					}
 				</View>
 				{loading ? <ActivityIndicator absolute size='large' theme={theme} /> : null}
-			</ScrollView>
+			</KeyboardAwareScrollView>
 		);
 	}
 }
