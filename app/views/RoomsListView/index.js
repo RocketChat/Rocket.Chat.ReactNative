@@ -101,23 +101,21 @@ const keyExtractor = item => item.rid;
 class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam(
-			'cancelSearchingAndroid'
-		);
+		const cancelSearch = navigation.getParam('cancelSearch', () => {});
 		const onPressItem = navigation.getParam('onPressItem', () => {});
-		const initSearchingAndroid = navigation.getParam(
-			'initSearchingAndroid',
+		const initSearching = navigation.getParam(
+			'initSearching',
 			() => {}
 		);
 
 		return {
 			...themedHeader(screenProps.theme),
-			headerLeft: searching ? (
+			headerLeft: searching && isAndroid ? (
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
 						iconName='cross'
-						onPress={cancelSearchingAndroid}
+						onPress={cancelSearch}
 					/>
 				</CustomHeaderButtons>
 			) : (
@@ -127,13 +125,13 @@ class RoomsListView extends React.Component {
 				/>
 			),
 			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching ? null : (
+			headerRight: searching && isAndroid ? null : (
 				<CustomHeaderButtons>
 					{isAndroid ? (
 						<Item
 							title='search'
 							iconName='magnifier'
-							onPress={initSearchingAndroid}
+							onPress={initSearching}
 						/>
 					) : null}
 					<Item
@@ -200,8 +198,8 @@ class RoomsListView extends React.Component {
 		const { navigation, closeServerDropdown } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
-			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			initSearching: this.initSearching,
+			cancelSearch: this.cancelSearch
 		});
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -247,7 +245,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats } = this.state;
+		const { allChats, searching } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -262,6 +260,10 @@ class RoomsListView extends React.Component {
 			this.shouldUpdate = true;
 		}
 
+		if (nextState.searching !== searching) {
+			return true;
+		}
+
 		// Abort if it's not focused
 		if (!nextProps.navigation.isFocused()) {
 			return false;
@@ -269,14 +271,10 @@ class RoomsListView extends React.Component {
 
 		const {
 			loading,
-			searching,
 			width,
 			search
 		} = this.state;
 		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.searching !== searching) {
 			return true;
 		}
 		if (nextState.width !== width) {
@@ -452,29 +450,50 @@ class RoomsListView extends React.Component {
 		});
 	}
 
-	initSearchingAndroid = () => {
+	initSearching = () => {
 		const { openSearchHeader, navigation } = this.props;
-		this.setState({ searching: true });
-		navigation.setParams({ searching: true });
-		openSearchHeader();
+		this.internalSetState({ searching: true });
+		if (isAndroid) {
+			navigation.setParams({ searching: true });
+			openSearchHeader();
+		}
 	};
 
-	cancelSearchingAndroid = () => {
+	cancelSearch = () => {
+		const { searching } = this.state;
+		const { closeSearchHeader, navigation } = this.props;
+
+		if (!searching) {
+			return;
+		}
+
+		if (isIOS && this.inputRef) {
+			this.inputRef.blur();
+			this.inputRef.clear();
+		}
 		if (isAndroid) {
-			const { closeSearchHeader, navigation } = this.props;
-			this.setState({ searching: false });
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
-			this.internalSetState({ search: [] });
 		}
 		Keyboard.dismiss();
+
+		this.setState({ searching: false, search: [] }, () => {
+			setTimeout(() => {
+				const offset = isAndroid ? 0 : SCROLL_OFFSET;
+				if (this.scroll.scrollTo) {
+					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
+				} else if (this.scroll.scrollToOffset) {
+					this.scroll.scrollToOffset({ offset });
+				}
+			}, 200);
+		});
 	};
 
 	handleBackPress = () => {
 		const { searching } = this.state;
 		const { appStart } = this.props;
 		if (searching) {
-			this.cancelSearchingAndroid();
+			this.cancelSearch();
 			return true;
 		}
 		appStart('background');
@@ -483,10 +502,19 @@ class RoomsListView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(text) => {
+		const { searching } = this.state;
 		const result = await RocketChat.search({ text });
+		// if the search was cancelled before the promise is resolved
+		if (!searching) {
+			return;
+		}
 		this.internalSetState({
-			search: result
+			search: result,
+			searching: true
 		});
+		if (this.scroll && this.scroll.scrollTo) {
+			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+		}
 	}, 300);
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
@@ -494,8 +522,8 @@ class RoomsListView extends React.Component {
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
 	goRoom = (item) => {
-		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
+		this.cancelSearch();
 		this.item = item;
 		navigation.navigate('RoomView', {
 			rid: item.rid,
@@ -678,21 +706,29 @@ class RoomsListView extends React.Component {
 	};
 
 	onRefresh = () => {
+		const { searching } = this.state;
 		const { roomsRequest } = this.props;
+		if (searching) {
+			return;
+		}
 		roomsRequest({ allData: true });
 	}
 
 	getScrollRef = ref => (this.scroll = ref);
 
+	getInputRef = ref => (this.inputRef = ref);
+
 	renderListHeader = () => {
-		const { search } = this.state;
+		const { searching } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
-				inputRef={(ref) => { this.inputRef = ref; }}
-				searchLength={search.length}
+				inputRef={this.getInputRef}
+				searching={searching}
 				sortBy={sortBy}
 				onChangeSearchText={this.search}
+				onCancelSearchPress={this.cancelSearch}
+				onSearchFocus={this.initSearching}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
 			/>
@@ -768,7 +804,7 @@ class RoomsListView extends React.Component {
 
 	renderScroll = () => {
 		const {
-			loading, chats, search
+			loading, chats, search, searching
 		} = this.state;
 		const { theme, refreshing } = this.props;
 
@@ -779,8 +815,8 @@ class RoomsListView extends React.Component {
 		return (
 			<FlatList
 				ref={this.getScrollRef}
-				data={search.length ? search : chats}
-				extraData={search.length ? search : chats}
+				data={searching ? search : chats}
+				extraData={searching ? search : chats}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
