@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
+import { getUserSelector } from '../../../selectors/login';
 
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
@@ -102,7 +103,7 @@ class RightButtonsContainer extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-	userId: state.login.user && state.login.user.id,
+	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled
 });
 

@@ -10,6 +10,7 @@ import nl from './locales/nl';
 import ptBR from './locales/pt-BR';
 import zhCN from './locales/zh-CN';
 import ptPT from './locales/pt-PT';
+import esES from './locales/es-ES';
 
 i18n.translations = {
 	en,
@@ -19,6 +20,7 @@ i18n.translations = {
 	fr,
 	de,
 	'pt-PT': ptPT,
+	'es-ES': esES,
 	nl
 };
 i18n.fallbacks = true;

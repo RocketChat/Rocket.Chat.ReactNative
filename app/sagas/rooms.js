@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
-import { roomsSuccess, roomsFailure } from '../actions/rooms';
+import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
@@ -26,15 +26,20 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	});
 };
 
-const handleRoomsRequest = function* handleRoomsRequest() {
+const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 	try {
 		const serversDB = database.servers;
-		yield RocketChat.subscribeRooms();
+		RocketChat.subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
+		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
-		const serversCollection = serversDB.collections.get('servers');
-		const serverRecord = yield serversCollection.find(server);
-		const { roomsUpdatedAt } = serverRecord;
+		if (params.allData) {
+			yield put(roomsRefresh());
+		} else {
+			const serversCollection = serversDB.collections.get('servers');
+			const serverRecord = yield serversCollection.find(server);
+			({ roomsUpdatedAt } = serverRecord);
+		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
