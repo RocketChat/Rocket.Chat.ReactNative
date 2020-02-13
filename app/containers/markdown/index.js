@@ -21,8 +21,7 @@ import MarkdownTableCell from './TableCell';
 
 import styles from './styles';
 
-const formatText = text => {
-
+const formatText = (text) => {
 	// Support <http://link|Text>
 	text = text.replace(
 		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
@@ -30,10 +29,10 @@ const formatText = text => {
 	);
 
 	// Convert consecutive \n breaks to commonmark-compatible line breaks to be rendered.
-	text = text.replace(/\n(?=\n)/g, "\n&nbsp;");
+	text = text.replace(/\n(?=\n)/g, '\n&nbsp;');
 
 	return text;
-}
+};
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
