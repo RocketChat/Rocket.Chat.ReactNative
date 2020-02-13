@@ -10,6 +10,7 @@ import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
+import debounce from '../../../utils/debounce';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -38,16 +39,17 @@ class RoomsListHeaderView extends PureComponent {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	handleCommands = ({ event }) => {
 		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
 		}
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = debounce((text) => {
 		const { setSearch } = this.props;
 		setSearch(text.trim());
-	}
+	}, 500)
 
 	onPress = () => {
 		const {
@@ -79,7 +81,7 @@ class RoomsListHeaderView extends PureComponent {
 				connecting={connecting}
 				isFetching={isFetching}
 				onPress={this.onPress}
-				onSearchChangeText={text => this.onSearchChangeText(text)}
+				onSearchChangeText={this.onSearchChangeText}
 			/>
 		);
 	}
