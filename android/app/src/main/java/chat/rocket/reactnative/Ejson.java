@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package football.connected.rewards;
 
 import android.content.SharedPreferences;
 

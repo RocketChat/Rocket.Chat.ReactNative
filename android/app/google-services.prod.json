@@ -1,225 +1,42 @@
 {
   "project_info": {
-    "project_number": "673693445664",
-    "firebase_url": "https://rocketchat-9e9be.firebaseio.com",
-    "project_id": "rocketchat-9e9be",
-    "storage_bucket": "rocketchat-9e9be.appspot.com"
+    "project_number": "176458656030",
+    "firebase_url": "https://sep-v4f.firebaseio.com",
+    "project_id": "sep-v4f",
+    "storage_bucket": "sep-v4f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:673693445664:android:6ef4638e500ec958",
+        "mobilesdk_app_id": "1:176458656030:android:297fe4a232187169e4010f",
         "android_client_info": {
-          "package_name": "RocketChat"
+          "package_name": "football.connected.rewards"
         }
       },
       "oauth_client": [
         {
-          "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
+          "client_id": "176458656030-n0v08ef5g9636slnsmn60h06lhd0slgb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDIkZj1TRz8TmhnMswDwVY5OnWuzFK3rxg"
+          "current_key": "AIzaSyDHs3qRi2eOlpyHrmwprnIkwZoX_OOPr3g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
+              "client_id": "176458656030-n0v08ef5g9636slnsmn60h06lhd0slgb.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
+              "client_id": "176458656030-hop4f607131isq6dujg0bevpkp8uqc5e.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:673693445664:android:16da2e50aff9f0c9",
-        "android_client_info": {
-          "package_name": "chat.rocket.android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "673693445664-k0mvosdjoe5dbvqce3b377ckabb5dgu8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chat.rocket.android",
-            "certificate_hash": "33fa8582794176014a59054192e261bfad0e5273"
-          }
-        },
-        {
-          "client_id": "673693445664-hrjftksij02vqtd467ln2cubvu48ft5j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chat.rocket.android",
-            "certificate_hash": "41cf750df786a6d9da712a98a629d0c8391876d6"
-          }
-        },
-        {
-          "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIkZj1TRz8TmhnMswDwVY5OnWuzFK3rxg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:673693445664:android:1551054db195f705",
-        "android_client_info": {
-          "package_name": "chat.rocket.android.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "673693445664-t5aeku0oie010npd40a0tgn27c418vk7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chat.rocket.android.dev",
-            "certificate_hash": "41cf750df786a6d9da712a98a629d0c8391876d6"
-          }
-        },
-        {
-          "client_id": "673693445664-iml14ln4vccuu7liclrpt2k671fkjs38.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chat.rocket.android.dev",
-            "certificate_hash": "33fa8582794176014a59054192e261bfad0e5273"
-          }
-        },
-        {
-          "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIkZj1TRz8TmhnMswDwVY5OnWuzFK3rxg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:673693445664:android:8be27b1f7c42a2ed",
-        "android_client_info": {
-          "package_name": "chat.rocket.reactnative"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIkZj1TRz8TmhnMswDwVY5OnWuzFK3rxg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:673693445664:android:64932c99863e2838",
-        "android_client_info": {
-          "package_name": "com.konecty.rocket.chat"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "673693445664-3ajben08beuco6eout3kpod2gbbm8fij.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.konecty.rocket.chat",
-            "certificate_hash": "cd5806ba3f0141d0f2e47acfe64a485f575108ab"
-          }
-        },
-        {
-          "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIkZj1TRz8TmhnMswDwVY5OnWuzFK3rxg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "673693445664-97s9t777ful7mn2510vuhb48958qd9tb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "673693445664-jbf9m30ta163gobjfp0v7j1v7kpo7kmv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "football.connected.rewards",
+                "app_store_id": "1497908493"
               }
             }
           ]
