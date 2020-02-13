@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
-index 800bd35..6e98112 100644
+index 800bd35..edb3030 100644
 --- a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
 +++ b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
 @@ -49,6 +49,7 @@ @interface KeyboardTrackingView : UIView
@@ -18,7 +18,52 @@ index 800bd35..6e98112 100644
          self.scrollToFocusedInput = NO;
          
          [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rctContentDidAppearNotification:) name:RCTContentDidAppearNotification object:nil];
-@@ -442,12 +444,28 @@ -(void)setAddBottomView:(BOOL)addBottomView
+@@ -170,6 +172,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+     
+     for (UIView* subview in allSubviews)
+     {
++        NSString* className = NSStringFromClass([subview class]);
+         if(_manageScrollView)
+         {
+             if(_scrollViewToManage == nil)
+@@ -195,7 +198,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+             }
+         }
+         
+-        if ([subview isKindOfClass:NSClassFromString(@"RCTTextField")])
++        if ([className isEqualToString:@"RCTTextField"])
+         {
+             UITextField *textField = nil;
+             Ivar backedTextInputIvar = class_getInstanceVariable([subview class], "_backedTextInput");
+@@ -209,15 +212,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
+             }
+             [self setupTextField:textField];
+         }
+-        else if ([subview isKindOfClass:NSClassFromString(@"RCTUITextField")] && [subview isKindOfClass:[UITextField class]])
++        else if ([className isEqualToString:@"RCTUITextField"])
+         {
+             [self setupTextField:(UITextField*)subview];
+         }
+-        else if ([subview isKindOfClass:NSClassFromString(@"RCTMultilineTextInputView")])
++        else if ([className isEqualToString:@"RCTMultilineTextInputView"])
+         {
+             [self setupTextView:[subview valueForKey:@"_backedTextInputView"]];
+         }
+-        else if ([subview isKindOfClass:NSClassFromString(@"RCTTextView")])
++        else if ([className isEqualToString:@"RCTTextView"])
+         {
+             UITextView *textView = nil;
+             Ivar backedTextInputIvar = class_getInstanceVariable([subview class], "_backedTextInput");
+@@ -231,7 +234,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+             }
+             [self setupTextView:textView];
+         }
+-        else if ([subview isKindOfClass:NSClassFromString(@"RCTUITextView")] && [subview isKindOfClass:[UITextView class]])
++        else if ([className isEqualToString:@"RCTUITextView"])
+         {
+             [self setupTextView:(UITextView*)subview];
+         }
+@@ -442,12 +445,28 @@ -(void)setAddBottomView:(BOOL)addBottomView
      [self addBottomViewIfNecessary];
  }
  
@@ -48,7 +93,7 @@ index 800bd35..6e98112 100644
          [self addSubview:_bottomView];
          [self updateBottomViewFrame];
      }
-@@ -631,6 +649,7 @@ @implementation KeyboardTrackingViewManager
+@@ -631,6 +650,7 @@ @implementation KeyboardTrackingViewManager
  RCT_REMAP_VIEW_PROPERTY(manageScrollView, manageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(requiresSameParentToManageScrollView, requiresSameParentToManageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(addBottomView, addBottomView, BOOL)
