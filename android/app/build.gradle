@@ -134,7 +134,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "nl.tue.topteam.socialfootball"
+        applicationId "football.connected.rewards"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer

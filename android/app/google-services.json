@@ -1,35 +1,43 @@
 {
   "project_info": {
-    "project_number": "115198584049",
-    "firebase_url": "https://rocketchat-reactnative-test.firebaseio.com",
-    "project_id": "rocketchat-reactnative-test",
-    "storage_bucket": "rocketchat-reactnative-test.appspot.com"
+    "project_number": "176458656030",
+    "firebase_url": "https://sep-v4f.firebaseio.com",
+    "project_id": "sep-v4f",
+    "storage_bucket": "sep-v4f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115198584049:android:8be27b1f7c42a2ed",
+        "mobilesdk_app_id": "1:176458656030:android:297fe4a232187169e4010f",
         "android_client_info": {
-          "package_name": "chat.rocket.reactnative"
+          "package_name": "football.connected.rewards"
         }
       },
       "oauth_client": [
         {
-          "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+          "client_id": "176458656030-n0v08ef5g9636slnsmn60h06lhd0slgb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWwowhAfACHBw3YxmDOXY3QyakgjhJLqc"
+          "current_key": "AIzaSyDHs3qRi2eOlpyHrmwprnIkwZoX_OOPr3g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+              "client_id": "176458656030-n0v08ef5g9636slnsmn60h06lhd0slgb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "176458656030-hop4f607131isq6dujg0bevpkp8uqc5e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "football.connected.rewards",
+                "app_store_id": "1497908493"
+              }
             }
           ]
         }

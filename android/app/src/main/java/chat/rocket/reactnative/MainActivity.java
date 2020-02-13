@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package football.connected.rewards;
 
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;

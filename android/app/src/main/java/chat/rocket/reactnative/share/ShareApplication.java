@@ -1,6 +1,6 @@
-package chat.rocket.reactnative.share;
+package football.connected.rewards.share;
 
-import chat.rocket.reactnative.BuildConfig;
+import football.connected.rewards.BuildConfig;
 
 import chat.rocket.SharePackage;
 

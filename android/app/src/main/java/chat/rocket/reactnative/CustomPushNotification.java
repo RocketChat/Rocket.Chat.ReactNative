@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package football.connected.rewards;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
