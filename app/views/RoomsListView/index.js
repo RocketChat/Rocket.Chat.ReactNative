@@ -467,7 +467,7 @@ class RoomsListView extends React.Component {
 			return;
 		}
 
-		if (isIOS) {
+		if (isIOS && this.inputRef) {
 			this.inputRef.blur();
 			this.inputRef.clear();
 		}
@@ -500,27 +500,21 @@ class RoomsListView extends React.Component {
 		return false;
 	};
 
-	search = async(text) => {
+	// eslint-disable-next-line react/sort-comp
+	search = debounce(async(text) => {
 		const { searching } = this.state;
-		if (text) {
-			const result = await RocketChat.search({ text });
-			// if the search was cancelled before the promise is resolved
-			if (!searching) {
-				return;
-			}
-			this.internalSetState({
-				search: result,
-				searching: true
-			});
+		const result = await RocketChat.search({ text });
+		// if the search was cancelled before the promise is resolved
+		if (!searching) {
+			return;
 		}
+		this.internalSetState({
+			search: result,
+			searching: true
+		});
 		if (this.scroll && this.scroll.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
 		}
-	};
-
-	// eslint-disable-next-line react/sort-comp
-	debouncedSearch = debounce((text) => {
-		this.search(text);
 	}, 300);
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
@@ -732,7 +726,7 @@ class RoomsListView extends React.Component {
 				inputRef={this.getInputRef}
 				searching={searching}
 				sortBy={sortBy}
-				onChangeSearchText={this.debouncedSearch}
+				onChangeSearchText={this.search}
 				onCancelSearchPress={this.cancelSearch}
 				onSearchFocus={this.initSearching}
 				toggleSort={this.toggleSort}

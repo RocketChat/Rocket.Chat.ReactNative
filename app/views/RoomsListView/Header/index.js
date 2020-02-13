@@ -46,10 +46,10 @@ class RoomsListHeaderView extends PureComponent {
 		}
 	}
 
-	onSearchChangeText = debounce((text) => {
+	onSearchChangeText = (text) => {
 		const { setSearch } = this.props;
 		setSearch(text.trim());
-	}, 500)
+	}
 
 	onPress = () => {
 		const {
