@@ -24,7 +24,7 @@ const Hashtag = React.memo(({
 				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : styles.mention, ...style]}
 				onPress={preview ? undefined : handlePress}
 			>
-				{`${ hashtag }`}
+				{hashtag}
 			</Text>
 		);
 	}

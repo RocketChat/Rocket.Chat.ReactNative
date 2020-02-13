@@ -42,16 +42,13 @@ const AtMention = React.memo(({
 				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
 				onPress={preview ? undefined : handlePress}
 			>
-				{`${ mention }`}
+				{mention}
 			</Text>
 		);
 	}
 
 	return (
-		<Text
-			style={[styles.text, { color: themes[theme].bodyText }, ...style]}
-			onPress={preview ? undefined : handlePress}
-		>
+		<Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>
 			{`@${ mention }`}
 		</Text>
 	);
