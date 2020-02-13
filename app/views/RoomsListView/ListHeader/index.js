@@ -6,10 +6,23 @@ import Directory from './Directory';
 import Sort from './Sort';
 
 const ListHeader = React.memo(({
-	searching, sortBy, onChangeSearchText, toggleSort, goDirectory, inputRef
+	searching,
+	sortBy,
+	onChangeSearchText,
+	toggleSort,
+	goDirectory,
+	inputRef,
+	onCancelSearchPress,
+	onSearchFocus
 }) => (
 	<>
-		<SearchBar onChangeSearchText={onChangeSearchText} inputRef={inputRef} />
+		<SearchBar
+			inputRef={inputRef}
+			searching={searching}
+			onChangeSearchText={onChangeSearchText}
+			onCancelSearchPress={onCancelSearchPress}
+			onSearchFocus={onSearchFocus}
+		/>
 		<Directory searching={searching} goDirectory={goDirectory} />
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
 	</>

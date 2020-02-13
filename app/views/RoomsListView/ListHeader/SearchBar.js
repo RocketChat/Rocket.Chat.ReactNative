@@ -5,7 +5,9 @@ import SearchBox from '../../../containers/SearchBox';
 import { isIOS } from '../../../utils/deviceInfo';
 import { withTheme } from '../../../theme';
 
-const SearchBar = React.memo(({ theme, onChangeSearchText, inputRef }) => {
+const SearchBar = React.memo(({
+	theme, onChangeSearchText, inputRef, searching, onCancelSearchPress, onSearchFocus
+}) => {
 	if (isIOS) {
 		return (
 			<SearchBox
@@ -13,6 +15,9 @@ const SearchBar = React.memo(({ theme, onChangeSearchText, inputRef }) => {
 				testID='rooms-list-view-search'
 				inputRef={inputRef}
 				theme={theme}
+				hasCancel={searching}
+				onCancelPress={onCancelSearchPress}
+				onFocus={onSearchFocus}
 			/>
 		);
 	}
