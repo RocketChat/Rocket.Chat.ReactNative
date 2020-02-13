@@ -9396,18 +9396,10 @@ react-native-keyboard-aware-scroll-view@0.9.1:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-keyboard-input@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-input/-/react-native-keyboard-input-5.3.1.tgz#e90f43e17c070535cb54cc0be66a247f177474fc"
-  integrity sha512-NdKgueDFetyh77CC8veXE9jgISxatKbWkOpe3wfyPjw9O0J/c7EI5CEjSp5/ICufkvY6oLVDsZrP6TngTxTrXw==
-  dependencies:
-    lodash "^4.17.4"
-    react-native-keyboard-tracking-view "^5.5.0"
-
-react-native-keyboard-tracking-view@^5.5.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.5.0.tgz#87d28639f30e5b511de510e4063e476f23d6e4f2"
-  integrity sha512-e/tYhvccmLOSV+6qpU5Hlpn/U2gVu5K5F555oCUBBF229vv/V/fGoq2QyBnBEKmF9IKzBEOpzxBavUR3IfaKXw==
+react-native-keyboard-tracking-view@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.6.1.tgz#287186f6ae6335baf83ad106c7779f68d1cc48c2"
+  integrity sha512-uud94SDB2ffGWQHb2ehCIxNi1lmSOQneZ/ro3Zb6Nu6yEh4ljqr1fbRco+pU1RWzaM73uS32A3vPu3NuXjPceA==
 
 react-native-keycommands@2.0.3:
   version "2.0.3"
