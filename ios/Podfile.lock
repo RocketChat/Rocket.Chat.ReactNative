@@ -510,10 +510,11 @@ SPEC REPOS:
     - GoogleUtilities
     - libwebp
     - nanopb
-    - QBImagePickerController
     - RSKImageCropper
     - SDWebImage
     - SDWebImageWebPCoder
+  trunk:
+    - QBImagePickerController
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
