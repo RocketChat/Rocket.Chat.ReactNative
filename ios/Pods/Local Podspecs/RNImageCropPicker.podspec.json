@@ -1,6 +1,6 @@
 {
   "name": "RNImageCropPicker",
-  "version": "0.26.1",
+  "version": "0.28.0",
   "summary": "Select single or multiple images, with cropping option",
   "requires_arc": true,
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/ivpusic/react-native-image-crop-picker",
-    "tag": "v#{version}"
+    "tag": "v0.28.0"
   },
   "source_files": "ios/src/*.{h,m}",
   "platforms": {
@@ -20,14 +20,23 @@
     "RSKImageCropper": [
 
     ],
-    "QBImagePickerController": [
-
-    ],
     "React-Core": [
 
     ],
     "React-RCTImage": [
 
     ]
-  }
+  },
+  "subspecs": [
+    {
+      "name": "QBImagePickerController",
+      "source_files": "ios/QBImagePicker/QBImagePicker/*.{h,m}",
+      "exclude_files": "ios/QBImagePicker/QBImagePicker/QBImagePicker.h",
+      "resource_bundles": {
+        "QBImagePicker": "ios/QBImagePicker/QBImagePicker/*.{lproj,storyboard}"
+      },
+      "requires_arc": true,
+      "frameworks": "Photos"
+    }
+  ]
 }
