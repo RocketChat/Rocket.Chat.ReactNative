@@ -818,7 +818,7 @@ class MessageBox extends Component {
 				<KeyboardTrackingView
 					addBottomView
 					manageScrollView
-					scrollBehavior={2}
+					scrollBehavior={2} // KeyboardTrackingScrollBehaviorFixedOffset
 					style={styles.trackingView}
 					requiresSameParentToManageScrollView
 					bottomViewColor={themes[theme].messageboxBackground}
