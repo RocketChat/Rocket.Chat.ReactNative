@@ -1,6 +1,6 @@
 {
   "name": "react-native-keyboard-tracking-view",
-  "version": "5.5.0",
+  "version": "5.6.1",
   "summary": "React Native UI component which tracks the keyboard",
   "license": "MIT",
   "authors": "Artal Druk <artald@wix.com>",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/wix/react-native-keyboard-tracking-view.git",
-    "tag": "v5.5.0"
+    "tag": "v5.6.1"
   },
   "source_files": "lib/**/*.{h,m}",
   "dependencies": {
