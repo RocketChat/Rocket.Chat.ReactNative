@@ -28,7 +28,7 @@ const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 	? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
-			<Text testID='room-info-view-name' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{ username && `@${ username }` }</Text>
+			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{ `@${ username }` }</Text>}
 		</>
 	)
 	: (
@@ -192,10 +192,11 @@ class RoomInfoView extends React.Component {
 
 	renderRoles = () => {
 		const { parsedRoles } = this.state;
+		const { theme } = this.props;
 		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
 						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
@@ -285,10 +286,10 @@ class RoomInfoView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	renderButton = (onPressHandler, iconName, text) => {
+	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
 		return (
-			<TouchableOpacity onPress={onPressHandler}>
+			<TouchableOpacity onPress={onPress}>
 				<View style={styles.roomButton}>
 					<CustomIcon
 						name={iconName}
@@ -320,13 +321,16 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderDirect = () => (
-		<>
-			{this.renderRoles()}
-			{this.renderTimezone()}
-			{this.renderCustomFields()}
-		</>
-	)
+	renderDirect = () => {
+		const { roomUser } = this.state;
+		return (
+			<>
+				{this.renderRoles()}
+				{this.renderTimezone()}
+				{this.renderCustomFields(roomUser._id)}
+			</>
+		);
+	}
 
 	render() {
 		const { room, roomUser } = this.state;
