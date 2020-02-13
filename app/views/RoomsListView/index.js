@@ -463,6 +463,10 @@ class RoomsListView extends React.Component {
 		const { searching } = this.state;
 		const { closeSearchHeader, navigation } = this.props;
 
+		if (!searching) {
+			return;
+		}
+
 		if (isIOS) {
 			this.inputRef.blur();
 			this.inputRef.clear();
@@ -708,7 +712,11 @@ class RoomsListView extends React.Component {
 	};
 
 	onRefresh = () => {
+		const { searching } = this.state;
 		const { roomsRequest } = this.props;
+		if (searching) {
+			return;
+		}
 		roomsRequest({ allData: true });
 	}
 
