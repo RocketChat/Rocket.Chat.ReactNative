@@ -565,18 +565,28 @@ const RocketChat = {
 					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
-
-				data = data.concat(users.map(user => ({
-					...user,
-					rid: user.username,
-					name: user.username,
-					t: 'd',
-					search: true
-				})), rooms.map(room => ({
-					rid: room._id,
-					...room,
-					search: true
-				})));
+				if (filterUsers) {
+					data = data.concat(users.map(user => ({
+						...user,
+						rid: user.username,
+						name: user.username,
+						t: 'd',
+						search: true
+					})));
+				}
+				if (filterRooms) {
+					rooms.forEach((room) => {
+						// Check if it exists on local database
+						const index = data.findIndex(item => item.rid === room._id);
+						if (index === -1) {
+							data.push({
+								rid: room._id,
+								...room,
+								search: true
+							});
+						}
+					});
+				}
 			}
 			delete this.oldPromise;
 			return data;

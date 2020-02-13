@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	cancel: {
-		marginRight: 10
+		marginRight: 15
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
