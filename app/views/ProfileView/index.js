@@ -56,6 +56,7 @@ class ProfileView extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		Accounts_CustomFields: PropTypes.string,
+		UTF8_Names_Validation: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
 	}
@@ -176,7 +177,7 @@ class ProfileView extends React.Component {
 		const {
 			name, username, email, newPassword, currentPassword, avatar, customFields
 		} = this.state;
-		const { user, setUser } = this.props;
+		const { user, setUser, UTF8_Names_Validation } = this.props;
 		const params = {};
 
 		// Name
@@ -186,7 +187,8 @@ class ProfileView extends React.Component {
 
 		// Username
 		if (user.username !== username) {
-			if (!username.match(/[$&+,:;=?@#|'.<>^* ()%!]/g)) {
+			const regEx = new RegExp(`^${ UTF8_Names_Validation }$`);
+			if (regEx.test(username)) {
 				params.username = username;
 			} else {
 				this.setState({
@@ -524,6 +526,7 @@ class ProfileView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	UTF8_Names_Validation: state.settings.UTF8_Names_Validation,
 	baseUrl: state.server.server
 });
 

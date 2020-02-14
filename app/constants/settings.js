@@ -106,5 +106,8 @@ export default {
 	},
 	CAS_login_url: {
 		type: 'valueAsString'
+	},
+	UTF8_Names_Validation: {
+		type: 'valueAsString'
 	}
 };
