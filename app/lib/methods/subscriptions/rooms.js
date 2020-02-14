@@ -11,6 +11,7 @@ import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
+import RocketChat from '../../rocketchat';
 
 const removeListener = listener => listener.stop();
 
@@ -275,6 +276,15 @@ export default function subscribeRooms() {
 		}
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
+			try {
+				const { payload: { rid } } = notification;
+				const subCollection = db.collections.get('subscriptions');
+				const sub = await subCollection.find(rid);
+				notification.title = RocketChat.getRoomTitle(sub);
+				notification.avatar = RocketChat.getRoomAvatar(sub);
+			} catch (e) {
+				// do nothing
+			}
 			store.dispatch(notificationReceived(notification));
 		}
 		if (/uiInteraction/.test(ev)) {

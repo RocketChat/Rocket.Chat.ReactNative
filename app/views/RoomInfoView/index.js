@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SafeAreaView } from 'react-navigation';
-
+import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -22,10 +23,14 @@ import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name, theme) => (type === 'd'
-	? <Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{name}</Text>
+const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
+	? (
+		<>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
+			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{`@${ username }`}</Text>}
+		</>
+	)
 	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
@@ -143,6 +148,24 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
+	goRoom = async() => {
+		const { roomUser } = this.state;
+		const { username: name } = roomUser;
+		const { navigation } = this.props;
+		try {
+			const result = await RocketChat.createDirectMessage(name);
+			if (result.success) {
+				await navigation.navigate('RoomsListView');
+				const rid = result.room._id;
+				navigation.navigate('RoomView', { rid, name, t: 'd' });
+			}
+		} catch (e) {
+			// do nothing
+		}
+	}
+
+	videoCall = () => RocketChat.callJitsi(this.rid)
+
 	isDirect = () => this.t === 'd'
 
 	renderItem = (key, room) => {
@@ -163,7 +186,7 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		if (description) {
 			return (
-				<View style={[styles.roleBadge, { backgroundColor: themes[theme].focusedBackground }]} key={description}>
+				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={description}>
 					<Text style={styles.role}>{ description }</Text>
 				</View>
 			);
@@ -173,10 +196,11 @@ class RoomInfoView extends React.Component {
 
 	renderRoles = () => {
 		const { parsedRoles } = this.state;
+		const { theme } = this.props;
 		if (parsedRoles && parsedRoles.length) {
 			return (
 				<View style={styles.item}>
-					<Text style={styles.itemLabel}>{I18n.t('Roles')}</Text>
+					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 					<View style={styles.rolesContainer}>
 						{parsedRoles.map(role => this.renderRole(role))}
 					</View>
@@ -261,6 +285,30 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
+	renderButton = (onPress, iconName, text) => {
+		const { theme } = this.props;
+		return (
+			<BorderlessButton
+				onPress={onPress}
+				style={styles.roomButton}
+			>
+				<CustomIcon
+					name={iconName}
+					size={30}
+					color={themes[theme].actionTintColor}
+				/>
+				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			</BorderlessButton>
+		);
+	}
+
+	renderButtons = () => (
+		<View style={styles.roomButtonsContainer}>
+			{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+			{this.renderButton(this.videoCall, 'video', I18n.t('Video_call'))}
+		</View>
+	)
+
 	renderChannel = () => {
 		const { room } = this.state;
 		return (
@@ -287,6 +335,7 @@ class RoomInfoView extends React.Component {
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+		const isDirect = this.isDirect();
 		if (!room) {
 			return <View />;
 		}
@@ -298,11 +347,12 @@ class RoomInfoView extends React.Component {
 					forceInset={{ vertical: 'never' }}
 					testID='room-info-view'
 				>
-					<View style={styles.avatarContainer}>
+					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
+						{isDirect ? this.renderButtons() : null}
 					</View>
-					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
+					{isDirect ? this.renderDirect() : this.renderChannel()}
 				</SafeAreaView>
 			</ScrollView>
 		);

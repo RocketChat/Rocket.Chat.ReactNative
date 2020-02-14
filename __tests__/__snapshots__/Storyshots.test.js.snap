@@ -4723,7 +4723,7 @@ exports[`Storyshots Message list message 1`] = `
                       ]
                     }
                   >
-                    @rocket.cat
+                    rocket.cat
                   </Text>
                   <Text
                     numberOfLines={0}
@@ -4766,7 +4766,7 @@ exports[`Storyshots Message list message 1`] = `
                       ]
                     }
                   >
-                    @diego.mello
+                    diego.mello
                   </Text>
                   <Text
                     numberOfLines={0}
@@ -4809,7 +4809,7 @@ exports[`Storyshots Message list message 1`] = `
                       ]
                     }
                   >
-                    @all
+                    all
                   </Text>
                   <Text
                     numberOfLines={0}
@@ -4852,7 +4852,7 @@ exports[`Storyshots Message list message 1`] = `
                       ]
                     }
                   >
-                    @here
+                    here
                   </Text>
                   <Text
                     numberOfLines={0}
@@ -4895,7 +4895,7 @@ exports[`Storyshots Message list message 1`] = `
                       ]
                     }
                   >
-                    #general
+                    general
                   </Text>
                 </Text>
               </View>
