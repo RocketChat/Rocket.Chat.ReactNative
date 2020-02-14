@@ -496,5 +496,8 @@ export default {
 	New_line: 'New line',
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
-	This_will_clear_all_your_offline_data: 'This will clear all your offline data.'
+	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
+	Incorrect_username: 'Incorrect Username',
+	Username_can_only_have_letters_numbers_dots_hyphens_and_underscores: 'Username can only have letters, numbers, dots, hyphens and underscores',
+	Okay: 'Okay'
 };

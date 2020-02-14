@@ -196,11 +196,11 @@ class ProfileView extends React.Component {
 					currentPassword: null
 				});
 				Alert.alert(
-					'Incorrect Username',
-					'Username can only have letters, numbers, dots, hyphens and underscores.',
+					I18n.t('Incorrect_username'),
+					I18n.t('Username_can_only_have_letters_numbers_dots_hyphens_and_underscores'),
 					[
 						{
-							text: 'OK',
+							text: I18n.t('Okay'),
 							onPress: () => this.setState({ showPasswordAlert: false })
 						}
 					],
