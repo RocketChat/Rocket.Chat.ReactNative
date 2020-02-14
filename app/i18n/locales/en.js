@@ -245,6 +245,7 @@ export default {
 	Message_removed: 'Message removed',
 	message: 'message',
 	messages: 'messages',
+	Message: 'Message',
 	Messages: 'Messages',
 	Message_Reported: 'Message reported',
 	Microphone_Permission_Message: 'Rocket Chat needs access to your microphone so you can send audio message.',
