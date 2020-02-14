@@ -14,6 +14,9 @@ export default {
 	Accounts_PasswordReset: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_ShowFormLogin: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},

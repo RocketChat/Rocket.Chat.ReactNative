@@ -108,14 +108,13 @@ class LoginSignupView extends React.Component {
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
 		CAS_login_url: PropTypes.string,
+		Accounts_ShowFormLogin: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		const showFormLogin = props.navigation.getParam('showFormLogin', true);
 		this.state = {
-			showFormLogin,
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
 		};
@@ -334,11 +333,11 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderServicesSeparator = () => {
-		const { collapsed, showFormLogin } = this.state;
-		const { services, theme } = this.props;
+		const { collapsed } = this.state;
+		const { services, theme, Accounts_ShowFormLogin } = this.props;
 		const { length } = Object.values(services);
 
-		if (length > 3 && showFormLogin) {
+		if (length > 3 && Accounts_ShowFormLogin) {
 			return (
 				<View style={styles.servicesTogglerContainer}>
 					<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
@@ -410,8 +409,8 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderServices = () => {
-		const { servicesHeight, showFormLogin } = this.state;
-		const { services } = this.props;
+		const { servicesHeight } = this.state;
+		const { services, Accounts_ShowFormLogin } = this.props;
 		const { length } = Object.values(services);
 		const style = {
 			overflow: 'hidden',
@@ -419,7 +418,7 @@ class LoginSignupView extends React.Component {
 		};
 
 
-		if (length > 3 && showFormLogin) {
+		if (length > 3 && Accounts_ShowFormLogin) {
 			return (
 				<Animated.View style={style}>
 					{Object.values(services).map(service => this.renderItem(service))}
@@ -434,9 +433,8 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderDefaultService = () => {
-		const { showFormLogin } = this.state;
-		const { theme } = this.props;
-		if (!showFormLogin) {
+		const { Accounts_ShowFormLogin, theme } = this.props;
+		if (!Accounts_ShowFormLogin) {
 			return null;
 		}
 		return (
@@ -493,6 +491,7 @@ const mapStateToProps = state => ({
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
+	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
 	services: state.login.services
 });
 

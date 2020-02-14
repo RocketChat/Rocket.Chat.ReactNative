@@ -52,6 +52,28 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	});
 };
 
+export function getSetting({ server, setting }) {
+	return new Promise(async(resolve, reject) => {
+		try {
+			const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":["${ setting }"]}}`).then(response => response.json());
+
+			if (result.success && result.settings.length) {
+				const parsedSettings = result.settings.reduce((ret, item) => {
+					const { _id, value } = item;
+					ret[_id] = value;
+					return ret;
+				}, {});
+
+				return resolve(parsedSettings[setting]);
+			}
+		} catch (e) {
+			log(e);
+		}
+
+		return reject();
+	});
+}
+
 export async function setSettings() {
 	const db = database.active;
 	const settingsCollection = db.collections.get('settings');
