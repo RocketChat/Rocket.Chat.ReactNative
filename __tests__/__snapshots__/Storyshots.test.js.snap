@@ -27460,6 +27460,7 @@ exports[`Storyshots Message list message 1`] = `
                     Support 
                   </Text>
                   <Text
+                    onLongPress={[Function]}
                     onPress={[Function]}
                     style={
                       Object {
@@ -27531,6 +27532,7 @@ exports[`Storyshots Message list message 1`] = `
                      
                   </Text>
                   <Text
+                    onLongPress={[Function]}
                     onPress={[Function]}
                     style={
                       Object {
@@ -27666,6 +27668,7 @@ exports[`Storyshots Message list message 1`] = `
                      
                   </Text>
                   <Text
+                    onLongPress={[Function]}
                     onPress={[Function]}
                     style={
                       Object {
