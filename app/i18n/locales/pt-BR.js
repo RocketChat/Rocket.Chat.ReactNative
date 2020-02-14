@@ -346,6 +346,7 @@ export default {
 	Settings_succesfully_changed: 'Configurações salvas com sucesso!',
 	Share: 'Compartilhar',
 	Share_Link: 'Share Link',
+	Show_more: 'Mostrar mais..',
 	Sign_in_your_server: 'Entrar no seu servidor',
 	Sign_Up: 'Registrar',
 	Some_field_is_invalid_or_empty: 'Algum campo está inválido ou vazio',
@@ -440,5 +441,8 @@ export default {
 	Server_selection: 'Seleção de servidor',
 	Server_selection_numbers: 'Selecionar servidor 1...9',
 	Add_server: 'Adicionar servidor',
-	New_line: 'Nova linha'
+	New_line: 'Nova linha',
+	You_will_be_logged_out_of_this_application: 'Você sairá deste aplicativo.',
+	Clear: 'Limpar',
+	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.'
 };

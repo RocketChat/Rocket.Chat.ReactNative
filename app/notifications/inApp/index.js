@@ -16,6 +16,7 @@ import { removeNotification as removeNotificationAction } from '../../actions/no
 import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { withTheme } from '../../theme';
+import { getUserSelector } from '../../selectors/login';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -72,8 +73,7 @@ class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
-		token: PropTypes.string,
-		userId: PropTypes.string,
+		user: PropTypes.object,
 		notification: PropTypes.object,
 		window: PropTypes.object,
 		removeNotification: PropTypes.func,
@@ -158,26 +158,31 @@ class NotificationBadge extends React.Component {
 	}
 
 	goToRoom = async() => {
-		const { notification: { payload }, navigation, baseUrl } = this.props;
+		const { notification, navigation, baseUrl } = this.props;
+		const { payload } = notification;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
 		}
 		const name = type === 'd' ? payload.sender.username : payload.name;
+		// if sub is not on local database, title will be null, so we use payload from notification
+		const { title = name } = notification;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name, t: type, prid, baseUrl
+			rid, name: title, t: type, prid, baseUrl
 		});
 		this.hide();
 	}
 
 	render() {
 		const {
-			baseUrl, token, userId, notification, window, theme
+			baseUrl, user: { id: userId, token }, notification, window, theme
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
 		const name = type === 'd' ? payload.sender.username : payload.name;
+		// if sub is not on local database, title and avatar will be null, so we use payload from notification
+		const { title = name, avatar = name } = notification;
 
 		let top = 0;
 		if (isIOS) {
@@ -211,9 +216,9 @@ class NotificationBadge extends React.Component {
 					background={Touchable.SelectableBackgroundBorderless()}
 				>
 					<>
-						<Avatar text={name} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 						<View style={styles.inner}>
-							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
+							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>
 						</View>
 					</>
@@ -227,9 +232,8 @@ class NotificationBadge extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userId: state.login.user && state.login.user.id,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	token: state.login.user && state.login.user.token,
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	notification: state.notification
 });
 

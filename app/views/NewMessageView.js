@@ -23,6 +23,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -227,11 +228,8 @@ class NewMessageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	baseUrl: state.server.server,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(NewMessageView));

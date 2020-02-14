@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
+import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
 
+import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -43,6 +44,7 @@ import {
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -96,7 +98,6 @@ class MessageBox extends Component {
 		super(props);
 		this.state = {
 			mentions: [],
-			showEmojiKeyboard: false,
 			showSend: false,
 			recording: false,
 			trackingType: '',
@@ -104,7 +105,8 @@ class MessageBox extends Component {
 				isVisible: false
 			},
 			commandPreview: [],
-			showCommandPreview: false
+			showCommandPreview: false,
+			command: {}
 		};
 		this.text = '';
 		this.focused = false;
@@ -167,10 +169,6 @@ class MessageBox extends Component {
 			this.setShowSend(true);
 		}
 
-		if (isAndroid) {
-			require('./EmojiKeyboard');
-		}
-
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -195,7 +193,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+			showSend, recording, mentions, file, commandPreview
 		} = this.state;
 
 		const {
@@ -214,9 +212,6 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
 		if (nextState.showSend !== showSend) {
@@ -280,7 +275,7 @@ class MessageBox extends Component {
 			try {
 				const command = await commandsCollection.find(name);
 				if (command.providesPreview) {
-					return this.setCommandPreview(name, params);
+					return this.setCommandPreview(command, name, params);
 				}
 			} catch (e) {
 				console.log('Slash command not found');
@@ -312,10 +307,6 @@ class MessageBox extends Component {
 		}
 	}, 100)
 
-	onKeyboardResigned = () => {
-		this.closeEmoji();
-	}
-
 	onPressMention = (item) => {
 		if (!this.component) {
 			return;
@@ -339,37 +330,25 @@ class MessageBox extends Component {
 	}
 
 	onPressCommandPreview = (item) => {
-		const { rid } = this.props;
+		const { command } = this.state;
+		const {
+			rid, tmid, message: { id: messageTmid }, replyCancel
+		} = this.props;
 		const { text } = this;
-		const command = text.substr(0, text.indexOf(' ')).slice(1);
+		const name = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.setState({ commandPreview: [], showCommandPreview: false });
+		this.setState({ commandPreview: [], showCommandPreview: false, command: {} });
 		this.stopTrackingMention();
 		this.clearInput();
 		this.handleTyping(false);
 		try {
-			RocketChat.executeCommandPreview(command, params, rid, item);
+			const { appId } = command;
+			const triggerId = generateTriggerId(appId);
+			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			replyCancel();
 		} catch (e) {
 			log(e);
 		}
-	}
-
-	onEmojiSelected = (keyboardId, params) => {
-		const { text } = this;
-		const { emoji } = params;
-		let newText = '';
-
-		// if messagebox has an active cursor
-		if (this.component && this.component._lastNativeSelection) {
-			const { start, end } = this.component._lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
-		}
-		this.setInput(newText);
-		this.setShowSend(true);
 	}
 
 	getPermalink = async(message) => {
@@ -452,13 +431,13 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command, params) => {
+	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
 		try	{
-			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
-			this.setState({ commandPreview: preview.items, showCommandPreview: true });
+			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
+			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
 		} catch (e) {
-			this.setState({ commandPreview: [], showCommandPreview: true });
+			this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 			log(e);
 		}
 	}
@@ -494,7 +473,7 @@ class MessageBox extends Component {
 
 	sendMediaMessage = async(file) => {
 		const {
-			rid, tmid, baseUrl: server, user
+			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
@@ -506,7 +485,8 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+			replyCancel();
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
 			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
@@ -605,12 +585,6 @@ class MessageBox extends Component {
 		this.clearInput();
 	}
 
-	openEmoji = async() => {
-		await this.setState({
-			showEmojiKeyboard: true
-		});
-	}
-
 	recordAudioMessage = async() => {
 		const recording = await Recording.permission();
 		this.setState({ recording });
@@ -635,19 +609,14 @@ class MessageBox extends Component {
 		}
 	}
 
-	closeEmoji = () => {
-		this.setState({ showEmojiKeyboard: false });
-	}
-
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId
+			onSubmit, rid: roomId, tmid
 		} = this.props;
 		const message = this.text;
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();
-		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
 		if (message.trim() === '') {
@@ -655,7 +624,7 @@ class MessageBox extends Component {
 		}
 
 		const {
-			editing, replying
+			editing, replying, message: { id: messageTmid }, replyCancel
 		} = this.props;
 
 		// Slash command
@@ -669,7 +638,10 @@ class MessageBox extends Component {
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
+					const [{ appId }] = slashCommand;
+					const triggerId = generateTriggerId(appId);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					replyCancel();
 				} catch (e) {
 					log(e);
 				}
@@ -686,7 +658,7 @@ class MessageBox extends Component {
 		// Reply
 		} else if (replying) {
 			const {
-				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+				message: replyingMessage, threadsEnabled, replyWithMention
 			} = this.props;
 
 			// Thread
@@ -728,10 +700,7 @@ class MessageBox extends Component {
 	}
 
 	identifyMentionKeyword = (keyword, type) => {
-		this.setState({
-			showEmojiKeyboard: false,
-			trackingType: type
-		});
+		this.setState({ trackingType: type });
 		this.updateMentions(keyword, type);
 	}
 
@@ -765,7 +734,7 @@ class MessageBox extends Component {
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme
@@ -802,12 +771,9 @@ class MessageBox extends Component {
 					>
 						<LeftButtons
 							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
 							showFileActions={this.showFileActions}
 							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
 						/>
 						<TextInput
 							ref={component => this.component = component}
@@ -829,7 +795,6 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
-							showFileActions={this.showFileActions}
 						/>
 					</View>
 				</View>
@@ -839,7 +804,7 @@ class MessageBox extends Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { showEmojiKeyboard, file } = this.state;
+		const { file } = this.state;
 		const { user, baseUrl, theme } = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -850,18 +815,16 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				<KeyboardAccessoryView
-					renderContent={this.renderContent}
-					kbInputRef={this.component}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
-					trackInteractive
-					// revealKeyboardInteractive
-					requiresSameParentToManageScrollView
+				<KeyboardTrackingView
 					addBottomView
+					manageScrollView
+					scrollBehavior={2} // KeyboardTrackingScrollBehaviorFixedOffset
+					style={styles.trackingView}
+					requiresSameParentToManageScrollView
 					bottomViewColor={themes[theme].messageboxBackground}
-				/>
+				>
+					{this.renderContent()}
+				</KeyboardTrackingView>
 				<UploadModal
 					isVisible={(file && file.isVisible)}
 					file={file}
@@ -874,13 +837,9 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
