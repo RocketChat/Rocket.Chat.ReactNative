@@ -58,13 +58,8 @@ export function getSetting({ server, setting }) {
 			const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":["${ setting }"]}}`).then(response => response.json());
 
 			if (result.success && result.settings.length) {
-				const parsedSettings = result.settings.reduce((ret, item) => {
-					const { _id, value } = item;
-					ret[_id] = value;
-					return ret;
-				}, {});
-
-				return resolve(parsedSettings[setting]);
+				const [{ value }] = result.settings;
+				return resolve(value);
 			}
 		} catch (e) {
 			log(e);
