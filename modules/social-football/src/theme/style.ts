@@ -24,6 +24,11 @@ export const appStyles = StyleSheet.create({
         fontSize: 16,
         color: appColors.light,
     },
+    errorText: {
+        fontFamily: 'Cabin-SemiBold',
+        fontSize: 16,
+        color: appColors.light,
+    },
     label: {
         fontSize: 16,
         fontFamily: 'Cabin-SemiBold',
