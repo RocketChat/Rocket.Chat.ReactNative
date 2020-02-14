@@ -14,6 +14,10 @@ import { REGISTER } from '../api/mutations/authentication.mutations';
 import SecurityManager from '../security/security-manager';
 import { TokenPair } from '../security/models/token-pair';
 
+enum ErrorTypes {
+    FIELD_UNAVAILABLE = '',
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
 });
 
 const RegisterPage = ({ navigation }) => {    
-    const [performRegistration, {data, loading}] = useMutation<{ register: TokenPair }>(REGISTER);
+    const [performRegistration, {data, loading, error }] = useMutation<{ register: TokenPair }>(REGISTER);
     const [registerFailed, setRegisterFailed] = useState(false);
 
     const [firstName, setFirstName] = useState(null);
@@ -81,9 +85,13 @@ const RegisterPage = ({ navigation }) => {
         }
     };
 
-    const renderRegisterFailed = () => (
-        <Alert title={i18n.t('register.error')} />
-    );
+    const renderRegisterFailed = () => {
+        if ((error?.graphQLErrors.length ?? 0) > 0) {
+            return <Alert title={error?.graphQLErrors.map(error => error.message).join(', ')!} />
+        } else {
+            return <Alert title={i18n.t('register.error')} />
+        }
+    }
 
     return <KeyboardUtilityView>
         <View style={styles.container}>
