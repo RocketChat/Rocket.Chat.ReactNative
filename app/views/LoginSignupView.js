@@ -113,7 +113,9 @@ class LoginSignupView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const showFormLogin = props.navigation.getParam('showFormLogin', true);
 		this.state = {
+			showFormLogin,
 			collapsed: true,
 			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
 		};
@@ -332,11 +334,11 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderServicesSeparator = () => {
-		const { collapsed } = this.state;
+		const { collapsed, showFormLogin } = this.state;
 		const { services, theme } = this.props;
 		const { length } = Object.values(services);
 
-		if (length > 3) {
+		if (length > 3 && showFormLogin) {
 			return (
 				<View style={styles.servicesTogglerContainer}>
 					<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
@@ -408,7 +410,7 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderServices = () => {
-		const { servicesHeight } = this.state;
+		const { servicesHeight, showFormLogin } = this.state;
 		const { services } = this.props;
 		const { length } = Object.values(services);
 		const style = {
@@ -417,7 +419,7 @@ class LoginSignupView extends React.Component {
 		};
 
 
-		if (length > 3) {
+		if (length > 3 && showFormLogin) {
 			return (
 				<Animated.View style={style}>
 					{Object.values(services).map(service => this.renderItem(service))}
@@ -428,6 +430,33 @@ class LoginSignupView extends React.Component {
 			<View>
 				{Object.values(services).map(service => this.renderItem(service))}
 			</View>
+		);
+	}
+
+	renderDefaultService = () => {
+		const { showFormLogin } = this.state;
+		const { theme } = this.props;
+		if (!showFormLogin) {
+			return null;
+		}
+		return (
+			<>
+				{this.renderServicesSeparator()}
+				<Button
+					title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
+					type='primary'
+					onPress={() => this.login()}
+					theme={theme}
+					testID='welcome-view-login'
+				/>
+				<Button
+					title={I18n.t('Create_account')}
+					type='secondary'
+					onPress={() => this.register()}
+					theme={theme}
+					testID='welcome-view-register'
+				/>
+			</>
 		);
 	}
 
@@ -451,21 +480,7 @@ class LoginSignupView extends React.Component {
 				>
 					<StatusBar theme={theme} />
 					{this.renderServices()}
-					{this.renderServicesSeparator()}
-					<Button
-						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
-						type='primary'
-						onPress={() => this.login()}
-						theme={theme}
-						testID='welcome-view-login'
-					/>
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						onPress={() => this.register()}
-						theme={theme}
-						testID='welcome-view-register'
-					/>
+					{this.renderDefaultService()}
 				</ScrollView>
 			</SafeAreaView>
 		);

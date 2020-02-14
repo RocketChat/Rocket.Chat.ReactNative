@@ -125,11 +125,12 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
+			const showFormLogin = yield RocketChat.getshowFormLogin(server);
 			const loginServicesLength = yield RocketChat.getLoginServices(server);
-			if (loginServicesLength === 0) {
+			if (loginServicesLength === 0 && showFormLogin) {
 				Navigation.navigate('LoginView');
 			} else {
-				Navigation.navigate('LoginSignupView');
+				Navigation.navigate('LoginSignupView', { showFormLogin });
 			}
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}

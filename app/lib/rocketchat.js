@@ -934,6 +934,28 @@ const RocketChat = {
 			return Promise.reject();
 		}
 	},
+	async getshowFormLogin(server) {
+		let data = true;
+		const setting = 'Accounts_ShowFormLogin';
+		try {
+			const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":["${ setting }"]}}`).then(response => response.json());
+
+			if (result.success && result.settings.length) {
+				const { settings } = result;
+
+				const parsedSettings = settings.reduce((ret, item) => {
+					const { _id, value } = item;
+					ret[_id] = value;
+					return ret;
+				}, {});
+
+				data = parsedSettings[setting];
+			}
+		} catch (e) {
+			log(e);
+		}
+		return data;
+	},
 	_determineAuthType(services) {
 		const {
 			name, custom, showButton = true, service
