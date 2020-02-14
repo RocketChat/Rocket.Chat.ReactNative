@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import { appStyles } from '../theme/style';
 import { SafeAreaView }  from 'react-navigation';
 import i18n from '../i18n';
 import { KeyboardUtilityView } from '../components/KeyboardUtilityView';
 import { Alert } from '../components/Alert';
-import { TextInput } from 'react-native-gesture-handler';
 import { appColors } from '../theme/colors';
 import { Button } from '../components/Button';
 import { Link } from '../components/Link';
@@ -13,6 +12,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { REGISTER } from '../api/mutations/authentication.mutations';
 import SecurityManager from '../security/security-manager';
 import { TokenPair } from '../security/models/token-pair';
+import { TextInput } from '../components/TextInput';
 
 enum ErrorTypes {
     FIELD_UNAVAILABLE = '',
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 const RegisterPage = ({ navigation }) => {    
     const [performRegistration, {data, loading, error }] = useMutation<{ register: TokenPair }>(REGISTER);
     const [registerFailed, setRegisterFailed] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     const [firstName, setFirstName] = useState(null);
     const [lastName, setLastName] = useState(null);
@@ -62,6 +63,7 @@ const RegisterPage = ({ navigation }) => {
 
     const onRegisterPress = async () => {
         setRegisterFailed(false);
+        setSubmitted(true);
 
         try {
             const result = await performRegistration({
@@ -107,28 +109,31 @@ const RegisterPage = ({ navigation }) => {
                 {registerFailed ? renderRegisterFailed() : null}
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.firstName.label')}</Text>
-                    <TextInput style={[appStyles.input]}
-                               value={firstName}
+                    <TextInput value={firstName}
+                               required={true}
+                               submitted={submitted}
                                onChangeText={value => setFirstName(value)}
                                placeholder={i18n.t('register.firstName.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.lastName.label')}</Text>
-                    <TextInput style={[appStyles.input]}
-                               value={lastName}
+                    <TextInput value={lastName}
+                               required={true}
+                               submitted={submitted}
                                onChangeText={value => setLastName(value)}
                                placeholder={i18n.t('register.lastName.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.email.label')}</Text>
-                    <TextInput style={[appStyles.input]}
-                               autoCompleteType='email'
+                    <TextInput autoCompleteType='email'
                                textContentType='email'
                                keyboardType='email-address'
                                autoCapitalize='none'
                                value={email}
+                               required={true}
+                               submitted={submitted}
                                onChangeText={value => setEmail(value)}
                                placeholder={i18n.t('register.email.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
@@ -136,11 +141,12 @@ const RegisterPage = ({ navigation }) => {
                 <View style={styles.separator} />
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.username.label')}</Text>
-                    <TextInput style={[appStyles.input]}
-                               autoCompleteType='username'
+                    <TextInput autoCompleteType='username'
                                textContentType='username'
                                autoCapitalize='none'
                                value={username}
+                               required={true}
+                               submitted={submitted}
                                onChangeText={value => setUsername(value)}
                                placeholder={i18n.t('register.username.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
@@ -152,7 +158,8 @@ const RegisterPage = ({ navigation }) => {
                                onChangeText={value => setPassword(value)}
                                autoCompleteType='password'
                                textContentType='password'
-                               style={[appStyles.input, styles.password]}
+                               required={true}
+                               submitted={submitted}
                                placeholder={i18n.t('register.password.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
                 </View>

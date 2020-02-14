@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Image, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from "react-navigation";
 import { appStyles } from '../theme/style'
 import { KeyboardUtilityView } from '../components/KeyboardUtilityView';
@@ -12,6 +12,7 @@ import { TokenPair } from '../security/models/token-pair';
 import { LOGIN } from '../api/mutations/authentication.mutations';
 import SecurityManager from '../security/security-manager';
 import { Alert } from '../components/Alert';
+import { TextInput } from '../components/TextInput';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,9 +45,11 @@ const LoginPage = ({ navigation }) => {
 
     const [performLogin, {data, loading}] = useMutation<{ loginApp: TokenPair }>(LOGIN);
     const [loginFailed, setLoginFailed] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     const onLoginPress = async () => {
         setLoginFailed(false);
+        setSubmitted(true);
 
         try {
             const result = await performLogin({
@@ -84,11 +87,12 @@ const LoginPage = ({ navigation }) => {
                 {loginFailed ? renderLoginFailed() : null}
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('login.username.label')}</Text>
-                    <TextInput style={[appStyles.input]}
-                               autoCompleteType='username'
+                    <TextInput autoCompleteType='username'
                                textContentType='username'
                                autoCapitalize='none'
                                value={username}
+                               required={true}
+                               submitted={submitted}
                                onChangeText={value => setUsername(value)}
                                placeholder={i18n.t('login.username.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
@@ -100,7 +104,8 @@ const LoginPage = ({ navigation }) => {
                                onChangeText={value => setPassword(value)}
                                autoCompleteType='password'
                                textContentType='password'
-                               style={[appStyles.input, styles.password]}
+                               required={true}
+                               submitted={submitted}
                                placeholder={i18n.t('login.password.placeholder')}
                                placeholderTextColor={appColors.placeholder} />
                 </View>
