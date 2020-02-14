@@ -367,17 +367,17 @@ class MessageBox extends Component {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
-		// Add space if not before emoji if not already there
+		// Add space before custom emoji if not already there
 		let addSpace = '';
 
 		// if messagebox has an active cursor
 		if (this.component && this.component._lastNativeSelection) {
 			const { start, end } = this.component._lastNativeSelection;
 			const cursor = Math.max(start, end);
-			addSpace = text.charAt(cursor - 1) === ' ' ? '' : ' ';
+			addSpace = emoji.charAt(0) === ':' && text.charAt(cursor - 1) !== ' ' ? ' ' : '';
 			newText = `${ text.substr(0, cursor) }${ addSpace }${ emoji }${ text.substr(cursor) }`;
 		} else {
-			addSpace = text.charAt(text.length - 1) === ' ' ? '' : ' ';
+			addSpace = emoji.charAt(0) === ':' && text.charAt(text.length - 1) !== ' ' ? ' ' : '';
 			// if messagebox doesn't have a cursor, just append selected emoji
 			newText = `${ text }${ addSpace }${ emoji }`;
 		}
