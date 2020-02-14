@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
+import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import Modal from 'react-native-modal';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -62,9 +64,11 @@ const stateAttrsUpdate = [
 	'loading',
 	'editing',
 	'replying',
-	'reacting'
+	'reacting',
+	'showAnnouncementModal',
+	'hasRoomChanged'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -163,6 +167,7 @@ class RoomView extends React.Component {
 				rid: this.rid, t: this.t, name, fname
 			},
 			roomUpdate: {},
+			hasRoomChanged: false,
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
@@ -173,7 +178,9 @@ class RoomView extends React.Component {
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
-			reacting: false
+			reacting: false,
+			showAnnouncementModal: false,
+			announcement: null
 		};
 
 		if (room && room.observe) {
@@ -183,7 +190,13 @@ class RoomView extends React.Component {
 		}
 
 		this.beginAnimating = false;
-		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			this.beginAnimating = true;
+			const { hasRoomChanged } = this.state;
+			if (hasRoomChanged) {
+				this.setState({ hasRoomChanged: false });
+			}
+		});
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
@@ -406,6 +419,7 @@ class RoomView extends React.Component {
 				} else {
 					this.state.room = changes;
 					this.state.roomUpdate = roomUpdate;
+					this.state.hasRoomChanged = true;
 				}
 			});
 	}
@@ -789,6 +803,48 @@ class RoomView extends React.Component {
 		return message;
 	}
 
+	toggleAnnouncementModal = (showModal) => {
+		this.setState({ showAnnouncementModal: showModal });
+	}
+
+	renderAnnouncement = () => {
+		const { theme } = this.props;
+		const { room } = this.state;
+		if (room.announcement) {
+			return (
+				<View style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status'>
+					<BorderlessButton onPress={() => this.toggleAnnouncementModal(true)}>
+						<Text style={[styles.announcementText, { color: themes[theme].actionTintColor }]} ellipsizeMode='tail' numberOfLines={1}>{room.announcement}</Text>
+					</BorderlessButton>
+				</View>
+			);
+		} else {
+			return null;
+		}
+	}
+
+	renderAnnouncementModal = () => {
+		const { room, showAnnouncementModal } = this.state;
+		const { theme } = this.props;
+		return (
+			<Modal
+				onBackdropPress={() => this.toggleAnnouncementModal(false)}
+				onBackButtonPress={() => this.toggleAnnouncementModal(false)}
+				useNativeDriver
+				isVisible={showAnnouncementModal}
+				animationIn='fadeIn'
+				animationOut='fadeOut'
+			>
+				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
+					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
+					<ScrollView style={styles.modalScrollView}>
+						<Text style={[styles.announcementText, { color: themes[theme].bodyText }]}>{room.announcement}</Text>
+					</ScrollView>
+				</View>
+			</Modal>
+		);
+	}
+
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -906,6 +962,7 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
+				{this.renderAnnouncement()}
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -918,6 +975,7 @@ class RoomView extends React.Component {
 					loading={loading}
 					animated={this.beginAnimating}
 				/>
+				{this.renderAnnouncementModal()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
