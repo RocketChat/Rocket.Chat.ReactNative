@@ -14,7 +14,7 @@
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
-    "generate-source-maps-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-release.bundle --sourcemap-output android-release.bundle.map",
+    "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify"
   },
   "husky": {
@@ -124,6 +124,7 @@
     "babel-jest": "^24.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-runtime": "^6.26.0",
+    "bugsnag-sourcemaps": "^1.2.2",
     "codecov": "3.5.0",
     "detox": "12.11.3",
     "emotion-theming": "^10.0.19",
