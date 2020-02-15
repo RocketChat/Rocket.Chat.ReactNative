@@ -11,9 +11,9 @@ import { withTheme } from '../../../theme';
 
 
 const Sort = React.memo(({
-	searchLength, sortBy, toggleSort, theme
+	searching, sortBy, toggleSort, theme
 }) => {
-	if (searchLength > 0) {
+	if (searching > 0) {
 		return null;
 	}
 	return (
@@ -36,7 +36,7 @@ const Sort = React.memo(({
 });
 
 Sort.propTypes = {
-	searchLength: PropTypes.number,
+	searching: PropTypes.bool,
 	sortBy: PropTypes.string,
 	theme: PropTypes.string,
 	toggleSort: PropTypes.func

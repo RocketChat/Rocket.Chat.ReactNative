@@ -50,8 +50,11 @@ export default StyleSheet.create({
 		position: 'absolute',
 		right: 16
 	},
+	itemContent: {
+		paddingBottom: 36
+	},
 	items: {
-		height: 200
+		height: 226
 	},
 	chips: {
 		flexDirection: 'row',
