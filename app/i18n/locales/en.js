@@ -498,6 +498,6 @@ export default {
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
 	Incorrect_username: 'Incorrect Username',
-	Username_can_only_have_letters_numbers_dots_hyphens_and_underscores: 'Username can only have letters, numbers, dots, hyphens and underscores',
+	Username_has_chars_not_allowed_by_server: 'Username has chars not allowed by server',
 	Okay: 'Okay'
 };

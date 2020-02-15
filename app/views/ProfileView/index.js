@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View,
-	ScrollView,
-	Keyboard,
-	Alert
-} from 'react-native';
+import { View, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 import SHA256 from 'js-sha256';
@@ -165,6 +160,17 @@ class ProfileView extends React.Component {
 		);
 	}
 
+	validateUsername = () => {
+		const { username } = this.state;
+		const { UTF8_Names_Validation } = this.props;
+		const usernameRegex = new RegExp(`^${ UTF8_Names_Validation }$`);
+		if (usernameRegex.test(username)) {
+			return true;
+		}
+		showErrorAlert(I18n.t('Username_has_chars_not_allowed_by_server'), I18n.t('Incorrect_username'));
+		return false;
+	}
+
 	submit = async() => {
 		Keyboard.dismiss();
 
@@ -177,7 +183,7 @@ class ProfileView extends React.Component {
 		const {
 			name, username, email, newPassword, currentPassword, avatar, customFields
 		} = this.state;
-		const { user, setUser, UTF8_Names_Validation } = this.props;
+		const { user, setUser } = this.props;
 		const params = {};
 
 		// Name
@@ -187,25 +193,13 @@ class ProfileView extends React.Component {
 
 		// Username
 		if (user.username !== username) {
-			const regEx = new RegExp(`^${ UTF8_Names_Validation }$`);
-			if (regEx.test(username)) {
+			if (this.validateUsername()) {
 				params.username = username;
 			} else {
 				this.setState({
 					saving: false,
 					currentPassword: null
 				});
-				Alert.alert(
-					I18n.t('Incorrect_username'),
-					I18n.t('Username_can_only_have_letters_numbers_dots_hyphens_and_underscores'),
-					[
-						{
-							text: I18n.t('Okay'),
-							onPress: () => this.setState({ showPasswordAlert: false })
-						}
-					],
-					{ cancelable: false }
-				);
 				return;
 			}
 		}
