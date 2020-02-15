@@ -53,6 +53,7 @@ import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
+import Markdown from '../../containers/markdown';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -838,7 +839,11 @@ class RoomView extends React.Component {
 				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
 					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
 					<ScrollView style={styles.modalScrollView}>
-						<Text style={[styles.announcementText, { color: themes[theme].bodyText }]}>{room.announcement}</Text>
+						<Markdown
+							useMarkdown
+							msg={room.announcement}
+							theme={theme}
+						/>
 					</ScrollView>
 				</View>
 			</Modal>
