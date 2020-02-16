@@ -381,7 +381,12 @@ class MessageBox extends Component {
 	}, 300)
 
 	getRooms = debounce(async(keyword = '') => {
-		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		const res = await RocketChat.search({
+			text: keyword,
+			filterRooms: true,
+			filterUsers: false,
+			initSearch: true
+		});
 		this.setState({ mentions: res });
 	}, 300)
 
