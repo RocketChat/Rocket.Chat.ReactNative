@@ -534,14 +534,19 @@ const RocketChat = {
 		}
 	},
 
-	async search({ text, filterUsers = true, filterRooms = true }) {
+	async search({
+		text,
+		filterUsers = true,
+		filterRooms = true,
+		initSearch = false
+	}) {
 		const searchText = text.trim();
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
 		}
 
-		if (searchText === '') {
+		if (searchText === '' && !initSearch) {
 			delete this.oldPromise;
 			return [];
 		}
