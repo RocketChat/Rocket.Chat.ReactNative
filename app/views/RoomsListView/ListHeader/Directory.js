@@ -10,7 +10,10 @@ import DisclosureIndicator from '../../../containers/DisclosureIndicator';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 
-const Directory = React.memo(({ goDirectory, theme }) => {
+const Directory = React.memo(({ goDirectory, theme, searching }) => {
+	if (searching > 0) {
+		return null;
+	}
 	const color = { color: themes[theme].headerSecondaryText };
 	return (
 		<Touch
@@ -33,6 +36,7 @@ const Directory = React.memo(({ goDirectory, theme }) => {
 });
 
 Directory.propTypes = {
+	searching: PropTypes.bool,
 	goDirectory: PropTypes.func,
 	theme: PropTypes.string
 };

@@ -172,20 +172,6 @@ jobs:
           working_directory: android/app
 
       - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-android
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appVersionCode=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=android \
-                -F sourceMap=@android-release.bundle.map \
-                -F bundle=@android-release.bundle
-            fi
-
-      - run:
           name: Config variables
           command: |
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
@@ -204,6 +190,19 @@ jobs:
 
             mv app/build/outputs /tmp/build/
           working_directory: android
+
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-android upload \
+                --api-key=$BUGSNAG_KEY \
+                --app-version=$CIRCLE_BUILD_NUM \
+                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
+                --minified-url=app.bundle \
+                --upload-sources
+            fi
 
       - store_artifacts:
           path: /tmp/build/outputs
