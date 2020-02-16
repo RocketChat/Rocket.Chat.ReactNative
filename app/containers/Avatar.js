@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touch from '../utils/touch';
+import Navigation from '../lib/Navigation';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
 );
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme
+	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, canView
 }) => {
 	const avatarStyle = {
 		width: size,
@@ -39,6 +40,9 @@ const Avatar = React.memo(({
 		uri = formatUrl(`/avatar/${ room }`, baseUrl, uriSize, avatarAuthURLFragment);
 	}
 
+	function openView() {
+		Navigation.navigate('AttachmentView', { attachment: { image_url: uri, image_type: 'png' } });
+	}
 
 	let image = (
 		<FastImage
@@ -49,6 +53,10 @@ const Avatar = React.memo(({
 			}}
 		/>
 	);
+
+	if (canView) {
+		onPress = openView;
+	}
 
 	if (onPress) {
 		image = (
@@ -78,7 +86,8 @@ Avatar.propTypes = {
 	userId: PropTypes.string,
 	token: PropTypes.string,
 	theme: PropTypes.string,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	canView: PropTypes.bool
 };
 
 Avatar.defaultProps = {

@@ -38,9 +38,6 @@ const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 		</View>
 	)
 );
-const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
-	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
-);
 
 class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -233,41 +230,23 @@ class RoomInfoView extends React.Component {
 		return null;
 	}
 
-	openAvatar = () => {
-		const { navigation, baseUrl, user } = this.props;
-		const { room, roomUser } = this.state;
-
-		const uriSize = 100;
-
-		let avatarAuthURLFragment = '';
-		if (user.id && user.token) {
-			avatarAuthURLFragment = `&rc_token=${ user.token }&rc_uid=${ user.id }`;
-		}
-		const text = room.name || roomUser.username;
-		const roomString = this.t === 'd' ? text : `@${ text }`;
-		const uri = formatUrl(`/avatar/${ roomString }`, baseUrl, uriSize, avatarAuthURLFragment);
-		navigation.navigate('AttachmentView', { attachment: { image_url: uri, image_type: 'png' } });
-	}
-
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
 
 		return (
-			<BorderlessButton
-				onPress={() => this.openAvatar()}
+			<Avatar
+				text={room.name || roomUser.username}
+				size={100}
+				style={styles.avatar}
+				type={this.t}
+				baseUrl={baseUrl}
+				userId={user.id}
+				token={user.token}
+				theme={theme}
+				canView
 			>
-				<Avatar
-					text={room.name || roomUser.username}
-					size={100}
-					style={styles.avatar}
-					type={this.t}
-					baseUrl={baseUrl}
-					userId={user.id}
-					token={user.token}
-				>
-					{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
-				</Avatar>
-			</BorderlessButton>
+				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
+			</Avatar>
 		);
 	}
 
