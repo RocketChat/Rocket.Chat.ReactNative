@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Linking, BackHandler } from 'react-native';
+import {
+	View, Linking, BackHandler, ScrollView
+} from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -34,7 +36,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth, supportSystemTheme
+	isTablet, isSplited, isIOS, setWidth, supportSystemTheme, isAndroid
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
@@ -479,6 +481,24 @@ class CustomModalStack extends React.Component {
 		const pageSheetViews = ['AttachmentView'];
 		const pageSheet = pageSheetViews.includes(getActiveRouteName(navigation.state));
 
+		const androidProps = isAndroid && {
+			style: { marginBottom: 0 }
+		};
+
+		let content = (
+			<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
+				<ModalSwitch navigation={navigation} screenProps={{ ...screenProps, closeModal: this.closeModal }} />
+			</View>
+		);
+
+		if (isAndroid) {
+			content = (
+				<ScrollView overScrollMode='never'>
+					{content}
+				</ScrollView>
+			);
+		}
+
 		return (
 			<Modal
 				useNativeDriver
@@ -487,10 +507,9 @@ class CustomModalStack extends React.Component {
 				onBackdropPress={closeModal}
 				hideModalContentWhileAnimating
 				avoidKeyboard
+				{...androidProps}
 			>
-				<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
-					<ModalSwitch navigation={navigation} screenProps={{ ...screenProps, closeModal: this.closeModal }} />
-				</View>
+				{content}
 			</Modal>
 		);
 	}
