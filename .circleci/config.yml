@@ -6,6 +6,10 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn
       - run: yarn run test
       - persist_to_workspace:
@@ -14,7 +18,12 @@ jobs:
             - node_modules
       - store_test_results:
           path: ~/project/junit.xml
-
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            
   android: 
     working_directory: ~/project/android
     docker:
@@ -46,9 +55,6 @@ jobs:
           name: Restore Yarn Package Cache
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn
       - run: brew install node
       - run: yarn
       - run: bundle install
