@@ -118,6 +118,17 @@ class ModalBlockView extends React.Component {
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!isEqual(nextProps, this.props)) {
+			return true;
+		}
+		if (!isEqual(nextState, this.state)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	componentDidUpdate(prevProps) {
 		const { navigation } = this.props;
 		const oldData = prevProps.navigation.getParam('data', {});
