@@ -8,7 +8,7 @@ import styles from './styles';
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo
 }) => {
-	if (isHeader) {
+	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
 			rid: author._id
