@@ -43,15 +43,19 @@ class Toast extends React.Component {
 		EventEmitter.removeListener(LISTENER);
 	}
 
+	getToastRef = toast => this.toast = toast;
+
 	showToast = ({ message }) => {
-		this.toast.show(message, 1000);
+		if (this.toast && this.toast.show) {
+			this.toast.show(message, 1000);
+		}
 	}
 
 	render() {
 		const { theme } = this.props;
 		return (
 			<EasyToast
-				ref={toast => this.toast = toast}
+				ref={this.getToastRef}
 				position='center'
 				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
 				textStyle={[styles.text, { color: themes[theme].buttonText }]}
