@@ -94,6 +94,14 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -118,6 +126,7 @@ class SearchMessagesView extends React.Component {
 				isHeader
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
+				navToRoomInfo={this.navToRoomInfo}
 				theme={theme}
 			/>
 		);
