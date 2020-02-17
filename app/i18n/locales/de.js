@@ -495,6 +495,6 @@ export default {
 	Add_server: 'Server hinufügen',
 	New_line: 'Zeilenumbruch',
 	You_will_be_logged_out_of_this_application: 'Du wirst in dieser Anwendung vom Server abgemeldet.',
-	Clear: 'Clear',
+	Clear: 'Löschen',
 	This_will_clear_all_your_offline_data: 'Dies wird deine Offline-Daten löschen.'
 };
