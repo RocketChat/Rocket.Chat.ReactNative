@@ -294,7 +294,7 @@ PODS:
     - React
   - react-native-keyboard-input (5.3.1):
     - React
-  - react-native-keyboard-tracking-view (5.5.0):
+  - react-native-keyboard-tracking-view (5.6.1):
     - React
   - react-native-notifications (2.0.6):
     - React
@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-jitsi-meet: 5bc06e8b65a7d04fd3705d5720f3b2ec66e49a29
   react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
-  react-native-keyboard-tracking-view: 1ebd24a2b6ca2314549aa51775995678094bffa1
+  react-native-keyboard-tracking-view: 4bb67b89ccd327c7d9eab87f722880d2103a25a8
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-slider: 39208600e44f885e2d2c0510b5c6435a0f62d087
