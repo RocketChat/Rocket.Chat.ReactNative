@@ -25,7 +25,6 @@ class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool,
 		theme: PropTypes.string,
 		listRef: PropTypes.func,
 		navigation: PropTypes.object

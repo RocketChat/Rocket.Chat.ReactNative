@@ -182,7 +182,6 @@ class RoomView extends React.Component {
 			this.findAndObserveRoom(this.rid);
 		}
 
-		this.beginAnimating = false;
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
@@ -913,7 +912,6 @@ class RoomView extends React.Component {
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
-					animated={this.beginAnimating}
 					navigation={navigation}
 				/>
 				{this.renderFooter()}
