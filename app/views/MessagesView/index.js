@@ -74,6 +74,14 @@ class MessagesView extends React.Component {
 		return false;
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
 		const { user, baseUrl, theme } = this.props;
@@ -88,7 +96,8 @@ class MessagesView extends React.Component {
 			isHeader: true,
 			attachments: item.attachments || [],
 			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji
+			getCustomEmoji: this.getCustomEmoji,
+			navToRoomInfo: this.navToRoomInfo
 		});
 
 		return ({
