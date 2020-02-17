@@ -42,6 +42,13 @@ jobs:
       - run:
           name: Set Ruby Version
           command: echo "ruby-2.4" >~/.ruby-version
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn
       - run: yarn
       - run: bundle install
       - run: bundle exec fastlane test
@@ -52,6 +59,11 @@ jobs:
           path: /Users/distiller/project/output
       - store_test_results:
           path: /Users/distiller/project/output/scan
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
 workflows:
   version: 2
