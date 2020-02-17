@@ -182,6 +182,7 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 
 		this.gotSubscriptions = false;
+		this.animated = false;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -215,9 +216,11 @@ class RoomsListView extends React.Component {
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
+			this.animated = true;
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
+			this.animated = false;
 			closeServerDropdown();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -338,12 +341,11 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
-	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
+		if (this.animated) {
 			animateNextTransition();
 		}
 		this.setState(...args);
@@ -532,7 +534,7 @@ class RoomsListView extends React.Component {
 			prid: item.prid,
 			room: item
 		});
-	};
+	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {

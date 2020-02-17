@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { InteractionManager } from 'react-native';
 
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
@@ -23,7 +24,7 @@ let subQueue = {};
 let subTimer = null;
 let roomQueue = {};
 let roomTimer = null;
-const WINDOW_TIME = 1000;
+const WINDOW_TIME = 500;
 
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
@@ -176,7 +177,9 @@ const debouncedUpdateSub = (subscription) => {
 			subQueue = {};
 			subTimer = null;
 			Object.keys(subBatch).forEach((key) => {
-				createOrUpdateSubscription(subBatch[key]);
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(subBatch[key]);
+				});
 			});
 		}, WINDOW_TIME);
 	}
@@ -190,7 +193,9 @@ const debouncedUpdateRoom = (room) => {
 			roomQueue = {};
 			roomTimer = null;
 			Object.keys(roomBatch).forEach((key) => {
-				createOrUpdateSubscription(null, roomBatch[key]);
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(null, roomBatch[key]);
+				});
 			});
 		}, WINDOW_TIME);
 	}
