@@ -100,6 +100,7 @@ class ModalBlockView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.submitting = false;
 		const { navigation } = props;
 		const data = navigation.getParam('data');
 		this.values = data.view.blocks.filter(filterInputFields).map(mapElementToState).reduce(reduceState, {});
@@ -155,7 +156,6 @@ class ModalBlockView extends React.Component {
 
 	cancel = async({ closeModal }) => {
 		const { data } = this.state;
-		const { navigation } = this.props;
 		const { appId, viewId, view } = data;
 		this.setState({ loading: true });
 		try {
@@ -175,15 +175,16 @@ class ModalBlockView extends React.Component {
 		// handle tablet case
 		if (closeModal) {
 			closeModal();
-		} else {
-			navigation.pop();
 		}
 		this.setState({ loading: false });
 	}
 
 	submit = async() => {
 		const { data } = this.state;
-		const { navigation } = this.props;
+		if (this.submitting) {
+			return;
+		}
+		this.submitting = true;
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
 		try {
@@ -197,10 +198,10 @@ class ModalBlockView extends React.Component {
 					}
 				}
 			});
-			navigation.pop();
 		} catch (e) {
 			// do nothing
 		}
+		this.submitting = false;
 		this.setState({ loading: false });
 	};
 

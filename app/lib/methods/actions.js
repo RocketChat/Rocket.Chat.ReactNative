@@ -133,11 +133,7 @@ export function triggerAction({
 
 			try {
 				const { type: interactionType, ...data } = await result.json();
-				handlePayloadUserInteraction(interactionType, data);
-
-				if (data.success) {
-					return resolve();
-				}
+				return resolve(handlePayloadUserInteraction(interactionType, data));
 			} catch (e) {
 				// modal.close has no body, so result.json will fail
 				// but it returns ok status
@@ -156,10 +152,21 @@ export default function triggerBlockAction(options) {
 	return triggerAction.call(this, { type: ACTION_TYPES.ACTION, ...options });
 }
 
-export function triggerSubmitView({ viewId, ...options }) {
-	return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+export async function triggerSubmitView({ viewId, ...options }) {
+	try {
+		const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+		if (!result || MODAL_ACTIONS.CLOSE === result) {
+			Navigation.back();
+		}
+	} catch (e) {
+		Navigation.back();
+	}
 }
 
-export function triggerCancel({ view, ...options }) {
-	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
+export async function triggerCancel({ view, ...options }) {
+	try {
+		await triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
+	} finally {
+		Navigation.back();
+	}
 }
