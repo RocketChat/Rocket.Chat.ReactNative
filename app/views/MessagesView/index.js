@@ -24,7 +24,7 @@ const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: navigation.state.params.name,
+		title: I18n.t(navigation.state.params.name),
 		...themedHeader(screenProps.theme)
 	});
 
