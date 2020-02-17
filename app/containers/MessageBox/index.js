@@ -530,7 +530,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -541,7 +541,7 @@ class MessageBox extends Component {
 				this.showUploadModal(video);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -552,7 +552,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
