@@ -50,7 +50,20 @@ class MessageContainer extends React.Component {
 	}
 
 	static defaultProps = {
+		getCustomEmoji: () => {},
 		onLongPress: () => {},
+		onReactionPress: () => {},
+		onDiscussionPress: () => {},
+		onThreadPress: () => {},
+		errorActionsShow: () => {},
+		replyBroadcast: () => {},
+		reactionInit: () => {},
+		fetchThreadName: () => {},
+		showAttachment: () => {},
+		onReactionLongPress: () => {},
+		navToRoomInfo: () => {},
+		callJitsi: () => {},
+		blockAction: () => {},
 		archived: false,
 		broadcast: false,
 		theme: 'light'
