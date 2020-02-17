@@ -404,6 +404,8 @@ export default {
 	Username_is_empty: 'Usuário está vazio',
 	Username: 'Usuário',
 	Username_or_email: 'Usuário ou email',
+	Verify_email_title: 'Registrado com sucesso!',
+	Verify_email_desc: 'Nós lhe enviamos um e-mail para confirmar o seu registro. Se você não receber um e-mail em breve, por favor retorne e tente novamente.',
 	Video_call: 'Chamada de vídeo',
 	Voice_call: 'Chamada de voz',
 	Websocket_disabled: 'Websocket está desativado para esse servidor.\n{{contact}}',
