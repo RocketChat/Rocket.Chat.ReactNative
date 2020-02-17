@@ -39,7 +39,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
-				subscriptions.map(sub => sub.unsubscribe());
+				await Promise.all(subscriptions.map(sub => sub.unsubscribe()));
 			} catch (e) {
 				// do nothing
 			}
