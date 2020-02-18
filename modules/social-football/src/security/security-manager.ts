@@ -92,6 +92,7 @@ class SecurityManager {
         await RNUserDefaults.set(SecurityManager.ACCESS_TOKEN_KEY, '');
         await RNUserDefaults.set(SecurityManager.REFRESH_TOKEN_KEY, '');
 
+        await Apollo.cache.reset();
         this.loginSubject.next(false);
     }
 

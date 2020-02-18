@@ -5,9 +5,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import SecurityManager from './security/security-manager';
 import config from './config/config';
-import { IS_AUTHENTICATED } from './api/queries/authentication.queries';
 
-const authLink = setContext(async(_, { headers }) => {
+const authLink = setContext(async(all, { headers }) => {
+    if (all?.operationName === 'RefreshUsingToken') {
+        return {
+            headers,
+        };
+    }
+
     const token = await SecurityManager.getAccessToken();
 
     return {
