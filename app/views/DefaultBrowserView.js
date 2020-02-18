@@ -24,7 +24,7 @@ const DEFAULT_BROWSERS = [
 		value: 'inApp'
 	},
 	{
-		title: I18n.t('Browser'),
+		title: isIOS ? 'Safari' : I18n.t('Browser'),
 		value: 'systemDefault:'
 	}
 ];
