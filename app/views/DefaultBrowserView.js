@@ -24,7 +24,7 @@ const DEFAULT_BROWSERS = [
 		value: 'inApp'
 	},
 	{
-		title: I18n.t('Default'),
+		title: I18n.t('Browser'),
 		value: 'systemDefault:'
 	}
 ];
@@ -154,7 +154,7 @@ class DefaultBrowserView extends React.Component {
 		return (
 			<>
 				<View style={styles.info}>
-					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{I18n.t('Choose_a_browser')}</Text>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{I18n.t('Choose_where_you_want_links_be_opened')}</Text>
 				</View>
 				{this.renderSeparator()}
 			</>
