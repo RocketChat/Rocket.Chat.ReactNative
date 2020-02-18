@@ -217,6 +217,9 @@ const SettingsStack = createStackNavigator({
 	},
 	ThemeView: {
 		getScreen: () => require('./views/ThemeView').default
+	},
+	DefaultBrowserView: {
+		getScreen: () => require('./views/DefaultBrowserView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

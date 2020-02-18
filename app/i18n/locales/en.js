@@ -157,6 +157,7 @@ export default {
 	Dark: 'Dark',
 	Dark_level: 'Dark Level',
 	Default: 'Default',
+	Default_browser: 'Default browser',
 	Delete_Room_Warning: 'Deleting a room will delete all messages posted within the room. This cannot be undone.',
 	delete: 'delete',
 	Delete: 'Delete',

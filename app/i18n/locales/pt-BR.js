@@ -154,6 +154,7 @@ export default {
 	Create: 'Criar',
 	Dark: 'Escuro',
 	Dark_level: 'Nível escuro',
+	Default_browser: 'Navegador padrão',
 	Delete_Room_Warning: 'A exclusão de uma sala irá apagar todas as mensagens postadas na sala. Isso não pode ser desfeito.',
 	delete: 'excluir',
 	Delete: 'Excluir',
