@@ -42,25 +42,20 @@ const openLink = async(url, theme = 'light') => {
 		if (browser) {
 			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
 			await Linking.openURL(schemeUrl);
-			return;
-		}
-
-		try {
+		} else {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
 				controlsColor: themes[theme].headerTintColor,
 				collapseToolbar: true,
 				showTitle: true
 			});
-		} catch {
-			try {
-				await Linking.openURL(url);
-			} catch {
-				// do nothing
-			}
 		}
 	} catch {
-		// do nothing
+		try {
+			await Linking.openURL(url);
+		} catch {
+			// do nothing
+		}
 	}
 };
 
