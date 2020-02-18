@@ -37,6 +37,7 @@
  * List of domains used for universal linking.
  */
 @property (copy, nonatomic, nullable) NSArray<NSString *> *universalLinkDomains;
+
 /**
  * Default conference options used for all conferences. These options will be merged
  * with those passed to JitsiMeetView.join when joining a conference.
