@@ -17,10 +17,25 @@ const jitsiBaseUrl = ({
 	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
 };
 
-function callJitsi(rid, onlyAudio = false) {
+async function callJitsi(rid, onlyAudio = false) {
+	let accessToken;
+	let queryString = '';
 	const { settings } = reduxStore.getState();
+	const { Jitsi_Enabled_TokenAuth } = settings;
 
-	Navigation.navigate('JitsiMeetView', { url: `${ jitsiBaseUrl(settings) }${ rid }`, onlyAudio, rid });
+	if (Jitsi_Enabled_TokenAuth) {
+		try {
+			accessToken = await this.sdk.methodCall('jitsi:generateAccessToken', rid);
+		} catch (e) {
+			// do nothing
+		}
+	}
+
+	if (accessToken) {
+		queryString = `?jwt=${ accessToken }`;
+	}
+
+	Navigation.navigate('JitsiMeetView', { url: `${ jitsiBaseUrl(settings) }${ rid }${ queryString }`, onlyAudio, rid });
 }
 
 export default callJitsi;
