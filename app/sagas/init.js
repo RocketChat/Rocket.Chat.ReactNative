@@ -121,6 +121,8 @@ const start = function* start({ root }) {
 		yield Navigation.navigate('SetUsernameView');
 	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
+	} else if (root === 'loading') {
+		yield Navigation.navigate('AuthLoading');
 	}
 	RNBootSplash.hide();
 };

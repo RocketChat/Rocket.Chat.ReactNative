@@ -83,7 +83,7 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.server.server
 });
 
 export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));

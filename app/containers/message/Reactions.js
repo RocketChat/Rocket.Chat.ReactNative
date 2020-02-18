@@ -56,7 +56,7 @@ const Reaction = React.memo(({
 const Reactions = React.memo(({
 	reactions, user, baseUrl, onReactionPress, reactionInit, onReactionLongPress, getCustomEmoji, theme
 }) => {
-	if (!reactions || reactions.length === 0) {
+	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
 	return (

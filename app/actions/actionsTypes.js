@@ -22,6 +22,7 @@ export const SHARE = createRequestTypes('SHARE', [
 export const USER = createRequestTypes('USER', ['SET']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
+	'REFRESH',
 	'SET_SEARCH',
 	'CLOSE_SERVER_DROPDOWN',
 	'TOGGLE_SERVER_DROPDOWN',
@@ -54,3 +55,11 @@ export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
 export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE', 'CLEAR']);
+export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
+	'SET_TOKEN',
+	'SET_PARAMS',
+	'SET_INVITE',
+	'CREATE',
+	'CLEAR',
+	...defaultTypes
+]);

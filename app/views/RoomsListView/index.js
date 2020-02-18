@@ -6,7 +6,8 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions
+	Dimensions,
+	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
@@ -59,6 +60,7 @@ import {
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
+import { getUserSelector } from '../../selectors/login';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -86,7 +88,8 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split'
+	'split',
+	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -98,23 +101,21 @@ const keyExtractor = item => item.rid;
 class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
-		const cancelSearchingAndroid = navigation.getParam(
-			'cancelSearchingAndroid'
-		);
+		const cancelSearch = navigation.getParam('cancelSearch', () => {});
 		const onPressItem = navigation.getParam('onPressItem', () => {});
-		const initSearchingAndroid = navigation.getParam(
-			'initSearchingAndroid',
+		const initSearching = navigation.getParam(
+			'initSearching',
 			() => {}
 		);
 
 		return {
 			...themedHeader(screenProps.theme),
-			headerLeft: searching ? (
+			headerLeft: searching && isAndroid ? (
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
 						iconName='cross'
-						onPress={cancelSearchingAndroid}
+						onPress={cancelSearch}
 					/>
 				</CustomHeaderButtons>
 			) : (
@@ -124,13 +125,13 @@ class RoomsListView extends React.Component {
 				/>
 			),
 			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching ? null : (
+			headerRight: searching && isAndroid ? null : (
 				<CustomHeaderButtons>
 					{isAndroid ? (
 						<Item
 							title='search'
 							iconName='magnifier'
-							onPress={initSearchingAndroid}
+							onPress={initSearching}
 						/>
 					) : null}
 					<Item
@@ -148,10 +149,11 @@ class RoomsListView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		userId: PropTypes.string,
-		username: PropTypes.string,
-		token: PropTypes.string,
-		baseUrl: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		loadingServer: PropTypes.bool,
@@ -161,7 +163,7 @@ class RoomsListView extends React.Component {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
-		useRealName: PropTypes.bool,
+		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		appState: PropTypes.string,
 		theme: PropTypes.string,
@@ -180,6 +182,7 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 
 		this.gotSubscriptions = false;
+		this.animated = false;
 		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
@@ -196,8 +199,8 @@ class RoomsListView extends React.Component {
 		const { navigation, closeServerDropdown } = this.props;
 		navigation.setParams({
 			onPressItem: this._onPressItem,
-			initSearchingAndroid: this.initSearchingAndroid,
-			cancelSearchingAndroid: this.cancelSearchingAndroid
+			initSearching: this.initSearching,
+			cancelSearch: this.cancelSearch
 		});
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -213,9 +216,11 @@ class RoomsListView extends React.Component {
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
+			this.animated = true;
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
+			this.animated = false;
 			closeServerDropdown();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -243,7 +248,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats } = this.state;
+		const { allChats, searching } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -258,6 +263,10 @@ class RoomsListView extends React.Component {
 			this.shouldUpdate = true;
 		}
 
+		if (nextState.searching !== searching) {
+			return true;
+		}
+
 		// Abort if it's not focused
 		if (!nextProps.navigation.isFocused()) {
 			return false;
@@ -265,14 +274,10 @@ class RoomsListView extends React.Component {
 
 		const {
 			loading,
-			searching,
 			width,
 			search
 		} = this.state;
 		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.searching !== searching) {
 			return true;
 		}
 		if (nextState.width !== width) {
@@ -336,12 +341,11 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
-	// eslint-disable-next-line react/sort-comp
 	internalSetState = (...args) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
+		if (this.animated) {
 			animateNextTransition();
 		}
 		this.setState(...args);
@@ -381,8 +385,7 @@ class RoomsListView extends React.Component {
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
-				Q.where('open', true),
-				Q.where('t', Q.notEq('l'))
+				Q.where('open', true)
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
@@ -449,29 +452,50 @@ class RoomsListView extends React.Component {
 		});
 	}
 
-	initSearchingAndroid = () => {
+	initSearching = () => {
 		const { openSearchHeader, navigation } = this.props;
-		this.setState({ searching: true });
-		navigation.setParams({ searching: true });
-		openSearchHeader();
+		this.internalSetState({ searching: true });
+		if (isAndroid) {
+			navigation.setParams({ searching: true });
+			openSearchHeader();
+		}
 	};
 
-	cancelSearchingAndroid = () => {
+	cancelSearch = () => {
+		const { searching } = this.state;
+		const { closeSearchHeader, navigation } = this.props;
+
+		if (!searching) {
+			return;
+		}
+
+		if (isIOS && this.inputRef) {
+			this.inputRef.blur();
+			this.inputRef.clear();
+		}
 		if (isAndroid) {
-			const { closeSearchHeader, navigation } = this.props;
-			this.setState({ searching: false });
 			navigation.setParams({ searching: false });
 			closeSearchHeader();
-			this.internalSetState({ search: [] });
 		}
 		Keyboard.dismiss();
+
+		this.setState({ searching: false, search: [] }, () => {
+			setTimeout(() => {
+				const offset = isAndroid ? 0 : SCROLL_OFFSET;
+				if (this.scroll.scrollTo) {
+					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
+				} else if (this.scroll.scrollToOffset) {
+					this.scroll.scrollToOffset({ offset });
+				}
+			}, 200);
+		});
 	};
 
 	handleBackPress = () => {
 		const { searching } = this.state;
 		const { appStart } = this.props;
 		if (searching) {
-			this.cancelSearchingAndroid();
+			this.cancelSearch();
 			return true;
 		}
 		appStart('background');
@@ -480,20 +504,28 @@ class RoomsListView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(text) => {
+		const { searching } = this.state;
 		const result = await RocketChat.search({ text });
+		// if the search was cancelled before the promise is resolved
+		if (!searching) {
+			return;
+		}
 		this.internalSetState({
-			search: result
+			search: result,
+			searching: true
 		});
+		if (this.scroll && this.scroll.scrollTo) {
+			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+		}
 	}, 300);
 
-	getRoomTitle = (item) => {
-		const { useRealName } = this.props;
-		return ((item.prid || useRealName) && item.fname) || item.name;
-	};
+	getRoomTitle = item => RocketChat.getRoomTitle(item)
+
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
 	goRoom = (item) => {
-		this.cancelSearchingAndroid();
 		const { navigation } = this.props;
+		this.cancelSearch();
 		this.item = item;
 		navigation.navigate('RoomView', {
 			rid: item.rid,
@@ -502,7 +534,7 @@ class RoomsListView extends React.Component {
 			prid: item.prid,
 			room: item
 		});
-	};
+	}
 
 	_onPressItem = async(item = {}) => {
 		if (!item.search) {
@@ -675,17 +707,30 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	onRefresh = () => {
+		const { searching } = this.state;
+		const { roomsRequest } = this.props;
+		if (searching) {
+			return;
+		}
+		roomsRequest({ allData: true });
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
+	getInputRef = ref => (this.inputRef = ref);
+
 	renderListHeader = () => {
-		const { search } = this.state;
+		const { searching } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
-				inputRef={(ref) => { this.inputRef = ref; }}
-				searchLength={search.length}
+				inputRef={this.getInputRef}
+				searching={searching}
 				sortBy={sortBy}
 				onChangeSearchText={this.search}
+				onCancelSearchPress={this.cancelSearch}
+				onSearchFocus={this.initSearching}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
 			/>
@@ -705,10 +750,12 @@ class RoomsListView extends React.Component {
 
 		const { width } = this.state;
 		const {
-			userId,
-			username,
-			token,
-			baseUrl,
+			user: {
+				id: userId,
+				username,
+				token
+			},
+			server,
 			StoreLastMessage,
 			theme,
 			split
@@ -724,7 +771,7 @@ class RoomsListView extends React.Component {
 				userMentions={item.userMentions}
 				isRead={this.getIsRead(item)}
 				favorite={item.f}
-				avatar={item.name}
+				avatar={this.getRoomAvatar(item)}
 				lastMessage={item.lastMessage}
 				name={this.getRoomTitle(item)}
 				_updatedAt={item.roomUpdatedAt}
@@ -735,7 +782,7 @@ class RoomsListView extends React.Component {
 				token={token}
 				rid={item.rid}
 				type={item.t}
-				baseUrl={baseUrl}
+				baseUrl={server}
 				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this._onPressItem(item)}
@@ -758,8 +805,10 @@ class RoomsListView extends React.Component {
 	}
 
 	renderScroll = () => {
-		const { loading, chats, search } = this.state;
-		const { theme } = this.props;
+		const {
+			loading, chats, search, searching
+		} = this.state;
+		const { theme, refreshing } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -768,8 +817,8 @@ class RoomsListView extends React.Component {
 		return (
 			<FlatList
 				ref={this.getScrollRef}
-				data={search.length ? search : chats}
-				extraData={search.length ? search : chats}
+				data={searching ? search : chats}
+				extraData={searching ? search : chats}
 				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
@@ -779,6 +828,13 @@ class RoomsListView extends React.Component {
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={(
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={this.onRefresh}
+						tintColor={themes[theme].auxiliaryText}
+					/>
+				)}
 				windowSize={9}
 			/>
 		);
@@ -820,15 +876,13 @@ class RoomsListView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	userId: state.login.user && state.login.user.id,
-	username: state.login.user && state.login.user.username,
-	token: state.login.user && state.login.user.token,
+	user: getUserSelector(state),
 	server: state.server.server,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSortDropdown: state.rooms.showSortDropdown,
+	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
@@ -843,7 +897,7 @@ const mapDispatchToProps = dispatch => ({
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	appStart: () => dispatch(appStartAction()),
-	roomsRequest: () => dispatch(roomsRequestAction()),
+	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });

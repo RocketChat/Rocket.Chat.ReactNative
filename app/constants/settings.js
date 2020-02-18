@@ -5,6 +5,9 @@ export default {
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
 	},
+	Accounts_EmailVerification: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_NamePlaceholder: {
 		type: 'valueAsString'
 	},
@@ -57,6 +60,9 @@ export default {
 		type: 'valueAsNumber'
 	},
 	Message_TimeFormat: {
+		type: 'valueAsString'
+	},
+	Message_TimeAndDateFormat: {
 		type: 'valueAsString'
 	},
 	Site_Name: {

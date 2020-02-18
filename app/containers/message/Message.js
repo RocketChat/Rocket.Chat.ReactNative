@@ -10,6 +10,7 @@ import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
 import Urls from './Urls';
 import Thread from './Thread';
+import Blocks from './Blocks';
 import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
@@ -32,6 +33,16 @@ const MessageInner = React.memo((props) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
+			</>
+		);
+	}
+	if (props.blocks && props.blocks.length) {
+		return (
+			<>
+				<User {...props} />
+				<Blocks {...props} />
+				<Thread {...props} />
+				<Reactions {...props} />
 			</>
 		);
 	}
@@ -139,7 +150,8 @@ Message.propTypes = {
 };
 
 MessageInner.propTypes = {
-	type: PropTypes.string
+	type: PropTypes.string,
+	blocks: PropTypes.array
 };
 
 export default MessageTouchable;

@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Linking, BackHandler } from 'react-native';
+import {
+	View, Linking, BackHandler, ScrollView
+} from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -34,12 +36,15 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isSplited, isIOS, setWidth, supportSystemTheme
+	isTablet, isSplited, isIOS, setWidth, supportSystemTheme, isAndroid
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
+
+import RoomsListView from './views/RoomsListView';
+import RoomView from './views/RoomView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -49,7 +54,7 @@ if (isIOS) {
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth)\?/;
+		const regex = /^(room|auth|invite)\?/;
 		if (url.match(regex)) {
 			url = url.replace(regex, '').trim();
 			if (url) {
@@ -109,9 +114,7 @@ const OutsideStackModal = createStackNavigator({
 });
 
 const RoomRoutes = {
-	RoomView: {
-		getScreen: () => require('./views/RoomView').default
-	},
+	RoomView,
 	ThreadMessagesView: {
 		getScreen: () => require('./views/ThreadMessagesView').default
 	},
@@ -125,9 +128,7 @@ const RoomRoutes = {
 
 // Inside
 const ChatsStack = createStackNavigator({
-	RoomsListView: {
-		getScreen: () => require('./views/RoomsListView').default
-	},
+	RoomsListView,
 	RoomActionsView: {
 		getScreen: () => require('./views/RoomActionsView').default
 	},
@@ -145,6 +146,12 @@ const ChatsStack = createStackNavigator({
 	},
 	SelectedUsersView: {
 		getScreen: () => require('./views/SelectedUsersView').default
+	},
+	InviteUsersView: {
+		getScreen: () => require('./views/InviteUsersView').default
+	},
+	InviteUsersEditView: {
+		getScreen: () => require('./views/InviteUsersEditView').default
 	},
 	MessagesView: {
 		getScreen: () => require('./views/MessagesView').default
@@ -269,10 +276,21 @@ const AttachmentStack = createStackNavigator({
 	cardStyle
 });
 
+const ModalBlockStack = createStackNavigator({
+	ModalBlockView: {
+		getScreen: () => require('./views/ModalBlockView').default
+	}
+}, {
+	mode: 'modal',
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
+	ModalBlockStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -416,6 +434,7 @@ const ModalSwitch = createSwitchNavigator({
 	SidebarStack,
 	RoomActionsStack,
 	SettingsStack,
+	ModalBlockStack,
 	AuthLoading: () => null
 },
 {
@@ -447,6 +466,9 @@ class CustomModalStack extends React.Component {
 			closeModal();
 			return true;
 		}
+		if (state && state.routes[state.index] && state.routes[state.index].routes.length > 1) {
+			navigation.goBack();
+		}
 		return false;
 	}
 
@@ -458,6 +480,24 @@ class CustomModalStack extends React.Component {
 		const pageSheetViews = ['AttachmentView'];
 		const pageSheet = pageSheetViews.includes(getActiveRouteName(navigation.state));
 
+		const androidProps = isAndroid && {
+			style: { marginBottom: 0 }
+		};
+
+		let content = (
+			<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
+				<ModalSwitch navigation={navigation} screenProps={{ ...screenProps, closeModal: this.closeModal }} />
+			</View>
+		);
+
+		if (isAndroid) {
+			content = (
+				<ScrollView overScrollMode='never'>
+					{content}
+				</ScrollView>
+			);
+		}
+
 		return (
 			<Modal
 				useNativeDriver
@@ -466,10 +506,9 @@ class CustomModalStack extends React.Component {
 				onBackdropPress={closeModal}
 				hideModalContentWhileAnimating
 				avoidKeyboard
+				{...androidProps}
 			>
-				<View style={[sharedStyles.modal, pageSheet ? sharedStyles.modalPageSheet : sharedStyles.modalFormSheet]}>
-					<ModalSwitch navigation={navigation} screenProps={screenProps} />
-				</View>
+				{content}
 			</Modal>
 		);
 	}

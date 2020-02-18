@@ -38,7 +38,7 @@ const Table = React.memo(({
 		);
 	};
 
-	const onPress = () => Navigation.navigate('TableView', { renderRows, tableWidth: getTableWidth() });
+	const onPress = () => Navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
 
 	return (
 		<TouchableOpacity onPress={onPress}>

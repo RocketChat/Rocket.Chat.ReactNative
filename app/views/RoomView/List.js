@@ -1,8 +1,9 @@
 import React from 'react';
-import { FlatList, InteractionManager } from 'react-native';
+import { FlatList, InteractionManager, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import moment from 'moment';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -14,6 +15,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
+import { themes } from '../../constants/colors';
 
 class List extends React.Component {
 	static propTypes = {
@@ -24,9 +26,9 @@ class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool,
 		theme: PropTypes.string,
-		listRef: PropTypes.func
+		listRef: PropTypes.func,
+		navigation: PropTypes.object
 	};
 
 	constructor(props) {
@@ -38,9 +40,18 @@ class List extends React.Component {
 		this.state = {
 			loading: true,
 			end: false,
-			messages: []
+			messages: [],
+			refreshing: false,
+			animated: false
 		};
 		this.init();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			if (this.mounted) {
+				this.setState({ animated: true });
+			} else {
+				this.state.animated = true;
+			}
+		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -103,7 +114,7 @@ class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end } = this.state;
+		const { loading, end, refreshing } = this.state;
 		const { theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -112,6 +123,9 @@ class List extends React.Component {
 			return true;
 		}
 		if (end !== nextState.end) {
+			return true;
+		}
+		if (refreshing !== nextState.refreshing) {
 			return true;
 		}
 		return false;
@@ -124,6 +138,9 @@ class List extends React.Component {
 		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
@@ -154,9 +171,31 @@ class List extends React.Component {
 		}
 	}, 300)
 
+	onRefresh = () => this.setState({ refreshing: true }, async() => {
+		const { messages } = this.state;
+		const { rid, tmid } = this.props;
+
+		if (messages.length) {
+			try {
+				if (tmid) {
+					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+				} else {
+					await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		this.setState({ refreshing: false });
+	})
+
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
-		animateNextTransition();
+		const { animated } = this.state;
+		if (animated) {
+			animateNextTransition();
+		}
 		this.forceUpdate();
 	};
 
@@ -192,7 +231,7 @@ class List extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
-		const { messages } = this.state;
+		const { messages, refreshing } = this.state;
 		const { theme, toggleScrollToBottomButton } = this.props;
 		return (
 			<>
@@ -217,6 +256,13 @@ class List extends React.Component {
 					onScroll={toggleScrollToBottomButton}
 					onScrollEndDrag={toggleScrollToBottomButton}
 					ListFooterComponent={this.renderFooter}
+					refreshControl={(
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={this.onRefresh}
+							tintColor={themes[theme].auxiliaryText}
+						/>
+					)}
 					{...scrollPersistTaps}
 				/>
 			</>

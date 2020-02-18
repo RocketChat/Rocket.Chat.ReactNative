@@ -1,1 +1,1 @@
-../../../FirebaseCore/Firebase/Core/Private/FIRDependency.h
+../../../FirebaseCore/FirebaseCore/Sources/Private/FIRDependency.h

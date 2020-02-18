@@ -16,26 +16,36 @@
 
 #import "GDTCCTLibrary/Private/GDTCCTUploader.h"
 
-#import <GoogleDataTransport/GDTConsoleLogger.h>
-#import <GoogleDataTransport/GDTPlatform.h>
-#import <GoogleDataTransport/GDTRegistrar.h>
+#import <GoogleDataTransport/GDTCORConsoleLogger.h>
+#import <GoogleDataTransport/GDTCORPlatform.h>
+#import <GoogleDataTransport/GDTCORRegistrar.h>
 
 #import <nanopb/pb.h>
 #import <nanopb/pb_decode.h>
 #import <nanopb/pb_encode.h>
 
+#import "GDTCCTLibrary/Private/GDTCCTCompressionHelper.h"
 #import "GDTCCTLibrary/Private/GDTCCTNanopbHelpers.h"
 #import "GDTCCTLibrary/Private/GDTCCTPrioritizer.h"
 
 #import "GDTCCTLibrary/Protogen/nanopb/cct.nanopb.h"
 
+#ifdef GDTCCTSUPPORT_VERSION
+#define STR(x) STR_EXPAND(x)
+#define STR_EXPAND(x) #x
+static NSString *const kGDTCCTSupportSDKVersion = @STR(GDTCCTSUPPORT_VERSION);
+#else
+static NSString *const kGDTCCTSupportSDKVersion = @"UNKNOWN";
+#endif  // GDTCCTSUPPORT_VERSION
+
+#if !NDEBUG
+NSNotificationName const GDTCCTUploadCompleteNotification = @"com.GDTCCTUploader.UploadComplete";
+#endif  // #if !NDEBUG
+
 @interface GDTCCTUploader ()
 
 // Redeclared as readwrite.
 @property(nullable, nonatomic, readwrite) NSURLSessionUploadTask *currentTask;
-
-/** If running in the background, the current background ID. */
-@property(nonatomic) BOOL runningInBackground;
 
 @end
 
@@ -43,7 +53,7 @@
 
 + (void)load {
   GDTCCTUploader *uploader = [GDTCCTUploader sharedInstance];
-  [[GDTRegistrar sharedInstance] registerUploader:uploader target:kGDTTargetCCT];
+  [[GDTCORRegistrar sharedInstance] registerUploader:uploader target:kGDTCORTargetCCT];
 }
 
 + (instancetype)sharedInstance {
@@ -84,77 +94,114 @@
   return defaultServerURL;
 }
 
-- (void)uploadPackage:(GDTUploadPackage *)package {
-  GDTBackgroundIdentifier bgID = GDTBackgroundIdentifierInvalid;
-  if (_runningInBackground) {
-    bgID = [[GDTApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-      if (bgID != GDTBackgroundIdentifierInvalid) {
-        [[GDTApplication sharedApplication] endBackgroundTask:bgID];
-      }
-    }];
-  }
+- (void)uploadPackage:(GDTCORUploadPackage *)package {
+  __block GDTCORBackgroundIdentifier bgID = GDTCORBackgroundIdentifierInvalid;
+  bgID = [[GDTCORApplication sharedApplication]
+      beginBackgroundTaskWithName:@"GDTCCTUploader-upload"
+                expirationHandler:^{
+                  if (bgID != GDTCORBackgroundIdentifierInvalid) {
+                    // Cancel the current upload and complete delivery.
+                    [self.currentTask cancel];
+                    [self.currentUploadPackage completeDelivery];
+
+                    // End the task.
+                    [[GDTCORApplication sharedApplication] endBackgroundTask:bgID];
+                  }
+                }];
 
   dispatch_async(_uploaderQueue, ^{
     if (self->_currentTask || self->_currentUploadPackage) {
-      GDTLogWarning(GDTMCWUploadFailed, @"%@",
-                    @"An upload shouldn't be initiated with another in progress.");
+      GDTCORLogWarning(GDTCORMCWUploadFailed, @"%@",
+                       @"An upload shouldn't be initiated with another in progress.");
       return;
     }
     NSURL *serverURL = self.serverURL ? self.serverURL : [self defaultServerURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:serverURL];
-    request.HTTPMethod = @"POST";
 
-    id completionHandler =
-        ^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
-          if (error) {
-            GDTLogWarning(GDTMCWUploadFailed, @"There was an error uploading events: %@", error);
-          }
-          NSError *decodingError;
-          gdt_cct_LogResponse logResponse = GDTCCTDecodeLogResponse(data, &decodingError);
-          if (!decodingError && logResponse.has_next_request_wait_millis) {
-            self->_nextUploadTime =
-                [GDTClock clockSnapshotInTheFuture:logResponse.next_request_wait_millis];
-          } else {
-            // 15 minutes from now.
-            self->_nextUploadTime = [GDTClock clockSnapshotInTheFuture:15 * 60 * 1000];
-          }
-          pb_release(gdt_cct_LogResponse_fields, &logResponse);
-          [package completeDelivery];
+    id completionHandler = ^(NSData *_Nullable data, NSURLResponse *_Nullable response,
+                             NSError *_Nullable error) {
+      GDTCORLogDebug("%@", @"CCT: request completed");
+      if (error) {
+        GDTCORLogWarning(GDTCORMCWUploadFailed, @"There was an error uploading events: %@", error);
+      }
+      NSError *decodingError;
+      if (data) {
+        gdt_cct_LogResponse logResponse = GDTCCTDecodeLogResponse(data, &decodingError);
+        if (!decodingError && logResponse.has_next_request_wait_millis) {
+          GDTCORLogDebug(
+              "CCT: The backend responded asking to not upload for %lld millis from now.",
+              logResponse.next_request_wait_millis);
+          self->_nextUploadTime =
+              [GDTCORClock clockSnapshotInTheFuture:logResponse.next_request_wait_millis];
+        } else {
+          GDTCORLogDebug("%@", @"CCT: The CCT backend response failed to parse, so the next "
+                               @"request won't occur until 15 minutes from now");
+          // 15 minutes from now.
+          self->_nextUploadTime = [GDTCORClock clockSnapshotInTheFuture:15 * 60 * 1000];
+        }
+        pb_release(gdt_cct_LogResponse_fields, &logResponse);
+      }
+#if !NDEBUG
+      // Post a notification when in DEBUG mode to state how many packages were uploaded. Useful
+      // for validation during tests.
+      [[NSNotificationCenter defaultCenter] postNotificationName:GDTCCTUploadCompleteNotification
+                                                          object:@(package.events.count)];
+#endif  // #if !NDEBUG
+      GDTCORLogDebug("%@", @"CCT: package delivered");
+      [package completeDelivery];
 
-          // End the background task if there was one.
-          if (bgID != GDTBackgroundIdentifierInvalid) {
-            [[GDTApplication sharedApplication] endBackgroundTask:bgID];
-          }
-          self.currentTask = nil;
-          self.currentUploadPackage = nil;
-        };
+      // End the background task if there was one.
+      if (bgID != GDTCORBackgroundIdentifierInvalid) {
+        [[GDTCORApplication sharedApplication] endBackgroundTask:bgID];
+        bgID = GDTCORBackgroundIdentifierInvalid;
+      }
+      self.currentTask = nil;
+      self.currentUploadPackage = nil;
+    };
     self->_currentUploadPackage = package;
-    NSData *requestProtoData = [self constructRequestProtoFromPackage:(GDTUploadPackage *)package];
+    NSData *requestProtoData =
+        [self constructRequestProtoFromPackage:(GDTCORUploadPackage *)package];
+    NSData *gzippedData = [GDTCCTCompressionHelper gzippedData:requestProtoData];
+    BOOL usingGzipData = gzippedData != nil && gzippedData.length < requestProtoData.length;
+    NSData *dataToSend = usingGzipData ? gzippedData : requestProtoData;
+    NSURLRequest *request = [self constructRequestWithURL:serverURL data:dataToSend];
+    GDTCORLogDebug("CCT: request created: %@", request);
     self.currentTask = [self.uploaderSession uploadTaskWithRequest:request
-                                                          fromData:requestProtoData
+                                                          fromData:dataToSend
                                                  completionHandler:completionHandler];
+    GDTCORLogDebug("%@", @"CCT: The upload task is about to begin.");
     [self.currentTask resume];
   });
 }
 
-- (BOOL)readyToUploadWithConditions:(GDTUploadConditions)conditions {
+- (BOOL)readyToUploadWithConditions:(GDTCORUploadConditions)conditions {
   __block BOOL result = NO;
   dispatch_sync(_uploaderQueue, ^{
     if (self->_currentUploadPackage) {
       result = NO;
+      GDTCORLogDebug("%@", @"CCT: can't upload because a package is in flight");
       return;
     }
     if (self->_currentTask) {
       result = NO;
+      GDTCORLogDebug("%@", @"CCT: can't upload because a task is in progress");
       return;
     }
-    if ((conditions & GDTUploadConditionHighPriority) == GDTUploadConditionHighPriority) {
+    if ((conditions & GDTCORUploadConditionHighPriority) == GDTCORUploadConditionHighPriority) {
       result = YES;
+      GDTCORLogDebug("%@", @"CCT: a high priority event is allowing an upload");
       return;
     } else if (self->_nextUploadTime) {
-      result = [[GDTClock snapshot] isAfter:self->_nextUploadTime];
+      result = [[GDTCORClock snapshot] isAfter:self->_nextUploadTime];
+#if !NDEBUG
+      if (result) {
+        GDTCORLogDebug("%@", @"CCT: can upload because the request wait time has transpired");
+      } else {
+        GDTCORLogDebug("%@", @"CCT: can't upload because the backend asked to wait");
+      }
+#endif  // !NDEBUG
       return;
     }
+    GDTCORLogDebug("%@", @"CCT: can upload because nothing is preventing it");
     result = YES;
   });
   return result;
@@ -167,12 +214,12 @@
  * @param package The upload package used to construct the request proto bytes.
  * @return Proto bytes representing a gdt_cct_LogRequest object.
  */
-- (nonnull NSData *)constructRequestProtoFromPackage:(GDTUploadPackage *)package {
+- (nonnull NSData *)constructRequestProtoFromPackage:(GDTCORUploadPackage *)package {
   // Segment the log events by log type.
-  NSMutableDictionary<NSString *, NSMutableSet<GDTStoredEvent *> *> *logMappingIDToLogSet =
+  NSMutableDictionary<NSString *, NSMutableSet<GDTCORStoredEvent *> *> *logMappingIDToLogSet =
       [[NSMutableDictionary alloc] init];
   [package.events
-      enumerateObjectsUsingBlock:^(GDTStoredEvent *_Nonnull event, BOOL *_Nonnull stop) {
+      enumerateObjectsUsingBlock:^(GDTCORStoredEvent *_Nonnull event, BOOL *_Nonnull stop) {
         NSMutableSet *logSet = logMappingIDToLogSet[event.mappingID];
         logSet = logSet ? logSet : [[NSMutableSet alloc] init];
         [logSet addObject:event];
@@ -187,9 +234,31 @@
   return data ? data : [[NSData alloc] init];
 }
 
-#pragma mark - GDTUploadPackageProtocol
+/** Constructs a request to CCT given a URL and request body data.
+ *
+ * @param URL The URL to send the request to.
+ * @param data The request body data.
+ * @return A new NSURLRequest ready to be sent to CCT.
+ */
+- (NSURLRequest *)constructRequestWithURL:(NSURL *)URL data:(NSData *)data {
+  BOOL isGzipped = [GDTCCTCompressionHelper isGzipped:data];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+  [request setValue:@"application/x-protobuf" forHTTPHeaderField:@"Content-Type"];
+  if (isGzipped) {
+    [request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
+  }
+  [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+  NSString *userAgent = [NSString stringWithFormat:@"datatransport/%@ cctsupport/%@ apple/",
+                                                   kGDTCORVersion, kGDTCCTSupportSDKVersion];
+  [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+  request.HTTPMethod = @"POST";
+  [request setHTTPBody:data];
+  return request;
+}
 
-- (void)packageExpired:(GDTUploadPackage *)package {
+#pragma mark - GDTCORUploadPackageProtocol
+
+- (void)packageExpired:(GDTCORUploadPackage *)package {
   dispatch_async(_uploaderQueue, ^{
     [self.currentTask cancel];
     self.currentTask = nil;
@@ -197,27 +266,9 @@
   });
 }
 
-#pragma mark - GDTLifecycleProtocol
+#pragma mark - GDTCORLifecycleProtocol
 
-- (void)appWillBackground:(GDTApplication *)app {
-  _runningInBackground = YES;
-  __block GDTBackgroundIdentifier bgID = [app beginBackgroundTaskWithExpirationHandler:^{
-    if (bgID != GDTBackgroundIdentifierInvalid) {
-      [app endBackgroundTask:bgID];
-    }
-  }];
-  if (bgID != GDTBackgroundIdentifierInvalid) {
-    dispatch_async(_uploaderQueue, ^{
-      [[GDTApplication sharedApplication] endBackgroundTask:bgID];
-    });
-  }
-}
-
-- (void)appWillForeground:(GDTApplication *)app {
-  _runningInBackground = NO;
-}
-
-- (void)appWillTerminate:(GDTApplication *)application {
+- (void)appWillTerminate:(GDTCORApplication *)application {
   dispatch_sync(_uploaderQueue, ^{
     [self.currentTask cancel];
     [self.currentUploadPackage completeDelivery];
