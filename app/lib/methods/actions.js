@@ -2,8 +2,6 @@ import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
 
-const TRIGGER_TIMEOUT = 5000;
-
 const ACTION_TYPES = {
 	ACTION: 'blockAction',
 	SUBMIT: 'viewSubmit',
@@ -34,7 +32,7 @@ const invalidateTriggerId = (id) => {
 export const generateTriggerId = (appId) => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
-	setTimeout(invalidateTriggerId, TRIGGER_TIMEOUT, triggerId);
+
 	return triggerId;
 };
 
@@ -100,17 +98,15 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 export function triggerAction({
 	type, actionId, appId, rid, mid, viewId, container, ...rest
 }) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async(resolve) => {
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
 
-		setTimeout(reject, TRIGGER_TIMEOUT, triggerId);
-
-		const { userId, authToken } = this.sdk.currentLogin;
-		const { host } = this.sdk.client;
-
 		try {
+			const { userId, authToken } = this.sdk.currentLogin;
+			const { host } = this.sdk.client;
+
 			// we need to use fetch because this.sdk.post add /v1 to url
 			const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
 				method: 'POST',
@@ -144,7 +140,6 @@ export function triggerAction({
 		} catch (e) {
 			// do nothing
 		}
-		return reject();
 	});
 }
 
@@ -158,15 +153,11 @@ export async function triggerSubmitView({ viewId, ...options }) {
 		if (!result || MODAL_ACTIONS.CLOSE === result) {
 			Navigation.back();
 		}
-	} catch (e) {
-		Navigation.back();
+	} catch {
+		// do nothing
 	}
 }
 
-export async function triggerCancel({ view, ...options }) {
-	try {
-		await triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
-	} finally {
-		Navigation.back();
-	}
+export function triggerCancel({ view, ...options }) {
+	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
 }

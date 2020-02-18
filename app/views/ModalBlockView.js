@@ -17,6 +17,7 @@ import { MODAL_ACTIONS, CONTAINER_TYPES } from '../lib/methods/actions';
 
 import sharedStyles from './Styles';
 import { textParser } from '../containers/UIKit/utils';
+import Navigation from '../lib/Navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -154,10 +155,19 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
+	invalidateSubmit = () => setTimeout(() => this.setState({ loading: false }), 5000);
+
 	cancel = async({ closeModal }) => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
-		this.setState({ loading: true });
+
+		// handle tablet case
+		if (closeModal) {
+			closeModal();
+		} else {
+			Navigation.back();
+		}
+
 		try {
 			await RocketChat.triggerCancel({
 				appId,
@@ -172,11 +182,6 @@ class ModalBlockView extends React.Component {
 		} catch (e) {
 			// do nothing
 		}
-		// handle tablet case
-		if (closeModal) {
-			closeModal();
-		}
-		this.setState({ loading: false });
 	}
 
 	submit = async() => {
@@ -187,6 +192,9 @@ class ModalBlockView extends React.Component {
 		this.submitting = true;
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
+
+		this.invalidateSubmit();
+
 		try {
 			await RocketChat.triggerSubmitView({
 				viewId,
