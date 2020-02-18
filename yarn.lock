@@ -1423,13 +1423,13 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@nozbe/watermelondb@0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.15.0.tgz#b5f2f89b5a7a4edf62f7c678c0f93737e02db2f2"
-  integrity sha512-W16K+R/jF6AWiqkCoCy6jyK3chZ/3uQ7D3fFIhFB6y+o9hjrNxRDUpz3jECm4P8H+StfW2e4YBogl1LA3UtaqQ==
+"@nozbe/watermelondb@^0.16.0-9":
+  version "0.16.0-9"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.16.0-9.tgz#0a8cf62d846b9d0f77179e3b41412d1fab181b53"
+  integrity sha512-6I2lr6hGM2VPtpy3treOpeRTxdMEHJHscPEA3WpWxLtrFH3dNpQ27yH2eoXt1N9mfkuF6MWJlqytit+KwXAE7A==
   dependencies:
     lodash.clonedeep "^4.5.0"
-    lokijs "git+https://github.com/Nozbe/LokiJS.git#384b80f"
+    lokijs "git+https://github.com/Nozbe/LokiJS.git#d08f660"
     rambdax "2.15.0"
     rxjs "^6.2.2"
     rxjs-compat "^6.3.2"
@@ -7409,9 +7409,9 @@ logkitty@^0.6.0:
     dayjs "^1.8.15"
     yargs "^12.0.5"
 
-"lokijs@git+https://github.com/Nozbe/LokiJS.git#384b80f":
+"lokijs@git+https://github.com/Nozbe/LokiJS.git#d08f660":
   version "1.5.7"
-  resolved "git+https://github.com/Nozbe/LokiJS.git#384b80f26edbf123c277a9cee02437a43467f9ac"
+  resolved "git+https://github.com/Nozbe/LokiJS.git#d08f660794be558529f5ba049fe2868d4f243ec4"
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"

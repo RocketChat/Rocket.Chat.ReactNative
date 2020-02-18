@@ -24,7 +24,7 @@ const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: navigation.state.params.name,
+		title: I18n.t(navigation.state.params.name),
 		...themedHeader(screenProps.theme)
 	});
 
@@ -74,6 +74,14 @@ class MessagesView extends React.Component {
 		return false;
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
 		const { user, baseUrl, theme } = this.props;
@@ -88,7 +96,8 @@ class MessagesView extends React.Component {
 			isHeader: true,
 			attachments: item.attachments || [],
 			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji
+			getCustomEmoji: this.getCustomEmoji,
+			navToRoomInfo: this.navToRoomInfo
 		});
 
 		return ({

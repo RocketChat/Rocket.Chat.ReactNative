@@ -5,6 +5,9 @@ export default {
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
 	},
+	Accounts_EmailVerification: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_NamePlaceholder: {
 		type: 'valueAsString'
 	},
