@@ -16,6 +16,7 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
+import { isIOS } from '../utils/deviceInfo';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -75,7 +76,9 @@ class DefaultBrowserView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.init();
+		if (isIOS) {
+			this.init();
+		}
 	}
 
 	async componentDidMount() {
