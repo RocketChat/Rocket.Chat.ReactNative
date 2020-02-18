@@ -359,6 +359,7 @@ class LoginSignupView extends React.Component {
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
+		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
 		switch (service.authType) {
@@ -384,8 +385,8 @@ class LoginSignupView extends React.Component {
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		const { CAS_enabled, theme } = this.props;
 		let buttonText;
-		if (service.service === 'saml' || (service.service === 'cas' && CAS_enabled)) {
-			buttonText = <Text style={styles.serviceName}>{name}</Text>;
+		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
+			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{name}</Text>;
 		} else {
 			buttonText = (
 				<>
@@ -397,7 +398,7 @@ class LoginSignupView extends React.Component {
 			<Touch
 				key={service.name}
 				onPress={onPress}
-				style={styles.serviceButton}
+				style={[styles.serviceButton, isSaml && { backgroundColor: service.buttonColor }]}
 				theme={theme}
 			>
 				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
@@ -416,7 +417,6 @@ class LoginSignupView extends React.Component {
 			overflow: 'hidden',
 			height: servicesHeight
 		};
-
 
 		if (length > 3 && Accounts_ShowFormLogin) {
 			return (
