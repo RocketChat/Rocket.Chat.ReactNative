@@ -450,6 +450,8 @@ export default {
 	Username: 'Username',
 	Username_or_email: 'Username or email',
 	Validating: 'Validating',
+	Verify_email_title: 'Registration Succeeded!',
+	Verify_email_desc: 'We have sent you an email to confirm your registration. If you do not receive an email shortly, please come back and try again.',
 	Video_call: 'Video call',
 	View_Original: 'View Original',
 	Voice_call: 'Voice call',

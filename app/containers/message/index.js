@@ -1,6 +1,6 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
+import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
 import debounce from '../../utils/debounce';
@@ -50,7 +50,20 @@ class MessageContainer extends React.Component {
 	}
 
 	static defaultProps = {
+		getCustomEmoji: () => {},
 		onLongPress: () => {},
+		onReactionPress: () => {},
+		onDiscussionPress: () => {},
+		onThreadPress: () => {},
+		errorActionsShow: () => {},
+		replyBroadcast: () => {},
+		reactionInit: () => {},
+		fetchThreadName: () => {},
+		showAttachment: () => {},
+		onReactionLongPress: () => {},
+		navToRoomInfo: () => {},
+		callJitsi: () => {},
+		blockAction: () => {},
 		archived: false,
 		broadcast: false,
 		theme: 'light'
@@ -82,7 +95,7 @@ class MessageContainer extends React.Component {
 
 	onPress = debounce(() => {
 		const { item, isThreadRoom } = this.props;
-		Keyboard.dismiss();
+		KeyboardUtils.dismiss();
 
 		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
