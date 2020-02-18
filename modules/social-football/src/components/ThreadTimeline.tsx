@@ -24,21 +24,21 @@ interface ImageThread extends ThreadPreview {
 }
 
 const threadPreview: ThreadPreview = {
-  Title: "penis",
+  Title: "threadpreview test",
   Balls: 2,
   ThreadType: ThreadType.Program,
   render: getNumber,
-  previewText: "dit is een penis"
+  previewText: "dit is een dit is een thread preview"
 };
 
 /**
  * function createImageThread (File file) : ImageThread{
     return  {
-        Title : "penis",
+        Title : "createimagethread test",
         Balls : 2,
         ThreadType : ThreadType.Program,
         render : getNumber,
-        previewText : "dit is een penis",
+        previewText : "dit is een dit is een threadimage preview",
         image : Image,
     };
 }
