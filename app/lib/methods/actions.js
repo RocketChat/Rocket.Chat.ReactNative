@@ -2,8 +2,6 @@ import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import Navigation from '../Navigation';
 
-const TRIGGER_TIMEOUT = 5000;
-
 const ACTION_TYPES = {
 	ACTION: 'blockAction',
 	SUBMIT: 'viewSubmit',
@@ -34,7 +32,7 @@ const invalidateTriggerId = (id) => {
 export const generateTriggerId = (appId) => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
-	setTimeout(invalidateTriggerId, TRIGGER_TIMEOUT, triggerId);
+
 	return triggerId;
 };
 
@@ -105,12 +103,10 @@ export function triggerAction({
 
 		const payload = rest.payload || rest;
 
-		setTimeout(reject, TRIGGER_TIMEOUT, triggerId);
-
-		const { userId, authToken } = this.sdk.currentLogin;
-		const { host } = this.sdk.client;
-
 		try {
+			const { userId, authToken } = this.sdk.currentLogin;
+			const { host } = this.sdk.client;
+
 			// we need to use fetch because this.sdk.post add /v1 to url
 			const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
 				method: 'POST',
@@ -133,11 +129,7 @@ export function triggerAction({
 
 			try {
 				const { type: interactionType, ...data } = await result.json();
-				handlePayloadUserInteraction(interactionType, data);
-
-				if (data.success) {
-					return resolve();
-				}
+				return resolve(handlePayloadUserInteraction(interactionType, data));
 			} catch (e) {
 				// modal.close has no body, so result.json will fail
 				// but it returns ok status
@@ -156,8 +148,11 @@ export default function triggerBlockAction(options) {
 	return triggerAction.call(this, { type: ACTION_TYPES.ACTION, ...options });
 }
 
-export function triggerSubmitView({ viewId, ...options }) {
-	return triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+export async function triggerSubmitView({ viewId, ...options }) {
+	const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+	if (!result || MODAL_ACTIONS.CLOSE === result) {
+		Navigation.back();
+	}
 }
 
 export function triggerCancel({ view, ...options }) {
