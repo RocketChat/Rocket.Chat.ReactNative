@@ -1,38 +1,85 @@
-# JavaScript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:8
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+    working_directory: ~/project
+    docker: 
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
+          name: Restore Yarn Package Cache
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn test
-      - save_cache:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - run: yarn run test
+      - persist_to_workspace:
+          root: ~/project
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - store_test_results:
+          path: ~/project/junit.xml
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            
+  android: 
+    working_directory: ~/project/android
+    docker:
+      - image: circleci/android:api-29
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
+      - run: bundle install
+      - run: bundle exec fastlane test
+      - store_test_results:
+          path: ~/project/android/reports
+
+  ios:
+    macos:
+      xcode: "9.0"
+    workspace: /Users/distiller/project/ios
+    environment:
+      FL_OUTPUT_DIR: /Users/distiller/project/output
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout:
+          path: /Users/distiller/project
+      - run:
+          name: Set Ruby Version
+          command: echo "ruby-2.4" >~/.ruby-version
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: brew install node
+      - run: yarn
+      - run: bundle install
+      - run: bundle exec fastlane test
+      - run:
+          command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
+          when: always
+      - store_artifacts:
+          path: /Users/distiller/project/output
+      - store_test_results:
+          path: /Users/distiller/project/output/scan
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
 workflows:
   version: 2
-  build-and-lint:
+  node-android-ios:
     jobs:
       - build
+      - android:
+          requires:
+            - build
+      - ios:
+          requires:
+            - build
