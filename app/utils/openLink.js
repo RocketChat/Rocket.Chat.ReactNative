@@ -10,7 +10,6 @@ export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 const scheme = {
 	chrome: 'googlechrome:',
 	chromeSecure: 'googlechromes:',
-	opera: 'opera-http:',
 	firefox: 'firefox:',
 	brave: 'brave:'
 };
@@ -21,14 +20,12 @@ const appSchemeURL = (url, browser) => {
 	const { protocol } = parsedUrl;
 	const isSecure = ['https:'].includes(protocol);
 
-	if (browser === 'chrome') {
+	if (browser === 'googlechrome') {
 		if (!isSecure) {
 			schemeUrl = url.replace(protocol, scheme.chrome);
 		} else {
 			schemeUrl = url.replace(protocol, scheme.chromeSecure);
 		}
-	} else if (browser === 'opera') {
-		schemeUrl = url.replace(protocol, scheme.opera);
 	} else if (browser === 'firefox') {
 		schemeUrl = `${ scheme.firefox }//open-url?url=${ url }`;
 	} else if (browser === 'brave') {
@@ -43,7 +40,7 @@ const openLink = async(url, theme = 'light') => {
 		const browser = await RNUserDefaults.get(DEFAULT_BROWSER_KEY);
 
 		if (browser) {
-			const schemeUrl = appSchemeURL(url, browser);
+			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
 			await Linking.openURL(schemeUrl);
 			return;
 		}

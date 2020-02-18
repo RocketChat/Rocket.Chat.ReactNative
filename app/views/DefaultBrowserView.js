@@ -34,10 +34,6 @@ const BROWSERS = [
 		value: 'googlechrome:'
 	},
 	{
-		title: 'Opera',
-		value: 'opera-http:'
-	},
-	{
 		title: 'Firefox',
 		value: 'firefox:'
 	},
