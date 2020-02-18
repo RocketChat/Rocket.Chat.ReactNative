@@ -15,34 +15,35 @@ import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
+import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 
-export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
-const defaultBrowsers = ['inApp', 'systemDefault'];
-
-const BROWSERS = [
+const DEFAULT_BROWSERS = [
 	{
-		title: 'inApp',
+		title: I18n.t('In_app'),
 		value: 'inApp'
 	},
 	{
-		title: 'systemDefault',
-		value: 'systemDefault'
+		title: I18n.t('Default'),
+		value: 'systemDefault:'
+	}
+];
+
+const BROWSERS = [
+	{
+		title: 'Chrome',
+		value: 'googlechrome:'
 	},
 	{
-		title: 'chrome',
-		value: 'googlechrome://'
+		title: 'Opera',
+		value: 'opera-http:'
 	},
 	{
-		title: 'opera',
-		value: 'opera-http://'
+		title: 'Firefox',
+		value: 'firefox:'
 	},
 	{
-		title: 'firefox',
-		value: 'firefox://'
-	},
-	{
-		title: 'brave',
-		value: 'brave://'
+		title: 'Brave',
+		value: 'brave:'
 	}
 ];
 
@@ -73,7 +74,7 @@ class DefaultBrowserView extends React.Component {
 
 	state = {
 		browser: null,
-		supported: BROWSERS.filter(browser => defaultBrowsers.includes(browser.value))
+		supported: []
 	}
 
 	constructor(props) {
@@ -92,33 +93,32 @@ class DefaultBrowserView extends React.Component {
 	}
 
 	init = () => {
-		BROWSERS.filter(browser => !defaultBrowsers.includes(browser.value))
-			.forEach((browser) => {
-				const { value } = browser;
-				Linking.canOpenURL(value).then((installed) => {
-					if (installed) {
-						if (this.mounted) {
-							this.setState(({ supported }) => ({ supported: [...supported, browser] }));
-						} else {
-							const { supported } = this.state;
-							this.state.supported = [...supported, browser];
-						}
+		BROWSERS.forEach((browser) => {
+			const { value } = browser;
+			Linking.canOpenURL(value).then((installed) => {
+				if (installed) {
+					if (this.mounted) {
+						this.setState(({ supported }) => ({ supported: [...supported, browser] }));
+					} else {
+						const { supported } = this.state;
+						this.state.supported = [...supported, browser];
 					}
-				});
+				}
 			});
+		});
 	}
 
 	isSelected = (value) => {
 		const { browser } = this.state;
-		if (!browser && value === 'inApp://') {
+		if (!browser && value === 'inApp') {
 			return true;
 		}
-		return browser === value.replace('://', '');
+		return browser === value;
 	}
 
 	changeDefaultBrowser = async(newBrowser) => {
 		try {
-			const browser = newBrowser.replace('://', '');
+			const browser = newBrowser !== 'inApp' ? newBrowser : null;
 			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
@@ -142,7 +142,7 @@ class DefaultBrowserView extends React.Component {
 		return (
 			<ListItem
 				title={title}
-				onPress={() => this.changeDefaultBrowser(value !== 'inApp' ? value : null)}
+				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${ title }`}
 				right={this.isSelected(value) ? this.renderIcon : null}
 				theme={theme}
@@ -155,7 +155,7 @@ class DefaultBrowserView extends React.Component {
 		return (
 			<>
 				<View style={styles.info}>
-					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>choose a browser</Text>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{I18n.t('Choose_a_browser')}</Text>
 				</View>
 				{this.renderSeparator()}
 			</>
@@ -169,11 +169,11 @@ class DefaultBrowserView extends React.Component {
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
-				testID='theme-view'
+				testID='default-browser-view'
 			>
 				<StatusBar theme={theme} />
 				<FlatList
-					data={supported}
+					data={DEFAULT_BROWSERS.concat(supported)}
 					keyExtractor={item => item.value}
 					contentContainerStyle={[
 						styles.list,

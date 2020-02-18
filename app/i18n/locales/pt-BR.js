@@ -134,6 +134,7 @@ export default {
 	Choose: 'Escolher',
 	Choose_from_library: 'Escolha da biblioteca',
 	Choose_file: 'Enviar arquivo',
+	Choose_a_browser: 'Escolha um Navegador',
 	Code: 'Código',
 	Collaborative: 'Colaborativo',
 	Confirm: 'Confirmar',
