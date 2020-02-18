@@ -107,7 +107,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
-  - JitsiMeetSDK (2.4.0)
+  - JitsiMeetSDK (2.6.0)
   - KeyCommands (2.0.3):
     - React
   - libwebp (1.1.0):
@@ -439,7 +439,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`, branch `2.6.0`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -564,6 +564,7 @@ EXTERNAL SOURCES:
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   JitsiMeetSDK:
+    :branch: 2.6.0
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   KeyCommands:
     :path: "../node_modules/react-native-keycommands"
@@ -704,7 +705,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: 0d7b379179ef81965e505677cd10d07956c3a2dc
+    :commit: bbf6d896cfdbd83a1697fbda93df96ea564762c1
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -735,7 +736,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 0048df6388dab1c254799f2a30365b1dffe20422
   GoogleDataTransportCCTSupport: f880d70972efa2ed1be4e9173a0f4c5f3dc2d176
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
-  JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
+  JitsiMeetSDK: 1614ded06ae69ff132a68602cff5e9ff80a1450f
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
@@ -805,6 +806,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 8664abd37a00715727e60df9ecd65e42ba47b548
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 18d0b080112c72e9cc76a381c1baba1172c6ca4d
+PODFILE CHECKSUM: 35c0ce828f72c5bcc9654e3b17c69f405a8f3c62
 
 COCOAPODS: 1.8.4

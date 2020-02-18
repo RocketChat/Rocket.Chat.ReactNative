@@ -1,0 +1,72 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.1.3 (swiftlang-1100.0.282.1 clang-1100.0.33.15)
+// swift-module-flags: -target x86_64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name JitsiMeet
+import AVKit
+import CallKit
+import Foundation
+@_exported import JitsiMeet
+import Swift
+public typealias AnimationCompletion = (Swift.Bool) -> Swift.Void
+public protocol PiPViewCoordinatorDelegate : AnyObject {
+  func exitPictureInPicture()
+}
+public class PiPViewCoordinator {
+  public var dragBoundInsets: UIKit.UIEdgeInsets {
+    get
+    set
+  }
+  public enum Position {
+    case lowerRightCorner
+    case upperRightCorner
+    case lowerLeftCorner
+    case upperLeftCorner
+    public static func == (a: JitsiMeet.PiPViewCoordinator.Position, b: JitsiMeet.PiPViewCoordinator.Position) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public var initialPositionInSuperview: JitsiMeet.PiPViewCoordinator.Position
+  public var pipSizeRatio: CoreGraphics.CGFloat
+  weak public var delegate: JitsiMeet.PiPViewCoordinatorDelegate?
+  public init(withView view: UIKit.UIView)
+  public func configureAsStickyView(withParentView parentView: UIKit.UIView? = nil)
+  public func show(completion: JitsiMeet.AnimationCompletion? = nil)
+  public func hide(completion: JitsiMeet.AnimationCompletion? = nil)
+  public func enterPictureInPicture()
+  @objc public func exitPictureInPicture()
+  public func resetBounds(bounds: CoreGraphics.CGRect)
+  public func stopDragGesture()
+  open func configureExitPiPButton(target: Any, action: ObjectiveC.Selector) -> UIKit.UIButton
+  @objc deinit
+}
+@objc final public class JMCallKitProxy : ObjectiveC.NSObject {
+  @objc public static var enabled: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public static func configureProvider(localizedName: Swift.String, ringtoneSound: Swift.String?, iconTemplateImageData: Foundation.Data?)
+  @objc public static func isProviderConfigured() -> Swift.Bool
+  @objc public static func addListener(_ listener: JitsiMeet.JMCallKitListener)
+  @objc public static func removeListener(_ listener: JitsiMeet.JMCallKitListener)
+  @objc public static func hasActiveCallForUUID(_ callUUID: Swift.String) -> Swift.Bool
+  @objc public static func reportNewIncomingCall(UUID: Foundation.UUID, handle: Swift.String?, displayName: Swift.String?, hasVideo: Swift.Bool, completion: @escaping (Swift.Error?) -> Swift.Void)
+  @objc public static func reportCallUpdate(with UUID: Foundation.UUID, handle: Swift.String?, displayName: Swift.String?, hasVideo: Swift.Bool)
+  @objc public static func reportCall(with UUID: Foundation.UUID, endedAt dateEnded: Foundation.Date?, reason endedReason: CallKit.CXCallEndedReason)
+  @objc public static func reportOutgoingCall(with UUID: Foundation.UUID, startedConnectingAt dateStartedConnecting: Foundation.Date?)
+  @objc public static func reportOutgoingCall(with UUID: Foundation.UUID, connectedAt dateConnected: Foundation.Date?)
+  @objc public static func request(_ transaction: CallKit.CXTransaction, completion: @escaping (Swift.Error?) -> Swift.Void)
+  @objc deinit
+}
+@objc public protocol JMCallKitListener : ObjectiveC.NSObjectProtocol {
+  @objc optional func providerDidReset()
+  @objc optional func performAnswerCall(UUID: Foundation.UUID)
+  @objc optional func performEndCall(UUID: Foundation.UUID)
+  @objc optional func performSetMutedCall(UUID: Foundation.UUID, isMuted: Swift.Bool)
+  @objc optional func performStartCall(UUID: Foundation.UUID, isVideo: Swift.Bool)
+  @objc optional func providerDidActivateAudioSession(session: AVFoundation.AVAudioSession)
+  @objc optional func providerDidDeactivateAudioSession(session: AVFoundation.AVAudioSession)
+  @objc optional func providerTimedOutPerformingAction(action: CallKit.CXAction)
+}
+extension JitsiMeet.PiPViewCoordinator.Position : Swift.Equatable {}
+extension JitsiMeet.PiPViewCoordinator.Position : Swift.Hashable {}
