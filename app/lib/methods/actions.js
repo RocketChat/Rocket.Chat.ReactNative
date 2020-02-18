@@ -98,7 +98,7 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 export function triggerAction({
 	type, actionId, appId, rid, mid, viewId, container, ...rest
 }) {
-	return new Promise(async(resolve) => {
+	return new Promise(async(resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
@@ -140,6 +140,7 @@ export function triggerAction({
 		} catch (e) {
 			// do nothing
 		}
+		return reject();
 	});
 }
 
@@ -148,13 +149,9 @@ export default function triggerBlockAction(options) {
 }
 
 export async function triggerSubmitView({ viewId, ...options }) {
-	try {
-		const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
-		if (!result || MODAL_ACTIONS.CLOSE === result) {
-			Navigation.back();
-		}
-	} catch {
-		// do nothing
+	const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
+	if (!result || MODAL_ACTIONS.CLOSE === result) {
+		Navigation.back();
 	}
 }
 

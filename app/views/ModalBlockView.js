@@ -61,6 +61,7 @@ class ModalBlockView extends React.Component {
 		const { theme, closeModal } = screenProps;
 		const data = navigation.getParam('data');
 		const cancel = navigation.getParam('cancel', () => {});
+		const submitting = navigation.getParam('submitting', false);
 		const { view } = data;
 		const { title, submit, close } = view;
 		return {
@@ -71,7 +72,7 @@ class ModalBlockView extends React.Component {
 					<Item
 						title={textParser([close.text])}
 						style={styles.submit}
-						onPress={() => cancel({ closeModal })}
+						onPress={!submitting && (() => cancel({ closeModal }))}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
@@ -81,7 +82,7 @@ class ModalBlockView extends React.Component {
 					<Item
 						title={textParser([submit.text])}
 						style={styles.submit}
-						onPress={navigation.getParam('submit', () => {})}
+						onPress={!submitting && (navigation.getParam('submit', () => {}))}
 						testID='submit-modal-uikit'
 					/>
 				</CustomHeaderButtons>
@@ -155,8 +156,6 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
-	invalidateSubmit = () => setTimeout(() => this.setState({ loading: false }), 5000);
-
 	cancel = async({ closeModal }) => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
@@ -186,15 +185,11 @@ class ModalBlockView extends React.Component {
 
 	submit = async() => {
 		const { data } = this.state;
-		if (this.submitting) {
-			return;
-		}
-		this.submitting = true;
+		const { navigation } = this.props;
+		navigation.setParams({ submitting: true });
+
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
-
-		this.invalidateSubmit();
-
 		try {
 			await RocketChat.triggerSubmitView({
 				viewId,
@@ -209,7 +204,8 @@ class ModalBlockView extends React.Component {
 		} catch (e) {
 			// do nothing
 		}
-		this.submitting = false;
+
+		navigation.setParams({ submitting: false });
 		this.setState({ loading: false });
 	};
 
