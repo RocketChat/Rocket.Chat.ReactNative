@@ -50,9 +50,8 @@ const styles = StyleSheet.create({
     }
 });
 
-const RegisterPage = ({ navigation }) => {    
+const RegisterPage = ({ navigation }) => {
     const [performRegistration, {data, loading, error }] = useMutation<{ register: TokenPair }>(REGISTER);
-    const [registerFailed, setRegisterFailed] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
     const [firstName, setFirstName] = useState(null);
@@ -62,38 +61,31 @@ const RegisterPage = ({ navigation }) => {
     const [email, setEmail] = useState(null);
 
     const onRegisterPress = async () => {
-        setRegisterFailed(false);
         setSubmitted(true);
 
-        try {
-            const result = await performRegistration({
-                variables: {
-                    user: {
-                        username,
-                        password,
-                        firstName,
-                        lastName,
-                        email,
-                    }
+        const result = await performRegistration({
+            variables: {
+                user: {
+                    username,
+                    password,
+                    firstName,
+                    lastName,
+                    email,
                 }
-            });
-            
-            SecurityManager.storeTokens(result.data!.register);
-            SecurityManager.setLoggedIn(true);
-        } catch (error) {
-            console.info(JSON.stringify(error));
+            }
+        });
 
-            setRegisterFailed(true);
-        }
+        await SecurityManager.storeTokens(result.data!.register);
+        SecurityManager.setLoggedIn(true);
     };
 
     const renderRegisterFailed = () => {
-        if ((error?.graphQLErrors.length ?? 0) > 0) {
-            return <Alert title={error?.graphQLErrors.map(error => error.message).join(', ')!} />
+        if (error!.graphQLErrors.length > 0) {
+            return <Alert title={error!.graphQLErrors.map(error => error.message).join(', ')!} />
         } else {
             return <Alert title={i18n.t('register.error')} />
         }
-    }
+    };
 
     return <KeyboardUtilityView>
         <View style={styles.container}>
@@ -106,10 +98,11 @@ const RegisterPage = ({ navigation }) => {
             </View>
 
             <View style={[styles.form]}>
-                {registerFailed ? renderRegisterFailed() : null}
+                {error ? renderRegisterFailed() : null}
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.firstName.label')}</Text>
-                    <TextInput value={firstName}
+                    <TextInput id={'firstName'}
+                               value={firstName}
                                required={true}
                                submitted={submitted}
                                onChangeText={value => setFirstName(value)}
@@ -118,7 +111,8 @@ const RegisterPage = ({ navigation }) => {
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.lastName.label')}</Text>
-                    <TextInput value={lastName}
+                    <TextInput id={'lastName'}
+                               value={lastName}
                                required={true}
                                submitted={submitted}
                                onChangeText={value => setLastName(value)}
@@ -127,7 +121,8 @@ const RegisterPage = ({ navigation }) => {
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.email.label')}</Text>
-                    <TextInput autoCompleteType='email'
+                    <TextInput id={'email'}
+                               autoCompleteType='email'
                                textContentType='email'
                                keyboardType='email-address'
                                autoCapitalize='none'
@@ -141,7 +136,8 @@ const RegisterPage = ({ navigation }) => {
                 <View style={styles.separator} />
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.username.label')}</Text>
-                    <TextInput autoCompleteType='username'
+                    <TextInput id={'username'}
+                               autoCompleteType='username'
                                textContentType='username'
                                autoCapitalize='none'
                                value={username}
@@ -153,7 +149,8 @@ const RegisterPage = ({ navigation }) => {
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('register.password.label')}</Text>
-                    <TextInput secureTextEntry={true}
+                    <TextInput id={'password'}
+                               secureTextEntry={true}
                                value={password}
                                onChangeText={value => setPassword(value)}
                                autoCompleteType='password'
@@ -164,14 +161,14 @@ const RegisterPage = ({ navigation }) => {
                                placeholderTextColor={appColors.placeholder} />
                 </View>
                 <View style={[appStyles.formGroup]}>
-                    <Button loading={loading} title={i18n.t('register.submit.label')} onPress={onRegisterPress} />
+                    <Button id={'submit'} loading={loading} title={i18n.t('register.submit.label')} onPress={onRegisterPress} />
                 </View>
             </View>
             <View style={[styles.loginLabel]}>
                 <Text style={[appStyles.text]}>{i18n.t('register.login.separator')}</Text>
             </View>
             <View style={[styles.loginLink]}>
-                <Link title={i18n.t('register.login.link')} onPress={() => navigation.pop()} />
+                <Link id={'login'} title={i18n.t('register.login.link')} onPress={() => navigation.pop()} />
             </View>
         </View>
     </KeyboardUtilityView>

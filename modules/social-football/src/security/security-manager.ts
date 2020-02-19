@@ -54,7 +54,7 @@ class SecurityManager {
         return !!(await this.getUser());
     }
 
-    private async refreshToken(): Promise<string|null> {
+    public async refreshToken(): Promise<string|null> {
         const refreshToken = await RNUserDefaults.get(SecurityManager.REFRESH_TOKEN_KEY);
 
         if (refreshToken) {
@@ -106,12 +106,13 @@ class SecurityManager {
     }
 
     public setLoggedIn(value: boolean) {
-        this.loginSubject.next(true);
+        this.loginSubject.next(value);
     }
 
-    private isTokenExpired(payload: any) {
+    public isTokenExpired(payload: any) {
         return (Date.now() / 1000) > payload.exp;
     }
 }
 
+export { SecurityManager as TestableSecurityManager };
 export default new SecurityManager();

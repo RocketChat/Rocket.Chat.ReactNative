@@ -28,7 +28,7 @@ export const TextInput: React.FunctionComponent<any> = ({ required, submitted, o
                             onChangeText={(value) => {
                                 setValue(value);
                                 setTyped(true);
-                                
+
                                 onChangeText(value);
                             }}
                             {...props} />
