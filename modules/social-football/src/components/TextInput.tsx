@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 export const TextInput: React.FunctionComponent<any> = ({ required, submitted, onChangeText, ...props }) => {
     const [typed, setTyped] = useState(false);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState<string|null>(null);
     const valid = !required || (value?.length ?? 0) > 0;
     const dirty = typed || submitted;
 
