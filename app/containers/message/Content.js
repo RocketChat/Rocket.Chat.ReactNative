@@ -32,6 +32,7 @@ const Content = React.memo((props) => {
 				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
+				getName={props.getName}
 				theme={props.theme}
 			/>
 		);
@@ -58,7 +59,8 @@ Content.propTypes = {
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	getName: PropTypes.func
 };
 Content.displayName = 'MessageContent';
 

@@ -39,7 +39,7 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, theme
+	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, getName, theme
 }) => {
 	const date = formatDate(_updatedAt);
 
@@ -110,7 +110,7 @@ const RoomItem = React.memo(({
 							ellipsizeMode='tail'
 							numberOfLines={1}
 						>
-							{name}
+							{getName({ name, username })}
 						</Text>
 						{_updatedAt ? (
 							<Text
@@ -144,6 +144,7 @@ const RoomItem = React.memo(({
 							showLastMessage={showLastMessage}
 							username={username}
 							alert={alert && !hideUnreadStatus}
+							getName={getName}
 							theme={theme}
 						/>
 						<UnreadBadge
@@ -187,12 +188,14 @@ RoomItem.propTypes = {
 	hideChannel: PropTypes.func,
 	avatar: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
+	getName: PropTypes.func,
 	theme: PropTypes.string
 };
 
 RoomItem.defaultProps = {
 	avatarSize: 48,
-	status: 'offline'
+	status: 'offline',
+	getName: user => user.username
 };
 
 const mapStateToProps = (state, ownProps) => ({

@@ -519,6 +519,8 @@ class RoomsListView extends React.Component {
 		}
 	}, 300);
 
+	getName = user => RocketChat.getName(user)
+
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
@@ -791,6 +793,7 @@ class RoomsListView extends React.Component {
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
+				getName={this.getName}
 			/>
 		);
 	};
