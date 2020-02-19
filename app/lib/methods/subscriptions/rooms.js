@@ -242,12 +242,12 @@ export default function subscribeRooms() {
 					log(e);
 				}
 			} else {
-				// debouncedUpdateSub(data);
+				debouncedUpdateSub(data);
 			}
 		}
 		if (/rooms/.test(ev)) {
 			if (type === 'updated' || type === 'inserted') {
-				// debouncedUpdateRoom(data);
+				debouncedUpdateRoom(data);
 			}
 		}
 		if (/message/.test(ev)) {

@@ -1096,7 +1096,7 @@ const RocketChat = {
 					InteractionManager.runAfterInteractions(() => {
 						reduxStore.dispatch(setActiveUsers(activeUsers));
 					});
-					// this.sdk.subscribe('stream-notify-logged', 'user-status');
+					this.sdk.subscribe('stream-notify-logged', 'user-status');
 					return resolve();
 				}
 			}
