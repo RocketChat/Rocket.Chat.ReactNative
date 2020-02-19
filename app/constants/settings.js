@@ -17,6 +17,9 @@ export default {
 	Accounts_PasswordReset: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_RegistrationForm: {
+		type: 'valueAsString'
+	},
 	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
