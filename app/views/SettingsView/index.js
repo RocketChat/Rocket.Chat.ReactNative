@@ -138,9 +138,9 @@ class SettingsView extends React.Component {
 		}
 	}
 
-	navigateToRoom = (room) => {
+	navigateToScreen = (screen) => {
 		const { navigation } = this.props;
-		navigation.navigate(room);
+		navigation.navigate(screen);
 	}
 
 	sendEmail = async() => {
@@ -173,11 +173,6 @@ class SettingsView extends React.Component {
 	saveToClipboard = async(content) => {
 		await Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	}
-
-	changeTheme = () => {
-		const { navigation } = this.props;
-		navigation.navigate('ThemeView');
 	}
 
 	onPressLicense = () => {
@@ -234,7 +229,7 @@ class SettingsView extends React.Component {
 							<SectionSeparator theme={theme} />
 							<ListItem
 								title={I18n.t('Profile')}
-								onPress={() => this.navigateToRoom('ProfileView')}
+								onPress={() => this.navigateToScreen('ProfileView')}
 								showActionIndicator
 								testID='settings-profile'
 								right={this.renderDisclosure}
@@ -255,7 +250,7 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Language')}
-						onPress={() => this.navigateToRoom('LanguageView')}
+						onPress={() => this.navigateToScreen('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
 						right={this.renderDisclosure}
@@ -281,9 +276,18 @@ class SettingsView extends React.Component {
 					/>
 					<Separator theme={theme} />
 					<ListItem
+						title={I18n.t('Default_browser')}
+						showActionIndicator
+						onPress={() => this.navigateToScreen('DefaultBrowserView')}
+						testID='settings-view-default-browser'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
-						onPress={this.changeTheme}
+						onPress={() => this.navigateToScreen('ThemeView')}
 						testID='settings-view-theme'
 						right={this.renderDisclosure}
 						theme={theme}

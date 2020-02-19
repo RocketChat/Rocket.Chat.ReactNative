@@ -103,5 +103,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+		<string>googlechromes</string>
+		<string>firefox</string>
+		<string>brave</string>
+	</array>
 </dict>
 </plist>
