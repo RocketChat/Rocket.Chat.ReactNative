@@ -4,8 +4,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { useQuery } from '@apollo/react-hooks';
 import { IS_AUTHENTICATED } from './api/queries/authentication.queries';
 import { TokenPayload } from './security/models/token-payload';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import SecurityManager from './security/security-manager';
+import i18n from './i18n';
 
 export const UnaunthenticatedNavigation: any = createAppContainer(createStackNavigator(
     {
@@ -22,14 +23,36 @@ export const UnaunthenticatedNavigation: any = createAppContainer(createStackNav
     }
 ));
 
-export const AuthenticatedNavigation: any = createAppContainer(createSwitchNavigator(
+export const AuthenticatedNavigation: any = createAppContainer(createStackNavigator(
     {
         TimelinePage: {
+            //title: 'Tijdlijn',
+            // options: {
+            //     title: 'tststst',
+            // },
             getScreen: () => require('./pages/TimelinePage').default
         },
+        CreateThreadPage: {
+            //title: i18n.t('createThread.title'),
+            getScreen: () => require('./pages/CreateThreadPage').default,
+            
+            // header: ({ scene, previous, navigation }) => {
+            //     const { options } = scene.descriptor;
+            //     const title =
+            //     options.headerTitle !== undefined
+            //         ? options.headerTitle
+            //         : options.title !== undefined
+            //         ? options.title
+            //         : scene.route.name;
+            
+            //     return (
+            //     <Text>test</Text>
+            //     );
+            // }
+        }
     },
     {
-        initialRouteName: 'TimelinePage'
+        initialRouteName: 'TimelinePage',
     }
 ));
 

@@ -15,6 +15,7 @@ const TimelinePage = ({ navigation }) => {
     
     return <SafeAreaView>
         <Text style={[appStyles.text]}>Dit is een timeline pagina. Welkom {data?.me}</Text>
+        <Button title='Aanmaken item'  onPress={() => navigation.push('CreateThreadPage')} />
         <Button title='Loguit (tijdelijk)'  onPress={() => logout()} />
     </SafeAreaView>
 };

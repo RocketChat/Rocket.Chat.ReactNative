@@ -81,7 +81,7 @@ const RegisterPage = ({ navigation }) => {
             SecurityManager.storeTokens(result.data!.register);
             SecurityManager.setLoggedIn(true);
         } catch (error) {
-            console.info(JSON.stringify(error));
+            console.info(error);
 
             setRegisterFailed(true);
         }

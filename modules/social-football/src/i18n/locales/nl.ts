@@ -1,3 +1,5 @@
+import { HeaderTitle } from "react-navigation-stack";
+
 export default {
     appName: 'Social.Football',
     login: {
@@ -50,5 +52,43 @@ export default {
             separator: 'of',
             link: 'Log in met een bestaand account',
         },
+    },
+    createThread: {
+        title: 'Nieuwe thread',
+        threadtitle: {
+            label: 'Titel',
+            placeholder: 'Item titel',
+        },
+        description: {
+            label: 'Beschrijving',
+            placeholder: 'Beschrijving item',
+        },
+        contentType: {
+            label: 'Type item',
+        },
+        text: {
+            label:'Tekst',
+        },
+        link: {
+            label:'Link',
+        },
+        photo: {
+            label:'Foto',
+        },
+        video: {
+            label:'Video'
+        },
+        exercise: {
+            label:'Oefening',
+        },
+        program: {
+            label: 'Trainingsprogramma',
+        },
+        comment: {
+            label: 'Opmerkingen',
+        },
+        categoricalResponse: {
+            label: 'Suggesties',
+        }
     }
 }
