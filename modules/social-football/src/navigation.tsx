@@ -18,6 +18,9 @@ export const pages = {
         TimelinePage: {
             getScreen: () => require('./pages/TimelinePage').default
         },
+        CreateThreadPage: {
+            getScreen: () => require('./pages/CreateThreadPage').default
+        },
     }
 };
 
@@ -29,7 +32,7 @@ export const UnaunthenticatedNavigation: any = createAppContainer(createStackNav
     }
 ));
 
-export const AuthenticatedNavigation: any = createAppContainer(createSwitchNavigator(
+export const AuthenticatedNavigation: any = createAppContainer(createStackNavigator(
     pages.authenticated,
     {
         initialRouteName: 'TimelinePage',
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 export const Navigation = forwardRef((props, ref) => {
-    const [login, setLogin] = useState(null);
+    const [login, setLogin] = useState<boolean|null>(null);
 
     useEffect(() => {
         SecurityManager.login$.subscribe(value => {

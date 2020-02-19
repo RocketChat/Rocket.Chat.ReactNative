@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import i18n from '../i18n';
 import { KeyboardUtilityView } from '../components/KeyboardUtilityView';
 import { Text, StyleSheet, View, Switch, Picker } from 'react-native';
 import { appStyles } from '../theme/style';
 import { TextInput } from '../components/TextInput';
 import { appColors } from '../theme/colors';
+import { Alert } from '../components/Alert';
 
 
 const styles = StyleSheet.create({
@@ -29,19 +30,45 @@ const styles = StyleSheet.create({
     }
 )
 
-const CreateThreadPage = ({ navigation }) => {
+const CreateThreadPage = () => {
+    const [createThreadFailed, setCreateThreadFailed] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const [suggestion, setSuggestion] = useState(true) //set toggle button suggestion to true
+    const [response, setResponse] = useState(true) //set toggle button response to true
+
+    const onCreatePress = async () => {
+        setCreateThreadFailed(false);
+        setSubmitted(true);
+
+        try {
+
+        } catch(error) {
+            setCreateThreadFailed(true);
+        }
+    };
+
+    const createThreadIsFailed = () => {
+        return <Alert title={i18n.t('createThread.error.label')} />
+    }
+
     return <KeyboardUtilityView>
         <View style={styles.container}>
             <View style={[styles.form]}>
+                {createThreadFailed ? createThreadIsFailed() : null}
                 <View>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.threadtitle.label')}</Text>
                     <TextInput 
+                    required={true}
+                    submitted={submitted}
                     placeholder={i18n.t('createThread.threadtitle.placeholder')}
                     placeholderTextColor={appColors.placeholder} />
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.description.label')}</Text>
                     <TextInput 
+                    required={true}
+                    submitted={submitted}
                     style={[appStyles.description]}
                     placeholder={i18n.t('createThread.description.placeholder')}
                     placeholderTextColor={appColors.placeholder} 
@@ -60,11 +87,17 @@ const CreateThreadPage = ({ navigation }) => {
                 </View>
                 <View style={[styles.swithContainer]}>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
-                    <Switch   />
+                    <Switch
+                    value = {suggestion}
+                    onValueChange = {() => setSuggestion(!suggestion) }
+                    />
                 </View>
                 <View style={[styles.swithContainer]}>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.categoricalResponse.label')}</Text>
-                    <Switch  />
+                    <Switch  
+                    value = {response}
+                    onValueChange = {() => setResponse(!response) }
+                    />
                 </View>
             </View>
         </View>

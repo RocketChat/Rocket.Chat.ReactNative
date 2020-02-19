@@ -89,6 +89,9 @@ export default {
         },
         categoricalResponse: {
             label: 'Suggesties',
+        },
+        error: {
+            label: 'Er ging iets mis bij aanmaken van een item.',
         }
     }
 }
