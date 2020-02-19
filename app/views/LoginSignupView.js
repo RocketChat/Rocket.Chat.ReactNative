@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
 	serviceName: {
 		...sharedStyles.textBold
 	},
+	registerDisabled: {
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter,
+		fontSize: 16
+	},
 	servicesTogglerContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -110,6 +115,7 @@ class LoginSignupView extends React.Component {
 		CAS_login_url: PropTypes.string,
 		Accounts_ShowFormLogin: PropTypes.bool,
 		Accounts_RegistrationForm: PropTypes.string,
+		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -126,7 +132,7 @@ class LoginSignupView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { collapsed, servicesHeight } = this.state;
 		const {
-			server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, theme
+			server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
 		} = this.props;
 		if (nextState.collapsed !== collapsed) {
 			return true;
@@ -147,6 +153,9 @@ class LoginSignupView extends React.Component {
 			return true;
 		}
 		if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
+			return true;
+		}
+		if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
 			return true;
 		}
 		if (!equal(nextProps.services, services)) {
@@ -458,9 +467,9 @@ class LoginSignupView extends React.Component {
 	}
 
 	renderRegister = () => {
-		const { Accounts_RegistrationForm, theme } = this.props;
+		const { Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme } = this.props;
 		if (Accounts_RegistrationForm !== 'Public') {
-			return null;
+			return <Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>{Accounts_RegistrationForm_LinkReplacementText}</Text>;
 		}
 		return (
 			<Button
@@ -510,6 +519,7 @@ const mapStateToProps = state => ({
 	CAS_login_url: state.settings.CAS_login_url,
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
 	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
+	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	services: state.login.services
 });
 
