@@ -126,7 +126,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-runtime": "^6.26.0",
     "bugsnag-sourcemaps": "^1.2.2",
-    "codecov": "3.5.0",
+    "codecov": "3.6.5",
     "detox": "12.11.3",
     "emotion-theming": "^10.0.19",
     "eslint": "^6.5.1",
