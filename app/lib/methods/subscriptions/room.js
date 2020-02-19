@@ -11,6 +11,10 @@ import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actio
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 
+let queue = [];
+let timer = null;
+const WINDOW_TIME = 2000;
+
 export default class RoomSubscription {
 	constructor(rid) {
 		this.rid = rid;
@@ -131,13 +135,13 @@ export default class RoomSubscription {
 		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
-	handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
-		const lastOpen = new Date();
-		if (this.rid !== message.rid) {
-			return;
-		}
-		InteractionManager.runAfterInteractions(async() => {
+	callMessageReceived = async(message, lastOpen) => {
+		return new Promise(async(resolve, reject) => {
+			console.log('TCL: RoomSubscription -> callMessageReceived -> message', message);
+			// if (this.rid !== message.rid) {
+			// 	return;
+			// }
+	
 			const db = database.active;
 			const batch = [];
 			const msgCollection = db.collections.get('messages');
@@ -146,7 +150,7 @@ export default class RoomSubscription {
 			let messageRecord;
 			let threadRecord;
 			let threadMessageRecord;
-
+	
 			// Create or update message
 			try {
 				messageRecord = await msgCollection.find(message._id);
@@ -171,7 +175,7 @@ export default class RoomSubscription {
 					}))
 				);
 			}
-
+	
 			// Create or update thread
 			if (message.tlm) {
 				try {
@@ -179,7 +183,7 @@ export default class RoomSubscription {
 				} catch (error) {
 					// Do nothing
 				}
-
+	
 				if (threadRecord) {
 					batch.push(
 						threadRecord.prepareUpdate(protectedFunction((t) => {
@@ -196,7 +200,7 @@ export default class RoomSubscription {
 					);
 				}
 			}
-
+	
 			// Create or update thread message
 			if (message.tmid) {
 				try {
@@ -204,7 +208,7 @@ export default class RoomSubscription {
 				} catch (error) {
 					// Do nothing
 				}
-
+	
 				if (threadMessageRecord) {
 					batch.push(
 						threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
@@ -232,9 +236,32 @@ export default class RoomSubscription {
 				await db.action(async() => {
 					await db.batch(...batch);
 				});
+				return resolve('FOI FOI FOI FOI FOI FOI FOI FOI FOI ');
 			} catch (e) {
 				log(e);
 			}
 		});
-	});
+	};
+
+	handleMessageReceived = (ddpMessage) => {
+		if (!timer) {
+			timer = setTimeout(async() => {
+				const innerQueue = queue;
+				const innerLastOpen = this.lastOpen;
+				queue = [];
+				timer = null;
+				for (let i = 0; i < innerQueue.length; i += 1) {
+					try {
+						// eslint-disable-next-line no-await-in-loop
+						await this.callMessageReceived(innerQueue[i], innerLastOpen);
+					} catch (e) {
+						console.log('TCL: RoomSubscription -> timer -> e', e);
+					}
+				}
+			}, WINDOW_TIME);
+		}
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		this.lastOpen = new Date();
+		queue.push(message);
+	};
 }
