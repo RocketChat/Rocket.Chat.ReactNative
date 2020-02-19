@@ -21,7 +21,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeRoom from './methods/subscriptions/room';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -33,6 +32,7 @@ import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
+import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
@@ -73,7 +73,6 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	subscribeRoom,
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
@@ -455,6 +454,27 @@ const RocketChat = {
 			console.log(error);
 		}
 	},
+	async clearCache({ server }) {
+		try {
+			const serversDB = database.servers;
+			await serversDB.action(async() => {
+				const serverCollection = serversDB.collections.get('servers');
+				const serverRecord = await serverCollection.find(server);
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+		} catch (e) {
+			// Do nothing
+		}
+
+		try {
+			const db = database.active;
+			await db.action(() => db.unsafeResetDatabase());
+		} catch (e) {
+			// Do nothing
+		}
+	},
 	registerPushToken() {
 		return new Promise(async(resolve) => {
 			const token = getDeviceToken();
@@ -545,18 +565,28 @@ const RocketChat = {
 					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
-
-				data = data.concat(users.map(user => ({
-					...user,
-					rid: user.username,
-					name: user.username,
-					t: 'd',
-					search: true
-				})), rooms.map(room => ({
-					rid: room._id,
-					...room,
-					search: true
-				})));
+				if (filterUsers) {
+					data = data.concat(users.map(user => ({
+						...user,
+						rid: user.username,
+						name: user.username,
+						t: 'd',
+						search: true
+					})));
+				}
+				if (filterRooms) {
+					rooms.forEach((room) => {
+						// Check if it exists on local database
+						const index = data.findIndex(item => item.rid === room._id);
+						if (index === -1) {
+							data.push({
+								rid: room._id,
+								...room,
+								search: true
+							});
+						}
+					});
+				}
 			}
 			delete this.oldPromise;
 			return data;
@@ -584,6 +614,9 @@ const RocketChat = {
 		}
 		return this.sdk.post('channels.join', { roomId });
 	},
+	triggerBlockAction,
+	triggerSubmitView,
+	triggerCancel,
 	sendFileMessage,
 	cancelUpload,
 	isUploadActive,
@@ -668,6 +701,9 @@ const RocketChat = {
 	},
 	subscribe(...args) {
 		return this.sdk.subscribe(...args);
+	},
+	subscribeRoom(...args) {
+		return this.sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
@@ -927,7 +963,7 @@ const RocketChat = {
 	},
 	roomTypeToApiType(t) {
 		const types = {
-			c: 'channels', d: 'im', p: 'groups'
+			c: 'channels', d: 'im', p: 'groups', l: 'channels'
 		};
 		return types[t];
 	},
@@ -983,10 +1019,10 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
-	runSlashCommand(command, roomId, params) {
+	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
 		return this.sdk.post('commands.run', {
-			command, roomId, params
+			command, roomId, params, triggerId, tmid
 		});
 	},
 	getCommandPreview(command, roomId, params) {
@@ -995,10 +1031,10 @@ const RocketChat = {
 			command, roomId, params
 		});
 	},
-	executeCommandPreview(command, params, roomId, previewItem) {
+	executeCommandPreview(command, params, roomId, previewItem, triggerId, tmid) {
 		// RC 0.65.0
 		return this.sdk.post('commands.preview', {
-			command, params, roomId, previewItem
+			command, params, roomId, previewItem, triggerId, tmid
 		});
 	},
 	_setUser(ddpMessage) {
@@ -1104,6 +1140,9 @@ const RocketChat = {
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
+	getRoomAvatar(room) {
+		return room.prid ? room.fname : room.name;
 	},
 
 	findOrCreateInvite({ rid, days, maxUses }) {

@@ -28,21 +28,27 @@ const AtMention = React.memo(({
 	}
 
 	const handlePress = () => {
-		if (mentions && mentions.length && mentions.findIndex(m => m.username === mention) !== -1) {
-			const index = mentions.findIndex(m => m.username === mention);
-			const navParam = {
-				t: 'd',
-				rid: mentions[index]._id
-			};
-			navToRoomInfo(navParam);
-		}
+		const index = mentions.findIndex(m => m.username === mention);
+		const navParam = {
+			t: 'd',
+			rid: mentions[index]._id
+		};
+		navToRoomInfo(navParam);
 	};
 
+	if (mentions && mentions.length && mentions.findIndex(m => m.username === mention) !== -1) {
+		return (
+			<Text
+				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
+				onPress={preview ? undefined : handlePress}
+			>
+				{mention}
+			</Text>
+		);
+	}
+
 	return (
-		<Text
-			style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
-			onPress={preview ? undefined : handlePress}
-		>
+		<Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>
 			{`@${ mention }`}
 		</Text>
 	);

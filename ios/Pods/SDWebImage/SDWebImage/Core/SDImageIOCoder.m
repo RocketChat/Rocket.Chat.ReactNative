@@ -11,6 +11,8 @@
 #import "NSImage+Compatibility.h"
 #import <ImageIO/ImageIO.h>
 #import "UIImage+Metadata.h"
+#import "SDImageHEICCoderInternal.h"
+#import "SDImageIOAnimatedCoderInternal.h"
 
 @implementation SDImageIOCoder {
     size_t _width, _height;
@@ -18,6 +20,8 @@
     CGImageSourceRef _imageSource;
     CGFloat _scale;
     BOOL _finished;
+    BOOL _preserveAspectRatio;
+    CGSize _thumbnailSize;
 }
 
 - (void)dealloc {
@@ -54,10 +58,10 @@
             return NO;
         case SDImageFormatHEIC:
             // Check HEIC decoding compatibility
-            return [[self class] canDecodeFromHEICFormat];
+            return [SDImageHEICCoder canDecodeFromHEICFormat];
         case SDImageFormatHEIF:
             // Check HEIF decoding compatibility
-            return [[self class] canDecodeFromHEIFFormat];
+            return [SDImageHEICCoder canDecodeFromHEIFFormat];
         default:
             return YES;
     }
@@ -73,7 +77,33 @@
         scale = MAX([scaleFactor doubleValue], 1) ;
     }
     
-    UIImage *image = [[UIImage alloc] initWithData:data scale:scale];
+    CGSize thumbnailSize = CGSizeZero;
+    NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
+    if (thumbnailSizeValue != nil) {
+#if SD_MAC
+        thumbnailSize = thumbnailSizeValue.sizeValue;
+#else
+        thumbnailSize = thumbnailSizeValue.CGSizeValue;
+#endif
+    }
+    
+    BOOL preserveAspectRatio = YES;
+    NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
+    if (preserveAspectRatioValue != nil) {
+        preserveAspectRatio = preserveAspectRatioValue.boolValue;
+    }
+    
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    if (!source) {
+        return nil;
+    }
+    
+    UIImage *image = [SDImageIOAnimatedCoder createFrameAtIndex:0 source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize];
+    CFRelease(source);
+    if (!image) {
+        return nil;
+    }
+    
     image.sd_imageFormat = [NSData sd_imageFormatForImageData:data];
     return image;
 }
@@ -94,6 +124,22 @@
             scale = MAX([scaleFactor doubleValue], 1);
         }
         _scale = scale;
+        CGSize thumbnailSize = CGSizeZero;
+        NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
+        if (thumbnailSizeValue != nil) {
+    #if SD_MAC
+            thumbnailSize = thumbnailSizeValue.sizeValue;
+    #else
+            thumbnailSize = thumbnailSizeValue.CGSizeValue;
+    #endif
+        }
+        _thumbnailSize = thumbnailSize;
+        BOOL preserveAspectRatio = YES;
+        NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
+        if (preserveAspectRatioValue != nil) {
+            preserveAspectRatio = preserveAspectRatioValue.boolValue;
+        }
+        _preserveAspectRatio = preserveAspectRatio;
 #if SD_UIKIT
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 #endif
@@ -139,21 +185,13 @@
     
     if (_width + _height > 0) {
         // Create the image
-        CGImageRef partialImageRef = CGImageSourceCreateImageAtIndex(_imageSource, 0, NULL);
-        
-        if (partialImageRef) {
-            CGFloat scale = _scale;
-            NSNumber *scaleFactor = options[SDImageCoderDecodeScaleFactor];
-            if (scaleFactor != nil) {
-                scale = MAX([scaleFactor doubleValue], 1);
-            }
-#if SD_UIKIT || SD_WATCH
-            UIImageOrientation imageOrientation = [SDImageCoderHelper imageOrientationFromEXIFOrientation:_orientation];
-            image = [[UIImage alloc] initWithCGImage:partialImageRef scale:scale orientation:imageOrientation];
-#else
-            image = [[UIImage alloc] initWithCGImage:partialImageRef scale:scale orientation:_orientation];
-#endif
-            CGImageRelease(partialImageRef);
+        CGFloat scale = _scale;
+        NSNumber *scaleFactor = options[SDImageCoderDecodeScaleFactor];
+        if (scaleFactor != nil) {
+            scale = MAX([scaleFactor doubleValue], 1);
+        }
+        image = [SDImageIOAnimatedCoder createFrameAtIndex:0 source:_imageSource scale:scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize];
+        if (image) {
             CFStringRef uttype = CGImageSourceGetType(_imageSource);
             image.sd_imageFormat = [NSData sd_imageFormatFromUTType:uttype];
         }
@@ -170,10 +208,10 @@
             return NO;
         case SDImageFormatHEIC:
             // Check HEIC encoding compatibility
-            return [[self class] canEncodeToHEICFormat];
+            return [SDImageHEICCoder canEncodeToHEICFormat];
         case SDImageFormatHEIF:
             // Check HEIF encoding compatibility
-            return [[self class] canEncodeToHEIFFormat];
+            return [SDImageHEICCoder canEncodeToHEIFFormat];
         default:
             return YES;
     }
@@ -228,67 +266,6 @@
     CFRelease(imageDestination);
     
     return [imageData copy];
-}
-
-+ (BOOL)canDecodeFromFormat:(SDImageFormat)format {
-    CFStringRef imageUTType = [NSData sd_UTTypeFromImageFormat:format];
-    NSArray *imageUTTypes = (__bridge_transfer NSArray *)CGImageSourceCopyTypeIdentifiers();
-    if ([imageUTTypes containsObject:(__bridge NSString *)(imageUTType)]) {
-        return YES;
-    }
-    return NO;
-}
-
-+ (BOOL)canDecodeFromHEICFormat {
-    static BOOL canDecode = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        canDecode = [self canDecodeFromFormat:SDImageFormatHEIC];
-    });
-    return canDecode;
-}
-
-+ (BOOL)canDecodeFromHEIFFormat {
-    static BOOL canDecode = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        canDecode = [self canDecodeFromFormat:SDImageFormatHEIF];
-    });
-    return canDecode;
-}
-
-+ (BOOL)canEncodeToFormat:(SDImageFormat)format {
-    NSMutableData *imageData = [NSMutableData data];
-    CFStringRef imageUTType = [NSData sd_UTTypeFromImageFormat:format];
-    
-    // Create an image destination.
-    CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData, imageUTType, 1, NULL);
-    if (!imageDestination) {
-        // Can't encode to HEIC
-        return NO;
-    } else {
-        // Can encode to HEIC
-        CFRelease(imageDestination);
-        return YES;
-    }
-}
-
-+ (BOOL)canEncodeToHEICFormat {
-    static BOOL canEncode = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        canEncode = [self canEncodeToFormat:SDImageFormatHEIC];
-    });
-    return canEncode;
-}
-
-+ (BOOL)canEncodeToHEIFFormat {
-    static BOOL canEncode = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        canEncode = [self canEncodeToFormat:SDImageFormatHEIF];
-    });
-    return canEncode;
 }
 
 @end

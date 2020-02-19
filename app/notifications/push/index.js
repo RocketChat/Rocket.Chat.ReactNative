@@ -14,9 +14,12 @@ export const onNotification = (notification) => {
 				} = EJSON.parse(data.ejson);
 
 				const types = {
-					c: 'channel', d: 'direct', p: 'group'
+					c: 'channel', d: 'direct', p: 'group', l: 'channels'
 				};
-				const roomName = type === 'd' ? sender.username : name;
+				let roomName = type === 'd' ? sender.username : name;
+				if (type === 'l') {
+					roomName = sender.name;
+				}
 
 				const params = {
 					host,

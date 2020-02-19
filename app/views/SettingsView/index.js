@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, SafeAreaView, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
 
-import { logout as logoutAction } from '../../actions/login';
+import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
 import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -15,13 +16,13 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
+import RocketChat, { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
@@ -33,6 +34,9 @@ import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
+import { appStart as appStartAction } from '../../actions';
+import { onReviewPress } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -79,15 +83,39 @@ class SettingsView extends React.Component {
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
-		logout: PropTypes.func.isRequired
+		logout: PropTypes.func.isRequired,
+		loginRequest: PropTypes.func,
+		token: PropTypes.string,
+		appStart: PropTypes.func
 	}
 
-	logout = () => {
-		const { logout, split } = this.props;
-		if (split) {
-			Navigation.navigate('RoomView');
-		}
-		logout();
+	handleLogout = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_be_logged_out_of_this_application'),
+			callToAction: I18n.t('Logout'),
+			onPress: () => {
+				const { logout, split } = this.props;
+				if (split) {
+					Navigation.navigate('RoomView');
+				}
+				logout();
+			}
+		});
+	}
+
+	handleClearCache = () => {
+		showConfirmationAlert({
+			message: I18n.t('This_will_clear_all_your_offline_data'),
+			callToAction: I18n.t('Clear'),
+			onPress: async() => {
+				const {
+					server: { server }, loginRequest, token, appStart
+				} = this.props;
+				await appStart('loading');
+				await RocketChat.clearCache({ server });
+				await loginRequest({ resume: token }, true);
+			}
+		});
 	}
 
 	toggleMarkdown = (value) => {
@@ -162,25 +190,6 @@ class SettingsView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	renderLogout = () => {
-		const { theme } = this.props;
-		return (
-			<>
-				<Separator theme={theme} />
-				<ListItem
-					title={I18n.t('Logout')}
-					testID='settings-logout'
-					onPress={this.logout}
-					right={this.renderDisclosure}
-					color={themes[theme].dangerColor}
-					theme={theme}
-				/>
-				<Separator theme={theme} />
-				<ItemInfo theme={theme} />
-			</>
-		);
-	}
-
 	renderMarkdownSwitch = () => {
 		const { useMarkdown } = this.props;
 		return (
@@ -209,20 +218,18 @@ class SettingsView extends React.Component {
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				testID='settings-view'
+				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
-					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						styles.listWithoutBorderBottom,
-						{ borderColor: themes[theme].separatorColor }
-					]}
+					contentContainerStyle={styles.listPadding}
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
 					{split ? (
 						<>
+							<Separator theme={theme} />
 							<SidebarView theme={theme} />
 							<SectionSeparator theme={theme} />
 							<ListItem
@@ -233,10 +240,10 @@ class SettingsView extends React.Component {
 								right={this.renderDisclosure}
 								theme={theme}
 							/>
-							<Separator theme={theme} />
 						</>
 					) : null}
 
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
@@ -251,6 +258,15 @@ class SettingsView extends React.Component {
 						onPress={() => this.navigateToRoom('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Review_this_app')}
+						showActionIndicator
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
@@ -309,9 +325,7 @@ class SettingsView extends React.Component {
 						right={() => this.renderMarkdownSwitch()}
 						theme={theme}
 					/>
-
-					<SectionSeparator theme={theme} />
-
+					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
@@ -324,7 +338,25 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 
-					{ split ? this.renderLogout() : null }
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Clear_cache')}
+						testID='settings-clear-cache'
+						onPress={this.handleClearCache}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Logout')}
+						testID='settings-logout'
+						onPress={this.handleLogout}
+						right={this.renderDisclosure}
+						color={themes[theme].dangerColor}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -333,14 +365,17 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
+	token: getUserSelector(state).token,
 	useMarkdown: state.markdown.useMarkdown,
 	allowCrashReport: state.crashReport.allowCrashReport
 });
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
+	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
 	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
-	toggleCrashReport: params => dispatch(toggleCrashReportAction(params))
+	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));

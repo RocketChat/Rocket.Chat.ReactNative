@@ -9,6 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
+import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
@@ -42,6 +43,8 @@ import {
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
+import { Review } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -103,7 +106,8 @@ class MessageBox extends Component {
 				isVisible: false
 			},
 			commandPreview: [],
-			showCommandPreview: false
+			showCommandPreview: false,
+			command: {}
 		};
 		this.text = '';
 		this.focused = false;
@@ -279,7 +283,7 @@ class MessageBox extends Component {
 			try {
 				const command = await commandsCollection.find(name);
 				if (command.providesPreview) {
-					return this.setCommandPreview(name, params);
+					return this.setCommandPreview(command, name, params);
 				}
 			} catch (e) {
 				console.log('Slash command not found');
@@ -338,16 +342,22 @@ class MessageBox extends Component {
 	}
 
 	onPressCommandPreview = (item) => {
-		const { rid } = this.props;
+		const { command } = this.state;
+		const {
+			rid, tmid, message: { id: messageTmid }, replyCancel
+		} = this.props;
 		const { text } = this;
-		const command = text.substr(0, text.indexOf(' ')).slice(1);
+		const name = text.substr(0, text.indexOf(' ')).slice(1);
 		const params = text.substr(text.indexOf(' ') + 1) || 'params';
-		this.setState({ commandPreview: [], showCommandPreview: false });
+		this.setState({ commandPreview: [], showCommandPreview: false, command: {} });
 		this.stopTrackingMention();
 		this.clearInput();
 		this.handleTyping(false);
 		try {
-			RocketChat.executeCommandPreview(command, params, rid, item);
+			const { appId } = command;
+			const triggerId = generateTriggerId(appId);
+			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			replyCancel();
 		} catch (e) {
 			log(e);
 		}
@@ -451,13 +461,13 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command, params) => {
+	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
 		try	{
-			const { preview } = await RocketChat.getCommandPreview(command, rid, params);
-			this.setState({ commandPreview: preview.items, showCommandPreview: true });
+			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
+			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
 		} catch (e) {
-			this.setState({ commandPreview: [], showCommandPreview: true });
+			this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 			log(e);
 		}
 	}
@@ -493,7 +503,7 @@ class MessageBox extends Component {
 
 	sendMediaMessage = async(file) => {
 		const {
-			rid, tmid, baseUrl: server, user
+			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
 		this.setState({ file: { isVisible: false } });
 		const fileInfo = {
@@ -505,7 +515,9 @@ class MessageBox extends Component {
 			path: file.path
 		};
 		try {
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+			replyCancel();
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}
@@ -518,7 +530,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -529,7 +541,7 @@ class MessageBox extends Component {
 				this.showUploadModal(video);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -540,7 +552,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -639,7 +651,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId
+			onSubmit, rid: roomId, tmid
 		} = this.props;
 		const message = this.text;
 
@@ -653,7 +665,7 @@ class MessageBox extends Component {
 		}
 
 		const {
-			editing, replying
+			editing, replying, message: { id: messageTmid }, replyCancel
 		} = this.props;
 
 		// Slash command
@@ -667,7 +679,10 @@ class MessageBox extends Component {
 			if (slashCommand.length > 0) {
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand);
+					const [{ appId }] = slashCommand;
+					const triggerId = generateTriggerId(appId);
+					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					replyCancel();
 				} catch (e) {
 					log(e);
 				}
@@ -684,7 +699,7 @@ class MessageBox extends Component {
 		// Reply
 		} else if (replying) {
 			const {
-				message: replyingMessage, replyCancel, threadsEnabled, replyWithMention
+				message: replyingMessage, threadsEnabled, replyWithMention
 			} = this.props;
 
 			// Thread
@@ -872,13 +887,9 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });

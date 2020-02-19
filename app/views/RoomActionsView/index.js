@@ -24,6 +24,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
+import { getUserSelector } from '../../selectors/login';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -349,7 +350,10 @@ class RoomActionsView extends React.Component {
 					renderItem: this.renderItem
 				});
 			}
+		} else if (t === 'l') {
+			sections[2].data = [notificationsAction];
 		}
+
 		return sections;
 	}
 
@@ -389,6 +393,9 @@ class RoomActionsView extends React.Component {
 	handleShare = () => {
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
+		if (!permalink) {
+			return;
+		}
 		Share.share({
 			message: permalink
 		});
@@ -517,11 +524,8 @@ class RoomActionsView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 
