@@ -43,31 +43,24 @@ const LoginPage = ({ navigation }) => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
-    const [performLogin, {data, loading}] = useMutation<{ loginApp: TokenPair }>(LOGIN);
-    const [loginFailed, setLoginFailed] = useState(false);
+    const [performLogin, {data, loading, error}] = useMutation<{ loginApp: TokenPair }>(LOGIN);
     const [submitted, setSubmitted] = useState(false);
 
     const onLoginPress = async () => {
-        setLoginFailed(false);
         setSubmitted(true);
 
-        try {
-            const result = await performLogin({
-                variables: {
-                    credentials: {
-                        username,
-                        password,
-                    }
+        const result = await performLogin({
+            variables: {
+                credentials: {
+                    username,
+                    password,
                 }
-            });
-            
-            SecurityManager.storeTokens(result.data!.loginApp);
-            SecurityManager.setLoggedIn(true);
-        } catch (error) {
-            console.info(JSON.stringify(error));
+            }
+        });
 
-            setLoginFailed(true);
-        }
+        await SecurityManager.storeTokens(result.data!.loginApp);
+        SecurityManager.setLoggedIn(true);
+
     };
 
     const renderLoginFailed = () => (
@@ -84,10 +77,11 @@ const LoginPage = ({ navigation }) => {
                 <Text style={[styles.description, appStyles.text]}>{i18n.t('login.description')}</Text>
             </View>
             <View style={[styles.form]}>
-                {loginFailed ? renderLoginFailed() : null}
+                {error ? renderLoginFailed() : null}
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('login.username.label')}</Text>
-                    <TextInput autoCompleteType='username'
+                    <TextInput id={'username'}
+                               autoCompleteType='username'
                                textContentType='username'
                                autoCapitalize='none'
                                value={username}
@@ -99,7 +93,8 @@ const LoginPage = ({ navigation }) => {
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('login.password.label')}</Text>
-                    <TextInput secureTextEntry={true}
+                    <TextInput id={'password'}
+                               secureTextEntry={true}
                                value={password}
                                onChangeText={value => setPassword(value)}
                                autoCompleteType='password'
@@ -110,14 +105,14 @@ const LoginPage = ({ navigation }) => {
                                placeholderTextColor={appColors.placeholder} />
                 </View>
                 <View style={[appStyles.formGroup]}>
-                    <Button loading={loading} title={i18n.t('login.submit.label')} onPress={onLoginPress} />
+                    <Button id={'submit'} loading={loading} title={i18n.t('login.submit.label')} onPress={onLoginPress} />
                 </View>
             </View>
             <View style={[styles.registerLabel]}>
                 <Text style={[appStyles.text]}>{i18n.t('login.register.separator')}</Text>
             </View>
             <View style={[styles.registerLink]}>
-                <Link title={i18n.t('login.register.link')} onPress={() => navigation.push('RegisterPage')} />
+                <Link id={'register'} title={i18n.t('login.register.link')} onPress={() => navigation.push('RegisterPage')} />
             </View>
         </View>
     </KeyboardUtilityView>

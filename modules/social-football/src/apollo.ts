@@ -5,8 +5,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import SecurityManager from './security/security-manager';
 import config from './config/config';
+import 'cross-fetch/polyfill';
 
-const authLink = setContext(async(all, { headers }) => {
+export const authLinkProcessor = async(all, { headers }) => {
     if (all?.operationName === 'RefreshUsingToken') {
         return {
             headers,
@@ -21,7 +22,9 @@ const authLink = setContext(async(all, { headers }) => {
             authorization: token ? `Bearer ${ token }` : ''
         }
     };
-});
+};
+
+export const authLink = setContext(authLinkProcessor);
 
 const cache = new InMemoryCache();
 

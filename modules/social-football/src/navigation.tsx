@@ -1,15 +1,12 @@
 import React, { forwardRef, useEffect, useState } from 'react';
-import { createAppContainer, createNavigator, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { useQuery } from '@apollo/react-hooks';
-import { IS_AUTHENTICATED } from './api/queries/authentication.queries';
-import { TokenPayload } from './security/models/token-payload';
-import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import SecurityManager from './security/security-manager';
 import i18n from './i18n';
 
-export const UnaunthenticatedNavigation: any = createAppContainer(createStackNavigator(
-    {
+export const pages = {
+    unauthenticated: {
         LoginPage: {
             getScreen: () => require('./pages/LoginPage').default
         },
@@ -17,40 +14,23 @@ export const UnaunthenticatedNavigation: any = createAppContainer(createStackNav
             getScreen: () => require('./pages/RegisterPage').default
         }
     },
+    authenticated: {
+        TimelinePage: {
+            getScreen: () => require('./pages/TimelinePage').default
+        },
+    }
+};
+
+export const UnaunthenticatedNavigation: any = createAppContainer(createStackNavigator(
+    pages.unauthenticated,
     {
         initialRouteName: 'LoginPage',
         headerMode: 'none',
     }
 ));
 
-export const AuthenticatedNavigation: any = createAppContainer(createStackNavigator(
-    {
-        TimelinePage: {
-            //title: 'Tijdlijn',
-            // options: {
-            //     title: 'tststst',
-            // },
-            getScreen: () => require('./pages/TimelinePage').default
-        },
-        CreateThreadPage: {
-            //title: i18n.t('createThread.title'),
-            getScreen: () => require('./pages/CreateThreadPage').default,
-            
-            // header: ({ scene, previous, navigation }) => {
-            //     const { options } = scene.descriptor;
-            //     const title =
-            //     options.headerTitle !== undefined
-            //         ? options.headerTitle
-            //         : options.title !== undefined
-            //         ? options.title
-            //         : scene.route.name;
-            
-            //     return (
-            //     <Text>test</Text>
-            //     );
-            // }
-        }
-    },
+export const AuthenticatedNavigation: any = createAppContainer(createSwitchNavigator(
+    pages.authenticated,
     {
         initialRouteName: 'TimelinePage',
     }
@@ -67,7 +47,6 @@ const styles = StyleSheet.create({
 });
 
 export const Navigation = forwardRef((props, ref) => {
-    const { data, client } = useQuery<{ getUser: TokenPayload }>(IS_AUTHENTICATED);
     const [login, setLogin] = useState(null);
 
     useEffect(() => {
