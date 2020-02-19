@@ -1,7 +1,7 @@
 export default {
     appName: 'Social.Football',
     login: {
-        description: 'Log hier in met je Connected.Football account, of maak er één aan.',
+        description: 'Log hier in met je Connected.Football account, of maak er een aan.',
         username: {
             label: 'Gebruikersnaam',
             placeholder: 'Vul hier je gebruikersnaam in',
@@ -21,7 +21,7 @@ export default {
     },
     register: {
         title: 'Registreren',
-        description: 'Maak een account aan, en word lid van een team, of maak er zelf één aan!',
+        description: 'Maak een account aan, en word lid van een team, of maak er zelf een aan!',
         firstName: {
             label: 'Voornaam',
             placeholder: 'Vul hier je voornaam in',
