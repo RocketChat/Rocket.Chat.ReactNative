@@ -23,6 +23,9 @@ export default {
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
+	Hide_System_Messages: {
+		type: 'valueAsArray'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
