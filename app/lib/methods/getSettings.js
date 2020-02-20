@@ -78,6 +78,7 @@ export async function setSettings() {
 		valueAsString: item.valueAsString,
 		valueAsBoolean: item.valueAsBoolean,
 		valueAsNumber: item.valueAsNumber,
+		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
 	reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));

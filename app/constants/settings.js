@@ -50,6 +50,9 @@ export default {
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
+	Hide_System_Messages: {
+		type: 'valueAsArray'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -120,7 +123,7 @@ export default {
 		type: 'valueAsBoolean'
 	},
 	Threads_enabled: {
-		type: null
+		type: 'valueAsBoolean'
 	},
 	FileUpload_MediaTypeWhiteList: {
 		type: 'valueAsString'
