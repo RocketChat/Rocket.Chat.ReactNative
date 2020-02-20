@@ -87,7 +87,6 @@ class ShareListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
-		baseUrl: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
 		theme: PropTypes.string
@@ -114,7 +113,7 @@ class ShareListView extends React.Component {
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		const { navigation, server } = this.props;
 		navigation.setParams({
 			initSearch: this.initSearch,
@@ -122,30 +121,32 @@ class ShareListView extends React.Component {
 			search: this.search
 		});
 
-		try {
-			const { value, type } = await ShareExtension.data();
-			let fileInfo = null;
-			const isMedia = (type === 'media');
-			if (isMedia) {
-				this.setState({ mediaLoading: true });
-				const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
-				fileInfo = {
-					name: data.filename,
-					description: '',
-					size: data.size,
-					mime: mime.lookup(data.path),
-					path: isIOS ? data.path : `file://${ data.path }`
-				};
+		setTimeout(async() => {
+			try {
+				const { value, type } = await ShareExtension.data();
+				let fileInfo = null;
+				const isMedia = (type === 'media');
+				if (isMedia) {
+					this.setState({ mediaLoading: true });
+					const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
+					fileInfo = {
+						name: data.filename,
+						description: '',
+						size: data.size,
+						mime: mime.lookup(data.path),
+						path: isIOS ? data.path : `file://${ data.path }`
+					};
+				}
+				this.setState({
+					value, fileInfo, isMedia, mediaLoading: false
+				});
+			} catch (e) {
+				log(e);
+				this.setState({ mediaLoading: false });
 			}
-			this.setState({
-				value, fileInfo, isMedia, mediaLoading: false
-			});
-		} catch (e) {
-			log(e);
-			this.setState({ mediaLoading: false });
-		}
 
-		this.getSubscriptions(server);
+			this.getSubscriptions(server);
+		}, 500);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -299,7 +300,7 @@ class ShareListView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const {
-			userId, token, baseUrl, theme
+			userId, token, server, theme
 		} = this.props;
 		return (
 			<DirectoryItem
@@ -308,7 +309,7 @@ class ShareListView extends React.Component {
 					token
 				}}
 				title={this.getRoomTitle(item)}
-				baseUrl={baseUrl}
+				baseUrl={server}
 				avatar={this.getRoomTitle(item)}
 				description={
 					item.t === 'c'
@@ -462,8 +463,7 @@ class ShareListView extends React.Component {
 const mapStateToProps = (({ share }) => ({
 	userId: share.user && share.user.id,
 	token: share.user && share.user.token,
-	server: share.server,
-	baseUrl: share ? share.server : ''
+	server: share.server
 }));
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

@@ -23,6 +23,23 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 4,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'blocks', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'slash_commands',
+					columns: [
+						{ name: 'app_id', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
