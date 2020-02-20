@@ -142,6 +142,7 @@ class RoomView extends React.Component {
 		Message_GroupingPeriod: PropTypes.number,
 		Message_TimeFormat: PropTypes.string,
 		Message_Read_Receipt_Enabled: PropTypes.bool,
+		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
@@ -943,7 +944,7 @@ class RoomView extends React.Component {
 			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
 		const {
-			user, baseUrl, theme, navigation
+			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
 		const { rid, t } = room;
 
@@ -969,6 +970,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
+					hideSystemMessages={Hide_System_Messages}
 				/>
 				{this.renderAnnouncementModal()}
 				{this.renderFooter()}
@@ -1003,7 +1005,8 @@ const mapStateToProps = state => ({
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
+	Hide_System_Messages: state.settings.Hide_System_Messages
 });
 
 const mapDispatchToProps = dispatch => ({
