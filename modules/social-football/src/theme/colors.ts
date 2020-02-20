@@ -4,4 +4,5 @@ export const appColors = {
     placeholder: '#95a5a6',
     inputBorder: '#d6d7da',
     light: '#ffffff',
+    error: '#e74c3c',
 }

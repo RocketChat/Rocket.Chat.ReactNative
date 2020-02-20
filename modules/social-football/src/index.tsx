@@ -1,15 +1,13 @@
-import { createAppContainer, createNavigator, createSwitchNavigator } from 'react-navigation';
+import React, { forwardRef } from 'react';
+import { ApolloProvider } from 'react-apollo';
+import Apollo from './apollo';
+import { Navigation } from './navigation';
+import SecurityManager from './security/security-manager';
 
-export const SocialFootballModule = createAppContainer(createSwitchNavigator(
-    {
-        LoginPage: {
-            getScreen: () => require('./pages/LoginPage').default
-        },
-        TimelinePage: {
-            getScreen: () => require('./pages/TimelinePage').default
-        },
-    },
-    {
-        initialRouteName: 'LoginPage'
-    }
-));
+SecurityManager.init();
+
+export const SocialFootballModule = forwardRef((props, ref) => {
+    return <ApolloProvider client={Apollo}>
+        <Navigation ref={ref} />
+    </ApolloProvider>
+});
