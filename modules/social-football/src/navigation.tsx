@@ -7,6 +7,7 @@ import i18n from './i18n';
 import { appColors } from './theme/colors';
 import { HeaderLogo } from './components/header/HeaderLogo';
 import { HeaderCreateThreadButton } from './components/header/HeaderCreateThreadButton';
+import { HeaderSaveThreadButton } from './components/header/HeaderSaveThreadButton copy';
 
 export const pages = {
     unauthenticated: {
@@ -27,9 +28,10 @@ export const pages = {
         },
         CreateThreadPage: {
             getScreen: () => require('./pages/CreateThreadPage').default,
-            navigationOptions: {
+            navigationOptions: ({ navigation }) => ({
                 headerTitle: i18n.t('createThread.title'),
-            },
+                headerRight:  <HeaderSaveThreadButton navigation={navigation} />
+            }),
         },
     }
 };
