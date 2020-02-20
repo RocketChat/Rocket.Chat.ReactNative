@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../../views/Styles';
@@ -73,6 +73,10 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
+	emojiKeyboardContainer: {
+		flex: 1,
+		borderTopWidth: StyleSheet.hairlineWidth
+	},
 	slash: {
 		height: 30,
 		width: 30,
@@ -99,15 +103,5 @@ export default StyleSheet.create({
 	},
 	scrollViewMention: {
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
-	},
-	trackingView: {
-		...Platform.select({
-			ios: {
-				position: 'absolute',
-				bottom: 0,
-				left: 0,
-				right: 0
-			}
-		})
 	}
 });

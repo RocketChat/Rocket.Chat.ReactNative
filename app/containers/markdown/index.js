@@ -60,6 +60,8 @@ const emojiCount = (str) => {
 	return counter;
 };
 
+const parser = new Parser();
+
 class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
@@ -81,12 +83,8 @@ class Markdown extends PureComponent {
 
 	constructor(props) {
 		super(props);
-
-		this.parser = this.createParser();
 		this.renderer = this.createRenderer(props.preview);
 	}
-
-	createParser = () => new Parser();
 
 	createRenderer = (preview = false) => new Renderer({
 		renderers: {
@@ -385,7 +383,7 @@ class Markdown extends PureComponent {
 
 		if (preview) {
 			m = m.split('\n').reduce((lines, line) => `${ lines } ${ line }`, '');
-			const ast = this.parser.parse(m);
+			const ast = parser.parse(m);
 			return this.renderer.render(ast);
 		}
 
@@ -393,7 +391,7 @@ class Markdown extends PureComponent {
 			return <Text style={[styles.text, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
-		const ast = this.parser.parse(m);
+		const ast = parser.parse(m);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 
 		this.editedMessage(ast);

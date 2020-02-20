@@ -1,9 +1,30 @@
 export default {
+	Accounts_AllowEmailChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowPasswordChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowRealNameChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserAvatarChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserProfileChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUsernameChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
+	},
+	Accounts_EmailVerification: {
+		type: 'valueAsBoolean'
 	},
 	Accounts_NamePlaceholder: {
 		type: 'valueAsString'
@@ -31,6 +52,9 @@ export default {
 	},
 	Jitsi_Domain: {
 		type: 'valueAsString'
+	},
+	Jitsi_Enabled_TokenAuth: {
+		type: 'valueAsBoolean'
 	},
 	Jitsi_URL_Room_Prefix: {
 		type: 'valueAsString'

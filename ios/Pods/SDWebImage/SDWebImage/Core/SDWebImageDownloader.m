@@ -24,9 +24,8 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
 @property (nonatomic, strong, nullable, readwrite) NSURL *url;
 @property (nonatomic, strong, nullable, readwrite) NSURLRequest *request;
 @property (nonatomic, strong, nullable, readwrite) NSURLResponse *response;
-@property (nonatomic, strong, nullable, readwrite) id downloadOperationCancelToken;
+@property (nonatomic, weak, nullable, readwrite) id downloadOperationCancelToken;
 @property (nonatomic, weak, nullable) NSOperation<SDWebImageDownloaderOperation> *downloadOperation;
-@property (nonatomic, weak, nullable) SDWebImageDownloader *downloader;
 @property (nonatomic, assign, getter=isCancelled) BOOL cancelled;
 
 - (nonnull instancetype)init NS_UNAVAILABLE;
@@ -38,7 +37,6 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
 @interface SDWebImageDownloader () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
 @property (strong, nonatomic, nonnull) NSOperationQueue *downloadQueue;
-@property (weak, nonatomic, nullable) NSOperation *lastAddedOperation;
 @property (strong, nonatomic, nonnull) NSMutableDictionary<NSURL *, NSOperation<SDWebImageDownloaderOperation> *> *URLOperations;
 @property (strong, nonatomic, nullable) NSMutableDictionary<NSString *, NSString *> *HTTPHeaders;
 @property (strong, nonatomic, nonnull) dispatch_semaphore_t HTTPHeadersLock; // A lock to keep the access to `HTTPHeaders` thread-safe
@@ -228,10 +226,11 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
             SD_UNLOCK(self.operationsLock);
         };
         self.URLOperations[url] = operation;
+        // Add the handlers before submitting to operation queue, avoid the race condition that operation finished before setting handlers.
+        downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
         // Add operation to operation queue only after all configuration done according to Apple's doc.
         // `addOperation:` does not synchronously execute the `operation.completionBlock` so this will not cause deadlock.
         [self.downloadQueue addOperation:operation];
-        downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
     } else {
         // When we reuse the download operation to attach more callbacks, there may be thread safe issue because the getter of callbacks may in another queue (decoding queue or delegate queue)
         // So we lock the operation here, and in `SDWebImageDownloaderOperation`, we use `@synchonzied (self)`, to ensure the thread safe between these two classes.
@@ -254,7 +253,6 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     token.url = url;
     token.request = operation.request;
     token.downloadOperationCancelToken = downloadOperationCancelToken;
-    token.downloader = self;
     
     return token;
 }
@@ -275,6 +273,16 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     SD_LOCK(self.HTTPHeadersLock);
     mutableRequest.allHTTPHeaderFields = self.HTTPHeaders;
     SD_UNLOCK(self.HTTPHeadersLock);
+    
+    // Context Option
+    SDWebImageMutableContext *mutableContext;
+    if (context) {
+        mutableContext = [context mutableCopy];
+    } else {
+        mutableContext = [NSMutableDictionary dictionary];
+    }
+    
+    // Request Modifier
     id<SDWebImageDownloaderRequestModifier> requestModifier;
     if ([context valueForKey:SDWebImageContextDownloadRequestModifier]) {
         requestModifier = [context valueForKey:SDWebImageContextDownloadRequestModifier];
@@ -294,6 +302,30 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     } else {
         request = [mutableRequest copy];
     }
+    // Response Modifier
+    id<SDWebImageDownloaderResponseModifier> responseModifier;
+    if ([context valueForKey:SDWebImageContextDownloadResponseModifier]) {
+        responseModifier = [context valueForKey:SDWebImageContextDownloadResponseModifier];
+    } else {
+        responseModifier = self.responseModifier;
+    }
+    if (responseModifier) {
+        mutableContext[SDWebImageContextDownloadResponseModifier] = responseModifier;
+    }
+    // Decryptor
+    id<SDWebImageDownloaderDecryptor> decryptor;
+    if ([context valueForKey:SDWebImageContextDownloadDecryptor]) {
+        decryptor = [context valueForKey:SDWebImageContextDownloadDecryptor];
+    } else {
+        decryptor = self.decryptor;
+    }
+    if (decryptor) {
+        mutableContext[SDWebImageContextDownloadDecryptor] = decryptor;
+    }
+    
+    context = [mutableContext copy];
+    
+    // Operation Class
     Class operationClass = self.config.operationClass;
     if (operationClass && [operationClass isSubclassOfClass:[NSOperation class]] && [operationClass conformsToProtocol:@protocol(SDWebImageDownloaderOperation)]) {
         // Custom operation class
@@ -321,28 +353,15 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     }
     
     if (self.config.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
-        // Emulate LIFO execution order by systematically adding new operations as last operation's dependency
-        [self.lastAddedOperation addDependency:operation];
-        self.lastAddedOperation = operation;
+        // Emulate LIFO execution order by systematically, each previous adding operation can dependency the new operation
+        // This can gurantee the new operation to be execulated firstly, even if when some operations finished, meanwhile you appending new operations
+        // Just make last added operation dependents new operation can not solve this problem. See test case #test15DownloaderLIFOExecutionOrder
+        for (NSOperation *pendingOperation in self.downloadQueue.operations) {
+            [pendingOperation addDependency:operation];
+        }
     }
     
     return operation;
-}
-
-- (void)cancel:(nullable SDWebImageDownloadToken *)token {
-    NSURL *url = token.url;
-    if (!url) {
-        return;
-    }
-    SD_LOCK(self.operationsLock);
-    NSOperation<SDWebImageDownloaderOperation> *operation = [self.URLOperations objectForKey:url];
-    if (operation) {
-        BOOL canceled = [operation cancel:token.downloadOperationCancelToken];
-        if (canceled) {
-            [self.URLOperations removeObjectForKey:url];
-        }
-    }
-    SD_UNLOCK(self.operationsLock);
 }
 
 - (void)cancelAllDownloads {
@@ -385,7 +404,12 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     NSOperation<SDWebImageDownloaderOperation> *returnOperation = nil;
     for (NSOperation<SDWebImageDownloaderOperation> *operation in self.downloadQueue.operations) {
         if ([operation respondsToSelector:@selector(dataTask)]) {
-            if (operation.dataTask.taskIdentifier == task.taskIdentifier) {
+            // So we lock the operation here, and in `SDWebImageDownloaderOperation`, we use `@synchonzied (self)`, to ensure the thread safe between these two classes.
+            NSURLSessionTask *operationTask;
+            @synchronized (operation) {
+                operationTask = operation.dataTask;
+            }
+            if (operationTask.taskIdentifier == task.taskIdentifier) {
                 returnOperation = operation;
                 break;
             }
@@ -504,13 +528,7 @@ didReceiveResponse:(NSURLResponse *)response
             return;
         }
         self.cancelled = YES;
-        if (self.downloader) {
-            // Downloader is alive, cancel token
-            [self.downloader cancel:self];
-        } else {
-            // Downloader is dealloced, only cancel download operation
-            [self.downloadOperation cancel:self.downloadOperationCancelToken];
-        }
+        [self.downloadOperation cancel:self.downloadOperationCancelToken];
         self.downloadOperationCancelToken = nil;
     }
 }
