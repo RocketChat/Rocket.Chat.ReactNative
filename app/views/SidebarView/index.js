@@ -8,7 +8,6 @@ import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
 import Touch from '../../utils/touch';
-import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import RocketChat from '../../lib/rocketchat';
@@ -23,6 +22,7 @@ import database from '../../lib/database';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
+import { getUserSelector } from '../../selectors/login';
 
 const keyExtractor = item => item.id;
 
@@ -44,7 +44,6 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
@@ -157,11 +156,6 @@ class Sidebar extends Component {
 		}
 	}
 
-	logout = () => {
-		const { logout } = this.props;
-		logout();
-	}
-
 	sidebarNavigate = (route) => {
 		const { navigation } = this.props;
 		navigation.navigate(route);
@@ -228,13 +222,6 @@ class Sidebar extends Component {
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
 				) : null}
-				<Separator theme={theme} />
-				<SidebarItem
-					text={I18n.t('Logout')}
-					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
-					onPress={this.logout}
-					testID='sidebar-logout'
-				/>
 			</>
 		);
 	}
@@ -299,10 +286,11 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</Touch>
 
-					{!split || showStatus ? <Separator theme={theme} /> : null}
+					{!split ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
+					{!split ? <Separator theme={theme} /> : null}
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -311,20 +299,9 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
-	user: {
-		id: state.login.user && state.login.user.id,
-		language: state.login.user && state.login.user.language,
-		status: state.login.user && state.login.user.status,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token,
-		roles: state.login.user && state.login.user.roles
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	loadingServer: state.server.loading
 });
 
-const mapDispatchToProps = dispatch => ({
-	logout: () => dispatch(logoutAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(Sidebar)));
+export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));

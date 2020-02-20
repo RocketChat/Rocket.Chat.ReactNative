@@ -103,8 +103,8 @@ Readme will guide you on how to config.
 | Custom Fields on Signup                                       	| ✅    	|
 | Report message                                                	| ✅    	|
 | Theming                                                       	| ✅    	|
-| Settings -> Review the App                                    	| ❌    	|
-| Settings -> Default Browser                                   	| ❌    	|
+| Settings -> Review the App                                    	| ✅    	|
+| Settings -> Default Browser                                   	| ✅    	|
 | Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
@@ -118,7 +118,7 @@ Readme will guide you on how to config.
 | Accessibility (Medium)                                        	| ❌    	|
 | Accessibility (Advanced)                                      	| ❌    	|
 | Authentication via Meteor                                     	| ❌    	|
-| Authentication via Wordpress                                  	| ❌    	|
+| Authentication via Wordpress                                  	| ✅    	|
 | Authentication via Custom OAuth                               	| ✅    	|
 | Add user to the room                                          	| ✅    	|
 | Send message                                                  	| ✅    	|

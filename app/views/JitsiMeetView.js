@@ -2,14 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
+import { connect } from 'react-redux';
 
 import RocketChat from '../lib/rocketchat';
+import { getUserSelector } from '../selectors/login';
 
 import sharedStyles from './Styles';
 
+const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
+	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
+);
+
 class JitsiMeetView extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		baseUrl: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			name: PropTypes.string,
+			token: PropTypes.string
+		})
 	}
 
 	constructor(props) {
@@ -21,14 +34,25 @@ class JitsiMeetView extends React.Component {
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
+		const { navigation, user, baseUrl } = this.props;
+		const {
+			name: displayName, id: userId, token, username
+		} = user;
+
+		const avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
+		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
+
 		setTimeout(() => {
+			const userInfo = {
+				displayName,
+				avatar
+			};
 			const url = navigation.getParam('url');
 			const onlyAudio = navigation.getParam('onlyAudio', false);
 			if (onlyAudio) {
-				JitsiMeet.audioCall(url);
+				JitsiMeet.audioCall(url, userInfo);
 			} else {
-				JitsiMeet.call(url);
+				JitsiMeet.call(url, userInfo);
 			}
 		}, 1000);
 	}
@@ -71,4 +95,9 @@ class JitsiMeetView extends React.Component {
 	}
 }
 
-export default JitsiMeetView;
+const mapStateToProps = state => ({
+	user: getUserSelector(state),
+	baseUrl: state.server.server
+});
+
+export default connect(mapStateToProps)(JitsiMeetView);

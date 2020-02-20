@@ -47,6 +47,10 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { Review } from '../../utils/review';
+import RoomClass from '../../lib/methods/subscriptions/room';
+import { getUserSelector } from '../../selectors/login';
+import { CONTAINER_TYPES } from '../../lib/methods/actions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -178,12 +182,11 @@ class RoomView extends React.Component {
 			this.findAndObserveRoom(this.rid);
 		}
 
-		this.beginAnimating = false;
-		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
+		this.sub = new RoomClass(this.rid);
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -283,18 +286,12 @@ class RoomView extends React.Component {
 				}
 			}
 		}
-		await this.unsubscribe();
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
+		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
 		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
 			this.onForegroundInteraction.cancel();
-		}
-		if (this.initInteraction && this.initInteraction.cancel) {
-			this.initInteraction.cancel();
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
@@ -319,7 +316,6 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			this.setState({ loading: true });
@@ -338,8 +334,7 @@ class RoomView extends React.Component {
 						this.setLastOpen(null);
 					}
 					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-					await this.unsubscribe();
-					this.sub = RocketChat.subscribeRoom(room);
+					this.sub.subscribe();
 				}
 			}
 
@@ -386,9 +381,10 @@ class RoomView extends React.Component {
 	}
 
 	unsubscribe = async() => {
-		if (this.sub && this.sub.stop) {
-			await this.sub.stop();
+		if (this.sub && this.sub.unsubscribe) {
+			await this.sub.unsubscribe();
 		}
+		delete this.sub;
 	}
 
 	observeRoom = (room) => {
@@ -472,6 +468,7 @@ class RoomView extends React.Component {
 		try {
 			await RocketChat.setReaction(shortname, messageId);
 			this.onReactionClose();
+			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
 		}
@@ -556,6 +553,7 @@ class RoomView extends React.Component {
 				this.list.current.update();
 			}
 			this.setLastOpen(null);
+			Review.pushPositiveEvent();
 		});
 	};
 
@@ -640,7 +638,7 @@ class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? 'Unfollowed thread' : 'Following thread' });
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}
@@ -699,6 +697,21 @@ class RoomView extends React.Component {
 		return isReadOnly(room, user);
 	}
 
+	blockAction = ({
+		actionId, appId, value, blockId, rid, mid
+	}) => RocketChat.triggerBlockAction({
+		blockId,
+		actionId,
+		value,
+		mid,
+		rid,
+		appId,
+		container: {
+			type: CONTAINER_TYPES.MESSAGE,
+			id: mid
+		}
+	});
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -723,6 +736,7 @@ class RoomView extends React.Component {
 			<Message
 				item={item}
 				user={user}
+				rid={room.rid}
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
@@ -749,6 +763,7 @@ class RoomView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
+				blockAction={this.blockAction}
 			/>
 		);
 
@@ -791,7 +806,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly) {
+		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
@@ -872,7 +887,9 @@ class RoomView extends React.Component {
 		const {
 			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, navigation
+		} = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -895,7 +912,7 @@ class RoomView extends React.Component {
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
-					animated={this.beginAnimating}
+					navigation={navigation}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
@@ -920,11 +937,7 @@ class RoomView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
@@ -932,7 +945,7 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
-	baseUrl: state.settings.baseUrl || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled
 });
 

@@ -1,9 +1,10 @@
 import * as types from './actionsTypes';
 
 
-export function roomsRequest() {
+export function roomsRequest(params = { allData: false }) {
 	return {
-		type: types.ROOMS.REQUEST
+		type: types.ROOMS.REQUEST,
+		params
 	};
 }
 
@@ -17,6 +18,12 @@ export function roomsFailure(err) {
 	return {
 		type: types.ROOMS.FAILURE,
 		err
+	};
+}
+
+export function roomsRefresh() {
+	return {
+		type: types.ROOMS.REFRESH
 	};
 }
 

@@ -28,6 +28,8 @@ export default function() {
 						// filter slash commands
 						let slashCommandsToCreate = commands.filter(i1 => !allSlashCommandsRecords.find(i2 => i1.command === i2.id));
 						let slashCommandsToUpdate = allSlashCommandsRecords.filter(i1 => commands.find(i2 => i1.id === i2.command));
+						let slashCommandsToDelete = allSlashCommandsRecords
+							.filter(i1 => !slashCommandsToCreate.find(i2 => i2.command === i1.id) && !slashCommandsToUpdate.find(i2 => i2.id === i1.id));
 
 						// Create
 						slashCommandsToCreate = slashCommandsToCreate.map(command => slashCommandsCollection.prepareCreate(protectedFunction((s) => {
@@ -43,9 +45,13 @@ export default function() {
 							}));
 						});
 
+						// Delete
+						slashCommandsToDelete = slashCommandsToDelete.map(command => command.prepareDestroyPermanently());
+
 						const allRecords = [
 							...slashCommandsToCreate,
-							...slashCommandsToUpdate
+							...slashCommandsToUpdate,
+							...slashCommandsToDelete
 						];
 
 						try {

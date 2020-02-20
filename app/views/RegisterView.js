@@ -42,6 +42,7 @@ class RegisterView extends React.Component {
 		loginRequest: PropTypes.func,
 		Site_Name: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
+		Accounts_EmailVerification: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -119,13 +120,19 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest } = this.props;
+		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
 
 		try {
 			await RocketChat.register({
 				name, email, pass: password, username, ...customFields
 			});
-			await loginRequest({ user: email, password });
+
+			if (Accounts_EmailVerification) {
+				await navigation.goBack();
+				Alert.alert(I18n.t('Verify_email_title'), I18n.t('Verify_email_desc'));
+			} else {
+				await loginRequest({ user: email, password });
+			}
 		} catch (e) {
 			Alert.alert(I18n.t('Oops'), e.data.error);
 		}
@@ -267,7 +274,8 @@ class RegisterView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
+	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
 });
 
 const mapDispatchToProps = dispatch => ({
