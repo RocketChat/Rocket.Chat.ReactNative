@@ -1,6 +1,9 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
+	disabled: {
+		opacity: 0.3
+	},
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
