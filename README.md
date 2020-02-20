@@ -104,7 +104,7 @@ Readme will guide you on how to config.
 | Report message                                                	| ✅    	|
 | Theming                                                       	| ✅    	|
 | Settings -> Review the App                                    	| ✅    	|
-| Settings -> Default Browser                                   	| ❌    	|
+| Settings -> Default Browser                                   	| ✅    	|
 | Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
