@@ -45,6 +45,9 @@ const CreateThreadPage = () => {
     const [response, setResponse] = useState(true) //set toggle button response to true
     const [type, setType] = useState(ContentType.TEXT)
 
+    const[isLink, setIsLink] = useState(false);
+    const[isYoutube, setIsYoutube] = useState(false);
+
     const onCreatePress = async () => {
         setCreateThreadFailed(false);
         setSubmitted(true);
@@ -55,6 +58,37 @@ const CreateThreadPage = () => {
             setCreateThreadFailed(true);
         }
     };
+
+    const linkInput = () => {
+        if(isLink){
+            return (<View>
+                <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
+            <TextInput 
+            required={true}
+            submitted={submitted}
+            placeholder={i18n.t('createThread.link.placeholder')}
+            placeholderTextColor={appColors.placeholder} />
+            </View>
+            )
+        }
+        return;
+    }
+    
+    const youtubeInput = () => {
+        if(isYoutube){
+            return (<View>
+                <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
+            <TextInput 
+            required={true}
+            submitted={submitted}
+            placeholder={i18n.t('createThread.youtube.placeholder')}
+            placeholderTextColor={appColors.placeholder} />
+            </View>
+            )
+        }
+        return;
+    }
+
 
     const createThreadIsFailed = () => {
         return <Alert title={i18n.t('createThread.error.label')} />
@@ -91,13 +125,20 @@ const CreateThreadPage = () => {
                                     Object.values(ContentType).map((contentType, index) => (
                                         <ContentTypeButton
                                             active={type === contentType}
-                                            onPress={() => setType(contentType)}
+                                            onPress={() => {
+                                                setType(contentType);
+                                                setIsLink(contentType == "LINK"); 
+                                                setIsYoutube(contentType == "YOUTUBE");   
+                                                }
+                                            }
                                             type={contentType} />
                                     ))
                                 }
                             </View>
                         </View>
-                        <View style={[styles.switchContainer]}>
+                        {linkInput()}
+                        {youtubeInput()}
+                        <View style={[styles.switchContainer, appStyles.formGroup]}>
                             <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
                             <Switch  
                                 value = {response}

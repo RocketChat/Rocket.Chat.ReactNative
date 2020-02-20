@@ -73,12 +73,14 @@ export default {
         },
         link: {
             label:'Link',
+            placeholder: 'Voer link in',
         },
         image: {
             label:'Afbeelding',
         },
         youtube: {
-            label:'YouTube'
+            label:'YouTube',
+            placeholder: 'Voer Youtube-link in',
         },
         video: {
             label:'Video'
