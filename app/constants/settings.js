@@ -35,6 +35,15 @@ export default {
 	Accounts_PasswordReset: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_RegistrationForm: {
+		type: 'valueAsString'
+	},
+	Accounts_RegistrationForm_LinkReplacementText: {
+		type: 'valueAsString'
+	},
+	Accounts_ShowFormLogin: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
