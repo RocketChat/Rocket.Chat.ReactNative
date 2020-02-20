@@ -110,7 +110,7 @@ const RoomItem = React.memo(({
 							ellipsizeMode='tail'
 							numberOfLines={1}
 						>
-							{getName({ name, username })}
+							{name}
 						</Text>
 						{_updatedAt ? (
 							<Text

@@ -32,7 +32,15 @@ const navigate = function* navigate({ params }) {
 	if (params.rid) {
 		const canOpenRoom = yield RocketChat.canOpenRoom(params);
 		if (canOpenRoom) {
-			const [type, name] = params.path.split('/');
+			const { rid } = params;
+			const [type, username] = params.path.split('/');
+			let name = username;
+			try {
+				const room = yield RocketChat.getRoom(rid);
+				name = RocketChat.getRoomTitle(room);
+			} catch {
+				// do nothing
+			}
 			yield Navigation.navigate('RoomsListView');
 			Navigation.navigate('RoomView', { rid: params.rid, name, t: roomTypes[type] });
 		}
