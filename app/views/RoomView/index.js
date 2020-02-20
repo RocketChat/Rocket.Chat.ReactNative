@@ -797,11 +797,15 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		if (room.announcement) {
 			return (
-				<View style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status'>
-					<BorderlessButton onPress={() => this.toggleAnnouncementModal(true)}>
-						<Text style={[styles.announcementText, { color: themes[theme].actionTintColor }]} ellipsizeMode='tail' numberOfLines={1}>{room.announcement}</Text>
-					</BorderlessButton>
-				</View>
+				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
+					<Markdown
+						useMarkdown
+						msg={room.announcement}
+						theme={theme}
+						numberOfLines={1}
+						preview
+					/>
+				</BorderlessButton>
 			);
 		} else {
 			return null;

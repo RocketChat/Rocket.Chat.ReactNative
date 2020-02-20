@@ -26,16 +26,13 @@ export default StyleSheet.create({
 		overflow: 'hidden'
 	},
 	announcementTextContainer: {
-		padding: 18,
+		paddingVertical: 12,
+		paddingHorizontal: 15,
 		alignItems: 'center'
 	},
 	announcementTitle: {
 		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	announcementText: {
-		fontSize: 16,
-		...sharedStyles.textRegular
 	},
 	modalView: {
 		padding: 20,
