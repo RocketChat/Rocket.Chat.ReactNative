@@ -21,6 +21,11 @@ export const pages = {
         CreateThreadPage: {
             getScreen: () => require('./pages/CreateThreadPage').default
         },
+    },
+    loading: {
+        LoadingPage: {
+            getScreen: () => require('./pages/LoadingPage').default
+        },
     }
 };
 
@@ -39,15 +44,12 @@ export const AuthenticatedNavigation: any = createAppContainer(createStackNaviga
     }
 ));
 
-const styles = StyleSheet.create({
-    activityHolder: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
+export const LoadingNavigator: any = createAppContainer(createSwitchNavigator(
+    pages.loading,
+    {
+
     }
-});
+));
 
 export const Navigation = forwardRef((props, ref) => {
     const [login, setLogin] = useState<boolean|null>(null);
@@ -59,7 +61,7 @@ export const Navigation = forwardRef((props, ref) => {
     }, []);
 
     return <>
-        {login === null ? <View style={[styles.activityHolder]}><ActivityIndicator /></View> : (
+        {login === null ? <LoadingNavigator ref={ref} /> : (
                 (login === false)
             ?
                 <UnaunthenticatedNavigation ref={ref} />
