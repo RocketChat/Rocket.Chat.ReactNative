@@ -10,9 +10,9 @@ const RightButtons = React.memo(({
 		return <SendButton theme={theme} onPress={submit} />;
 	}
 	if (recordAudioMessageEnabled) {
-		return <AudioButton theme={theme} onPress={recordAudioMessage} />
+		return <AudioButton theme={theme} onPress={recordAudioMessage} />;
 	}
-	return <></>
+	return <></>;
 });
 
 RightButtons.propTypes = {

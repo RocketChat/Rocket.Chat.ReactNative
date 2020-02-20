@@ -782,7 +782,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -843,7 +843,7 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={this.props.Message_AudioRecorderEnabled}
+							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showFileActions={this.showFileActions}
 						/>
 					</View>

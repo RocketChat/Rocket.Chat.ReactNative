@@ -18,10 +18,10 @@ const RightButtons = React.memo(({
 		);
 	}
 	return (
-			<>
-				<FileButton onPress={showFileActions} theme={theme} />
-			</>
-		);
+		<>
+			<FileButton onPress={showFileActions} theme={theme} />
+		</>
+	);
 });
 
 RightButtons.propTypes = {
