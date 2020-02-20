@@ -66,8 +66,7 @@ const stateAttrsUpdate = [
 	'editing',
 	'replying',
 	'reacting',
-	'showAnnouncementModal',
-	'hasRoomChanged'
+	'showAnnouncementModal'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
 
@@ -168,7 +167,6 @@ class RoomView extends React.Component {
 				rid: this.rid, t: this.t, name, fname
 			},
 			roomUpdate: {},
-			hasRoomChanged: false,
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
@@ -190,15 +188,8 @@ class RoomView extends React.Component {
 			this.findAndObserveRoom(this.rid);
 		}
 
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
-			const { hasRoomChanged } = this.state;
-			if (hasRoomChanged) {
-				this.setState({ hasRoomChanged: false });
-			}
-		});
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
-		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		this.sub = new RoomClass(this.rid);
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -414,7 +405,6 @@ class RoomView extends React.Component {
 				} else {
 					this.state.room = changes;
 					this.state.roomUpdate = roomUpdate;
-					this.state.hasRoomChanged = true;
 				}
 			});
 	}
