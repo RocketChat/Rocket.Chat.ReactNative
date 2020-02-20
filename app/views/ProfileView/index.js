@@ -311,19 +311,17 @@ class ProfileView extends React.Component {
 		} = this.props;
 
 		return (
-			<View style={[
-				styles.avatarButtons,
-				!Accounts_AllowUserAvatarChange && styles.disabled
-			]}
-			>
+			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
 					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
+					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='upload' size={30} color={themes[theme].bodyText} />,
 					onPress: () => this.pickImage(),
+					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
@@ -335,6 +333,7 @@ class ProfileView extends React.Component {
 				{Object.keys(avatarSuggestions).map((service) => {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
+						disabled: !Accounts_AllowUserAvatarChange,
 						key: `profile-view-avatar-${ service }`,
 						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
