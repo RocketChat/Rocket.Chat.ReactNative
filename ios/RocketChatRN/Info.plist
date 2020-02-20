@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>BugsnagAPIKey</key>
-	<string/>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>nl</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>

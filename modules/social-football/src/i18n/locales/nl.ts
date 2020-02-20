@@ -3,6 +3,9 @@ import { MaskedViewBase } from "react-native";
 
 export default {
     appName: 'Social.Football',
+    navigation: {
+        back: 'Terug',
+    },
     login: {
         description: 'Log hier in met je Connected.Football account, of maak er een aan.',
         username: {
@@ -55,7 +58,7 @@ export default {
         },
     },
     createThread: {
-        title: 'Nieuwe thread',
+        title: 'Nieuw',
         create: 'Maak',
         threadtitle: {
             label: 'Titel',
