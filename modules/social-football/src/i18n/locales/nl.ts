@@ -74,8 +74,11 @@ export default {
         link: {
             label:'Link',
         },
-        photo: {
-            label:'Foto',
+        image: {
+            label:'Afbeelding',
+        },
+        youtube: {
+            label:'YouTube'
         },
         video: {
             label:'Video'

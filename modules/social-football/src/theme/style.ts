@@ -41,14 +41,4 @@ export const appStyles = StyleSheet.create({
     formGroup: {
         marginTop: 20,
     },
-    description: {
-        height:200,
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: appColors.inputBorder,
-        paddingTop: 12,
-        paddingBottom: 12,
-        paddingLeft: 10,
-        paddingRight: 10,
-    },
 });
