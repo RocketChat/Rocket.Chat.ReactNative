@@ -94,6 +94,7 @@ const Url = React.memo(({
 	return (
 		<Touchable
 			onPress={onPress}
+			onLongPress={onLongPress}
 			style={[
 				styles.button,
 				index > 0 && styles.marginTop,
