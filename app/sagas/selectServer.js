@@ -19,6 +19,7 @@ import log from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -89,6 +90,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
+		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
+		setBasicAuth(basicAuth);
+
 		if (user) {
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
@@ -125,8 +129,9 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
+			const showFormLogin = yield RocketChat.getSetting({ server, setting: 'Accounts_ShowFormLogin' });
 			const loginServicesLength = yield RocketChat.getLoginServices(server);
-			if (loginServicesLength === 0) {
+			if (loginServicesLength === 0 && showFormLogin) {
 				Navigation.navigate('LoginView');
 			} else {
 				Navigation.navigate('LoginSignupView');

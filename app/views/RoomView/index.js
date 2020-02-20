@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
+import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import Modal from 'react-native-modal';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -51,6 +53,7 @@ import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
+import Markdown from '../../containers/markdown';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -62,9 +65,10 @@ const stateAttrsUpdate = [
 	'loading',
 	'editing',
 	'replying',
-	'reacting'
+	'reacting',
+	'showAnnouncementModal'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -173,7 +177,9 @@ class RoomView extends React.Component {
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
-			reacting: false
+			reacting: false,
+			showAnnouncementModal: false,
+			announcement: null
 		};
 
 		if (room && room.observe) {
@@ -182,11 +188,8 @@ class RoomView extends React.Component {
 			this.findAndObserveRoom(this.rid);
 		}
 
-		this.beginAnimating = false;
-		this.didFocusListener = props.navigation.addListener('didFocus', () => this.beginAnimating = true);
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
-		this.willBlurListener = props.navigation.addListener('willBlur', () => this.mounted = false);
 		this.mounted = false;
 		this.sub = new RoomClass(this.rid);
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -289,9 +292,6 @@ class RoomView extends React.Component {
 			}
 		}
 		this.unsubscribe();
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -321,7 +321,6 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			this.setState({ loading: true });
@@ -789,6 +788,56 @@ class RoomView extends React.Component {
 		return message;
 	}
 
+	toggleAnnouncementModal = (showModal) => {
+		this.setState({ showAnnouncementModal: showModal });
+	}
+
+	renderAnnouncement = () => {
+		const { theme } = this.props;
+		const { room } = this.state;
+		if (room.announcement) {
+			return (
+				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
+					<Markdown
+						useMarkdown
+						msg={room.announcement}
+						theme={theme}
+						numberOfLines={1}
+						preview
+					/>
+				</BorderlessButton>
+			);
+		} else {
+			return null;
+		}
+	}
+
+	renderAnnouncementModal = () => {
+		const { room, showAnnouncementModal } = this.state;
+		const { theme } = this.props;
+		return (
+			<Modal
+				onBackdropPress={() => this.toggleAnnouncementModal(false)}
+				onBackButtonPress={() => this.toggleAnnouncementModal(false)}
+				useNativeDriver
+				isVisible={showAnnouncementModal}
+				animationIn='fadeIn'
+				animationOut='fadeOut'
+			>
+				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
+					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
+					<ScrollView style={styles.modalScrollView}>
+						<Markdown
+							useMarkdown
+							msg={room.announcement}
+							theme={theme}
+						/>
+					</ScrollView>
+				</View>
+			</Modal>
+		);
+	}
+
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -893,7 +942,9 @@ class RoomView extends React.Component {
 		const {
 			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, navigation
+		} = this.props;
 		const { rid, t } = room;
 
 		return (
@@ -906,6 +957,7 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
+				{this.renderAnnouncement()}
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -916,8 +968,9 @@ class RoomView extends React.Component {
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
-					animated={this.beginAnimating}
+					navigation={navigation}
 				/>
+				{this.renderAnnouncementModal()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker

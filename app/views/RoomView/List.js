@@ -25,9 +25,9 @@ class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool,
 		theme: PropTypes.string,
-		listRef: PropTypes.func
+		listRef: PropTypes.func,
+		navigation: PropTypes.object
 	};
 
 	constructor(props) {
@@ -40,9 +40,17 @@ class List extends React.Component {
 			loading: true,
 			end: false,
 			messages: [],
-			refreshing: false
+			refreshing: false,
+			animated: false
 		};
 		this.init();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			if (this.mounted) {
+				this.setState({ animated: true });
+			} else {
+				this.state.animated = true;
+			}
+		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -130,6 +138,9 @@ class List extends React.Component {
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -180,7 +191,10 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
-		animateNextTransition();
+		const { animated } = this.state;
+		if (animated) {
+			animateNextTransition();
+		}
 		this.forceUpdate();
 	};
 
