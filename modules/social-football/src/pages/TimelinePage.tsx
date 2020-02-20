@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, Button } from 'react-native';
+import { Text, Button, View } from 'react-native';
 import { appStyles } from '../theme/style';
-import { SafeAreaView }  from 'react-navigation';
 import SecurityManager from '../security/security-manager';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_ME } from '../api/queries/authentication.queries';
@@ -13,11 +12,11 @@ const TimelinePage = ( {navigation} ) => {
         SecurityManager.logout();
     }
 
-    return <SafeAreaView>
+    return <View>
         <Text style={[appStyles.text]}>Dit is een timeline pagina. Welkom {data?.me}</Text>
         <Button title='Aanmaken item'  onPress={() => navigation.push('CreateThreadPage')} />
         <Button title='Loguit (tijdelijk)'  onPress={() => logout()} />
-    </SafeAreaView>
+    </View>
 };
 
 export default TimelinePage;

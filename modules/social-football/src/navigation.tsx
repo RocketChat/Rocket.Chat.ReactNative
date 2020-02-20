@@ -4,6 +4,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import SecurityManager from './security/security-manager';
 import i18n from './i18n';
+import { appColors } from './theme/colors';
+import { HeaderLogo } from './components/header/HeaderLogo';
+import { HeaderCreateThreadButton } from './components/header/HeaderCreateThreadButton';
+import { HeaderSaveThreadButton } from './components/header/HeaderSaveThreadButton copy';
 
 export const pages = {
     unauthenticated: {
@@ -16,15 +20,18 @@ export const pages = {
     },
     authenticated: {
         TimelinePage: {
-            getScreen: () => require('./pages/TimelinePage').default
+            getScreen: () => require('./pages/TimelinePage').default,
+            navigationOptions: ({ navigation }) => ({
+                headerTitle: <HeaderLogo />,
+                headerRight:  <HeaderCreateThreadButton navigation={navigation} />
+            }),
         },
         CreateThreadPage: {
-            getScreen: () => require('./pages/CreateThreadPage').default
-        },
-    },
-    loading: {
-        LoadingPage: {
-            getScreen: () => require('./pages/LoadingPage').default
+            getScreen: () => require('./pages/CreateThreadPage').default,
+            navigationOptions: ({ navigation }) => ({
+                headerTitle: i18n.t('createThread.title'),
+                headerRight:  <HeaderSaveThreadButton navigation={navigation} />
+            }),
         },
     }
 };
@@ -41,15 +48,31 @@ export const AuthenticatedNavigation: any = createAppContainer(createStackNaviga
     pages.authenticated,
     {
         initialRouteName: 'TimelinePage',
+        defaultNavigationOptions: {
+            headerBackTitle: i18n.t('navigation.back'),
+            headerStyle: {
+                backgroundColor: appColors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontFamily: 'Cabin-SemiBold'
+            },
+            headerBackTitleStyle: {
+                fontFamily: 'Cabin-SemiBold'
+            },
+        },
     }
 ));
 
-export const LoadingNavigator: any = createAppContainer(createSwitchNavigator(
-    pages.loading,
-    {
-
+const styles = StyleSheet.create({
+    activityHolder: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
     }
-));
+});
 
 export const Navigation = forwardRef((props, ref) => {
     const [login, setLogin] = useState<boolean|null>(null);
@@ -61,7 +84,7 @@ export const Navigation = forwardRef((props, ref) => {
     }, []);
 
     return <>
-        {login === null ? <LoadingNavigator ref={ref} /> : (
+        {login === null ? <View style={[styles.activityHolder]}><ActivityIndicator /></View> : (
                 (login === false)
             ?
                 <UnaunthenticatedNavigation ref={ref} />
