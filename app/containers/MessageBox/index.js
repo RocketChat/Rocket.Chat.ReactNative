@@ -85,6 +85,7 @@ class MessageBox extends Component {
 		replyWithMention: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
+		Message_AudioRecorderEnabled: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
@@ -842,6 +843,7 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
+							recordAudioMessageEnabled={this.props.Message_AudioRecorderEnabled}
 							showFileActions={this.showFileActions}
 						/>
 					</View>
@@ -891,7 +893,8 @@ const mapStateToProps = state => ({
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
 const dispatchToProps = ({
