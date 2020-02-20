@@ -27,22 +27,23 @@ const AtMention = React.memo(({
 		};
 	}
 
+	const user = mentions && mentions.length && mentions.find(m => m.username === mention);
+
 	const handlePress = () => {
-		const index = mentions.findIndex(m => m.username === mention);
 		const navParam = {
 			t: 'd',
-			rid: mentions[index]._id
+			rid: user && user._id
 		};
 		navToRoomInfo(navParam);
 	};
 
-	if (mentions && mentions.length && mentions.findIndex(m => m.username === mention) !== -1) {
+	if (user) {
 		return (
 			<Text
 				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
 				onPress={preview ? undefined : handlePress}
 			>
-				{getName(mentions.find(m => m.username === mention))}
+				{getName(user)}
 			</Text>
 		);
 	}
