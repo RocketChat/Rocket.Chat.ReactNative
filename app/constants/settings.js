@@ -89,6 +89,9 @@ export default {
 	Message_AllowStarring: {
 		type: 'valueAsBoolean'
 	},
+	Message_AudioRecorderEnabled: {
+		type: 'valueAsBoolean'
+	},
 	Message_GroupingPeriod: {
 		type: 'valueAsNumber'
 	},
