@@ -1,4 +1,22 @@
 export default {
+	Accounts_AllowEmailChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowPasswordChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowRealNameChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserAvatarChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserProfileChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUsernameChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
