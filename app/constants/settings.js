@@ -35,6 +35,9 @@ export default {
 	Jitsi_Domain: {
 		type: 'valueAsString'
 	},
+	Jitsi_Enabled_TokenAuth: {
+		type: 'valueAsBoolean'
+	},
 	Jitsi_URL_Room_Prefix: {
 		type: 'valueAsString'
 	},
