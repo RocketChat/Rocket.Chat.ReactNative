@@ -50,6 +50,11 @@ class ProfileView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
+		Accounts_AllowEmailChange: PropTypes.bool,
+		Accounts_AllowPasswordChange: PropTypes.bool,
+		Accounts_AllowRealNameChange: PropTypes.bool,
+		Accounts_AllowUserAvatarChange: PropTypes.bool,
+		Accounts_AllowUsernameChange: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
@@ -98,6 +103,12 @@ class ProfileView extends React.Component {
 	}
 
 	setAvatar = (avatar) => {
+		const { Accounts_AllowUserAvatarChange } = this.props;
+
+		if (!Accounts_AllowUserAvatarChange) {
+			return;
+		}
+
 		this.setState({ avatar });
 	}
 
@@ -233,6 +244,12 @@ class ProfileView extends React.Component {
 	}
 
 	resetAvatar = async() => {
+		const { Accounts_AllowUserAvatarChange } = this.props;
+
+		if (!Accounts_AllowUserAvatarChange) {
+			return;
+		}
+
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
@@ -244,6 +261,12 @@ class ProfileView extends React.Component {
 	}
 
 	pickImage = async() => {
+		const { Accounts_AllowUserAvatarChange } = this.props;
+
+		if (!Accounts_AllowUserAvatarChange) {
+			return;
+		}
+
 		const options = {
 			cropping: true,
 			compressImageQuality: 0.8,
@@ -280,18 +303,25 @@ class ProfileView extends React.Component {
 
 	renderAvatarButtons = () => {
 		const { avatarUrl, avatarSuggestions } = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user,
+			baseUrl,
+			theme,
+			Accounts_AllowUserAvatarChange
+		} = this.props;
 
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
 					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
+					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='upload' size={30} color={themes[theme].bodyText} />,
 					onPress: () => this.pickImage(),
+					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
@@ -303,6 +333,7 @@ class ProfileView extends React.Component {
 				{Object.keys(avatarSuggestions).map((service) => {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
+						disabled: !Accounts_AllowUserAvatarChange,
 						key: `profile-view-avatar-${ service }`,
 						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
@@ -381,7 +412,15 @@ class ProfileView extends React.Component {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
 		} = this.state;
 		const {
-			baseUrl, user, theme, Accounts_CustomFields
+			baseUrl,
+			user,
+			theme,
+			Accounts_AllowEmailChange,
+			Accounts_AllowPasswordChange,
+			Accounts_AllowRealNameChange,
+			Accounts_AllowUserAvatarChange,
+			Accounts_AllowUsernameChange,
+			Accounts_CustomFields
 		} = this.props;
 
 		return (
@@ -408,6 +447,10 @@ class ProfileView extends React.Component {
 							/>
 						</View>
 						<RCTextInput
+							editable={Accounts_AllowRealNameChange}
+							inputStyle={[
+								!Accounts_AllowRealNameChange && styles.disabled
+							]}
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
@@ -418,6 +461,10 @@ class ProfileView extends React.Component {
 							theme={theme}
 						/>
 						<RCTextInput
+							editable={Accounts_AllowUsernameChange}
+							inputStyle={[
+								!Accounts_AllowUsernameChange && styles.disabled
+							]}
 							inputRef={(e) => { this.username = e; }}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
@@ -428,6 +475,10 @@ class ProfileView extends React.Component {
 							theme={theme}
 						/>
 						<RCTextInput
+							editable={Accounts_AllowEmailChange}
+							inputStyle={[
+								!Accounts_AllowEmailChange && styles.disabled
+							]}
 							inputRef={(e) => { this.email = e; }}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
@@ -438,6 +489,10 @@ class ProfileView extends React.Component {
 							theme={theme}
 						/>
 						<RCTextInput
+							editable={Accounts_AllowPasswordChange}
+							inputStyle={[
+								!Accounts_AllowPasswordChange && styles.disabled
+							]}
 							inputRef={(e) => { this.newPassword = e; }}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
@@ -455,6 +510,10 @@ class ProfileView extends React.Component {
 						/>
 						{this.renderCustomFields()}
 						<RCTextInput
+							editable={Accounts_AllowUserAvatarChange}
+							inputStyle={[
+								!Accounts_AllowUserAvatarChange && styles.disabled
+							]}
 							inputRef={(e) => { this.avatarUrl = e; }}
 							label={I18n.t('Avatar_Url')}
 							placeholder={I18n.t('Avatar_Url')}
@@ -499,6 +558,11 @@ class ProfileView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
+	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange,
+	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange,
+	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange,
+	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
+	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	baseUrl: state.server.server
 });

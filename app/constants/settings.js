@@ -1,4 +1,22 @@
 export default {
+	Accounts_AllowEmailChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowPasswordChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowRealNameChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserAvatarChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserProfileChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUsernameChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
@@ -15,6 +33,15 @@ export default {
 		type: 'valueAsString'
 	},
 	Accounts_PasswordReset: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_RegistrationForm: {
+		type: 'valueAsString'
+	},
+	Accounts_RegistrationForm_LinkReplacementText: {
+		type: 'valueAsString'
+	},
+	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
 	CROWD_Enable: {
