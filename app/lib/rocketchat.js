@@ -913,7 +913,7 @@ const RocketChat = {
 			let loginServices = [];
 			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
 
-			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
+			if (loginServicesResult.success && loginServicesResult.services) {
 				const { services } = loginServicesResult;
 				loginServices = services;
 
