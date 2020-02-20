@@ -104,9 +104,6 @@ const CreateThreadPage = () => {
                                 onValueChange = {() => setResponse(!response) }
                             />
                         </View>
-                        <View style={[appStyles.formGroup]}>
-                            <Button title={i18n.t('createThread.create')} onPress={onCreatePress} />
-                        </View>
                     </View>
                 </View>
             </ScrollView>
