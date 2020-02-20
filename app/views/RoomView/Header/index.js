@@ -8,6 +8,7 @@ import Header from './Header';
 import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
 import RoomHeaderLeft from './RoomHeaderLeft';
+import { getUserSelector } from '../../../selectors/login';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -86,9 +87,9 @@ const mapStateToProps = (state, ownProps) => {
 	let status;
 	const { rid, type } = ownProps;
 	if (type === 'd') {
-		if (state.login.user && state.login.user.id) {
-			const { id: loggedUserId } = state.login.user;
-			const userId = rid.replace(loggedUserId, '').trim();
+		const user = getUserSelector(state);
+		if (user.id) {
+			const userId = rid.replace(user.id, '').trim();
 			status = state.activeUsers[userId];
 		}
 	}

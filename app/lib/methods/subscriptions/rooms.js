@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { InteractionManager } from 'react-native';
 
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
@@ -9,7 +10,9 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
+import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
+import RocketChat from '../../rocketchat';
 
 const removeListener = listener => listener.stop();
 
@@ -21,7 +24,7 @@ let subQueue = {};
 let subTimer = null;
 let roomQueue = {};
 let roomTimer = null;
-const WINDOW_TIME = 1000;
+const WINDOW_TIME = 500;
 
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
@@ -174,7 +177,9 @@ const debouncedUpdateSub = (subscription) => {
 			subQueue = {};
 			subTimer = null;
 			Object.keys(subBatch).forEach((key) => {
-				createOrUpdateSubscription(subBatch[key]);
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(subBatch[key]);
+				});
 			});
 		}, WINDOW_TIME);
 	}
@@ -188,7 +193,9 @@ const debouncedUpdateRoom = (room) => {
 			roomQueue = {};
 			roomTimer = null;
 			Object.keys(roomBatch).forEach((key) => {
-				createOrUpdateSubscription(null, roomBatch[key]);
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(null, roomBatch[key]);
+				});
 			});
 		}, WINDOW_TIME);
 	}
@@ -250,6 +257,7 @@ export default function subscribeRooms() {
 				_id,
 				rid: args.rid,
 				msg: args.msg,
+				blocks: args.blocks,
 				ts: new Date(),
 				_updatedAt: new Date(),
 				status: messagesStatus.SENT,
@@ -273,7 +281,20 @@ export default function subscribeRooms() {
 		}
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
+			try {
+				const { payload: { rid } } = notification;
+				const subCollection = db.collections.get('subscriptions');
+				const sub = await subCollection.find(rid);
+				notification.title = RocketChat.getRoomTitle(sub);
+				notification.avatar = RocketChat.getRoomAvatar(sub);
+			} catch (e) {
+				// do nothing
+			}
 			store.dispatch(notificationReceived(notification));
+		}
+		if (/uiInteraction/.test(ev)) {
+			const { type: eventType, ...args } = type;
+			handlePayloadUserInteraction(eventType, args);
 		}
 	});
 

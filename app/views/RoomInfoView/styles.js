@@ -8,29 +8,37 @@ export default StyleSheet.create({
 	},
 	scroll: {
 		flex: 1,
-		flexDirection: 'column',
-		padding: 10
+		flexDirection: 'column'
 	},
 	item: {
-		padding: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		justifyContent: 'center'
 	},
 	avatarContainer: {
-		height: 250,
+		height: 240,
 		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginBottom: 20
+	},
+	avatarContainerDirectRoom: {
+		height: 320
 	},
 	avatar: {
 		marginHorizontal: 10
 	},
 	roomTitleContainer: {
 		paddingTop: 20,
-		flexDirection: 'row'
+		alignItems: 'center'
 	},
 	roomTitle: {
-		fontSize: 18,
+		fontSize: 20,
 		...sharedStyles.textMedium
+	},
+	roomUsername: {
+		fontSize: 18,
+		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
@@ -66,5 +74,17 @@ export default StyleSheet.create({
 	role: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	roomButtonsContainer: {
+		flexDirection: 'row',
+		paddingTop: 30
+	},
+	roomButton: {
+		alignItems: 'center',
+		paddingHorizontal: 20,
+		justifyContent: 'space-between'
+	},
+	roomButtonText: {
+		marginTop: 5
 	}
 });

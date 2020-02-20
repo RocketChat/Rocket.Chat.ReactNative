@@ -22,7 +22,7 @@ import {
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
@@ -36,6 +36,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction } from '../../actions';
 import { onReviewPress } from '../../utils/review';
+import { getUserSelector } from '../../selectors/login';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -88,21 +89,33 @@ class SettingsView extends React.Component {
 		appStart: PropTypes.func
 	}
 
-	logout = () => {
-		const { logout, split } = this.props;
-		if (split) {
-			Navigation.navigate('RoomView');
-		}
-		logout();
+	handleLogout = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_be_logged_out_of_this_application'),
+			callToAction: I18n.t('Logout'),
+			onPress: () => {
+				const { logout, split } = this.props;
+				if (split) {
+					Navigation.navigate('RoomView');
+				}
+				logout();
+			}
+		});
 	}
 
-	clearCache = async() => {
-		const {
-			server: { server }, loginRequest, token, appStart
-		} = this.props;
-		await appStart('loading');
-		await RocketChat.clearCache({ server });
-		await loginRequest({ resume: token }, true);
+	handleClearCache = () => {
+		showConfirmationAlert({
+			message: I18n.t('This_will_clear_all_your_offline_data'),
+			callToAction: I18n.t('Clear'),
+			onPress: async() => {
+				const {
+					server: { server }, loginRequest, token, appStart
+				} = this.props;
+				await appStart('loading');
+				await RocketChat.clearCache({ server });
+				await loginRequest({ resume: token }, true);
+			}
+		});
 	}
 
 	toggleMarkdown = (value) => {
@@ -125,9 +138,9 @@ class SettingsView extends React.Component {
 		}
 	}
 
-	navigateToRoom = (room) => {
+	navigateToScreen = (screen) => {
 		const { navigation } = this.props;
-		navigation.navigate(room);
+		navigation.navigate(screen);
 	}
 
 	sendEmail = async() => {
@@ -160,11 +173,6 @@ class SettingsView extends React.Component {
 	saveToClipboard = async(content) => {
 		await Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	}
-
-	changeTheme = () => {
-		const { navigation } = this.props;
-		navigation.navigate('ThemeView');
 	}
 
 	onPressLicense = () => {
@@ -221,7 +229,7 @@ class SettingsView extends React.Component {
 							<SectionSeparator theme={theme} />
 							<ListItem
 								title={I18n.t('Profile')}
-								onPress={() => this.navigateToRoom('ProfileView')}
+								onPress={() => this.navigateToScreen('ProfileView')}
 								showActionIndicator
 								testID='settings-profile'
 								right={this.renderDisclosure}
@@ -242,7 +250,7 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Language')}
-						onPress={() => this.navigateToRoom('LanguageView')}
+						onPress={() => this.navigateToScreen('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
 						right={this.renderDisclosure}
@@ -268,9 +276,18 @@ class SettingsView extends React.Component {
 					/>
 					<Separator theme={theme} />
 					<ListItem
+						title={I18n.t('Default_browser')}
+						showActionIndicator
+						onPress={() => this.navigateToScreen('DefaultBrowserView')}
+						testID='settings-view-default-browser'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
-						onPress={this.changeTheme}
+						onPress={() => this.navigateToScreen('ThemeView')}
 						testID='settings-view-theme'
 						right={this.renderDisclosure}
 						theme={theme}
@@ -329,7 +346,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Clear_cache')}
 						testID='settings-clear-cache'
-						onPress={this.clearCache}
+						onPress={this.handleClearCache}
 						right={this.renderDisclosure}
 						color={themes[theme].dangerColor}
 						theme={theme}
@@ -338,7 +355,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Logout')}
 						testID='settings-logout'
-						onPress={this.logout}
+						onPress={this.handleLogout}
 						right={this.renderDisclosure}
 						color={themes[theme].dangerColor}
 						theme={theme}
@@ -352,7 +369,7 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	token: state.login.user && state.login.user.token,
+	token: getUserSelector(state).token,
 	useMarkdown: state.markdown.useMarkdown,
 	allowCrashReport: state.crashReport.allowCrashReport
 });

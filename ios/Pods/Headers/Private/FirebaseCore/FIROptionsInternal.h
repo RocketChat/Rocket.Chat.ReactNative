@@ -1,1 +1,1 @@
-../../../FirebaseCore/Firebase/Core/Private/FIROptionsInternal.h
+../../../FirebaseCore/FirebaseCore/Sources/Private/FIROptionsInternal.h

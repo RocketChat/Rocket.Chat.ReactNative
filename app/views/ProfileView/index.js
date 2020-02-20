@@ -31,6 +31,7 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -557,21 +558,14 @@ class ProfileView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		name: state.login.user && state.login.user.name,
-		username: state.login.user && state.login.user.username,
-		customFields: state.login.user && state.login.user.customFields,
-		emails: state.login.user && state.login.user.emails,
-		token: state.login.user && state.login.user.token
-	},
+	user: getUserSelector(state),
 	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange,
 	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange,
 	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange,
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : ''
+	baseUrl: state.server.server
 });
 
 const mapDispatchToProps = dispatch => ({
