@@ -96,7 +96,7 @@ export default {
 		type: 'valueAsBoolean'
 	},
 	Threads_enabled: {
-		type: null
+		type: 'valueAsBoolean'
 	},
 	FileUpload_MediaTypeWhiteList: {
 		type: 'valueAsString'
