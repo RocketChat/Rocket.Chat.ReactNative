@@ -2,6 +2,7 @@ import * as types from '../actions/actionsTypes';
 
 const initialState = {
 	isFetching: false,
+	refreshing: false,
 	failure: false,
 	errorMessage: {},
 	searchText: '',
@@ -23,14 +24,22 @@ export default function login(state = initialState, action) {
 		case types.ROOMS.SUCCESS:
 			return {
 				...state,
-				isFetching: false
+				isFetching: false,
+				refreshing: false
 			};
 		case types.ROOMS.FAILURE:
 			return {
 				...state,
 				isFetching: false,
+				refreshing: false,
 				failure: true,
 				errorMessage: action.err
+			};
+		case types.ROOMS.REFRESH:
+			return {
+				...state,
+				isFetching: true,
+				refreshing: true
 			};
 		case types.ROOMS.SET_SEARCH:
 			return {

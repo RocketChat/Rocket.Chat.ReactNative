@@ -19,6 +19,7 @@ import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -93,6 +94,14 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -117,6 +126,7 @@ class SearchMessagesView extends React.Component {
 				isHeader
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
+				navToRoomInfo={this.navToRoomInfo}
 				theme={theme}
 			/>
 		);
@@ -167,12 +177,8 @@ class SearchMessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	customEmojis: state.customEmojis
 });
 

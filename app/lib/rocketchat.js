@@ -1,6 +1,6 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
@@ -12,7 +12,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
-import fetch, { headers } from '../utils/fetch';
+import fetch, { BASIC_AUTH_KEY } from '../utils/fetch';
 
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
@@ -32,6 +32,7 @@ import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
+import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
@@ -56,8 +57,6 @@ const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
-
-RocketChatSettings.customHeaders = headers;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -445,6 +444,7 @@ const RocketChat = {
 		await RNUserDefaults.clear('currentServer');
 		await RNUserDefaults.clear(TOKEN_KEY);
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
+		await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
 
 		try {
 			const db = database.active;
@@ -564,18 +564,28 @@ const RocketChat = {
 					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
-
-				data = data.concat(users.map(user => ({
-					...user,
-					rid: user.username,
-					name: user.username,
-					t: 'd',
-					search: true
-				})), rooms.map(room => ({
-					rid: room._id,
-					...room,
-					search: true
-				})));
+				if (filterUsers) {
+					data = data.concat(users.map(user => ({
+						...user,
+						rid: user.username,
+						name: user.username,
+						t: 'd',
+						search: true
+					})));
+				}
+				if (filterRooms) {
+					rooms.forEach((room) => {
+						// Check if it exists on local database
+						const index = data.findIndex(item => item.rid === room._id);
+						if (index === -1) {
+							data.push({
+								rid: room._id,
+								...room,
+								search: true
+							});
+						}
+					});
+				}
 			}
 			delete this.oldPromise;
 			return data;
@@ -603,6 +613,9 @@ const RocketChat = {
 		}
 		return this.sdk.post('channels.join', { roomId });
 	},
+	triggerBlockAction,
+	triggerSubmitView,
+	triggerCancel,
 	sendFileMessage,
 	cancelUpload,
 	isUploadActive,
@@ -1005,10 +1018,10 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
-	runSlashCommand(command, roomId, params) {
+	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
 		return this.sdk.post('commands.run', {
-			command, roomId, params
+			command, roomId, params, triggerId, tmid
 		});
 	},
 	getCommandPreview(command, roomId, params) {
@@ -1017,10 +1030,10 @@ const RocketChat = {
 			command, roomId, params
 		});
 	},
-	executeCommandPreview(command, params, roomId, previewItem) {
+	executeCommandPreview(command, params, roomId, previewItem, triggerId, tmid) {
 		// RC 0.65.0
 		return this.sdk.post('commands.preview', {
-			command, params, roomId, previewItem
+			command, params, roomId, previewItem, triggerId, tmid
 		});
 	},
 	_setUser(ddpMessage) {
@@ -1126,6 +1139,9 @@ const RocketChat = {
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return ((room.prid || useRealName) && room.fname) || room.name;
+	},
+	getRoomAvatar(room) {
+		return room.prid ? room.fname : room.name;
 	},
 
 	findOrCreateInvite({ rid, days, maxUses }) {
