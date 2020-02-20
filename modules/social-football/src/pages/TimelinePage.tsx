@@ -15,6 +15,10 @@ const styles = StyleSheet.create({
     },
 
     topbar: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 50,
         width: '100%',
         backgroundColor: '#F18217',
@@ -23,10 +27,11 @@ const styles = StyleSheet.create({
     logo: {
         height: 30,
         width: '10%',
-        backgroundColor: '#F18217',
-    },
+        },
 
     filterbar: {
+        flex: 1,
+        flexDirection: 'row',
         height: 25,
         width: '100%',
         backgroundColor: '#FFF1E5',
@@ -41,10 +46,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
 
+    textAndPreview: {
+        flex: 3,
+        flexDirection: 'row',
+        marginTop: 5,
+    },
+
     preview: {
+        flex: 1,
         width: 100,
         height: 75,
-        marginLeft: '75%',
         borderRadius: 10,
     },
 
@@ -60,7 +71,9 @@ const styles = StyleSheet.create({
     },
 
     threadText: {
+        flex: 2,
         color: 'black',
+        fontSize: 15
     },
 
     creatorText: {
@@ -73,23 +86,31 @@ const styles = StyleSheet.create({
 
 const TimelinePage = ({ navigation }) => (
     <SafeAreaView>
+
+
         <ScrollView>
             <View style={[styles.topbar]}>
-                <Image style={[styles.logo]} source={require('../assets/images/app-logo.png')} />
+                <Image style={[styles.logo]} source={require('../assets/images/trophy.png')} />
+                <Image style={[styles.logo]} source={require('../assets/images/topbar-logo.png')} />
+            </View>
+
+
+
+            <View style={[styles.filterbar]} >
+                <Text style={[styles.filterText]}>Alle berichten.</Text>
+                <Image style={[styles.logo]} source={require('../assets/images/refresh.png')} />
+
             </View>
 
             <View style={styles.container}>
-
-                <View style={[styles.filterbar]} >
-                    <Text style={[styles.filterText]}>Alle berichten.</Text>
-                </View>
-
                 <View style={[styles.item]}>
-                    <Text style={[styles.creatorText]}>Dick Advocaat Zondag.</Text>
+                    <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
                     <Text style={[styles.threadTitle]}>{i18n.t('appName')}</Text>
-                    <Text style={[styles.threadText]}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</Text>
-                    <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
-                 </View>
+                    <View style={[styles.textAndPreview]}>
+                        <Text style={[styles.threadText]}>Dit is de beschijving van deze thread met een afbeelding die... </Text>
+                        <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
+                    </View>
+                </View>
 
                 <View style={[styles.item]} />
                 <View style={[styles.item]} />
