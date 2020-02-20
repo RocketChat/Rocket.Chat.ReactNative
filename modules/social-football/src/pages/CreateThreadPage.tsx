@@ -6,6 +6,8 @@ import { appStyles } from '../theme/style';
 import { TextInput } from '../components/TextInput';
 import { appColors } from '../theme/colors';
 import { Alert } from '../components/Alert';
+import { Button } from '../components/Button'
+import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
 
 const styles = StyleSheet.create({
@@ -34,8 +36,9 @@ const CreateThreadPage = () => {
     const [createThreadFailed, setCreateThreadFailed] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
-    const [suggestion, setSuggestion] = useState(true) //set toggle button suggestion to true
+    // const [suggestion, setSuggestion] = useState(true) //set toggle button suggestion to true
     const [response, setResponse] = useState(true) //set toggle button response to true
+    const [type, setType] = useState('Tekst')
 
     const onCreatePress = async () => {
         setCreateThreadFailed(false);
@@ -76,7 +79,9 @@ const CreateThreadPage = () => {
                 </View>
                 <View style={[appStyles.formGroup]}>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.contentType.label')}</Text>
-                    <Picker>
+                    <Picker 
+                    selectedValue = {type}
+                    onValueChange={() => setType(value)}>
                         <Picker.Item label={i18n.t('createThread.text.label')} value="Text"></Picker.Item>
                         <Picker.Item label={i18n.t('createThread.link.label')} value="Link"></Picker.Item>
                         <Picker.Item label={i18n.t('createThread.photo.label')} value="Photo"></Picker.Item>
@@ -87,17 +92,20 @@ const CreateThreadPage = () => {
                 </View>
                 <View style={[styles.swithContainer]}>
                     <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
-                    <Switch
-                    value = {suggestion}
-                    onValueChange = {() => setSuggestion(!suggestion) }
-                    />
-                </View>
-                <View style={[styles.swithContainer]}>
-                    <Text style={[appStyles.label]}>{i18n.t('createThread.categoricalResponse.label')}</Text>
                     <Switch  
                     value = {response}
                     onValueChange = {() => setResponse(!response) }
                     />
+                </View>
+                {/* <View style={[styles.swithContainer]}>
+                    <Text style={[appStyles.label]}>{i18n.t('createThread.categoricalResponse.label')}</Text>
+                    <Switch
+                    value = {suggestion}
+                    onValueChange = {() => setSuggestion(!suggestion) }
+                    />
+                </View> */}
+                <View style={[appStyles.formGroup]}>
+                    <Button title={i18n.t('createThread.create')} onPress={onCreatePress} />
                 </View>
             </View>
         </View>

@@ -1,4 +1,5 @@
 import { HeaderTitle } from "react-navigation-stack";
+import { MaskedViewBase } from "react-native";
 
 export default {
     appName: 'Social.Football',
@@ -55,6 +56,7 @@ export default {
     },
     createThread: {
         title: 'Nieuwe thread',
+        create: 'Maak',
         threadtitle: {
             label: 'Titel',
             placeholder: 'Item titel',
@@ -85,7 +87,7 @@ export default {
             label: 'Trainingsprogramma',
         },
         comment: {
-            label: 'Opmerkingen',
+            label: 'Opmerkingen toestaan',
         },
         categoricalResponse: {
             label: 'Suggesties',
