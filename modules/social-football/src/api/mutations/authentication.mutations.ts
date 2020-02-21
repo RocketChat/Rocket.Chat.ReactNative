@@ -8,6 +8,7 @@ export const LOGIN = gql`
         }
     }
 `;
+
 export const REGISTER = gql`
     mutation RegisterApp($user: User!) {
         register(user: $user) {

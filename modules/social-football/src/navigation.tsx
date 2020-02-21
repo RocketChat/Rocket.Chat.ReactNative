@@ -21,19 +21,16 @@ export const pages = {
     authenticated: {
         TimelinePage: {
             getScreen: () => require('./pages/TimelinePage').default,
-            navigationOptions: ({ navigation }) => ({
-                headerTitle: <HeaderLogo />,
-                headerRight:  <HeaderCreateThreadButton navigation={navigation} />
-            }),
         },
         CreateThreadPage: {
             getScreen: () => require('./pages/CreateThreadPage').default,
-            navigationOptions: ({ navigation }) => ({
-                headerTitle: i18n.t('createThread.title'),
-                headerRight:  <HeaderSaveThreadButton navigation={navigation} />
-            }),
         },
-    }
+    },
+    loading: {
+        LoadingPage: {
+            getScreen: () => require('./pages/LoadingPage').default
+        },
+    },
 };
 
 export const UnaunthenticatedNavigation: any = createAppContainer(createStackNavigator(
@@ -41,6 +38,13 @@ export const UnaunthenticatedNavigation: any = createAppContainer(createStackNav
     {
         initialRouteName: 'LoginPage',
         headerMode: 'none',
+    }
+));
+
+export const LoadingNavigation: any = createAppContainer(createSwitchNavigator(
+    pages.loading,
+    {
+        initialRouteName: 'LoadingPage',
     }
 ));
 
@@ -84,8 +88,8 @@ export const Navigation = forwardRef((props, ref) => {
     }, []);
 
     return <>
-        {login === null ? <View style={[styles.activityHolder]}><ActivityIndicator /></View> : (
-                (login === false)
+        {login === null ? <LoadingNavigation ref={ref} /> : (
+                !login
             ?
                 <UnaunthenticatedNavigation ref={ref} />
             :

@@ -1,6 +1,6 @@
 import React from 'react';
 import { HeaderButton } from './HeaderButton';
 
-export const HeaderSaveThreadButton = ({ navigation }) => (
-    <HeaderButton onPress={() => null} image={require('../../assets/images/save-post.png')} />
+export const HeaderSaveThreadButton = ({ onPress }) => (
+    <HeaderButton onPress={onPress} image={require('../../assets/images/save-post.png')} />
 );

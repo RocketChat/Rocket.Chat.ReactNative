@@ -7,13 +7,13 @@ import {ContentTypeButton} from "../../src/components/ContentTypeButton";
 
 describe('<CreateThreadPage />', () => {
     it('should run without errors', () => {
-        const component = shallow(<CreateThreadPage />);
+        const component = shallow(<CreateThreadPage navigation={{}} />);
 
         expect(component).toBeTruthy();
     });
 
     it('should submit the form for a link', async () => {
-        const component = mount(<CreateThreadPage />);
+        const component = mount(<CreateThreadPage navigation={{}} />);
 
         expect(component).toBeTruthy();
 
@@ -40,7 +40,7 @@ describe('<CreateThreadPage />', () => {
     });
 
     it('should submit the form for a YouTube video', async () => {
-        const component = mount(<CreateThreadPage />);
+        const component = mount(<CreateThreadPage navigation={{}} />);
 
         expect(component).toBeTruthy();
 

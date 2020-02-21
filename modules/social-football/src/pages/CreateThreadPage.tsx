@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import i18n from '../i18n';
 import {KeyboardUtilityView} from '../components/KeyboardUtilityView';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {appStyles} from '../theme/style';
 import {TextInput} from '../components/TextInput';
 import {appColors} from '../theme/colors';
-import {Button} from '../components/Button'
 import {Switch} from '../components/Switch'
 import {ContentType} from '../enums/content-type';
 import {ContentTypeButton} from '../components/ContentTypeButton';
+import {HeaderSaveThreadButton} from "../components/header/HeaderSaveThreadButton";
+import {useMutation} from "@apollo/react-hooks";
+import {CREATE_THREAD} from "../api/mutations/threads.mutations";
+import {Alert} from "../components/Alert";
 
 const styles = StyleSheet.create({
         container: {
@@ -31,12 +34,15 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: 40,
         },
+        error: {
+            marginBottom: 20,
+        }
     }
 );
 
-const CreateThreadPage = () => {
+const CreateThreadPage = ({ navigation }) => {
+    const [performCreation, { data, loading, error }] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
     const [submitted, setSubmitted] = useState(false);
 
     const [commentsEnabled, setCommentsEnabled] = useState(true); // set toggle button response to true
@@ -46,12 +52,38 @@ const CreateThreadPage = () => {
     const [link, setLink] = useState<string | null>(null);
     const [youtube, setYoutube] = useState<string | null>(null);
 
+    const determineAssetUrl = () => {
+        switch (type) {
+            case ContentType.YOUTUBE:
+                return youtube;
+            case ContentType.LINK:
+                return link;
+        }
+    };
+
     const onCreatePress = async () => {
-        setSubmitted(true);
+        try {
+            setSubmitted(true);
+
+            await performCreation({
+                variables: {
+                    thread: {
+                        title,
+                        type,
+                        description,
+                        commentsEnabled,
+                        published: false,
+                        assetUrl: determineAssetUrl(),
+                    }
+                }
+            });
+        } catch (error) {
+            alert(JSON.stringify(error));
+        }
     };
 
     const renderLinkInput = () => {
-        return <View>
+        return <View style={appStyles.formGroup}>
                 <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
                 <TextInput
                     id={'link'}
@@ -60,13 +92,15 @@ const CreateThreadPage = () => {
                     placeholder={i18n.t('createThread.link.placeholder')}
                     placeholderTextColor={appColors.placeholder}
                     value={link}
+                    textContentType='URL'
+                    autoCapitalize='none'
                     onChangeText={value => setLink(value)}
                 />
             </View>;
     };
 
     const renderYoutubeInput = () => {
-        return <View>
+        return <View style={appStyles.formGroup}>
                 <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
                 <TextInput
                     id={'youtube'}
@@ -79,15 +113,27 @@ const CreateThreadPage = () => {
             </View>;
     };
 
-    // const createThreadIsFailed = () => {
-    //     return <Alert title={i18n.t('createThread.error.label')} />
-    // };
+    const renderHeaderButton = () => {
+
+    };
+
+    useEffect(() => {
+        navigation.setParams({
+            headerRight: <HeaderSaveThreadButton onPress={onCreatePress} />
+        });
+    },[]);
+
+    const renderThreadIsFailed = () => {
+        return <View style={styles.error}>
+            <Alert title={i18n.t('createThread.error.label')} />
+        </View>
+    };
 
     return <KeyboardUtilityView centerVertically={false}>
         <ScrollView style={styles.container}>
             <View>
                 <View style={[styles.form]}>
-                    {/*{error ? createThreadIsFailed() : null}*/}
+                    {error ? renderThreadIsFailed() : null}
                     <View>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.threadtitle.label')}</Text>
                         <TextInput
@@ -131,7 +177,7 @@ const CreateThreadPage = () => {
                     </View>
                     { type === ContentType.LINK ? renderLinkInput() : null }
                     { type === ContentType.YOUTUBE ? renderYoutubeInput() : null }
-                    <View style={[styles.switchContainer]}>
+                    <View style={[styles.switchContainer, appStyles.formGroup]}>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
                         <Switch
                             id={'commentsEnabled'}
@@ -139,13 +185,16 @@ const CreateThreadPage = () => {
                             onValueChange={(value) => setCommentsEnabled(value)}
                         />
                     </View>
-                    <View style={[appStyles.formGroup]}>
-                        <Button id={'submit'} title={i18n.t('createThread.create')} onPress={onCreatePress}/>
-                    </View>
                 </View>
             </View>
         </ScrollView>
     </KeyboardUtilityView>;
+};
+
+CreateThreadPage.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: navigation.getParam('headerRight', null),
+    };
 };
 
 export default CreateThreadPage;
