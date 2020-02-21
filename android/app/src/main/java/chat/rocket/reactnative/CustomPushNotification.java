@@ -96,7 +96,6 @@ public class CustomPushNotification extends PushNotification {
         String notId = bundle.getString("notId", "1");
         String title = bundle.getString("title");
         String message = bundle.getString("message");
-        String ejson = bundle.getString("ejson", "{}");
 
         notification
             .setContentTitle(title)
