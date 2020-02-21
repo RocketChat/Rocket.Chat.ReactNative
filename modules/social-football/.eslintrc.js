@@ -22,13 +22,6 @@ module.exports = {
 		"react/jsx-filename-extension": [1, {
 			"extensions": [".ts", ".tsx"]
 		}],
-		"import/no-extraneous-dependencies": [
-			"error", {
-				"devDependencies": false,
-				"optionalDependencies": false,
-				"peerDependencies": false,
-				"packageDir": "./"
-			}
-		]
+		"import/no-extraneous-dependencies": "off"
 	},
 };

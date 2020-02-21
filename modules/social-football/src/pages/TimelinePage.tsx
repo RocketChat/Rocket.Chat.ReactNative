@@ -4,6 +4,8 @@ import { appStyles } from '../theme/style';
 import { SafeAreaView } from 'react-navigation';
 import { appColors } from '../theme/colors';
 import i18n from '../i18n'
+import { HeaderLogo } from '../components/header/HeaderLogo';
+import { HeaderCreateThreadButton } from '../components/header/HeaderCreateThreadButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -134,5 +136,12 @@ const TimelinePage = ({ navigation }) => (
     </SafeAreaView>
 
 );
+
+TimelinePage.navigationOptions = ({ navigation }) => {
+    return {
+        headerTitle: <HeaderLogo />,
+        headerRight:  <HeaderCreateThreadButton navigation={navigation} />
+    };
+};
 
 export default TimelinePage;

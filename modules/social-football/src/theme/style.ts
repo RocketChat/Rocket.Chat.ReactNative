@@ -24,21 +24,19 @@ export const appStyles = StyleSheet.create({
         fontSize: 16,
         color: appColors.light,
     },
+    errorText: {
+        fontFamily: 'Cabin-SemiBold',
+        fontSize: 16,
+        color: appColors.light,
+    },
     label: {
         fontSize: 16,
         fontFamily: 'Cabin-SemiBold',
         color: appColors.primary,
         marginBottom: 2,
     },
-    input: {
+    inputText: {
         fontFamily: 'Cabin-Regular',
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: appColors.inputBorder,
-        paddingTop: 12,
-        paddingBottom: 12,
-        paddingLeft: 10,
-        paddingRight: 10,
     },
     formGroup: {
         marginTop: 20,
