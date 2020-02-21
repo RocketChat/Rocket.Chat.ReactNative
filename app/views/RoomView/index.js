@@ -365,7 +365,7 @@ class RoomView extends React.Component {
 			const { navigation } = this.props;
 			const subCollection = await db.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
-			this.setState({ room, joined: true });
+			this.setState({ room });
 			navigation.setParams({ room });
 			this.observeRoom(room);
 		} catch (error) {
