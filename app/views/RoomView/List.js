@@ -1,5 +1,7 @@
 import React from 'react';
-import { FlatList, InteractionManager, RefreshControl } from 'react-native';
+import {
+	FlatList, InteractionManager, RefreshControl, Animated, View
+} from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -12,17 +14,20 @@ import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
+import Touch from '../../utils/touch';
+import { CustomIcon } from '../../lib/Icons';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import debounce from '../../utils/debounce';
 import { themes } from '../../constants/colors';
+
+const AnimatedTouch = Animated.createAnimatedComponent(Touch);
 
 class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
-		toggleScrollToBottomButton: PropTypes.func,
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
@@ -37,6 +42,8 @@ class List extends React.Component {
 		console.time(`${ this.constructor.name } mount`);
 
 		this.mounted = false;
+		this.contentOffsetY = 0;
+		this.scrollButtonTranslateY = new Animated.Value(300);
 		this.state = {
 			loading: true,
 			end: false,
@@ -213,6 +220,48 @@ class List extends React.Component {
 		return null;
 	}
 
+	handleScrollButtonAnimation = (isVisible, toValue) => {
+		this.isScrollButtonVisible = isVisible;
+		Animated.timing(
+			this.scrollButtonTranslateY,
+			{
+				toValue,
+				duration: 200,
+				useNativeDriver: true
+			}
+		).start();
+	}
+
+
+	toggleScrollToBottomButton = (e) => {
+		const { y } = e.nativeEvent.contentOffset;
+		this.contentOffsetY = y;
+		if (y > 200 && !this.isScrollButtonVisible) {
+			this.handleScrollButtonAnimation(true, 0);
+		} else if (y <= 200 && this.isScrollButtonVisible) {
+			this.handleScrollButtonAnimation(false, 300);
+		}
+	}
+
+	scrollToBottom = () => {
+		this.flatList.scrollToIndex({ animated: this.contentOffsetY < 2000, index: 0 });
+		this.handleScrollButtonAnimation(false, 300);
+	}
+
+	renderScrollButton = () => {
+		const { scrollButtonTranslateY, scrollToBottom } = this;
+		const { theme } = this.props;
+		return (
+			<AnimatedTouch
+				theme={theme}
+				onPress={scrollToBottom}
+				style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, borderColor: themes[theme].borderColor, transform: [{ translateY: scrollButtonTranslateY }] }]}
+			>
+				<CustomIcon name='arrow-down' size={30} style={{ color: themes[theme].tintColor }} />
+			</AnimatedTouch>
+		);
+	}
+
 	renderFooter = () => {
 		const { loading } = this.state;
 		const { rid, theme } = this.props;
@@ -228,43 +277,51 @@ class List extends React.Component {
 		return renderRow(item, messages[index + 1]);
 	}
 
+	setListRef = ref => this.flatList = ref;
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
-		const { theme, toggleScrollToBottomButton } = this.props;
+		const { theme } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
-				<FlatList
-					testID='room-view-messages'
-					ref={listRef}
-					keyExtractor={item => item.id}
-					data={messages}
-					extraData={this.state}
-					renderItem={this.renderItem}
-					contentContainerStyle={styles.contentContainer}
-					style={styles.list}
-					inverted
-					removeClippedSubviews={isIOS}
-					initialNumToRender={7}
-					onEndReached={this.onEndReached}
-					onEndReachedThreshold={5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
-					scrollEventThrottle={20}
-					onScroll={toggleScrollToBottomButton}
-					onScrollEndDrag={toggleScrollToBottomButton}
-					ListFooterComponent={this.renderFooter}
-					refreshControl={(
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={this.onRefresh}
-							tintColor={themes[theme].auxiliaryText}
-						/>
-					)}
-					{...scrollPersistTaps}
-				/>
+				<View style={styles.listContainer}>
+					<FlatList
+						testID='room-view-messages'
+						ref={(ref) => {
+							listRef(ref);
+							this.setListRef(ref);
+						}}
+						keyExtractor={item => item.id}
+						data={messages}
+						extraData={this.state}
+						renderItem={this.renderItem}
+						contentContainerStyle={styles.contentContainer}
+						style={styles.list}
+						inverted
+						removeClippedSubviews={isIOS}
+						initialNumToRender={7}
+						onEndReached={this.onEndReached}
+						onEndReachedThreshold={5}
+						maxToRenderPerBatch={5}
+						windowSize={10}
+						scrollEventThrottle={8}
+						onScroll={this.toggleScrollToBottomButton}
+						onScrollEndDrag={this.toggleScrollToBottomButton}
+						ListFooterComponent={this.renderFooter}
+						refreshControl={(
+							<RefreshControl
+								refreshing={refreshing}
+								onRefresh={this.onRefresh}
+								tintColor={themes[theme].auxiliaryText}
+							/>
+						)}
+						{...scrollPersistTaps}
+					/>
+					{this.renderScrollButton()}
+				</View>
 			</>
 		);
 	}

@@ -9,6 +9,10 @@ export default StyleSheet.create({
 	safeAreaView: {
 		flex: 1
 	},
+	listContainer: {
+		flex: 1,
+		position: 'relative'
+	},
 	list: {
 		flex: 1
 	},
@@ -49,7 +53,7 @@ export default StyleSheet.create({
 	},
 	scrollButton: {
 		position: 'absolute',
-		bottom: 70,
+		bottom: 20,
 		right: 20,
 		height: 50,
 		width: 50,

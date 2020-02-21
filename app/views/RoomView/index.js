@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, InteractionManager, Animated
-} from 'react-native';
+import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
@@ -49,7 +47,6 @@ import {
 	handleCommandReplyLatest
 } from '../../commands';
 import ModalNavigation from '../../lib/ModalNavigation';
-import { CustomIcon } from '../../lib/Icons';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
@@ -68,8 +65,6 @@ const stateAttrsUpdate = [
 	'reacting'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout'];
-
-const AnimatedTouch = Animated.createAnimatedComponent(Touch);
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -162,8 +157,6 @@ class RoomView extends React.Component {
 		const selectedMessage = props.navigation.getParam('message');
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
-		this.contentOffsetY = 0;
-		this.scrollButtonTranslateY = new Animated.Value(300);
 		this.state = {
 			joined: true,
 			room: room || {
@@ -536,33 +529,6 @@ class RoomView extends React.Component {
 		}
 	}, 1000, true)
 
-	handleScrollButtonAnimation = (isVisible, toValue) => {
-		this.isScrollButtonVisible = isVisible;
-		Animated.timing(
-			this.scrollButtonTranslateY,
-			{
-				toValue,
-				duration: 200,
-				useNativeDriver: true
-			}
-		).start();
-	}
-
-	toggleScrollToBottomButton = (e) => {
-		const { y } = e.nativeEvent.contentOffset;
-		this.contentOffsetY = y;
-		if (y > 200 && !this.isScrollButtonVisible) {
-			this.handleScrollButtonAnimation(true, 0);
-		} else if (y <= 200 && this.isScrollButtonVisible) {
-			this.handleScrollButtonAnimation(false, 300);
-		}
-	}
-
-	scrollToBottom = () => {
-		this.flatList.scrollToIndex({ animated: this.contentOffsetY < 1500, index: 0 });
-		this.handleScrollButtonAnimation(false, 300);
-	}
-
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
@@ -817,16 +783,6 @@ class RoomView extends React.Component {
 		return message;
 	}
 
-	renderScrollButton = () => {
-		const { scrollButtonTranslateY, scrollToBottom } = this;
-		const { theme } = this.props;
-		return (
-			<AnimatedTouch theme={theme} onPress={scrollToBottom} style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, borderColor: themes[theme].borderColor, transform: [{ translateY: scrollButtonTranslateY }] }]}>
-				<CustomIcon name='arrow-down' size={30} style={{ color: themes[theme].tintColor }} />
-			</AnimatedTouch>
-		);
-	}
-
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -956,11 +912,8 @@ class RoomView extends React.Component {
 					room={room}
 					renderRow={this.renderItem}
 					loading={loading}
-					animated={this.beginAnimating}
-					toggleScrollToBottomButton={this.toggleScrollToBottomButton}
 					navigation={navigation}
 				/>
-				{this.renderScrollButton()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
