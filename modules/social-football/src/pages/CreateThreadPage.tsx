@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     }
 );
 
-const CreateThreadPage = ({ navigation }) => {
-    const [performCreation, { data, loading, error }] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
+const CreateThreadPage = ({navigation}) => {
+    const [performCreation, {data, loading, error}] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
     const [submitted, setSubmitted] = useState(false);
 
     const [commentsEnabled, setCommentsEnabled] = useState(true); // set toggle button response to true
@@ -61,71 +61,77 @@ const CreateThreadPage = ({ navigation }) => {
         }
     };
 
-    const onCreatePress = async () => {
-        try {
-            setSubmitted(true);
+    const isValid = () => {
+        return (
+            !!title &&
+            !!type &&
+            !!description &&
+            (type !== ContentType.LINK || !!link) &&
+            (type !== ContentType.YOUTUBE || !!youtube)
+        );
+    };
 
-            await performCreation({
-                variables: {
-                    thread: {
-                        title,
-                        type,
-                        description,
-                        commentsEnabled,
-                        published: false,
-                        assetUrl: determineAssetUrl(),
-                    }
-                }
-            });
-        } catch (error) {
-            alert(JSON.stringify(error));
+    const onCreatePress = async () => {
+        setSubmitted(true);
+
+        if (!isValid()) {
+            return;
         }
+
+        await performCreation({
+            variables: {
+                thread: {
+                    title,
+                    type,
+                    description,
+                    commentsEnabled,
+                    published: false,
+                    assetUrl: determineAssetUrl(),
+                }
+            }
+        });
     };
 
     const renderLinkInput = () => {
         return <View style={appStyles.formGroup}>
-                <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
-                <TextInput
-                    id={'link'}
-                    required={true}
-                    submitted={submitted}
-                    placeholder={i18n.t('createThread.link.placeholder')}
-                    placeholderTextColor={appColors.placeholder}
-                    value={link}
-                    textContentType='URL'
-                    autoCapitalize='none'
-                    onChangeText={value => setLink(value)}
-                />
-            </View>;
+            <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
+            <TextInput
+                id={'link'}
+                required={true}
+                submitted={submitted}
+                placeholder={i18n.t('createThread.link.placeholder')}
+                placeholderTextColor={appColors.placeholder}
+                value={link}
+                textContentType='URL'
+                autoCapitalize='none'
+                onChangeText={value => setLink(value)}
+            />
+        </View>;
     };
 
     const renderYoutubeInput = () => {
         return <View style={appStyles.formGroup}>
-                <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
-                <TextInput
-                    id={'youtube'}
-                    required={true}
-                    submitted={submitted}
-                    placeholder={i18n.t('createThread.youtube.placeholder')}
-                    placeholderTextColor={appColors.placeholder}
-                    value={youtube}
-                    onChangeText={value => setYoutube(value)} />
-            </View>;
-    };
-
-    const renderHeaderButton = () => {
-
+            <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
+            <TextInput
+                id={'youtube'}
+                required={true}
+                submitted={submitted}
+                placeholder={i18n.t('createThread.youtube.placeholder')}
+                placeholderTextColor={appColors.placeholder}
+                value={youtube}
+                onChangeText={value => setYoutube(value)}/>
+        </View>;
     };
 
     useEffect(() => {
         navigation.setParams({
-            headerRight: <HeaderSaveThreadButton onPress={onCreatePress} />
+            headerRight: <HeaderSaveThreadButton onPress={onCreatePress}/>
         });
-    },[]);
+    }, []);
 
     const renderThreadIsFailed = () => {
         return <View style={styles.error}>
-            <Alert title={i18n.t('createThread.error.label')} />
+            <Alert title={i18n.t('createThread.error.label')}/>
         </View>
     };
 
@@ -175,8 +181,8 @@ const CreateThreadPage = ({ navigation }) => {
                             }
                         </View>
                     </View>
-                    { type === ContentType.LINK ? renderLinkInput() : null }
-                    { type === ContentType.YOUTUBE ? renderYoutubeInput() : null }
+                    {type === ContentType.LINK ? renderLinkInput() : null}
+                    {type === ContentType.YOUTUBE ? renderYoutubeInput() : null}
                     <View style={[styles.switchContainer, appStyles.formGroup]}>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
                         <Switch
@@ -191,7 +197,7 @@ const CreateThreadPage = ({ navigation }) => {
     </KeyboardUtilityView>;
 };
 
-CreateThreadPage.navigationOptions = ({ navigation }) => {
+CreateThreadPage.navigationOptions = ({navigation}) => {
     return {
         headerRight: navigation.getParam('headerRight', null),
     };
