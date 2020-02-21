@@ -821,8 +821,8 @@ class RoomView extends React.Component {
 		const { scrollButtonTranslateY, scrollToBottom } = this;
 		const { theme } = this.props;
 		return (
-			<AnimatedTouch theme={theme} onPress={scrollToBottom} style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, transform: [{ translateY: scrollButtonTranslateY }] }]}>
-				<CustomIcon name='arrow-down' size={30} style={{ color: themes[theme].auxiliaryTintColor }} />
+			<AnimatedTouch theme={theme} onPress={scrollToBottom} style={[styles.scrollButton, { backgroundColor: themes[theme].bannerBackground, borderColor: themes[theme].borderColor, transform: [{ translateY: scrollButtonTranslateY }] }]}>
+				<CustomIcon name='arrow-down' size={30} style={{ color: themes[theme].tintColor }} />
 			</AnimatedTouch>
 		);
 	}
