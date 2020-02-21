@@ -367,9 +367,7 @@ class Markdown extends PureComponent {
 	}
 
 	render() {
-		const {
-			msg, numberOfLines, preview = false, theme
-		} = this.props;
+		const { msg, preview = false } = this.props;
 
 		if (!msg) {
 			return null;
