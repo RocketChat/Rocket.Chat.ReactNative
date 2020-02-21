@@ -10,6 +10,7 @@ import { useQuery } from 'react-apollo';
 import { ThreadsQueries } from '../api';
 import { PaginatedThreads } from '../models/threads';
 import { TimelineItem } from '../components/TimelineItem';
+import {InfiniteScrollView} from "../components/InfiniteScrollView";
 
 const styles = StyleSheet.create({
     container: {
@@ -43,29 +44,49 @@ const styles = StyleSheet.create({
 });
 
 const TimelinePage = ({ navigation }) => {
-    const [offset, setOffset] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const perPage = 6;
 
-    const { data, error } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
+    const { data, error, fetchMore, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
-            offset,
-            limit,
+            limit: perPage,
         },
-        pollInterval: 500,
+        fetchPolicy: "cache-and-network"
     });
 
-    return <ScrollView>
-            <View style={[styles.filterbar]} >
-                <Text style={[styles.filterText]}>Alle berichten.</Text>
-                <Image style={[]} source={require('../assets/images/refresh.png')} />
+    const fetchMoreResults = () => {
+        if (loading) {
+            return;
+        }
 
-            </View>
+        fetchMore({
+            variables: {
+                offset: data?.getThreads.threads.length,
+                limit: perPage,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
 
+                return {
+                    getThreads: {
+                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads]
+                    },
+                }
+            }
+        })
+    };
 
+    return <>
+        {/*<View style={[styles.filterbar]} >*/}
+        {/*    <Text style={[styles.filterText]}>Alle berichten.</Text>*/}
+        {/*    <Image style={[]} source={require('../assets/images/refresh.png')} />*/}
+
+        {/*</View>*/}
+        <InfiniteScrollView onEndReached={() => fetchMoreResults()}>
             <View style={styles.container}>
                 {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
             </View>
-        </ScrollView>;
+        </InfiniteScrollView>
+    </>;
 };
 
 TimelinePage.navigationOptions = ({ navigation }) => {
