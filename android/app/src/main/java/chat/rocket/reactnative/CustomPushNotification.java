@@ -96,6 +96,7 @@ public class CustomPushNotification extends PushNotification {
         String notId = bundle.getString("notId", "1");
         String title = bundle.getString("title");
         String message = bundle.getString("message");
+        String ejson = bundle.getString("ejson", "{}");
 
         notification
             .setContentTitle(title)
@@ -110,7 +111,9 @@ public class CustomPushNotification extends PushNotification {
         notificationChannel(notification);
         notificationIcons(notification, bundle);
         notificationStyle(notification, notificationId, bundle);
-        notificationReply(notification, notificationId, bundle);
+        if (!notId.equals("1") && !ejson.equals("{}")) {
+            notificationReply(notification, notificationId, bundle);
+        }
         notificationDismiss(notification, notificationId);
 
         return notification;
