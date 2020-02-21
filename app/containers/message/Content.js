@@ -10,7 +10,14 @@ import { themes } from '../../constants/colors';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
-		return <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{getInfoMessage({ ...props })}</Text>;
+		const infoMessage = getInfoMessage({ ...props });
+		return (
+			<Text
+				style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
+				accessibilityLabel={infoMessage}
+			>{infoMessage}
+			</Text>
+		);
 	}
 
 	let content = null;
@@ -32,7 +39,6 @@ const Content = React.memo((props) => {
 				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
-				useRealName={props.useRealName}
 				theme={props.theme}
 			/>
 		);
@@ -59,8 +65,7 @@ Content.propTypes = {
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func,
-	useRealName: PropTypes.bool
+	navToRoomInfo: PropTypes.func
 };
 Content.displayName = 'MessageContent';
 

@@ -366,19 +366,14 @@ class RoomView extends React.Component {
 			const subCollection = await db.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
-			navigation.setParams({
-				name: this.getRoomTitle(room),
-				avatar: room.name,
-				t: room.t
-			});
+			navigation.setParams({ room });
 			this.observeRoom(room);
 		} catch (error) {
 			if (this.t !== 'd') {
 				console.log('Room not found');
 				this.internalSetState({ joined: false });
-			}
-			if (this.rid) {
-				// We navigate to RoomView before the Room is inserted to the local db
+			} else if (this.rid) {
+				// We navigate to RoomView before the DM is inserted to the local db
 				// So we retry just to make sure we have the right content
 				this.retryFindCount = this.retryFindCount + 1 || 1;
 				if (this.retryFindCount <= 3) {
@@ -856,7 +851,7 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -870,7 +865,7 @@ class RoomView extends React.Component {
 		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]} accessibilityLabel={I18n.t('This_room_is_read_only')}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}

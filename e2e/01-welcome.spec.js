@@ -6,7 +6,7 @@ const { tapBack } = require('./helpers/app');
 
 describe('Welcome screen', () => {
 	before(async() => {
-		await device.reloadReactNative();
+		await device.launchApp({ newInstance: true });
 		await element(by.id('join-community-button')).tap();
 		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 	})

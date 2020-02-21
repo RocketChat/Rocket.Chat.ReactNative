@@ -30,6 +30,7 @@ async function login() {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await element(by.id('login-view-email')).replaceText(data.user);
     await element(by.id('login-view-password')).replaceText(data.password);
+    await sleep(300);
     await element(by.id('login-view-submit')).tap();
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 }

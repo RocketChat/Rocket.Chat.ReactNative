@@ -9,13 +9,13 @@ describe('Rooms list screen', () => {
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-        });
+		});
         
-        // it('should have rooms list', async() => {
+		// it('should have rooms list', async() => {
 		// 	await expect(element(by.id('rooms-list-view-list'))).toBeVisible();
 		// });
 
-        it('should have room item', async() => {
+		it('should have room item', async() => {
 			await expect(element(by.id('rooms-list-view-item-general')).atIndex(0)).toExist();
 		});
 		
@@ -51,8 +51,8 @@ describe('Rooms list screen', () => {
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
 			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.text('rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('rocket.cat'))).toBeVisible();
+			await waitFor(element(by.id('room-view-title-rocket.cat'))).toBeVisible().withTimeout(60000);
+			await expect(element(by.id('room-view-title-rocket.cat'))).toBeVisible();
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();

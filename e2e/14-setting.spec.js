@@ -6,7 +6,7 @@ const { logout, navigateToLogin, login } = require('./helpers/app');
 
 describe('Settings screen', () => {
 	before(async() => {
-		await device.reloadReactNative();
+		await device.launchApp({ newInstance: true });
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
@@ -67,26 +67,26 @@ describe('Settings screen', () => {
 			await expect(element(by.id('language-view-ru'))).toExist();
 		});
 
-		it('should navigate to change language', async() => {
-			await expect(element(by.id('language-view-zh-CN'))).toExist();
-			await element(by.id('language-view-zh-CN')).tap()
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			await element(by.id('rooms-list-view-sidebar')).tap();
-			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-			await waitFor(element(by.text('设置'))).toBeVisible().withTimeout(2000);
-			await element(by.text('设置')).tap();
-			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-			await element(by.id('settings-view-language')).tap();
-			await element(by.id('language-view-en')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			await element(by.id('rooms-list-view-sidebar')).tap();
-			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.text('Settings'))).toBeVisible();
-			await element(by.text('Settings')).tap();
-			await expect(element(by.id('settings-view'))).toBeVisible();
-		});
+		// it('should navigate to change language', async() => {
+		// 	await expect(element(by.id('language-view-zh-CN'))).toExist();
+		// 	await element(by.id('language-view-zh-CN')).tap()
+		// 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+		// 	await expect(element(by.id('rooms-list-view'))).toBeVisible();
+		// 	await element(by.id('rooms-list-view-sidebar')).tap();
+		// 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+		// 	await waitFor(element(by.text('设置'))).toBeVisible().withTimeout(2000);
+		// 	await element(by.text('设置')).tap();
+		// 	await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
+		// 	await element(by.id('settings-view-language')).tap();
+		// 	await element(by.id('language-view-en')).tap();
+		// 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+		// 	await expect(element(by.id('rooms-list-view'))).toBeVisible();
+		// 	await element(by.id('rooms-list-view-sidebar')).tap();
+		// 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+		// 	await expect(element(by.text('Settings'))).toBeVisible();
+		// 	await element(by.text('Settings')).tap();
+		// 	await expect(element(by.id('settings-view'))).toBeVisible();
+		// });
 		after(async() => {
 			takeScreenshot();
 		});
