@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
-		maxHeight: 242,
+		maxHeight: 230,
 		flexGrow: 1,
 		width: 1,
 		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
