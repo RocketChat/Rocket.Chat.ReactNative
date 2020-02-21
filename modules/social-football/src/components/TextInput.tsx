@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         paddingBottom: 12,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        textAlignVertical: 'top'
     },
     inputError: {
         borderColor: appColors.error,

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 export const KeyboardUtilityView: React.FunctionComponent<{ centerVertically?: boolean }> = ({ children, centerVertically }) => (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAvoidingView style={[styles.centerContainer, styles.centerContainerHorizontally, centerVertically ? styles.centerContainerVertically : {}]} behavior='padding' enabled>
+        <KeyboardAvoidingView style={[styles.centerContainer, styles.centerContainerHorizontally, centerVertically ? styles.centerContainerVertically : {}]} enabled>
             {children}
         </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

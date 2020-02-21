@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
     logo: {
         width: 70,
         resizeMode: 'contain',
-        marginTop: -10,
+        marginTop: Platform.OS === 'ios' ? -10 : 0,
+        alignSelf: 'center',
     }
 });
 

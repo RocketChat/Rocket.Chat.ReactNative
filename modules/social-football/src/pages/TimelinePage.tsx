@@ -11,6 +11,8 @@ import { ThreadsQueries } from '../api';
 import { PaginatedThreads } from '../models/threads';
 import { TimelineItem } from '../components/TimelineItem';
 import {InfiniteScrollView} from "../components/InfiniteScrollView";
+import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
+import { HeaderTitle } from 'react-navigation-stack';
 
 const styles = StyleSheet.create({
     container: {
@@ -58,6 +60,10 @@ const TimelinePage = ({ navigation }) => {
             return;
         }
 
+        if (!fetchMore) {
+            return;
+        }
+
         fetchMore({
             variables: {
                 offset: data?.getThreads.threads.length,
@@ -68,10 +74,13 @@ const TimelinePage = ({ navigation }) => {
 
                 return {
                     getThreads: {
-                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads]
+                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads],
+                        limit: perPage,
+                        offset: fetchMoreResult.getThreads.offset,
+                        total: prev.getThreads.threads.length + fetchMoreResult.getThreads.threads.length,
                     },
                 }
-            }
+            },
         })
     };
 
@@ -92,7 +101,8 @@ const TimelinePage = ({ navigation }) => {
 TimelinePage.navigationOptions = ({ navigation }) => {
     return {
         headerTitle: <HeaderLogo />,
-        headerRight: <HeaderCreateThreadButton navigation={navigation} />
+        headerRight: <HeaderCreateThreadButton navigation={navigation} />,
+        headerLeft: <HeaderLeaderboardButton navigation={navigation} />,
     };
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView} from "react-native";
 
-export const InfiniteScrollView = ({ onEndReached, children, onScroll, ...props }) => (<ScrollView
+export const InfiniteScrollView = ({ onEndReached, children, onScroll = () => null, ...props }) => (<ScrollView
     onScroll={(e) => {
         let paddingToBottom = 10;
         paddingToBottom += e.nativeEvent.layoutMeasurement.height;
@@ -10,7 +10,7 @@ export const InfiniteScrollView = ({ onEndReached, children, onScroll, ...props 
             onEndReached();
         }
 
-        onScroll();
+        onScroll()!;
     }}
     {...props}>
     {children}
