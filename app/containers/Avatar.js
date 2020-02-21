@@ -9,6 +9,10 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
 );
 
+const formatUrlForAttachment = (url, baseUrl, avatarAuthURLFragment) => (
+	`${ baseUrl }${ url }?format=png${ avatarAuthURLFragment }`
+);
+
 const Avatar = React.memo(({
 	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, canView
 }) => {
@@ -41,6 +45,12 @@ const Avatar = React.memo(({
 	}
 
 	function openView() {
+		if (avatar) {
+			uri = avatar.includes('http') ? avatar : formatUrlForAttachment(avatar, baseUrl, avatarAuthURLFragment);
+		} else {
+			uri = formatUrlForAttachment(`/avatar/${ room }`, baseUrl, avatarAuthURLFragment);
+		}
+		console.log(uri);
 		Navigation.navigate('AttachmentView', { attachment: { image_url: uri, image_type: 'png' } });
 	}
 
