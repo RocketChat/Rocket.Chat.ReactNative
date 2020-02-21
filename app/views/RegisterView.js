@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Keyboard, Text, ScrollView, Alert
-} from 'react-native';
+import { Keyboard, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
@@ -24,6 +22,7 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
+import { showErrorAlert } from '../utils/info';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -129,12 +128,15 @@ class RegisterView extends React.Component {
 
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
-				Alert.alert(I18n.t('Verify_email_title'), I18n.t('Verify_email_desc'));
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
 			} else {
 				await loginRequest({ user: email, password });
 			}
 		} catch (e) {
-			Alert.alert(I18n.t('Oops'), e.data.error);
+			if (e.data && e.data.errorType === 'username-invalid') {
+				return loginRequest({ user: email, password });
+			}
+			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
 	}
