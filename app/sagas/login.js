@@ -35,7 +35,13 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
-		return yield put(loginSuccess(result));
+		if (!result.username) {
+			yield put(serverFinishAdd());
+			yield put(setUser(result));
+			yield put(appStart('setUsername'));
+		} else {
+			yield put(loginSuccess(result));
+		}
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
 			yield put(logout(true));
@@ -117,9 +123,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		EventEmitter.emit('connected');
 
 		let currentRoot;
-		if (!user.username) {
-			yield put(appStart('setUsername'));
-		} else if (adding) {
+		if (adding) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
 		} else {
@@ -193,7 +197,6 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		// yield take(types.SERVER.SELECT_REQUEST);
 		yield race({
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)
