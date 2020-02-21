@@ -146,7 +146,6 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
-		useMarkdown: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
@@ -726,7 +725,7 @@ class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, theme
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -767,7 +766,6 @@ class RoomView extends React.Component {
 				Message_GroupingPeriod={Message_GroupingPeriod}
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
-				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
@@ -805,7 +803,6 @@ class RoomView extends React.Component {
 			return (
 				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
 					<Markdown
-						useMarkdown
 						msg={room.announcement}
 						theme={theme}
 						numberOfLines={1}
@@ -834,7 +831,6 @@ class RoomView extends React.Component {
 					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
 					<ScrollView style={styles.modalScrollView}>
 						<Markdown
-							useMarkdown
 							msg={room.announcement}
 							theme={theme}
 						/>
@@ -1007,7 +1003,6 @@ const mapStateToProps = state => ({
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
