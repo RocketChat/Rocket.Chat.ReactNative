@@ -401,6 +401,13 @@ class MessageBox extends Component {
 			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			this.setState({ mentions: mergedEmojis || [] });
+		} else {
+			const customEmojisCollection = db.collections.get('custom_emojis');
+			let customEmojis = await customEmojisCollection.query().fetch();
+			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const filteredEmojis = emojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			this.setState({ mentions: mergedEmojis || [] });
 		}
 	}, 300)
 
