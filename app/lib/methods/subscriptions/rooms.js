@@ -283,10 +283,9 @@ export default function subscribeRooms() {
 			const [notification] = ddpMessage.fields.args;
 			try {
 				const { payload: { rid } } = notification;
-				const subCollection = db.collections.get('subscriptions');
-				const sub = await subCollection.find(rid);
-				notification.title = RocketChat.getRoomTitle(sub);
-				notification.avatar = RocketChat.getRoomAvatar(sub);
+				const room = await RocketChat.getRoom(rid);
+				notification.title = RocketChat.getRoomTitle(room);
+				notification.avatar = RocketChat.getRoomAvatar(room);
 			} catch (e) {
 				// do nothing
 			}
