@@ -160,7 +160,7 @@ class ProfileView extends React.Component {
 	}
 
 	handleError = (e, func, action) => {
-		if (e.data && e.data.errorType === 'error-too-many-requests') {
+		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(
