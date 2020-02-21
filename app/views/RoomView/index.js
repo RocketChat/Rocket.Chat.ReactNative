@@ -366,7 +366,11 @@ class RoomView extends React.Component {
 			const subCollection = await db.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
-			navigation.setParams({ room });
+			navigation.setParams({
+				name: this.getRoomTitle(room),
+				avatar: room.name,
+				t: room.t
+			});
 			this.observeRoom(room);
 		} catch (error) {
 			if (this.t !== 'd') {
