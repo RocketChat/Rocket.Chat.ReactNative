@@ -151,14 +151,14 @@ class RoomInfoView extends React.Component {
 
 	goRoom = async() => {
 		const { roomUser } = this.state;
-		const { username: name } = roomUser;
+		const { username } = roomUser;
 		const { navigation } = this.props;
 		try {
-			const result = await RocketChat.createDirectMessage(name);
+			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				await navigation.navigate('RoomsListView');
 				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name, t: 'd' });
+				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
 			}
 		} catch (e) {
 			// do nothing

@@ -173,6 +173,7 @@ class RoomsListView extends React.Component {
 		appStart: PropTypes.func,
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
+		useRealName: PropTypes.bool,
 		split: PropTypes.bool
 	};
 
@@ -757,6 +758,7 @@ class RoomsListView extends React.Component {
 			},
 			server,
 			StoreLastMessage,
+			useRealName,
 			theme,
 			split
 		} = this.props;
@@ -791,6 +793,7 @@ class RoomsListView extends React.Component {
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
+				useRealName={useRealName}
 			/>
 		);
 	};
