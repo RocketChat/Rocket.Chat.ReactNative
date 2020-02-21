@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import i18n from '../i18n';
-import { KeyboardUtilityView } from '../components/KeyboardUtilityView';
-import { Text, StyleSheet, View, Picker, ScrollView } from 'react-native';
-import { appStyles } from '../theme/style';
-import { TextInput } from '../components/TextInput';
-import { appColors } from '../theme/colors';
-import { Alert } from '../components/Alert';
-import { Button } from '../components/Button'
-import { Switch } from '../components/Switch'
-import { ContentType } from '../enums/content-type';
-import { ContentTypeButton } from '../components/ContentTypeButton';
+import {KeyboardUtilityView} from '../components/KeyboardUtilityView';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {appStyles} from '../theme/style';
+import {TextInput} from '../components/TextInput';
+import {appColors} from '../theme/colors';
+import {Button} from '../components/Button'
+import {Switch} from '../components/Switch'
+import {ContentType} from '../enums/content-type';
+import {ContentTypeButton} from '../components/ContentTypeButton';
 
 const styles = StyleSheet.create({
         container: {
@@ -35,82 +34,85 @@ const styles = StyleSheet.create({
             marginBottom: 40,
         },
     }
-)
+);
 
 const CreateThreadPage = () => {
-    const [createThreadFailed, setCreateThreadFailed] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
-    // const [suggestion, setSuggestion] = useState(true) //set toggle button suggestion to true
-    const [response, setResponse] = useState(true) //set toggle button response to true
-    const [type, setType] = useState(ContentType.TEXT)
+    const [commentsEnabled, setCommentsEnabled] = useState(true); // set toggle button response to true
+    const [type, setType] = useState(ContentType.TEXT);
+    const [title, setTitle] = useState<string | null>(null);
+    const [description, setDescription] = useState<string | null>(null);
 
     const onCreatePress = async () => {
-        setCreateThreadFailed(false);
         setSubmitted(true);
-
-        try {
-
-        } catch(error) {
-            setCreateThreadFailed(true);
-        }
     };
 
-    const createThreadIsFailed = () => {
-        return <Alert title={i18n.t('createThread.error.label')} />
-    }
+    // const createThreadIsFailed = () => {
+    //     return <Alert title={i18n.t('createThread.error.label')} />
+    // };
 
     return <KeyboardUtilityView centerVertically={false}>
-            <ScrollView style={styles.container}>
-                <View>
-                    <View style={[styles.form]}>
-                        {createThreadFailed ? createThreadIsFailed() : null}
-                        <View>
-                            <Text style={[appStyles.label]}>{i18n.t('createThread.threadtitle.label')}</Text>
-                            <TextInput 
+        <ScrollView style={styles.container}>
+            <View>
+                <View style={[styles.form]}>
+                    {/*{error ? createThreadIsFailed() : null}*/}
+                    <View>
+                        <Text style={[appStyles.label]}>{i18n.t('createThread.threadtitle.label')}</Text>
+                        <TextInput
+                            id={'title'}
                             required={true}
                             submitted={submitted}
                             placeholder={i18n.t('createThread.threadtitle.placeholder')}
-                            placeholderTextColor={appColors.placeholder} />
-                        </View>
-                        <View style={[appStyles.formGroup]}>
-                            <Text style={[appStyles.label]}>{i18n.t('createThread.description.label')}</Text>
-                            <TextInput 
-                                required={true}
-                                multiline={true}
-                                submitted={submitted}
-                                numberOfLines={4}
-                                placeholder={i18n.t('createThread.description.placeholder')}
-                                placeholderTextColor={appColors.placeholder} 
-                            />
-                        </View>
-                        <View style={[appStyles.formGroup]}>
-                            <Text style={[appStyles.label]}>{i18n.t('createThread.contentType.label')}</Text>
-                            <View style={[styles.contentTypesContainer]}>
-                                {
-                                    Object.values(ContentType).map((contentType, index) => (
-                                        <ContentTypeButton
-                                            active={type === contentType}
-                                            onPress={() => setType(contentType)}
-                                            type={contentType} />
-                                    ))
-                                }
-                            </View>
-                        </View>
-                        <View style={[styles.switchContainer]}>
-                            <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
-                            <Switch  
-                                value = {response}
-                                onValueChange = {() => setResponse(!response) }
-                            />
-                        </View>
-                        <View style={[appStyles.formGroup]}>
-                            <Button title={i18n.t('createThread.create')} onPress={onCreatePress} />
+                            placeholderTextColor={appColors.placeholder}
+                            value={title}
+                            onChangeText={(value) => setTitle(value)}
+                        />
+                    </View>
+                    <View style={[appStyles.formGroup]}>
+                        <Text style={[appStyles.label]}>{i18n.t('createThread.description.label')}</Text>
+                        <TextInput
+                            id={'description'}
+                            required={true}
+                            multiline={true}
+                            submitted={submitted}
+                            numberOfLines={4}
+                            placeholder={i18n.t('createThread.description.placeholder')}
+                            placeholderTextColor={appColors.placeholder}
+                            value={description}
+                            onChangeText={(value) => setDescription(value)}
+                        />
+                    </View>
+                    <View style={[appStyles.formGroup]}>
+                        <Text style={[appStyles.label]}>{i18n.t('createThread.contentType.label')}</Text>
+                        <View style={[styles.contentTypesContainer]}>
+                            {
+                                Object.values(ContentType).map((contentType, index) => (
+                                    <ContentTypeButton
+                                        id={`type-${contentType}`}
+                                        key={`type-${contentType}`}
+                                        active={type === contentType}
+                                        onPress={() => setType(contentType)}
+                                        type={contentType}/>
+                                ))
+                            }
                         </View>
                     </View>
+                    <View style={[styles.switchContainer]}>
+                        <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
+                        <Switch
+                            id={'commentsEnabled'}
+                            value={commentsEnabled}
+                            onValueChange={(value) => setCommentsEnabled(value)}
+                        />
+                    </View>
+                    <View style={[appStyles.formGroup]}>
+                        <Button id={'submit'} title={i18n.t('createThread.create')} onPress={onCreatePress}/>
+                    </View>
                 </View>
-            </ScrollView>
-        </KeyboardUtilityView>;
+            </View>
+        </ScrollView>
+    </KeyboardUtilityView>;
 };
 
 export default CreateThreadPage;

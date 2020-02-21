@@ -40,7 +40,7 @@ export const ContentTypeButton = ({ type, onPress, active }: { type: ContentType
             case ContentType.YOUTUBE:
                 return <Image style={[styles.frame]} source={require(`../assets/images/content-type-youtube-background.png`)} />;
         }
-    }
+    };
 
     const renderIcon = () => {
         switch (type) {
@@ -53,7 +53,7 @@ export const ContentTypeButton = ({ type, onPress, active }: { type: ContentType
             case ContentType.YOUTUBE:
                 return <Image source={require(`../assets/images/content-type-youtube.png`)} />;
         }
-    }
+    };
 
     const renderIconActive = () => {
         switch (type) {
@@ -66,7 +66,7 @@ export const ContentTypeButton = ({ type, onPress, active }: { type: ContentType
             case ContentType.YOUTUBE:
                 return <Image source={require(`../assets/images/content-type-youtube-active.png`)} />;
         }
-    }
+    };
 
     const renderBorder = () => (
         <View style={[styles.frame, styles.activeBorder]} />

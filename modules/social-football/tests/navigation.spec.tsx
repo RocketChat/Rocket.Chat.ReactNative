@@ -45,9 +45,12 @@ describe('<Navigation />', () => {
         const pageGroups = Object.values(pages);
 
         pageGroups.forEach(group => {
-            Object.values(group).forEach(page => {
+            Object.values(group).forEach((page: any) => {
                 if (page.getScreen) {
                     page.getScreen();
+                }
+                if (page.navigationOptions) {
+                    page.navigationOptions({});
                 }
             });
         })
