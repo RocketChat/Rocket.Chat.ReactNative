@@ -12,6 +12,7 @@ import {HeaderSaveThreadButton} from "../components/header/HeaderSaveThreadButto
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
+import {Button} from "../components/Button";
 
 const styles = StyleSheet.create({
         container: {
@@ -78,18 +79,22 @@ const CreateThreadPage = ({navigation}) => {
             return;
         }
 
+        const thread = {
+                title,
+                type,
+                description,
+                commentsEnabled,
+                published: false,
+                assetUrl: determineAssetUrl(),
+            };
+
         await performCreation({
             variables: {
-                thread: {
-                    title,
-                    type,
-                    description,
-                    commentsEnabled,
-                    published: false,
-                    assetUrl: determineAssetUrl(),
-                }
+                thread,
             }
         });
+
+        await navigation.pop();
     };
 
     const renderLinkInput = () => {
@@ -101,7 +106,6 @@ const CreateThreadPage = ({navigation}) => {
                 submitted={submitted}
                 placeholder={i18n.t('createThread.link.placeholder')}
                 placeholderTextColor={appColors.placeholder}
-                value={link}
                 textContentType='URL'
                 autoCapitalize='none'
                 onChangeText={value => setLink(value)}
@@ -122,12 +126,6 @@ const CreateThreadPage = ({navigation}) => {
                 onChangeText={value => setYoutube(value)}/>
         </View>;
     };
-
-    useEffect(() => {
-        navigation.setParams({
-            headerRight: <HeaderSaveThreadButton onPress={onCreatePress}/>
-        });
-    }, []);
 
     const renderThreadIsFailed = () => {
         return <View style={styles.error}>
@@ -191,6 +189,9 @@ const CreateThreadPage = ({navigation}) => {
                             onValueChange={(value) => setCommentsEnabled(value)}
                         />
                     </View>
+                    <View style={[appStyles.formGroup]}>
+                        <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                    </View>
                 </View>
             </View>
         </ScrollView>
@@ -199,7 +200,7 @@ const CreateThreadPage = ({navigation}) => {
 
 CreateThreadPage.navigationOptions = ({navigation}) => {
     return {
-        headerRight: navigation.getParam('headerRight', null),
+        headerTitle: i18n.t('createThread.title'),
     };
 };
 

@@ -5,6 +5,18 @@ export const TIMELINE = gql`
         getThreads(offset: $offset, limit: $limit){
             threads {
                 type,
+                title,
+                description,
+                commentsEnabled,
+                published,
+                assetUrl,
+                rocketChatMessageID,
+                assetMetadata {
+                    title,
+                    description,
+                    image,
+                },
+                createdAt
             }
             total,
             limit,

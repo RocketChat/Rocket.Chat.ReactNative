@@ -43,21 +43,18 @@ const styles = StyleSheet.create({
 });
 
 const TimelinePage = ({ navigation }) => {
-    const offset = useState(0);
-    const limit = useState(10);
+    const [offset, setOffset] = useState(0);
+    const [limit, setLimit] = useState(10);
 
     const { data, error } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
             offset,
             limit,
-        }
+        },
+        pollInterval: 500,
     });
 
-    console.info(error);
-    console.info(data);
-
-    return <SafeAreaView>
-        <ScrollView>
+    return <ScrollView>
             <View style={[styles.filterbar]} >
                 <Text style={[styles.filterText]}>Alle berichten.</Text>
                 <Image style={[]} source={require('../assets/images/refresh.png')} />
@@ -68,8 +65,7 @@ const TimelinePage = ({ navigation }) => {
             <View style={styles.container}>
                 {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
             </View>
-        </ScrollView>
-    </SafeAreaView>
+        </ScrollView>;
 };
 
 TimelinePage.navigationOptions = ({ navigation }) => {

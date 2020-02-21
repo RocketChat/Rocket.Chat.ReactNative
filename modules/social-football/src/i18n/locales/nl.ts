@@ -60,6 +60,7 @@ export default {
     createThread: {
         title: 'Nieuw',
         create: 'Maak',
+        save: 'Aanmaken',
         threadtitle: {
             label: 'Titel',
             placeholder: 'Item titel',
