@@ -43,9 +43,40 @@ const CreateThreadPage = () => {
     const [type, setType] = useState(ContentType.TEXT);
     const [title, setTitle] = useState<string | null>(null);
     const [description, setDescription] = useState<string | null>(null);
+    const [link, setLink] = useState<string | null>(null);
+    const [youtube, setYoutube] = useState<string | null>(null);
 
     const onCreatePress = async () => {
         setSubmitted(true);
+    };
+
+    const renderLinkInput = () => {
+        return <View>
+                <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
+                <TextInput
+                    id={'link'}
+                    required={true}
+                    submitted={submitted}
+                    placeholder={i18n.t('createThread.link.placeholder')}
+                    placeholderTextColor={appColors.placeholder}
+                    value={link}
+                    onChangeText={value => setLink(value)}
+                />
+            </View>;
+    };
+
+    const renderYoutubeInput = () => {
+        return <View>
+                <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
+                <TextInput
+                    id={'youtube'}
+                    required={true}
+                    submitted={submitted}
+                    placeholder={i18n.t('createThread.youtube.placeholder')}
+                    placeholderTextColor={appColors.placeholder}
+                    value={youtube}
+                    onChangeText={value => setYoutube(value)} />
+            </View>;
     };
 
     // const createThreadIsFailed = () => {
@@ -98,6 +129,8 @@ const CreateThreadPage = () => {
                             }
                         </View>
                     </View>
+                    { type === ContentType.LINK ? renderLinkInput() : null }
+                    { type === ContentType.YOUTUBE ? renderYoutubeInput() : null }
                     <View style={[styles.switchContainer]}>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
                         <Switch
