@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
+import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
-import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
@@ -85,6 +85,7 @@ class MessageBox extends Component {
 		replyWithMention: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
+		Message_AudioRecorderEnabled: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
@@ -98,6 +99,7 @@ class MessageBox extends Component {
 		super(props);
 		this.state = {
 			mentions: [],
+			showEmojiKeyboard: false,
 			showSend: false,
 			recording: false,
 			trackingType: '',
@@ -169,6 +171,10 @@ class MessageBox extends Component {
 			this.setShowSend(true);
 		}
 
+		if (isAndroid) {
+			require('./EmojiKeyboard');
+		}
+
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -193,7 +199,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showSend, recording, mentions, file, commandPreview
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
 		} = this.state;
 
 		const {
@@ -212,6 +218,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
 		if (nextState.showSend !== showSend) {
@@ -306,6 +315,10 @@ class MessageBox extends Component {
 		}
 	}, 100)
 
+	onKeyboardResigned = () => {
+		this.closeEmoji();
+	}
+
 	onPressMention = (item) => {
 		if (!this.component) {
 			return;
@@ -348,6 +361,24 @@ class MessageBox extends Component {
 		} catch (e) {
 			log(e);
 		}
+	}
+
+	onEmojiSelected = (keyboardId, params) => {
+		const { text } = this;
+		const { emoji } = params;
+		let newText = '';
+
+		// if messagebox has an active cursor
+		if (this.component && this.component._lastNativeSelection) {
+			const { start, end } = this.component._lastNativeSelection;
+			const cursor = Math.max(start, end);
+			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		} else {
+			// if messagebox doesn't have a cursor, just append selected emoji
+			newText = `${ text }${ emoji }`;
+		}
+		this.setInput(newText);
+		this.setShowSend(true);
 	}
 
 	getPermalink = async(message) => {
@@ -516,7 +547,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -527,7 +558,7 @@ class MessageBox extends Component {
 				this.showUploadModal(video);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -538,7 +569,7 @@ class MessageBox extends Component {
 				this.showUploadModal(image);
 			}
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
@@ -601,6 +632,12 @@ class MessageBox extends Component {
 		this.clearInput();
 	}
 
+	openEmoji = async() => {
+		await this.setState({
+			showEmojiKeyboard: true
+		});
+	}
+
 	recordAudioMessage = async() => {
 		const recording = await Recording.permission();
 		this.setState({ recording });
@@ -625,6 +662,10 @@ class MessageBox extends Component {
 		}
 	}
 
+	closeEmoji = () => {
+		this.setState({ showEmojiKeyboard: false });
+	}
+
 	submit = async() => {
 		const {
 			onSubmit, rid: roomId, tmid
@@ -633,6 +674,7 @@ class MessageBox extends Component {
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();
+		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
 		if (message.trim() === '') {
@@ -716,7 +758,10 @@ class MessageBox extends Component {
 	}
 
 	identifyMentionKeyword = (keyword, type) => {
-		this.setState({ trackingType: type });
+		this.setState({
+			showEmojiKeyboard: false,
+			trackingType: type
+		});
 		this.updateMentions(keyword, type);
 	}
 
@@ -750,10 +795,10 @@ class MessageBox extends Component {
 
 	renderContent = () => {
 		const {
-			recording, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -787,9 +832,12 @@ class MessageBox extends Component {
 					>
 						<LeftButtons
 							theme={theme}
+							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
 							showFileActions={this.showFileActions}
 							editCancel={this.editCancel}
+							openEmoji={this.openEmoji}
+							closeEmoji={this.closeEmoji}
 						/>
 						<TextInput
 							ref={component => this.component = component}
@@ -811,6 +859,8 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
+							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+							showFileActions={this.showFileActions}
 						/>
 					</View>
 				</View>
@@ -820,7 +870,7 @@ class MessageBox extends Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { file } = this.state;
+		const { showEmojiKeyboard, file } = this.state;
 		const { user, baseUrl, theme } = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -831,16 +881,18 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				<KeyboardTrackingView
-					addBottomView
-					manageScrollView
-					scrollBehavior={2} // KeyboardTrackingScrollBehaviorFixedOffset
-					style={styles.trackingView}
+				<KeyboardAccessoryView
+					renderContent={this.renderContent}
+					kbInputRef={this.component}
+					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					onKeyboardResigned={this.onKeyboardResigned}
+					onItemSelected={this.onEmojiSelected}
+					trackInteractive
+					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
+					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
-				>
-					{this.renderContent()}
-				</KeyboardTrackingView>
+				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}
 					file={file}
@@ -857,7 +909,8 @@ const mapStateToProps = state => ({
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
 const dispatchToProps = ({
