@@ -111,9 +111,7 @@ public class CustomPushNotification extends PushNotification {
         notificationChannel(notification);
         notificationIcons(notification, bundle);
         notificationStyle(notification, notificationId, bundle);
-        if (!notId.equals("1") && !ejson.equals("{}")) {
-            notificationReply(notification, notificationId, bundle);
-        }
+        notificationReply(notification, notificationId, bundle);
         notificationDismiss(notification, notificationId);
 
         return notification;
@@ -255,7 +253,9 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notificationReply(Notification.Builder notification, int notificationId, Bundle bundle) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+        String notId = bundle.getString("notId", "1");
+        String ejson = bundle.getString("ejson", "{}");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || notId.equals("1") || ejson.equals("{}")) {
             return;
         }
         String label = "Reply";
