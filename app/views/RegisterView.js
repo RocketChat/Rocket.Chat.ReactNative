@@ -41,6 +41,7 @@ class RegisterView extends React.Component {
 		loginRequest: PropTypes.func,
 		Site_Name: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
+		Accounts_EmailVerification: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -118,7 +119,7 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest } = this.props;
+		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
 
 		try {
 			try {
@@ -128,7 +129,13 @@ class RegisterView extends React.Component {
 			} catch (e) {
 				showErrorAlert(e.data.error, I18n.t('Oops'));
 			}
-			await loginRequest({ user: email, password });
+
+			if (Accounts_EmailVerification) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
+			} else {
+				await loginRequest({ user: email, password });
+			}
 		} catch (e) {
 			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
@@ -270,7 +277,8 @@ class RegisterView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	Accounts_CustomFields: state.settings.Accounts_CustomFields
+	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
 });
 
 const mapDispatchToProps = dispatch => ({

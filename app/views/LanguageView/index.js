@@ -50,6 +50,9 @@ const LANGUAGES = [
 	}, {
 		label: 'Nederlands',
 		value: 'nl'
+	}, {
+		label: 'Italiano',
+		value: 'it'
 	}
 ];
 

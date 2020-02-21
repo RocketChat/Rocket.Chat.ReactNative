@@ -40,6 +40,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'settings',
+					columns: [
+						{ name: 'value_as_array', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

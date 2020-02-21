@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "Private/GULMutableDictionary.h"
+#import "GoogleUtilities/Network/Private/GULMutableDictionary.h"
 
 @implementation GULMutableDictionary {
   /// The mutable dictionary.
@@ -45,14 +45,14 @@
 - (id)objectForKey:(id)key {
   __block id object;
   dispatch_sync(_queue, ^{
-    object = self->_objects[key];
+    object = [self->_objects objectForKey:key];
   });
   return object;
 }
 
 - (void)setObject:(id)object forKey:(id<NSCopying>)key {
   dispatch_async(_queue, ^{
-    self->_objects[key] = object;
+    [self->_objects setObject:object forKey:key];
   });
 }
 
@@ -77,13 +77,17 @@
 }
 
 - (id)objectForKeyedSubscript:(id<NSCopying>)key {
-  // The method this calls is already synchronized.
-  return [self objectForKey:key];
+  __block id object;
+  dispatch_sync(_queue, ^{
+    object = self->_objects[key];
+  });
+  return object;
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key {
-  // The method this calls is already synchronized.
-  [self setObject:obj forKey:key];
+  dispatch_async(_queue, ^{
+    self->_objects[key] = obj;
+  });
 }
 
 - (NSDictionary *)dictionary {

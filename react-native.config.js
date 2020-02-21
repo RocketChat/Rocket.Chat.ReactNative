@@ -5,6 +5,11 @@ module.exports = {
 				android: null
 			}
 		},
+		'react-native-keyboard-input': {
+			platforms: {
+				android: null
+			}
+		},
 		'@nozbe/watermelondb': {
 			platforms: {
 				android: null,

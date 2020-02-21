@@ -25,9 +25,10 @@ class List extends React.Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		animated: PropTypes.bool,
 		theme: PropTypes.string,
-		listRef: PropTypes.func
+		listRef: PropTypes.func,
+		hideSystemMessages: PropTypes.array,
+		navigation: PropTypes.object
 	};
 
 	constructor(props) {
@@ -40,9 +41,17 @@ class List extends React.Component {
 			loading: true,
 			end: false,
 			messages: [],
-			refreshing: false
+			refreshing: false,
+			animated: false
 		};
 		this.init();
+		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+			if (this.mounted) {
+				this.setState({ animated: true });
+			} else {
+				this.state.animated = true;
+			}
+		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -53,7 +62,7 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	async init() {
-		const { rid, tmid } = this.props;
+		const { rid, tmid, hideSystemMessages = [] } = this.props;
 		const db = database.active;
 
 		if (tmid) {
@@ -66,12 +75,12 @@ class List extends React.Component {
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(Q.where('rid', tmid))
+				.query(Q.where('rid', tmid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(Q.where('rid', rid))
+				.query(Q.where('rid', rid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		}
 
@@ -130,6 +139,9 @@ class List extends React.Component {
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
+		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -180,7 +192,10 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
-		animateNextTransition();
+		const { animated } = this.state;
+		if (animated) {
+			animateNextTransition();
+		}
 		this.forceUpdate();
 	};
 
