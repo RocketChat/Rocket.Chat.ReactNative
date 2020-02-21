@@ -716,8 +716,6 @@ class RoomView extends React.Component {
 		}
 	});
 
-	getName = user => RocketChat.getName(user)
-
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -770,7 +768,6 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
-				getName={this.getName}
 			/>
 		);
 

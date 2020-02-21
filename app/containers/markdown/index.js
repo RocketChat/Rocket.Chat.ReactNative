@@ -73,18 +73,14 @@ class Markdown extends PureComponent {
 		numberOfLines: PropTypes.number,
 		useMarkdown: PropTypes.bool,
 		customEmojis: PropTypes.bool,
+		useRealName: PropTypes.bool,
 		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		navToRoomInfo: PropTypes.func,
-		getName: PropTypes.func,
 		preview: PropTypes.bool,
 		theme: PropTypes.string,
 		style: PropTypes.array
 	};
-
-	static defaultProps = {
-		getName: user => user.username
-	}
 
 	constructor(props) {
 		super(props);
@@ -256,13 +252,13 @@ class Markdown extends PureComponent {
 
 	renderAtMention = ({ mentionName }) => {
 		const {
-			username, mentions, navToRoomInfo, getName, preview, style, theme
+			username, mentions, navToRoomInfo, useRealName, preview, style, theme
 		} = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
 				mention={mentionName}
-				getName={getName}
+				useRealName={useRealName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
 				preview={preview}

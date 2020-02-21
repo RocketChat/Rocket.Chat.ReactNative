@@ -1136,10 +1136,6 @@ const RocketChat = {
 	translateMessage(message, targetLanguage) {
 		return this.sdk.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	},
-	getName(user) {
-		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
-		return useRealName ? user.name : user.username;
-	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return ((room.prid || useRealName) && room.fname) || room.name;

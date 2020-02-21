@@ -157,7 +157,7 @@ class RoomInfoView extends React.Component {
 			if (result.success) {
 				await navigation.navigate('RoomsListView');
 				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name: RocketChat.getName(roomUser), t: 'd' });
+				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
 			}
 		} catch (e) {
 			// do nothing
