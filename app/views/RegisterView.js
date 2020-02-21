@@ -122,13 +122,9 @@ class RegisterView extends React.Component {
 		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
 
 		try {
-			try {
-				await RocketChat.register({
-					name, email, pass: password, username, ...customFields
-				});
-			} catch (e) {
-				showErrorAlert(e.data.error, I18n.t('Oops'));
-			}
+			await RocketChat.register({
+				name, email, pass: password, username, ...customFields
+			});
 
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
@@ -137,6 +133,9 @@ class RegisterView extends React.Component {
 				await loginRequest({ user: email, password });
 			}
 		} catch (e) {
+			if (e.data && e.data.errorType === 'username-invalid') {
+				return loginRequest({ user: email, password });
+			}
 			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
