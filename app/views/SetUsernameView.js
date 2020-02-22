@@ -22,6 +22,7 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
+import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -45,7 +46,8 @@ class SetUsernameView extends React.Component {
 		userId: PropTypes.string,
 		loginRequest: PropTypes.func,
 		token: PropTypes.string,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		UTF8_Names_Validation: PropTypes.string
 	}
 
 	constructor(props) {
@@ -83,11 +85,26 @@ class SetUsernameView extends React.Component {
 		return false;
 	}
 
+	validUsername = () => {
+		const { username } = this.state;
+		const { UTF8_Names_Validation } = this.props;
+		const usernameRegex = new RegExp(`^${ UTF8_Names_Validation }$`);
+		if (usernameRegex.test(username)) {
+			return true;
+		}
+		showErrorAlert(I18n.t('Username_has_chars_not_allowed_by_server'), I18n.t('Incorrect_username'));
+		return false;
+	}
+
 	submit = async() => {
 		const { username } = this.state;
 		const { loginRequest, token } = this.props;
 
 		if (!username.trim()) {
+			return;
+		}
+
+		if (!this.validUsername()) {
 			return;
 		}
 
@@ -162,7 +179,8 @@ class SetUsernameView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	token: getUserSelector(state).token
+	token: getUserSelector(state).token,
+	UTF8_Names_Validation: state.settings.UTF8_Names_Validation
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -24,6 +24,7 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
+import { showErrorAlert } from '../utils/info';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
@@ -43,7 +44,8 @@ class RegisterView extends React.Component {
 		Site_Name: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
 		Accounts_EmailVerification: PropTypes.bool,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		UTF8_Names_Validation: PropTypes.string
 	}
 
 	constructor(props) {
@@ -97,6 +99,17 @@ class RegisterView extends React.Component {
 		navigation.setParams({ title });
 	}
 
+	validUsername = () => {
+		const { username } = this.state;
+		const { UTF8_Names_Validation } = this.props;
+		const usernameRegex = new RegExp(`^${ UTF8_Names_Validation }$`);
+		if (usernameRegex.test(username)) {
+			return true;
+		}
+		showErrorAlert(I18n.t('Username_has_chars_not_allowed_by_server'), I18n.t('Incorrect_username'));
+		return false;
+	}
+
 	valid = () => {
 		const {
 			name, email, password, username, customFields
@@ -112,6 +125,9 @@ class RegisterView extends React.Component {
 
 	submit = async() => {
 		if (!this.valid()) {
+			return;
+		}
+		if (!this.validUsername()) {
 			return;
 		}
 		this.setState({ saving: true });
@@ -275,7 +291,8 @@ class RegisterView extends React.Component {
 
 const mapStateToProps = state => ({
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
+	UTF8_Names_Validation: state.settings.UTF8_Names_Validation
 });
 
 const mapDispatchToProps = dispatch => ({
