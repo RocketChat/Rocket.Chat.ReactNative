@@ -7,7 +7,7 @@ export const canUploadFile = (file, serverInfo) => {
 		return { success: false, error: 'error-file-too-large' };
 	}
 	// if white list is empty, all media types are enabled
-	if (!FileUpload_MediaTypeWhiteList) {
+	if (!FileUpload_MediaTypeWhiteList || FileUpload_MediaTypeWhiteList === '*') {
 		return { success: true };
 	}
 	const allowedMime = FileUpload_MediaTypeWhiteList.split(',');

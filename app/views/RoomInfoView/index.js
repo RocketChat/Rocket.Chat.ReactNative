@@ -21,6 +21,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import Markdown from '../../containers/markdown';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
@@ -150,14 +151,14 @@ class RoomInfoView extends React.Component {
 
 	goRoom = async() => {
 		const { roomUser } = this.state;
-		const { username: name } = roomUser;
+		const { username } = roomUser;
 		const { navigation } = this.props;
 		try {
-			const result = await RocketChat.createDirectMessage(name);
+			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				await navigation.navigate('RoomsListView');
 				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name, t: 'd' });
+				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
 			}
 		} catch (e) {
 			// do nothing
@@ -172,12 +173,12 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
-				<Text
-					style={[styles.itemContent, !room[key] && styles.itemContent__empty, { color: themes[theme].auxiliaryText }]}
-					testID={`room-info-view-${ key }`}
-				>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
-				</Text>
+				<Text style={[styles.itemLabel, { color: themes[theme].auxiliaryText }]}>{I18n.t(camelize(key))}</Text>
+				<Markdown
+					useMarkdown
+					msg={room[key] ? room[key] : `__${ I18n.t(`No_${ key }_provided`) }__`}
+					theme={theme}
+				/>
 			</View>
 		);
 	}

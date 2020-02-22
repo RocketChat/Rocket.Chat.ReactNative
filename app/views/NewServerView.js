@@ -9,6 +9,9 @@ import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import isEqual from 'deep-equal';
+import RNUserDefaults from 'rn-user-defaults';
+import { encode } from 'base-64';
+import parse from 'url-parse';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -25,6 +28,7 @@ import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
+import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 
 const styles = StyleSheet.create({
 	image: {
@@ -148,7 +152,22 @@ class NewServerView extends React.Component {
 
 		if (text) {
 			Keyboard.dismiss();
-			connectServer(this.completeUrl(text), cert);
+			const server = this.completeUrl(text);
+			await this.basicAuth(server, text);
+			connectServer(server, cert);
+		}
+	}
+
+	basicAuth = async(server, text) => {
+		try {
+			const parsedUrl = parse(text, true);
+			if (parsedUrl.auth.length) {
+				const credentials = encode(parsedUrl.auth);
+				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				setBasicAuth(credentials);
+			}
+		} catch {
+			// do nothing
 		}
 	}
 
@@ -177,6 +196,11 @@ class NewServerView extends React.Component {
 	}
 
 	completeUrl = (url) => {
+		const parsedUrl = parse(url, true);
+		if (parsedUrl.auth.length) {
+			url = parsedUrl.host;
+		}
+
 		url = url && url.replace(/\s/g, '');
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)

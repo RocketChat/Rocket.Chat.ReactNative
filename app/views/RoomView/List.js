@@ -27,6 +27,7 @@ class List extends React.Component {
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		listRef: PropTypes.func,
+		hideSystemMessages: PropTypes.array,
 		navigation: PropTypes.object
 	};
 
@@ -61,7 +62,7 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	async init() {
-		const { rid, tmid } = this.props;
+		const { rid, tmid, hideSystemMessages = [] } = this.props;
 		const db = database.active;
 
 		if (tmid) {
@@ -74,12 +75,12 @@ class List extends React.Component {
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(Q.where('rid', tmid))
+				.query(Q.where('rid', tmid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(Q.where('rid', rid))
+				.query(Q.where('rid', rid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		}
 

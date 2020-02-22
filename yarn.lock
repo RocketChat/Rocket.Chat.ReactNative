@@ -2748,7 +2748,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base-64@0.1.0:
+base-64@0.1.0, base-64@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
   integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
@@ -9493,8 +9493,8 @@ react-native-iphone-x-helper@^1.0.3:
   integrity sha512-xIeTo4s77wwKgBZLVRIZC9tM9/PkXS46Ul76NXmvmixEb3ZwqGdQesR3zRiLMOoIdfOURB6N9bba9po7+x9Bag==
 
 react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
-  version "2.0.4"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/5f535b301d18a26860e2e04ca5b164a564184b48"
+  version "2.1.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/351789a80ba5c05f27b702e69d3354f0e3651a49"
 
 react-native-keyboard-aware-scroll-view@0.9.1:
   version "0.9.1"
