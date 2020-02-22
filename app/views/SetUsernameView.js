@@ -16,7 +16,6 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
-import log from '../utils/log';
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -113,7 +112,7 @@ class SetUsernameView extends React.Component {
 			await RocketChat.setUsername(username);
 			await loginRequest({ resume: token });
 		} catch (e) {
-			log(e);
+			showErrorAlert(e.message, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
 	}

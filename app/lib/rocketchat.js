@@ -1,6 +1,6 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
@@ -12,7 +12,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
-import fetch, { headers } from '../utils/fetch';
+import fetch, { BASIC_AUTH_KEY } from '../utils/fetch';
 
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
@@ -24,7 +24,7 @@ import subscribeRooms from './methods/subscriptions/rooms';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { setSettings } from './methods/getSettings';
+import getSettings, { getSetting, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -57,8 +57,6 @@ const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
-
-RocketChatSettings.customHeaders = headers;
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -446,6 +444,7 @@ const RocketChat = {
 		await RNUserDefaults.clear('currentServer');
 		await RNUserDefaults.clear(TOKEN_KEY);
 		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
+		await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
 
 		try {
 			const db = database.active;
@@ -621,6 +620,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
+	getSetting,
 	setSettings,
 	getPermissions,
 	getCustomEmojis,
@@ -629,6 +629,10 @@ const RocketChat = {
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = item[defaultSettings[item._id].type];
+		if (item._id === 'Hide_System_Messages') {
+			ret[item._id] = ret[item._id]
+				.reduce((array, value) => [...array, ...value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value]], []);
+		}
 		return ret;
 	}, {}),
 	_prepareSettings(settings) {
@@ -912,7 +916,7 @@ const RocketChat = {
 			let loginServices = [];
 			const loginServicesResult = await fetch(`${ server }/api/v1/settings.oauth`).then(response => response.json());
 
-			if (loginServicesResult.success && loginServicesResult.services.length > 0) {
+			if (loginServicesResult.success && loginServicesResult.services) {
 				const { services } = loginServicesResult;
 				loginServices = services;
 

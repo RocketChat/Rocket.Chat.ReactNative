@@ -30,6 +30,7 @@
     "@react-native-community/slider": "2.0.5",
     "@rocket.chat/sdk": "1.0.0-alpha.41",
     "@rocket.chat/ui-kit": "^0.2.0-alpha.25",
+    "base-64": "^0.1.0",
     "bugsnag-react-native": "2.23.2",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",

@@ -47,6 +47,7 @@ class Sidebar extends Component {
 		activeItemKey: PropTypes.string,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
+		useRealName: PropTypes.bool,
 		split: PropTypes.bool
 	}
 
@@ -77,7 +78,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split, theme
+			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -109,6 +110,9 @@ class Sidebar extends Component {
 			}
 		}
 		if (nextProps.split !== split) {
+			return true;
+		}
+		if (nextProps.useRealName !== useRealName) {
 			return true;
 		}
 		if (!equal(nextState.status, status)) {
@@ -242,7 +246,7 @@ class Sidebar extends Component {
 	render() {
 		const { showStatus } = this.state;
 		const {
-			user, Site_Name, baseUrl, split, theme
+			user, Site_Name, baseUrl, useRealName, split, theme
 		} = this.props;
 
 		if (!user) {
@@ -278,7 +282,7 @@ class Sidebar extends Component {
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
 								<Status style={styles.status} size={12} status={user && user.status} theme={theme} />
-								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{user.username}</Text>
+								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
 							</View>
 							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
@@ -300,7 +304,8 @@ const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
-	loadingServer: state.server.loading
+	loadingServer: state.server.loading,
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
 export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));
