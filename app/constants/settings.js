@@ -146,6 +146,9 @@ export default {
 	Threads_enabled: {
 		type: 'valueAsBoolean'
 	},
+	FileUpload_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	FileUpload_MediaTypeWhiteList: {
 		type: 'valueAsString'
 	},

@@ -43,6 +43,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 		if (setting._id === 'UI_Use_Real_Name') {
 			return { ...allSettings, useRealName: setting.valueAsBoolean };
 		}
+		if (setting._id === 'FileUpload_Enabled') {
+			return { ...allSettings, FileUpload_Enabled: setting.valueAsBoolean };
+		}
 		if (setting._id === 'FileUpload_MediaTypeWhiteList') {
 			return { ...allSettings, FileUpload_MediaTypeWhiteList: setting.valueAsString };
 		}

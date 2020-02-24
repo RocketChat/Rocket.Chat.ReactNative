@@ -10,6 +10,8 @@ export default class Server extends Model {
 
 	@field('use_real_name') useRealName;
 
+	@field('file_upload_enabled') FileUpload_Enabled;
+
 	@field('file_upload_media_type_white_list') FileUpload_MediaTypeWhiteList;
 
 	@field('file_upload_max_file_size') FileUpload_MaxFileSize;

@@ -1,5 +1,8 @@
 export const canUploadFile = (file, serverInfo) => {
-	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
+	const { FileUpload_Enabled, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
+	if (!FileUpload_Enabled) {
+		return { success: false, error: 'error-message-file-upload-not-allowed' };
+	}
 	if (!(file && file.path)) {
 		return { success: true };
 	}

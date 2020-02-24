@@ -14,6 +14,7 @@ export default {
 	'error-delete-protected-role': 'Cannot delete a protected role',
 	'error-department-not-found': 'Department not found',
 	'error-direct-message-file-upload-not-allowed': 'File sharing not allowed in direct messages',
+	'error-message-file-upload-not-allowed': 'File uploads have been turned off',
 	'error-duplicate-channel-name': 'A channel with name {{channel_name}} exists',
 	'error-email-domain-blacklisted': 'The email domain is blacklisted',
 	'error-email-send-failed': 'Error trying to send email: {{message}}',

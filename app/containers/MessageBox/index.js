@@ -85,6 +85,7 @@ class MessageBox extends Component {
 		roomType: PropTypes.string,
 		tmid: PropTypes.string,
 		replyWithMention: PropTypes.bool,
+		FileUpload_Enabled: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
 		Message_AudioRecorderEnabled: PropTypes.bool,
@@ -506,8 +507,8 @@ class MessageBox extends Component {
 	}
 
 	canUploadFile = (file) => {
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const result = canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
+		const { FileUpload_Enabled, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
+		const result = canUploadFile(file, { FileUpload_Enabled, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
 		if (result.success) {
 			return true;
 		}
@@ -606,6 +607,19 @@ class MessageBox extends Component {
 		}, (actionIndex) => {
 			this.handleMessageBoxActions(actionIndex);
 		});
+	
+    showFileActions = () => {
+		const { FileUpload_Enabled } = this.props;
+		if (FileUpload_Enabled) {
+			ActionSheet.showActionSheetWithOptions({
+				options: this.fileOptions,
+				cancelButtonIndex: FILE_CANCEL_INDEX
+			}, (actionIndex) => {
+				this.handleFileActionPress(actionIndex);
+			});
+		} else {
+			Alert.alert(I18n.t('Error_uploading'), I18n.t('error-message-file-upload-not-allowed'));
+		}
 	}
 
 	handleMessageBoxActions = (actionIndex) => {
@@ -913,6 +927,7 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
+	FileUpload_Enabled: state.settings.FileUpload_Enabled,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
