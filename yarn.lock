@@ -9381,13 +9381,6 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-animatable@^1.2.4:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.1.tgz#f004a7e9de6838d0fbf210d642593cff7affd9ef"
-  integrity sha512-NoE6OAgCrhggWBRV6rBJup5vLAGoTjx168Tku1RZmjUGIdYRAyGesP/MoqvxiNJjhTAgwYx2LT63VTT1xO8g4Q==
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-appearance@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.1.tgz#f8120222131767e9227c2c7ba3a9478f4c6a5ab7"
@@ -9421,14 +9414,6 @@ react-native-device-info@^2.3.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-2.3.2.tgz#db2b8f135aaf2515583e367ab791dcc7d2f0d14c"
   integrity sha512-ccpPuUbwhw5uYdVwN1UJp6ykMZz6U/u82HNM3oJ7O6MP8RIMlMDkHbqR4O0sDtUSuRMGiqqRzFtmOLFYeQ0ODw==
-
-react-native-dialog@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-5.6.0.tgz#8c36a1e9f397eba0cea88821ebcf92f029236a1a"
-  integrity sha512-pUTxHJHzErMY+JaDRSMKiCbJTEdy2Ik4hcNOwasOlxpj6S6tT5SonLsrLPGBCO0XpTOySE0qVzuikmKgUDZfig==
-  dependencies:
-    prop-types "^15.7.2"
-    react-native-modal "^9.0.0"
 
 react-native-document-picker@^3.2.4:
   version "3.2.4"
@@ -9548,14 +9533,6 @@ react-native-modal@11.5.3:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-modal@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-9.0.0.tgz#0bfd0770361a2e5c6e0072bfdb0f1277f9662dba"
-  integrity sha512-j4xeIK9noHU/ksp2Ndc8NI1qJvjApToqGvqLEu2wtYeaISanbhtd0S3V4hZkSlCa3DZtegl6aaMZBLeH1q6xfA==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-animatable "^1.2.4"
-
 react-native-modalize@^1.3.6:
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-1.3.6.tgz#1a8651f673dbaccb9ebef908688bbd72b7790470"
@@ -9605,6 +9582,11 @@ react-native-progress@^4.0.3:
   dependencies:
     "@react-native-community/art" "^1.0.3"
     prop-types "^15.7.2"
+
+react-native-prompt-android@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-prompt-android/-/react-native-prompt-android-1.1.0.tgz#3c5168029075cb9f72549fd5f92403372fb234e9"
+  integrity sha512-4JoyEaT2ZnK9IH+tDFpbTiQBgva8UIFGQf4/Uw/tnEVWBERlVlzcs5B82T9BkeEhEqXhp89JaiSBnLWj30lciw==
 
 react-native-reanimated@1.4.0:
   version "1.4.0"
