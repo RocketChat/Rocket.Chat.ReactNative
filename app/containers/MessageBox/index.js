@@ -180,7 +180,11 @@ class MessageBox extends Component {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		this.didFocusListener = navigation.addListener('didFocus', () => this.tracking.resetTracking());
+		this.didFocusListener = navigation.addListener('didFocus', () => {
+			if (this.tracking && this.tracking.resetTracking) {
+				this.tracking.resetTracking();
+			}
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
