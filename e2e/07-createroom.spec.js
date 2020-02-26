@@ -5,7 +5,7 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
-describe('Create room screen', () => {
+describe.skip('Create room screen', () => {
 	before(async() => {
 		await sleep(5000);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
@@ -155,8 +155,6 @@ describe('Create room screen', () => {
 				await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
-				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});
@@ -183,8 +181,6 @@ describe('Create room screen', () => {
 				await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
-				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});

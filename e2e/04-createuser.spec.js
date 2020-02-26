@@ -17,7 +17,7 @@ async function navigateToRegister() {
 	await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 }
 
-describe('Create user screen', () => {
+describe.skip('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await navigateToRegister();

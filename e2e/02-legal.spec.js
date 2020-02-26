@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
-describe('Legal screen', () => {
+describe.skip('Legal screen', () => {
 	before(async() => {
 		await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('legal-view'))).toBeVisible();

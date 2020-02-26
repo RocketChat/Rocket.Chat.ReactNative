@@ -15,7 +15,8 @@ async function navigateToRoomActions(type) {
 		room = `private${ data.random }`;
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	await element(by.id('rooms-list-view-search')).replaceText(room);
+	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
+	await element(by.id('rooms-list-view-search')).typeText(room);
 	await sleep(2000);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
@@ -38,7 +39,7 @@ async function backToRoomsList() {
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
-describe('Room actions screen', () => {
+describe.skip('Room actions screen', () => {
 	describe('Render', async() => {
 		describe('Direct', async() => {
 			before(async() => {

@@ -5,7 +5,7 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { sleep } = require('./helpers/app');
 
-describe('Change server', () => {
+describe.skip('Change server', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
