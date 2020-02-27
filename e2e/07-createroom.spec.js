@@ -5,7 +5,7 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
-describe.skip('Create room screen', () => {
+describe('Create room screen', () => {
 	before(async() => {
 		await sleep(5000);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);

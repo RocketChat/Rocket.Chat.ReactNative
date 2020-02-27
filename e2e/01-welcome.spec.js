@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
-describe.skip('Welcome screen', () => {
+describe('Welcome screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await element(by.id('join-community-button')).tap();

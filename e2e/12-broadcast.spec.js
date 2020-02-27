@@ -34,7 +34,7 @@ const localNavigateToLogin = async() => {
 	await navigateToLogin();
 }
 
-describe.skip('Broadcast room', () => {
+describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 	});

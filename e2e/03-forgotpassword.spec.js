@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
-describe.skip('Forgot password screen', () => {
+describe('Forgot password screen', () => {
 	before(async() => {
 		await element(by.id('welcome-view-login')).tap();
     	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);

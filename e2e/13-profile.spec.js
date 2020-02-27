@@ -15,7 +15,7 @@ async function waitForToast() {
 	await sleep(5000);
 }
 
-describe.skip('Profile screen', () => {
+describe('Profile screen', () => {
 	before(async() => {
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);

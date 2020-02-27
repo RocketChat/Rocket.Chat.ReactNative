@@ -5,7 +5,7 @@ const { takeScreenshot } = require('./helpers/screenshot');
 const { login, logout, navigateToLogin, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
-describe.skip('Rooms list screen', () => {
+describe('Rooms list screen', () => {
 	describe('Render', async() => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();

@@ -4,7 +4,7 @@ const {
 const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login } = require('./helpers/app');
 
-describe.skip('Settings screen', () => {
+describe('Settings screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();

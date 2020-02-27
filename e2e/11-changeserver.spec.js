@@ -3,9 +3,9 @@ const {
 } = require('detox');
 const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
-const { sleep } = require('./helpers/app');
+const { sleep, logout } = require('./helpers/app');
 
-describe.skip('Change server', () => {
+describe('Change server', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

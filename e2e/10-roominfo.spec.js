@@ -35,7 +35,7 @@ async function waitForToast() {
 	await sleep(5000);
 }
 
-describe.skip('Room info screen', () => {
+describe('Room info screen', () => {
 	describe('Direct', async() => {
 		before(async() => {
 			await device.launchApp({ newInstance: true });
