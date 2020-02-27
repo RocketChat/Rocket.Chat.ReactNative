@@ -248,11 +248,23 @@ class MessageActions extends React.Component {
 		editInit(message);
 	}
 
-	handleUnread = () => {
-		const { message } = this.props;
+	handleUnread = async() => {
+		const { message, room } = this.props;
 		try {
-			RocketChat.markAsUnread({ messageId: message.id });
-			Navigation.navigate('RoomsListView');
+			const db = database.active;
+			const result = await RocketChat.markAsUnread({ messageId: message.id });
+			if (result.success) {
+				const subCollection = db.collections.get('subscriptions');
+				const subRecord = await subCollection.find(room.rid);
+				await db.action(async() => {
+					try {
+						await subRecord.update(sub => sub.lastOpen = message.ts);
+					} catch (err) {
+						log(err);
+					}
+				});
+				Navigation.navigate('RoomsListView');
+			}
 		} catch (err) {
 			log(err);
 		}
