@@ -22,7 +22,7 @@ async function navigateToRoom() {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-describe.skip('Room screen', () => {
+describe('Room screen', () => {
 	const mainRoom = `private${ data.random }`;
 
 	before(async() => {
@@ -104,6 +104,12 @@ describe.skip('Room screen', () => {
 				await mockMessage('message')
 				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
 			});
+
+			it('should ask for review', async() => {
+				await waitFor(element(by.text('Are you enjoying this app?'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.text('Are you enjoying this app?')).atIndex(0)).toExist();
+				await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+			})
 
 			it('should show/hide emoji keyboard', async () => {
 				if (device.getPlatform() === 'android') {
