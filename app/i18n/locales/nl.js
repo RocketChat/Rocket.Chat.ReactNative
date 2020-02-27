@@ -179,7 +179,6 @@ export default {
 	EMAIL: 'EMAIL',
 	email: 'e-mail',
 	Enable_Auto_Translate: 'Zet Auto-Translate aan',
-	Enable_markdown: 'Zet markdown aan',
 	Enable_notifications: 'Zet notifications aan',
 	Everyone_can_access_this_channel: 'Iedereen kan bij dit kanaal',
 	erasing_room: 'kamer legen',
