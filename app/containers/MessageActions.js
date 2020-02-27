@@ -46,7 +46,6 @@ class MessageActions extends React.Component {
 		const {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
-
 		// Cancel
 		this.options = [I18n.t('Cancel')];
 		this.CANCEL_INDEX = 0;
@@ -61,6 +60,12 @@ class MessageActions extends React.Component {
 		if (this.allowEdit(this.props)) {
 			this.options.push(I18n.t('Edit'));
 			this.EDIT_INDEX = this.options.length - 1;
+		}
+
+		// Mark as unread
+		if (message.u && message.u._id !== user.id) {
+			this.options.push(I18n.t('Mark_as_unread'));
+			this.UNREAD_INDEX = this.options.length - 1;
 		}
 
 		// Permalink
@@ -243,6 +248,16 @@ class MessageActions extends React.Component {
 		editInit(message);
 	}
 
+	handleUnread = () => {
+		const { message } = this.props;
+		try {
+			RocketChat.markAsUnread({ messageId: message.id });
+			Navigation.navigate('RoomsListView');
+		} catch (err) {
+			log(err);
+		}
+	}
+
 	handleCopy = async() => {
 		const { message } = this.props;
 		await Clipboard.setString(message.msg);
@@ -348,6 +363,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.EDIT_INDEX:
 					this.handleEdit();
+					break;
+				case this.UNREAD_INDEX:
+					this.handleUnread();
 					break;
 				case this.PERMALINK_INDEX:
 					this.handlePermalink();
