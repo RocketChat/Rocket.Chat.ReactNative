@@ -133,7 +133,7 @@ class LanguageView extends React.Component {
 				}
 			});
 
-			await appStart('loading');
+			await appStart('loading', I18n.t('Change_language_loading'));
 			await appStart('inside');
 		} catch (e) {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
@@ -205,7 +205,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params)),
-	appStart: params => dispatch(appStartAction(params))
+	appStart: (...params) => dispatch(appStartAction(...params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));
