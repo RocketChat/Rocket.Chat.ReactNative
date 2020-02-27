@@ -166,10 +166,12 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 				// see if there're other logged in servers and selects first one
 				if (servers.length > 0) {
-					const newServer = servers[0].id;
-					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-					if (token) {
-						return yield put(selectServerRequest(newServer));
+					for (let i = 0; i < servers.length; i += 1) {
+						const newServer = servers[i].id;
+						const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+						if (token) {
+							return yield put(selectServerRequest(newServer));
+						}
 					}
 				}
 				// if there's no servers, go outside
