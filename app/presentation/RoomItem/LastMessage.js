@@ -36,7 +36,7 @@ const formatMsg = ({
 		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
 	}
 
-	return `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
+	return `${ prefix }${ lastMessage.msg }`;
 };
 
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);

@@ -370,6 +370,7 @@ class Markdown extends PureComponent {
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
+			m = m.replace(/\n+/g, ' ');
 			m = shortnameToUnicode(m);
 			m = removeMarkdown(m);
 			return (
