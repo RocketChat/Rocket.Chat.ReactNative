@@ -65,7 +65,21 @@ class AttachmentView extends React.Component {
 	componentDidMount() {
 		const { navigation } = this.props;
 		navigation.setParams({ handleSave: this.handleSave });
+
+		this.willBlurListener = navigation.addListener('willBlur', () => {
+			if (this.videoRef && this.videoRef.stopAsync) {
+				this.videoRef.stopAsync();
+			}
+		});
 	}
+
+	componentWillUnmount() {
+		if (this.willBlurListener && this.willBlurListener.remove) {
+			this.willBlurListener.remove();
+		}
+	}
+
+	getVideoRef = ref => this.videoRef = ref;
 
 	handleSave = async() => {
 		const { attachment } = this.state;
@@ -117,6 +131,7 @@ class AttachmentView extends React.Component {
 			useNativeControls
 			onLoad={() => this.setState({ loading: false })}
 			onError={console.log}
+			ref={this.getVideoRef}
 		/>
 	);
 
