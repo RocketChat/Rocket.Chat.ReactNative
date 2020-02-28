@@ -10,7 +10,7 @@ import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 
 const Link = React.memo(({
-	children, link, preview, theme
+	children, link, theme
 }) => {
 	const handlePress = () => {
 		if (!link) {
@@ -28,13 +28,9 @@ const Link = React.memo(({
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
 		<Text
-			onPress={preview ? undefined : handlePress}
-			onLongPress={preview ? undefined : onLongPress}
-			style={
-				!preview
-					? { ...styles.link, color: themes[theme].actionTintColor }
-					: { color: themes[theme].bodyText }
-			}
+			onPress={handlePress}
+			onLongPress={onLongPress}
+			style={{ ...styles.link, color: themes[theme].actionTintColor }}
 		>
 			{ childLength !== 0 ? children : link }
 		</Text>
@@ -44,8 +40,7 @@ const Link = React.memo(({
 Link.propTypes = {
 	children: PropTypes.node,
 	link: PropTypes.string,
-	theme: PropTypes.string,
-	preview: PropTypes.bool
+	theme: PropTypes.string
 };
 
 export default Link;
