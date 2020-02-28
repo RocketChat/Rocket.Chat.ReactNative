@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 const ReplyPreview = React.memo(({
-	message, Message_TimeFormat, baseUrl, username, useMarkdown, replying, getCustomEmoji, close, theme
+	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme
 }) => {
 	if (!replying) {
 		return null;
@@ -67,7 +67,6 @@ const ReplyPreview = React.memo(({
 					username={username}
 					getCustomEmoji={getCustomEmoji}
 					numberOfLines={1}
-					useMarkdown={useMarkdown}
 					preview
 					theme={theme}
 				/>
@@ -79,7 +78,6 @@ const ReplyPreview = React.memo(({
 
 ReplyPreview.propTypes = {
 	replying: PropTypes.bool,
-	useMarkdown: PropTypes.bool,
 	message: PropTypes.object.isRequired,
 	Message_TimeFormat: PropTypes.string.isRequired,
 	close: PropTypes.func.isRequired,
@@ -90,7 +88,6 @@ ReplyPreview.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	useMarkdown: state.markdown.useMarkdown,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	baseUrl: state.server.server
 });

@@ -50,7 +50,6 @@ import I18n from '../i18n';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
-export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 const returnAnArray = obj => obj || [];
@@ -628,7 +627,7 @@ const RocketChat = {
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[defaultSettings[item._id].type];
+		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id]
 				.reduce((array, value) => [...array, ...value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value]], []);
@@ -883,13 +882,6 @@ const RocketChat = {
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		// RC 0.51.0
 		return this.sdk.methodCall('setAvatarFromService', data, contentType, service);
-	},
-	async getUseMarkdown() {
-		const useMarkdown = await AsyncStorage.getItem(MARKDOWN_KEY);
-		if (useMarkdown === null) {
-			return true;
-		}
-		return JSON.parse(useMarkdown);
 	},
 	async getAllowCrashReport() {
 		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
