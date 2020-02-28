@@ -63,6 +63,12 @@ class MessageActions extends React.Component {
 			this.EDIT_INDEX = this.options.length - 1;
 		}
 
+		// Mark as unread
+		if (message.u && message.u._id !== user.id) {
+			this.options.push(I18n.t('Mark_unread'));
+			this.UNREAD_INDEX = this.options.length - 1;
+		}
+
 		// Permalink
 		this.options.push(I18n.t('Permalink'));
 		this.PERMALINK_INDEX = this.options.length - 1;
@@ -243,6 +249,30 @@ class MessageActions extends React.Component {
 		editInit(message);
 	}
 
+	handleUnread = async() => {
+		const { message, room } = this.props;
+		const { id: messageId, ts } = message;
+		const { rid } = room;
+		try {
+			const db = database.active;
+			const result = await RocketChat.markAsUnread({ messageId });
+			if (result.success) {
+				const subCollection = db.collections.get('subscriptions');
+				const subRecord = await subCollection.find(rid);
+				await db.action(async() => {
+					try {
+						await subRecord.update(sub => sub.lastOpen = ts);
+					} catch {
+						// do nothing
+					}
+				});
+				Navigation.navigate('RoomsListView');
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	handleCopy = async() => {
 		const { message } = this.props;
 		await Clipboard.setString(message.msg);
@@ -348,6 +378,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.EDIT_INDEX:
 					this.handleEdit();
+					break;
+				case this.UNREAD_INDEX:
+					this.handleUnread();
 					break;
 				case this.PERMALINK_INDEX:
 					this.handlePermalink();
