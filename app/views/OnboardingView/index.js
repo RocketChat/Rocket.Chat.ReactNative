@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, Image, TouchableOpacity, BackHandler
+	View, Text, Image, TouchableOpacity, BackHandler, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,7 +10,6 @@ import Orientation from 'react-native-orientation-locker';
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
 import { appStart as appStartAction } from '../../actions';
 import I18n from '../../i18n';
-import openLink from '../../utils/openLink';
 import Button from './Button';
 import styles from './styles';
 import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
@@ -105,9 +104,12 @@ class OnboardingView extends React.Component {
 		this.newServer('https://open.rocket.chat');
 	}
 
-	createWorkspace = () => {
-		const { theme } = this.props;
-		openLink('https://cloud.rocket.chat/trial', theme);
+	createWorkspace = async() => {
+		try {
+			await Linking.openURL('https://cloud.rocket.chat/trial');
+		} catch {
+			// do nothing
+		}
 	}
 
 	renderClose = () => {
