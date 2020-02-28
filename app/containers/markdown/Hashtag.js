@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Hashtag = React.memo(({
-	hashtag, channels, navToRoomInfo, preview, style = [], theme
+	hashtag, channels, navToRoomInfo, style = [], theme
 }) => {
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
@@ -21,8 +21,8 @@ const Hashtag = React.memo(({
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<Text
-				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : styles.mention, ...style]}
-				onPress={preview ? undefined : handlePress}
+				style={[styles.mention, ...style]}
+				onPress={handlePress}
 			>
 				{hashtag}
 			</Text>
@@ -39,7 +39,6 @@ Hashtag.propTypes = {
 	hashtag: PropTypes.string,
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.array,
-	preview: PropTypes.bool,
 	theme: PropTypes.string,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
