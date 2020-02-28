@@ -53,6 +53,9 @@ const LANGUAGES = [
 	}, {
 		label: 'Italiano',
 		value: 'it'
+	}, {
+		label: '日本語',
+		value: 'ja'
 	}
 ];
 
