@@ -1,3 +1,6 @@
+diff --git a/node_modules/react-native-keyboard-input/.DS_Store b/node_modules/react-native-keyboard-input/.DS_Store
+new file mode 100644
+index 0000000..e69de29
 diff --git a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java b/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
 index 69ef9f3..10729c8 100644
 --- a/node_modules/react-native-keyboard-input/lib/android/src/main/java/com/wix/reactnativekeyboardinput/CustomKeyboardRootView.java
@@ -83,7 +86,7 @@ index 0000000..1d08ca1
 +end
 \ No newline at end of file
 diff --git a/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js b/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
-index bd557a8..6745017 100644
+index bd557a8..c150bb4 100644
 --- a/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
 +++ b/node_modules/react-native-keyboard-input/src/KeyboardAccessoryView.js
 @@ -23,6 +23,7 @@ export default class KeyboardAccessoryView extends Component {
@@ -94,7 +97,20 @@ index bd557a8..6745017 100644
      allowHitsOutsideBounds: PropTypes.bool,
    };
    static defaultProps = {
-@@ -136,6 +137,7 @@ export default class KeyboardAccessoryView extends Component {
+@@ -125,6 +126,12 @@ export default class KeyboardAccessoryView extends Component {
+     }
+   }
+ 
++  resetTracking() {
++    if (this.trackingViewRef) {
++      this.trackingViewRef.resetTracking();
++    }
++  }
++
+   render() {
+     return (
+       <KeyboardTrackingView
+@@ -136,6 +143,7 @@ export default class KeyboardAccessoryView extends Component {
          manageScrollView={this.props.manageScrollView}
          requiresSameParentToManageScrollView={this.props.requiresSameParentToManageScrollView}
          addBottomView={this.props.addBottomView}

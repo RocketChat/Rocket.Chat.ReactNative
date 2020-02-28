@@ -3,6 +3,7 @@ import { Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
+import removeMarkdown from 'remove-markdown';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -18,6 +19,7 @@ import MarkdownEmoji from './Emoji';
 import MarkdownTable from './Table';
 import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
+import mergeTextNodes from './mergeTextNodes';
 
 import styles from './styles';
 
@@ -83,10 +85,10 @@ class Markdown extends PureComponent {
 
 	constructor(props) {
 		super(props);
-		this.renderer = this.createRenderer(props.preview);
+		this.renderer = this.createRenderer();
 	}
 
-	createRenderer = (preview = false) => new Renderer({
+	createRenderer = () => new Renderer({
 		renderers: {
 			text: this.renderText,
 
@@ -119,7 +121,7 @@ class Markdown extends PureComponent {
 			table_row: this.renderTableRow,
 			table_cell: this.renderTableCell,
 
-			editedIndicator: preview ? () => null : this.renderEditedIndicator
+			editedIndicator: this.renderEditedIndicator
 		},
 		renderParagraphsInLists: true
 	});
@@ -141,19 +143,15 @@ class Markdown extends PureComponent {
 
 	renderText = ({ context, literal }) => {
 		const {
-			numberOfLines, preview, style = []
+			numberOfLines, style = []
 		} = this.props;
 		const defaultStyle = [
-			this.isMessageContainsOnlyEmoji && !preview ? styles.textBig : {},
+			this.isMessageContainsOnlyEmoji ? styles.textBig : {},
 			...context.map(type => styles[type])
 		];
 		return (
 			<Text
-				style={[
-					styles.text,
-					!preview ? defaultStyle : {},
-					...style
-				]}
+				style={[styles.text, defaultStyle, ...style]}
 				numberOfLines={numberOfLines}
 			>
 				{literal}
@@ -162,18 +160,16 @@ class Markdown extends PureComponent {
 	}
 
 	renderCodeInline = ({ literal }) => {
-		const { preview, theme, style = [] } = this.props;
+		const { theme, style = [] } = this.props;
 		return (
 			<Text
 				style={[
-					!preview
-						? {
-							...styles.codeInline,
-							color: themes[theme].bodyText,
-							backgroundColor: themes[theme].bannerBackground,
-							borderColor: themes[theme].bannerBackground
-						}
-						: { ...styles.text, color: themes[theme].bodyText },
+					{
+						...styles.codeInline,
+						color: themes[theme].bodyText,
+						backgroundColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
+					},
 					...style
 				]}
 			>
@@ -183,18 +179,16 @@ class Markdown extends PureComponent {
 	};
 
 	renderCodeBlock = ({ literal }) => {
-		const { preview, theme, style = [] } = this.props;
+		const { theme, style = [] } = this.props;
 		return (
 			<Text
 				style={[
-					!preview
-						? {
-							...styles.codeBlock,
-							color: themes[theme].bodyText,
-							backgroundColor: themes[theme].bannerBackground,
-							borderColor: themes[theme].bannerBackground
-						}
-						: { ...styles.text, color: themes[theme].bodyText },
+					{
+						...styles.codeBlock,
+						color: themes[theme].bodyText,
+						backgroundColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
+					},
 					...style
 				]}
 			>
@@ -221,11 +215,10 @@ class Markdown extends PureComponent {
 	};
 
 	renderLink = ({ children, href }) => {
-		const { preview, theme } = this.props;
+		const { theme } = this.props;
 		return (
 			<MarkdownLink
 				link={href}
-				preview={preview}
 				theme={theme}
 			>
 				{children}
@@ -235,14 +228,13 @@ class Markdown extends PureComponent {
 
 	renderHashtag = ({ hashtag }) => {
 		const {
-			channels, navToRoomInfo, style, preview, theme
+			channels, navToRoomInfo, style, theme
 		} = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
-				preview={preview}
 				theme={theme}
 				style={style}
 			/>
@@ -251,7 +243,7 @@ class Markdown extends PureComponent {
 
 	renderAtMention = ({ mentionName }) => {
 		const {
-			username, mentions, navToRoomInfo, useRealName, preview, style, theme
+			username, mentions, navToRoomInfo, useRealName, style, theme
 		} = this.props;
 		return (
 			<MarkdownAtMention
@@ -260,7 +252,6 @@ class Markdown extends PureComponent {
 				useRealName={useRealName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
-				preview={preview}
 				theme={theme}
 				style={style}
 			/>
@@ -269,13 +260,13 @@ class Markdown extends PureComponent {
 
 	renderEmoji = ({ emojiName, literal }) => {
 		const {
-			getCustomEmoji, baseUrl, customEmojis = true, preview, style, theme
+			getCustomEmoji, baseUrl, customEmojis = true, style, theme
 		} = this.props;
 		return (
 			<MarkdownEmoji
 				emojiName={emojiName}
 				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji && !preview}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
@@ -336,10 +327,7 @@ class Markdown extends PureComponent {
 	};
 
 	renderBlockQuote = ({ children }) => {
-		const { preview, theme } = this.props;
-		if (preview) {
-			return children;
-		}
+		const { theme } = this.props;
 		return (
 			<MarkdownBlockQuote theme={theme}>
 				{children}
@@ -367,7 +355,9 @@ class Markdown extends PureComponent {
 	}
 
 	render() {
-		const { msg, preview = false } = this.props;
+		const {
+			msg, numberOfLines, preview = false, theme, style = []
+		} = this.props;
 
 		if (!msg) {
 			return null;
@@ -378,19 +368,22 @@ class Markdown extends PureComponent {
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
-		m = shortnameToUnicode(m);
 
 		if (preview) {
-			m = m.split('\n').reduce((lines, line) => `${ lines } ${ line }`, '');
-			const ast = parser.parse(m);
-			return this.renderer.render(ast);
+			m = m.replace(/\n+/g, ' ');
+			m = shortnameToUnicode(m);
+			m = removeMarkdown(m);
+			return (
+				<Text style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines}>
+					{m}
+				</Text>
+			);
 		}
 
-		const ast = parser.parse(m);
+		let ast = parser.parse(m);
+		ast = mergeTextNodes(ast);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
-
 		this.editedMessage(ast);
-
 		return this.renderer.render(ast);
 	}
 }
