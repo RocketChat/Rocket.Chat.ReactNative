@@ -449,5 +449,6 @@ export default {
 	New_line: 'Nova linha',
 	You_will_be_logged_out_of_this_application: 'Você sairá deste aplicativo.',
 	Clear: 'Limpar',
-	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.'
+	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.',
+	Mark_unread: 'Marcar como não Lida'
 };

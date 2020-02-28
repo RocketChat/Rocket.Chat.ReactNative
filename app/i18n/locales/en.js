@@ -503,5 +503,6 @@ export default {
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
 	Message_starred_successfully: 'Message starred successfully',
-	Message_un_starred_successfully: 'Message un-starred successfully'
+	Message_un_starred_successfully: 'Message un-starred successfully',
+	Mark_unread: 'Mark Unread'
 };
