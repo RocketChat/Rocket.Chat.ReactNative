@@ -100,9 +100,18 @@ class LanguageView extends React.Component {
 			return;
 		}
 
-		const { user, setUser, appStart } = this.props;
+		const { appStart } = this.props;
 
 		await appStart('loading', I18n.t('Change_language_loading'));
+
+		// shows loading for at least 200ms
+		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 200))]);
+
+		await appStart('inside');
+	}
+
+	changeLanguage = async(language) => {
+		const { user, setUser } = this.props;
 
 		const params = {};
 
@@ -131,8 +140,6 @@ class LanguageView extends React.Component {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}
-
-		await appStart('inside');
 	}
 
 	renderSeparator = () => {
