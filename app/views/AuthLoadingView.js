@@ -3,6 +3,7 @@ import {
 	View, Text, StyleSheet, ActivityIndicator
 } from 'react-native';
 
+import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -31,7 +32,7 @@ export default React.memo(withTheme(({ theme, navigation }) => {
 			{text && (
 				<>
 					<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
-					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{text}</Text>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${ text }\n${ I18n.t('Please_wait') }`}</Text>
 				</>
 			)}
 		</View>
