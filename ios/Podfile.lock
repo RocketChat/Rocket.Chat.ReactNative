@@ -299,7 +299,7 @@ PODS:
   - react-native-jitsi-meet (2.1.0):
     - JitsiMeetSDK
     - React
-  - react-native-keyboard-input (5.3.1):
+  - react-native-keyboard-input (5.4.1):
     - React
   - react-native-keyboard-tracking-view (5.6.1):
     - React
@@ -754,7 +754,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-jitsi-meet: 04ccc47303c62ba2b7e7407a113f5f46241ebd75
-  react-native-keyboard-input: 2a01e0aceac330592bbe9b3101761bb9d8e6d1fb
+  react-native-keyboard-input: 775c2f00554869563b1d59c6bebd8f8a2aa54295
   react-native-keyboard-tracking-view: 4bb67b89ccd327c7d9eab87f722880d2103a25a8
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
