@@ -469,7 +469,7 @@ class CustomModalStack extends React.Component {
 			closeModal();
 			return true;
 		}
-		if (state && state.routes[state.index] && state.routes[state.index].routes.length > 1) {
+		if (state && state.routes[state.index] && state.routes[state.index].routes && state.routes[state.index].routes.length > 1) {
 			navigation.goBack();
 		}
 		return false;
