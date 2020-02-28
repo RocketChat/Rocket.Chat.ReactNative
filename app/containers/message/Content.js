@@ -29,7 +29,6 @@ const Content = React.memo((props) => {
 				preview={props.tmid && !props.isThreadRoom}
 				channels={props.channels}
 				mentions={props.mentions}
-				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
 				useRealName={props.useRealName}
@@ -53,7 +52,6 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
-	useMarkdown: PropTypes.bool,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	getCustomEmoji: PropTypes.func,

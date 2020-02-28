@@ -171,7 +171,6 @@ export default {
 	EMAIL: 'EMAIL',
 	email: 'e-mail',
 	Enable_Auto_Translate: 'Включить автоперевод',
-	Enable_markdown: 'Включить markdown',
 	Enable_notifications: 'Включить уведомления',
 	Everyone_can_access_this_channel: 'Каждый может получить доступ к этому каналу',
 	erasing_room: 'стирание комнаты',

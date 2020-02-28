@@ -79,7 +79,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 });
 
 const Description = React.memo(({
-	attachment, baseUrl, user, getCustomEmoji, useMarkdown, theme
+	attachment, baseUrl, user, getCustomEmoji, theme
 }) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
@@ -91,7 +91,6 @@ const Description = React.memo(({
 			baseUrl={baseUrl}
 			username={user.username}
 			getCustomEmoji={getCustomEmoji}
-			useMarkdown={useMarkdown}
 			theme={theme}
 		/>
 	);
@@ -125,7 +124,7 @@ const Fields = React.memo(({ attachment, theme }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, useMarkdown, split, theme
+	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, split, theme
 }) => {
 	if (!attachment) {
 		return null;
@@ -164,7 +163,6 @@ const Reply = React.memo(({
 					baseUrl={baseUrl}
 					user={user}
 					getCustomEmoji={getCustomEmoji}
-					useMarkdown={useMarkdown}
 					theme={theme}
 				/>
 				<Fields attachment={attachment} theme={theme} />
@@ -179,7 +177,6 @@ Reply.propTypes = {
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	index: PropTypes.number,
-	useMarkdown: PropTypes.bool,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
 	split: PropTypes.bool
@@ -197,7 +194,6 @@ Description.propTypes = {
 	attachment: PropTypes.object,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	useMarkdown: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string
 };

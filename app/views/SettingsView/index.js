@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
-import { toggleMarkdown as toggleMarkdownAction } from '../../actions/markdown';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
@@ -16,7 +15,7 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import RocketChat, { MARKDOWN_KEY, CRASH_REPORT_KEY } from '../../lib/rocketchat';
+import RocketChat, { CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
@@ -77,9 +76,7 @@ class SettingsView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server:	PropTypes.object,
-		useMarkdown: PropTypes.bool,
 		allowCrashReport: PropTypes.bool,
-		toggleMarkdown: PropTypes.func,
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
@@ -116,12 +113,6 @@ class SettingsView extends React.Component {
 				await loginRequest({ resume: token }, true);
 			}
 		});
-	}
-
-	toggleMarkdown = (value) => {
-		AsyncStorage.setItem(MARKDOWN_KEY, JSON.stringify(value));
-		const { toggleMarkdown } = this.props;
-		toggleMarkdown(value);
 	}
 
 	toggleCrashReport = (value) => {
@@ -183,17 +174,6 @@ class SettingsView extends React.Component {
 	renderDisclosure = () => {
 		const { theme } = this.props;
 		return <DisclosureImage theme={theme} />;
-	}
-
-	renderMarkdownSwitch = () => {
-		const { useMarkdown } = this.props;
-		return (
-			<Switch
-				value={useMarkdown}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleMarkdown}
-			/>
-		);
 	}
 
 	renderCrashReportSwitch = () => {
@@ -324,13 +304,6 @@ class SettingsView extends React.Component {
 					<SectionSeparator theme={theme} />
 
 					<ListItem
-						title={I18n.t('Enable_markdown')}
-						testID='settings-view-markdown'
-						right={() => this.renderMarkdownSwitch()}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
 						right={() => this.renderCrashReportSwitch()}
@@ -370,14 +343,12 @@ class SettingsView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server,
 	token: getUserSelector(state).token,
-	useMarkdown: state.markdown.useMarkdown,
 	allowCrashReport: state.crashReport.allowCrashReport
 });
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
-	toggleMarkdown: params => dispatch(toggleMarkdownAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	appStart: params => dispatch(appStartAction(params))
 });
