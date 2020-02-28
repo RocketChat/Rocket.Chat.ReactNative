@@ -627,7 +627,7 @@ const RocketChat = {
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[defaultSettings[item._id].type];
+		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id]
 				.reduce((array, value) => [...array, ...value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value]], []);
