@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const AtMention = React.memo(({
-	mention, mentions, username, navToRoomInfo, preview, style = [], useRealName, theme
+	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme
 }) => {
 	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
@@ -40,8 +40,8 @@ const AtMention = React.memo(({
 	if (user) {
 		return (
 			<Text
-				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
-				onPress={preview ? undefined : handlePress}
+				style={[mentionStyle, ...style]}
+				onPress={handlePress}
 			>
 				{useRealName ? user.name : user.username}
 			</Text>
@@ -60,7 +60,6 @@ AtMention.propTypes = {
 	username: PropTypes.string,
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.array,
-	preview: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	theme: PropTypes.string,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
