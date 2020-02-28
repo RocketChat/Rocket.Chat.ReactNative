@@ -176,7 +176,6 @@ export default {
 	EMAIL: 'EMAIL',
 	email: 'e-mail',
 	Enable_Auto_Translate: 'Permitir Auto-Translate',
-	Enable_markdown: 'Permitir markdown',
 	Enable_notifications: 'Permitir notificaciones',
 	Everyone_can_access_this_channel: 'Todos los usuarios pueden acceder a este canal',
 	erasing_room: 'eliminando sala',

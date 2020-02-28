@@ -44,10 +44,6 @@ describe('Settings screen', () => {
 		it('should have server version', async() => {
 			await expect(element(by.id('settings-view-server-version'))).toExist();
 		});
-		
-		it('should have enable markdown', async() => {
-			await expect(element(by.id('settings-view-markdown'))).toExist();
-		});
 
 		after(async() => {
 			takeScreenshot();
