@@ -734,9 +734,10 @@ class RoomView extends React.Component {
 			dateSeparator = item.ts;
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
 		} else {
-			showUnreadSeparator = lastOpen
-				&& moment(item.ts).isAfter(lastOpen)
-				&& moment(previousItem.ts).isBefore(lastOpen);
+			if (lastOpen) {
+				showUnreadSeparator = moment(item.ts).isAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen);
+				showUnreadSeparator = moment(item.ts).isSame(lastOpen);
+			}
 			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}

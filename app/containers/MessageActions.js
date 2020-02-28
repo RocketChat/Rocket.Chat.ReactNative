@@ -46,6 +46,7 @@ class MessageActions extends React.Component {
 		const {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
+
 		// Cancel
 		this.options = [I18n.t('Cancel')];
 		this.CANCEL_INDEX = 0;
@@ -250,23 +251,25 @@ class MessageActions extends React.Component {
 
 	handleUnread = async() => {
 		const { message, room } = this.props;
+		const { id: messageId, ts } = message;
+		const { rid } = room;
 		try {
 			const db = database.active;
-			const result = await RocketChat.markAsUnread({ messageId: message.id });
+			const result = await RocketChat.markAsUnread({ messageId });
 			if (result.success) {
 				const subCollection = db.collections.get('subscriptions');
-				const subRecord = await subCollection.find(room.rid);
+				const subRecord = await subCollection.find(rid);
 				await db.action(async() => {
 					try {
-						await subRecord.update(sub => sub.lastOpen = message.ts);
-					} catch (err) {
-						log(err);
+						await subRecord.update(sub => sub.lastOpen = ts);
+					} catch {
+						// do nothing
 					}
 				});
 				Navigation.navigate('RoomsListView');
 			}
-		} catch (err) {
-			log(err);
+		} catch (e) {
+			log(e);
 		}
 	}
 

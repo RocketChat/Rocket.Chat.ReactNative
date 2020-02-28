@@ -650,9 +650,7 @@ const RocketChat = {
 		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
 	},
 	markAsUnread({ messageId }) {
-		if (messageId) {
-			return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
-		}
+		return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 	},
 	toggleStarMessage(messageId, starred) {
 		if (starred) {
