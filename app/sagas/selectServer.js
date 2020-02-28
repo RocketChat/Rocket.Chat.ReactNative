@@ -112,11 +112,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			serverInfo = yield getServerInfo({ server, raiseError: false });
 		}
 
-		// we'll set serverVersion as metadata for bugsnag
-		bugsnagServerVersion((serverInfo && serverInfo.version) || version);
-
 		// Return server version even when offline
-		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
+		const serverVersion = (serverInfo && serverInfo.version) || version;
+
+		// we'll set serverVersion as metadata for bugsnag
+		bugsnagServerVersion(serverVersion);
+		yield put(selectServerSuccess(server, serverVersion));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
