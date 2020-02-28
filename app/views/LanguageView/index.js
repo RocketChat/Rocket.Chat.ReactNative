@@ -107,8 +107,8 @@ class LanguageView extends React.Component {
 
 		await appStart('loading', I18n.t('Change_language_loading'));
 
-		// shows loading for at least 200ms
-		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 200))]);
+		// shows loading for at least 300ms
+		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
 		await appStart('inside');
 	}
