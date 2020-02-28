@@ -108,7 +108,7 @@ class SettingsView extends React.Component {
 				const {
 					server: { server }, loginRequest, token, appStart
 				} = this.props;
-				await appStart('loading');
+				await appStart('loading', I18n.t('Clear_cache_loading'));
 				await RocketChat.clearCache({ server });
 				await loginRequest({ resume: token }, true);
 			}
@@ -350,7 +350,7 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
-	appStart: params => dispatch(appStartAction(params))
+	appStart: (...params) => dispatch(appStartAction(...params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));

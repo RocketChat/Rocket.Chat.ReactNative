@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
-import Loading from '../../containers/Loading';
 import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
@@ -75,21 +74,17 @@ class LanguageView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			language: props.user ? props.user.language : 'en',
-			saving: false
+			language: props.user ? props.user.language : 'en'
 		};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { language, saving } = this.state;
+		const { language } = this.state;
 		const { user, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.language !== language) {
-			return true;
-		}
-		if (nextState.saving !== saving) {
 			return true;
 		}
 		if (nextProps.user.language !== user.language) {
@@ -108,9 +103,18 @@ class LanguageView extends React.Component {
 			return;
 		}
 
-		this.setState({ saving: true });
+		const { appStart } = this.props;
 
-		const { user, setUser, appStart } = this.props;
+		await appStart('loading', I18n.t('Change_language_loading'));
+
+		// shows loading for at least 300ms
+		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
+
+		await appStart('inside');
+	}
+
+	changeLanguage = async(language) => {
+		const { user, setUser } = this.props;
 
 		const params = {};
 
@@ -135,15 +139,10 @@ class LanguageView extends React.Component {
 					// do nothing
 				}
 			});
-
-			await appStart('loading');
-			await appStart('inside');
 		} catch (e) {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}
-
-		this.setState({ saving: false });
 	}
 
 	renderSeparator = () => {
@@ -174,7 +173,6 @@ class LanguageView extends React.Component {
 	}
 
 	render() {
-		const { saving } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
@@ -196,7 +194,6 @@ class LanguageView extends React.Component {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-				<Loading visible={saving} />
 			</SafeAreaView>
 		);
 	}
@@ -208,7 +205,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params)),
-	appStart: params => dispatch(appStartAction(params))
+	appStart: (...params) => dispatch(appStartAction(...params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));
