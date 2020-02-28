@@ -502,5 +502,5 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
-	Mark_as_unread: 'Mark as unread'
+	Mark_unread: 'Mark Unread'
 };

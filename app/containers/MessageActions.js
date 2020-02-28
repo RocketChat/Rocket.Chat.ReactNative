@@ -65,7 +65,7 @@ class MessageActions extends React.Component {
 
 		// Mark as unread
 		if (message.u && message.u._id !== user.id) {
-			this.options.push(I18n.t('Mark_as_unread'));
+			this.options.push(I18n.t('Mark_unread'));
 			this.UNREAD_INDEX = this.options.length - 1;
 		}
 
