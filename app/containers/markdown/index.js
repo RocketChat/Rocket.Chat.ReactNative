@@ -71,7 +71,6 @@ class Markdown extends PureComponent {
 		tmid: PropTypes.string,
 		isEdited: PropTypes.bool,
 		numberOfLines: PropTypes.number,
-		useMarkdown: PropTypes.bool,
 		customEmojis: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -368,9 +367,7 @@ class Markdown extends PureComponent {
 	}
 
 	render() {
-		const {
-			msg, useMarkdown = true, numberOfLines, preview = false, theme
-		} = this.props;
+		const { msg, preview = false } = this.props;
 
 		if (!msg) {
 			return null;
@@ -387,10 +384,6 @@ class Markdown extends PureComponent {
 			m = m.split('\n').reduce((lines, line) => `${ lines } ${ line }`, '');
 			const ast = parser.parse(m);
 			return this.renderer.render(ast);
-		}
-
-		if (!useMarkdown && !preview) {
-			return <Text style={[styles.text, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>{m}</Text>;
 		}
 
 		const ast = parser.parse(m);
