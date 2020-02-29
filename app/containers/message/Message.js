@@ -151,7 +151,9 @@ Message.propTypes = {
 
 MessageInner.propTypes = {
 	type: PropTypes.string,
-	blocks: PropTypes.array
+	blocks: PropTypes.array,
+	setPlaying: PropTypes.func,
+	audioPlaying: PropTypes.bool
 };
 
 export default MessageTouchable;

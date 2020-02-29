@@ -45,7 +45,9 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		setPlaying: PropTypes.func,
+		audioPlaying: PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -63,8 +65,10 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
+		setPlaying: () => {},
 		archived: false,
 		broadcast: false,
+		audioPlaying: false,
 		theme: 'light'
 	}
 
@@ -226,7 +230,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, setPlaying, audioPlaying
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -296,6 +300,8 @@ class MessageContainer extends React.Component {
 				callJitsi={callJitsi}
 				blockAction={blockAction}
 				theme={theme}
+				setPlaying={setPlaying}
+				audioPlaying={audioPlaying}
 			/>
 		);
 	}

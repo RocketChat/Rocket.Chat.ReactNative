@@ -8,18 +8,21 @@ import Video from './Video';
 import Reply from './Reply';
 
 const Attachments = React.memo(({
-	attachments, timeFormat, user, baseUrl, showAttachment, getCustomEmoji, theme
+	attachments, timeFormat, user, baseUrl, showAttachment, getCustomEmoji, theme, setPlaying, audioPlaying
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
 	}
+
+	console.log('22222222222222222222222222222222222');
+	console.log(setPlaying);
 
 	return attachments.map((file, index) => {
 		if (file.image_url) {
 			return <Image key={file.image_url} file={file} user={user} baseUrl={baseUrl} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
 		if (file.audio_url) {
-			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} theme={theme} />;
+			return <Audio key={file.audio_url} file={file} user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} theme={theme} setPlaying={setPlaying} audioPlaying={audioPlaying} />;
 		}
 		if (file.video_url) {
 			return <Video key={file.video_url} file={file} user={user} baseUrl={baseUrl} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
@@ -37,7 +40,9 @@ Attachments.propTypes = {
 	baseUrl: PropTypes.string,
 	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	setPlaying: PropTypes.func,
+	audioPlaying: PropTypes.bool
 };
 Attachments.displayName = 'MessageAttachments';
 
