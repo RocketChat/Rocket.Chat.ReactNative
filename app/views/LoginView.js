@@ -245,7 +245,9 @@ class LoginView extends React.Component {
 				style={[
 					sharedStyles.container,
 					isTablet && sharedStyles.tabletScreenContent,
-					{ backgroundColor: themes[theme].backgroundColor }
+					{
+						backgroundColor: themes[theme].backgroundColor, flexDirection: 'column', justifyContent: 'center'
+					}
 				]}
 				testID='login-view'
 				forceInset={{ vertical: 'never' }}
@@ -322,7 +324,7 @@ class LoginView extends React.Component {
 				key='login-view'
 			>
 				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={[sharedStyles.containerScrollView, { flex: 1, flexDirection: 'column', justifyContent: 'center' }]}>
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}
 				</ScrollView>

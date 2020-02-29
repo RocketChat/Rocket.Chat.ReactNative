@@ -210,8 +210,8 @@ class RegisterView extends React.Component {
 				contentContainerStyle={sharedStyles.container}
 			>
 				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={[sharedStyles.containerScrollView, { flex: 1, flexDirection: 'column', justifyContent: 'center' }]}>
+					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent, { flex: 1, flexDirection: 'column', justifyContent: 'center' }]} testID='register-view' forceInset={{ vertical: 'never' }}>
 						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 						<TextInput
 							autoFocus
