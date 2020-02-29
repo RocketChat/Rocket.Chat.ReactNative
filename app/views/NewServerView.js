@@ -31,9 +31,15 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		margin: 'auto'
+	},
 	image: {
 		alignSelf: 'center',
-		marginVertical: verticalScale(20),
+		marginVertical: verticalScale(35),
 		width: 210,
 		height: 171
 	},
@@ -301,8 +307,8 @@ class NewServerView extends React.Component {
 				key='login-view'
 			>
 				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
+				<ScrollView {...scrollPersistTaps} contentContainerStyle={[sharedStyles.containerScrollView, { flex: 1, flexDirection: 'column', justifyContent: 'center' }]}>
+					<SafeAreaView style={styles.container} testID='new-server-view'>
 						<Image style={styles.image} source={{ uri: 'new_server' }} />
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
 						<View style={isTablet && sharedStyles.tabletScreenContent}>

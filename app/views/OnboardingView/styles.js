@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import { verticalScale, moderateScale } from '../../utils/scaling';
-import { isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: isTablet ? 'center' : 'flex-start'
+		justifyContent: 'center'
 	},
 	onboarding: {
 		alignSelf: 'center',
