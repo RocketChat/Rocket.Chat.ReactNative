@@ -77,8 +77,7 @@ class Audio extends React.Component {
 		theme: PropTypes.string,
 		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
-		setPlaying: PropTypes.func,
-		audioPlaying: PropTypes.bool
+		getLock: PropTypes.func
 	}
 
 	constructor(props) {
@@ -133,6 +132,9 @@ class Audio extends React.Component {
 	}
 
 	onEnd = () => {
+		const { getLock } = this.props;
+		const { paused } = this.state;
+		getLock(!paused);
 		this.setState({ paused: true, currentTime: 0 });
 		requestAnimationFrame(() => {
 			this.player.seek(0);
@@ -147,16 +149,9 @@ class Audio extends React.Component {
 	setRef = ref => this.player = ref;
 
 	togglePlayPause = () => {
-		const { audioPlaying, setPlaying } = this.props;
+		const { getLock } = this.props;
 		const { paused } = this.state;
-		console.log('Audiolock: ', audioPlaying);
-		if (!audioPlaying && paused) {
-			setPlaying();
-			this.setState({ paused: !paused });
-		}
-
-		if (audioPlaying && !paused) {
-			setPlaying();
+		if (getLock(!paused)) {
 			this.setState({ paused: !paused });
 		}
 	}

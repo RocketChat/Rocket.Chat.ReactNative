@@ -46,9 +46,7 @@ class MessageContainer extends React.Component {
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
-		setPlaying: PropTypes.func,
-		audioPlaying: PropTypes.bool,
-		tmp: PropTypes.number
+		getLock: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -66,7 +64,7 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
-		setPlaying: () => {},
+		getLock: () => {},
 		archived: false,
 		broadcast: false,
 		theme: 'light'
@@ -230,7 +228,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, setPlaying, audioPlaying, tmp
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getLock
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -300,9 +298,7 @@ class MessageContainer extends React.Component {
 				callJitsi={callJitsi}
 				blockAction={blockAction}
 				theme={theme}
-				setPlaying={setPlaying}
-				audioPlaying={audioPlaying}
-				tmp={tmp}
+				getLock={getLock}
 			/>
 		);
 	}

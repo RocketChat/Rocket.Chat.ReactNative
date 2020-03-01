@@ -152,8 +152,6 @@ Message.propTypes = {
 MessageInner.propTypes = {
 	type: PropTypes.string,
 	blocks: PropTypes.array,
-	setPlaying: PropTypes.func,
-	audioPlaying: PropTypes.bool,
 	tmp: PropTypes.number
 };
 
