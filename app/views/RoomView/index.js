@@ -740,9 +740,7 @@ class RoomView extends React.Component {
 	}
 
 	renderItem = (item, previousItem) => {
-		const {
-			room, lastOpen, canAutoTranslate
-		} = this.state;
+		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
 			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
 		} = this.props;

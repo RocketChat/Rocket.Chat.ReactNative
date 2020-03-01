@@ -151,8 +151,7 @@ Message.propTypes = {
 
 MessageInner.propTypes = {
 	type: PropTypes.string,
-	blocks: PropTypes.array,
-	tmp: PropTypes.number
+	blocks: PropTypes.array
 };
 
 export default MessageTouchable;
