@@ -47,7 +47,8 @@ class MessageContainer extends React.Component {
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
 		setPlaying: PropTypes.func,
-		audioPlaying: PropTypes.bool
+		audioPlaying: PropTypes.bool,
+		tmp: PropTypes.number
 	}
 
 	static defaultProps = {
@@ -68,7 +69,6 @@ class MessageContainer extends React.Component {
 		setPlaying: () => {},
 		archived: false,
 		broadcast: false,
-		audioPlaying: false,
 		theme: 'light'
 	}
 
@@ -230,7 +230,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, setPlaying, audioPlaying
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, setPlaying, audioPlaying, tmp
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -302,6 +302,7 @@ class MessageContainer extends React.Component {
 				theme={theme}
 				setPlaying={setPlaying}
 				audioPlaying={audioPlaying}
+				tmp={tmp}
 			/>
 		);
 	}

@@ -8,14 +8,14 @@ import Video from './Video';
 import Reply from './Reply';
 
 const Attachments = React.memo(({
-	attachments, timeFormat, user, baseUrl, showAttachment, getCustomEmoji, theme, setPlaying, audioPlaying
+	attachments, timeFormat, user, baseUrl, showAttachment, getCustomEmoji, theme, setPlaying, audioPlaying, tmp
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
 	}
 
 	console.log('22222222222222222222222222222222222');
-	console.log(setPlaying);
+	console.log(tmp);
 
 	return attachments.map((file, index) => {
 		if (file.image_url) {
@@ -42,7 +42,8 @@ Attachments.propTypes = {
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string,
 	setPlaying: PropTypes.func,
-	audioPlaying: PropTypes.bool
+	audioPlaying: PropTypes.bool,
+	tmp: PropTypes.number
 };
 Attachments.displayName = 'MessageAttachments';
 

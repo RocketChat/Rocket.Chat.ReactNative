@@ -180,7 +180,8 @@ class RoomView extends React.Component {
 			reacting: false,
 			showAnnouncementModal: false,
 			announcement: null,
-			audioPlaying: false
+			audioPlaying: false,
+			tmp: 992
 		};
 
 		if (room && room.observe) {
@@ -727,12 +728,17 @@ class RoomView extends React.Component {
 
 	setPlaying = () => {
 		const { audioPlaying } = this.state;
-		this.setState({ audioPlaying: !audioPlaying });
+		console.log('Locking: ', audioPlaying);
+		try {
+			this.setState({ audioPlaying: !audioPlaying });
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	renderItem = (item, previousItem) => {
 		const {
-			room, lastOpen, canAutoTranslate, audioPlaying
+			room, lastOpen, canAutoTranslate, audioPlaying, tmp
 		} = this.state;
 		const {
 			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
@@ -785,6 +791,7 @@ class RoomView extends React.Component {
 				blockAction={this.blockAction}
 				setPlaying={this.setPlaying}
 				audioPlaying={audioPlaying}
+				tmp={tmp}
 			/>
 		);
 
