@@ -46,7 +46,7 @@ const RoomItem = React.memo(({
 	useEffect(() => {
 		if (type === 'd') {
 			const uid = rid.replace(userId, '');
-			RocketChat.getUserPresence({ uid });
+			RocketChat.getUserPresence(uid);
 		}
 	}, []);
 

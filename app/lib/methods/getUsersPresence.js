@@ -4,7 +4,9 @@ import semver from 'semver';
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 
-export async function getUsersPresence({ ids }) {
+let ids = [];
+
+export default async function getUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
@@ -40,15 +42,19 @@ export async function getUsersPresence({ ids }) {
 	}
 }
 
-let users = [];
 let usersTimer = null;
-export default function getUserPresence({ uid }) {
+export function getUserPresence(uid) {
+	const auth = reduxStore.getState().login.isAuthenticated;
+
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			getUsersPresence.call(this, { ids: users });
-			users = [];
+			if (auth) {
+				getUsersPresence.call(this);
+				ids = [];
+			}
 			usersTimer = null;
 		}, 1000);
 	}
-	users.push(uid);
+
+	ids.push(uid);
 }

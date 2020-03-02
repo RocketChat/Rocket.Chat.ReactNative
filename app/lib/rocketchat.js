@@ -21,7 +21,7 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import getUserPresence from './methods/getUserPresence';
+import getUsersPresence, { getUserPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -1066,6 +1066,7 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
 		}
 	},
+	getUsersPresence,
 	getUserPresence,
 	getDirectory({
 		query, count, offset, sort
