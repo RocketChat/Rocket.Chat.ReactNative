@@ -146,17 +146,22 @@ const CreateThreadPage = ({navigation}) => {
             return;
         }
 
-        if (type === ContentType.LINK) {
-            refetchLinkUrlPreview({
-                type,
-                url,
-            });
-        } else if (type === ContentType.YOUTUBE) {
-            refetchYoutubeUrlPreview({
-                type,
-                url,
-            });
-        }     
+        try {
+            if (type === ContentType.LINK && refetchLinkUrlPreview) {
+                refetchLinkUrlPreview({
+                    type,
+                    url,
+                });
+            } else if (type === ContentType.YOUTUBE && refetchYoutubeUrlPreview) {
+                refetchYoutubeUrlPreview({
+                    type,
+                    url,
+                });
+            }     
+        } catch (error) {
+            // non critical
+            console.warn(error);
+        }
     }, [type, youtube, link])
 
     const renderLinkPreview = () => {

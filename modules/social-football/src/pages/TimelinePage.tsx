@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import { Image, View, Text, StyleSheet, Button, ScrollView, ActivityIndicator } from 'react-native';
 import { appStyles } from '../theme/style';
 import { SafeAreaView } from 'react-navigation';
 import { appColors } from '../theme/colors';
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#FFF1E5'
+        backgroundColor: '#FFF1E5',
     },
 
     icon: {
@@ -43,6 +43,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
 
+    loading: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        opacity: 0,
+    },
 });
 
 const TimelinePage = ({ navigation }) => {
@@ -72,9 +79,19 @@ const TimelinePage = ({ navigation }) => {
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
 
+                const ids: string[] = [];
+
                 return {
                     getThreads: {
-                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads],
+                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
+                            console.log('id', item._id);
+                            if (ids.indexOf(item._id!) === -1) {
+                                ids.push(item._id!);
+                                return false;
+                            }
+
+                            return true;
+                        }),
                         limit: perPage,
                         offset: fetchMoreResult.getThreads.offset,
                         total: prev.getThreads.threads.length + fetchMoreResult.getThreads.threads.length,
@@ -82,6 +99,10 @@ const TimelinePage = ({ navigation }) => {
                 }
             },
         })
+    };
+
+    const renderLoader = () => {
+        return <View style={[styles.loading, { opacity: loading ? 1 : 0}]}><ActivityIndicator /></View>
     };
 
     return <>
@@ -93,6 +114,7 @@ const TimelinePage = ({ navigation }) => {
         <InfiniteScrollView onEndReached={() => fetchMoreResults()}>
             <View style={styles.container}>
                 {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
+                {renderLoader()}
             </View>
         </InfiniteScrollView>
     </>;
