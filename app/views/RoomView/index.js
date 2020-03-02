@@ -66,7 +66,7 @@ const stateAttrsUpdate = [
 	'editing',
 	'replying',
 	'reacting',
-	'showAnnouncementModal'
+	'showBannerModal'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
 
@@ -167,6 +167,7 @@ class RoomView extends React.Component {
 				rid: this.rid, t: this.t, name, fname
 			},
 			roomUpdate: {},
+			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
@@ -178,7 +179,7 @@ class RoomView extends React.Component {
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false,
-			showAnnouncementModal: false,
+			showBannerModal: false,
 			announcement: null
 		};
 
@@ -234,12 +235,15 @@ class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
-		const { roomUpdate } = state;
+		const { roomUpdate, member } = state;
 		const { appState, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
 		if (appState !== nextProps.appState) {
+			return true;
+		}
+		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -316,9 +320,11 @@ class RoomView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	goRoomActionsView = () => {
-		const { room } = this.state;
+		const { room, member } = this.state;
 		const { navigation } = this.props;
-		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+		navigation.navigate('RoomActionsView', {
+			rid: this.rid, t: this.t, room, member
+		});
 	}
 
 	init = async() => {
@@ -346,7 +352,10 @@ class RoomView extends React.Component {
 			// We run `canAutoTranslate` again in order to refetch auto translate permission
 			// in case of a missing connection or poor connection on room open
 			const canAutoTranslate = await RocketChat.canAutoTranslate();
-			this.setState({ canAutoTranslate, loading: false });
+
+			const member = await this.getRoomMember();
+
+			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
 			this.retryInit = this.retryInit + 1 || 1;
@@ -356,6 +365,27 @@ class RoomView extends React.Component {
 				}, 300);
 			}
 		}
+	}
+
+	getRoomMember = async() => {
+		const { room } = this.state;
+		const { rid, t } = room;
+
+		if (t === 'd') {
+			const { user } = this.props;
+
+			try {
+				const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				if (result.success) {
+					return result.user;
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		return {};
 	}
 
 	findAndObserveRoom = async(rid) => {
@@ -794,18 +824,20 @@ class RoomView extends React.Component {
 		return message;
 	}
 
-	toggleAnnouncementModal = (showModal) => {
-		this.setState({ showAnnouncementModal: showModal });
-	}
+	toggleBannerModal = () => this.setState(prevState => ({ showBannerModal: !prevState.showBannerModal }));
 
-	renderAnnouncement = () => {
+	renderBanner = () => {
 		const { theme } = this.props;
-		const { room } = this.state;
-		if (room.announcement) {
+		const { room, member } = this.state;
+		if (room.announcement || member.statusText) {
 			return (
-				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
+				<BorderlessButton
+					style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]}
+					testID='room-view-banner'
+					onPress={this.toggleBannerModal}
+				>
 					<Markdown
-						msg={room.announcement}
+						msg={room.announcement || member.statusText}
 						theme={theme}
 						numberOfLines={1}
 						preview
@@ -817,23 +849,23 @@ class RoomView extends React.Component {
 		}
 	}
 
-	renderAnnouncementModal = () => {
-		const { room, showAnnouncementModal } = this.state;
+	renderBannerModal = () => {
+		const { room, member, showBannerModal } = this.state;
 		const { theme } = this.props;
 		return (
 			<Modal
-				onBackdropPress={() => this.toggleAnnouncementModal(false)}
-				onBackButtonPress={() => this.toggleAnnouncementModal(false)}
+				onBackdropPress={this.toggleBannerModal}
+				onBackButtonPress={this.toggleBannerModal}
 				useNativeDriver
-				isVisible={showAnnouncementModal}
+				isVisible={showBannerModal}
 				animationIn='fadeIn'
 				animationOut='fadeOut'
 			>
 				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
-					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
+					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{this.t === 'd' ? I18n.t('Custom_Status') : I18n.t('Announcement')}</Text>
 					<ScrollView style={styles.modalScrollView}>
 						<Markdown
-							msg={room.announcement}
+							msg={room.announcement || member.statusText}
 							theme={theme}
 						/>
 					</ScrollView>
@@ -962,7 +994,7 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
-				{this.renderAnnouncement()}
+				{this.renderBanner()}
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -976,7 +1008,7 @@ class RoomView extends React.Component {
 					navigation={navigation}
 					hideSystemMessages={Hide_System_Messages}
 				/>
-				{this.renderAnnouncementModal()}
+				{this.renderBannerModal()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker

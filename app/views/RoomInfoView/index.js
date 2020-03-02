@@ -4,6 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
@@ -25,11 +26,12 @@ import Markdown from '../../containers/markdown';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
-const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
+const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
 			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{`@${ username }`}</Text>}
+			{statusText && <Markdown msg={statusText} preview theme={theme} />}
 		</>
 	)
 	: (
@@ -72,16 +74,22 @@ class RoomInfoView extends React.Component {
 	constructor(props) {
 		super(props);
 		const room = props.navigation.getParam('room');
+		const roomUser = props.navigation.getParam('member');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
 			room: room || {},
-			roomUser: {},
+			roomUser: roomUser || {},
 			parsedRoles: []
 		};
 	}
 
 	async componentDidMount() {
+		const { roomUser } = this.state;
+		if (this.t === 'd' && !_.isEmpty(roomUser)) {
+			return;
+		}
+
 		if (this.t === 'd') {
 			const { user } = this.props;
 			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
@@ -173,9 +181,10 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].auxiliaryText }]}>{I18n.t(camelize(key))}</Text>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
 				<Markdown
 					msg={room[key] ? room[key] : `__${ I18n.t(`No_${ key }_provided`) }__`}
+					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
 					theme={theme}
 				/>
 			</View>
@@ -349,7 +358,7 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, roomUser && roomUser.statusText, theme) }</View>
 						{isDirect ? this.renderButtons() : null}
 					</View>
 					{isDirect ? this.renderDirect() : this.renderChannel()}
