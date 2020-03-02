@@ -183,7 +183,6 @@ export default {
 	EMAIL: 'EMAIL',
 	email: 'Email',
 	Enable_Auto_Translate: 'Automatische Übersetzung aktivieren',
-	Enable_markdown: 'Markdown aktivieren',
 	Enable_notifications: 'Benachrichtigungen aktivieren',
 	Everyone_can_access_this_channel: 'Jeder kann auf diesen Kanal zugreifen',
 	erasing_room: 'lösche Raum',

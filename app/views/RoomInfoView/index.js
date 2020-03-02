@@ -175,7 +175,6 @@ class RoomInfoView extends React.Component {
 			<View style={styles.item}>
 				<Text style={[styles.itemLabel, { color: themes[theme].auxiliaryText }]}>{I18n.t(camelize(key))}</Text>
 				<Markdown
-					useMarkdown
 					msg={room[key] ? room[key] : `__${ I18n.t(`No_${ key }_provided`) }__`}
 					theme={theme}
 				/>

@@ -130,6 +130,7 @@ export default {
 	Click_to_join: 'Click to Join!',
 	Close: 'Close',
 	Close_emoji_selector: 'Close emoji selector',
+	Change_language_loading: 'Changing language.',
 	Choose: 'Choose',
 	Choose_from_library: 'Choose from library',
 	Choose_file: 'Choose file',
@@ -150,6 +151,7 @@ export default {
 	Permalink: 'Permalink',
 	Certificate_password: 'Certificate Password',
 	Clear_cache: 'Clear local server cache',
+	Clear_cache_loading: 'Clearing cache.',
 	Whats_the_password_for_your_certificate: 'What\'s the password for your certificate?',
 	Create_account: 'Create an account',
 	Create_Channel: 'Create Channel',
@@ -183,7 +185,6 @@ export default {
 	EMAIL: 'EMAIL',
 	email: 'e-mail',
 	Enable_Auto_Translate: 'Enable Auto-Translate',
-	Enable_markdown: 'Enable markdown',
 	Enable_notifications: 'Enable notifications',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',
 	erasing_room: 'erasing room',
@@ -236,6 +237,7 @@ export default {
 	Login: 'Login',
 	Login_error: 'Your credentials were rejected! Please try again.',
 	Login_with: 'Login with',
+	Logging_out: 'Logging out.',
 	Logout: 'Logout',
 	Max_number_of_uses: 'Max number of uses',
 	members: 'members',
@@ -302,6 +304,7 @@ export default {
 	pinned: 'pinned',
 	Pinned: 'Pinned',
 	Please_enter_your_password: 'Please enter your password',
+	Please_wait: 'Please wait.',
 	Preferences: 'Preferences',
 	Preferences_saved: 'Preferences saved!',
 	Privacy_Policy: ' Privacy Policy',
@@ -502,5 +505,6 @@ export default {
 	New_line: 'New line',
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
-	This_will_clear_all_your_offline_data: 'This will clear all your offline data.'
+	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
+	Mark_unread: 'Mark Unread'
 };
