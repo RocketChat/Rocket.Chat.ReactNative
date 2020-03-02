@@ -8,6 +8,7 @@ import RoomItem from './RoomItem';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
+import Markdown from './Markdown';
 // import RoomViewHeader from './RoomViewHeader';
 
 // Change here to see themed storybook
@@ -35,6 +36,8 @@ storiesOf('UiKitMessage', module)
 	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
 storiesOf('UiKitModal', module)
 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
+storiesOf('Markdown', module)
+	.add('list Markdown', () => <Markdown theme={theme} />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
