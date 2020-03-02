@@ -128,7 +128,9 @@ export default {
 	Channel_Name: 'Nome do Canal',
 	Channels: 'Canais',
 	Chats: 'Conversas',
+	Change_language_loading: 'Alterando idioma.',
 	Call_already_ended: 'A chamada já terminou!',
+	Clear_cache_loading: 'Limpando cache.',
 	Click_to_join: 'Clique para participar!',
 	Close: 'Fechar',
 	Close_emoji_selector: 'Fechar seletor de emojis',
@@ -177,7 +179,6 @@ export default {
 	Email_or_password_field_is_empty: 'Email ou senha estão vazios',
 	Email: 'Email',
 	email: 'e-mail',
-	Enable_markdown: 'Habilitar markdown',
 	Enable_notifications: 'Habilitar notificações',
 	Everyone_can_access_this_channel: 'Todos podem acessar este canal',
 	Error_uploading: 'Erro subindo',
@@ -223,6 +224,7 @@ export default {
 	Login_error: 'Suas credenciais foram rejeitadas. Tente novamente por favor!',
 	Login_with: 'Login with',
 	Logout: 'Sair',
+	Logging_out: 'Saindo.',
 	Max_number_of_uses: 'Número máximo de usos',
 	Members: 'Membros',
 	Mentioned_Messages: 'Mensagens mencionadas',
@@ -277,6 +279,7 @@ export default {
 	Pinned_Messages: 'Mensagens Fixadas',
 	pinned: 'fixada',
 	Pinned: 'Mensagens Fixadas',
+	Please_wait: 'Por favor, aguarde.',
 	Please_enter_your_password: 'Por favor, digite sua senha',
 	Preferences: 'Preferências',
 	Preferences_saved: 'Preferências salvas!',
@@ -450,5 +453,6 @@ export default {
 	New_line: 'Nova linha',
 	You_will_be_logged_out_of_this_application: 'Você sairá deste aplicativo.',
 	Clear: 'Limpar',
-	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.'
+	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.',
+	Mark_unread: 'Marcar como não Lida'
 };

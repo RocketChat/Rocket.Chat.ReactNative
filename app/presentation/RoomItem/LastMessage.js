@@ -6,7 +6,6 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
 
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username, useRealName
@@ -37,11 +36,7 @@ const formatMsg = ({
 		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
 	}
 
-	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-	if (msg) {
-		msg = shortnameToUnicode(msg);
-	}
-	return msg;
+	return `${ prefix }${ lastMessage.msg }`;
 };
 
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
