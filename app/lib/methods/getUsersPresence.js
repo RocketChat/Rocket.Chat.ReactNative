@@ -19,13 +19,14 @@ export default async function getUsersPresence() {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
 	} else {
-		// Request userPresence on demand
-		const params = { ids: ids.join(',') };
-		ids = [];
+		let params = {};
 
-		// if (this.lastUserPresenceFetch) {
-		// 	params.from = this.lastUserPresenceFetch.toISOString();
-		// }
+		// is server is greather than or equal 3.0.0
+		if (serverVersion && !semver.lt(semver.coerce(serverVersion), '3.0.0')) {
+			// Request userPresence on demand
+			params = { ids: ids.length ? ids.join(',') : [] };
+			ids = [];
+		}
 
 		// RC 1.1.0
 		const result = await this.sdk.get('users.presence', params);
@@ -52,7 +53,7 @@ export function getUserPresence(uid) {
 				getUsersPresence.call(this);
 			}
 			usersTimer = null;
-		}, 1000);
+		}, 2000);
 	}
 
 	ids.push(uid);
