@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, BackHandler, ScrollView, UIManager
+	View, Linking, BackHandler, ScrollView
 } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -49,10 +49,6 @@ import RoomView from './views/RoomView';
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
 	RNScreens.useScreens();
-}
-
-if (isAndroid && UIManager.setLayoutAnimationEnabledExperimental) {
-	UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const parseDeepLinking = (url) => {
