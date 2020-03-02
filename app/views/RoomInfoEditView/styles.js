@@ -35,12 +35,12 @@ export default StyleSheet.create({
 	},
 	switchContainer: {
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		paddingVertical: 5
 	},
 	switchLabelContainer: {
 		flex: 1,
-		paddingHorizontal: 10,
-		alignItems: 'flex-end'
+		paddingHorizontal: 8
 	},
 	switchLabelPrimary: {
 		fontSize: 16,
@@ -49,8 +49,7 @@ export default StyleSheet.create({
 	},
 	switchLabelSecondary: {
 		fontSize: 12,
-		...sharedStyles.textRegular,
-		textAlign: 'right'
+		...sharedStyles.textRegular
 	},
 	switch: {
 		alignSelf: 'center'
