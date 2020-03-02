@@ -24,3 +24,14 @@ export const TIMELINE = gql`
         }
     }
 `;
+
+export const PREVIEW_METADATA = gql`
+    query Preview($type: ContentType!, $url: String!) {
+        getPreviewMetadata(type: $type, url: $url) {
+            url,
+            title,
+            description,
+            image,
+        }
+    }
+`;

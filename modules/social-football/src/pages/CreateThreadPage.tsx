@@ -9,10 +9,14 @@ import {Switch} from '../components/Switch'
 import {ContentType} from '../enums/content-type';
 import {ContentTypeButton} from '../components/ContentTypeButton';
 import {HeaderSaveThreadButton} from "../components/header/HeaderSaveThreadButton";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
 import {Button} from "../components/Button";
+import Urls from "../../../../app/containers/message/Urls"
+import { AssetMetadata } from '../models/asset-metadata';
+import isURL from 'is-url'
+import { PREVIEW_METADATA } from '../api/queries/threads.queries';
 
 const styles = StyleSheet.create({
         container: {
@@ -44,6 +48,8 @@ const styles = StyleSheet.create({
 
 const CreateThreadPage = ({navigation}) => {
     const [performCreation, {data, loading, error}] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
+    const { data: urlLinkPreview, refetch: refetchLinkUrlPreview } = useQuery<{ getPreviewMetadata: AssetMetadata | undefined }>(PREVIEW_METADATA);
+    const { data: urlYoutubePreview, refetch: refetchYoutubeUrlPreview } = useQuery<{ getPreviewMetadata: AssetMetadata | undefined }>(PREVIEW_METADATA);
     const [submitted, setSubmitted] = useState(false);
 
     const [commentsEnabled, setCommentsEnabled] = useState(true); // set toggle button response to true
@@ -133,6 +139,36 @@ const CreateThreadPage = ({navigation}) => {
         </View>
     };
 
+    useEffect(() => {
+        const url = type === ContentType.LINK ? link : (ContentType.YOUTUBE ? youtube : null);
+
+        if (!isURL(url)) {
+            return;
+        }
+
+        if (type === ContentType.LINK) {
+            refetchLinkUrlPreview({
+                type,
+                url,
+            });
+        } else if (type === ContentType.YOUTUBE) {
+            refetchYoutubeUrlPreview({
+                type,
+                url,
+            });
+        }     
+    }, [type, youtube, link])
+
+    const renderLinkPreview = () => {
+        if (urlYoutubePreview?.getPreviewMetadata && ContentType.YOUTUBE === type) {
+            return <Urls urls={[urlYoutubePreview.getPreviewMetadata]} user={{}} />
+        } else if (urlLinkPreview?.getPreviewMetadata && ContentType.LINK === type) {
+            return <Urls urls={[urlLinkPreview.getPreviewMetadata]} user={{}} />
+        }
+
+        return null;
+    }
+
     return <KeyboardUtilityView centerVertically={false}>
         <ScrollView style={styles.container}>
             <View>
@@ -181,6 +217,7 @@ const CreateThreadPage = ({navigation}) => {
                     </View>
                     {type === ContentType.LINK ? renderLinkInput() : null}
                     {type === ContentType.YOUTUBE ? renderYoutubeInput() : null}
+                    {renderLinkPreview()}
                     <View style={[styles.switchContainer, appStyles.formGroup]}>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
                         <Switch
