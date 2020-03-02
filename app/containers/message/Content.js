@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
+import equal from 'deep-equal';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -42,7 +43,24 @@ const Content = React.memo((props) => {
 			{content}
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp && prevProps.msg === nextProps.msg && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => {
+	if (prevProps.isTemp !== nextProps.isTemp) {
+		return false;
+	}
+	if (prevProps.msg !== nextProps.msg) {
+		return false;
+	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
+	if (!equal(prevProps.mentions, nextProps.mentions)) {
+		return false;
+	}
+	if (!equal(prevProps.channels, nextProps.channels)) {
+		return false;
+	}
+	return true;
+});
 
 Content.propTypes = {
 	isTemp: PropTypes.bool,
