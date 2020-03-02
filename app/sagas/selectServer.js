@@ -15,7 +15,7 @@ import {
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log from '../utils/log';
+import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
@@ -113,7 +113,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
+		const serverVersion = (serverInfo && serverInfo.version) || version;
+
+		// we'll set serverVersion as metadata for bugsnag
+		logServerVersion(serverVersion);
+		yield put(selectServerSuccess(server, serverVersion));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);

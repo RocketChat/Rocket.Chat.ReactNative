@@ -147,7 +147,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
-	yield put(appStart('loading'));
+	yield put(appStart('loading', I18n.t('Logging_out')));
 	const server = yield select(getServer);
 	if (server) {
 		try {

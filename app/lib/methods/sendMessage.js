@@ -5,7 +5,7 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 
-const changeMessageStatus = async(id, tmid, status) => {
+const changeMessageStatus = async(id, tmid, status, message) => {
 	const db = database.active;
 	const msgCollection = db.collections.get('messages');
 	const threadMessagesCollection = db.collections.get('thread_messages');
@@ -14,6 +14,8 @@ const changeMessageStatus = async(id, tmid, status) => {
 	successBatch.push(
 		messageRecord.prepareUpdate((m) => {
 			m.status = status;
+			m.mentions = message.mentions;
+			m.channels = message.channels;
 		})
 	);
 
@@ -22,6 +24,8 @@ const changeMessageStatus = async(id, tmid, status) => {
 		successBatch.push(
 			threadMessageRecord.prepareUpdate((tm) => {
 				tm.status = status;
+				tm.mentions = message.mentions;
+				tm.channels = message.channels;
 			})
 		);
 	}
@@ -42,12 +46,12 @@ export async function sendMessageCall(message) {
 	try {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
-		await sdk.post('chat.sendMessage', {
+		const result = await sdk.post('chat.sendMessage', {
 			message: {
 				_id, rid, msg, tmid
 			}
 		});
-		await changeMessageStatus(_id, tmid, messagesStatus.SENT);
+		await changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
 	} catch (e) {
 		await changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 	}
