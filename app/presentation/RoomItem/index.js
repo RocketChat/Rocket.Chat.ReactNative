@@ -12,7 +12,6 @@ import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
 import Touchable from './Touchable';
 import { themes } from '../../constants/colors';
-import RocketChat from '../../lib/rocketchat';
 
 export { ROW_HEIGHT };
 
@@ -41,12 +40,12 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, theme
+	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, theme
 }) => {
 	useEffect(() => {
-		if (type === 'd') {
+		if (type === 'd' && rid) {
 			const uid = rid.replace(userId, '');
-			RocketChat.getUserPresence(uid);
+			getUserPresence(uid);
 		}
 	}, []);
 
@@ -198,12 +197,14 @@ RoomItem.propTypes = {
 	avatar: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
+	getUserPresence: PropTypes.func,
 	theme: PropTypes.string
 };
 
 RoomItem.defaultProps = {
 	avatarSize: 48,
-	status: 'offline'
+	status: 'offline',
+	getUserPresence: () => {}
 };
 
 const mapStateToProps = (state, ownProps) => ({
