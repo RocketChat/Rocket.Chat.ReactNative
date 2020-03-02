@@ -21,6 +21,7 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
+import getUserPresence from './methods/getUserPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -1065,42 +1066,7 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
 		}
 	},
-	getUserPresence() {
-		return new Promise(async(resolve) => {
-			const serverVersion = reduxStore.getState().server.version;
-
-			// if server is lower than 1.1.0
-			if (serverVersion && semver.lt(semver.coerce(serverVersion), '1.1.0')) {
-				if (this.activeUsersSubTimeout) {
-					clearTimeout(this.activeUsersSubTimeout);
-					this.activeUsersSubTimeout = false;
-				}
-				this.activeUsersSubTimeout = setTimeout(() => {
-					this.sdk.subscribe('activeUsers');
-				}, 5000);
-				return resolve();
-			} else {
-				const params = {};
-				// if (this.lastUserPresenceFetch) {
-				// 	params.from = this.lastUserPresenceFetch.toISOString();
-				// }
-
-				// RC 1.1.0
-				const result = await this.sdk.get('users.presence', params);
-				if (result.success) {
-					const activeUsers = result.users.reduce((ret, item) => {
-						ret[item._id] = item.status;
-						return ret;
-					}, {});
-					InteractionManager.runAfterInteractions(() => {
-						reduxStore.dispatch(setActiveUsers(activeUsers));
-					});
-					this.sdk.subscribe('stream-notify-logged', 'user-status');
-					return resolve();
-				}
-			}
-		});
-	},
+	getUserPresence,
 	getDirectory({
 		query, count, offset, sort
 	}) {

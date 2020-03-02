@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
 import Touchable from './Touchable';
 import { themes } from '../../constants/colors';
+import RocketChat from '../../lib/rocketchat';
 
 export { ROW_HEIGHT };
 
@@ -42,6 +43,13 @@ const arePropsEqual = (oldProps, newProps) => {
 const RoomItem = React.memo(({
 	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, theme
 }) => {
+	useEffect(() => {
+		if (type === 'd') {
+			const uid = rid.replace(userId, '');
+			RocketChat.getUserPresence({ uid });
+		}
+	}, []);
+
 	const date = formatDate(_updatedAt);
 
 	let accessibilityLabel = name;
