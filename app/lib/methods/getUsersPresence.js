@@ -20,9 +20,9 @@ export default async function getUsersPresence() {
 		}, 5000);
 	} else {
 		// Request userPresence on demand
-		const params = {
-			ids: ids.join(',')
-		};
+		const params = { ids: ids.join(',') };
+		ids = [];
+
 		// if (this.lastUserPresenceFetch) {
 		// 	params.from = this.lastUserPresenceFetch.toISOString();
 		// }
@@ -48,9 +48,8 @@ export function getUserPresence(uid) {
 
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			if (auth) {
+			if (auth && ids.length) {
 				getUsersPresence.call(this);
-				ids = [];
 			}
 			usersTimer = null;
 		}, 1000);
