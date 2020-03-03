@@ -24,7 +24,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import { loggerConfig, analytics } from '../../utils/log';
+import log, { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
@@ -95,7 +95,15 @@ class SettingsView extends React.Component {
 				if (split) {
 					Navigation.navigate('RoomView');
 				}
-				logout();
+				const CookieManager = require('@react-native-community/cookies');
+				CookieManager.clearAll()
+					.then(() => {
+						logout();
+					})
+					.catch((e) => {
+						logout();
+						log(e);
+					});
 			}
 		});
 	}
