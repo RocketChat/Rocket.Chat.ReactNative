@@ -39,6 +39,7 @@ const Content = React.memo((props) => {
 				mentions={props.mentions}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
+				useRealName={props.useRealName}
 				theme={props.theme}
 			/>
 		);
@@ -81,7 +82,8 @@ Content.propTypes = {
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	useRealName: PropTypes.bool
 };
 Content.displayName = 'MessageContent';
 
