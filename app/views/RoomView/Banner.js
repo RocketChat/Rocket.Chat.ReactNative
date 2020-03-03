@@ -15,7 +15,9 @@ import styles from './styles';
 const Banner = React.memo(({
 	announcement, statusText, type, theme
 }) => {
-	const [showModal, toggleModal] = useState(false);
+	const [showModal, openModal] = useState(false);
+
+	const toggleModal = () => openModal(prevState => !prevState);
 
 	if (announcement || statusText) {
 		return (
@@ -23,7 +25,7 @@ const Banner = React.memo(({
 				<BorderlessButton
 					style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]}
 					testID='room-view-banner'
-					onPress={() => toggleModal(true)}
+					onPress={toggleModal}
 				>
 					<Markdown
 						msg={announcement || statusText}
@@ -33,8 +35,8 @@ const Banner = React.memo(({
 					/>
 				</BorderlessButton>
 				<Modal
-					onBackdropPress={() => toggleModal(false)}
-					onBackButtonPress={() => toggleModal(false)}
+					onBackdropPress={toggleModal}
+					onBackButtonPress={toggleModal}
 					useNativeDriver
 					isVisible={showModal}
 					animationIn='fadeIn'
