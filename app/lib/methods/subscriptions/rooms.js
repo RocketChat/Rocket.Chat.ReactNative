@@ -13,6 +13,7 @@ import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
+import EventEmmiter from '../../../utils/events';
 
 const removeListener = listener => listener.stop();
 
@@ -238,6 +239,7 @@ export default function subscribeRooms() {
 							...threadMessagesToDelete
 						);
 					});
+					EventEmmiter.emit('removed', { rid: data.rid });
 				} catch (e) {
 					log(e);
 				}
