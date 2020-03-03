@@ -71,8 +71,9 @@ const registerPushToken = function* registerPushToken() {
 	yield RocketChat.registerPushToken();
 };
 
-const fetchUserPresence = function* fetchUserPresence() {
-	yield RocketChat.getUserPresence();
+const fetchUsersPresence = function* fetchUserPresence() {
+	yield RocketChat.getUsersPresence();
+	yield RocketChat.subscribeUsersPresence();
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -87,7 +88,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchRoles);
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
-		yield fork(fetchUserPresence);
+		yield fork(fetchUsersPresence);
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
