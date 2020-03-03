@@ -6,6 +6,7 @@ import SecurityManager from './security/security-manager';
 
 /**
 * Main creation file using the Apollo client.
+* Forwards all references to the Navigation.
 * 
 * @param props, ref
 * @returns {(ApolloProvider)}

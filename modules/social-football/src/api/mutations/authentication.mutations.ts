@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
  * Login to the Application.
  * 
  * @param UserCredentials
- * @returns {accessToken, refreshToken} if UserCredentials are Valid
+ * @returns {loginApp<credentials>} if UserCredentials are Valid
  * @returns {error} if UserCredentials are Invalid
  */
 export const LOGIN = gql`
@@ -20,7 +20,7 @@ export const LOGIN = gql`
  * Register with the Application.
  * 
  * @param User
- * @returns {accessToken, refreshToken} if User is new
+ * @returns {register<user>} if User is new
  * @returns {error} if User already exists
  */
 export const REGISTER = gql`
@@ -36,7 +36,7 @@ export const REGISTER = gql`
  * Get new Tokens from the Server.
  * 
  * @param String
- * @returns {accessToken, refreshToken}
+ * @returns {refreshUsingToken<refreshToken>}
  */
 export const REFRESH_USING_TOKEN = gql`
     mutation RefreshUsingToken($refreshToken: String!) {

@@ -19,7 +19,7 @@ class SecurityManager {
 
     /**
      * Requests an accessToken. 
-     * Returns an error message when the request fails.
+     * Returns null when the request fails.
      *
      * @returns {(Promise<string|null>)}
      * @memberof SecurityManager
@@ -48,7 +48,7 @@ class SecurityManager {
 
     /**
      * If there is an accesstoken request the User.
-     * Otherwise, return nothing.
+     * Otherwise, return null.
      *
      * @returns {(Promise<TokenPayload|null>)}
      * @memberof SecurityManager
@@ -69,7 +69,7 @@ class SecurityManager {
 
     /**
      * Requests refreshtoken. 
-     * Returns an error message when the request fails.
+     * Returns null when the request fails.
      * Renew the refreshtoken when it is expired.
      *
      * @returns {(Promise<string|null>)}
@@ -140,7 +140,7 @@ class SecurityManager {
     /**
      * Check if the user is logged-in.
      *
-     * @param {*} value
+     * @param {bool} value
      * @returns bool
      * @memberof SecurityManager
      */

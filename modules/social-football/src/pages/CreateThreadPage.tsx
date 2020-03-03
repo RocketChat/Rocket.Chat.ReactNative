@@ -16,6 +16,7 @@ import Urls from "../../../../app/containers/message/Urls"
 import { AssetMetadata } from '../models/asset-metadata';
 import isURL from 'is-url'
 import { PREVIEW_METADATA } from '../api/queries/threads.queries';
+import { HeaderTitle } from 'react-navigation-stack';
 
 /**
  * Defines the standard Stylesheet for the Create Thread Page.
@@ -77,7 +78,9 @@ const CreateThreadPage = ({navigation}) => {
     };
 
     /**
-     * Checks if all information for the Thread is filled.
+     * Checks if all required information for the Thread is filled.
+     * 
+     * @returns {bool}
      */
     const isValid = () => {
         return (
@@ -116,6 +119,8 @@ const CreateThreadPage = ({navigation}) => {
 
     /**
      * Creates the Form that has to be filled in when creating a new Thread.
+     * 
+     * @returns {JSX.element Form}
      */
     const renderLinkInput = () => {
         return <View style={appStyles.formGroup}>
@@ -134,7 +139,9 @@ const CreateThreadPage = ({navigation}) => {
     };
 
     /**
-     * Creates the card that shows the Youtube card information.
+     * Creates the Card that shows the Youtube card information.
+     * 
+     * @returns {JSX.element Form}
      */
     const renderYoutubeInput = () => {
         return <View style={appStyles.formGroup}>
@@ -180,7 +187,7 @@ const CreateThreadPage = ({navigation}) => {
     }, [type, youtube, link])
 
     /**
-     * Creates the card that shows the Link card information.
+     * Decides which Link Card to show.
      */
     const renderLinkPreview = () => {
         if (urlYoutubePreview?.getPreviewMetadata && ContentType.YOUTUBE === type) {
@@ -194,6 +201,8 @@ const CreateThreadPage = ({navigation}) => {
 
     /**
      * Makes sure that the Keyboard is rendered correctly.
+     * 
+     * @returns {KeyboardUtilityView}
      */
     return <KeyboardUtilityView centerVertically={false}>
         <ScrollView style={styles.container}>
@@ -263,6 +272,8 @@ const CreateThreadPage = ({navigation}) => {
 
 /**
  * Gets the localized title for the header.
+ * 
+ * @returns {headerTitle}
  */
 CreateThreadPage.navigationOptions = ({navigation}) => {
     return {

@@ -1,5 +1,5 @@
 /**
- * Defining the needed information for a Token.
+ * Defining the information stored in a Token Payload.
  */
 
 export interface TokenPayload {

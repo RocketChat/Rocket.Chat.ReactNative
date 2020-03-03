@@ -9,12 +9,11 @@ import 'cross-fetch/polyfill';
 
 /**
  * Provide authorisation for Apollo.
- * If AccessToken is Invalid use RefreshUsingToken to request new AccessToken.
- * If Accesstoken is Valid create new header with same data.
+ * If RefreshUsingToken then don't add access token because it is obtaining a new one.
  * 
  * @param all 
  * @param headers 
- * @returns {headers}
+ * @returns {all, headers}
  */
 export const authLinkProcessor = async(all, { headers }) => {
     if (all?.operationName === 'RefreshUsingToken') {

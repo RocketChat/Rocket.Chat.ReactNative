@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
 
 /**
- * Required me method.
+ * OBSOLETE
+ * Retrieves the logged-in userrname.
  * 
  * @returns {me}
  */

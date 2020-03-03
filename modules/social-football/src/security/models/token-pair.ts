@@ -1,5 +1,5 @@
 /**
- * Paring the Authorization Tokens.
+ * Defining the TokenPair.
  * 
  * @param accessToken
  * @param refreshToken

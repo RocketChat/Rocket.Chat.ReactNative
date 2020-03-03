@@ -95,6 +95,8 @@ const RegisterPage = ({ navigation }) => {
 
     /**
      * Creates the Form to Register.
+     * 
+     * @returns {KeyboardUtilityView}
      */
     return <KeyboardUtilityView>
         <View style={styles.container}>

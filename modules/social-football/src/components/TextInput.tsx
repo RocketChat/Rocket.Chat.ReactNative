@@ -4,7 +4,7 @@ import { appStyles } from '../theme/style';
 import { appColors } from '../theme/colors';
 
 /**
- * Defining a Text Input.
+ * Defining a Text Input field.
  */
 
 const styles = StyleSheet.create({
