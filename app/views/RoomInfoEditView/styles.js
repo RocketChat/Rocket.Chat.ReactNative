@@ -35,11 +35,12 @@ export default StyleSheet.create({
 	},
 	switchContainer: {
 		flexDirection: 'row',
-		paddingVertical: 5
+		alignItems: 'flex-start'
 	},
 	switchLabelContainer: {
 		flex: 1,
-		paddingHorizontal: 8
+		paddingHorizontal: 10,
+		alignItems: 'flex-end'
 	},
 	switchLabelPrimary: {
 		fontSize: 16,
@@ -48,7 +49,8 @@ export default StyleSheet.create({
 	},
 	switchLabelSecondary: {
 		fontSize: 12,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		textAlign: 'right'
 	},
 	switch: {
 		alignSelf: 'center'
@@ -61,5 +63,14 @@ export default StyleSheet.create({
 	broadcast: {
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
+	},
+	hideSystemMessages: {
+		alignItems: 'flex-start'
+	},
+	systemMessagesLabel: {
+		textAlign: 'left'
+	},
+	switchMargin: {
+		marginBottom: 16
 	}
 });

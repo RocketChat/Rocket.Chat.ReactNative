@@ -68,7 +68,7 @@ const stateAttrsUpdate = [
 	'reacting',
 	'showAnnouncementModal'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -950,7 +950,7 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t } = room;
+		const { rid, t, sysMes } = room;
 
 		return (
 			<SafeAreaView
@@ -974,7 +974,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
-					hideSystemMessages={Hide_System_Messages}
+					hideSystemMessages={sysMes || Hide_System_Messages}
 				/>
 				{this.renderAnnouncementModal()}
 				{this.renderFooter()}

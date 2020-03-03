@@ -16,20 +16,24 @@ export default class SwitchContainer extends React.PureComponent {
 		onValueChange: PropTypes.func,
 		theme: PropTypes.string,
 		testID: PropTypes.string,
-		hasSingleLabel: PropTypes.bool
+		labelContainerStyle: PropTypes.object,
+		leftLabelStyle: PropTypes.object,
+		children: PropTypes.any
 	}
 
 	render() {
 		const {
-			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID, hasSingleLabel
+			children, value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID, labelContainerStyle, leftLabelStyle
 		} = this.props;
 		return (
 			[
-				<View key='switch-container' style={styles.switchContainer}>
-					<View style={styles.switchLabelContainer}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText, textAlign: hasSingleLabel ? 'left' : 'right' }]}>{leftLabelPrimary}</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText, textAlign: hasSingleLabel ? 'left' : 'right' }]}>{leftLabelSecondary}</Text>
-					</View>
+				<View key='switch-container' style={[styles.switchContainer, children && styles.switchMargin]}>
+					{leftLabelPrimary && (
+						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+							<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>{leftLabelPrimary}</Text>
+							<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>{leftLabelSecondary}</Text>
+						</View>
+					)}
 					<Switch
 						style={styles.switch}
 						onValueChange={onValueChange}
@@ -38,13 +42,14 @@ export default class SwitchContainer extends React.PureComponent {
 						trackColor={SWITCH_TRACK_COLOR}
 						testID={testID}
 					/>
-					{!hasSingleLabel ? (
-						<View style={styles.switchLabelContainer}>
-							<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{rightLabelPrimary}</Text>
-							<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{rightLabelSecondary}</Text>
+					{rightLabelPrimary && (
+						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+							<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>{rightLabelPrimary}</Text>
+							<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>{rightLabelSecondary}</Text>
 						</View>
-					) : null}
+					)}
 				</View>,
+				children,
 				<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 			]
 		);

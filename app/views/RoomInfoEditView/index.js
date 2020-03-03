@@ -6,6 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import isEqual from 'lodash/isEqual';
 
 import database from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
@@ -27,6 +29,8 @@ import StatusBar from '../../containers/StatusBar';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { MessageTypeValues } from '../../utils/messageTypes';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -71,7 +75,8 @@ class RoomInfoEditView extends React.Component {
 			ro: false,
 			reactWhenReadOnly: false,
 			archived: false,
-			systemMessages: false
+			systemMessages: [],
+			enableSysMes: false
 		};
 		this.loadRoom();
 	}
@@ -118,7 +123,7 @@ class RoomInfoEditView extends React.Component {
 
 	init = (room) => {
 		const {
-			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired
+			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
@@ -132,7 +137,9 @@ class RoomInfoEditView extends React.Component {
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
-			archived: room.archived
+			archived: room.archived,
+			systemMessages: sysMes,
+			enableSysMes: sysMes.length > 0
 		});
 	}
 
@@ -149,7 +156,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -160,13 +167,15 @@ class RoomInfoEditView extends React.Component {
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
+			&& isEqual(room.sysMes, systemMessages)
+			&& enableSysMes === (room.sysMes.length > 0)
 		);
 	}
 
 	submit = async() => {
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -209,6 +218,10 @@ class RoomInfoEditView extends React.Component {
 		// React When Read Only
 		if (room.reactWhenReadOnly !== reactWhenReadOnly) {
 			params.reactWhenReadOnly = reactWhenReadOnly;
+		}
+
+		if (!isEqual(room.sysMes, systemMessages)) {
+			params.systemMessages = systemMessages;
 		}
 
 		// Join Code
@@ -299,12 +312,34 @@ class RoomInfoEditView extends React.Component {
 		return (permissions[PERMISSION_ARCHIVE] || permissions[PERMISSION_UNARCHIVE]);
 	};
 
+	renderSystemMessages = () => {
+		const { systemMessages, enableSysMes } = this.state;
+		const { theme } = this.props;
+
+		if (!enableSysMes) {
+			return null;
+		}
+
+		return (
+			<MultiSelect
+				options={MessageTypeValues.map(m => ({ value: m.value, text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) } }))}
+				onChange={({ value }) => this.setState({ systemMessages: value })}
+				placeholder={{ text: I18n.t('Hide_System_Messages') }}
+				value={systemMessages}
+				context={BLOCK_CONTEXT.FORM}
+				multiselect
+				theme={theme}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, systemMessages
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
 		} = this.state;
 		const { theme } = this.props;
 		const { dangerColor } = themes[theme];
+
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -410,14 +445,17 @@ class RoomInfoEditView extends React.Component {
 							: null
 						}
 						<SwitchContainer
-							hasSingleLabel
-							value={systemMessages}
-							leftLabelPrimary='Hide System Messages'
-							leftLabelSecondary='Uses server configuration'
+							value={enableSysMes}
+							leftLabelPrimary={I18n.t('Hide_System_Messages')}
+							leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
 							theme={theme}
 							testID='room-info-edit-switch-system-messages'
-							onValueChange={value => this.setState({ systemMessages: value })}
-						/>
+							onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
+							labelContainerStyle={styles.hideSystemMessages}
+							leftLabelStyle={styles.systemMessagesLabel}
+						>
+							{this.renderSystemMessages()}
+						</SwitchContainer>
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,

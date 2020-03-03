@@ -51,6 +51,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'sys_mes', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
