@@ -17,7 +17,7 @@ import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import RocketChat, { CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
-	getReadableVersion, getDeviceModel, isAndroid
+	getReadableVersion, getDeviceModel, isAndroid, isIOS
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -95,15 +95,19 @@ class SettingsView extends React.Component {
 				if (split) {
 					Navigation.navigate('RoomView');
 				}
-				const CookieManager = require('@react-native-community/cookies');
-				CookieManager.clearAll()
-					.then(() => {
-						logout();
-					})
-					.catch((e) => {
-						logout();
-						log(e);
-					});
+				if (isAndroid) {
+					const CookieManager = require('@react-native-community/cookies');
+					CookieManager.clearAll()
+						.then(() => {
+							logout();
+						})
+						.catch((e) => {
+							logout();
+							log(e);
+						});
+				} else {
+					logout();
+				}
 			}
 		});
 	}
