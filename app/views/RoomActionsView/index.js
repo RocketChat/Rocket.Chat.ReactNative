@@ -457,7 +457,7 @@ class RoomActionsView extends React.Component {
 						)
 					}
 					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
-					{room.t === 'd' && <Markdown msg={member.statusText} preview theme={theme} />}
+					{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
 				</View>,
 				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 			], item)
