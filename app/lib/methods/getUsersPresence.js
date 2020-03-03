@@ -21,10 +21,15 @@ export default async function getUsersPresence() {
 	} else {
 		let params = {};
 
-		// is server is greather than or equal 3.0.0
+		// if server is greather than or equal 3.0.0
 		if (serverVersion && !semver.lt(semver.coerce(serverVersion), '3.0.0')) {
+			// if not have any id, only subscribe to changes
+			if (!ids.length) {
+				this.sdk.subscribe('stream-notify-logged', 'user-status');
+				return;
+			}
 			// Request userPresence on demand
-			params = { ids: ids.length ? ids.join(',') : [] };
+			params = { ids: ids.join(',') };
 			ids = [];
 		}
 
