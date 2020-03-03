@@ -1,12 +1,11 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
 describe('Welcome screen', () => {
 	before(async() => {
-		await device.reloadReactNative();
+		await device.launchApp({ newInstance: true });
 		await element(by.id('join-community-button')).tap();
 		await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 	})
@@ -25,10 +24,6 @@ describe('Welcome screen', () => {
 		});
 
 		// TODO: oauth
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -50,10 +45,6 @@ describe('Welcome screen', () => {
 			await element(by.id('welcome-view-more')).tap();
 			await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('legal-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });
