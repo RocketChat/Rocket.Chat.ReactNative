@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { sleep, logout } = require('./helpers/app');
 
@@ -70,9 +69,5 @@ describe('Change server', () => {
 		// app MUST show public room created on previous tests
 		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
-	});
-
-	afterEach(async() => {
-		takeScreenshot();
 	});
 });

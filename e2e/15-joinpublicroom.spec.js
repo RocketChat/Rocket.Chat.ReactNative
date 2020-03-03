@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
@@ -136,10 +135,6 @@ describe('Join public room', () => {
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
 			})
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -187,10 +182,6 @@ describe('Join public room', () => {
 			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 });

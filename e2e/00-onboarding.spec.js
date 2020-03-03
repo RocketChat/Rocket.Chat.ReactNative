@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
 describe('Onboarding', () => {
@@ -24,10 +23,6 @@ describe('Onboarding', () => {
 
 		it('should have "Create a new workspace"', async() => {
 			await expect(element(by.id('create-workspace-button'))).toBeVisible();
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 
@@ -77,11 +72,6 @@ describe('Onboarding', () => {
 			await element(by.id('new-server-view-button')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-		});
-
-
-		afterEach(async() => {
-			// takeScreenshot();
 		});
 	});
 });

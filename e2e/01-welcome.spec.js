@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
 describe('Welcome screen', () => {
@@ -25,10 +24,6 @@ describe('Welcome screen', () => {
 		});
 
 		// TODO: oauth
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -50,10 +45,6 @@ describe('Welcome screen', () => {
 			await element(by.id('welcome-view-more')).tap();
 			await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('legal-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });

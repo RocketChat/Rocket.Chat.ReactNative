@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
@@ -70,10 +69,6 @@ describe('Room screen', () => {
 			it('should have actions button', async() => {
 				await expect(element(by.id('messagebox-actions'))).toBeVisible();
 			});
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 
@@ -336,10 +331,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('thread-messages-view'))).toBeVisible();
 				await tapBack();
 			});
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 
 		after(async() => {

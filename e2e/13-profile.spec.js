@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login, sleep } = require('./helpers/app');
 const data = require('./data');
 
@@ -74,10 +73,6 @@ describe('Profile screen', () => {
 			await waitFor(element(by.id('profile-view-submit'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
 			await expect(element(by.id('profile-view-submit'))).toExist();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -107,10 +102,6 @@ describe('Profile screen', () => {
 			await sleep(1000);
 			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 });

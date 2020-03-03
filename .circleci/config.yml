@@ -97,9 +97,6 @@ jobs:
           paths:
             - node_modules
 
-      - store_artifacts:
-          path: /tmp/screenshots
-
   android-build:
     <<: *defaults
     docker:

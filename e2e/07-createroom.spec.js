@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
@@ -23,10 +22,6 @@ describe('Create room screen', () => {
 			it('should have search input', async() => {
 				await waitFor(element(by.id('new-message-view-search'))).toExist().withTimeout(2000);
 				await expect(element(by.id('new-message-view-search'))).toExist();
-			});
-	
-			after(async() => {
-				takeScreenshot();
 			});
 		})
 
@@ -62,11 +57,6 @@ describe('Create room screen', () => {
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('select-users-view'))).toBeVisible();
-			});
-
-
-			after(async() => {
-				takeScreenshot();
 			});
 		})
 	});
@@ -185,9 +175,5 @@ describe('Create room screen', () => {
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});
 		})
-
-		afterEach(async() => {
-			takeScreenshot();
-		});
 	});
 });

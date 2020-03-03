@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { navigateToLogin, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
@@ -42,10 +41,6 @@ describe('Login screen', () => {
 		it('should have legal button', async() => {
 			await expect(element(by.id('login-view-more'))).toBeVisible();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', () => {
@@ -79,10 +74,6 @@ describe('Login screen', () => {
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });

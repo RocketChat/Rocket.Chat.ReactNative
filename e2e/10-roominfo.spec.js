@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
@@ -46,10 +45,6 @@ describe('Room info screen', () => {
 			await expect(element(by.id('room-info-view'))).toBeVisible();
 			await expect(element(by.id('room-info-view-name'))).toBeVisible();
 		});
-
-		after(async() => {
-			await takeScreenshot();
-		});
 	});
 
 	describe('Channel/Group', async() => {
@@ -84,10 +79,6 @@ describe('Room info screen', () => {
 	
 			it('should have edit button', async() => {
 				await expect(element(by.id('room-info-view-edit-button'))).toBeVisible();
-			});
-	
-			after(async() => {
-				takeScreenshot();
 			});
 		});
 
@@ -150,7 +141,6 @@ describe('Room info screen', () => {
 			});
 	
 			after(async() => {
-				await takeScreenshot();
 				// Ugly hack to scroll on detox
 				await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			});
@@ -324,10 +314,6 @@ describe('Room info screen', () => {
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
-			});
-	
-			afterEach(async() => {
-				takeScreenshot();
 			});
 		});
 	});

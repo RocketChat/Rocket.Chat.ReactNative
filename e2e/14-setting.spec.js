@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, navigateToLogin, login } = require('./helpers/app');
 
 describe('Settings screen', () => {
@@ -44,10 +43,6 @@ describe('Settings screen', () => {
 		it('should have server version', async() => {
 			await expect(element(by.id('settings-view-server-version'))).toExist();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Language', async() => {
@@ -83,8 +78,5 @@ describe('Settings screen', () => {
 		// 	await element(by.text('Settings')).tap();
 		// 	await expect(element(by.id('settings-view'))).toBeVisible();
 		// });
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 });

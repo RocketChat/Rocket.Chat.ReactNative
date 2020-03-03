@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { login, logout, navigateToLogin, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
@@ -29,10 +28,6 @@ describe('Rooms list screen', () => {
 				await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
 				// await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.server }. Tap to view servers list.`);
 			});
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 
@@ -76,10 +71,6 @@ describe('Rooms list screen', () => {
 			it('should logout', async() => {
 				await logout();
 			});
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 
 		after(async() => {
