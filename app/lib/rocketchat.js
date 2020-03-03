@@ -25,7 +25,7 @@ import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './met
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getSetting, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -620,7 +620,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
-	getSetting,
+	getLoginSettings,
 	setSettings,
 	getPermissions,
 	getCustomEmojis,
