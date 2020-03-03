@@ -35,6 +35,7 @@
     "expo-web-browser": "^6.0.0",
     "hoist-non-react-statics": "^3.3.0",
     "i18n-js": "3.5.0",
+    "is-url": "^1.2.4",
     "js-base64": "^2.5.1",
     "js-sha256": "^0.9.0",
     "lodash": "4.17.15",

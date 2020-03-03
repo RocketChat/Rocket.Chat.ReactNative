@@ -1,10 +1,10 @@
 {
   "name": "social-football",
   "version": "1.0.0",
-  "description": "A module that runs on top of Rocket.Chat for the Social.Football application.",
+  "description": "A module that runs on top of Rocket.Chat for the Connected.Football application.",
   "main": "index.js",
   "repository": "https://github.com/RocketChat/Rocket.Chat.ReactNative",
-  "author": "TOP team",
+  "author": "TOP Team",
   "license": "MIT",
   "scripts": {
     "test": "jest",

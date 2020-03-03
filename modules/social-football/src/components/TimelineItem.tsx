@@ -3,6 +3,10 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
 
+/**
+ * Defining the Metadata for an Item within the Timeline.
+ */
+
 const styles = StyleSheet.create({
     item: {
         padding: 30,
@@ -51,7 +55,6 @@ const styles = StyleSheet.create({
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     return <View style={[styles.item]}>
     <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
-
 
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>

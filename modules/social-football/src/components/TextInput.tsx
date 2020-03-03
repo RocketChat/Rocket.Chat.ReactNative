@@ -3,6 +3,10 @@ import { TextInput as NativeTextInput, StyleSheet } from 'react-native';
 import { appStyles } from '../theme/style';
 import { appColors } from '../theme/colors';
 
+/**
+ * Defining a Text Input.
+ */
+
 const styles = StyleSheet.create({
     input: {
         borderRadius: 4,
@@ -29,11 +33,10 @@ export const TextInput: React.FunctionComponent<any> = ({ required, submitted, o
     const dirty = typed || submitted;
 
     return <NativeTextInput style={[styles.input, appStyles.inputText, (valid || !dirty) ? {} : styles.inputError, props.multiline ? styles.multiline : {} ]}
-                            onChangeText={(value) => {
-                                setValue(value);
-                                setTyped(true);
-
-                                onChangeText(value);
-                            }}
-                            {...props} />
+        onChangeText={(value) => {
+            setValue(value);
+            setTyped(true);
+            onChangeText(value);
+        }}
+    {...props} />
 }

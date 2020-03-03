@@ -1,6 +1,10 @@
 import React from 'react'
 import { KeyboardAvoidingView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
 
+/**
+ * Defining the use of the Keyboard.
+ */
+
 const styles = StyleSheet.create({
     centerContainer: {
         flex: 1,

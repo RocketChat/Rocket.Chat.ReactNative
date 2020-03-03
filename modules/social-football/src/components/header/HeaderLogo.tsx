@@ -1,6 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, Platform } from 'react-native';
 
+/**
+ * Defining the Logo within the Header.
+ */
+
 const styles = StyleSheet.create({
     logo: {
         width: 70,

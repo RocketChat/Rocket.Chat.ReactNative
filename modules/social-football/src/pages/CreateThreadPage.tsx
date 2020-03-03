@@ -18,6 +18,9 @@ import { AssetMetadata } from '../models/asset-metadata';
 import isURL from 'is-url'
 import { PREVIEW_METADATA } from '../api/queries/threads.queries';
 
+/**
+ * Defines the standard Stylesheet for the Create Thread Page.
+ */
 const styles = StyleSheet.create({
         container: {
             width: '100%',
@@ -46,6 +49,9 @@ const styles = StyleSheet.create({
     }
 );
 
+/**
+ * Creates the Page.
+ */
 const CreateThreadPage = ({navigation}) => {
     const [performCreation, {data, loading, error}] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
     const { data: urlLinkPreview, refetch: refetchLinkUrlPreview } = useQuery<{ getPreviewMetadata: AssetMetadata | undefined }>(PREVIEW_METADATA);
@@ -59,6 +65,9 @@ const CreateThreadPage = ({navigation}) => {
     const [link, setLink] = useState<string | null>(null);
     const [youtube, setYoutube] = useState<string | null>(null);
 
+    /**
+     * Checks if the added URL is a special content type.
+     */
     const determineAssetUrl = () => {
         switch (type) {
             case ContentType.YOUTUBE:
@@ -68,6 +77,9 @@ const CreateThreadPage = ({navigation}) => {
         }
     };
 
+    /**
+     * Checks if all information for the Thread is filled.
+     */
     const isValid = () => {
         return (
             !!title &&
@@ -103,6 +115,9 @@ const CreateThreadPage = ({navigation}) => {
         await navigation.pop();
     };
 
+    /**
+     * Creates the Form that has to be filled in when creating a new Thread.
+     */
     const renderLinkInput = () => {
         return <View style={appStyles.formGroup}>
             <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
@@ -119,6 +134,9 @@ const CreateThreadPage = ({navigation}) => {
         </View>;
     };
 
+    /**
+     * Creates the card that shows the Youtube card information.
+     */
     const renderYoutubeInput = () => {
         return <View style={appStyles.formGroup}>
             <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
@@ -139,6 +157,9 @@ const CreateThreadPage = ({navigation}) => {
         </View>
     };
 
+    /**
+     * Checks if the filled URL is a correct and supported link.
+     */
     useEffect(() => {
         const url = type === ContentType.LINK ? link : (ContentType.YOUTUBE ? youtube : null);
 
@@ -164,6 +185,9 @@ const CreateThreadPage = ({navigation}) => {
         }
     }, [type, youtube, link])
 
+    /**
+     * Creates the card that shows the Link card information.
+     */
     const renderLinkPreview = () => {
         if (urlYoutubePreview?.getPreviewMetadata && ContentType.YOUTUBE === type) {
             return <Urls urls={[urlYoutubePreview.getPreviewMetadata]} user={{}} />
@@ -174,6 +198,9 @@ const CreateThreadPage = ({navigation}) => {
         return null;
     }
 
+    /**
+     * Makes sure that the Keyboard is rendered correctly.
+     */
     return <KeyboardUtilityView centerVertically={false}>
         <ScrollView style={styles.container}>
             <View>
@@ -240,6 +267,9 @@ const CreateThreadPage = ({navigation}) => {
     </KeyboardUtilityView>;
 };
 
+/**
+ * Gets the localized title for the header.
+ */
 CreateThreadPage.navigationOptions = ({navigation}) => {
     return {
         headerTitle: i18n.t('createThread.title'),

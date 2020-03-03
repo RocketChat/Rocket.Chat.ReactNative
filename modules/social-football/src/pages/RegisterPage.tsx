@@ -18,6 +18,9 @@ enum ErrorTypes {
     FIELD_UNAVAILABLE = '',
 }
 
+/**
+ * Defines the standard Stylesheet for the Register Page.
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -50,6 +53,9 @@ const styles = StyleSheet.create({
     }
 });
 
+/**
+ * Creates the Page.
+ */
 const RegisterPage = ({ navigation }) => {
     const [performRegistration, {data, loading, error }] = useMutation<{ register: TokenPair }>(REGISTER);
     const [submitted, setSubmitted] = useState(false);
@@ -87,6 +93,9 @@ const RegisterPage = ({ navigation }) => {
         }
     };
 
+    /**
+     * Creates the Form to Register.
+     */
     return <KeyboardUtilityView>
         <View style={styles.container}>
             <View>

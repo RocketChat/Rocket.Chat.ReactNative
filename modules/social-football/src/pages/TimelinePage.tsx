@@ -14,6 +14,9 @@ import {InfiniteScrollView} from "../components/InfiniteScrollView";
 import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
 import { HeaderTitle } from 'react-navigation-stack';
 
+/**
+ * Defines the standard Stylesheet for the Timeline Page.
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -52,9 +55,17 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ * Creates the Page.
+ */
 const TimelinePage = ({ navigation }) => {
+    
+    //The maximum amount of threads that are loaded at once by Lazy Loading
     const perPage = 6;
 
+    /**
+     * Fetching more Threads
+     */
     const { data, error, fetchMore, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
             limit: perPage,
@@ -120,6 +131,9 @@ const TimelinePage = ({ navigation }) => {
     </>;
 };
 
+/**
+ * Creation of the Page.
+ */
 TimelinePage.navigationOptions = ({ navigation }) => {
     return {
         headerTitle: <HeaderLogo />,

@@ -1,3 +1,7 @@
+/**
+ * Defining the needed information for a Token.
+ */
+
 export interface TokenPayload {
     username: string;
     userId: string;

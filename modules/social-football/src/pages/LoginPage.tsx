@@ -14,6 +14,9 @@ import SecurityManager from '../security/security-manager';
 import { Alert } from '../components/Alert';
 import { TextInput } from '../components/TextInput';
 
+/**
+ * Defines the standard Stylesheet for the Login Page.
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -39,6 +42,9 @@ const styles = StyleSheet.create({
     }
 });
 
+/**
+ * Creates the Page.
+ */
 const LoginPage = ({ navigation }) => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
@@ -67,6 +73,9 @@ const LoginPage = ({ navigation }) => {
         <Alert title={i18n.t('login.wrongCredentials')} />
     );
 
+    /**
+     * Creates the form to Login.
+     */
     return <KeyboardUtilityView>
         <View style={styles.container}>
             <Image source={require('../assets/images/app-logo.png')} />

@@ -7,6 +7,15 @@ import SecurityManager from './security/security-manager';
 import config from './config/config';
 import 'cross-fetch/polyfill';
 
+/**
+ * Provide authorisation for Apollo.
+ * If AccessToken is Invalid use RefreshUsingToken to request new AccessToken.
+ * If Accesstoken is Valid create new header with same data.
+ * 
+ * @param all 
+ * @param headers 
+ * @returns {headers}
+ */
 export const authLinkProcessor = async(all, { headers }) => {
     if (all?.operationName === 'RefreshUsingToken') {
         return {
@@ -28,6 +37,16 @@ export const authLink = setContext(authLinkProcessor);
 
 const cache = new InMemoryCache();
 
+/**
+ * Setup the ApolloClient.
+ * Use the ApolloLink to define the link of operations before execution.
+ * 
+ * @param link
+ * @param authLink
+ * @param uri
+ * @param cache
+ * @returns {ApolloClient}
+ */
 const client = new ApolloClient({
     link: ApolloLink.from([
         authLink,
