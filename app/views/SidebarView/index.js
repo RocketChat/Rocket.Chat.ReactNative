@@ -108,6 +108,9 @@ class Sidebar extends Component {
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
+			if (nextProps.user.statusText !== user.statusText) {
+				return true;
+			}
 		}
 		if (nextProps.split !== split) {
 			return true;

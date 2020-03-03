@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
-import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import Modal from 'react-native-modal';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -53,7 +51,7 @@ import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
-import Markdown from '../../containers/markdown';
+import Banner from './Banner';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -66,7 +64,7 @@ const stateAttrsUpdate = [
 	'editing',
 	'replying',
 	'reacting',
-	'showBannerModal'
+	'member'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
 
@@ -147,8 +145,7 @@ class RoomView extends React.Component {
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
 		theme: PropTypes.string,
-		replyBroadcast: PropTypes.func,
-		activeUsers: PropTypes.object
+		replyBroadcast: PropTypes.func
 	};
 
 	constructor(props) {
@@ -180,7 +177,6 @@ class RoomView extends React.Component {
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false,
-			showBannerModal: false,
 			announcement: null
 		};
 
@@ -237,7 +233,7 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, activeUsers, theme } = this.props;
+		const { appState, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -245,9 +241,6 @@ class RoomView extends React.Component {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
-			return true;
-		}
-		if (activeUsers !== nextProps.activeUsers) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -828,57 +821,6 @@ class RoomView extends React.Component {
 		return message;
 	}
 
-	toggleBannerModal = () => this.setState(prevState => ({ showBannerModal: !prevState.showBannerModal }));
-
-	renderBanner = () => {
-		const { room, member } = this.state;
-		const { activeUsers, user, theme } = this.props;
-		const { rid } = this;
-		if (room.announcement || member.statusText) {
-			return (
-				<BorderlessButton
-					style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]}
-					testID='room-view-banner'
-					onPress={this.toggleBannerModal}
-				>
-					<Markdown
-						msg={room.announcement || ((activeUsers[rid.replace(user.id, '')] && activeUsers[rid.replace(user.id, '')].statusText) || member.statusText)}
-						theme={theme}
-						numberOfLines={1}
-						preview
-					/>
-				</BorderlessButton>
-			);
-		} else {
-			return null;
-		}
-	}
-
-	renderBannerModal = () => {
-		const { room, member, showBannerModal } = this.state;
-		const { theme } = this.props;
-		return (
-			<Modal
-				onBackdropPress={this.toggleBannerModal}
-				onBackButtonPress={this.toggleBannerModal}
-				useNativeDriver
-				isVisible={showBannerModal}
-				animationIn='fadeIn'
-				animationOut='fadeOut'
-			>
-				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
-					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{this.t === 'd' ? I18n.t('Custom_Status') : I18n.t('Announcement')}</Text>
-					<ScrollView style={styles.modalScrollView}>
-						<Markdown
-							msg={room.announcement || member.statusText}
-							theme={theme}
-						/>
-					</ScrollView>
-				</View>
-			</Modal>
-		);
-	}
-
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -982,7 +924,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, reactionsModalVisible, selectedMessage, loading, reacting
+			room, reactionsModalVisible, selectedMessage, loading, reacting, member
 		} = this.state;
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
@@ -999,7 +941,13 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
-				{this.renderBanner()}
+				<Banner
+					rid={rid}
+					announcement={room.announcement}
+					statusText={member.statusText}
+					type={t}
+					theme={theme}
+				/>
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -1013,7 +961,6 @@ class RoomView extends React.Component {
 					navigation={navigation}
 					hideSystemMessages={Hide_System_Messages}
 				/>
-				{this.renderBannerModal()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
@@ -1046,8 +993,7 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages,
-	activeUsers: state.activeUsers
+	Hide_System_Messages: state.settings.Hide_System_Messages
 });
 
 const mapDispatchToProps = dispatch => ({
