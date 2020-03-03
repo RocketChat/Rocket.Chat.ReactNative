@@ -172,7 +172,7 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 				<Markdown
 					testID={testID}
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import PropTypes from 'prop-types';
 import equal from 'deep-equal';
 
@@ -12,15 +12,16 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 		return null;
 	}
 	return (
-		<FlatList
-			testID='messagebox-container'
-			style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
-			data={mentions}
-			extraData={mentions}
-			renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
-			keyExtractor={item => item.id || item.username || item.command || item}
-			keyboardShouldPersistTaps='always'
-		/>
+		<View testID='messagebox-container'>
+			<FlatList
+				style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				data={mentions}
+				extraData={mentions}
+				renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
+				keyExtractor={item => item.id || item.username || item.command || item}
+				keyboardShouldPersistTaps='always'
+			/>
+		</View>
 	);
 }, (prevProps, nextProps) => {
 	if (prevProps.theme !== nextProps.theme) {
