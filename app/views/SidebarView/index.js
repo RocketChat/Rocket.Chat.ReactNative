@@ -23,6 +23,7 @@ import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
+import CustomStatus from './CustomStatus';
 
 const keyExtractor = item => item.id;
 
@@ -194,18 +195,6 @@ class Sidebar extends Component {
 		);
 	}
 
-	renderCustomStatus = () => {
-		const { user, theme } = this.props;
-		return (
-			<SidebarItem
-				text={user.statusText || I18n.t('Edit_Status')}
-				left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={() => {}}
-				testID='sidebar-custom-status'
-			/>
-		);
-	}
-
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
 		const { activeItemKey, theme } = this.props;
@@ -304,10 +293,10 @@ class Sidebar extends Component {
 						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
 					</Touch>
 
-					{!split ? <Separator theme={theme} /> : null}
-
-					{this.renderCustomStatus()}
 					<Separator theme={theme} />
+
+					<CustomStatus user={user} />
+					{!split ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
