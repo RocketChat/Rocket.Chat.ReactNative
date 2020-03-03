@@ -554,9 +554,11 @@ class RoomView extends React.Component {
 	}
 
 	handleRemoved = ({ rid }) => {
+		const { room } = this.state;
 		const { navigation } = this.props;
 		if (rid === this.rid) {
 			navigation.pop();
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
 
