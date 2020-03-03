@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
 describe('Forgot password screen', () => {
@@ -24,10 +23,6 @@ describe('Forgot password screen', () => {
 		it('should have submit button', async() => {
 			await expect(element(by.id('forgot-password-view-submit'))).toBeVisible();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -37,10 +32,6 @@ describe('Forgot password screen', () => {
 			await element(by.text('OK')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });
