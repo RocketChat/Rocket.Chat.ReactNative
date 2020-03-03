@@ -24,7 +24,6 @@ import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 	? (
 		<>
@@ -169,14 +168,15 @@ class RoomInfoView extends React.Component {
 
 	isDirect = () => this.t === 'd'
 
-	renderItem = (key, room) => {
+	renderItem = ({ label, content, testID }) => {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 				<Markdown
+					testID={testID}
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-					msg={room[key] ? room[key] : `__${ I18n.t(`No_${ key }_provided`) }__`}
+					msg={content || `__${ I18n.t(`No_${ label.toLowerCase() }_provided`) }__`}
 					theme={theme}
 				/>
 			</View>
@@ -221,8 +221,8 @@ class RoomInfoView extends React.Component {
 			if (!utcOffset) {
 				return null;
 			}
-			return this.renderSpecificItem({
-				label: I18n.t('Timezone'),
+			return this.renderItem({
+				label: 'Timezone',
 				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`,
 				testID: 'room-info-view-timezone'
 			});
@@ -248,27 +248,11 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderBroadcast = () => this.renderSpecificItem({
-		label: I18n.t('Broadcast_Channel'),
+	renderBroadcast = () => this.renderItem({
+		label: 'Broadcast_Channel',
 		content: I18n.t('Broadcast_channel_Description'),
 		testID: 'room-info-view-broadcast'
 	});
-
-	renderSpecificItem = ({ label, content, testID }) => {
-		const { theme } = this.props;
-
-		return (
-			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
-				<Text
-					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-					testID={testID}
-				>
-					{content}
-				</Text>
-			</View>
-		);
-	}
 
 	renderCustomFields = () => {
 		const { roomUser } = this.state;
@@ -322,11 +306,12 @@ class RoomInfoView extends React.Component {
 
 	renderChannel = () => {
 		const { room } = this.state;
+		const { description, topic, announcement } = room;
 		return (
 			<>
-				{this.renderItem('description', room)}
-				{this.renderItem('topic', room)}
-				{this.renderItem('announcement', room)}
+				{this.renderItem({ label: 'Description', content: description })}
+				{this.renderItem({ label: 'Topic', content: topic })}
+				{this.renderItem({ label: 'Announcement', content: announcement })}
 				{room.broadcast ? this.renderBroadcast() : null}
 			</>
 		);
