@@ -179,7 +179,6 @@ export default {
 	EMAIL: 'E-MAIL',
 	email: 'e-mail',
 	Enable_Auto_Translate: 'Abilita traduzione automatica',
-	Enable_markdown: 'Abilita Markdown',
 	Enable_notifications: 'Abilita notifiche',
 	Everyone_can_access_this_channel: 'Tutti hanno accesso a questo canale',
 	erasing_room: 'cancellazione stanza',

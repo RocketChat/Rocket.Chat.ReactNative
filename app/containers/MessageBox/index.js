@@ -92,7 +92,8 @@ class MessageBox extends Component {
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
 		theme: PropTypes.string,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -140,7 +141,7 @@ class MessageBox extends Component {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid } = this.props;
+		const { rid, tmid, navigation } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.collections.get('threads');
@@ -178,6 +179,12 @@ class MessageBox extends Component {
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
+
+		this.didFocusListener = navigation.addListener('didFocus', () => {
+			if (this.tracking && this.tracking.resetTracking) {
+				this.tracking.resetTracking();
+			}
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -257,6 +264,9 @@ class MessageBox extends Component {
 		}
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -866,6 +876,7 @@ class MessageBox extends Component {
 				}}
 			>
 				<KeyboardAccessoryView
+					ref={ref => this.tracking = ref}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
