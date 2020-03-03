@@ -10,7 +10,7 @@ async function mockMessage(message) {
 	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
-	await sleep(2000);
+	await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toBeVisible();
 };
 
 async function navigateToRoom() {
@@ -35,10 +35,6 @@ describe('Room screen', () => {
 			await waitFor(element(by.id(`room-view-title-${ mainRoom }`))).toBeVisible().withTimeout(5000);
 			await expect(element(by.id(`room-view-title-${ mainRoom }`))).toBeVisible();
 		});
-
-		// it('should have messages list', async() => {
-		// 	await expect(element(by.id('room-view-messages'))).toBeVisible();
-		// });
 
 		// Render - Header
 		describe('Header', async() => {
@@ -82,23 +78,6 @@ describe('Room screen', () => {
 	});
 
 	describe('Usage', async() => {
-		// describe('Header', async() => {
-		// 	it('should back to rooms list', async() => {
-		// 		await tapBack();
-		// 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		// 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		// 		await navigateToRoom();
-		// 	});
-
-		// 	it('should tap on more and navigate to room actions', async() => {
-		// 		await element(by.id('room-view-header-actions')).tap();
-		// 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
-		// 		await expect(element(by.id('room-actions-view'))).toBeVisible();
-		// 		await tapBack();
-		// 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		// 	});
-		// });
-
 		describe('Messagebox', async() => {
 			it('should send message', async() => {
 				await mockMessage('message')
@@ -170,31 +149,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
-
-			// it('should show and tap on slash command autocomplete and send slash command', async() => {
-			// 	await element(by.id('messagebox-input')).tap();
-			// 	await element(by.id('messagebox-input')).typeText('/');
-			// 	await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
-			// 	await expect(element(by.id('messagebox-container'))).toBeVisible();
-			// 	await element(by.id('mention-item-shrug')).tap();
-			// 	await expect(element(by.id('messagebox-input'))).toHaveText('/shrug ');
-			// 	await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
-			// 	await element(by.id('messagebox-send-message')).tap();
-			// 	await waitFor(element(by.text(`joy ¯\_(ツ)_/¯`))).toBeVisible().withTimeout(60000);
-			// });
-
-			// it('should show command Preview', async() => {
-			// 	await element(by.id('messagebox-input')).tap();
-			// 	await element(by.id('messagebox-input')).replaceText('/giphy');
-			// 	await waitFor(element(by.id('messagebox-container'))).toBeVisible().withTimeout(10000);
-			// 	await expect(element(by.id('messagebox-container'))).toBeVisible();
-			// 	await element(by.id('mention-item-giphy')).tap();
-			// 	await expect(element(by.id('messagebox-input'))).toHaveText('/giphy ');
-			// 	await element(by.id('messagebox-input')).typeText('no'); // workaround for number keyboard
-			// 	await waitFor(element(by.id('commandbox-container'))).toBeVisible().withTimeout(10000);
-			// 	await expect(element(by.id('commandbox-container'))).toBeVisible();
-			// 	await element(by.id('messagebox-input')).clearText();
-			// });
 		});
 
 		describe('Message', async() => {
@@ -205,25 +159,21 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Permalink')).tap();
-				// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(5000);
-				// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(5000);
+				await sleep(1000);
 
 				// TODO: test clipboard
 			});
 
 			it('should copy message', async() => {
-				await sleep(1000);
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Copy')).tap();
-				// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(5000);
-				// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(5000);
+				await sleep(1000);
 				// TODO: test clipboard
 			});
 
 			it('should star message', async() => {
-				await sleep(1000);
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
@@ -235,10 +185,10 @@ describe('Room screen', () => {
 				await expect(element(by.text('Unstar'))).toBeVisible();
 				await element(by.text('Cancel')).tap();
 				await waitFor(element(by.text('Cancel'))).toBeNotVisible().withTimeout(2000);
+				await sleep(1000);
 			});
 
 			it('should react to message', async() => {
-				await sleep(1000);
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
@@ -251,10 +201,10 @@ describe('Room screen', () => {
 				await element(by.id('reaction-picker-grinning')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeVisible();
+				await sleep(1000);
 			});
 
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
-				await sleep(1000);
 				await element(by.id('message-add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('reaction-picker'))).toBeVisible();
@@ -264,10 +214,10 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('reaction-picker-grimacing'))).toBeVisible().withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
 				await waitFor(element(by.id('message-reaction-:grimacing:'))).toBeVisible().withTimeout(60000);
+				await sleep(1000);
 			});
 
 			it('should remove reaction', async() => {
-				await sleep(1000);
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
