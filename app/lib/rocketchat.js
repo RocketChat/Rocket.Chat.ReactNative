@@ -21,7 +21,7 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence } from './methods/getUsersPresence';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
@@ -1068,6 +1068,7 @@ const RocketChat = {
 	},
 	getUsersPresence,
 	getUserPresence,
+	subscribeUsersPresence,
 	getDirectory({
 		query, count, offset, sort
 	}) {

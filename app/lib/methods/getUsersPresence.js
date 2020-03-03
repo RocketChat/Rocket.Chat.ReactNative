@@ -4,9 +4,7 @@ import semver from 'semver';
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 
-let ids = [];
-
-export default async function getUsersPresence() {
+export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
@@ -19,13 +17,23 @@ export default async function getUsersPresence() {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
 	} else {
+		this.sdk.subscribe('stream-notify-logged', 'user-status');
+	}
+}
+
+let ids = [];
+
+export default async function getUsersPresence() {
+	const serverVersion = reduxStore.getState().server.version;
+
+	// if server is greather than or equal 1.1.0
+	if (serverVersion && !semver.lt(semver.coerce(serverVersion), '1.1.0')) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0
 		if (serverVersion && !semver.lt(semver.coerce(serverVersion), '3.0.0')) {
-			// if not have any id, only subscribe to changes
+			// if not have any id
 			if (!ids.length) {
-				this.sdk.subscribe('stream-notify-logged', 'user-status');
 				return;
 			}
 			// Request userPresence on demand
@@ -43,7 +51,6 @@ export default async function getUsersPresence() {
 			InteractionManager.runAfterInteractions(() => {
 				reduxStore.dispatch(setActiveUsers(activeUsers));
 			});
-			this.sdk.subscribe('stream-notify-logged', 'user-status');
 		}
 	}
 }
