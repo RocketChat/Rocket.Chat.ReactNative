@@ -83,6 +83,7 @@ jobs:
       - run:
           name: Build
           command: |
+            detox clean-framework-cache && detox build-framework-cache
             detox build --configuration ios.sim.release
 
       - run:
