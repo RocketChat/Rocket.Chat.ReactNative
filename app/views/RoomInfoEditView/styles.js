@@ -35,7 +35,6 @@ export default StyleSheet.create({
 	},
 	switchContainer: {
 		flexDirection: 'row',
-		alignItems: 'flex-start',
 		paddingVertical: 5
 	},
 	switchLabelContainer: {

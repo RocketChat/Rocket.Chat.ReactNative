@@ -70,7 +70,8 @@ class RoomInfoEditView extends React.Component {
 			t: false,
 			ro: false,
 			reactWhenReadOnly: false,
-			archived: false
+			archived: false,
+			systemMessages: false
 		};
 		this.loadRoom();
 	}
@@ -300,7 +301,7 @@ class RoomInfoEditView extends React.Component {
 
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, systemMessages
 		} = this.state;
 		const { theme } = this.props;
 		const { dangerColor } = themes[theme];
@@ -408,6 +409,15 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
+						<SwitchContainer
+							hasSingleLabel
+							value={systemMessages}
+							leftLabelPrimary='Hide System Messages'
+							leftLabelSecondary='Uses server configuration'
+							theme={theme}
+							testID='room-info-edit-switch-system-messages'
+							onValueChange={value => this.setState({ systemMessages: value })}
+						/>
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,

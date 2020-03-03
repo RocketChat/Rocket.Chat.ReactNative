@@ -15,19 +15,20 @@ export default class SwitchContainer extends React.PureComponent {
 		rightLabelSecondary: PropTypes.string,
 		onValueChange: PropTypes.func,
 		theme: PropTypes.string,
-		testID: PropTypes.string
+		testID: PropTypes.string,
+		hasSingleLabel: PropTypes.bool
 	}
 
 	render() {
 		const {
-			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID
+			value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID, hasSingleLabel
 		} = this.props;
 		return (
 			[
 				<View key='switch-container' style={styles.switchContainer}>
 					<View style={styles.switchLabelContainer}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText, textAlign: 'right' }]}>{leftLabelPrimary}</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText, textAlign: 'right' }]}>{leftLabelSecondary}</Text>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText, textAlign: hasSingleLabel ? 'left' : 'right' }]}>{leftLabelPrimary}</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText, textAlign: hasSingleLabel ? 'left' : 'right' }]}>{leftLabelSecondary}</Text>
 					</View>
 					<Switch
 						style={styles.switch}
@@ -37,10 +38,12 @@ export default class SwitchContainer extends React.PureComponent {
 						trackColor={SWITCH_TRACK_COLOR}
 						testID={testID}
 					/>
-					<View style={styles.switchLabelContainer}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{rightLabelPrimary}</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{rightLabelSecondary}</Text>
-					</View>
+					{!hasSingleLabel ? (
+						<View style={styles.switchLabelContainer}>
+							<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }]}>{rightLabelPrimary}</Text>
+							<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }]}>{rightLabelSecondary}</Text>
+						</View>
+					) : null}
 				</View>,
 				<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 			]
