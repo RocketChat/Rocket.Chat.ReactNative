@@ -50,13 +50,14 @@ const styles = StyleSheet.create({
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
+    <Text style={[styles.creatorText]}>Dick Advocaat  ●  {item.createdAt}.</Text>
 
 
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>
             <Text style={[styles.threadTitle]}>{item.title}</Text>
             <Text style={[styles.threadText]}>{item.description}</Text>
+            <Text style={[styles.threadText]}>{item.type}</Text>
         </View>
         <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
     </View>
