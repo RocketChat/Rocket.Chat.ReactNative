@@ -9,6 +9,22 @@ export const appStyles = StyleSheet.create({
         fontFamily: 'Cabin-Bold',
         color: appColors.primary,
     },
+    heading: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        fontFamily: 'Cabin-Bold',
+        color: appColors.dark,
+    },
+    bold: {
+        fontWeight: 'bold',
+        fontFamily: 'Cabin-Bold',
+        color: appColors.dark,
+    },
+    subTitle: {
+        color: appColors.muted,
+        fontSize: 13,
+        fontFamily: 'Cabin-SemiBold',
+    },
     text: {
         fontFamily: 'Cabin-Regular',
         fontSize: 16,
