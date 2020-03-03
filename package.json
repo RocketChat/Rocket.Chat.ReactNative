@@ -81,6 +81,7 @@
     "react-native-platform-touchable": "^1.1.1",
     "react-native-popover-view": "^2.0.5",
     "react-native-progress": "^4.0.3",
+    "react-native-prompt-android": "^1.1.0",
     "react-native-reanimated": "1.4.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-screens": "^2.0.0-alpha.3",

@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
+import prompt from 'react-native-prompt-android';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
@@ -23,7 +24,9 @@ import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
-import CustomStatus from './CustomStatus';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
+import Loading from '../../containers/Loading';
 
 const keyExtractor = item => item.id;
 
@@ -56,6 +59,7 @@ class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
+			loading: false,
 			isAdmin: false,
 			status: []
 		};
@@ -77,7 +81,9 @@ class Sidebar extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus, isAdmin } = this.state;
+		const {
+			status, showStatus, loading, isAdmin
+		} = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
 		} = this.props;
@@ -125,6 +131,9 @@ class Sidebar extends Component {
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
+		if (nextState.loading !== loading) {
+			return true;
+		}
 		return false;
 	}
 
@@ -144,6 +153,40 @@ class Sidebar extends Component {
 				name: I18n.t('Invisible')
 			}]
 		});
+	}
+
+	setCustomStatus = () => {
+		const { user } = this.props;
+		prompt(
+			I18n.t('Set_custom_status'),
+			'',
+			[
+				{ text: I18n.t('Cancel'), onPress: () => {} },
+				{
+					text: I18n.t('Set_status'),
+					onPress: async(statusText) => {
+						this.setState({ loading: true });
+
+						try {
+							const result = await RocketChat.saveUserProfile({ statusText }, {});
+							if (result.success) {
+								EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+							} else {
+								EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+							}
+						} catch {
+							EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+						}
+
+						this.setState({ loading: false });
+					}
+				}
+			],
+			{
+				defaultValue: user.statusText,
+				cancelable: true
+			}
+		);
 	}
 
 	async setIsAdmin() {
@@ -247,8 +290,20 @@ class Sidebar extends Component {
 		);
 	}
 
+	renderCustomStatus = () => {
+		const { theme, user } = this.props;
+		return (
+			<SidebarItem
+				text={user.statusText || I18n.t('Edit_Status')}
+				left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+				onPress={this.setCustomStatus}
+				testID='sidebar-custom-status'
+			/>
+		);
+	}
+
 	render() {
-		const { showStatus } = this.state;
+		const { showStatus, loading } = this.state;
 		const {
 			user, Site_Name, baseUrl, useRealName, split, theme
 		} = this.props;
@@ -295,13 +350,14 @@ class Sidebar extends Component {
 
 					<Separator theme={theme} />
 
-					<CustomStatus user={user} />
+					{this.renderCustomStatus()}
 					{!split ? <Separator theme={theme} /> : null}
 
 					{!showStatus && !split ? this.renderNavigation() : null}
 					{showStatus ? this.renderStatus() : null}
 					{!split ? <Separator theme={theme} /> : null}
 				</ScrollView>
+				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}
