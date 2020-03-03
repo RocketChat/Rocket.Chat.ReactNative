@@ -147,7 +147,8 @@ class RoomView extends React.Component {
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
 		theme: PropTypes.string,
-		replyBroadcast: PropTypes.func
+		replyBroadcast: PropTypes.func,
+		activeUsers: PropTypes.object
 	};
 
 	constructor(props) {
@@ -236,7 +237,7 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, theme } = this.props;
+		const { appState, activeUsers, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -244,6 +245,9 @@ class RoomView extends React.Component {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
+			return true;
+		}
+		if (activeUsers !== nextProps.activeUsers) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -827,8 +831,9 @@ class RoomView extends React.Component {
 	toggleBannerModal = () => this.setState(prevState => ({ showBannerModal: !prevState.showBannerModal }));
 
 	renderBanner = () => {
-		const { theme } = this.props;
 		const { room, member } = this.state;
+		const { activeUsers, user, theme } = this.props;
+		const { rid } = this;
 		if (room.announcement || member.statusText) {
 			return (
 				<BorderlessButton
@@ -837,7 +842,7 @@ class RoomView extends React.Component {
 					onPress={this.toggleBannerModal}
 				>
 					<Markdown
-						msg={room.announcement || member.statusText}
+						msg={room.announcement || ((activeUsers[rid.replace(user.id, '')] && activeUsers[rid.replace(user.id, '')].statusText) || member.statusText)}
 						theme={theme}
 						numberOfLines={1}
 						preview
@@ -1041,7 +1046,8 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages
+	Hide_System_Messages: state.settings.Hide_System_Messages,
+	activeUsers: state.activeUsers
 });
 
 const mapDispatchToProps = dispatch => ({

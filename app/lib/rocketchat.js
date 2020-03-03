@@ -241,7 +241,7 @@ const RocketChat = {
 					}
 					const userStatus = ddpMessage.fields.args[0];
 					const [id,, status, statusText] = userStatus;
-					this.activeUsers[id] = STATUSES[status];
+					this.activeUsers[id] = { status: STATUSES[status], statusText };
 
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
@@ -1046,7 +1046,7 @@ const RocketChat = {
 		}
 
 		if (ddpMessage.cleared && user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status: 'offline' }));
+			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
 		if (!this._setUserTimer) {
@@ -1061,9 +1061,9 @@ const RocketChat = {
 		}
 
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = 'offline';
+			this.activeUsers[ddpMessage.id] = { status: 'offline' };
 		} else if (ddpMessage.fields.status) {
-			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
+			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
 	getUserPresence() {
@@ -1090,7 +1090,10 @@ const RocketChat = {
 				const result = await this.sdk.get('users.presence', params);
 				if (result.success) {
 					const activeUsers = result.users.reduce((ret, item) => {
-						ret[item._id] = item.status;
+						ret[item._id] = {
+							status: item.status,
+							statusText: item.statusText
+						};
 						return ret;
 					}, {});
 					InteractionManager.runAfterInteractions(() => {
