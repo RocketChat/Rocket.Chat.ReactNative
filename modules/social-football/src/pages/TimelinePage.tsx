@@ -67,10 +67,6 @@ const TimelinePage = ({ navigation }) => {
             return;
         }
 
-        if (!fetchMore) {
-            return;
-        }
-
         fetchMore({
             variables: {
                 offset: data?.getThreads.threads.length,
@@ -84,13 +80,12 @@ const TimelinePage = ({ navigation }) => {
                 return {
                     getThreads: {
                         threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
-                            console.log('id', item._id);
                             if (ids.indexOf(item._id!) === -1) {
                                 ids.push(item._id!);
-                                return false;
+                                return true;
                             }
 
-                            return true;
+                            return false;
                         }),
                         limit: perPage,
                         offset: fetchMoreResult.getThreads.offset,

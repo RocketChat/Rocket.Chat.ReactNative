@@ -8,7 +8,6 @@ import {appColors} from '../theme/colors';
 import {Switch} from '../components/Switch'
 import {ContentType} from '../enums/content-type';
 import {ContentTypeButton} from '../components/ContentTypeButton';
-import {HeaderSaveThreadButton} from "../components/header/HeaderSaveThreadButton";
 import {useMutation, useQuery} from "@apollo/react-hooks";
 import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
@@ -140,27 +139,22 @@ const CreateThreadPage = ({navigation}) => {
     };
 
     useEffect(() => {
-        const url = type === ContentType.LINK ? link : (ContentType.YOUTUBE ? youtube : null);
+        const url = type === ContentType.LINK ? link : youtube;
 
         if (!isURL(url)) {
             return;
         }
 
-        try {
-            if (type === ContentType.LINK && refetchLinkUrlPreview) {
-                refetchLinkUrlPreview({
-                    type,
-                    url,
-                });
-            } else if (type === ContentType.YOUTUBE && refetchYoutubeUrlPreview) {
-                refetchYoutubeUrlPreview({
-                    type,
-                    url,
-                });
-            }     
-        } catch (error) {
-            // non critical
-            console.warn(error);
+        if (type === ContentType.LINK && refetchLinkUrlPreview) {
+            refetchLinkUrlPreview({
+                type,
+                url,
+            });
+        } else {
+            refetchYoutubeUrlPreview({
+                type,
+                url,
+            });
         }
     }, [type, youtube, link])
 
@@ -232,7 +226,7 @@ const CreateThreadPage = ({navigation}) => {
                         />
                     </View>
                     <View style={[appStyles.formGroup]}>
-                        <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                        <Button id={'submit'} title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
                     </View>
                 </View>
             </View>

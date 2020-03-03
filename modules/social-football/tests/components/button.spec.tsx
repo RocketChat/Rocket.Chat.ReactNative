@@ -20,7 +20,7 @@ describe('<Button />', () => {
     it('should show a loader', () => {
         const title = 'This is my label.';
 
-        const component = shallow(<Button title={title} loading={true} />);
+        const component = shallow(<Button title={title} loading={true} onPress={jest.fn()} />);
 
         expect(component.find(Text)).toHaveLength(0);
         expect(component.find(ActivityIndicator)).toHaveLength(1);
