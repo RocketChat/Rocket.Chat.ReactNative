@@ -11,7 +11,14 @@ import { themes } from '../../constants/colors';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
-		return <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{getInfoMessage({ ...props })}</Text>;
+		const infoMessage = getInfoMessage({ ...props });
+		return (
+			<Text
+				style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
+				accessibilityLabel={infoMessage}
+			>{infoMessage}
+			</Text>
+		);
 	}
 
 	let content = null;

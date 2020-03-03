@@ -52,21 +52,17 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	});
 };
 
-export function getSetting({ server, setting }) {
-	return new Promise(async(resolve, reject) => {
-		try {
-			const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":["${ setting }"]}}`).then(response => response.json());
+export async function getLoginSettings({ server }) {
+	try {
+		const settingsParams = JSON.stringify(['Accounts_ShowFormLogin', 'Accounts_RegistrationForm']);
+		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
-			if (result.success && result.settings.length) {
-				const [{ value }] = result.settings;
-				return resolve(value);
-			}
-		} catch (e) {
-			log(e);
+		if (result.success && result.settings.length) {
+			reduxStore.dispatch(actions.addSettings(this.parseSettings(this._prepareSettings(result.settings))));
 		}
-
-		return reject();
-	});
+	} catch (e) {
+		log(e);
+	}
 }
 
 export async function setSettings() {
@@ -81,7 +77,7 @@ export async function setSettings() {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
-	reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
+	reduxStore.dispatch(actions.addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
 export default async function() {

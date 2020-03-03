@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -40,8 +40,15 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, theme
+	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, theme
 }) => {
+	useEffect(() => {
+		if (type === 'd' && rid) {
+			const uid = rid.replace(userId, '');
+			getUserPresence(uid);
+		}
+	}, []);
+
 	const date = formatDate(_updatedAt);
 
 	let accessibilityLabel = name;
@@ -190,12 +197,14 @@ RoomItem.propTypes = {
 	avatar: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
+	getUserPresence: PropTypes.func,
 	theme: PropTypes.string
 };
 
 RoomItem.defaultProps = {
 	avatarSize: 48,
-	status: 'offline'
+	status: 'offline',
+	getUserPresence: () => {}
 };
 
 const mapStateToProps = (state, ownProps) => ({
