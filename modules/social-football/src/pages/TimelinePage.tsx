@@ -13,6 +13,7 @@ import { TimelineItem } from '../components/TimelineItem';
 import { InfiniteScrollView } from "../components/InfiniteScrollView";
 import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
 import { HeaderTitle } from 'react-navigation-stack';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,30 +24,25 @@ const styles = StyleSheet.create({
     },
 
     icon: {
-        width: 25,
-        height: 25,
+        marginTop: 7,
     },
 
-    filterBackGround: {
-        backgroundColor: '#FFF1E5',
-    },
-
-    filterbar: {
-        marginTop: 20,
-        marginBottom: 20,
-        flex: 1,
+    filterBar: {
         flexDirection: 'row',
-        alignItems: 'center',
+        backgroundColor: '#FFF1E5',
         justifyContent: 'space-between',
-        height: 25,
+        height: 30,
         width: '100%',
-        paddingLeft: 30,
-        paddingRight: 30,
+        paddingTop: 5,
+        paddingLeft: 25,
+        paddingRight: 25,
     },
 
     filterText: {
+        flexDirection: 'row',
         fontWeight: 'bold',
     },
+
 
 });
 
@@ -91,11 +87,24 @@ const TimelinePage = ({ navigation }) => {
 
     return <>
 
-        <View style={[styles.filterBackGround]}>
-            <View style={[styles.filterbar]}>
-                <Text style={[styles.filterText]}>Alle berichten.</Text>
-                <Image style={[]} source={require('../assets/images/refresh.png')} />
+        <View style={[styles.filterBar]}>
+            {/* <ModalDropdown options={['Alle Berichten', 'Teskt', 'Foto', 'Video', 'Nog wat', 'Teskt']}>
+               <Text style={[styles.filterText]}> Alle berichten <Image style={[]} source={require('../assets/images/filter_arrow.png')} /></Text>
+            </ModalDropdown> */}
+
+            <View style={[styles.filterText]}>
+                <ModalDropdown
+                    textStyle={{ fontSize: 15, fontWeight: 'bold' }}
+                    dropdownTextStyle={{ fontSize: 13, fontWeight: 'bold' }}
+                    dropdownStyle={{ width: '90%', height: 150 }}
+                    defaultValue={['Alle berichten ']}
+                    defaultIndex= '0'
+                    options={['Alle berichten','Tekst ', 'Foto ', 'Video ', 'Nog wat ', 'Tekst ']} />
+                <Image style={[styles.icon]} source={require('../assets/images/filter_arrow.png')} />
             </View>
+
+            <Image style={[]} source={require('../assets/images/refresh.png')} />
+
         </View>
 
         <InfiniteScrollView onEndReached={() => fetchMoreResults()}>
