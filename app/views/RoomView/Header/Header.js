@@ -116,7 +116,11 @@ const Header = React.memo(({
 	};
 
 	return (
-		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
+		<TouchableOpacity
+			testID='room-view-header-actions'
+			onPress={onPress}
+			style={[styles.container, { width: width - widthOffset }]}
+		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}

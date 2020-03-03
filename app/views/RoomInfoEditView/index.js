@@ -452,7 +452,7 @@ class RoomInfoEditView extends React.Component {
 								]}
 								onPress={this.toggleArchive}
 								disabled={!this.hasArchivePermission()}
-								testID='room-info-edit-view-archive'
+								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							>
 								<Text
 									style={[
@@ -460,7 +460,6 @@ class RoomInfoEditView extends React.Component {
 										styles.button_inverted,
 										{ color: dangerColor }
 									]}
-									accessibilityTraits='button'
 								>
 									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 								</Text>
