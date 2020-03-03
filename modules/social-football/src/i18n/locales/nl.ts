@@ -60,7 +60,6 @@ export default {
     createThread: {
         title: 'Nieuw',
         create: 'Maak',
-        publish: 'Publiceren',
         save: 'Aanmaken',
         threadtitle: {
             label: 'Titel',
