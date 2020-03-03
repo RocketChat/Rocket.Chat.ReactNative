@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native'
 import { appColors } from './colors';
 
+/**
+ * Defining the Styles used throughout the app.
+ */
+
 export const appStyles = StyleSheet.create({
     title: {
         fontSize: 28,

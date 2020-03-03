@@ -3,6 +3,10 @@ import { StyleSheet, View, Text } from 'react-native';
 import { appColors } from '../theme/colors';
 import { appStyles } from '../theme/style';
 
+/**
+ * Defining an Alert.
+ */
+
 interface Props {
     title: string;
 }

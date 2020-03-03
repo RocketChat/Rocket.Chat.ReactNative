@@ -1,6 +1,10 @@
 import { HeaderTitle } from "react-navigation-stack";
 import { MaskedViewBase } from "react-native";
 
+/**
+ * This is the Localisation for the NL Dutch Language.
+ */
+
 export default {
     appName: 'Social.Football',
     navigation: {

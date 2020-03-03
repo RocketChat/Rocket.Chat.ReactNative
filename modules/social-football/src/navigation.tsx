@@ -8,6 +8,22 @@ import { appColors } from './theme/colors';
 import { HeaderLogo } from './components/header/HeaderLogo';
 import { HeaderCreateThreadButton } from './components/header/HeaderCreateThreadButton';
 
+/**
+ * The constant defining the Stylesheet.
+ */
+const styles = StyleSheet.create({
+    activityHolder: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+    }
+});
+
+/**
+ * The constant defining all pages.
+ */
 export const pages = {
     unauthenticated: {
         LoginPage: {
@@ -32,6 +48,12 @@ export const pages = {
     },
 };
 
+/**
+ * The constant defining the types of navigation.
+ * Determining which navigation to show.
+ * 
+ * @returns {LoadingNavigation if login === null, UnaunthenticatedNavigation if !login, AuthenticatedNavigation if login}
+ */
 export const UnaunthenticatedNavigation: any = createAppContainer(createStackNavigator(
     pages.unauthenticated,
     {
@@ -66,16 +88,6 @@ export const AuthenticatedNavigation: any = createAppContainer(createStackNaviga
         },
     }
 ));
-
-const styles = StyleSheet.create({
-    activityHolder: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-    }
-});
 
 export const Navigation = forwardRef((props, ref) => {
     const [login, setLogin] = useState<boolean|null>(null);

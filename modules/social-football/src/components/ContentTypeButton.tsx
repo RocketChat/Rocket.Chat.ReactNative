@@ -3,6 +3,10 @@ import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { ContentType } from '../enums/content-type';
 import { appColors } from '../theme/colors';
 
+/**
+ * Defining a Content Type Selector Button.
+ */
+
 const styles = StyleSheet.create({
     activeBorder: {
         borderColor: appColors.primary,

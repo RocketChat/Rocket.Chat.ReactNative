@@ -5,6 +5,10 @@ import { ThreadModel } from '../models/threads';
 import {appColors} from "../theme/colors";
 import {appStyles} from "../theme/style";
 
+/**
+ * Defining the Metadata for an Item within the Timeline.
+ */
+
 const styles = StyleSheet.create({
     item: {
         padding: 30,
@@ -40,7 +44,6 @@ const styles = StyleSheet.create({
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     return <View style={[styles.item]}>
     <Text style={[styles.creatorText, appStyles.subTitle]}>Dick Advocaat  ●  Zondag.</Text>
-
 
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>

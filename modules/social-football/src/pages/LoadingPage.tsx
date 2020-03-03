@@ -1,6 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
+/**
+ * Defines the standard Stylesheet for the Loading Page.
+ */
 const styles = StyleSheet.create({
     activityHolder: {
         flex: 1,
