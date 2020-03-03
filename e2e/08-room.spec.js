@@ -228,6 +228,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.text('Message actions'))).toBeVisible().withTimeout(5000);
 				await expect(element(by.text('Message actions'))).toBeVisible();
 				await element(by.text('Star')).tap();
+				await sleep(2000);
 				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await waitFor(element(by.text('Unstar'))).toBeVisible().withTimeout(2000);
