@@ -198,7 +198,7 @@ class CustomStatus extends Component {
 					hideModalContentWhileAnimating
 					avoidKeyboard
 				>
-					<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].chatComponentBackground }, split && sharedStyles.modal]}>
+					<View style={[styles.container, { width: width - 32, backgroundColor: themes[theme].chatComponentBackground }, split && [sharedStyles.modal, sharedStyles.modalFormSheet]]}>
 						<View style={styles.titleContainer}>
 							<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Set_custom_status')}</Text>
 						</View>
