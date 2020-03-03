@@ -1,22 +1,122 @@
-import React from 'react';
-import { Text, Button } from 'react-native';
+import React, { useState } from 'react';
+import { Image, View, Text, StyleSheet, Button, ScrollView, ActivityIndicator } from 'react-native';
 import { appStyles } from '../theme/style';
-import { SafeAreaView }  from 'react-navigation';
-import SecurityManager from '../security/security-manager';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_ME } from '../api/queries/authentication.queries';
+import { SafeAreaView } from 'react-navigation';
+import { appColors } from '../theme/colors';
+import i18n from '../i18n'
+import { HeaderLogo } from '../components/header/HeaderLogo';
+import { HeaderCreateThreadButton } from '../components/header/HeaderCreateThreadButton';
+import { useQuery } from 'react-apollo';
+import { ThreadsQueries } from '../api';
+import { PaginatedThreads } from '../models/threads';
+import { TimelineItem } from '../components/TimelineItem';
+import {InfiniteScrollView} from "../components/InfiniteScrollView";
+import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
+import { HeaderTitle } from 'react-navigation-stack';
 
-const TimelinePage = () => {
-    const { loading, error, data } = useQuery(GET_ME);
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: appColors.lightPrimary,
+    },
 
-    const logout = () => {
-        SecurityManager.logout();
-    }
+    icon: {
+        width: 25,
+        height: 25,
+    },
 
-    return <SafeAreaView>
-        <Text style={[appStyles.text]}>Dit is een timeline pagina. Welkom {data?.me}</Text>
-        <Button title='Loguit (tijdelijk)'  onPress={() => logout()} />
-    </SafeAreaView>
+    filterBar: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: 25,
+        width: '100%',
+        paddingLeft: 30,
+        paddingRight: 30,
+        backgroundColor: appColors.lightPrimary,
+    },
+
+    loading: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        opacity: 0,
+    },
+});
+
+const TimelinePage = ({ navigation }) => {
+    const perPage = 6;
+
+    const { data, error, fetchMore, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
+        variables: {
+            limit: perPage,
+        },
+        fetchPolicy: "cache-and-network"
+    });
+
+    const fetchMoreResults = () => {
+        if (loading) {
+            return;
+        }
+
+        fetchMore({
+            variables: {
+                offset: data?.getThreads.threads.length,
+                limit: perPage,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+
+                const ids: string[] = [];
+
+                return {
+                    getThreads: {
+                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
+                            if (ids.indexOf(item._id!) === -1) {
+                                ids.push(item._id!);
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                        limit: perPage,
+                        offset: fetchMoreResult.getThreads.offset,
+                        total: prev.getThreads.threads.length + fetchMoreResult.getThreads.threads.length,
+                    },
+                }
+            },
+        })
+    };
+
+    const renderLoader = () => {
+        return <View style={[styles.loading, { opacity: loading ? 1 : 0}]}><ActivityIndicator /></View>
+    };
+
+    return <>
+        {/*<View style={[styles.filterBar]} >*/}
+        {/*    <Text style={[appStyles.bold]}>Alle berichten.</Text>*/}
+        {/*    <Image style={[]} source={require('../assets/images/refresh.png')} />*/}
+
+        {/*</View>*/}
+        <InfiniteScrollView onEndReached={() => fetchMoreResults()}>
+            <View style={styles.container}>
+                {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
+                {renderLoader()}
+            </View>
+        </InfiniteScrollView>
+    </>;
+};
+
+TimelinePage.navigationOptions = ({ navigation }) => {
+    return {
+        headerTitle: <HeaderLogo />,
+        headerRight: <HeaderCreateThreadButton navigation={navigation} />,
+        headerLeft: <HeaderLeaderboardButton navigation={navigation} />,
+    };
 };
 
 export default TimelinePage;

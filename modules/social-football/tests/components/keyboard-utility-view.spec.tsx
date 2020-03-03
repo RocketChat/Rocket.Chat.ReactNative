@@ -5,10 +5,18 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 describe('<KeyboardUtilityView />', () => {
     it('should run without errors', () => {
-        const title = 'This is my label.';
         const spy = spyOn(Keyboard, 'dismiss');
 
         const component = shallow(<KeyboardUtilityView />);
+        component.find(TouchableWithoutFeedback).first().props().onPress();
+
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should support vertical centering', () => {
+        const spy = spyOn(Keyboard, 'dismiss');
+
+        const component = shallow(<KeyboardUtilityView centerVertically={true} />);
         component.find(TouchableWithoutFeedback).first().props().onPress();
 
         expect(spy).toHaveBeenCalled();

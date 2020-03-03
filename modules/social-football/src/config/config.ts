@@ -1,3 +1,3 @@
 export default {
-    api: 'http://127.0.0.1:3000/graphql',
+    api: 'http://localhost:3000/graphql',
 };

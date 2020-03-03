@@ -6,10 +6,10 @@ import {appColors} from "../../src/theme/colors";
 import {updateWrapper} from "../helpers/general";
 
 describe('<TextInput />', () => {
-    it('should run without errors', () => {
+    it.each([true, false])('should run without errors for multiline %d', (multiline) => {
         const fn = jest.fn();
 
-        const component = shallow(<TextInput onChangeText={fn} />);
+        const component = shallow(<TextInput onChangeText={fn} multiline={multiline} />);
         const nativeInput = component.find(NativeTextInput);
 
         nativeInput.first().props().onChangeText();

@@ -1,5 +1,11 @@
+import { HeaderTitle } from "react-navigation-stack";
+import { MaskedViewBase } from "react-native";
+
 export default {
     appName: 'Social.Football',
+    navigation: {
+        back: 'Terug',
+    },
     login: {
         description: 'Log hier in met je Connected.Football account, of maak er een aan.',
         username: {
@@ -50,5 +56,53 @@ export default {
             separator: 'of',
             link: 'Log in met een bestaand account',
         },
+    },
+    createThread: {
+        title: 'Nieuw',
+        create: 'Maak',
+        save: 'Aanmaken',
+        threadtitle: {
+            label: 'Titel',
+            placeholder: 'Item titel',
+        },
+        description: {
+            label: 'Beschrijving',
+            placeholder: 'Beschrijving item',
+        },
+        contentType: {
+            label: 'Type item',
+        },
+        text: {
+            label:'Tekst',
+        },
+        link: {
+            label:'Link',
+            placeholder: 'Voer link in',
+        },
+        image: {
+            label:'Afbeelding',
+        },
+        youtube: {
+            label:'YouTube',
+            placeholder: 'Voer Youtube-link in',
+        },
+        video: {
+            label:'Video'
+        },
+        exercise: {
+            label:'Oefening',
+        },
+        program: {
+            label: 'Trainingsprogramma',
+        },
+        comment: {
+            label: 'Opmerkingen toestaan',
+        },
+        categoricalResponse: {
+            label: 'Suggesties',
+        },
+        error: {
+            label: 'Er ging iets mis bij aanmaken van een item.',
+        }
     }
 }

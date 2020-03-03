@@ -12,9 +12,13 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         paddingLeft: 10,
         paddingRight: 10,
+        textAlignVertical: 'top'
     },
     inputError: {
         borderColor: appColors.error,
+    },
+    multiline: {
+        minHeight: 65,
     }
 });
 
@@ -24,7 +28,7 @@ export const TextInput: React.FunctionComponent<any> = ({ required, submitted, o
     const valid = !required || (value?.length ?? 0) > 0;
     const dirty = typed || submitted;
 
-    return <NativeTextInput style={[styles.input, appStyles.inputText, (valid || !dirty) ? {} : styles.inputError ]}
+    return <NativeTextInput style={[styles.input, appStyles.inputText, (valid || !dirty) ? {} : styles.inputError, props.multiline ? styles.multiline : {} ]}
                             onChangeText={(value) => {
                                 setValue(value);
                                 setTyped(true);

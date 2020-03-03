@@ -10,7 +10,9 @@ module.exports = {
         '^(.*):(.*)$': '$1_$2',
         'rn-user-defaults': '<rootDir>/tests/mocks/user-defaults.mock.ts',
         'react-navigation': '<rootDir>/tests/mocks/react-navigation.mock.tsx',
-        'react-native-localize': '<rootDir>/tests/mocks/react-native-localize.mock.ts'
+        'react-native-localize': '<rootDir>/tests/mocks/react-native-localize.mock.ts',
+        'expo-web-browser': '<rootDir>/tests/mocks/expo-web-browser.mock.ts',
+        'react-native-device-info': '<rootDir>/tests/mocks/react-native-device-info.mock.ts'
     },
     unmockedModulePathPatterns: [
         'node_modules/react/',
