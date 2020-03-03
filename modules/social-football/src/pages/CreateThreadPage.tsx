@@ -103,6 +103,31 @@ const CreateThreadPage = ({navigation}) => {
         await navigation.pop();
     };
 
+    const onPublishPress = async () => {
+        setSubmitted(true);
+
+        if (!isValid()) {
+            return;
+        }
+
+        const thread = {
+                title,
+                type,
+                description,
+                commentsEnabled,
+                published: true,
+                assetUrl: determineAssetUrl(),
+            };
+
+        await performCreation({
+            variables: {
+                thread,
+            }
+        });
+
+        await navigation.pop();
+    };
+
     const renderLinkInput = () => {
         return <View style={appStyles.formGroup}>
             <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
@@ -233,6 +258,7 @@ const CreateThreadPage = ({navigation}) => {
                     </View>
                     <View style={[appStyles.formGroup]}>
                         <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                        <Button title={i18n.t('createThread.publish')} onPress={onPublishPress} loading={loading} />
                     </View>
                 </View>
             </View>

@@ -1,3 +1,3 @@
 export default {
-    api: 'http://localhost:3000/graphql',
+    api: 'https://sep-rewards-develop.herokuapp.com/graphql',
 };

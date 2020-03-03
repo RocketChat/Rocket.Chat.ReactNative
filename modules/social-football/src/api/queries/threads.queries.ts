@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const TIMELINE = gql`
-    query Timeline($offset: Int, $limit: Int) {
-        getThreads(offset: $offset, limit: $limit){
+    query Timeline($offset: Int, $limit: Int, $published: boolean) {
+        getThreads(offset: $offset, limit: $limit, published: $published){
             threads {
                 type,
                 title,
