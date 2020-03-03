@@ -1,14 +1,11 @@
 import React from 'react';
 import {shallow, mount, render} from 'enzyme';
-import {HeaderSaveThreadButton} from "../../../src/components/header/HeaderSaveThreadButton";
+import { HeaderLeaderboardButton } from "../../../src/components/header/HeaderLeaderboardButton";
 import {HeaderButton} from "../../../src/components/header/HeaderButton";
 
-describe('<HeaderSaveThreadButton />', () => {
+describe('<HeaderLeaderbordButton />', () => {
     it('should run without errors', () => {
-        const fn = jest.fn();
-        const navigation = { push: fn };
-
-        const component = shallow(<HeaderSaveThreadButton navigation={navigation} />);
+        const component = shallow(<HeaderLeaderboardButton navigation={{}} />);
 
         component.find(HeaderButton).first().props().onPress();
 

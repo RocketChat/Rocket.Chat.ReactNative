@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#FFF1E5',
+        backgroundColor: appColors.lightPrimary,
     },
 
     icon: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         height: 25,
     },
 
-    filterbar: {
+    filterBar: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -39,11 +39,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingLeft: 30,
         paddingRight: 30,
-        backgroundColor: '#FFF1E5',
-    },
-
-    filterText: {
-        fontWeight: 'bold'
+        backgroundColor: appColors.lightPrimary,
     },
 
     loading: {
@@ -78,10 +74,6 @@ const TimelinePage = ({ navigation }) => {
             return;
         }
 
-        if (!fetchMore) {
-            return;
-        }
-
         fetchMore({
             variables: {
                 offset: data?.getThreads.threads.length,
@@ -95,13 +87,12 @@ const TimelinePage = ({ navigation }) => {
                 return {
                     getThreads: {
                         threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
-                            console.log('id', item._id);
                             if (ids.indexOf(item._id!) === -1) {
                                 ids.push(item._id!);
-                                return false;
+                                return true;
                             }
 
-                            return true;
+                            return false;
                         }),
                         limit: perPage,
                         offset: fetchMoreResult.getThreads.offset,
@@ -117,8 +108,8 @@ const TimelinePage = ({ navigation }) => {
     };
 
     return <>
-        {/*<View style={[styles.filterbar]} >*/}
-        {/*    <Text style={[styles.filterText]}>Alle berichten.</Text>*/}
+        {/*<View style={[styles.filterBar]} >*/}
+        {/*    <Text style={[appStyles.bold]}>Alle berichten.</Text>*/}
         {/*    <Image style={[]} source={require('../assets/images/refresh.png')} />*/}
 
         {/*</View>*/}

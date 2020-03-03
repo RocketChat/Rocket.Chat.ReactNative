@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
+import {appColors} from "../theme/colors";
+import {appStyles} from "../theme/style";
 
 /**
  * Defining the Metadata for an Item within the Timeline.
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         marginBottom: 10,
         width: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: appColors.light,
     },
 
     textAndPreview: {
@@ -28,24 +30,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-    threadTitle: {
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 15
-    },
-
     allText: {
         flex: 2,
     },
 
-    threadText: {
-        color: 'black',
-        fontSize: 15
-    },
-
     creatorText: {
-        color: '#B0B0B0',
-        fontSize: 13,
         marginBottom: 7,
         marginTop: 5
     }
@@ -54,12 +43,12 @@ const styles = StyleSheet.create({
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
+    <Text style={[styles.creatorText, appStyles.subTitle]}>Dick Advocaat  ●  Zondag.</Text>
 
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>
-            <Text style={[styles.threadTitle]}>{item.title}</Text>
-            <Text style={[styles.threadText]}>{item.description}</Text>
+            <Text style={[appStyles.heading]}>{item.title}</Text>
+            <Text style={[appStyles.text]}>{item.description}</Text>
         </View>
         <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
     </View>

@@ -1,29 +1,68 @@
 import React from 'react';
 import {shallow, mount, render} from 'enzyme';
-import {Button, Text} from 'react-native';
 import TimelinePage from "../../src/pages/TimelinePage";
-import SecurityManager from '../../src/security/security-manager';
-import {AuthenticationQueries} from "../../src/api";
-import {MockedProvider} from "@apollo/react-testing";
+import {AuthenticationQueries, ThreadsQueries} from "../../src/api";
+import {MockedProvider, MockedResponse} from "@apollo/react-testing";
 import {updateWrapper} from "../helpers/general";
+import {InfiniteScrollView} from "../../src/components/InfiniteScrollView";
+import {TimelineItem} from "../../src/components/TimelineItem";
+import {ContentType} from "../../src/enums/content-type";
 
 describe('<TimelinePage />', () => {
-    const username = 'robomessi';
 
-    const mocks = [
+    const mocks: MockedResponse[] = [
         {
             request: {
-                query: AuthenticationQueries.GET_ME,
+                query: ThreadsQueries.TIMELINE,
+                variables: {
+                    limit: 6,
+                },
             },
             result: {
                 data: {
-                    me: username,
+                    getThreads: {
+                        threads: [
+                            { _id: 1, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                        ],
+                        limit: 6,
+                        offset: 0,
+                        total: 9,
+                    },
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsQueries.TIMELINE,
+                variables: {
+                    limit: 6,
+                    offset: 6,
+                }
+            },
+            result: {
+                data: {
+                    getThreads: {
+                        threads: [
+                            { _id: 7, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 8, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                        ],
+                        limit: 6,
+                        offset: 6,
+                        total: 9,
+                    }
                 },
             },
         },
     ];
 
-    it('should run without errors', () => {
+    it('should run without errors', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
                 return <MockedProvider mocks={mocks} addTypename={false}>
@@ -32,29 +71,15 @@ describe('<TimelinePage />', () => {
             },
         });
 
-        const button = component.find(Button);
+        expect(TimelinePage.navigationOptions({ navigation: jest.fn() }).headerTitle).toBeTruthy();
+        expect(component).toBeTruthy();
 
-        expect(button).toHaveLength(1);
+        await updateWrapper(component, 1000);
+
+        expect(component.find(TimelineItem)).toHaveLength(6);
     });
 
-    it('should logout', () => {
-        const logoutSpy = spyOn(SecurityManager, 'logout');
-
-        const component = mount(<TimelinePage navigation={null} />, {
-            wrappingComponent: ({ children }) => {
-                return <MockedProvider mocks={mocks} addTypename={false}>
-                    {children}
-                </MockedProvider>;
-            },
-        });
-        const button = component.find(Button);
-
-        button.props().onPress();
-
-        expect(logoutSpy).toHaveBeenCalled();
-    });
-
-    it('should show the authenticated username', async () => {
+    it('should load more results when the end is reached', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
                 return <MockedProvider mocks={mocks} addTypename={false}>
@@ -65,8 +90,87 @@ describe('<TimelinePage />', () => {
 
         await updateWrapper(component);
 
-        const text = component.find(Text);
+        const infiniteScroll = component.find(InfiniteScrollView);
+        infiniteScroll.props().onEndReached();
 
-        expect(text.props().children).toContain(username);
+        await updateWrapper(component, 1000);
+
+        expect(component.find(TimelineItem)).toHaveLength(9);
+    });
+
+    const mocksError: MockedResponse[] = [
+        {
+            request: {
+                query: ThreadsQueries.TIMELINE,
+                variables: {
+                    limit: 6,
+                },
+            },
+            result: {
+                data: {
+                    getThreads: {
+                        threads: [
+                            { _id: 1, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                        ],
+                        limit: 6,
+                        offset: 0,
+                        total: 9,
+                    },
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsQueries.TIMELINE,
+                variables: {
+                    limit: 6,
+                    offset: 6,
+                }
+            },
+            result: {
+                data: null,
+            },
+        },
+    ];
+
+    it('should not merge results when new results are not valid', async () => {
+        const component = mount(<TimelinePage navigation={null} />, {
+            wrappingComponent: ({ children }) => {
+                return <MockedProvider mocks={mocksError} addTypename={false}>
+                    {children}
+                </MockedProvider>;
+            },
+        });
+
+        await updateWrapper(component);
+
+        const infiniteScroll = component.find(InfiniteScrollView);
+        infiniteScroll.props().onEndReached();
+
+        await updateWrapper(component, 1000);
+
+        expect(component.find(TimelineItem)).toHaveLength(6);
+    });
+
+    it('should not load more results when item is still loading', async () => {
+        const component = mount(<TimelinePage navigation={null} />, {
+            wrappingComponent: ({ children }) => {
+                return <MockedProvider mocks={mocks} addTypename={false}>
+                    {children}
+                </MockedProvider>;
+            },
+        });
+
+        const infiniteScroll = component.find(InfiniteScrollView);
+        infiniteScroll.props().onEndReached();
+
+        await updateWrapper(component, 1000);
+
+        expect(component.find(TimelineItem)).toHaveLength(6);
     });
 });

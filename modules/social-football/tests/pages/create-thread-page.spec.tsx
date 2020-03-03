@@ -1,33 +1,208 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount} from 'enzyme';
 import CreateThreadPage from "../../src/pages/CreateThreadPage";
 import {updateWrapper} from "../helpers/general";
 import {act} from 'react-dom/test-utils';
-import {ContentTypeButton} from "../../src/components/ContentTypeButton";
+import {ThreadsMutations, ThreadsQueries} from "../../src/api";
+import {MockedProvider, MockedResponse} from "@apollo/react-testing";
+import {ContentType} from "../../src/enums/content-type";
+import { ThemeContext } from '../../../../app/theme';
+import {Alert} from "../../src/components/Alert";
 
 describe('<CreateThreadPage />', () => {
-    it('should run without errors', () => {
-        const component = shallow(<CreateThreadPage navigation={{}} />);
+    const mocks: MockedResponse[] = [
+        {
+            request: {
+                query: ThreadsQueries.PREVIEW_METADATA,
+            },
+            result: {
+                data: {
+                    getPreviewMetadata: null,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsQueries.PREVIEW_METADATA,
+                variables: {
+                    url: 'https://tue.nl',
+                    type: ContentType.LINK,
+                }
+            },
+            result: {
+                data: {
+                    getPreviewMetadata: {
+                        url: 'https://tue.nl',
+                        title: 'TUE',
+                        description: '',
+                        image: null,
+                    },
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsQueries.PREVIEW_METADATA,
+                variables: {
+                    url: 'https://www.youtube.com/watch?v=-wOdL7HFNOs',
+                    type: ContentType.YOUTUBE,
+                }
+            },
+            result: {
+                data: {
+                    getPreviewMetadata: {
+                        url: 'https://www.youtube.com/watch?v=-wOdL7HFNOs',
+                        title: 'YouTube',
+                        description: '',
+                        image: null,
+                    },
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+            },
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+                variables: {
+                    thread: {
+                        title: 'A new text!',
+                        description: 'This is a very cool text.',
+                        commentsEnabled: true,
+                        type: ContentType.LINK,
+                        assetUrl: 'https://tue.nl',
+                        published: false,
+                    }
+                },
+            },
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+                variables: {
+                    thread: {
+                        title: 'A new text!',
+                        description: 'This is a very cool text.',
+                        commentsEnabled: true,
+                        type: ContentType.YOUTUBE,
+                        assetUrl: 'https://www.youtube.com/watch?v=-wOdL7HFNOs',
+                        published: false,
+                    }
+                },
+            },
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+                variables: {
+                    thread: {
+                        title: 'A new text!',
+                        description: 'This is a very cool text.',
+                        commentsEnabled: true,
+                        type: ContentType.IMAGE,
+                        assetUrl: undefined,
+                        published: false,
+                    }
+                },
+            },
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+                variables: {
+                    thread: {
+                        title: 'A new text!',
+                        description: 'This is a very cool text.',
+                        commentsEnabled: true,
+                        type: ContentType.TEXT,
+                        assetUrl: undefined,
+                        published: false,
+                    }
+                },
+            },
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+        {
+            request: {
+                query: ThreadsMutations.CREATE_THREAD,
+                variables: {
+                    thread: {
+                        title: 'Something',
+                        description: 'Did go wrong',
+                        commentsEnabled: true,
+                        type: ContentType.TEXT,
+                        assetUrl: undefined,
+                        published: false,
+                    }
+                },
+            },
+            error: new Error(),
+            result: {
+                data: {
+                    createThread: false,
+                },
+            },
+        },
+    ];
+
+    it.each([ContentType.LINK, ContentType.YOUTUBE, ContentType.TEXT, ContentType.IMAGE])('should submit the form for a %s', async (type) => {
+        const fn = jest.fn();
+
+        const component = mount(<CreateThreadPage navigation={{ pop: fn }} />, {
+            wrappingComponent: ({ children }) => {
+                return <ThemeContext.Provider value={{ theme: 'dark' } as any}><MockedProvider mocks={mocks} addTypename={false}>
+                    {children}
+                </MockedProvider></ThemeContext.Provider>;
+            },
+        });
 
         expect(component).toBeTruthy();
-    });
-
-    it('should submit the form for a link', async () => {
-        const component = mount(<CreateThreadPage navigation={{}} />);
-
-        expect(component).toBeTruthy();
+        expect(CreateThreadPage.navigationOptions({ navigation: jest.fn() }).headerTitle).toBeTruthy();
 
         act(() => {
             component.find('#title').first().props().onChangeText('A new text!');
             component.find('#description').first().props().onChangeText('This is a very cool text.');
             component.find('#commentsEnabled').first().props().onValueChange(true);
-            component.find('#type-LINK').first().props().onPress();
+            component.find(`#type-${type}`).first().props().onPress();
         });
 
         await updateWrapper(component, 1000);
 
         act(() => {
-            component.find('#link').first().props().onChangeText('https://tue.nl');
+            if (component.find('#link').length > 0) {
+                component.find('#link').first().props().onChangeText('https://tue.nl');
+            }
+
+            if (component.find('#youtube').length > 0) {
+                component.find('#youtube').first().props().onChangeText('https://www.youtube.com/watch?v=-wOdL7HFNOs');
+            }
         });
 
         await updateWrapper(component, 1000);
@@ -37,24 +212,28 @@ describe('<CreateThreadPage />', () => {
         });
 
         await updateWrapper(component, 200);
+
+        expect(fn).toHaveBeenCalled();
     });
 
-    it('should submit the form for a YouTube video', async () => {
-        const component = mount(<CreateThreadPage navigation={{}} />);
+    it.each([ContentType.LINK, ContentType.YOUTUBE, ContentType.TEXT, ContentType.IMAGE])('should not submit the form when not valid for a %s', async (type) => {
+        const fn = jest.fn();
 
-        expect(component).toBeTruthy();
-
-        act(() => {
-            component.find('#title').first().props().onChangeText('A new text!');
-            component.find('#description').first().props().onChangeText('This is a very cool text.');
-            component.find('#commentsEnabled').first().props().onValueChange(true);
-            component.find('#type-YOUTUBE').first().props().onPress();
+        const component = mount(<CreateThreadPage navigation={{ pop: fn }} />, {
+            wrappingComponent: ({ children }) => {
+                return <ThemeContext.Provider value={{ theme: 'dark' } as any}><MockedProvider mocks={mocks} addTypename={false}>
+                    {children}
+                </MockedProvider></ThemeContext.Provider>;
+            },
         });
 
-        await updateWrapper(component, 1000);
+        expect(component).toBeTruthy();
+        expect(CreateThreadPage.navigationOptions({ navigation: jest.fn() }).headerTitle).toBeTruthy();
 
         act(() => {
-            component.find('#youtube').first().props().onChangeText('https://www.youtube.com/watch?v=44wisHopGu0');
+            component.find('#description').first().props().onChangeText('This is a very cool text.');
+            component.find('#commentsEnabled').first().props().onValueChange(true);
+            component.find(`#type-${type}`).first().props().onPress();
         });
 
         await updateWrapper(component, 1000);
@@ -64,5 +243,37 @@ describe('<CreateThreadPage />', () => {
         });
 
         await updateWrapper(component, 200);
+
+        expect(fn).not.toHaveBeenCalled();
+    });
+
+    it('should show an error for when something went wrong', async () => {
+        const component = mount(<CreateThreadPage navigation={null} />, {
+            wrappingComponent: ({ children }) => {
+                return <ThemeContext.Provider value={{ theme: 'dark' } as any}><MockedProvider mocks={mocks} addTypename={false}>
+                    {children}
+                </MockedProvider></ThemeContext.Provider>;
+            },
+        });
+
+        expect(component).toBeTruthy();
+        expect(CreateThreadPage.navigationOptions({ navigation: jest.fn() }).headerTitle).toBeTruthy();
+
+        act(() => {
+            component.find('#title').first().props().onChangeText('Something');
+            component.find('#description').first().props().onChangeText('Did go wrong');
+            component.find('#commentsEnabled').first().props().onValueChange(true);
+            component.find(`#type-TEXT`).first().props().onPress();
+        });
+
+        await updateWrapper(component, 1000);
+
+        act(() => {
+            component.find('#submit').first().props().onPress();
+        });
+
+        await updateWrapper(component, 200);
+
+        expect(component.find(Alert)).toHaveLength(1);
     });
 });

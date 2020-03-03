@@ -7,7 +7,6 @@ import i18n from './i18n';
 import { appColors } from './theme/colors';
 import { HeaderLogo } from './components/header/HeaderLogo';
 import { HeaderCreateThreadButton } from './components/header/HeaderCreateThreadButton';
-import { HeaderSaveThreadButton } from './components/header/HeaderSaveThreadButton';
 
 /**
  * The constant defining the Stylesheet.
