@@ -65,6 +65,7 @@ class RegisterView extends React.Component {
 			name: '',
 			email: '',
 			password: '',
+			confirmPassword: '',
 			username: '',
 			saving: false,
 			customFields
@@ -109,8 +110,20 @@ class RegisterView extends React.Component {
 		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
 	}
 
+	isPasswordSame = () => {
+		const { confirmPassword, password } = this.state;
+		if (confirmPassword === password) {
+			return true;
+		}
+		showErrorAlert(I18n.t('Password_and_Confirm_Password_do_not_match'), I18n.t('Passwords_do_not_match'));
+		return false;
+	}
+
 	submit = async() => {
 		if (!this.valid()) {
+			return;
+		}
+		if (!this.isPasswordSame()) {
 			return;
 		}
 		this.setState({ saving: true });
@@ -251,6 +264,18 @@ class RegisterView extends React.Component {
 							iconLeft='key'
 							secureTextEntry
 							onChangeText={value => this.setState({ password: value })}
+							onSubmitEditing={this.submit}
+							testID='register-view-password'
+							containerStyle={sharedStyles.inputLastChild}
+							theme={theme}
+						/>
+						<TextInput
+							inputRef={(e) => { this.passwordInput = e; }}
+							placeholder={I18n.t('Confirm_Password')}
+							returnKeyType='send'
+							iconLeft='key'
+							secureTextEntry
+							onChangeText={value => this.setState({ confirmPassword: value })}
 							onSubmitEditing={this.submit}
 							testID='register-view-password'
 							containerStyle={sharedStyles.inputLastChild}

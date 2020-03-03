@@ -506,5 +506,8 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
-	Mark_unread: 'Mark Unread'
+	Mark_unread: 'Mark Unread',
+	Password_and_Confirm_Password_do_not_match: 'Password and Confirm Password do not match',
+	Passwords_do_not_match: 'Passwords do not match',
+	Confirm_Password: 'Confirm Password'
 };
