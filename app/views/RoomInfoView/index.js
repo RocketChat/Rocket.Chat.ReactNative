@@ -213,7 +213,7 @@ class RoomInfoView extends React.Component {
 
 	renderTimezone = () => {
 		const { roomUser } = this.state;
-		const { Message_TimeFormat, theme } = this.props;
+		const { Message_TimeFormat } = this.props;
 
 		if (roomUser) {
 			const { utcOffset } = roomUser;
@@ -221,12 +221,11 @@ class RoomInfoView extends React.Component {
 			if (!utcOffset) {
 				return null;
 			}
-			return (
-				<View style={styles.item}>
-					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Timezone')}</Text>
-					<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
-				</View>
-			);
+			return this.renderSpecificItem({
+				label: I18n.t('Timezone'),
+				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`,
+				testID: 'room-info-view-timezone'
+			});
 		}
 		return null;
 	}
@@ -249,16 +248,23 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderBroadcast = () => {
+	renderBroadcast = () => this.renderSpecificItem({
+		label: I18n.t('Broadcast_Channel'),
+		content: I18n.t('Broadcast_channel_Description'),
+		testID: 'room-info-view-broadcast'
+	});
+
+	renderSpecificItem = ({ label, content, testID }) => {
 		const { theme } = this.props;
 
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Broadcast_Channel')}</Text>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 				<Text
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-					testID='room-info-view-broadcast'
-				>{I18n.t('Broadcast_channel_Description')}
+					testID={testID}
+				>
+					{content}
 				</Text>
 			</View>
 		);
