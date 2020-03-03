@@ -173,8 +173,9 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].auxiliaryText }]}>{I18n.t(camelize(key))}</Text>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
 				<Markdown
+					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
 					msg={room[key] ? room[key] : `__${ I18n.t(`No_${ key }_provided`) }__`}
 					theme={theme}
 				/>
@@ -248,16 +249,20 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderBroadcast = () => (
-		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{I18n.t('Broadcast_Channel')}</Text>
-			<Text
-				style={styles.itemContent}
-				testID='room-info-view-broadcast'
-			>{I18n.t('Broadcast_channel_Description')}
-			</Text>
-		</View>
-	)
+	renderBroadcast = () => {
+		const { theme } = this.props;
+
+		return (
+			<View style={styles.item}>
+				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Broadcast_Channel')}</Text>
+				<Text
+					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
+					testID='room-info-view-broadcast'
+				>{I18n.t('Broadcast_channel_Description')}
+				</Text>
+			</View>
+		);
+	}
 
 	renderCustomFields = () => {
 		const { roomUser } = this.state;
