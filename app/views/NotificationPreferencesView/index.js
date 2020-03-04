@@ -242,7 +242,6 @@ class NotificationPreferencesView extends React.Component {
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
-					showsVerticalScrollIndicator={false}
 					testID='notification-preference-view-list'
 				>
 					<Separator theme={theme} />

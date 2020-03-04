@@ -476,6 +476,7 @@ export default {
 	You_can_search_using_RegExp_eg: 'You can use RegExp. e.g. `/^text$/i`',
 	You_colon: 'You: ',
 	you_were_mentioned: 'you were mentioned',
+	You_were_removed_from_channel: 'You were removed from {{channel}}',
 	you: 'you',
 	You: 'You',
 	Logged_out_by_server: 'You\'ve been logged out by the server. Please log in again.',
