@@ -26,7 +26,7 @@ export default class SwitchContainer extends React.PureComponent {
 			children, value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID, labelContainerStyle, leftLabelStyle
 		} = this.props;
 		return (
-			[
+			<>
 				<View key='switch-container' style={[styles.switchContainer, children && styles.switchMargin]}>
 					{leftLabelPrimary && (
 						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
@@ -48,10 +48,10 @@ export default class SwitchContainer extends React.PureComponent {
 							<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>{rightLabelSecondary}</Text>
 						</View>
 					)}
-				</View>,
-				children,
+				</View>
+				{children}
 				<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
-			]
+			</>
 		);
 	}
 }
