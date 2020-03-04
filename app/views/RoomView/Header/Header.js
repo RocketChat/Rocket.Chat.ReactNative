@@ -68,11 +68,24 @@ Typing.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, scale, connecting, theme
+	title, tmid, scale, connecting, theme
 }) => {
 	if (connecting) {
 		title = I18n.t('Connecting');
 	}
+
+	if (!tmid) {
+		return (
+			<Text
+				style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
+				numberOfLines={1}
+				testID={`room-view-title-${ title }`}
+			>
+				{title}
+			</Text>
+		);
+	}
+
 	return (
 		<Markdown
 			preview
@@ -87,6 +100,7 @@ const HeaderTitle = React.memo(({
 
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
+	tmid: PropTypes.string,
 	scale: PropTypes.number,
 	connecting: PropTypes.bool,
 	theme: PropTypes.string
@@ -126,6 +140,7 @@ const Header = React.memo(({
 					<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
 					<HeaderTitle
 						title={title}
+						tmid={tmid}
 						scale={scale}
 						connecting={connecting}
 						theme={theme}
