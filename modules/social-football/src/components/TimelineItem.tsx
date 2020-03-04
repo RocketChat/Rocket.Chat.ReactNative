@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import {Button} from "../components/Button";
+import {PublishButton} from "../components/PublishButton";
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
 
@@ -32,6 +34,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
+    publish: {
+        flex: 1,
+        width: 100,
+        height: 20,
+        borderRadius: 10,
+    },
+
     threadTitle: {
         color: 'black',
         fontWeight: 'bold',
@@ -51,16 +60,37 @@ const styles = StyleSheet.create({
         color: '#B0B0B0',
         fontSize: 13,
         marginBottom: 7,
-        marginTop: 5
+        marginTop: 5,
+    },
+
+    hiddenCreatorText: {
+        color: '#200000',
+        fontSize: 13,
+        marginBottom: 7,
+        marginTop: 5,
+    },
+
+    hiddenButton: {
+        color: '#DDDDDD'
     }
 
 });
 
+const renderPublishButton = (item) => {
+    if(!item.published){
+        return(
+        <View style={[styles.publish]}>
+            <PublishButton title={i18n.t('createThread.publish')}  onPress={() => item.published = true} />
+        </View>
+        )
+    } 
+    return;
+}
+
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
-
+    
     return <View style={item.published ? [styles.item] : [styles.hiddenItem]}>
-    <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
-
+    <Text style={item.published ? [styles.creatorText] : [styles.hiddenCreatorText]}>Dick Advocaat  ●  Zondag.</Text>
 
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>
@@ -68,6 +98,8 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             <Text style={[styles.threadText]}>{item.description}</Text>
         </View>
         <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
+        
     </View>
+    {renderPublishButton(item)}
 </View>
 };
