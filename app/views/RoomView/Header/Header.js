@@ -68,13 +68,13 @@ Typing.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, scale, connecting, theme
+	title, tmid, prid, scale, connecting, theme
 }) => {
 	if (connecting) {
 		title = I18n.t('Connecting');
 	}
 
-	if (!tmid) {
+	if (!tmid && !prid) {
 		return (
 			<Text
 				style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
@@ -101,6 +101,7 @@ const HeaderTitle = React.memo(({
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
 	tmid: PropTypes.string,
+	prid: PropTypes.string,
 	scale: PropTypes.number,
 	connecting: PropTypes.bool,
 	theme: PropTypes.string
@@ -141,6 +142,7 @@ const Header = React.memo(({
 					<HeaderTitle
 						title={title}
 						tmid={tmid}
+						prid={prid}
 						scale={scale}
 						connecting={connecting}
 						theme={theme}
