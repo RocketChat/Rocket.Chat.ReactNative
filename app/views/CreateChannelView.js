@@ -208,10 +208,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	removeUser = (user) => {
-		const { users, removeUser } = this.props;
-		if (users.length === 1) {
-			return;
-		}
+		const { removeUser } = this.props;
 		removeUser(user);
 	}
 
@@ -285,6 +282,7 @@ class CreateChannelView extends React.Component {
 				username={item.name}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${ item.name }`}
+				icon='check'
 				baseUrl={baseUrl}
 				user={user}
 				theme={theme}
