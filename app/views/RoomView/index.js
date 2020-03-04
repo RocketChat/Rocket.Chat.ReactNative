@@ -179,8 +179,7 @@ class RoomView extends React.Component {
 			replyWithMention: false,
 			reacting: false,
 			showAnnouncementModal: false,
-			announcement: null,
-			playMedia: false
+			announcement: null
 		};
 
 		if (room && room.observe) {
@@ -725,24 +724,6 @@ class RoomView extends React.Component {
 		}
 	});
 
-	playMedia = () => {
-		const { playMedia } = this.state;
-		if (playMedia) {
-			return false;
-		}
-		this.setState({ playMedia: true });
-		return true;
-	}
-
-	pauseMedia = () => {
-		const { playMedia } = this.state;
-		if (playMedia) {
-			this.setState({ playMedia: false });
-			return true;
-		}
-		return false;
-	}
-
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -794,8 +775,6 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
-				playMedia={this.playMedia}
-				pauseMedia={this.pauseMedia}
 			/>
 		);
 

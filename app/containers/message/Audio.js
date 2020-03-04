@@ -15,6 +15,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import EventEmitter from '../../utils/events';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -76,9 +77,7 @@ class Audio extends React.Component {
 		user: PropTypes.object.isRequired,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
-		getCustomEmoji: PropTypes.func,
-		playMedia: PropTypes.func,
-		pauseMedia: PropTypes.func
+		getCustomEmoji: PropTypes.func
 	}
 
 	constructor(props) {
@@ -133,11 +132,7 @@ class Audio extends React.Component {
 	}
 
 	onEnd = () => {
-		const { pauseMedia } = this.props;
-		const { paused } = this.state;
-		if (!paused) {
-			pauseMedia();
-		}
+		EventEmitter.removeListener('stopAllMediaEvent'); // removing the event listener to make things lighter
 		this.setState({ paused: true, currentTime: 0 });
 		requestAnimationFrame(() => {
 			this.player.seek(0);
@@ -152,16 +147,19 @@ class Audio extends React.Component {
 	setRef = ref => this.player = ref;
 
 	togglePlayPause = () => {
-		const { playMedia, pauseMedia } = this.props;
 		const { paused } = this.state;
 		if (paused) {
-			if (playMedia()) {
-				this.setState({ paused: false });
-			}
+			EventEmitter.emit('stopAllMediaEvent'); // stopping any existing media from playing
+			EventEmitter.addEventListener('stopAllMediaEvent', this.handleStopEvent); // add event listener to this audio component and then play
+			this.setState({ paused: false });
 		} else {
-			pauseMedia();
 			this.setState({ paused: true });
 		}
+	}
+
+	handleStopEvent = () => {
+		EventEmitter.removeListener('stopAllMediaEvent'); // removing the event listener to make things lighter
+		this.setState({ paused: true });
 	}
 
 	onValueChange = value => this.setState({ currentTime: value });
