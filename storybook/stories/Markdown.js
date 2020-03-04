@@ -16,10 +16,181 @@ const styles = StyleSheet.create({
 	}
 });
 
+const baseUrl = 'https://open.rocket.chat';
+const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const lineBreakText = `a
+b
+c
+
+d
+
+
+e`;
+
+const getCustomEmoji = (content) => {
+	const customEmoji = {
+		marioparty: { name: content, extension: 'gif' },
+		react_rocket: { name: content, extension: 'png' },
+		nyan_rocket: { name: content, extension: 'png' }
+	}[content];
+	return customEmoji;
+};
+
 // eslint-disable-next-line arrow-body-style
 export default ({ theme }) => {
 	return (
-		<ScrollView style={{ backgroundColor: themes[theme].auxiliaryBackground, marginVertical: 10, marginBottom: 50 }}>
+		<ScrollView
+			style={{
+				backgroundColor: themes[theme].backgroundColor,
+				marginVertical: 50
+			}}
+			contentContainerStyle={{
+				paddingBottom: 50
+			}}
+		>
+			<StoriesSeparator style={styles.separator} title='Short Text' theme={theme} />
+			<View style={styles.container}>
+				<Markdown msg='This is Rocket.Chat' theme={theme} />
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Long Text' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg={longText}
+					theme={theme}
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Line Break Text' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg={lineBreakText}
+					theme={theme}
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Edited' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='This is edited'
+					theme={theme}
+					isEdited
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Preview' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg={longText}
+					theme={theme}
+					numberOfLines={1}
+					preview
+				/>
+				<Markdown
+					msg={lineBreakText}
+					theme={theme}
+					numberOfLines={1}
+					preview
+				/>
+				<Markdown
+					msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
+					theme={theme}
+					numberOfLines={1}
+					preview
+					mentions={[
+						{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
+						{ _id: 'random2', name: 'Name', username: 'name1' },
+						{ _id: 'here', username: 'here' },
+						{ _id: 'all', username: 'all' }
+					]}
+					channels={[{ _id: '123', name: 'test-channel' }]}
+					username='rocket.cat'
+				/>
+				<Markdown
+					msg='Testing: 😃 :+1: :marioparty:'
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+					numberOfLines={1}
+					preview
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Mentions' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='@rocket.cat @name1 @all @here @unknown'
+					theme={theme}
+					mentions={[
+						{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
+						{ _id: 'random2', name: 'Name', username: 'name1' },
+						{ _id: 'here', username: 'here' },
+						{ _id: 'all', username: 'all' }
+					]}
+					username='rocket.cat'
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Mentions with Real Name' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='@rocket.cat @name1 @all @here @unknown'
+					theme={theme}
+					mentions={[
+						{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
+						{ _id: 'random2', name: 'Name', username: 'name1' },
+						{ _id: 'here', username: 'here' },
+						{ _id: 'all', username: 'all' }
+					]}
+					username='rocket.cat'
+					useRealName
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Hashtag' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='#test-channel #unknown'
+					theme={theme}
+					channels={[{ _id: '123', name: 'test-channel' }]}
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Emoji' theme={theme} />
+			<View style={styles.container}>
+				<Markdown msg='Unicode: 😃😇👍' theme={theme} />
+				<Markdown msg='Shortnames: :joy::+1:' theme={theme} />
+				<Markdown
+					msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:'
+					theme={theme}
+					getCustomEmoji={getCustomEmoji}
+					baseUrl={baseUrl}
+				/>
+				<Markdown
+					msg='😃 :+1: :marioparty:'
+					theme={theme}
+					getCustomEmoji={getCustomEmoji}
+					baseUrl={baseUrl}
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Block Quote' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='> This is Block Quote'
+					theme={theme}
+				/>
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Links' theme={theme} />
+			<View style={styles.container}>
+				<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' theme={theme} />
+				<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' theme={theme} />
+			</View>
+
+			<StoriesSeparator style={styles.separator} title='Image' theme={theme} />
+			<View style={styles.container}>
+				<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' theme={theme} />
+			</View>
 
 			<StoriesSeparator style={styles.separator} title='Headers' theme={theme} />
 			<View style={styles.container}>
@@ -49,102 +220,10 @@ export default ({ theme }) => {
 				/>
 			</View>
 
-			<StoriesSeparator style={styles.separator} title='Short Text' theme={theme} />
-			<View style={styles.container}>
-				<Markdown msg='This is Rocket.Chat' theme={theme} />
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Long Text' theme={theme} />
+			<StoriesSeparator style={styles.separator} title='Inline Code' theme={theme} />
 			<View style={styles.container}>
 				<Markdown
-					msg='Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-					theme={theme}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Edited' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='This is Edited'
-					theme={theme}
-					isEdited
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Reply' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='This is a reply This is a reply This is Reply This is Reply'
-					theme={theme}
-					numberOfLines={1}
-					preview
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Short Link' theme={theme} />
-			<View style={styles.container}>
-				<Markdown msg='https://www.google.com' theme={theme} />
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Long Link' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='https://www.google.com/search?q=ROcket+Chat&sxsrf=ALeKk02yM3p0-CkP_xQX7VHTya90UAKgig:1583174106589&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj0ovaRt_znAhVdwTgGHfI3DOQQ_AUoAnoECA0QBA&biw=1920&bih=942#imgrc=oTPvGoNKD8TDpM'
-					theme={theme}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Text as Link' theme={theme} />
-			<View style={styles.container}>
-				<Markdown msg='[This is a link](https://www.google.com)' theme={theme} />
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Mentions' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='@sarthak'
-					theme={theme}
-					mentions={[{ _id: 'random', name: 'Sarthak', username: 'sarthak' }]}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Multiple Mentions with Text' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='@sarthak @name1 Testing'
-					theme={theme}
-					mentions={[{ _id: 'random', name: 'Sarthak', username: 'sarthak' }, { _id: 'random2', name: 'Name', username: 'name1' }]}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Hashtag' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='#testChannel'
-					theme={theme}
-					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Emoji' theme={theme} />
-			<View style={styles.container}>
-				<Markdown msg='😃😇👍' theme={theme} />
-				<Markdown msg='🚀🚀🚀' theme={theme} />
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Block Quote' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='> This is Block Quote'
-					theme={theme}
-				/>
-			</View>
-
-			<StoriesSeparator style={styles.separator} title='Code in line' theme={theme} />
-			<View style={styles.container}>
-				<Markdown
-					msg='Normal inline code - `CodeInLine`'
+					msg='This is `inline code`'
 					theme={theme}
 					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
 				/>
@@ -153,7 +232,10 @@ export default ({ theme }) => {
 			<StoriesSeparator style={styles.separator} title='Code Block' theme={theme} />
 			<View style={styles.container}>
 				<Markdown
-					msg={'```javascript\nvar s = "JavaScript syntax highlighting";\nalert(s);\n```'}
+					msg='Inline `code` has `back-ticks around` it.
+```
+Code block
+```'
 					theme={theme}
 					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
 				/>
@@ -180,10 +262,19 @@ export default ({ theme }) => {
 				<Markdown
 					msg='Strong emphasis, aka bold, with **asterisks** or __underscores__'
 					theme={theme}
-					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
 				/>
 			</View>
 
+			<StoriesSeparator style={styles.separator} title='Table' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg='First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column'
+					theme={theme}
+				/>
+			</View>
 		</ScrollView>
 	);
 };
