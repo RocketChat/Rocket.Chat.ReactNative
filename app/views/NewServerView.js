@@ -201,6 +201,11 @@ class NewServerView extends React.Component {
 			url = parsedUrl.host;
 		}
 
+		// host never can contain a ':'
+		if (parsedUrl.host.includes(':')) {
+			return '';
+		}
+
 		url = url && url.replace(/\s/g, '');
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)
