@@ -41,4 +41,7 @@ export const appStyles = StyleSheet.create({
     formGroup: {
         marginTop: 20,
     },
+    toggledText: {
+        color: appColors.toggled
+    }
 });

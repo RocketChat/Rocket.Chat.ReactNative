@@ -29,3 +29,11 @@ export const Button: React.FunctionComponent<Props> = ({ title, onPress, loading
         </View>
     </TouchableOpacity>
 )
+
+export const ToggledButton: React.FunctionComponent<Props> = ({ title, onPress, loading }) => (
+    <TouchableOpacity style={[styles.button]} onPress={onPress}>
+        <View style={[styles.buttonContainer]}>
+            {loading ? <ActivityIndicator color='#ffffff' /> : <Text style={[appStyles.toggledText]}>{title}</Text>}
+        </View>
+    </TouchableOpacity>
+)

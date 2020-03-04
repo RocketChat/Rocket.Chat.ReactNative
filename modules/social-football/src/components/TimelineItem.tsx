@@ -1,16 +1,18 @@
-import { View, Text, Image, StyleSheet,Linking } from 'react-native';
+import { View, Text, Image, StyleSheet, Linking } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
+import { BallModel } from '../models/balls';
 import { appColors } from '../theme/colors';
-import {ContentType} from '../enums/content-type';
+import { ContentType } from '../enums/content-type';
 import React, { useEffect, useState } from 'react';
 import Urls from "../../../../app/containers/message/Urls"
-import isURL from 'is-url'
-import { AssetMetadata } from '../models/asset-metadata';
-import { PREVIEW_METADATA } from '../api/queries/threads.queries';
-import { useQuery } from 'react-apollo';
+import { useQuery, useMutation } from 'react-apollo';
 import moment from "moment";
 import 'moment/locale/nl';
+import { BallQueries, BallMutations } from '../api';
+import { Button, ToggledButton} from "../components/Button";
+import { CREATE_BALL } from '../api/mutations/balls.mutations';
+
 
 const styles = StyleSheet.create({
     item: {
@@ -54,10 +56,13 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         marginTop: 5
     },
-    linkText:{
-        color:appColors.lightPrimary,
-
+    linkText: {
+        color: appColors.lightPrimary,
     },
+
+    balls: {
+        flex: 1,
+    }
 
 });
 
@@ -67,56 +72,92 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Urls urls={[item.assetMetadata!]} user={{}} />
         }
     };
-    const renderImageInfo = (item:ThreadModel) => {
-        if(item.assetMetadata)
-            return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
-        else
-            return;
-     };
-    const showLink = (item:ThreadModel) => {
-        if(item.type == ContentType.LINK && item.assetUrl)
-            return <Text 
-                style={[styles.linkText]}
-                onPress={() => Linking.openURL('www.google.com')}
-                >
-                {item.assetUrl}
-                </Text>;
+    const renderImageInfo = (item: ThreadModel) => {
+        if (item.assetMetadata)
+            return <Image style={[styles.preview]} source={{ uri: item.assetMetadata.image }} />;
         else
             return;
     };
-    const showDate = (item:ThreadModel)=>{
-         moment.locale();
-         if(item.updatedAt){
-             return <Text>{moment(item.updatedAt).fromNow()}</Text>
-         }
+    const showLink = (item: ThreadModel) => {
+        if (item.type == ContentType.LINK && item.assetUrl)
+            return <Text
+                style={[styles.linkText]}
+                onPress={() => Linking.openURL('www.google.com')}
+            >
+                {item.assetUrl}
+            </Text>;
+        else
+            return;
+    };
+    const showDate = (item: ThreadModel) => {
+        moment.locale();
+        if (item.updatedAt) {
+            return <Text>{moment(item.updatedAt).fromNow()}</Text>
+        }
         return <Text>{moment(item.createdAt).fromNow()}</Text>
 
     }
-    const checkUpdated = (item:ThreadModel)=>{
-        if(item.updatedAt){
+    const checkUpdated = (item: ThreadModel) => {
+        if (item.updatedAt) {
             return <Text>aangepast</Text>
         }
-        else{
+        else {
             return <Text>aangemaakt</Text>
         }
     }
-    return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}>{item.createdByUserId}  ●  {showDate(item)} {checkUpdated(item)}.</Text>
-    <Text style={[styles.creatorText]}>{item.type}</Text>
-    {/* <Text>{renderLinkInfo(item)}</Text> */}
-    <View style={[styles.textAndPreview]}>
-        <View style={[styles.allText]}>
-            <Text style={[styles.threadTitle]}>{item.title}</Text>
-            <Text style={[styles.threadText]}>{item.description}</Text>
-            <Text style={[styles.threadText]}>{item.type}</Text>
-            {showLink(item)}
+    // This one works
+    const { data } = useQuery<{ getBallsForThread: BallModel }>(BallQueries.BALLS, {
+        variables: {
+            threadId: item._id!
+        },
+        fetchPolicy: "cache-and-network"
+    });
 
+    // This one does not work
+    const onBallPress = async () => {
+        alert(item._id);
+        await useMutation<{ createBall: Boolean }>(CREATE_BALL, {
+            variables: {
+                threadId: item._id!
+            }
+        })
+    };
+
+    // WIP
+    const unlikePress = () => {
+        alert("not supported yet");
+    }
+    
+    // This one works
+    const renderBallButton = () => {
+        if(data!.getBallsForThread.ballByUser) {
+            return <ToggledButton title={data!.getBallsForThread.total!.toString()} onPress={unlikePress}/>
+        } else {
+            return <Button title={data!.getBallsForThread.total!.toString()} onPress={onBallPress} />
+        }
+    }
+
+    return <View style={[styles.item]}>
+        <Text style={[styles.creatorText]}>{item.createdByUserId}  ●  {showDate(item)} {checkUpdated(item)}.</Text>
+        <Text style={[styles.creatorText]}>{item.type}</Text>
+        {/* <Text>{renderLinkInfo(item)}</Text> */}
+        <View style={[styles.textAndPreview]}>
+            <View style={[styles.allText]}>
+                <Text style={[styles.threadTitle]}>{item.title}</Text>
+                <Text style={[styles.threadText]}>{item.description}</Text>
+                <Text style={[styles.threadText]}>{item.type}</Text>
+                {showLink(item)}
+
+            </View>
+            {renderImageInfo(item)}
+
+            {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
         </View>
-        {renderImageInfo(item)}
-      
-        {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
-    </View>
-    {renderPreview()}
+        {renderPreview()}
+        <View style={[styles.balls]}>
+            <Text> ● {data!.getBallsForThread.total}</Text>
+        </View>
+        {renderBallButton()}
     </View>
 
 };

@@ -7,4 +7,5 @@ export const appColors = {
     light: '#ffffff',
     error: '#e74c3c',
     dark: '#000000',
+    toggled: '#0313fc'
 }
