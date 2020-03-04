@@ -70,7 +70,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
                 <Text style={[styles.threadTitle]}>{item.title}</Text>
                 <Text style={[styles.threadText]}>{item.description}</Text>
             </View>
-            <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
+            {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
         </View>
         {renderPreview()}
     </View>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import { Image, View, Text, StyleSheet, Button, ScrollView, RefreshControl } from 'react-native';
 import { appStyles } from '../theme/style';
 import { SafeAreaView } from 'react-navigation';
 import { appColors } from '../theme/colors';
@@ -14,6 +14,7 @@ import { InfiniteScrollView } from "../components/InfiniteScrollView";
 import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
 import { HeaderTitle } from 'react-navigation-stack';
 import ModalDropdown from 'react-native-modal-dropdown';
+import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,6 +46,12 @@ const styles = StyleSheet.create({
 
 
 });
+
+function wait(timeout) {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
 
 const TimelinePage = ({ navigation }) => {
     const perPage = 6;
@@ -107,12 +114,14 @@ const TimelinePage = ({ navigation }) => {
 
         </View>
 
-        <InfiniteScrollView onEndReached={() => fetchMoreResults()}>
+        <InfiniteScrollView
+         onEndReached={() => fetchMoreResults()}>
             <View style={styles.container}>
                 {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
             </View>
         </InfiniteScrollView>
     </>;
+
 };
 
 TimelinePage.navigationOptions = ({ navigation }) => {
@@ -121,7 +130,6 @@ TimelinePage.navigationOptions = ({ navigation }) => {
         headerRight: <HeaderCreateThreadButton navigation={navigation} />,
         headerLeft: <HeaderLeaderboardButton navigation={navigation} />,
     };
-
 };
-
+  
 export default TimelinePage;
