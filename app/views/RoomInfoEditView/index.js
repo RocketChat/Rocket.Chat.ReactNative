@@ -231,6 +231,8 @@ class RoomInfoEditView extends React.Component {
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
+				const { navigation } = this.props;
+				navigation.navigate('RoomView');
 			}
 		}, 100);
 	}
