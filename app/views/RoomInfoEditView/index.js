@@ -139,7 +139,7 @@ class RoomInfoEditView extends React.Component {
 			joinCode: joinCodeRequired ? this.randomValue : '',
 			archived: room.archived,
 			systemMessages: sysMes,
-			enableSysMes: sysMes.length > 0
+			enableSysMes: sysMes && sysMes.length > 0
 		});
 	}
 
@@ -168,7 +168,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
 			&& isEqual(room.sysMes, systemMessages)
-			&& enableSysMes === (room.sysMes.length > 0)
+			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 		);
 	}
 
