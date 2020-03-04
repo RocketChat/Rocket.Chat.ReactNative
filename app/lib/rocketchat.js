@@ -21,10 +21,11 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getSetting, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -50,7 +51,6 @@ import I18n from '../i18n';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
-export const MARKDOWN_KEY = 'RC_MARKDOWN_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 const returnAnArray = obj => obj || [];
@@ -625,7 +625,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
-	getSetting,
+	getLoginSettings,
 	setSettings,
 	getPermissions,
 	getCustomEmojis,
@@ -633,7 +633,7 @@ const RocketChat = {
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
-		ret[item._id] = item[defaultSettings[item._id].type];
+		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id]
 				.reduce((array, value) => [...array, ...value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value]], []);
@@ -654,6 +654,9 @@ const RocketChat = {
 		const { id, msg, rid } = message;
 		// RC 0.49.0
 		return this.sdk.post('chat.update', { roomId: rid, msgId: id, text: msg });
+	},
+	markAsUnread({ messageId }) {
+		return this.sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 	},
 	toggleStarMessage(messageId, starred) {
 		if (starred) {
@@ -889,13 +892,6 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.sdk.methodCall('setAvatarFromService', data, contentType, service);
 	},
-	async getUseMarkdown() {
-		const useMarkdown = await AsyncStorage.getItem(MARKDOWN_KEY);
-		if (useMarkdown === null) {
-			return true;
-		}
-		return JSON.parse(useMarkdown);
-	},
 	async getAllowCrashReport() {
 		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
 		if (allowCrashReport === null) {
@@ -1075,42 +1071,9 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
 		}
 	},
-	getUserPresence() {
-		return new Promise(async(resolve) => {
-			const serverVersion = reduxStore.getState().server.version;
-
-			// if server is lower than 1.1.0
-			if (serverVersion && semver.lt(semver.coerce(serverVersion), '1.1.0')) {
-				if (this.activeUsersSubTimeout) {
-					clearTimeout(this.activeUsersSubTimeout);
-					this.activeUsersSubTimeout = false;
-				}
-				this.activeUsersSubTimeout = setTimeout(() => {
-					this.sdk.subscribe('activeUsers');
-				}, 5000);
-				return resolve();
-			} else {
-				const params = {};
-				// if (this.lastUserPresenceFetch) {
-				// 	params.from = this.lastUserPresenceFetch.toISOString();
-				// }
-
-				// RC 1.1.0
-				const result = await this.sdk.get('users.presence', params);
-				if (result.success) {
-					const activeUsers = result.users.reduce((ret, item) => {
-						ret[item._id] = item.status;
-						return ret;
-					}, {});
-					InteractionManager.runAfterInteractions(() => {
-						reduxStore.dispatch(setActiveUsers(activeUsers));
-					});
-					this.sdk.subscribe('stream-notify-logged', 'user-status');
-					return resolve();
-				}
-			}
-		});
-	},
+	getUsersPresence,
+	getUserPresence,
+	subscribeUsersPresence,
 	getDirectory({
 		query, count, offset, sort
 	}) {
