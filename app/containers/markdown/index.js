@@ -151,6 +151,7 @@ class Markdown extends PureComponent {
 		];
 		return (
 			<Text
+				accessibilityLabel={literal}
 				style={[styles.text, defaultStyle, ...style]}
 				numberOfLines={numberOfLines}
 			>

@@ -40,12 +40,6 @@ export function addSettings(settings) {
 		payload: settings
 	};
 }
-export function setAllSettings(settings) {
-	return {
-		type: types.SET_ALL_SETTINGS,
-		payload: settings
-	};
-}
 
 export function login() {
 	return {
