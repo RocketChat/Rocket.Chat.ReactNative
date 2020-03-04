@@ -43,7 +43,7 @@ const AtMention = React.memo(({
 				style={[mentionStyle, ...style]}
 				onPress={handlePress}
 			>
-				{useRealName ? user.name : user.username}
+				{useRealName && user.name ? user.name : user.username}
 			</Text>
 		);
 	}
