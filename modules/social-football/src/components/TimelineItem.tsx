@@ -110,6 +110,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             <Text style={[styles.threadText]}>{item.description}</Text>
             <Text style={[styles.threadText]}>{item.type}</Text>
             {showLink(item)}
+
         </View>
         {renderImageInfo(item)}
       
