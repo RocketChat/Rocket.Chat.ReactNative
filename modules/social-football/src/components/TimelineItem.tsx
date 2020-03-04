@@ -12,6 +12,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
 
+    hiddenItem: {
+        padding: 30,
+        paddingTop: 0,
+        marginBottom: 10,
+        width: '100%',
+        backgroundColor: '#D3D3D3',
+    },
+
     textAndPreview: {
         flexDirection: 'row',
         marginTop: 5,
@@ -49,7 +57,8 @@ const styles = StyleSheet.create({
 });
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
-    return <View style={[styles.item]}>
+
+    return <View style={item.published ? [styles.item] : [styles.hiddenItem]}>
     <Text style={[styles.creatorText]}>Dick Advocaat  ●  Zondag.</Text>
 
 
