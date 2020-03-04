@@ -99,7 +99,7 @@ const TimelinePage = ({ navigation }) => {
                     dropdownStyle={{ width: '90%', height: 150 }}
                     defaultValue={['Alle berichten ']}
                     defaultIndex= '0'
-                    options={['Alle berichten','Tekst ', 'Foto ', 'Video ', 'Nog wat ', 'Tekst ']} />
+                    options={['Alle berichten ','Tekst ', 'Foto ', 'Video ', 'Nog wat ', 'Tekst ']} />
                 <Image style={[styles.icon]} source={require('../assets/images/filter_arrow.png')} />
             </View>
 
