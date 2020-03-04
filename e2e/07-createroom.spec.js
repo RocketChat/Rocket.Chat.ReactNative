@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 const { tapBack, sleep } = require('./helpers/app');
 
@@ -9,7 +8,7 @@ describe('Create room screen', () => {
 	before(async() => {
 		await sleep(5000);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-		await device.reloadReactNative();
+		await device.launchApp({ newInstance: true });
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
 	});
@@ -24,19 +23,17 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id('new-message-view-search'))).toExist().withTimeout(2000);
 				await expect(element(by.id('new-message-view-search'))).toExist();
 			});
-	
-			after(async() => {
-				takeScreenshot();
-			});
 		})
 
 		describe('Usage', async() => {
 			it('should back to rooms list', async() => {
+				await sleep(1000);
 				await element(by.id('new-message-view-close')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('new-message-view'))).toBeVisible();
 			});
 
 			it('should search user and navigate', async() => {
@@ -46,22 +43,20 @@ describe('Create room screen', () => {
 				await element(by.id('new-message-view-item-rocket.cat')).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
 				await expect(element(by.id('room-view'))).toBeVisible();
-				await waitFor(element(by.text('rocket.cat'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.text('rocket.cat'))).toBeVisible();
+				await waitFor(element(by.id('room-view-title-rocket.cat'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('room-view-title-rocket.cat'))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-create-channel')).tap();
 			});
 
 			it('should navigate to select users', async() => {
+				await element(by.id('rooms-list-view-create-channel')).tap();
+				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('new-message-view'))).toBeVisible();
+				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('select-users-view'))).toBeVisible();
-			});
-
-
-			after(async() => {
-				takeScreenshot();
 			});
 		})
 	});
@@ -114,11 +109,12 @@ describe('Create room screen', () => {
 				const room = `public${ data.random }`;
 				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-type')).tap();
+				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toBeVisible();
-				await waitFor(element(by.text(room))).toExist().withTimeout(60000);
-				await expect(element(by.text(room))).toExist();
+				await waitFor(element(by.id(`room-view-title-${ room }`))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
@@ -128,25 +124,27 @@ describe('Create room screen', () => {
 			it('should create private room', async() => {
 				const room = `private${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await device.reloadReactNative();
+				// await device.launchApp({ newInstance: true });
+				await sleep(1000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
+				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
+				await sleep(1000);
 				await element(by.id('select-users-view-item-rocket.cat')).tap();
 				await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
-				await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toBeVisible();
-				await waitFor(element(by.text(room))).toExist().withTimeout(60000);
-				await expect(element(by.text(room))).toExist();
+				await waitFor(element(by.id(`room-view-title-${ room }`))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
-				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});
@@ -154,30 +152,28 @@ describe('Create room screen', () => {
 			it('should create empty room', async() => {
 				const room = `empty${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await device.reloadReactNative();
+				// await device.launchApp({ newInstance: true });
+				await sleep(1000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
+				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
+				await sleep(1000);
 				await element(by.id('selected-users-view-submit')).tap();
-				await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toBeVisible();
-				await waitFor(element(by.text(room))).toExist().withTimeout(60000);
-				await expect(element(by.text(room))).toExist();
+				await waitFor(element(by.id(`room-view-title-${ room }`))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('rooms-list-view-search')).replaceText(room);
-				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
 			});
 		})
-
-		afterEach(async() => {
-			takeScreenshot();
-		});
 	});
 });

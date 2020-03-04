@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const AtMention = React.memo(({
-	mention, mentions, username, navToRoomInfo, preview, style = [], theme
+	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme
 }) => {
 	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
@@ -27,22 +27,23 @@ const AtMention = React.memo(({
 		};
 	}
 
+	const user = mentions && mentions.length && mentions.find(m => m.username === mention);
+
 	const handlePress = () => {
-		const index = mentions.findIndex(m => m.username === mention);
 		const navParam = {
 			t: 'd',
-			rid: mentions[index]._id
+			rid: user && user._id
 		};
 		navToRoomInfo(navParam);
 	};
 
-	if (mentions && mentions.length && mentions.findIndex(m => m.username === mention) !== -1) {
+	if (user) {
 		return (
 			<Text
-				style={[preview ? { ...styles.text, color: themes[theme].bodyText } : mentionStyle, ...style]}
-				onPress={preview ? undefined : handlePress}
+				style={[mentionStyle, ...style]}
+				onPress={handlePress}
 			>
-				{mention}
+				{useRealName && user.name ? user.name : user.username}
 			</Text>
 		);
 	}
@@ -59,7 +60,7 @@ AtMention.propTypes = {
 	username: PropTypes.string,
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.array,
-	preview: PropTypes.bool,
+	useRealName: PropTypes.bool,
 	theme: PropTypes.string,
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
