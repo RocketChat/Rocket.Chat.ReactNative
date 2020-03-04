@@ -130,6 +130,7 @@ export default {
 	Click_to_join: 'Klicken um teilzunehmen!',
 	Close: 'Schließen',
 	Close_emoji_selector: 'Schließen Sie die Emoji-Auswahl',
+	Change_language_loading: 'Ändere Sprache.',
 	Choose: 'Wählen',
 	Choose_from_library: 'Aus der Bibliothek auswählen',
 	Choose_file: 'Datei auswählen',
@@ -150,6 +151,7 @@ export default {
 	Permalink: 'Permalink',
 	Certificate_password: 'Zertifikats-Passwort',
 	Clear_cache: 'Lokalen Server-Cache leeren',
+	Clear_cache_loading: 'Leere Cache.',
 	Whats_the_password_for_your_certificate: 'Wie lautet das Passwort für Ihr Zertifikat?',
 	Create_account: 'Ein Konto erstellen',
 	Create_Channel: 'Kanal erstellen',
@@ -235,6 +237,7 @@ export default {
 	Login: 'Anmeldung',
 	Login_error: 'Ihre Zugangsdaten wurden abgelehnt! Bitte versuchen Sie es erneut.',
 	Login_with: 'Einloggen mit',
+	Logging_out: 'Abmelden.',
 	Logout: 'Abmelden',
 	Max_number_of_uses: 'Maximale Anzahl der Benutzungen',
 	members: 'Mitglieder',
@@ -301,6 +304,7 @@ export default {
 	pinned: 'angeheftet',
 	Pinned: 'Angeheftet',
 	Please_enter_your_password: 'Bitte geben Sie Ihr Passwort ein',
+	Please_wait: 'Bitte warten.',
 	Preferences: 'Einstellungen',
 	Preferences_saved: 'Einstellungen gespeichert!',
 	Privacy_Policy: ' Datenschutzbestimmungen',
@@ -501,5 +505,6 @@ export default {
 	New_line: 'Zeilenumbruch',
 	You_will_be_logged_out_of_this_application: 'Du wirst in dieser Anwendung vom Server abgemeldet.',
 	Clear: 'Löschen',
-	This_will_clear_all_your_offline_data: 'Dies wird deine Offline-Daten löschen.'
+	This_will_clear_all_your_offline_data: 'Dies wird deine Offline-Daten löschen.',
+	Mark_unread: 'Als ungelesen markieren'
 };
