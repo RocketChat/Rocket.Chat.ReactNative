@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginTop: Platform.OS === 'ios' ? -10 : 0,
         alignSelf: 'center',
+        flex:1,
+        height:35
     }
 });
 

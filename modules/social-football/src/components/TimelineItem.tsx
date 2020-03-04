@@ -9,6 +9,8 @@ import isURL from 'is-url'
 import { AssetMetadata } from '../models/asset-metadata';
 import { PREVIEW_METADATA } from '../api/queries/threads.queries';
 import { useQuery } from 'react-apollo';
+import moment from "moment";
+import 'moment/locale/nl';
 
 const styles = StyleSheet.create({
     item: {
@@ -58,29 +60,6 @@ const styles = StyleSheet.create({
     },
 
 });
-const renderLinkInfo = (item:ThreadModel) => {
-    if(item.assetMetadata)
-        return <Text>{item.assetMetadata.title} - {item.assetMetadata.description} - {item.assetMetadata.image}</Text>;
-    else
-        return null;
- };
- const renderImageInfo = (item:ThreadModel) => {
-    if(item.assetMetadata)
-        return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
-    else
-        return;
- };
- const showLink = (item:ThreadModel) => {
-    if(item.type == ContentType.LINK && item.assetUrl)
-        return <Text 
-            style={[styles.linkText]}
-            onPress={() => Linking.openURL('www.google.com')}
-            >
-            {item.assetUrl}
-            </Text>;
-    else
-        return;
- };
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     const renderPreview = () => {
@@ -88,9 +67,41 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Urls urls={[item.assetMetadata!]} user={{}} />
         }
     };
+    const renderImageInfo = (item:ThreadModel) => {
+        if(item.assetMetadata)
+            return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
+        else
+            return;
+     };
+    const showLink = (item:ThreadModel) => {
+        if(item.type == ContentType.LINK && item.assetUrl)
+            return <Text 
+                style={[styles.linkText]}
+                onPress={() => Linking.openURL('www.google.com')}
+                >
+                {item.assetUrl}
+                </Text>;
+        else
+            return;
+    };
+    const showDate = (item:ThreadModel)=>{
+         moment.locale();
+         if(item.updatedAt){
+             return <Text>{moment(item.updatedAt).fromNow()}</Text>
+         }
+        return <Text>{moment(item.createdAt).fromNow()}</Text>
 
+    }
+    const checkUpdated = (item:ThreadModel)=>{
+        if(item.updatedAt){
+            return <Text>aangepast</Text>
+        }
+        else{
+            return <Text>aangemaakt</Text>
+        }
+    }
     return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}>{item.createdByUserId?item.createdByUserId:"None"}  ●  {item.createdAt}.</Text>
+    <Text style={[styles.creatorText]}>{item.createdByUserId}  ●  {showDate(item)} {checkUpdated(item)}.</Text>
     <Text style={[styles.creatorText]}>{item.type}</Text>
     {/* <Text>{renderLinkInfo(item)}</Text> */}
     <View style={[styles.textAndPreview]}>
@@ -101,10 +112,10 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             {showLink(item)}
         </View>
         {renderImageInfo(item)}
-        {renderPreview()}
+      
         {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
-
     </View>
+    {renderPreview()}
     </View>
 
 };
