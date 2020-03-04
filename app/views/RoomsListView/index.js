@@ -524,6 +524,8 @@ class RoomsListView extends React.Component {
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
+	getUserPresence = uid => RocketChat.getUserPresence(uid)
+
 	goRoom = (item) => {
 		const { navigation } = this.props;
 		this.cancelSearch();
@@ -794,6 +796,7 @@ class RoomsListView extends React.Component {
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
+				getUserPresence={this.getUserPresence}
 			/>
 		);
 	};

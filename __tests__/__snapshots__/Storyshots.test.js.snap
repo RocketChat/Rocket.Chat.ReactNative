@@ -2255,6 +2255,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -2498,6 +2499,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     numberOfLines={0}
                     style={
                       Array [
@@ -2741,6 +2743,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="..."
                     numberOfLines={0}
                     style={
                       Array [
@@ -2962,6 +2965,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Different user"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3056,6 +3060,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="This is the third message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3150,6 +3155,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="This is the second message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3371,6 +3377,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="This is the first message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3487,6 +3494,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3748,6 +3756,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -3987,6 +3996,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -4230,6 +4240,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -4502,6 +4513,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Testing block quote"
                         numberOfLines={0}
                         style={
                           Array [
@@ -4755,6 +4767,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Testing block quote"
                         numberOfLines={0}
                         style={
                           Array [
@@ -4796,6 +4809,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Testing block quote"
                     numberOfLines={0}
                     style={
                       Array [
@@ -5077,6 +5091,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Dogs"
                         numberOfLines={0}
                         style={
                           Array [
@@ -5155,6 +5170,7 @@ exports[`Storyshots Message list message 1`] = `
                           }
                         >
                           <Text
+                            accessibilityLabel="cats"
                             numberOfLines={0}
                             style={
                               Array [
@@ -5237,6 +5253,7 @@ exports[`Storyshots Message list message 1`] = `
                           }
                         >
                           <Text
+                            accessibilityLabel="cats"
                             numberOfLines={0}
                             style={
                               Array [
@@ -5526,6 +5543,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Dogs"
                         numberOfLines={0}
                         style={
                           Array [
@@ -5606,6 +5624,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Cats"
                         numberOfLines={0}
                         style={
                           Array [
@@ -5891,6 +5910,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Dogs"
                         numberOfLines={0}
                         style={
                           Array [
@@ -6027,6 +6047,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Cats"
                         numberOfLines={0}
                         style={
                           Array [
@@ -6274,6 +6295,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -6517,6 +6539,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -6777,6 +6800,7 @@ exports[`Storyshots Message list message 1`] = `
                     rocket.cat
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -6820,6 +6844,7 @@ exports[`Storyshots Message list message 1`] = `
                     diego.mello
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -6863,6 +6888,7 @@ exports[`Storyshots Message list message 1`] = `
                     all
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -6906,6 +6932,7 @@ exports[`Storyshots Message list message 1`] = `
                     here
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -7166,6 +7193,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="👊🤙👏"
                     numberOfLines={0}
                     style={
                       Array [
@@ -7414,6 +7442,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="👏"
                     numberOfLines={0}
                     style={
                       Array [
@@ -7694,6 +7723,7 @@ exports[`Storyshots Message list message 1`] = `
                     />
                   </View>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -7757,6 +7787,7 @@ exports[`Storyshots Message list message 1`] = `
                     />
                   </View>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -8286,6 +8317,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="🤙"
                     numberOfLines={0}
                     style={
                       Array [
@@ -8566,6 +8598,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="🤙"
                     numberOfLines={0}
                     style={
                       Array [
@@ -8624,6 +8657,7 @@ exports[`Storyshots Message list message 1`] = `
                     />
                   </View>
                   <Text
+                    accessibilityLabel="🤙🤙"
                     numberOfLines={0}
                     style={
                       Array [
@@ -8867,6 +8901,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Testing"
                     numberOfLines={0}
                     style={
                       Array [
@@ -9110,6 +9145,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Reactions"
                     numberOfLines={0}
                     style={
                       Array [
@@ -9693,6 +9729,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Multiple Reactions"
                     numberOfLines={0}
                     style={
                       Array [
@@ -10717,6 +10754,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Fourth message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -10938,6 +10976,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Third message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -11159,6 +11198,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Second message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -11380,6 +11420,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="First message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -11623,6 +11664,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Fourth message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -11906,6 +11948,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Third message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -12045,6 +12088,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Second message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -12266,6 +12310,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Second message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -12532,6 +12577,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="First message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -12852,6 +12898,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="This is a description"
                       style={
                         Array [
                           Object {
@@ -13150,6 +13197,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="This is a description "
                       style={
                         Array [
                           Object {
@@ -13469,6 +13517,7 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="This is a description "
                   style={
                     Array [
                       Object {
@@ -14099,6 +14148,7 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="This is a description "
                   style={
                     Array [
                       Object {
@@ -14223,6 +14273,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="First message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -14447,6 +14498,7 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="This is a description"
                   style={
                     Array [
                       Object {
@@ -15060,6 +15112,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -15180,6 +15233,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="How are you?"
                       style={
                         Array [
                           Object {
@@ -15401,6 +15455,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -15521,6 +15576,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="How are you? "
                       style={
                         Array [
                           Object {
@@ -15796,6 +15852,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -15890,6 +15947,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -16111,6 +16169,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -16227,6 +16286,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="I'm fine!"
                     numberOfLines={0}
                     style={
                       Array [
@@ -16492,6 +16552,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="How are you?"
                     numberOfLines={0}
                     style={
                       Array [
@@ -16808,6 +16869,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="How are you?"
                     numberOfLines={0}
                     style={
                       Array [
@@ -18762,6 +18824,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="How are you?"
                     numberOfLines={0}
                     style={
                       Array [
@@ -21892,6 +21955,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message "
                     numberOfLines={0}
                     style={
                       Array [
@@ -22368,6 +22432,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -22488,6 +22553,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="Custom fields"
                       style={
                         Array [
                           Object {
@@ -22981,6 +23047,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -23101,6 +23168,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="Custom fields"
                       style={
                         Array [
                           Object {
@@ -23327,6 +23395,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="Custom fields 2"
                       style={
                         Array [
                           Object {
@@ -23676,6 +23745,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Broadcasted message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -23743,6 +23813,7 @@ exports[`Storyshots Message list message 1`] = `
                       "paddingHorizontal": 15,
                     }
                   }
+                  testID="message-broadcast-reply"
                 >
                   <Text
                     allowFontScaling={false}
@@ -24001,6 +24072,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="This message is inside an archived room"
                     numberOfLines={0}
                     style={
                       Array [
@@ -24275,6 +24347,7 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="This message has error"
                   numberOfLines={0}
                   style={
                     Array [
@@ -24457,6 +24530,7 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="This message has error too"
                   numberOfLines={0}
                   style={
                     Array [
@@ -24705,6 +24779,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Temp message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -24948,6 +25023,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message being edited"
                     numberOfLines={0}
                     style={
                       Array [
@@ -25126,6 +25202,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Message removed"
                 style={
                   Array [
                     Object {
@@ -25294,6 +25371,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Has joined the channel"
                 style={
                   Array [
                     Object {
@@ -25462,6 +25540,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Room name changed to: New name by diego.mello"
                 style={
                   Array [
                     Object {
@@ -25630,6 +25709,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Message pinned"
                 style={
                   Array [
                     Object {
@@ -25798,6 +25878,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Has left the channel"
                 style={
                   Array [
                     Object {
@@ -25966,6 +26047,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="User rocket.cat removed by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26134,6 +26216,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="User rocket.cat added by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26302,6 +26385,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="User rocket.cat muted by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26470,6 +26554,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="User rocket.cat unmuted by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26638,6 +26723,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="rocket.cat was set admin by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26806,6 +26892,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="rocket.cat is no longer admin by diego.mello"
                 style={
                   Array [
                     Object {
@@ -26974,6 +27061,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Room description changed to: new description by diego.mello"
                 style={
                   Array [
                     Object {
@@ -27142,6 +27230,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Room announcement changed to: new announcement by diego.mello"
                 style={
                   Array [
                     Object {
@@ -27310,6 +27399,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Room topic changed to: new topic by diego.mello"
                 style={
                   Array [
                     Object {
@@ -27478,6 +27568,7 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <Text
+                accessibilityLabel="Room type changed to: public by diego.mello"
                 style={
                   Array [
                     Object {
@@ -27716,6 +27807,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
                       Array [
@@ -27959,6 +28051,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Italic with single "
                     numberOfLines={0}
                     style={
                       Array [
@@ -27985,6 +28078,7 @@ exports[`Storyshots Message list message 1`] = `
                     Italic with single 
                   </Text>
                   <Text
+                    accessibilityLabel="underscore"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28014,6 +28108,7 @@ exports[`Storyshots Message list message 1`] = `
                     underscore
                   </Text>
                   <Text
+                    accessibilityLabel=" or double "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28040,6 +28135,7 @@ exports[`Storyshots Message list message 1`] = `
                      or double 
                   </Text>
                   <Text
+                    accessibilityLabel="underscores"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28069,6 +28165,7 @@ exports[`Storyshots Message list message 1`] = `
                     underscores
                   </Text>
                   <Text
+                    accessibilityLabel=". Bold with single "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28095,6 +28192,7 @@ exports[`Storyshots Message list message 1`] = `
                     . Bold with single 
                   </Text>
                   <Text
+                    accessibilityLabel="asterisk"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28124,6 +28222,7 @@ exports[`Storyshots Message list message 1`] = `
                     asterisk
                   </Text>
                   <Text
+                    accessibilityLabel=" or double "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28150,6 +28249,7 @@ exports[`Storyshots Message list message 1`] = `
                      or double 
                   </Text>
                   <Text
+                    accessibilityLabel="asterisks"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28179,6 +28279,7 @@ exports[`Storyshots Message list message 1`] = `
                     asterisks
                   </Text>
                   <Text
+                    accessibilityLabel=". Strikethrough with single "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28205,6 +28306,7 @@ exports[`Storyshots Message list message 1`] = `
                     . Strikethrough with single 
                   </Text>
                   <Text
+                    accessibilityLabel="Strikethrough"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28234,6 +28336,7 @@ exports[`Storyshots Message list message 1`] = `
                     Strikethrough
                   </Text>
                   <Text
+                    accessibilityLabel=" or double "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28260,6 +28363,7 @@ exports[`Storyshots Message list message 1`] = `
                      or double 
                   </Text>
                   <Text
+                    accessibilityLabel="Strikethrough"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28509,6 +28613,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H1"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28545,6 +28650,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H2"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28581,6 +28687,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H3"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28617,6 +28724,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H4"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28653,6 +28761,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H5"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28689,6 +28798,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="H6"
                     numberOfLines={0}
                     style={
                       Array [
@@ -28930,6 +29040,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Support "
                     numberOfLines={0}
                     style={
                       Array [
@@ -28969,6 +29080,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="Google"
                       numberOfLines={0}
                       style={
                         Array [
@@ -29002,6 +29114,7 @@ exports[`Storyshots Message list message 1`] = `
                     </Text>
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -29041,6 +29154,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="I\`m an inline-style link"
                       numberOfLines={0}
                       style={
                         Array [
@@ -29074,6 +29188,7 @@ exports[`Storyshots Message list message 1`] = `
                     </Text>
                   </Text>
                   <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -29113,6 +29228,7 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="https://google.com"
                       numberOfLines={0}
                       style={
                         Array [
@@ -29594,6 +29710,7 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Inline "
                     numberOfLines={0}
                     style={
                       Array [
@@ -29637,6 +29754,7 @@ exports[`Storyshots Message list message 1`] = `
                     code
                   </Text>
                   <Text
+                    accessibilityLabel=" has "
                     numberOfLines={0}
                     style={
                       Array [
@@ -29680,6 +29798,7 @@ exports[`Storyshots Message list message 1`] = `
                     back-ticks around
                   </Text>
                   <Text
+                    accessibilityLabel=" it."
                     numberOfLines={0}
                     style={
                       Array [
@@ -29971,6 +30090,7 @@ exports[`Storyshots Message list message 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Quote"
                         numberOfLines={0}
                         style={
                           Array [
@@ -30304,6 +30424,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="First Header"
                                 numberOfLines={0}
                                 style={
                                   Array [
@@ -30357,6 +30478,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="Second Header"
                                 numberOfLines={0}
                                 style={
                                   Array [
@@ -30429,6 +30551,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="Content from cell 1"
                                 numberOfLines={0}
                                 style={
                                   Array [
@@ -30482,6 +30605,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="Content from cell 2"
                                 numberOfLines={0}
                                 style={
                                   Array [
@@ -30551,6 +30675,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="Content in the first column"
                                 numberOfLines={0}
                                 style={
                                   Array [
@@ -30604,6 +30729,7 @@ exports[`Storyshots Message list message 1`] = `
                               }
                             >
                               <Text
+                                accessibilityLabel="Content in the second column"
                                 numberOfLines={0}
                                 style={
                                   Array [

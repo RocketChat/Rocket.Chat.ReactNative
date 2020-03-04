@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
-import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
+import Markdown from '../../../containers/markdown';
 
 const androidMarginLeft = isTablet ? 0 : 10;
 
@@ -75,12 +74,14 @@ const HeaderTitle = React.memo(({
 		title = I18n.t('Connecting');
 	}
 	return (
-		<Text
+		<Markdown
+			preview
+			msg={title}
 			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
 			numberOfLines={1}
 			testID={`room-view-title-${ title }`}
-		>{title}
-		</Text>
+			theme={theme}
+		/>
 	);
 });
 
@@ -102,12 +103,6 @@ const Header = React.memo(({
 			scale = 0.8;
 		}
 	}
-	if (title) {
-		title = shortnameToUnicode(title);
-		if (tmid) {
-			title = removeMarkdown(title);
-		}
-	}
 
 	const onPress = () => {
 		if (!tmid) {
@@ -116,7 +111,11 @@ const Header = React.memo(({
 	};
 
 	return (
-		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
+		<TouchableOpacity
+			testID='room-view-header-actions'
+			onPress={onPress}
+			style={[styles.container, { width: width - widthOffset }]}
+		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
