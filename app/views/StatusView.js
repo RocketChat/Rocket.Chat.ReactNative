@@ -63,7 +63,11 @@ class StatusView extends React.Component {
 		headerLeft: <CancelModalButton onPress={navigation.getParam('close', () => {})} />,
 		headerRight: (
 			<CustomHeaderButtons>
-				<Item title={I18n.t('Done')} onPress={navigation.getParam('submit', () => {})} />
+				<Item
+					title={I18n.t('Done')}
+					onPress={navigation.getParam('submit', () => {})}
+					testID='status-view-submit'
+				/>
 			</CustomHeaderButtons>
 		),
 		...themedHeader(screenProps.theme)
@@ -141,9 +145,17 @@ class StatusView extends React.Component {
 					value={statusText}
 					containerStyle={styles.inputContainer}
 					onChangeText={text => this.setState({ statusText: text })}
-					left={<Status style={styles.inputLeft} size={12} status={user.status} />}
+					left={(
+						<Status
+							testID={`status-view-current-${ user.status }`}
+							style={styles.inputLeft}
+							status={user.status}
+							size={12}
+						/>
+					)}
 					inputStyle={styles.inputStyle}
 					placeholder={I18n.t('What_are_you_doing_right_now')}
+					testID='status-view-input'
 				/>
 				<Separator theme={theme} />
 			</>
