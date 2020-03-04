@@ -34,6 +34,7 @@ export default StyleSheet.create({
 	},
 	item: {
 		height: 48,
+		maxWidth: '85%',
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
