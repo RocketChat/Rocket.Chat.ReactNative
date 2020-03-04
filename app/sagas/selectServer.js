@@ -1,5 +1,5 @@
 import {
-	put, take, takeLatest, fork, cancel, race
+	put, take, takeLatest, fork, cancel, race, select
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
@@ -133,9 +133,12 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
-			const showFormLogin = yield RocketChat.getSetting({ server, setting: 'Accounts_ShowFormLogin' });
 			const loginServicesLength = yield RocketChat.getLoginServices(server);
-			if (loginServicesLength === 0 && showFormLogin) {
+			yield RocketChat.getLoginSettings({ server });
+
+			const showFormLogin = yield select(state => state.settings.Accounts_ShowFormLogin);
+
+			if (!loginServicesLength && showFormLogin) {
 				Navigation.navigate('LoginView');
 			} else {
 				Navigation.navigate('LoginSignupView');
