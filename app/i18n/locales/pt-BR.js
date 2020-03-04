@@ -427,6 +427,7 @@ export default {
 	You_can_search_using_RegExp_eg: 'Você pode usar expressões regulares, por exemplo `/^text$/i`',
 	You_colon: 'Você: ',
 	you_were_mentioned: 'você foi mencionado',
+	You_were_removed_from_channel: 'Você foi removido de {{channel}}',
 	you: 'você',
 	You: 'Você',
 	Your_invite_link_will_expire_after__usesLeft__uses: 'Seu link de convite irá vencer depois de {{usesLeft}} usos.',

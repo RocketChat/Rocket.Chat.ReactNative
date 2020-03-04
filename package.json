@@ -56,7 +56,6 @@
     "react-native-bootsplash": "^1.1.0",
     "react-native-console-time-polyfill": "^1.2.1",
     "react-native-device-info": "^2.3.0",
-    "react-native-dialog": "^5.6.0",
     "react-native-document-picker": "^3.2.4",
     "react-native-easy-toast": "^1.2.0",
     "react-native-fast-image": "^7.0.2",
@@ -81,6 +80,7 @@
     "react-native-platform-touchable": "^1.1.1",
     "react-native-popover-view": "^2.0.5",
     "react-native-progress": "^4.0.3",
+    "react-native-prompt-android": "^1.1.0",
     "react-native-reanimated": "1.4.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-screens": "^2.0.0-alpha.3",
@@ -128,7 +128,7 @@
     "babel-runtime": "^6.26.0",
     "bugsnag-sourcemaps": "^1.2.2",
     "codecov": "3.5.0",
-    "detox": "12.11.3",
+    "detox": "^15.2.2",
     "emotion-theming": "^10.0.19",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "17.1.1",
@@ -176,13 +176,13 @@
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/RocketChatRN.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 7"
+        "name": "iPhone 11 Pro"
       },
       "ios.sim.release": {
         "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 7"
+        "name": "iPhone 11 Pro"
       }
     }
   }

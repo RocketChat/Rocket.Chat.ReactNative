@@ -229,6 +229,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
+		EventEmitter.addEventListener('removed', this.handleRemoved);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -311,6 +312,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
+		EventEmitter.removeListener('removed', this.handleRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -549,6 +551,15 @@ class RoomView extends React.Component {
 	handleConnected = () => {
 		this.init();
 		EventEmitter.removeListener('connected', this.handleConnected);
+	}
+
+	handleRemoved = ({ rid }) => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+		if (rid === this.rid) {
+			navigation.pop();
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
+		}
 	}
 
 	internalSetState = (...args) => {
@@ -854,7 +865,7 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -868,7 +879,7 @@ class RoomView extends React.Component {
 		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]} accessibilityLabel={I18n.t('This_room_is_read_only')}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}

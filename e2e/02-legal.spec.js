@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { tapBack } = require('./helpers/app');
 
 describe('Legal screen', () => {
@@ -21,10 +20,6 @@ describe('Legal screen', () => {
 	
 		it('should have privacy policy button', async() => {
 			await expect(element(by.id('legal-privacy-button'))).toBeVisible();
-		});
-
-		after(async() => {
-			takeScreenshot();
 		});
 	});
 
@@ -47,10 +42,6 @@ describe('Legal screen', () => {
 			await tapBack();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });

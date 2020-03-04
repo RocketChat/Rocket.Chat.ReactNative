@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const data = require('./data');
 
 describe('Onboarding', () => {
@@ -25,10 +24,6 @@ describe('Onboarding', () => {
 		it('should have "Create a new workspace"', async() => {
 			await expect(element(by.id('create-workspace-button'))).toBeVisible();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
@@ -40,12 +35,12 @@ describe('Onboarding', () => {
 			await element(by.id('join-community-button')).tap();
 			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('welcome-view'))).toBeVisible();
-			await waitFor(element(by.text('Rocket.Chat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.text('Rocket.Chat'))).toBeVisible();
+			// await waitFor(element(by.text('Rocket.Chat'))).toBeVisible().withTimeout(60000);
+			// await expect(element(by.text('Rocket.Chat'))).toBeVisible();
 		});
 
 		it('should navigate to new server', async() => {
-			await device.reloadReactNative();
+			await device.launchApp({ newInstance: true });
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('connect-server-button')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
@@ -55,7 +50,7 @@ describe('Onboarding', () => {
 		it('should enter an invalid server and get error', async() => {
 			await element(by.id('new-server-view-input')).replaceText('invalidtest');
 			await element(by.id('new-server-view-button')).tap();
-			const errorText = 'The URL you entered is invalid. Check it and try again, please!';
+			const errorText = 'Oops!';
 			await waitFor(element(by.text(errorText))).toBeVisible().withTimeout(60000);
 			await expect(element(by.text(errorText))).toBeVisible();
 		});
@@ -69,7 +64,7 @@ describe('Onboarding', () => {
 		});
 
 		it('should enter a valid server without login services and navigate to login', async() => {
-			await device.reloadReactNative();
+			await device.launchApp({ newInstance: true });
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('connect-server-button')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
@@ -77,11 +72,6 @@ describe('Onboarding', () => {
 			await element(by.id('new-server-view-button')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('login-view'))).toBeVisible();
-		});
-
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 	});
 });
