@@ -72,6 +72,7 @@ export default StyleSheet.create({
 	},
 	chipText: {
 		paddingHorizontal: 8,
+		flexShrink: 1,
 		...sharedStyles.textMedium,
 		fontSize: 14
 	},
