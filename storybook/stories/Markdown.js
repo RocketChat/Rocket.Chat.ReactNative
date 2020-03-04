@@ -176,7 +176,8 @@ export default ({ theme }) => {
 			<StoriesSeparator style={styles.separator} title='Block Quote' theme={theme} />
 			<View style={styles.container}>
 				<Markdown
-					msg='> This is Block Quote'
+					msg={`> This is block quote
+this is a normal line`}
 					theme={theme}
 				/>
 			</View>
@@ -225,7 +226,6 @@ export default ({ theme }) => {
 				<Markdown
 					msg='This is `inline code`'
 					theme={theme}
-					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
 				/>
 			</View>
 
@@ -237,7 +237,6 @@ export default ({ theme }) => {
 Code block
 ```'
 					theme={theme}
-					channels={[{ _id: 'TESTCHANNEL', name: 'testChannel' }]}
 				/>
 			</View>
 
