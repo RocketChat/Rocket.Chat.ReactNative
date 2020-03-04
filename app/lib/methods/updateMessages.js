@@ -74,17 +74,29 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 			// Update
 			msgsToUpdate = msgsToUpdate.map((message) => {
 				const newMessage = update.find(m => m._id === message.id);
+				if (message._hasPendingUpdate) {
+					console.log(message);
+					return;
+				}
 				return message.prepareUpdate(protectedFunction((m) => {
 					Object.assign(m, newMessage);
 				}));
 			});
 			threadsToUpdate = threadsToUpdate.map((thread) => {
+				if (thread._hasPendingUpdate) {
+					console.log(thread);
+					return;
+				}
 				const newThread = allThreads.find(t => t._id === thread.id);
 				return thread.prepareUpdate(protectedFunction((t) => {
 					Object.assign(t, newThread);
 				}));
 			});
 			threadMessagesToUpdate = threadMessagesToUpdate.map((threadMessage) => {
+				if (threadMessage._hasPendingUpdate) {
+					console.log(threadMessage);
+					return;
+				}
 				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
 				return threadMessage.prepareUpdate(protectedFunction((tm) => {
 					Object.assign(tm, newThreadMessage);

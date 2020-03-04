@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import Dialog from 'react-native-dialog';
+import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -61,7 +61,6 @@ class ProfileView extends React.Component {
 	}
 
 	state = {
-		showPasswordAlert: false,
 		saving: false,
 		name: null,
 		username: null,
@@ -155,19 +154,11 @@ class ProfileView extends React.Component {
 		);
 	}
 
-	closePasswordAlert = () => {
-		this.setState({ showPasswordAlert: false });
-	}
-
 	handleError = (e, func, action) => {
 		if (e.data && e.data.errorType === 'error-too-many-requests') {
 			return showErrorAlert(e.data.error);
 		}
-		showErrorAlert(
-			I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }),
-			'',
-			() => this.setState({ showPasswordAlert: false })
-		);
+		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	}
 
 	submit = async() => {
@@ -212,7 +203,26 @@ class ProfileView extends React.Component {
 
 		const requirePassword = !!params.email || newPassword;
 		if (requirePassword && !params.currentPassword) {
-			return this.setState({ showPasswordAlert: true, saving: false });
+			this.setState({ saving: false });
+			prompt(
+				I18n.t('Please_enter_your_password'),
+				I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
+				[
+					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
+					{
+						text: I18n.t('Save'),
+						onPress: (p) => {
+							this.setState({ currentPassword: p });
+							this.submit();
+						}
+					}
+				],
+				{
+					type: 'secure-text',
+					cancelable: false
+				}
+			);
+			return;
 		}
 
 		try {
@@ -233,7 +243,7 @@ class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				this.setState({ saving: false, showPasswordAlert: false });
+				this.setState({ saving: false });
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
@@ -409,7 +419,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, showPasswordAlert
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
 		} = this.state;
 		const {
 			baseUrl,
@@ -533,22 +543,6 @@ class ProfileView extends React.Component {
 							loading={saving}
 							theme={theme}
 						/>
-						<Dialog.Container visible={showPasswordAlert}>
-							<Dialog.Title>
-								{I18n.t('Please_enter_your_password')}
-							</Dialog.Title>
-							<Dialog.Description>
-								{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-							</Dialog.Description>
-							<Dialog.Input
-								onChangeText={value => this.setState({ currentPassword: value })}
-								secureTextEntry
-								testID='profile-view-typed-password'
-								style={styles.dialogInput}
-							/>
-							<Dialog.Button label={I18n.t('Cancel')} onPress={this.closePasswordAlert} />
-							<Dialog.Button label={I18n.t('Save')} onPress={this.submit} />
-						</Dialog.Container>
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

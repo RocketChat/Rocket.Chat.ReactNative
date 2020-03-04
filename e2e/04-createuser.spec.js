@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
 const { logout, sleep } = require('./helpers/app');
 const data = require('./data');
 
@@ -19,7 +18,7 @@ async function navigateToRegister() {
 
 describe('Create user screen', () => {
 	before(async() => {
-		await device.reloadReactNative();
+		await device.launchApp({ newInstance: true });
 		await navigateToRegister();
 	});
 
@@ -51,15 +50,11 @@ describe('Create user screen', () => {
 		it('should have legal button', async() => {
 			await expect(element(by.id('register-view-more'))).toBeVisible();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', () => {
 		// FIXME: Detox isn't able to check if it's tappable: https://github.com/wix/Detox/issues/246
-		// it.only('should submit invalid email and do nothing', async() => {
+		// it('should submit invalid email and do nothing', async() => {
 		// 	const invalidEmail = 'invalidemail';
 		// 	await element(by.id('register-view-name')).replaceText(data.user);
 		// 	await element(by.id('register-view-username')).replaceText(data.user);
@@ -74,18 +69,20 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-email')).replaceText(data.existingEmail);
 			await element(by.id('register-view-password')).replaceText(data.password);
+			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0)).toExist().withTimeout(10000);
 			await expect(element(by.text('Email already exists. [403]')).atIndex(0)).toExist();
 			await element(by.text('OK')).tap();
 		});
 
-		it('should submit email already taken and raise error', async() => {
+		it('should submit username already taken and raise error', async() => {
 			const invalidEmail = 'invalidemail';
 			await element(by.id('register-view-name')).replaceText(data.user);
 			await element(by.id('register-view-username')).replaceText(data.existingName);
 			await element(by.id('register-view-email')).replaceText(data.email);
 			await element(by.id('register-view-password')).replaceText(data.password);
+			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Username is already in use')).atIndex(0)).toExist().withTimeout(10000);
 			await expect(element(by.text('Username is already in use')).atIndex(0)).toExist();
@@ -97,13 +94,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-username')).replaceText(data.user);
 			await element(by.id('register-view-email')).replaceText(data.email);
 			await element(by.id('register-view-password')).replaceText(data.password);
+			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		});
-
-		afterEach(async() => {
-			takeScreenshot();
 		});
 
 		after(async() => {
