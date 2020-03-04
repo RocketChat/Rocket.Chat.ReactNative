@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet,Linking } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
-
+import { appColors } from '../theme/colors';
+import {ContentType} from '../enums/content-type';
 const styles = StyleSheet.create({
     item: {
         padding: 30,
@@ -44,22 +45,51 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 7,
         marginTop: 5
-    }
+    },
+    linkText:{
+        color:appColors.lightPrimary,
+
+    },
 
 });
+const renderLinkInfo = (item:ThreadModel) => {
+    if(item.assetMetadata)
+        return <Text>{item.assetMetadata.title} - {item.assetMetadata.description} - {item.assetMetadata.image}</Text>;
+    else
+        return null;
+ };
+ const renderImageInfo = (item:ThreadModel) => {
+    if(item.assetMetadata)
+        return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
+    else
+        return;
+ };
+ const showLink = (item:ThreadModel) => {
+    if(item.type == ContentType.LINK && item.assetUrl)
+        return <Text 
+            style={[styles.linkText]}
+            onPress={() => Linking.openURL('www.google.com')}
+            >
+            {item.assetUrl}
+            </Text>;
+    else
+        return;
+ };
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}>Dick Advocaat  ●  {item.createdAt}.</Text>
-
-
+    <Text style={[styles.creatorText]}>{item.createdByUserId?item.createdByUserId:"None"}  ●  {item.createdAt}.</Text>
+    <Text style={[styles.creatorText]}>{item.type}</Text>
+    {/* <Text>{renderLinkInfo(item)}</Text> */}
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>
             <Text style={[styles.threadTitle]}>{item.title}</Text>
             <Text style={[styles.threadText]}>{item.description}</Text>
             <Text style={[styles.threadText]}>{item.type}</Text>
+            {showLink(item)}
         </View>
-        <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
+        {renderImageInfo(item)}
+        {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
     </View>
 </View>
 };
