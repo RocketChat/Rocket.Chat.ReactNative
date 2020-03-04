@@ -1,9 +1,15 @@
-import React from 'react';
 import { View, Text, Image, StyleSheet,Linking } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
 import { appColors } from '../theme/colors';
 import {ContentType} from '../enums/content-type';
+import React, { useEffect, useState } from 'react';
+import Urls from "../../../../app/containers/message/Urls"
+import isURL from 'is-url'
+import { AssetMetadata } from '../models/asset-metadata';
+import { PREVIEW_METADATA } from '../api/queries/threads.queries';
+import { useQuery } from 'react-apollo';
+
 const styles = StyleSheet.create({
     item: {
         padding: 30,
@@ -77,6 +83,12 @@ const renderLinkInfo = (item:ThreadModel) => {
  };
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
+    const renderPreview = () => {
+        if (item.assetMetadata) {
+            return <Urls urls={[item.assetMetadata!]} user={{}} />
+        }
+    };
+
     return <View style={[styles.item]}>
     <Text style={[styles.creatorText]}>{item.createdByUserId?item.createdByUserId:"None"}  ●  {item.createdAt}.</Text>
     <Text style={[styles.creatorText]}>{item.type}</Text>
@@ -89,7 +101,10 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             {showLink(item)}
         </View>
         {renderImageInfo(item)}
+        {renderPreview()}
         {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
+
     </View>
-</View>
+    </View>
+
 };
