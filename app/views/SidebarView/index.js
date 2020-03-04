@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, FlatList, SafeAreaView
+	ScrollView, Text, View, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
-import prompt from 'react-native-prompt-android';
 
-import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -20,15 +16,10 @@ import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import database from '../../lib/database';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
-import Loading from '../../containers/Loading';
-
-const keyExtractor = item => item.id;
+import Navigation from '../../lib/Navigation';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -59,31 +50,23 @@ class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
-			loading: false,
-			isAdmin: false,
-			status: []
+			isAdmin: false
 		};
 	}
 
 	componentDidMount() {
-		this.setStatus();
 		this.setIsAdmin();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { user, loadingServer } = this.props;
-		if (nextProps.user && user && user.language !== nextProps.user.language) {
-			this.setStatus();
-		}
+		const { loadingServer } = this.props;
 		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			status, showStatus, loading, isAdmin
-		} = this.state;
+		const { showStatus, isAdmin } = this.state;
 		const {
 			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
 		} = this.props;
@@ -125,68 +108,10 @@ class Sidebar extends Component {
 		if (nextProps.useRealName !== useRealName) {
 			return true;
 		}
-		if (!equal(nextState.status, status)) {
-			return true;
-		}
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
-		if (nextState.loading !== loading) {
-			return true;
-		}
 		return false;
-	}
-
-	setStatus = () => {
-		this.setState({
-			status: [{
-				id: 'online',
-				name: I18n.t('Online')
-			}, {
-				id: 'busy',
-				name: I18n.t('Busy')
-			}, {
-				id: 'away',
-				name: I18n.t('Away')
-			}, {
-				id: 'offline',
-				name: I18n.t('Invisible')
-			}]
-		});
-	}
-
-	setCustomStatus = () => {
-		const { user } = this.props;
-		prompt(
-			I18n.t('Set_custom_status'),
-			'',
-			[
-				{ text: I18n.t('Cancel'), onPress: () => {} },
-				{
-					text: I18n.t('Set_status'),
-					onPress: async(statusText) => {
-						this.setState({ loading: true });
-
-						try {
-							const result = await RocketChat.saveUserProfile({ statusText }, {});
-							if (result.success) {
-								EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
-							} else {
-								EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
-							}
-						} catch {
-							EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
-						}
-
-						this.setState({ loading: false });
-					}
-				}
-			],
-			{
-				defaultValue: user.statusText,
-				cancelable: true
-			}
-		);
 	}
 
 	async setIsAdmin() {
@@ -210,32 +135,6 @@ class Sidebar extends Component {
 	sidebarNavigate = (route) => {
 		const { navigation } = this.props;
 		navigation.navigate(route);
-	}
-
-	toggleStatus = () => {
-		animateNextTransition();
-		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
-	}
-
-	renderStatusItem = ({ item }) => {
-		const { user } = this.props;
-		return (
-			<SidebarItem
-				text={item.name}
-				left={<Status style={styles.status} size={12} status={item.id} />}
-				current={user.status === item.id}
-				onPress={() => {
-					this.toggleStatus();
-					if (user.status !== item.id) {
-						try {
-							RocketChat.setUserPresenceDefaultStatus(item.id);
-						} catch (e) {
-							log(e);
-						}
-					}
-				}}
-			/>
-		);
 	}
 
 	renderNavigation = () => {
@@ -277,33 +176,20 @@ class Sidebar extends Component {
 		);
 	}
 
-	renderStatus = () => {
-		const { status } = this.state;
-		const { user } = this.props;
-		return (
-			<FlatList
-				data={status}
-				extraData={user}
-				renderItem={this.renderStatusItem}
-				keyExtractor={keyExtractor}
-			/>
-		);
-	}
-
 	renderCustomStatus = () => {
-		const { theme, user } = this.props;
+		const { user, theme } = this.props;
 		return (
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
-				left={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={this.setCustomStatus}
+				left={<Status style={styles.status} size={12} status={user && user.status} />}
+				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+				onPress={() => Navigation.navigate('StatusView')}
 				testID='sidebar-custom-status'
 			/>
 		);
 	}
 
 	render() {
-		const { showStatus, loading } = this.state;
 		const {
 			user, Site_Name, baseUrl, useRealName, split, theme
 		} = this.props;
@@ -324,12 +210,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<Touch
-						onPress={this.toggleStatus}
-						testID='sidebar-toggle-status'
-						style={styles.header}
-						theme={theme}
-					>
+					<View style={styles.header} theme={theme}>
 						<Avatar
 							text={user.username}
 							size={30}
@@ -340,24 +221,23 @@ class Sidebar extends Component {
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
-								<Status style={styles.status} size={12} status={user && user.status} theme={theme} />
 								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
 							</View>
 							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
-						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
-					</Touch>
+					</View>
 
 					<Separator theme={theme} />
 
 					{this.renderCustomStatus()}
-					{!split ? <Separator theme={theme} /> : null}
-
-					{!showStatus && !split ? this.renderNavigation() : null}
-					{showStatus ? this.renderStatus() : null}
-					{!split ? <Separator theme={theme} /> : null}
+					{!split ? (
+						<>
+							<Separator theme={theme} />
+							{this.renderNavigation()}
+							<Separator theme={theme} />
+						</>
+					) : null}
 				</ScrollView>
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}
