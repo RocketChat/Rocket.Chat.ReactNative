@@ -60,7 +60,7 @@ export default StyleSheet.create({
 	chips: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginRight: 16
+		marginRight: 50
 	},
 	chip: {
 		flexDirection: 'row',

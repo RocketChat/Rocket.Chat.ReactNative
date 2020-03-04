@@ -32,7 +32,7 @@ Chip.propTypes = {
 };
 
 const Chips = ({ items, onSelect, theme }) => (
-	<View style={[styles.chips, { marginRight: 54 }]}>
+	<View style={styles.chips}>
 		{items.map(item => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} theme={theme} />)}
 	</View>
 );
