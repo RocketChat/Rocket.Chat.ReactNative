@@ -24,7 +24,7 @@ export const LOGIN = gql`
  * @returns {error} if User already exists
  */
 export const REGISTER = gql`
-    mutation RegisterApp($user: User!) {
+    mutation RegisterApp($user: UserInput!) {
         register(user: $user) {
             accessToken,
             refreshToken,
