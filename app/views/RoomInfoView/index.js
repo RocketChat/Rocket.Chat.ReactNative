@@ -175,7 +175,7 @@ class RoomInfoView extends React.Component {
 				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 				<Markdown
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-					msg={content || `__${ I18n.t(`No_${ label.toLowerCase() }_provided`) }__`}
+					msg={content || `__${ I18n.t('No_label_provided', { label: label.toLowerCase() }) }__`}
 					theme={theme}
 				/>
 			</View>
