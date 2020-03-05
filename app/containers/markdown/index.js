@@ -78,6 +78,7 @@ class Markdown extends PureComponent {
 		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		navToRoomInfo: PropTypes.func,
+		navToRoomPreview: PropTypes.func,
 		preview: PropTypes.bool,
 		theme: PropTypes.string,
 		style: PropTypes.array
@@ -229,13 +230,13 @@ class Markdown extends PureComponent {
 
 	renderHashtag = ({ hashtag }) => {
 		const {
-			channels, navToRoomInfo, style, theme
+			channels, navToRoomPreview, style, theme
 		} = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
-				navToRoomInfo={navToRoomInfo}
+				navToRoomPreview={navToRoomPreview}
 				theme={theme}
 				style={style}
 			/>

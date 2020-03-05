@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Hashtag = React.memo(({
-	hashtag, channels, navToRoomInfo, style = [], theme
+	hashtag, channels, navToRoomPreview, style = [], theme
 }) => {
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
@@ -15,7 +15,7 @@ const Hashtag = React.memo(({
 			t: 'c',
 			rid: channels[index]._id
 		};
-		navToRoomInfo(navParam);
+		navToRoomPreview(navParam);
 	};
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
@@ -37,7 +37,7 @@ const Hashtag = React.memo(({
 
 Hashtag.propTypes = {
 	hashtag: PropTypes.string,
-	navToRoomInfo: PropTypes.func,
+	navToRoomPreview: PropTypes.func,
 	style: PropTypes.array,
 	theme: PropTypes.string,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])

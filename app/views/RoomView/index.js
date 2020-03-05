@@ -678,7 +678,12 @@ class RoomView extends React.Component {
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
+			alert('Base NavToRoomInfo');
 		}
+	}
+
+	navToRoomPreview = () => {
+		alert('Enter Channel');
 	}
 
 	callJitsi = () => {
@@ -783,6 +788,7 @@ class RoomView extends React.Component {
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
 				navToRoomInfo={this.navToRoomInfo}
+				navToRoomPreview={this.navToRoomPreview}
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
