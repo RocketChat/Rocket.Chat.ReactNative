@@ -678,12 +678,13 @@ class RoomView extends React.Component {
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
-			alert('Base NavToRoomInfo');
 		}
 	}
 
-	navToRoomPreview = () => {
-		alert('Enter Channel');
+	navToRoomPreview = ({ rid, name, type }) => {
+		const { navigation } = this.props;
+
+		navigation.push('RoomView', { rid, name, type });
 	}
 
 	callJitsi = () => {

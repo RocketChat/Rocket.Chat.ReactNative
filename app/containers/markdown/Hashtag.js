@@ -11,11 +11,8 @@ const Hashtag = React.memo(({
 }) => {
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
-		const navParam = {
-			t: 'c',
-			rid: channels[index]._id
-		};
-		navToRoomPreview(navParam);
+		const { _id, name } = channels[index];
+		navToRoomPreview({ rid: _id, name, type: 'c' });
 	};
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
