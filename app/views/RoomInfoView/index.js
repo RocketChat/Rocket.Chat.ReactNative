@@ -172,7 +172,7 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 				<Markdown
 					testID={testID}
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
@@ -222,7 +222,7 @@ class RoomInfoView extends React.Component {
 				return null;
 			}
 			return this.renderItem({
-				label: 'Timezone',
+				label: I18n.t('Timezone'),
 				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`,
 				testID: 'room-info-view-timezone'
 			});
@@ -249,9 +249,8 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderBroadcast = () => this.renderItem({
-		label: 'Broadcast_Channel',
-		content: I18n.t('Broadcast_channel_Description'),
-		testID: 'room-info-view-broadcast'
+		label: I18n.t('Broadcast_Channel'),
+		content: I18n.t('Broadcast_channel_Description')
 	});
 
 	renderCustomFields = () => {
@@ -309,9 +308,9 @@ class RoomInfoView extends React.Component {
 		const { description, topic, announcement } = room;
 		return (
 			<>
-				{this.renderItem({ label: 'Description', content: description })}
-				{this.renderItem({ label: 'Topic', content: topic })}
-				{this.renderItem({ label: 'Announcement', content: announcement })}
+				{this.renderItem({ label: I18n.t('Description'), content: description })}
+				{this.renderItem({ label: I18n.t('Topic'), content: topic })}
+				{this.renderItem({ label: I18n.t('Announcement'), content: announcement })}
 				{room.broadcast ? this.renderBroadcast() : null}
 			</>
 		);
