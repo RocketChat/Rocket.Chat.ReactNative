@@ -787,7 +787,7 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
 	},
-	eraseRoom(roomId, t) {
+	deleteRoom(roomId, t) {
 		// RC 0.49.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.delete`, { roomId });
 	},

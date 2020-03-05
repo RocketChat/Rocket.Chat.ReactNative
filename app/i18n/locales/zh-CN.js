@@ -144,7 +144,7 @@ export default {
 	Dont_Have_An_Account: '还没有账号?',
 	Do_you_really_want_to_key_this_room_question_mark: '你真的想要{{key}}这个房间吗?',
 	edit: '编辑',
-	erasing_room: '正抹去房间',
+	deleting_room: '正抹去房间',
 	Edit: '编辑',
 	Email_or_password_field_is_empty: '邮件或密码字段为空',
 	Email: '邮箱',

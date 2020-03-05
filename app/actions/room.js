@@ -8,9 +8,9 @@ export function leaveRoom(rid, t) {
 	};
 }
 
-export function eraseRoom(rid, t) {
+export function deleteRoom(rid, t) {
 	return {
-		type: types.ROOM.ERASE,
+		type: types.ROOM.DELETE,
 		rid,
 		t
 	};
