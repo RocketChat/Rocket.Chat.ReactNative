@@ -144,7 +144,7 @@ export default async function(rid, msg, tmid, user) {
 					_id: user.id || '1',
 					username: user.username
 				};
-				if (tmid) {
+				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
 					m.tlm = messageDate;
 					m.tmsg = tMessageRecord.msg;
