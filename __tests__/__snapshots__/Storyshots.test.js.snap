@@ -464,6 +464,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         numberOfLines={1}
         style={
           Array [
@@ -482,6 +483,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </Text>
       <Text
+        accessibilityLabel="a b c d e"
         numberOfLines={1}
         style={
           Array [
@@ -500,6 +502,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         a b c d e
       </Text>
       <Text
+        accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
         numberOfLines={1}
         style={
           Array [
@@ -518,6 +521,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         @rocket.cat @name1 @all @here @unknown #general #unknown
       </Text>
       <Text
+        accessibilityLabel="Testing: 😃 👍 :marioparty:"
         numberOfLines={1}
         style={
           Array [
@@ -18799,6 +18803,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -19030,6 +19035,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -19261,6 +19267,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -19492,6 +19499,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -19723,6 +19731,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                   numberOfLines={1}
                   style={
                     Array [
@@ -19954,6 +19963,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                   numberOfLines={1}
                   style={
                     Array [
@@ -20671,6 +20681,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -20819,6 +20830,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                   numberOfLines={1}
                   style={
                     Array [
@@ -21219,6 +21231,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="I'm fine!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -21367,6 +21380,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="Cool!"
                   numberOfLines={1}
                   style={
                     Array [
@@ -21515,6 +21529,7 @@ exports[`Storyshots Message list message 1`] = `
             >
               <View>
                 <Text
+                  accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                   numberOfLines={1}
                   style={
                     Array [
