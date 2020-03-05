@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
 });
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
+    const [performBall, { data: ballData, loading: ballLoading }] = useMutation<{ createBall: Boolean }>(CREATE_BALL);
+
     const renderPreview = () => {
         if (item.assetMetadata) {
             return <Urls urls={[item.assetMetadata!]} user={{}} />
@@ -113,14 +115,12 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         fetchPolicy: "cache-and-network"
     });
 
-    // This one does not work
     const onBallPress = async () => {
-        alert(item._id);
-        await useMutation<{ createBall: Boolean }>(CREATE_BALL, {
+        await performBall({
             variables: {
                 threadId: item._id!
             }
-        })
+        });
     };
 
     // WIP
