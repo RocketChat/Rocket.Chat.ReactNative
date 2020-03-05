@@ -54,6 +54,7 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Markdown from '../../containers/markdown';
+import Navigation from '../../lib/Navigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -555,9 +556,8 @@ class RoomView extends React.Component {
 
 	handleRoomRemoved = ({ rid }) => {
 		const { room } = this.state;
-		const { navigation } = this.props;
 		if (rid === this.rid) {
-			navigation.pop();
+			Navigation.navigate('RoomsListView');
 			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
