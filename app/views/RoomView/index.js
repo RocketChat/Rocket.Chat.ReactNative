@@ -229,7 +229,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-		EventEmitter.addEventListener('removed', this.handleRemoved);
+		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -312,7 +312,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		EventEmitter.removeListener('removed', this.handleRemoved);
+		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -553,7 +553,7 @@ class RoomView extends React.Component {
 		EventEmitter.removeListener('connected', this.handleConnected);
 	}
 
-	handleRemoved = ({ rid }) => {
+	handleRoomRemoved = ({ rid }) => {
 		const { room } = this.state;
 		const { navigation } = this.props;
 		if (rid === this.rid) {
