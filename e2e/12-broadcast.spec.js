@@ -62,8 +62,7 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('room-actions-info')).tap();
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
-		await waitFor(element(by.id('room-info-view-broadcast'))).toBeVisible().withTimeout(2000);
-		await expect(element(by.id('room-info-view-broadcast'))).toBeVisible();
+		await expect(element(by.label('Broadcast Channel'))).toBeVisible();
 		await tapBack();
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(2000);
 		await tapBack();

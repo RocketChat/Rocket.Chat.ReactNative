@@ -63,18 +63,15 @@ describe('Room info screen', () => {
 			});
 	
 			it('should have description', async() => {
-				// await expect(element(by.id('room-info-view-description'))).toBeVisible();
-				await expect(element(by.label('description'))).toBeVisible();
+				await expect(element(by.label('Description'))).toBeVisible();
 			});
 	
 			it('should have topic', async() => {
-				// await expect(element(by.id('room-info-view-topic'))).toBeVisible();
-				await expect(element(by.label('topic'))).toBeVisible();
+				await expect(element(by.label('Topic'))).toBeVisible();
 			});
 	
 			it('should have announcement', async() => {
-				// await expect(element(by.id('room-info-view-announcement'))).toBeVisible();
-				await expect(element(by.label('announcement'))).toBeVisible();
+				await expect(element(by.label('Announcement'))).toBeVisible();
 			});
 	
 			it('should have edit button', async() => {

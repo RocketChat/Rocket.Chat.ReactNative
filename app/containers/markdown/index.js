@@ -375,7 +375,7 @@ class Markdown extends PureComponent {
 			m = shortnameToUnicode(m);
 			m = removeMarkdown(m);
 			return (
-				<Text style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines}>
+				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines}>
 					{m}
 				</Text>
 			);
