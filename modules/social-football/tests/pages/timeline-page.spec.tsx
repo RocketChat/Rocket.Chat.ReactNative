@@ -21,13 +21,14 @@ describe('<TimelinePage />', () => {
             result: {
                 data: {
                     getThreads: {
+                        __typename: 'PaginatedThreads',
                         threads: [
-                            { _id: 1, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 1, title: 'Test thread32', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
                         ],
                         limit: 6,
                         offset: 0,
@@ -47,11 +48,12 @@ describe('<TimelinePage />', () => {
             result: {
                 data: {
                     getThreads: {
+                        __typename: 'PaginatedThreads',
                         threads: [
-                            { _id: 7, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 8, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 7, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 8, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 9, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
                         ],
                         limit: 6,
                         offset: 6,
@@ -65,7 +67,7 @@ describe('<TimelinePage />', () => {
     it('should run without errors', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
-                return <MockedProvider mocks={mocks} addTypename={false}>
+                return <MockedProvider mocks={mocks} addTypename={true}>
                     {children}
                 </MockedProvider>;
             },
@@ -82,13 +84,13 @@ describe('<TimelinePage />', () => {
     it('should load more results when the end is reached', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
-                return <MockedProvider mocks={mocks} addTypename={false}>
+                return <MockedProvider mocks={mocks} addTypename={true}>
                     {children}
                 </MockedProvider>;
             },
         });
 
-        await updateWrapper(component);
+        await updateWrapper(component, 1000);
 
         const infiniteScroll = component.find(InfiniteScrollView);
         infiniteScroll.props().onEndReached();
@@ -109,13 +111,14 @@ describe('<TimelinePage />', () => {
             result: {
                 data: {
                     getThreads: {
+                        __typename: 'PaginatedThreads',
                         threads: [
-                            { _id: 1, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
-                            { _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 1, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 2, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 3, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 4, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 5, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
+                            { __typename: 'Thread', _id: 6, title: 'Test thread', description: 'Description', type: ContentType.TEXT, assetUrl: null, assetMetadata: null, commentsEnabled: true, published: true, createdAt: new Date(), rocketChatMessageID: null },
                         ],
                         limit: 6,
                         offset: 0,
@@ -141,7 +144,7 @@ describe('<TimelinePage />', () => {
     it('should not merge results when new results are not valid', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
-                return <MockedProvider mocks={mocksError} addTypename={false}>
+                return <MockedProvider mocks={mocksError} addTypename={true}>
                     {children}
                 </MockedProvider>;
             },
@@ -160,7 +163,7 @@ describe('<TimelinePage />', () => {
     it('should not load more results when item is still loading', async () => {
         const component = mount(<TimelinePage navigation={null} />, {
             wrappingComponent: ({ children }) => {
-                return <MockedProvider mocks={mocks} addTypename={false}>
+                return <MockedProvider mocks={mocks} addTypename={true}>
                     {children}
                 </MockedProvider>;
             },

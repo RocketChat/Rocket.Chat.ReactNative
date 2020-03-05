@@ -108,5 +108,8 @@ export default {
         error: {
             label: 'Er ging iets mis bij aanmaken van een item.',
         }
-    }
+    },
+    timeline: {
+        empty: 'Er zijn geen resultaten gevonden.',
+    },
 }

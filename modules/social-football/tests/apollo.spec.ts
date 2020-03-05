@@ -1,6 +1,6 @@
 import SecurityManager from '../src/security/security-manager';
 import {mocked} from 'ts-jest/utils';
-import {authLink, authLinkProcessor} from '../src/apollo';
+import {authLink, authLinkProcessor, cacheKeyGenerator} from '../src/apollo';
 
 jest.mock('../src/security/security-manager');
 
@@ -30,5 +30,11 @@ describe('graphql client', () => {
 
         const result = await authLinkProcessor({ operationName: 'RefreshUsingToken' }, { headers: { }});
         expect(result.headers.authorization).toBeUndefined();
+    });
+
+    it('should generate a cache key', () => {
+        const entity = { _id: 'test' };
+
+        expect(cacheKeyGenerator(entity)).toEqual('test');
     });
 });

@@ -34,7 +34,9 @@ export const authLinkProcessor = async(all, { headers }) => {
 
 export const authLink = setContext(authLinkProcessor);
 
-const cache = new InMemoryCache();
+// specify how objects should be identified
+export const cacheKeyGenerator = o => o._id;
+const cache = new InMemoryCache({ dataIdFromObject: cacheKeyGenerator});
 
 /**
  * Setup the ApolloClient.
