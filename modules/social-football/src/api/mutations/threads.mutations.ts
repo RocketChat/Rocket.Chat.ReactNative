@@ -6,3 +6,9 @@ export const CREATE_THREAD = gql`
     }
 `;
 
+// export const PUBLISH_THREAD = gql`
+//     mutation PublishThread($thread: ThreadInput!) {
+//         PublishThread(thread:$thread)
+//     }
+// `;
+

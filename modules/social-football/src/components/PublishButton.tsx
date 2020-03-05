@@ -12,9 +12,8 @@ interface Props {
 
 const styles = StyleSheet.create({
     button: {
-        color: '#0DEFDE',
         borderRadius: 4,
-        backgroundColor: appColors.primary,
+        backgroundColor: '#888888',
         height: 30,
         width: 100,
         marginTop: 7,
