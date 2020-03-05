@@ -8,11 +8,17 @@ export function leaveRoom(rid, t) {
 	};
 }
 
-export function deleteRoom(rid, t) {
+export function deleteRoomInit(rid, t) {
 	return {
-		type: types.ROOM.DELETE,
+		type: types.ROOM.DELETE_INIT,
 		rid,
 		t
+	};
+}
+
+export function deleteRoomFinish() {
+	return {
+		type: types.ROOM.DELETE_FINISH
 	};
 }
 

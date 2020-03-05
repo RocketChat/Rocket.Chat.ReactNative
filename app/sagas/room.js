@@ -1,10 +1,11 @@
 import { Alert } from 'react-native';
 import {
-	takeLatest, take, select, delay
+	takeLatest, take, select, delay, race, put
 } from 'redux-saga/effects';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
+import { deleteRoomFinish } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
@@ -48,6 +49,14 @@ const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 		if (result.success) {
 			yield Navigation.navigate('RoomsListView');
 		}
+		// types.ROOM.DELETE_FINISH is triggered by `subscriptions-changed` with `removed` arg
+		const { timeout } = yield race({
+			deleteFinished: take(types.ROOM.DELETE_FINISH),
+			timeout: delay(3000)
+		});
+		if (timeout) {
+			put(deleteRoomFinish());
+		}
 	} catch (e) {
 		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_room') }));
 	}
@@ -56,6 +65,6 @@ const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
-	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
+	yield takeLatest(types.ROOM.DELETE_INIT, handleDeleteRoom);
 };
 export default root;
