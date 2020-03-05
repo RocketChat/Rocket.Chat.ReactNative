@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import isEqual from 'lodash/isEqual';
+import semver from 'semver';
 
 import database from '../../lib/database';
 import { eraseRoom as eraseRoomAction } from '../../actions/room';
@@ -56,6 +57,7 @@ class RoomInfoEditView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		eraseRoom: PropTypes.func,
+		serverVersion: PropTypes.string,
 		theme: PropTypes.string
 	};
 
@@ -337,7 +339,7 @@ class RoomInfoEditView extends React.Component {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
 		} = this.state;
-		const { theme } = this.props;
+		const { serverVersion, theme } = this.props;
 		const { dangerColor } = themes[theme];
 
 		return (
@@ -444,18 +446,20 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						<SwitchContainer
-							value={enableSysMes}
-							leftLabelPrimary={I18n.t('Hide_System_Messages')}
-							leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
-							theme={theme}
-							testID='room-info-edit-switch-system-messages'
-							onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
-							labelContainerStyle={styles.hideSystemMessages}
-							leftLabelStyle={styles.systemMessagesLabel}
-						>
-							{this.renderSystemMessages()}
-						</SwitchContainer>
+						{serverVersion && !semver.lt(serverVersion, '3.0.0') ? (
+							<SwitchContainer
+								value={enableSysMes}
+								leftLabelPrimary={I18n.t('Hide_System_Messages')}
+								leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
+								theme={theme}
+								testID='room-info-edit-switch-system-messages'
+								onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
+								labelContainerStyle={styles.hideSystemMessages}
+								leftLabelStyle={styles.systemMessagesLabel}
+							>
+								{this.renderSystemMessages()}
+							</SwitchContainer>
+						) : null}
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
@@ -545,8 +549,12 @@ class RoomInfoEditView extends React.Component {
 	}
 }
 
+const mapStateToProps = state => ({
+	serverVersion: state.server.version
+});
+
 const mapDispatchToProps = dispatch => ({
 	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
 });
 
-export default connect(null, mapDispatchToProps)(withTheme(RoomInfoEditView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));

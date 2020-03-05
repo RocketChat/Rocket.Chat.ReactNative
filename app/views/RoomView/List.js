@@ -63,8 +63,14 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	async init() {
-		const { rid, tmid, hideSystemMessages = [] } = this.props;
+		const { rid, tmid } = this.props;
 		const db = database.active;
+
+		// handle servers with version < 3.0.0
+		let { hideSystemMessages = [] } = this.props;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
 
 		if (tmid) {
 			try {
