@@ -168,13 +168,12 @@ class RoomInfoView extends React.Component {
 
 	isDirect = () => this.t === 'd'
 
-	renderItem = ({ label, content, testID }) => {
+	renderItem = ({ label, content }) => {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
 				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 				<Markdown
-					testID={testID}
 					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
 					msg={content || `__${ I18n.t(`No_${ label.toLowerCase() }_provided`) }__`}
 					theme={theme}
@@ -223,8 +222,7 @@ class RoomInfoView extends React.Component {
 			}
 			return this.renderItem({
 				label: I18n.t('Timezone'),
-				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`,
-				testID: 'room-info-view-timezone'
+				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`
 			});
 		}
 		return null;

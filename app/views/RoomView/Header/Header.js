@@ -92,7 +92,6 @@ const HeaderTitle = React.memo(({
 			msg={title}
 			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
 			numberOfLines={1}
-			testID={`room-view-title-${ title }`}
 			theme={theme}
 		/>
 	);
