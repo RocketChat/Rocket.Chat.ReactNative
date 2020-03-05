@@ -4,6 +4,8 @@ import {Button} from "../components/Button";
 import {PublishButton} from "../components/PublishButton";
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
+import { useMutation } from 'react-apollo';
+import {PUBLISH_THREAD} from "../api/mutations/threads.mutations";
 
 const styles = StyleSheet.create({
     item: {
@@ -76,11 +78,24 @@ const styles = StyleSheet.create({
 
 });
 
+const [performPublish, {data, loading, error}] = useMutation<{ publishThread: boolean }>(PUBLISH_THREAD);
+const thread = {
+    published: false,
+};
+
+const publishPress = () => {
+    performPublish({
+        variables: {
+            thread,
+        }
+    });
+}
+
 const renderPublishButton = (item) => {
     if(!item.published){
         return(
         <View style={[styles.publish]}>
-            <PublishButton title={i18n.t('createThread.publish')}  onPress={() => item.published = true} />
+            <PublishButton title={i18n.t('createThread.publish')}  onPress={() => publishPress } />
         </View>
         )
     } 
