@@ -67,12 +67,15 @@ const TimelinePage = ({ navigation }) => {
     
     //The maximum amount of threads that are loaded at once by Lazy Loading
     const perPage = 6;
+    const initial = 10;
 
     /**
      * Fetching more Threads
      */
     const { data, fetchMore, refetch, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
-        variables: {},
+        variables: {
+            limit: initial,
+        },
         fetchPolicy: "cache-and-network"
     });
     
@@ -98,6 +101,7 @@ const TimelinePage = ({ navigation }) => {
 
                 return {
                     getThreads: {
+                        __typename: 'PaginatedThreads',
                         threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
                             if (ids.indexOf(item._id!) === -1) {
                                 ids.push(item._id!);
@@ -105,10 +109,14 @@ const TimelinePage = ({ navigation }) => {
                             }
 
                             return false;
+                        }).map((item: any) => {
+                            item.__typename = 'Thread';
+
+                            return item;
                         }),
                         limit: perPage,
                         offset: fetchMoreResult.getThreads.offset,
-                        total: prev.getThreads.threads.length + fetchMoreResult.getThreads.threads.length,
+                        total: ids.length,
                     },
                 }
             },
