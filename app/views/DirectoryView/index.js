@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, Text
+	View, FlatList, Text, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';

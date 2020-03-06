@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, StyleSheet, FlatList
+	View, Text, Switch, ScrollView, StyleSheet, FlatList, SafeAreaView
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import TextInput from '../presentation/TextInput';

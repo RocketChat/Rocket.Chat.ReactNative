@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard, SafeAreaView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';

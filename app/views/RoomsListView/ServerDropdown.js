@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/native';
 import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';

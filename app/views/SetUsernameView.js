@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, StyleSheet
+	Text, ScrollView, StyleSheet, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { loginRequest as loginRequestAction } from '../actions/login';

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, ScrollView } from 'react-native';
+import {
+	Keyboard, Text, ScrollView, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
 import equal from 'deep-equal';
 

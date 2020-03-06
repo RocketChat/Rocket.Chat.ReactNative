@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { HeaderBackButton } from 'react-navigation-stack';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import HeaderComponent from '../../app/views/RoomView/Header/Header';
 // import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';

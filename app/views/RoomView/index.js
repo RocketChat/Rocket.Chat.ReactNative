@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, InteractionManager } from 'react-native';
+import {
+	Text, View, InteractionManager, SafeAreaView
+} from 'react-native';
 import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import Modal from 'react-native-modal';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';

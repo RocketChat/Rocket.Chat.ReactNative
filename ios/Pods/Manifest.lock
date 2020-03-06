@@ -307,6 +307,8 @@ PODS:
     - React
   - react-native-orientation-locker (1.1.6):
     - React
+  - react-native-safe-area-context (0.7.3):
+    - React
   - react-native-slider (2.0.5):
     - React
   - react-native-video (5.0.2):
@@ -361,6 +363,8 @@ PODS:
     - React
   - RNBootSplash (1.1.0):
     - React
+  - RNCMaskedView (0.1.7):
+    - React
   - RNDateTimePicker (2.1.0):
     - React
   - RNDeviceInfo (2.3.2):
@@ -378,7 +382,7 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNGestureHandler (1.5.0):
+  - RNGestureHandler (1.6.0):
     - React
   - RNImageCropPicker (0.28.0):
     - React-Core
@@ -391,11 +395,11 @@ PODS:
     - RSKImageCropper
   - RNLocalize (1.3.1):
     - React
-  - RNReanimated (1.4.0):
+  - RNReanimated (1.7.0):
     - React
   - RNRootView (1.0.3):
     - React
-  - RNScreens (2.0.0-alpha.3):
+  - RNScreens (2.2.0):
     - React
   - RNUserDefaults (1.7.0):
     - React
@@ -461,6 +465,7 @@ DEPENDENCIES:
   - react-native-keyboard-tracking-view (from `../node_modules/react-native-keyboard-tracking-view`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -480,6 +485,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudio (from `../node_modules/react-native-audio`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -603,6 +609,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
   react-native-video:
@@ -639,6 +647,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-audio"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -758,6 +768,7 @@ SPEC CHECKSUMS:
   react-native-keyboard-tracking-view: 4bb67b89ccd327c7d9eab87f722880d2103a25a8
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
+  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-slider: 39208600e44f885e2d2c0510b5c6435a0f62d087
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   react-native-webview: 2aadbfef6b9eaa9e89b306ae3e31e6e870a6306d
@@ -776,16 +787,17 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 73aabec1fc8f968798b655e7271760b17909648e
+  RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
   RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
   RNDeviceInfo: 17e34f6dd902f08d88cbe2c0b7a01be948d43641
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
-  RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
+  RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
   RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
-  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
-  RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
+  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   RNUserDefaults: af71a1cdf1c12baf8210bc741c65f5faba9826d6
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a

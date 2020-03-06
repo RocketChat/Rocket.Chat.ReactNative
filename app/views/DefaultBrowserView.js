@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, FlatList, View, Text, Linking
+	StyleSheet, FlatList, View, Text, Linking, SafeAreaView
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';

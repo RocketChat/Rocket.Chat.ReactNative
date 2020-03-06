@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	View, Text, Image, TouchableOpacity, BackHandler, Linking
+	View, Text, Image, TouchableOpacity, BackHandler, Linking, SafeAreaView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
@@ -27,6 +26,7 @@ class OnboardingView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		adding: PropTypes.bool,
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
@@ -39,7 +39,7 @@ class OnboardingView extends React.Component {
 	constructor(props) {
 		super(props);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-		this.previousServer = props.navigation.getParam('previousServer');
+		this.previousServer = props.route.params?.previousServer;
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}

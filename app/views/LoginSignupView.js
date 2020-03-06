@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, Image, StyleSheet, Animated, Easing
+	Text, View, ScrollView, Image, StyleSheet, Animated, Easing, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
-import { SafeAreaView } from 'react-navigation';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
