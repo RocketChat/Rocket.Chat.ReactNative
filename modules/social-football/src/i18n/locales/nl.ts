@@ -111,5 +111,6 @@ export default {
     },
     timeline: {
         empty: 'Er zijn geen resultaten gevonden.',
+        edited: '● Bewerkt',
     },
 }

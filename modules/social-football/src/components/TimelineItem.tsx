@@ -55,7 +55,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     //shows the image preview for any thread with an image
     const renderImageInfo = (item:ThreadModel) => {
         if(item.assetMetadata)
-            return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
+            return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}/>;
         else
             return;
      };
@@ -77,7 +77,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return;
         }
         else{
-            return <Text> ● Bewerkt</Text>
+            return <Text>{i18n.t('timeline.edited')}</Text>
         }
     }
     return <View style={[styles.item]}>
