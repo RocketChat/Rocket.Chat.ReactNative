@@ -3,7 +3,6 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
 
 const Hashtag = React.memo(({
@@ -12,7 +11,7 @@ const Hashtag = React.memo(({
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
 		const { _id, name } = channels[index];
-		navToRoomPreview({ rid: _id, name, type: 'c' });
+		navToRoomPreview({ rid: _id, name });
 	};
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
