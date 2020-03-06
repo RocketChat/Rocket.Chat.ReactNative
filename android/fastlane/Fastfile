@@ -13,11 +13,25 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-default_platform(:ios)
+default_platform(:android)
 
-platform :ios do
-  desc "Description of what the lane does"
+platform :android do
+  desc "Runs all the tests"
+  lane :tests do
+    gradle(task: "test")
+  end
+
+  desc "Make a new build for release"
   lane :beta do
-    build_app(scheme: "RocketChatRN")
+    gradle(
+      task: 'assemble',
+      build_type: 'Release'
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
   end
 end

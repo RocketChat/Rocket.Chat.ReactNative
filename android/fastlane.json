@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "api-7685070149689017526-386795",
+  "private_key_id": "18ecaa3011a22bc8db4be0523a2259f2f9ee0c30",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC90lGCKY8ZNxRM\nBjPKKtXtG0FvCMExtua+bCzvj7owBEd/oDzXYwARo/Uelvo3PSSJTq2aceFNZGvT\n1gfenkiELIRY6AtEHQN9lojy8VB9Ur18ERLNKtlGkBD+T027/0A46by9OUK1EEWU\nq/NFUhswcgDICOt0esWI/JSJ/izOfdwnRQMFkeBvsMwXlvYUxlecZeDWCaISyt+O\nNgAVoBycnMZBBMcHJMomj2bCCRex0nVthluJzUWuIX5RofaIGcNI5b3yNcDICo7b\nFGAZgZ8OxqJSQ2iRLwnSgvStbp/uuIsh4vvGtQed7uAuj7birLBvIvqz6UPerbX2\n6nn925Z1AgMBAAECggEAI0TOXa2cl64G8KgvW7cRR+yKQBfjk3ndDhD52Wn+SVkm\nMrWiUE+l7eEllFEvfO94mCV89ocFulQ3/6RTEn8c0KgX0BAPNdDhOuarG96P2rUy\nnThr4qB9PdHbQnEYK5+9vkVZitv2g79Z+klnmh/rCtmHwSL9IoeEJ9NsQuZty1C/\nH8XwTXewCR1fFp0v6T0KzlfJhRjGKbmwz01Aw4qwHU0es3t4HS1Z4xDP3i6YSpPD\nQ4yCJ2/9j1QuJbaHsRa5sktjTjUwCr2IOiH7C9wQe9Sc3ZYWSlhT2DTfM6r7O5gP\nftXao/HEmrqQIa69CHq+PT5IFOkJhPBHydQQJbpMMQKBgQD71gQTixuxHVrYTqLF\n2bTSbMWKtND7Ckb7pITu9iqHEOg7kMiaa6rFxGOcpcQkN+f6NdO55Nf3aFVLNsGi\nHC12BivUOMi7/qpe4Rm55/6d0JYc48EkPZ4/SWtP2nj29iyi5F4S+pVo4aISRTW2\n0ucdILScnJAVFJiNZtUUjuzJkQKBgQDA9c37T7iCW9h9P6HHxAMqWFzr8mfp2gz6\nysJfjP5gbKShzUKJggMvSg7XXwk6iFpR8QloWcpRUdLKgls4a7meRQrUvET6p5wz\nPgCINNzY+WtIlGkH07UoeqUA8ZZV5kap8bCg6/Hca0gigBgSGxkE3wwZ8F40IpoO\nCK8JqKzspQKBgQDdN71y8XKM3c1sT386ryfg5D2Ov5EHxJpf+L/xLXpkFRz7Hg6p\nX0Su3vnlo9OtQRLcvyXSmMyBfzvViy8C2R+yGm+rx4nFYkqEd9XicYE/XfhPPl3u\nGNaGn1bN2YsC3XKOUG622zod3H5C8Frj01XDR3SAUiNa8TGknJ02puonkQKBgCce\n7rb/77GGO3sRNpSQue+Q4K35hHXV/oGuMAA9Tqlv/WTMf6vvTwP8aMvjebSDRoSM\ncNLWOX2JMEpcaXAj7wsWhl6hGP8UkkeVT3hN92SKFOUvKagrlPPzAZcSY99gg30b\nAituCqgcnBBalga9tbHWItbzc7XwOfmUayBzMTP9AoGBAM1DYZ8RMynTxyoUAOAa\nHEtH9piZ93CDfnfMUxnka7WXKzLORFt7Dg74MVH1rQ+2Co3004d2sERH3ftF1Se6\nIX44Em0Nd2WqgX4jmm8AZSYsf4Bkes1kZcck6rZAtvXihuv4Kc/wWiPxfBNIRPmk\nmuNV6wMwTnmRWlLqc90sKtQe\n-----END PRIVATE KEY-----\n",
+  "client_email": "social-connected-football-andr@api-7685070149689017526-386795.iam.gserviceaccount.com",
+  "client_id": "101741590325534470223",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/social-connected-football-andr%40api-7685070149689017526-386795.iam.gserviceaccount.com"
+}

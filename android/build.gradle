@@ -64,7 +64,11 @@ subprojects { subproject ->
                 defaultConfig {
                     targetSdkVersion 28
                 }
+                lintOptions {
+                    abortOnError false
+                }
             }
+
         }
     }
 }
