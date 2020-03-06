@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import {Button} from "../components/Button";
 import {PublishButton} from "../components/PublishButton";
@@ -78,32 +78,32 @@ const styles = StyleSheet.create({
 
 });
 
-const [performPublish, {data, loading, error}] = useMutation<{ publishThread: boolean }>(PUBLISH_THREAD);
-const thread = {
-    published: false,
-};
 
-const publishPress = () => {
-    performPublish({
-        variables: {
-            thread,
-        }
-    });
-}
 
-const renderPublishButton = (item) => {
+
+export const TimelineItem = ({ item }: { item: ThreadModel }) => {
+     const [performPublish, {data, loading, error}] = useMutation<{ publishThread: boolean }>(PUBLISH_THREAD);
+   
+const renderPublishButton = (item: ThreadModel) => {
+    const [testState, setTestState] = useState(false);
+    const publishPress = () => {
+        setTestState(true);
+        performPublish({
+            variables: {
+                id: item._id,
+            }
+        });
+    }
     if(!item.published){
         return(
         <View style={[styles.publish]}>
-            <PublishButton title={i18n.t('createThread.publish')}  onPress={() => publishPress } />
+            <Text>{testState}</Text>
+            {<PublishButton title={testState.toString()}  onPress={publishPress} loading={loading}/>}
         </View>
         )
     } 
-    return;
+    return <></>;
 }
-
-export const TimelineItem = ({ item }: { item: ThreadModel }) => {
-    
     return <View style={item.published ? [styles.item] : [styles.hiddenItem]}>
     <Text style={item.published ? [styles.creatorText] : [styles.hiddenCreatorText]}>Dick Advocaat  ●  Zondag.</Text>
 
