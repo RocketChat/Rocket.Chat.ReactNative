@@ -99,17 +99,14 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const searching = navigation.getParam('searching');
-		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const onPressItem = navigation.getParam('onPressItem', () => {});
-		const initSearching = navigation.getParam(
-			'initSearching',
-			() => {}
-		);
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const searching = route.params?.searching;
+		const cancelSearch = route.params?.cancelSearch ?? (() => {});
+		const onPressItem = route.params?.onPressItem ?? (() => {});
+		const initSearching = route.params?.initSearching ?? (() => {});
 
 		return {
-			...themedHeader('light'),
+			...themedHeader(screenProps.theme),
 			headerLeft: searching && isAndroid ? (
 				<CustomHeaderButtons left>
 					<Item

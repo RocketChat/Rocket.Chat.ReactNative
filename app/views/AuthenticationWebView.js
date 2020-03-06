@@ -18,8 +18,8 @@ const userAgent = isIOS
 	: 'Mozilla/5.0 (Linux; Android 6.0.1; SM-G920V Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36';
 
 class AuthenticationWebView extends React.PureComponent {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const authType = navigation.getParam('authType', 'oauth');
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const authType = route.params?.authType ?? 'oauth';
 		return {
 			...themedHeader(screenProps.theme),
 			headerLeft: <CloseModalButton navigation={navigation} />,
@@ -28,6 +28,7 @@ class AuthenticationWebView extends React.PureComponent {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		theme: PropTypes.string
@@ -39,7 +40,7 @@ class AuthenticationWebView extends React.PureComponent {
 			logging: false,
 			loading: false
 		};
-		this.authType = props.navigation.getParam('authType', 'oauth');
+		this.authType = props.route.params?.authType ?? 'oauth';
 		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	}
 
@@ -77,8 +78,8 @@ class AuthenticationWebView extends React.PureComponent {
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
 		if (this.authType === 'saml' || this.authType === 'cas') {
-			const { navigation } = this.props;
-			const ssoToken = navigation.getParam('ssoToken');
+			const { route } = this.props;
+			const ssoToken = route.params?.ssoToken;
 			if (url.includes('ticket') || url.includes('validate') || url.includes('saml_idp_credentialToken')) {
 				let payload;
 				if (this.authType === 'saml') {
@@ -104,8 +105,8 @@ class AuthenticationWebView extends React.PureComponent {
 
 	render() {
 		const { loading } = this.state;
-		const { navigation, theme } = this.props;
-		const uri = navigation.getParam('url');
+		const { route, theme } = this.props;
+		const uri = route.params?.url;
 		return (
 			<>
 				<StatusBar theme={theme} />

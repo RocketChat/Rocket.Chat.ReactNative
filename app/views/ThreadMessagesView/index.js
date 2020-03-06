@@ -41,6 +41,7 @@ class ThreadMessagesView extends React.Component {
 
 	static propTypes = {
 		user: PropTypes.object,
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -52,8 +53,8 @@ class ThreadMessagesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			loading: false,
 			end: false,

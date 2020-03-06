@@ -54,14 +54,15 @@ class AutoTranslateView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
-		const room = props.navigation.getParam('room');
+		this.rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();

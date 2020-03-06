@@ -17,7 +17,7 @@ const borderBottom = theme => ({
 	elevation: 0
 });
 
-export const themedHeader = theme => ({
+export const themedHeader = (theme = 'light') => ({
 	headerStyle: {
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground

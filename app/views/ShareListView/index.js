@@ -35,11 +35,11 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const searching = navigation.getParam('searching');
-		const initSearch = navigation.getParam('initSearch', () => {});
-		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const search = navigation.getParam('search', () => {});
+	static navigationOptions = ({ route, screenProps }) => {
+		const searching = route.params?.searching;
+		const initSearch = route.params?.initSearch ?? (() => {});
+		const cancelSearch = route.params?.cancelSearch ?? (() => {});
+		const search = route.params?.search ?? (() => {});
 
 		if (isIOS) {
 			return {

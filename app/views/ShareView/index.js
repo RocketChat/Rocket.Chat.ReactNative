@@ -18,8 +18,8 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
 class ShareView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const canSend = navigation.getParam('canSend', true);
+	static navigationOptions = ({ route, screenProps }) => {
+		const canSend = route.params?.canSend ?? true;
 
 		return ({
 			title: I18n.t('Share'),
@@ -30,7 +30,7 @@ class ShareView extends React.Component {
 						<CustomHeaderButtons>
 							<Item
 								title={I18n.t('Send')}
-								onPress={navigation.getParam('sendMessage')}
+								onPress={route.params?.sendMessage}
 								testID='send-message-share-view'
 								buttonStyle={styles.send}
 							/>
@@ -41,6 +41,7 @@ class ShareView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
@@ -53,13 +54,13 @@ class ShareView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', '');
-		const name = navigation.getParam('name', '');
-		const value = navigation.getParam('value', '');
-		const isMedia = navigation.getParam('isMedia', false);
-		const fileInfo = navigation.getParam('fileInfo', {});
-		const room = navigation.getParam('room', { rid });
+		const { route } = this.props;
+		const rid = route.params?.rid ?? '';
+		const name = route.params?.name ?? '';
+		const value = route.params?.value ?? '';
+		const isMedia = route.params?.isMedia ?? false;
+		const fileInfo = route.params?.fileInfo ?? {};
+		const room = route.params?.room ?? { rid };
 
 		this.state = {
 			rid,

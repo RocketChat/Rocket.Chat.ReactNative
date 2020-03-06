@@ -75,6 +75,7 @@ class NewServerView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		theme: PropTypes.string,
@@ -84,7 +85,7 @@ class NewServerView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const server = props.navigation.getParam('server');
+		const server = props.route.params?.server;
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];

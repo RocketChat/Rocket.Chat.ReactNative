@@ -25,7 +25,7 @@ class ReadReceiptView extends React.Component {
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -34,7 +34,7 @@ class ReadReceiptView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.messageId = props.navigation.getParam('messageId');
+		this.messageId = props.route.params?.messageId;
 		this.state = {
 			loading: false,
 			receipts: []

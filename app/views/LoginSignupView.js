@@ -95,8 +95,8 @@ const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
 class LoginSignupView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
 			...themedHeader(screenProps.theme),
 			title,

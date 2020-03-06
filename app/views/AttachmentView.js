@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
 });
 
 class AttachmentView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation, screenProps }) => {
 		const { theme } = screenProps;
-		const attachment = navigation.getParam('attachment');
-		const from = navigation.getParam('from');
-		const handleSave = navigation.getParam('handleSave', () => {});
+		const attachment = route.params?.attachment;
+		const from = route.params?.from;
+		const handleSave = route.params?.handleSave ?? (() => {});
 		const { title, video_url } = attachment;
 		const options = {
 			title,
@@ -47,6 +47,7 @@ class AttachmentView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
 		baseUrl: PropTypes.string,
@@ -58,7 +59,7 @@ class AttachmentView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const attachment = props.navigation.getParam('attachment');
+		const attachment = props.route.params?.attachment;
 		this.state = { attachment, loading: true };
 	}
 

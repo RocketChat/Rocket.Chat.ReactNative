@@ -28,9 +28,9 @@ import { getUserSelector } from '../../selectors/login';
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const toggleStatus = navigation.getParam('toggleStatus', () => {});
-		const allUsers = navigation.getParam('allUsers');
+	static navigationOptions = ({ route, screenProps }) => {
+		const toggleStatus = route.params?.toggleStatus ?? (() => {});
+		const allUsers = route.params?.allUsers;
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
@@ -44,6 +44,7 @@ class RoomMembersView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		rid: PropTypes.string,
 		members: PropTypes.array,
@@ -63,7 +64,7 @@ class RoomMembersView extends React.Component {
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
-		const room = props.navigation.getParam('room');
+		const room = props.route.params?.room;
 		this.state = {
 			isLoading: false,
 			allUsers: false,

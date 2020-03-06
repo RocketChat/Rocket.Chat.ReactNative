@@ -39,6 +39,7 @@ class RoomActionsView extends React.Component {
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -52,9 +53,9 @@ class RoomActionsView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		const room = props.navigation.getParam('room');
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		const room = props.route.params?.room;
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,

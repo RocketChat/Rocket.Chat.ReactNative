@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 });
 
 class SetUsernameView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title');
+	static navigationOptions = ({ route, screenProps }) => {
+		const title = route.params?.title;
 		return {
 			...themedHeader(screenProps.theme),
 			title

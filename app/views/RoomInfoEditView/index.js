@@ -54,6 +54,7 @@ class RoomInfoEditView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		deleteRoomInit: PropTypes.func,
 		serverVersion: PropTypes.string,
@@ -100,8 +101,8 @@ class RoomInfoEditView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	loadRoom = async() => {
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', null);
+		const { route } = this.props;
+		const rid = route.params?.rid;
 		if (!rid) {
 			return;
 		}

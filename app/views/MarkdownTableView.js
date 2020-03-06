@@ -15,14 +15,14 @@ class MarkdownTableView extends React.Component {
 	});
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	render() {
-		const { navigation, theme } = this.props;
-		const renderRows = navigation.getParam('renderRows');
-		const tableWidth = navigation.getParam('tableWidth');
+		const { route, theme } = this.props;
+		const renderRows = route.params?.renderRows;
+		const tableWidth = route.params?.tableWidth;
 
 		if (isIOS) {
 			return (

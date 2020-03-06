@@ -73,19 +73,19 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const rid = navigation.getParam('rid', null);
-		const prid = navigation.getParam('prid');
-		const title = navigation.getParam('name');
-		const t = navigation.getParam('t');
-		const tmid = navigation.getParam('tmid');
-		const baseUrl = navigation.getParam('baseUrl');
-		const userId = navigation.getParam('userId');
-		const token = navigation.getParam('token');
-		const avatar = navigation.getParam('avatar');
-		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
-		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
-		const unreadsCount = navigation.getParam('unreadsCount', null);
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const rid = route.params?.rid ?? null;
+		const prid = route.params?.prid;
+		const title = route.params?.name;
+		const t = route.params?.t;
+		const tmid = route.params?.tmid;
+		const baseUrl = route.params?.baseUrl;
+		const userId = route.params?.userId;
+		const token = route.params?.token;
+		const avatar = route.params?.avatar;
+		const toggleFollowThread = route.params?.toggleFollowThread ?? (() => {});
+		const goRoomActionsView = route.params?.goRoomActionsView ?? (() => {});
+		const unreadsCount = route.params?.unreadsCount ?? null;
 		if (!rid) {
 			return {
 				...themedHeader(screenProps.theme)
@@ -132,6 +132,7 @@ class RoomView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -156,13 +157,13 @@ class RoomView extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
-		this.tmid = props.navigation.getParam('tmid', null);
-		const room = props.navigation.getParam('room');
-		const selectedMessage = props.navigation.getParam('message');
-		const name = props.navigation.getParam('name');
-		const fname = props.navigation.getParam('fname');
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
+		this.tmid = props.route.params?.tmid;
+		const room = props.route.params?.room;
+		const selectedMessage = props.route.params?.message;
+		const name = props.route.params?.name;
+		const fname = props.route.params?.fname;
 		this.state = {
 			joined: true,
 			room: room || {
@@ -519,9 +520,9 @@ class RoomView extends React.Component {
 			.observeWithColumns(['unread']);
 
 		this.queryUnreads = observable.subscribe((data) => {
-			const { navigation } = this.props;
+			const { navigation, route } = this.props;
 			const unreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
-			if (unreadsCount !== navigation.getParam('unreadsCount')) {
+			if (unreadsCount !== route.params?.unreadsCount) {
 				navigation.setParams({
 					unreadsCount
 				});

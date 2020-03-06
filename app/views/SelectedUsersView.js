@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title');
-		const nextAction = navigation.getParam('nextAction', () => {});
+	static navigationOptions = ({ route, screenProps }) => {
+		const title = route.params?.title;
+		const nextAction = route.params?.nextAction ?? (() => {});
 		return {
 			...themedHeader(screenProps.theme),
 			title,
@@ -53,6 +53,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
@@ -134,12 +135,12 @@ class SelectedUsersView extends React.Component {
 	}
 
 	nextAction = async() => {
-		const { navigation, setLoadingInvite } = this.props;
-		const nextActionID = navigation.getParam('nextActionID');
+		const { route, navigation, setLoadingInvite } = this.props;
+		const nextActionID = route.params?.nextActionID;
 		if (nextActionID === 'CREATE_CHANNEL') {
 			navigation.navigate('CreateChannelView');
 		} else {
-			const rid = navigation.getParam('rid');
+			const rid = route.params?.rid;
 			try {
 				setLoadingInvite(true);
 				await RocketChat.addUsersToRoom(rid);

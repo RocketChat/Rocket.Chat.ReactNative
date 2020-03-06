@@ -65,6 +65,7 @@ class InviteUsersView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
 		timeDateFormat: PropTypes.string,
@@ -74,7 +75,7 @@ class InviteUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 	}
 
 	onValueChangePicker = (key, value) => {

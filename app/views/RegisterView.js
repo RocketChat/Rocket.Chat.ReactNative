@@ -28,8 +28,8 @@ import { showErrorAlert } from '../utils/info';
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
 			...themedHeader(screenProps.theme),
 			title,

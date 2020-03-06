@@ -29,6 +29,7 @@ class SearchMessagesView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
@@ -43,7 +44,7 @@ class SearchMessagesView extends React.Component {
 			messages: [],
 			searchText: ''
 		};
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

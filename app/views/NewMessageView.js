@@ -57,6 +57,7 @@ class NewMessageView extends React.Component {
 	})
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
@@ -119,8 +120,8 @@ class NewMessageView extends React.Component {
 	}
 
 	onPressItem = (item) => {
-		const { navigation } = this.props;
-		const onPressItem = navigation.getParam('onPressItem', () => {});
+		const { route } = this.props;
+		const onPressItem = route.params?.onPressItem ?? (() => {});
 		onPressItem(item);
 	}
 

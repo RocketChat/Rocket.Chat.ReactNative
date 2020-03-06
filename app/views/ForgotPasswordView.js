@@ -17,8 +17,8 @@ import { themes } from '../constants/colors';
 import { themedHeader } from '../utils/navigation';
 
 class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
+	static navigationOptions = ({ route, screenProps }) => {
+		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
 			title,
 			...themedHeader(screenProps.theme)

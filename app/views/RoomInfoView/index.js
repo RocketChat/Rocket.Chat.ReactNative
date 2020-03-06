@@ -41,10 +41,10 @@ const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const showEdit = navigation.getParam('showEdit');
-		const rid = navigation.getParam('rid');
-		const t = navigation.getParam('t');
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const showEdit = route.params?.showEdit;
+		const rid = route.params?.rid;
+		const t = route.params?.t;
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			...themedHeader(screenProps.theme),
@@ -59,6 +59,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -71,9 +72,9 @@ class RoomInfoView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const room = props.navigation.getParam('room');
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		const room = props.route.params?.room;
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			room: room || {},
 			roomUser: {},
@@ -103,8 +104,8 @@ class RoomInfoView extends React.Component {
 			}
 			return;
 		}
-		const { navigation } = this.props;
-		let room = navigation.getParam('room');
+		const { navigation, route } = this.props;
+		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable

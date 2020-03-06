@@ -30,6 +30,16 @@ import {
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import { SplitContext } from './split';
+import { defaultHeader } from './utils/navigation';
+
+// App Stack
+import AuthLoadingView from './views/AuthLoadingView';
+
+// SetUsername Stack
+import SetUsernameView from './views/SetUsernameView';
+
+// AuthenticationWebViewStack
+import AuthenticationWebView from './views/AuthenticationWebView';
 
 // Outside Stack
 import OnboardingView from './views/OnboardingView';
@@ -39,9 +49,6 @@ import LoginView from './views/LoginView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import LegalView from './views/LegalView';
-
-// AuthenticationWebView Stack
-import AuthenticationWebView from './views/AuthenticationWebView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -62,72 +69,97 @@ const parseDeepLinking = (url) => {
 	return null;
 };
 
-const OutSideStack = createStackNavigator();
-const Outside = () => (
-	<OutSideStack.Navigator screenOptions={{ headerShown: false }}>
-		<OutSideStack.Screen
+// Outside
+const Outside = createStackNavigator();
+const OutsideStack = () => (
+	<Outside.Navigator screenOptions={defaultHeader}>
+		<Outside.Screen
 			name='OnboardingView'
 			component={OnboardingView}
+			options={{ headerShown: false }}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='NewServerView'
 			component={NewServerView}
+			options={{ headerShown: false }}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='LoginSignupView'
 			component={LoginSignupView}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='LoginView'
 			component={LoginView}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='ForgotPasswordView'
 			component={ForgotPasswordView}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='RegisterView'
 			component={RegisterView}
 		/>
-		<OutSideStack.Screen
+		<Outside.Screen
 			name='LegalView'
 			component={LegalView}
 		/>
-	</OutSideStack.Navigator>
+	</Outside.Navigator>
 );
 
-const AuthenticationWebViewStack = createStackNavigator();
-const AuthenticationWebViewScreen = () => (
-	<AuthenticationWebViewStack.Navigator>
-		<AuthenticationWebViewStack.Screen
+// AuthenticationWebViewStack
+const AuthWebView = createStackNavigator();
+const AuthenticationWebViewStack = () => (
+	<AuthWebView.Navigator screenOptions={defaultHeader}>
+		<AuthWebView.Screen
 			name='AuthenticationWebView'
 			component={AuthenticationWebView}
 		/>
-	</AuthenticationWebViewStack.Navigator>
+	</AuthWebView.Navigator>
 );
 
-const OutsideStackModal = createStackNavigator();
-const OutsideModal = () => (
-	<OutsideStackModal.Navigator mode='modal' screenOptions={{ headerShown: false }}>
-		<OutsideStackModal.Screen
+// OutsideStackModal
+const OutsideModal = createStackNavigator();
+const OutsideStackModal = () => (
+	<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, headerShown: false }}>
+		<OutsideModal.Screen
 			name='OutsideStack'
-			component={Outside}
+			component={OutsideStack}
 		/>
-		<OutsideStackModal.Screen
-			name='AuthenticationWebView'
-			component={AuthenticationWebViewScreen}
+		<OutsideModal.Screen
+			name='AuthenticationWebViewStack'
+			component={AuthenticationWebViewStack}
 		/>
-	</OutsideStackModal.Navigator>
+	</OutsideModal.Navigator>
 );
 
-const AppStack = createStackNavigator();
+// SetUsernameStack
+const SetUsername = createStackNavigator();
+const SetUsernameStack = () => (
+	<SetUsername.Navigator screenOptions={defaultHeader}>
+		<SetUsername.Screen
+			name='SetUsernameView'
+			component={SetUsernameView}
+		/>
+	</SetUsername.Navigator>
+);
+
+// App
+const Stack = createStackNavigator();
 export const App = () => (
-	<AppStack.Navigator screenOptions={{ headerShown: false }}>
-		<AppStack.Screen
-			name='OutsideStack'
-			component={OutsideModal}
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
+		<Stack.Screen
+			name='AuthLoading'
+			component={AuthLoadingView}
 		/>
-	</AppStack.Navigator>
+		<Stack.Screen
+			name='OutsideStack'
+			component={OutsideStackModal}
+		/>
+		<Stack.Screen
+			name='SetUsernameStack'
+			component={SetUsernameStack}
+		/>
+	</Stack.Navigator>
 );
 
 export default class Root extends React.Component {

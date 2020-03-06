@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
+	static navigationOptions = ({ route, navigation, screenProps }) => {
+		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
 			title,
 			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />,
