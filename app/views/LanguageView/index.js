@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView, NavigationActions } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
-import Loading from '../../containers/Loading';
 import { showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
@@ -18,6 +17,9 @@ import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import { appStart as appStartAction } from '../../actions';
+import { getUserSelector } from '../../selectors/login';
+import database from '../../lib/database';
 
 const LANGUAGES = [
 	{
@@ -30,6 +32,9 @@ const LANGUAGES = [
 		label: 'English',
 		value: 'en'
 	}, {
+		label: 'Español (ES)',
+		value: 'es-ES'
+	}, {
 		label: 'Français',
 		value: 'fr'
 	}, {
@@ -41,6 +46,15 @@ const LANGUAGES = [
 	}, {
 		label: 'Russian',
 		value: 'ru'
+	}, {
+		label: 'Nederlands',
+		value: 'nl'
+	}, {
+		label: 'Italiano',
+		value: 'it'
+	}, {
+		label: '日本語',
+		value: 'ja'
 	}
 ];
 
@@ -51,41 +65,37 @@ class LanguageView extends React.Component {
 	})
 
 	static propTypes = {
-		userLanguage: PropTypes.string,
-		navigation: PropTypes.object,
+		user: PropTypes.object,
 		setUser: PropTypes.func,
+		appStart: PropTypes.func,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			language: props.userLanguage ? props.userLanguage : 'en',
-			saving: false
+			language: props.user ? props.user.language : 'en'
 		};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { language, saving } = this.state;
-		const { userLanguage, theme } = this.props;
+		const { language } = this.state;
+		const { user, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.language !== language) {
 			return true;
 		}
-		if (nextState.saving !== saving) {
-			return true;
-		}
-		if (nextProps.userLanguage !== userLanguage) {
+		if (nextProps.user.language !== user.language) {
 			return true;
 		}
 		return false;
 	}
 
 	formIsChanged = (language) => {
-		const { userLanguage } = this.props;
-		return (userLanguage !== language);
+		const { user } = this.props;
+		return (user.language !== language);
 	}
 
 	submit = async(language) => {
@@ -93,14 +103,23 @@ class LanguageView extends React.Component {
 			return;
 		}
 
-		this.setState({ saving: true });
+		const { appStart } = this.props;
 
-		const { userLanguage, setUser, navigation } = this.props;
+		await appStart('loading', I18n.t('Change_language_loading'));
+
+		// shows loading for at least 300ms
+		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
+
+		await appStart('inside');
+	}
+
+	changeLanguage = async(language) => {
+		const { user, setUser } = this.props;
 
 		const params = {};
 
 		// language
-		if (userLanguage !== language) {
+		if (user.language !== language) {
 			params.language = language;
 		}
 
@@ -108,17 +127,21 @@ class LanguageView extends React.Component {
 			await RocketChat.saveUserPreferences(params);
 			setUser({ language: params.language });
 
-			this.setState({ saving: false });
-			setTimeout(() => {
-				navigation.reset([NavigationActions.navigate({ routeName: 'SettingsView' })], 0);
-				navigation.navigate('RoomsListView');
-			}, 300);
+			const serversDB = database.servers;
+			const usersCollection = serversDB.collections.get('users');
+			await serversDB.action(async() => {
+				try {
+					const userRecord = await usersCollection.find(user.id);
+					await userRecord.update((record) => {
+						record.language = params.language;
+					});
+				} catch (e) {
+					// do nothing
+				}
+			});
 		} catch (e) {
-			this.setState({ saving: false });
-			setTimeout(() => {
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
-				log(e);
-			}, 300);
+			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
+			log(e);
 		}
 	}
 
@@ -150,7 +173,6 @@ class LanguageView extends React.Component {
 	}
 
 	render() {
-		const { saving } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
@@ -172,18 +194,18 @@ class LanguageView extends React.Component {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 				/>
-				<Loading visible={saving} />
 			</SafeAreaView>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	userLanguage: state.login.user && state.login.user.language
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+	setUser: params => dispatch(setUserAction(params)),
+	appStart: (...params) => dispatch(appStartAction(...params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));

@@ -11,6 +11,7 @@ import styles from '../Styles';
 import { themedHeader } from '../../utils/navigation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
+import { getUserSelector } from '../../selectors/login';
 
 class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -21,12 +22,12 @@ class AdminPanelView extends React.Component {
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		authToken: PropTypes.string,
+		token: PropTypes.string,
 		theme: PropTypes.string
 	}
 
 	render() {
-		const { baseUrl, authToken, theme } = this.props;
+		const { baseUrl, token, theme } = this.props;
 		if (!baseUrl) {
 			return null;
 		}
@@ -35,7 +36,7 @@ class AdminPanelView extends React.Component {
 				<StatusBar theme={theme} />
 				<WebView
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
-					injectedJavaScript={`Meteor.loginWithToken('${ authToken }', function() { })`}
+					injectedJavaScript={`Meteor.loginWithToken('${ token }', function() { })`}
 				/>
 			</SafeAreaView>
 		);
@@ -43,8 +44,8 @@ class AdminPanelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	authToken: state.login.user && state.login.user.token
+	baseUrl: state.server.server,
+	token: getUserSelector(state).token
 });
 
 export default connect(mapStateToProps)(withTheme(AdminPanelView));

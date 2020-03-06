@@ -52,6 +52,19 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	});
 };
 
+export async function getLoginSettings({ server }) {
+	try {
+		const settingsParams = JSON.stringify(['Accounts_ShowFormLogin', 'Accounts_RegistrationForm']);
+		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
+
+		if (result.success && result.settings.length) {
+			reduxStore.dispatch(actions.addSettings(this.parseSettings(this._prepareSettings(result.settings))));
+		}
+	} catch (e) {
+		log(e);
+	}
+}
+
 export async function setSettings() {
 	const db = database.active;
 	const settingsCollection = db.collections.get('settings');
@@ -61,9 +74,10 @@ export async function setSettings() {
 		valueAsString: item.valueAsString,
 		valueAsBoolean: item.valueAsBoolean,
 		valueAsNumber: item.valueAsNumber,
+		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
-	reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
+	reduxStore.dispatch(actions.addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
 export default async function() {
