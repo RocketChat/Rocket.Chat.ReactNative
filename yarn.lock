@@ -12586,6 +12586,18 @@ redux@4.0.4, redux@^4.0.4:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
+refetch-queries@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/refetch-queries/-/refetch-queries-2.0.1.tgz#7e1d1c42b2cfb61d5b38b101abf623ced4f55795"
+  integrity sha512-8vU3pCuYvSQp9mBq2w2OR669IBIrnjNfCIWWBS/ow7JcHQ4U5UMMtKeAX/f/6tjKHLAtbO8t0H1Rkvrn1OvGuw==
+  dependencies:
+    "@apollo/react-common" "^3.1.3"
+    "@apollo/react-hooks" "^3.1.3"
+    apollo-client "^2.6.8"
+    apollo-utilities "^1.3.3"
+    graphql "^14.6.0"
+    lodash "^4.17.15"
+
 reflect.ownkeys@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/reflect.ownkeys/-/reflect.ownkeys-0.2.0.tgz#749aceec7f3fdf8b63f927a04809e90c5c0b3460"

@@ -8,7 +8,7 @@ import {appColors} from '../theme/colors';
 import {Switch} from '../components/Switch'
 import {ContentType} from '../enums/content-type';
 import {ContentTypeButton} from '../components/ContentTypeButton';
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "refetch-queries";
 import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
 import {Button} from "../components/Button";
@@ -17,6 +17,7 @@ import { AssetMetadata } from '../models/asset-metadata';
 import isURL from 'is-url'
 import { PREVIEW_METADATA } from '../api/queries/threads.queries';
 import { HeaderTitle } from 'react-navigation-stack';
+import { ThreadsQueries } from '../api';
 
 /**
  * Defines the standard Stylesheet for the Create Thread Page.
@@ -106,12 +107,18 @@ const CreateThreadPage = ({navigation}) => {
                 commentsEnabled,
                 published: false,
                 assetUrl: determineAssetUrl(),
-            };
+        };
 
         await performCreation({
             variables: {
                 thread,
-            }
+            },
+            refetchQueriesMatch: [
+                {
+                  query: ThreadsQueries.TIMELINE,
+                  variables: { }
+                }
+              ]
         });
 
         await navigation.pop();
