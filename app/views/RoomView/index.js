@@ -682,13 +682,13 @@ class RoomView extends React.Component {
 	}
 
 	navToRoomPreview = async({ rid, name }) => {
-		const { navigation } = this.props;
+		const { navigation, user: { id: uid } } = this.props;
 		try {
-			const { room } = await RocketChat.getRoomInfo(rid);
-			if (room.t === 'c' || await RocketChat.getRoom(rid)) {
+			const room = await RocketChat.canAccessRoom(rid, uid);
+			if (room) {
 				navigation.push('RoomView', { rid, name, type: room.t });
 			}
-		} catch (error) {
+		} catch {
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-not-allowed') });
 		}
 	}

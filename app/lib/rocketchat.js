@@ -1123,6 +1123,9 @@ const RocketChat = {
 	useInviteToken(token) {
 		// RC 2.4.0
 		return this.sdk.post('useInviteToken', { token });
+	},
+	canAccessRoom(rid, uid) {
+		return this.sdk.methodCall('canAccessRoom', rid, uid);
 	}
 };
 
