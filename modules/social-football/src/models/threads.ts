@@ -20,6 +20,8 @@ export interface ThreadModel extends CreateThreadModel {
     createdByUserId: string;
     createdAt: Date;
     updatedAt?: Date;
+    balled?: boolean;
+    balls?: number;
 }
 
 export interface PaginatedThreads {

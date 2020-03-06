@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 });
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
-    const [performBall, { data: ballData, loading: ballLoading }] = useMutation<{ createBall: Boolean }>(CREATE_BALL);
+    const [performBall, { data, loading: ballLoading }] = useMutation<{ createBall: ThreadModel }>(CREATE_BALL);
 
     const renderPreview = () => {
         if (item.assetMetadata) {
@@ -107,20 +107,14 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Text>aangemaakt</Text>
         }
     }
-    // This one works
-    const { data } = useQuery<{ getBallsForThread: BallModel }>(BallQueries.BALLS, {
-        variables: {
-            threadId: item._id!
-        },
-        fetchPolicy: "cache-and-network"
-    });
 
     const onBallPress = async () => {
         await performBall({
             variables: {
-                threadId: item._id!
+                threadId: item._id!,
             }
         });
+        alert(data?.createBall.balls);
     };
 
     // WIP
@@ -130,10 +124,10 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     
     // This one works
     const renderBallButton = () => {
-        if(data!.getBallsForThread.ballByUser) {
-            return <ToggledButton title={data!.getBallsForThread.total!.toString()} onPress={unlikePress}/>
+        if(item.balled) {
+            return <ToggledButton title={item.balls!.toString()} onPress={unlikePress}/>
         } else {
-            return <Button title={data!.getBallsForThread.total!.toString()} onPress={onBallPress} />
+            return <Button title={item.balls!.toString()} onPress={onBallPress} />
         }
     }
 
@@ -154,9 +148,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
         </View>
         {renderPreview()}
-        <View style={[styles.balls]}>
-            <Text> ● {data!.getBallsForThread.total}</Text>
-        </View>
         {renderBallButton()}
     </View>
 

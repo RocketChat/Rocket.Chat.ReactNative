@@ -17,7 +17,9 @@ export const TIMELINE = gql`
                     description,
                     image,
                 },
-                createdAt
+                createdAt,
+                balls,
+                balled
             }
             total,
             limit,
