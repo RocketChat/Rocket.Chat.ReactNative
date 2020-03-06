@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
-import {appColors} from "../theme/colors";
-import {appStyles} from "../theme/style";
+import { appColors } from "../theme/colors";
+import { appStyles } from "../theme/style";
 import moment from "moment";
 import 'moment/locale/nl';
 import Urls from "../../../../app/containers/message/Urls"
-import {ContentType} from '../enums/content-type';
+import { ContentType } from '../enums/content-type';
 import SecurityManager from '../security/security-manager';
 
 /**
@@ -53,9 +53,9 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     useEffect(() => {
         SecurityManager.getRocketChatHeaders().then(headers => setRcAuthHeaders(headers));
     }, []);
-    
+
     //Gets and shows the userID
-    const getUserId = (item:ThreadModel) => {
+    const getUserId = (item: ThreadModel) => {
         return <Text>{item.createdByUser?.firstName}</Text>;
     }
 
@@ -64,33 +64,33 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         switch (item.type) {
             case ContentType.IMAGE:
                 if (item.assetUrl) {
-                    return <Image style={[styles.preview]}  source={{uri: item.assetUrl, headers: rcAuthHeaders }}/>;
+                    return <Image style={[styles.preview]} source={{ uri: item.assetUrl, headers: rcAuthHeaders }} />;
                 }
 
                 return;
             case ContentType.LINK:
             case ContentType.YOUTUBE:
-                return <Image style={[styles.preview]}  source={{uri: item.assetMetadata!.image}}/>;
+                if (item.assetMetadata) {
+                    return <Image style={[styles.preview]} source={{ uri: item.assetMetadata!.image }} />;
+                }
+
+                return;
         }
-     };
+    };
 
     //Shows the date using moment.js
-    const showDate = (item:ThreadModel)=>{
-         moment.locale();
-         if(item.updatedAt){
-             return <Text>{moment(item.updatedAt).fromNow()}</Text>
-         }
-        return <Text>{moment(item.createdAt).fromNow()}</Text>
+    const showDate = (item: ThreadModel) => {
+        moment.locale();
+        if (item.updatedAt) {
+            return <Text>{moment(item.updatedAt).fromNow()}</Text>
+        }
 
-
+        return <Text>{moment(item.createdAt).fromNow()}</Text>;
     }
 
     //Shows an edited sign when a thread is edited.
-    const checkUpdated = (item:ThreadModel)=>{
-        if(!item.updatedAt){
-            return;
-        }
-        else{
+    const checkUpdated = (item: ThreadModel) => {
+        if (item.updatedAt) {
             return <Text>{i18n.t('timeline.edited')}</Text>
         }
     }
@@ -100,7 +100,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
 
     return <View style={[styles.item]}>
-        <Text style={[styles.creatorText]}> { getUserId(item) }  ●  {showDate(item)}{checkUpdated(item)}</Text>
+        <Text style={[styles.creatorText]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
         <View style={[styles.textAndPreview]}>
             <View style={[styles.allText]}>
                 <Text style={[appStyles.heading]}>{item.title}</Text>
@@ -109,7 +109,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             </View>
             {renderImageInfo()}
 
-            </View>
         </View>
+    </View>
 
 };
