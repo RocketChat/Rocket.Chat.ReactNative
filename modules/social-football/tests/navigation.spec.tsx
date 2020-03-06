@@ -1,24 +1,31 @@
 import React, { createRef } from 'react';
 import { mount } from 'enzyme';
 import { ActivityIndicator } from 'react-native';
-import {AuthenticatedNavigation, Navigation, pages, UnaunthenticatedNavigation} from '../src/navigation';
+import {
+    AuthenticatedNavigation,
+    LoadingNavigation,
+    Navigation,
+    pages,
+    UnaunthenticatedNavigation
+} from '../src/navigation';
 import SecurityManager from "../src/security/security-manager";
 import {mocked} from "ts-jest/utils";
 import {BehaviorSubject} from "rxjs";
+import {updateWrapper} from "./helpers/general";
 
 jest.mock('../src/security/security-manager');
 
 const mockedSecurity = mocked(SecurityManager);
 
 describe('<Navigation />', () => {
-    it('should show an activity indicator when login state is not ready', () => {
+    it('should show an activity indicator when login state is not ready', async () => {
         const subject = new BehaviorSubject(null);
         mockedSecurity.login$ = subject.asObservable();
 
         const ref = createRef();
         const component = mount(<Navigation ref={ref} />);
 
-        expect(component.find(ActivityIndicator)).toHaveLength(1);
+        expect(component.find(LoadingNavigation)).toHaveLength(1);
     });
 
     it('should show authenticated nav when authenticated', () => {

@@ -1,27 +1,36 @@
 import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, Button, ScrollView, RefreshControl } from 'react-native';
+import { Image, View, Text, StyleSheet, Button, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { appStyles } from '../theme/style';
 import { SafeAreaView } from 'react-navigation';
 import { appColors } from '../theme/colors';
 import i18n from '../i18n'
 import { HeaderLogo } from '../components/header/HeaderLogo';
 import { HeaderCreateThreadButton } from '../components/header/HeaderCreateThreadButton';
-import { useQuery } from 'react-apollo';
+import { useQuery } from 'refetch-queries';
 import { ThreadsQueries } from '../api';
 import { PaginatedThreads } from '../models/threads';
 import { TimelineItem } from '../components/TimelineItem';
 import { InfiniteScrollView } from "../components/InfiniteScrollView";
 import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
-import { HeaderTitle } from 'react-navigation-stack';
-import ModalDropdown from 'react-native-modal-dropdown';
-import Constants from 'expo-constants';
 
+/**
+ * Defines the standard Stylesheet for the Timeline Page.
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#FFF1E5'
+    },
+
+    page: {
+        backgroundColor: appColors.lightPrimary,
+        minHeight: '100%',
+    },
+
+    empty: {
+        textAlign: 'center',
+        fontSize: 16,
     },
 
     icon: {
@@ -29,46 +38,45 @@ const styles = StyleSheet.create({
     },
 
     filterBar: {
+        flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#FFF1E5',
         justifyContent: 'space-between',
         height: 30,
         width: '100%',
-        paddingTop: 5,
-        paddingLeft: 25,
-        paddingRight: 25,
-    },
-
-    filterText: {
-        flexDirection: 'row',
-        fontWeight: 'bold',
+        paddingLeft: 30,
+        paddingRight: 30,
+        backgroundColor: appColors.lightPrimary,
     },
 
 
 });
 
-function wait(timeout) {
-    return new Promise(resolve => {
-      setTimeout(resolve, timeout);
-    });
-  }
-
+/**
+ * Creates the Page.
+ */
 const TimelinePage = ({ navigation }) => {
+    
+    //The maximum amount of threads that are loaded at once by Lazy Loading
     const perPage = 6;
+    const initial = 10;
 
-    const { data, error, fetchMore, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
+    /**
+     * Fetching more Threads
+     */
+    const { data, fetchMore, refetch, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
-            limit: perPage,
+            limit: initial,
         },
         fetchPolicy: "cache-and-network"
     });
+    
+    /**
+     * Hold state whether pull-to-refresh was used
+     */
+    const [refreshing, setRefreshing] = useState(false);
 
     const fetchMoreResults = () => {
         if (loading) {
-            return;
-        }
-
-        if (!fetchMore) {
             return;
         }
 
@@ -82,48 +90,71 @@ const TimelinePage = ({ navigation }) => {
 
                 return {
                     getThreads: {
-                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads],
+                        __typename: 'PaginatedThreads',
+                        threads: [...prev.getThreads.threads, ...fetchMoreResult.getThreads.threads].filter(item => {
+                            if (ids.indexOf(item._id!) === -1) {
+                                ids.push(item._id!);
+                                return true;
+                            }
+
+                            return false;
+                        }).map((item: any) => {
+                            item.__typename = 'Thread';
+
+                            return item;
+                        }),
                         limit: perPage,
                         offset: fetchMoreResult.getThreads.offset,
-                        total: prev.getThreads.threads.length + fetchMoreResult.getThreads.threads.length,
+                        total: ids.length,
                     },
                 }
             },
         })
     };
 
+    const renderLoader = () => {
+        return <View style={[styles.loading, { opacity: loading ? 1 : 0 }]}><ActivityIndicator /></View>
+    };
+
+    const reset = async () => {
+        setRefreshing(true);
+
+        await refetch({});
+
+        setRefreshing(false);
+    };
+
     return <>
+        {/*<View style={[styles.filterBar]} >*/}
+        {/*    <Text style={[appStyles.bold]}>Alle berichten.</Text>*/}
+        {/*    <Image style={[]} source={require('../assets/images/refresh.png')} />*/}
 
-        <View style={[styles.filterBar]}>
-            {/* <ModalDropdown options={['Alle Berichten', 'Teskt', 'Foto', 'Video', 'Nog wat', 'Teskt']}>
-               <Text style={[styles.filterText]}> Alle berichten <Image style={[]} source={require('../assets/images/filter_arrow.png')} /></Text>
-            </ModalDropdown> */}
-
-            <View style={[styles.filterText]}>
-                <ModalDropdown
-                    textStyle={{ fontSize: 15, fontWeight: 'bold' }}
-                    dropdownTextStyle={{ fontSize: 13, fontWeight: 'bold' }}
-                    dropdownStyle={{ width: '90%', height: 150 }}
-                    defaultValue={['Alle berichten ']}
-                    defaultIndex= '0'
-                    options={['Alle berichten ','Tekst ', 'Foto ', 'Video ', 'Nog wat ', 'Tekst ']} />
-                <Image style={[styles.icon]} source={require('../assets/images/filter_arrow.png')} />
+        {/*</View>*/}
+        <SafeAreaView>
+            <View style={styles.page}>
+                <InfiniteScrollView
+                    onEndReached={() => fetchMoreResults()}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={() => reset()}
+                        />
+                    }>
+                    <View style={styles.container}>
+                        {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
+                        {renderLoader()}
+                    </View>
+                </InfiniteScrollView>
+                {!loading && data?.getThreads.total === 0 ? <Text style={[appStyles.bold, styles.empty]}>{i18n.t('timeline.empty')}</Text> : null}
             </View>
-
-            <Image style={[]} source={require('../assets/images/refresh.png')} />
-
-        </View>
-
-        <InfiniteScrollView
-         onEndReached={() => fetchMoreResults()}>
-            <View style={styles.container}>
-                {data?.getThreads.threads.map((item, index) => <TimelineItem key={index} item={item} />)}
-            </View>
-        </InfiniteScrollView>
+        </SafeAreaView>
     </>;
 
 };
 
+/**
+ * Creation of the Page.
+ */
 TimelinePage.navigationOptions = ({ navigation }) => {
     return {
         headerTitle: <HeaderLogo />,

@@ -3,6 +3,10 @@ import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { appStyles } from '../theme/style';
 import i18n from '../i18n'
 
+/**
+ * Defining a Link.
+ */
+
 interface Props {
     title: string;
     onPress: () => void;

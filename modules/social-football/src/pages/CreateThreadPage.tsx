@@ -8,8 +8,7 @@ import {appColors} from '../theme/colors';
 import {Switch} from '../components/Switch'
 import {ContentType} from '../enums/content-type';
 import {ContentTypeButton} from '../components/ContentTypeButton';
-import {HeaderSaveThreadButton} from "../components/header/HeaderSaveThreadButton";
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "refetch-queries";
 import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
 import {Button} from "../components/Button";
@@ -17,7 +16,12 @@ import Urls from "../../../../app/containers/message/Urls"
 import { AssetMetadata } from '../models/asset-metadata';
 import isURL from 'is-url'
 import { PREVIEW_METADATA } from '../api/queries/threads.queries';
+import { HeaderTitle } from 'react-navigation-stack';
+import { ThreadsQueries } from '../api';
 
+/**
+ * Defines the standard Stylesheet for the Create Thread Page.
+ */
 const styles = StyleSheet.create({
         container: {
             width: '100%',
@@ -46,6 +50,9 @@ const styles = StyleSheet.create({
     }
 );
 
+/**
+ * Creates the Page.
+ */
 const CreateThreadPage = ({navigation}) => {
     const [performCreation, {data, loading, error}] = useMutation<{ createThread: boolean }>(CREATE_THREAD);
     const { data: urlLinkPreview, refetch: refetchLinkUrlPreview } = useQuery<{ getPreviewMetadata: AssetMetadata | undefined }>(PREVIEW_METADATA);
@@ -59,6 +66,9 @@ const CreateThreadPage = ({navigation}) => {
     const [link, setLink] = useState<string | null>(null);
     const [youtube, setYoutube] = useState<string | null>(null);
 
+    /**
+     * Checks if the added URL is a special content type.
+     */
     const determineAssetUrl = () => {
         switch (type) {
             case ContentType.YOUTUBE:
@@ -68,6 +78,11 @@ const CreateThreadPage = ({navigation}) => {
         }
     };
 
+    /**
+     * Checks if all required information for the Thread is filled.
+     * 
+     * @returns {bool}
+     */
     const isValid = () => {
         return (
             !!title &&
@@ -92,17 +107,28 @@ const CreateThreadPage = ({navigation}) => {
                 commentsEnabled,
                 published: false,
                 assetUrl: determineAssetUrl(),
-            };
+        };
 
         await performCreation({
             variables: {
                 thread,
-            }
+            },
+            refetchQueriesMatch: [
+                {
+                  query: ThreadsQueries.TIMELINE,
+                  variables: { }
+                }
+              ]
         });
 
         await navigation.pop();
     };
 
+    /**
+     * Creates the Form that has to be filled in when creating a new Thread.
+     * 
+     * @returns {JSX.element Form}
+     */
     const renderLinkInput = () => {
         return <View style={appStyles.formGroup}>
             <Text style={[appStyles.label]}>{i18n.t('createThread.link.label')}</Text>
@@ -119,6 +145,11 @@ const CreateThreadPage = ({navigation}) => {
         </View>;
     };
 
+    /**
+     * Creates the Card that shows the Youtube card information.
+     * 
+     * @returns {JSX.element Form}
+     */
     const renderYoutubeInput = () => {
         return <View style={appStyles.formGroup}>
             <Text style={[appStyles.label]}>{i18n.t('createThread.youtube.label')}</Text>
@@ -139,31 +170,32 @@ const CreateThreadPage = ({navigation}) => {
         </View>
     };
 
+    /**
+     * Checks if the filled URL is a correct and supported link.
+     */
     useEffect(() => {
-        const url = type === ContentType.LINK ? link : (ContentType.YOUTUBE ? youtube : null);
+        const url = type === ContentType.LINK ? link : youtube;
 
         if (!isURL(url)) {
             return;
         }
 
-        try {
-            if (type === ContentType.LINK && refetchLinkUrlPreview) {
-                refetchLinkUrlPreview({
-                    type,
-                    url,
-                });
-            } else if (type === ContentType.YOUTUBE && refetchYoutubeUrlPreview) {
-                refetchYoutubeUrlPreview({
-                    type,
-                    url,
-                });
-            }     
-        } catch (error) {
-            // non critical
-            console.warn(error);
+        if (type === ContentType.LINK && refetchLinkUrlPreview) {
+            refetchLinkUrlPreview({
+                type,
+                url,
+            });
+        } else {
+            refetchYoutubeUrlPreview({
+                type,
+                url,
+            });
         }
     }, [type, youtube, link])
 
+    /**
+     * Decides which Link Card to show.
+     */
     const renderLinkPreview = () => {
         if (urlYoutubePreview?.getPreviewMetadata && ContentType.YOUTUBE === type) {
             return <Urls urls={[urlYoutubePreview.getPreviewMetadata]} user={{}} />
@@ -174,6 +206,11 @@ const CreateThreadPage = ({navigation}) => {
         return null;
     }
 
+    /**
+     * Makes sure that the Keyboard is rendered correctly.
+     * 
+     * @returns {KeyboardUtilityView}
+     */
     return <KeyboardUtilityView centerVertically={false}>
         <ScrollView style={styles.container}>
             <View>
@@ -232,7 +269,7 @@ const CreateThreadPage = ({navigation}) => {
                         />
                     </View>
                     <View style={[appStyles.formGroup]}>
-                        <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                        <Button id={'submit'} title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
                     </View>
                 </View>
             </View>
@@ -240,6 +277,11 @@ const CreateThreadPage = ({navigation}) => {
     </KeyboardUtilityView>;
 };
 
+/**
+ * Gets the localized title for the header.
+ * 
+ * @returns {headerTitle}
+ */
 CreateThreadPage.navigationOptions = ({navigation}) => {
     return {
         headerTitle: i18n.t('createThread.title'),

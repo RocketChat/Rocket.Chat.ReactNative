@@ -3,6 +3,10 @@ import { TouchableOpacity, Text, StyleSheet, View, ActivityIndicator } from 'rea
 import { appStyles } from '../theme/style';
 import { appColors } from '../theme/colors';
 
+/**
+ * Defining a Standard Button.
+ */
+
 interface Props {
     title: string;
     loading?: boolean;

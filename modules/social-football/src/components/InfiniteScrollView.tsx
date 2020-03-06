@@ -1,6 +1,10 @@
 import React from 'react';
 import {ScrollView} from "react-native";
 
+/**
+ * Defining the Lazy Loading scrolling.
+ */
+
 export const InfiniteScrollView = ({ onEndReached, children, onScroll = () => null, ...props }) => (<ScrollView
     onScroll={(e) => {
         let paddingToBottom = 10;

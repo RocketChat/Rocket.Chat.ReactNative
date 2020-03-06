@@ -9,10 +9,13 @@ import Urls from "../../../../app/containers/message/Urls"
 import { useQuery, useMutation } from 'react-apollo';
 import moment from "moment";
 import 'moment/locale/nl';
-import { BallQueries, BallMutations } from '../api';
 import { Button, ToggledButton} from "../components/Button";
 import { CREATE_BALL } from '../api/mutations/balls.mutations';
+import {appStyles} from "../theme/style";
 
+/**
+ * Defining the Metadata for an Item within the Timeline.
+ */
 
 const styles = StyleSheet.create({
     item: {
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         marginBottom: 10,
         width: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: appColors.light,
     },
 
     textAndPreview: {
@@ -35,24 +38,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-    threadTitle: {
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 15
-    },
-
     allText: {
         flex: 2,
     },
 
-    threadText: {
-        color: 'black',
-        fontSize: 15
-    },
-
     creatorText: {
-        color: '#B0B0B0',
-        fontSize: 13,
         marginBottom: 7,
         marginTop: 5
     },
@@ -132,23 +122,15 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
 
     return <View style={[styles.item]}>
-        <Text style={[styles.creatorText]}>{item.createdByUserId}  ●  {showDate(item)} {checkUpdated(item)}.</Text>
-        <Text style={[styles.creatorText]}>{item.type}</Text>
-        {/* <Text>{renderLinkInfo(item)}</Text> */}
-        <View style={[styles.textAndPreview]}>
-            <View style={[styles.allText]}>
-                <Text style={[styles.threadTitle]}>{item.title}</Text>
-                <Text style={[styles.threadText]}>{item.description}</Text>
-                <Text style={[styles.threadText]}>{item.type}</Text>
-                {showLink(item)}
+    <Text style={[styles.creatorText, appStyles.subTitle]}>Dick Advocaat  ●  Zondag.</Text>
 
-            </View>
-            {renderImageInfo(item)}
-
-            {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
+    <View style={[styles.textAndPreview]}>
+        <View style={[styles.allText]}>
+            <Text style={[appStyles.heading]}>{item.title}</Text>
+            <Text style={[appStyles.text]}>{item.description}</Text>
         </View>
         {renderPreview()}
         {renderBallButton()}
     </View>
-
+</View>
 };

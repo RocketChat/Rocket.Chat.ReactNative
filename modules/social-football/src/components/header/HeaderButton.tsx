@@ -1,6 +1,10 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 
+/**
+ * Defining a Standard Button within the Header.
+ */
+
 const styles = StyleSheet.create({
     holder: {
         width: 35,

@@ -8,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
 
 class SecurityManager {
     private static readonly ACCESS_TOKEN_KEY = 'accessToken';
-
     private static readonly REFRESH_TOKEN_KEY = 'refreshToken';
 
     private loginSubject = new BehaviorSubject<boolean|null>(null);
@@ -18,6 +17,13 @@ class SecurityManager {
         this.loginSubject.next(!!(await this.getAccessToken()));
     }
 
+    /**
+     * Requests an accessToken. 
+     * Returns null when the request fails.
+     *
+     * @returns {(Promise<string|null>)}
+     * @memberof SecurityManager
+     */
     public async getAccessToken(): Promise<string|null> {
         const accessToken = await RNUserDefaults.get(SecurityManager.ACCESS_TOKEN_KEY);
 
@@ -40,6 +46,13 @@ class SecurityManager {
         return null;
     }
 
+    /**
+     * If there is an accesstoken request the User.
+     * Otherwise, return null.
+     *
+     * @returns {(Promise<TokenPayload|null>)}
+     * @memberof SecurityManager
+     */
     public async getUser(): Promise<TokenPayload|null> {
         const accessToken = await this.getAccessToken();
 
@@ -54,6 +67,14 @@ class SecurityManager {
         return !!(await this.getUser());
     }
 
+    /**
+     * Requests refreshtoken. 
+     * Returns null when the request fails.
+     * Renew the refreshtoken when it is expired.
+     *
+     * @returns {(Promise<string|null>)}
+     * @memberof SecurityManager
+     */
     public async refreshToken(): Promise<string|null> {
         const refreshToken = await RNUserDefaults.get(SecurityManager.REFRESH_TOKEN_KEY);
 
@@ -88,6 +109,11 @@ class SecurityManager {
         return null;
     }
 
+    /**
+     * Resets the Accesstoken and Refreshtoken.
+     *
+     * @memberof SecurityManager
+     */
     public async logout() {
         await RNUserDefaults.set(SecurityManager.ACCESS_TOKEN_KEY, '');
         await RNUserDefaults.set(SecurityManager.REFRESH_TOKEN_KEY, '');
@@ -96,6 +122,12 @@ class SecurityManager {
         this.loginSubject.next(false);
     }
 
+    /**
+     * Store the accesstoken and refreshtoken.
+     *
+     * @param {TokenPair} pair
+     * @memberof SecurityManager
+     */
     public async storeTokens(pair: TokenPair) {
         console.info('Storing tokens.');
 
@@ -105,10 +137,24 @@ class SecurityManager {
         console.info('Stored tokens.');
     }
 
+    /**
+     * Check if the user is logged-in.
+     *
+     * @param {bool} value
+     * @returns bool
+     * @memberof SecurityManager
+     */
     public setLoggedIn(value: boolean) {
         this.loginSubject.next(value);
     }
 
+    /**
+     * Check if the token is expired or not.
+     *
+     * @param {*} payload
+     * @returns bool
+     * @memberof SecurityManager
+     */
     public isTokenExpired(payload: any) {
         return (Date.now() / 1000) > payload.exp;
     }
