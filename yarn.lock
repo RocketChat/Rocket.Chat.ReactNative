@@ -12108,13 +12108,10 @@ react-native-navigation-bar-color@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-1.0.0.tgz#04ff752a58049af93ceea9ccf266b8d3fbc6514a"
   integrity sha512-djBE0zSp+JT65VeUm4UpIpr9DA9SpE9YTLwDAcqkWfB9JI8l3djSx+SmrIYfc7dUs216Y6qo2dr0qR3+M5qbOQ==
 
-react-native-notifications@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.0.6.tgz#5355fad1ea53327fb00fd5e8a6570279fe32f2a9"
-  integrity sha512-NFx5ADlqfQYTFkKWvd/GxM8rxKf1lSWJZJY0jbydAOZAuhnKFR/CsH7Mpx6T+9pY5Z3rvu7UzBtVn9LTBx0jYg==
-  dependencies:
-    core-js "^1.0.0"
-    uuid "^2.0.3"
+react-native-notifications@^3.4.0:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-3.1.2.tgz#fb679e40e81b121041604a6f7403878ed48e099f"
+  integrity sha512-2v2hhXysHWmf87kinVJwaF6bfBVIWCHWho4FudxuK2s4JzS/3zjOUHFnErrYv9YcudGi+U2IwZAHKqMF0wYn1A==
 
 react-native-orientation-locker@1.1.6:
   version "1.1.6"
@@ -14937,11 +14934,6 @@ uuid-js@^0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/uuid-js/-/uuid-js-0.7.5.tgz#6c886d02a53d2d40dcf25d91a170b4a7b25b94d0"
   integrity sha1-bIhtAqU9LUDc8l2RoXC0p7JblNA=
-
-uuid@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
-  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
