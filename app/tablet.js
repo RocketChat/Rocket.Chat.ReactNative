@@ -129,6 +129,17 @@ export const initTabletNav = (setState) => {
 					return null;
 				}
 
+				if (routeName === 'RoomsListView') {
+					const resetAction = StackActions.reset({
+						index: 0,
+						actions: [NavigationActions.navigate({ routeName: 'RoomView', params: {} })]
+					});
+					roomRef.dispatch(resetAction);
+					notificationRef.dispatch(resetAction);
+					setState({ showModal: false });
+					return null;
+				}
+
 				if (routeName === 'NewMessageView') {
 					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
 					setState({ showModal: true });

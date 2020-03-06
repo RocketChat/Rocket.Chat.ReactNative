@@ -3,6 +3,7 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
+
 import styles from './styles';
 
 const Hashtag = React.memo(({
