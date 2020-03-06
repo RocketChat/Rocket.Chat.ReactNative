@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
@@ -8,6 +8,7 @@ import moment from "moment";
 import 'moment/locale/nl';
 import Urls from "../../../../app/containers/message/Urls"
 import {ContentType} from '../enums/content-type';
+import SecurityManager from '../security/security-manager';
 
 /**
  * Defining the Metadata for an Item within the Timeline.
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 80,
         borderRadius: 10,
+        resizeMode: 'cover',
     },
 
     allText: {
@@ -46,6 +48,11 @@ const styles = StyleSheet.create({
 });
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
+    const [rcAuthHeaders, setRcAuthHeaders] = useState({});
+
+    useEffect(() => {
+        SecurityManager.getRocketChatHeaders().then(headers => setRcAuthHeaders(headers));
+    }, []);
     
     //Gets and shows the userID
     const getUserId = (item:ThreadModel) => {
@@ -53,11 +60,18 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
 
     //shows the image preview for any thread with an image
-    const renderImageInfo = (item:ThreadModel) => {
-        if(item.assetMetadata)
-            return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}/>;
-        else
-            return;
+    const renderImageInfo = () => {
+        switch (item.type) {
+            case ContentType.IMAGE:
+                if (item.assetUrl) {
+                    return <Image style={[styles.preview]}  source={{uri: item.assetUrl, headers: rcAuthHeaders }}/>;
+                }
+
+                return;
+            case ContentType.LINK:
+            case ContentType.YOUTUBE:
+                return <Image style={[styles.preview]}  source={{uri: item.assetMetadata!.image}}/>;
+        }
      };
 
     //Shows the date using moment.js
@@ -80,17 +94,22 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Text>{i18n.t('timeline.edited')}</Text>
         }
     }
-    return <View style={[styles.item]}>
-    <Text style={[styles.creatorText]}> { getUserId(item) }  ●  {showDate(item)}{checkUpdated(item)}</Text>
-    <View style={[styles.textAndPreview]}>
-        <View style={[styles.allText]}>
-            <Text style={[appStyles.heading]}>{item.title}</Text>
-            <Text style={[appStyles.text]}>{item.description}</Text>
-            {/* {showLink(item)} */}
-        </View>
-        {renderImageInfo(item)}
 
+    if (!rcAuthHeaders) {
+        return <View></View>;
+    }
+
+    return <View style={[styles.item]}>
+        <Text style={[styles.creatorText]}> { getUserId(item) }  ●  {showDate(item)}{checkUpdated(item)}</Text>
+        <View style={[styles.textAndPreview]}>
+            <View style={[styles.allText]}>
+                <Text style={[appStyles.heading]}>{item.title}</Text>
+                <Text style={[appStyles.text]}>{item.description}</Text>
+                {/* {showLink(item)} */}
+            </View>
+            {renderImageInfo()}
+
+            </View>
         </View>
-    </View>
 
 };
