@@ -1,8 +1,8 @@
-app_identifier("nl.tue.topteam.socialfootball") # The bundle identifier of your app
-apple_id("daanhendriks97@gmail.com") # Your Apple email address
+app_identifier "chat.rocket.reactnative" # The bundle identifier of your app
+apple_id "rodrigo.nascimento@rocket.chat" # Your Apple email address
 
-itc_team_id("118488627") # App Store Connect Team ID
-team_id("KTUM5Y9PXH") # Developer Portal Team ID
+team_id "S6UPZG7ZR3" # Developer Portal Team ID
+itc_team_id "118376632"
 
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
+# you can even provide different app identifiers, Apple IDs and team names per lane:
+# More information: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Appfile.md

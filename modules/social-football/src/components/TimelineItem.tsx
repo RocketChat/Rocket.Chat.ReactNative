@@ -68,11 +68,6 @@ const styles = StyleSheet.create({
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     const [performBall, { data: ballData, loading: ballLoading }] = useMutation<{ createBall: Boolean }>(CREATE_BALL);
-    const {data: ball, loading} = useQuery<{ getBallsForThread: BallModel }>(BallQueries.BALLS, {
-        variables: {
-            threadId: item._id
-        }
-    });
 
     const renderPreview = () => {
         if (item.assetMetadata) {
@@ -112,6 +107,13 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Text>aangemaakt</Text>
         }
     }
+    // This one works
+    const { data } = useQuery<{ getBallsForThread: BallModel }>(BallQueries.BALLS, {
+        variables: {
+            threadId: item._id!
+        },
+        fetchPolicy: "cache-and-network"
+    });
 
     const onBallPress = async () => {
         await performBall({
@@ -119,7 +121,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
                 threadId: item._id!
             }
         });
-        renderBallButton(); // TODO fix that this renders again once clicked.
     };
 
     // WIP
@@ -128,12 +129,12 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
     
     // This one works
-    const renderBallButton = () => { // TODO UI things
-        if (ball?.getBallsForThread.ballByUser && ball != undefined) {
-            return <ToggledButton title={ball!.getBallsForThread.total!.toString()} onPress={unlikePress} loading={loading}/>
+    const renderBallButton = () => {
+        if(data!.getBallsForThread.ballByUser) {
+            return <ToggledButton title={data!.getBallsForThread.total!.toString()} onPress={unlikePress}/>
         } else {
-            return <Button title={ball!.getBallsForThread.total!.toString()} onPress={onBallPress} loading={loading} />
-        } 
+            return <Button title={data!.getBallsForThread.total!.toString()} onPress={onBallPress} />
+        }
     }
 
     return <View style={[styles.item]}>
@@ -153,6 +154,9 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             {/* <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} /> */}
         </View>
         {renderPreview()}
+        <View style={[styles.balls]}>
+            <Text> ● {data!.getBallsForThread.total}</Text>
+        </View>
         {renderBallButton()}
     </View>
 
