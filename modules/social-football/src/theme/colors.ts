@@ -4,7 +4,7 @@
 
 export const appColors = {
     primary: '#f18217', //Bright orange
-    lightPrimary: '#ffcca1', //Light orange
+    lightPrimary: '#ffedde', //Light orange
     text: '#333333', //Very dark gray
     muted: '#B0B0B0', //Light orangeish-gray
     placeholder: '#95a5a6', //Dark blueish-gray

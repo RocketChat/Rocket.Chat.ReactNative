@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { OVERVIEW } from "../fragments/threads.fragments";
 
 /**
  * Get all information needed to show the Timeline page.
@@ -10,26 +11,15 @@ export const TIMELINE = gql`
     query Timeline($offset: Int, $limit: Int) {
         getThreads(offset: $offset, limit: $limit){
             threads {
-                _id,
-                type,
-                title,
-                description,
-                commentsEnabled,
-                published,
-                assetUrl,
-                rocketChatMessageID,
-                assetMetadata {
-                    title,
-                    description,
-                    image,
-                },
-                createdAt
+                ...ThreadsOverview
             }
             total,
             limit,
             offset,
         }
     }
+
+    ${OVERVIEW}
 `;
 
 /**
