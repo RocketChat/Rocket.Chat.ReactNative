@@ -31,7 +31,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
+export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'DELETE_INIT', 'DELETE_FINISH', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
