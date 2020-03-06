@@ -49,11 +49,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     
     //Gets and shows the userID
     const getUserId = (item:ThreadModel) => {
-         if (item.createdByUserId){
-            return <Text>{item.createdByUserId}</Text>;
-        }
-        return ;
-
+        return <Text>{item.createdByUser?.firstName}</Text>;
     }
 
 //Not used, can be used to render youtube video previews
@@ -112,7 +108,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             <Text style={[appStyles.heading]}>{item.title}</Text>
             <Text style={[appStyles.text]}>{item.description}</Text>
             {/* {showLink(item)} */}
-            {getUserId(item)}
         </View>
         {renderImageInfo(item)}
 

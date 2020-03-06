@@ -24,7 +24,11 @@ export const TIMELINE = gql`
                     image,
                 },
                 createdAt,
-                createdByUserId,
+                createdByUser {
+                    firstName,
+                    lastName,
+                    username,
+                },
                 createdAt,
                 teamChannelId,
                 updatedAt

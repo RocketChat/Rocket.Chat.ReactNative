@@ -1,5 +1,6 @@
 import { ContentType } from "../enums/content-type";
 import { AssetMetadata } from "./asset-metadata";
+import { UserModel } from "./users";
 
 /**
  * Defining the model to Create a new Thread.
@@ -23,7 +24,7 @@ export interface ThreadModel extends CreateThreadModel {
 
     assetMetadata?: AssetMetadata;
     teamChannelId: string;
-    createdByUserId: string;
+    createdByUser: UserModel|null;
     createdAt: Date;
     updatedAt?: Date;
 }

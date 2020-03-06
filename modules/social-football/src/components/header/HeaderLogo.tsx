@@ -7,6 +7,8 @@ import { Image, StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
     logo: {
+        flex:1,
+        height:35,
         width: 70,
         resizeMode: 'contain',
         marginTop: Platform.OS === 'ios' ? -10 : 0,
