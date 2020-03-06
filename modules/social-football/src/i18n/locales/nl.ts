@@ -108,5 +108,12 @@ export default {
         error: {
             label: 'Er ging iets mis bij aanmaken van een item.',
         }
+    },
+    filterOptions: {
+        all: 'Alle berichten',
+        text: 'Tekstberichten',
+        image: 'Afbeeldingen',
+        video: 'Video\'s',
+        link: 'Links',
     }
 }
