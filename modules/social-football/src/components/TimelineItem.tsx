@@ -47,24 +47,8 @@ const styles = StyleSheet.create({
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     
+    //Gets and shows the userID
     const getUserId = (item:ThreadModel) => {
-        // const { data, error, fetchMore, loading } = useQuery<{ getUser:UserModel }>(UserQueries.GetUserFromID, {
-        //     variables: {
-        //         createdByUserId: item.createdByUserId
-        //     }
-        // });
-
-
-        // if(loading){
-        //     return <Text>Loading + {loading}</Text>
-        // }
-        // if(error){
-        // return <Text>Error + {error.message}  - {error.networkError?.message}</Text>
-        // }
-        // if(data?.getUser){ 
-        //     return <Text>Name: {data?.getUser.firstName}  !</Text>
-        // }
-      //  else
          if (item.createdByUserId){
             return <Text>{item.createdByUserId}</Text>;
         }
@@ -72,28 +56,35 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
 
     }
 
-    const renderPreview = () => {
-        if((item.type == ContentType.YOUTUBE || item.type == ContentType.LINK) && item.assetMetadata){
-            return <Urls urls={[item.assetMetadata!]} user={{}} />
-        }
-    };
+//Not used, can be used to render youtube video previews
+    // const renderPreview = () => {
+    //     if((item.type == ContentType.YOUTUBE || item.type == ContentType.LINK) && item.assetMetadata){
+    //         return <Urls urls={[item.assetMetadata!]} user={{}} />
+    //     }
+    // };
+
+    //shows the image preview for any thread with an image
     const renderImageInfo = (item:ThreadModel) => {
         if(item.assetMetadata)
             return <Image style={[styles.preview]}  source={{uri: item.assetMetadata.image}}        />;
         else
             return;
      };
-    const showLink = (item:ThreadModel) => {
-        if(item.type == ContentType.LINK && item.assetUrl)
-            return <Text 
-                style={[styles.linkText]}
-                onPress={() => Linking.openURL('www.google.com')}
-                >
-                {item.assetUrl}
-                </Text>;
-        else
-            return;
-    };
+
+//Not used, can be used to render Links
+    // const showLink = (item:ThreadModel) => {
+    //     if(item.type == ContentType.LINK && item.assetUrl)
+    //         return <Text 
+    //             style={[styles.linkText]}
+    //             onPress={() => Linking.openURL('www.google.com')}
+    //             >
+    //             {item.assetUrl}
+    //             </Text>;
+    //     else
+    //         return;
+    // };
+
+    //Shows the date using moment.js
     const showDate = (item:ThreadModel)=>{
          moment.locale();
          if(item.updatedAt){
@@ -103,6 +94,8 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
 
 
     }
+
+    //Shows a edited sign when a thread is edited.
     const checkUpdated = (item:ThreadModel)=>{
         if(!item.updatedAt){
             return;
