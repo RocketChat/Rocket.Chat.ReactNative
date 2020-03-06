@@ -159,7 +159,7 @@ class Audio extends React.Component {
 			user, baseUrl, file, getCustomEmoji, split, theme
 		} = this.props;
 		const { description } = file;
-
+		const newVariable = paused ? formatTime(duration) : formatTime(currentTime);
 		if (!baseUrl) {
 			return null;
 		}
@@ -196,7 +196,7 @@ class Audio extends React.Component {
 						onValueChange={this.onValueChange}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
-					{paused ? <Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text> : <Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{formatTime(currentTime)}</Text>}
+					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{newVariable}</Text>
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
