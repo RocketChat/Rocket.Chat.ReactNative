@@ -52,13 +52,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         return <Text>{item.createdByUser?.firstName}</Text>;
     }
 
-//Not used, can be used to render youtube video previews
-    // const renderPreview = () => {
-    //     if((item.type == ContentType.YOUTUBE || item.type == ContentType.LINK) && item.assetMetadata){
-    //         return <Urls urls={[item.assetMetadata!]} user={{}} />
-    //     }
-    // };
-
     //shows the image preview for any thread with an image
     const renderImageInfo = (item:ThreadModel) => {
         if(item.assetMetadata)
@@ -66,19 +59,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         else
             return;
      };
-
-//Not used, can be used to render Links
-    // const showLink = (item:ThreadModel) => {
-    //     if(item.type == ContentType.LINK && item.assetUrl)
-    //         return <Text 
-    //             style={[styles.linkText]}
-    //             onPress={() => Linking.openURL('www.google.com')}
-    //             >
-    //             {item.assetUrl}
-    //             </Text>;
-    //     else
-    //         return;
-    // };
 
     //Shows the date using moment.js
     const showDate = (item:ThreadModel)=>{
@@ -91,7 +71,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
 
     }
 
-    //Shows a edited sign when a thread is edited.
+    //Shows an edited sign when a thread is edited.
     const checkUpdated = (item:ThreadModel)=>{
         if(!item.updatedAt){
             return;
@@ -102,7 +82,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
     return <View style={[styles.item]}>
     <Text style={[styles.creatorText]}> { getUserId(item) }  ●  {showDate(item)}{checkUpdated(item)}</Text>
-    {/* <Text>{renderLinkInfo(item)}</Text> */}
     <View style={[styles.textAndPreview]}>
         <View style={[styles.allText]}>
             <Text style={[appStyles.heading]}>{item.title}</Text>
@@ -112,7 +91,6 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         {renderImageInfo(item)}
 
         </View>
-    {/* {renderPreview()} */}
     </View>
 
 };
