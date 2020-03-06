@@ -32,6 +32,7 @@ export const merge = (subscription, room) => {
 		} else {
 			subscription.muted = [];
 		}
+		subscription.sysMes = room.sysMes;
 	}
 
 	if (!subscription.name) {
