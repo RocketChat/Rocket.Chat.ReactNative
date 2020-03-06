@@ -23,7 +23,13 @@ export const TIMELINE = gql`
                     description,
                     image,
                 },
-                createdAt
+                createdAt,
+                createdByUserId,
+                createdAt,
+                teamChannelId,
+                updatedAt
+
+
             }
             total,
             limit,
