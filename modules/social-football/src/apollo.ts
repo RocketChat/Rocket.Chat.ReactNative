@@ -6,18 +6,24 @@ import { setContext } from 'apollo-link-context';
 import SecurityManager from './security/security-manager';
 import config from './config/config';
 import 'cross-fetch/polyfill';
+import { createUploadLink } from 'apollo-upload-client';
 
 /**
  * Provide authorisation for Apollo.
  * If RefreshUsingToken then don't add access token because it is obtaining a new one.
- * 
- * @param all 
- * @param headers 
+ *
+ * @param all
+ * @param headers
  * @returns {all, headers}
  */
 export const authLinkProcessor = async(all, { headers }) => {
+    const base = {
+        uri: config.api,
+    };
+
     if (all?.operationName === 'RefreshUsingToken') {
         return {
+            ...base,
             headers,
         };
     }
@@ -25,6 +31,7 @@ export const authLinkProcessor = async(all, { headers }) => {
     const token = await SecurityManager.getAccessToken();
 
     return {
+        ...base,
         headers: {
             ...headers,
             authorization: token ? `Bearer ${ token }` : ''
@@ -41,7 +48,7 @@ const cache = new InMemoryCache({ dataIdFromObject: cacheKeyGenerator});
 /**
  * Setup the ApolloClient.
  * Use the ApolloLink to define the link of operations before execution.
- * 
+ *
  * @param link
  * @param authLink
  * @param uri
@@ -50,12 +57,9 @@ const cache = new InMemoryCache({ dataIdFromObject: cacheKeyGenerator});
  */
 const client = new ApolloClient({
     link: ApolloLink.from([
-        authLink,
-        new HttpLink({
-            uri: config.api,
-        })
+        authLink.concat(createUploadLink()),
     ]),
     cache,
 });
-
+authLinkProcessor(null, { headers: {} }).then(a => console.info('f', JSON.stringify(a)));
 export default client;

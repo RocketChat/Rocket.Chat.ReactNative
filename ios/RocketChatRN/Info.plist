@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BugsnagAPIKey</key>
-	<string></string>
+	<string/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>nl</string>
 	<key>CFBundleDisplayName</key>

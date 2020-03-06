@@ -112,4 +112,7 @@ export default {
     timeline: {
         empty: 'Er zijn geen resultaten gevonden.',
     },
+    imagePicker: {
+        select: 'Selecteer een afbeelding',
+    },
 }

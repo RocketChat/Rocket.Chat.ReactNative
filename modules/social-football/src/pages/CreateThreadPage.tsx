@@ -13,11 +13,13 @@ import {CREATE_THREAD} from "../api/mutations/threads.mutations";
 import {Alert} from "../components/Alert";
 import {Button} from "../components/Button";
 import Urls from "../../../../app/containers/message/Urls"
-import { AssetMetadata } from '../models/asset-metadata';
+import {AssetMetadata} from '../models/asset-metadata';
 import isURL from 'is-url'
-import { PREVIEW_METADATA } from '../api/queries/threads.queries';
-import { HeaderTitle } from 'react-navigation-stack';
-import { ThreadsQueries } from '../api';
+import {PREVIEW_METADATA} from '../api/queries/threads.queries';
+import {ThreadsQueries} from '../api';
+import {ImagePicker} from "../components/ImagePicker";
+import { Image } from 'react-native-image-crop-picker';
+import {ReactNativeFile} from 'apollo-upload-client';
 
 /**
  * Defines the standard Stylesheet for the Create Thread Page.
@@ -65,6 +67,7 @@ const CreateThreadPage = ({navigation}) => {
     const [description, setDescription] = useState<string | null>(null);
     const [link, setLink] = useState<string | null>(null);
     const [youtube, setYoutube] = useState<string | null>(null);
+    const [image, setImage] = useState<Image | null>(null);
 
     /**
      * Checks if the added URL is a special content type.
@@ -79,8 +82,27 @@ const CreateThreadPage = ({navigation}) => {
     };
 
     /**
+     * Check if file was uploaded
+     */
+    const determineAssetFile = () => {
+        switch (type) {
+            case ContentType.IMAGE:
+                const pathParts = image!.path.split('/');
+                const fileName = image!.filename ?? pathParts[pathParts.length - 1];
+
+                return new ReactNativeFile({
+                    uri: image!.path,
+                    name: fileName,
+                    type: image!.mime,
+                })
+            default:
+                return {};
+        }
+    };
+
+    /**
      * Checks if all required information for the Thread is filled.
-     * 
+     *
      * @returns {bool}
      */
     const isValid = () => {
@@ -89,7 +111,8 @@ const CreateThreadPage = ({navigation}) => {
             !!type &&
             !!description &&
             (type !== ContentType.LINK || !!link) &&
-            (type !== ContentType.YOUTUBE || !!youtube)
+            (type !== ContentType.YOUTUBE || !!youtube) &&
+            (type !== ContentType.IMAGE || !!image)
         );
     };
 
@@ -101,12 +124,13 @@ const CreateThreadPage = ({navigation}) => {
         }
 
         const thread = {
-                title,
-                type,
-                description,
-                commentsEnabled,
-                published: false,
-                assetUrl: determineAssetUrl(),
+            title,
+            type,
+            description,
+            commentsEnabled,
+            published: false,
+            assetUrl: determineAssetUrl(),
+            assetFile: determineAssetFile(),
         };
 
         await performCreation({
@@ -115,10 +139,10 @@ const CreateThreadPage = ({navigation}) => {
             },
             refetchQueriesMatch: [
                 {
-                  query: ThreadsQueries.TIMELINE,
-                  variables: { }
+                    query: ThreadsQueries.TIMELINE,
+                    variables: { }
                 }
-              ]
+            ]
         });
 
         await navigation.pop();
@@ -126,7 +150,7 @@ const CreateThreadPage = ({navigation}) => {
 
     /**
      * Creates the Form that has to be filled in when creating a new Thread.
-     * 
+     *
      * @returns {JSX.element Form}
      */
     const renderLinkInput = () => {
@@ -147,7 +171,7 @@ const CreateThreadPage = ({navigation}) => {
 
     /**
      * Creates the Card that shows the Youtube card information.
-     * 
+     *
      * @returns {JSX.element Form}
      */
     const renderYoutubeInput = () => {
@@ -204,11 +228,29 @@ const CreateThreadPage = ({navigation}) => {
         }
 
         return null;
+    };
+
+    /**
+     * Render image input
+     */
+    const renderImageInput = () => {
+        return <View style={appStyles.formGroup}>
+            <Text style={[appStyles.label]}>{i18n.t('createThread.image.label')}</Text>
+            <ImagePicker
+                id={'image'}
+                required={true}
+                submitted={submitted}
+                onChange={(path) => setImage(path)} />
+        </View>;
+    };
+
+    if (error) {
+        console.error(error);
     }
 
     /**
      * Makes sure that the Keyboard is rendered correctly.
-     * 
+     *
      * @returns {KeyboardUtilityView}
      */
     return <KeyboardUtilityView centerVertically={false}>
@@ -259,6 +301,7 @@ const CreateThreadPage = ({navigation}) => {
                     </View>
                     {type === ContentType.LINK ? renderLinkInput() : null}
                     {type === ContentType.YOUTUBE ? renderYoutubeInput() : null}
+                    {type === ContentType.IMAGE ? renderImageInput() : null}
                     {renderLinkPreview()}
                     <View style={[styles.switchContainer, appStyles.formGroup]}>
                         <Text style={[appStyles.label]}>{i18n.t('createThread.comment.label')}</Text>
@@ -279,7 +322,7 @@ const CreateThreadPage = ({navigation}) => {
 
 /**
  * Gets the localized title for the header.
- * 
+ *
  * @returns {headerTitle}
  */
 CreateThreadPage.navigationOptions = ({navigation}) => {
