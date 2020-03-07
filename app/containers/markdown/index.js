@@ -80,6 +80,7 @@ class Markdown extends PureComponent {
 		navToRoomInfo: PropTypes.func,
 		preview: PropTypes.bool,
 		theme: PropTypes.string,
+		testID: PropTypes.string,
 		style: PropTypes.array
 	};
 
@@ -357,7 +358,7 @@ class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, numberOfLines, preview = false, theme, style = []
+			msg, numberOfLines, preview = false, theme, style = [], testID
 		} = this.props;
 
 		if (!msg) {
@@ -375,7 +376,7 @@ class Markdown extends PureComponent {
 			m = shortnameToUnicode(m);
 			m = removeMarkdown(m);
 			return (
-				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines}>
+				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
 					{m}
 				</Text>
 			);
