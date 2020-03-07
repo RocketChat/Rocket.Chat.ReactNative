@@ -180,7 +180,8 @@ class RoomView extends React.Component {
 			replyWithMention: false,
 			reacting: false,
 			showAnnouncementModal: false,
-			announcement: null
+			announcement: null,
+			mentionedUser: null
 		};
 
 		if (room && room.observe) {
@@ -450,6 +451,10 @@ class RoomView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
+	}
+
+	onMention = (mention) => {
+		this.setState({ mentionUser: true, mentionedUser: mention });
 	}
 
 	onReplyInit = (message, mention) => {
@@ -855,7 +860,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention
+			joined, room, selectedMessage, editing, replying, replyWithMention, mentionedUser
 		} = this.state;
 		const { navigation, theme } = this.props;
 
@@ -908,6 +913,7 @@ class RoomView extends React.Component {
 				replyCancel={this.onReplyCancel}
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
+				mentionedUser={mentionedUser}
 			/>
 		);
 	};
@@ -936,6 +942,7 @@ class RoomView extends React.Component {
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
 							isReadOnly={this.isReadOnly}
+							onMention={this.onMention}
 						/>
 					)
 					: null

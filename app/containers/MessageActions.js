@@ -26,6 +26,7 @@ class MessageActions extends React.Component {
 		reactionInit: PropTypes.func.isRequired,
 		replyInit: PropTypes.func.isRequired,
 		isReadOnly: PropTypes.bool,
+		onMention: PropTypes.func.isRequired,
 		Message_AllowDeleting: PropTypes.bool,
 		Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
 		Message_AllowEditing: PropTypes.bool,
@@ -80,6 +81,10 @@ class MessageActions extends React.Component {
 		// Share
 		this.options.push(I18n.t('Share'));
 		this.SHARE_INDEX = this.options.length - 1;
+
+		// User Mention
+		this.options.push(I18n.t('Mention'));
+		this.USER_MENTION = this.options.length - 1;
 
 		// Quote
 		if (!isReadOnly) {
@@ -315,6 +320,12 @@ class MessageActions extends React.Component {
 		}
 	}
 
+	handleMention = () => {
+		const { message, onMention } = this.props;
+		const userMentioned = `@${ JSON.parse(message._raw.u).username } `;
+		onMention(userMentioned);
+	}
+
 	handleReply = () => {
 		const { message, replyInit } = this.props;
 		replyInit(message, true);
@@ -390,6 +401,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.SHARE_INDEX:
 					this.handleShare();
+					break;
+				case this.USER_MENTION:
+					this.handleMention();
 					break;
 				case this.QUOTE_INDEX:
 					this.handleQuote();

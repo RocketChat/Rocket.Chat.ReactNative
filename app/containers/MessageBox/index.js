@@ -87,6 +87,7 @@ class MessageBox extends Component {
 		FileUpload_MaxFileSize: PropTypes.number,
 		Message_AudioRecorderEnabled: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
+		mentionedUser: PropTypes.string,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
@@ -188,7 +189,12 @@ class MessageBox extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { isFocused, editing, replying } = this.props;
+		const {
+			isFocused, editing, replying, mentionedUser
+		} = this.props;
+		if (mentionedUser !== nextProps.mentionedUser) {
+			this.setInput(this.text + nextProps.mentionedUser);
+		}
 		if (!isFocused()) {
 			return;
 		}
