@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
 
     topBar: {
-        height: 50,
+        height: '6%',
     },
 
     filterBar: {
@@ -58,12 +58,15 @@ const styles = StyleSheet.create({
     },
 
     filterbutton: {
-        width: '50%',
-        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: 'auto',
+        margin: 'auto',
     },
 
     dropdown: {
-        marginTop: 50,
+        marginTop: 10,
         backgroundColor: appColors.light,
         width: 'auto',
         height: 'auto',
@@ -98,6 +101,7 @@ const TimelinePage = ({ navigation }) => {
 
     // Hook for filter state
     const [filterIndex, setFilterIndex] = useState(0);
+    const [filterFocus, setFilterFocus] = useState(false);
 
     /**
      * Fetching more Threads
@@ -167,24 +171,35 @@ const TimelinePage = ({ navigation }) => {
         setRefreshing(false);
     };
 
+    
+
+    const dropDown =
+        <Dropdown
+            pickerStyle={[styles.dropdown]}
+            textColor={appColors.text}
+            baseColor={appColors.text}
+            itemColor={appColors.text}
+            rippleInsets={{ top: -5, bottom: 10, left: -10, right: -10 }}
+            renderBase={(menu) => 
+                <View style={[styles.filterbutton]}>
+                    <Text style={[{ fontWeight: 'bold'}]}>{menu.value}</Text>
+                    <Image style={[{ marginLeft: 5, transform: [{ rotate: filterFocus ? '180deg' : '0deg' }]} ]}
+                        source={require('../assets/images/filter_arrow.png') } />
+                </View>}
+            dropdownPosition={0}
+            data={filterOptions}
+            value={filterOptions[filterIndex].value}
+            onChangeText={(value, index, data) => setFilterIndex(index)}
+            onFocus={() => setFilterFocus(true)}
+            onBlur={() => setFilterFocus(false)}
+        />
+
     return <>
         <View style={[styles.topBar]}>
-        <View style={[styles.filterBar]}>
-        <View style={[styles.filterbutton]}>
-            <Dropdown
-                pickerStyle={[styles.dropdown]}
-                textColor={appColors.text}
-                baseColor={appColors.text}
-                itemColor={appColors.text}
-                dropdownPosition={0}
-                data={filterOptions}
-                value={filterOptions[filterIndex].value}
-                onChangeText={(value, index, data) => setFilterIndex(index)}
-            />
+            <View style={[styles.filterBar]}>
+                {dropDown}
+                <Image source={require('../assets/images/refresh.png')} />
             </View>
-            
-            <Image source={require('../assets/images/refresh.png')} />
-        </View>
         </View>
         <SafeAreaView>
             <View style={styles.page}>
