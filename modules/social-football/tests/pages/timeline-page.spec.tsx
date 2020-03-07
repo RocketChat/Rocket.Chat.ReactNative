@@ -7,6 +7,7 @@ import {updateWrapper} from "../helpers/general";
 import {InfiniteScrollView} from "../../src/components/InfiniteScrollView";
 import {TimelineItem} from "../../src/components/TimelineItem";
 import {ContentType} from "../../src/enums/content-type";
+import { Dropdown } from 'react-native-material-dropdown';
 
 describe('<TimelinePage />', () => {
 
@@ -171,6 +172,26 @@ describe('<TimelinePage />', () => {
 
         await updateWrapper(component, 1000);
 
+        expect(component.find(TimelineItem)).toHaveLength(6);
+    });
+
+    it('should apply filters without errors', async () => {
+        const component = mount(<TimelinePage navigation={null} />, {
+            wrappingComponent: ({ children }) => {
+                return <MockedProvider mocks={mocks} addTypename={false}>
+                    {children}
+                </MockedProvider>;
+            },
+        });
+
+        await updateWrapper(component);
+
+        const dropDown = component.find(Dropdown);
+        dropDown.props().onChangeText('Tekstberichten', 1, null);
+
+        await updateWrapper(component, 1000);
+
+        expect(component).toBeTruthy();
         expect(component.find(TimelineItem)).toHaveLength(6);
     });
 });
