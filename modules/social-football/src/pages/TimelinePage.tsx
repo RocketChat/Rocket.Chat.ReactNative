@@ -48,11 +48,16 @@ const styles = StyleSheet.create({
         backgroundColor: appColors.lightPrimary,
     },
 
-    filtermenu: {
-        width: '60%',
-        fontWeight: 'bold',
-        color: appColors.text,
-        marginBottom: 15,
+    filterbutton: {
+        width: '50%',
+        marginBottom: 20,
+    },
+
+    dropdown: {
+        marginTop: 50,
+        backgroundColor: appColors.light,
+        width: 'auto',
+        height: 'auto',
     },
 
     loading: {
@@ -137,9 +142,13 @@ const TimelinePage = ({ navigation }) => {
     return <>
         <View style={[styles.topBar]}>
         <View style={[styles.filterBar]}>
-        <View style={[styles.filtermenu]}>
+        <View style={[styles.filterbutton]}>
             <Dropdown
-                style={[styles.filtermenu]}
+                pickerStyle={[styles.dropdown]}
+                textColor={appColors.text}
+                baseColor={appColors.text}
+                itemColor={appColors.text}
+                dropdownPosition={0}
                 data={filterOptions}
                 value={filterOptions[filterIndex].value}
                 onChangeText={(value, index, data) => setFilterIndex(index)}
