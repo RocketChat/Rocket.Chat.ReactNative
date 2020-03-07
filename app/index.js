@@ -38,9 +38,6 @@ import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
 import SetUsernameView from './views/SetUsernameView';
 
-// AuthenticationWebViewStack
-import AuthenticationWebView from './views/AuthenticationWebView';
-
 // Outside Stack
 import OnboardingView from './views/OnboardingView';
 import NewServerView from './views/NewServerView';
@@ -49,6 +46,7 @@ import LoginView from './views/LoginView';
 import ForgotPasswordView from './views/ForgotPasswordView';
 import RegisterView from './views/RegisterView';
 import LegalView from './views/LegalView';
+import AuthenticationWebView from './views/AuthenticationWebView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -106,17 +104,6 @@ const OutsideStack = () => (
 	</Outside.Navigator>
 );
 
-// AuthenticationWebViewStack
-const AuthWebView = createStackNavigator();
-const AuthenticationWebViewStack = () => (
-	<AuthWebView.Navigator screenOptions={defaultHeader}>
-		<AuthWebView.Screen
-			name='AuthenticationWebView'
-			component={AuthenticationWebView}
-		/>
-	</AuthWebView.Navigator>
-);
-
 // OutsideStackModal
 const OutsideModal = createStackNavigator();
 const OutsideStackModal = () => (
@@ -126,8 +113,9 @@ const OutsideStackModal = () => (
 			component={OutsideStack}
 		/>
 		<OutsideModal.Screen
-			name='AuthenticationWebViewStack'
-			component={AuthenticationWebViewStack}
+			name='AuthenticationWebView'
+			component={AuthenticationWebView}
+			options={{ headerShown: true }}
 		/>
 	</OutsideModal.Navigator>
 );
