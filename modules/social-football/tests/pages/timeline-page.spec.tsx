@@ -261,6 +261,6 @@ describe('<TimelinePage />', () => {
         await updateWrapper(component, 1000);
 
         expect(component).toBeTruthy();
-        expect(component.find(TimelineItem)).toHaveLength(6);
+        expect(component.find(TimelineItem)).toHaveLength(10);
     });
 });
