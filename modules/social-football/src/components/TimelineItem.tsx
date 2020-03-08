@@ -64,47 +64,12 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
             return <Urls urls={[item.assetMetadata!]} user={{}} />
         }
     };
-    const renderImageInfo = (item: ThreadModel) => {
-        if (item.assetMetadata)
-            return <Image style={[styles.preview]} source={{ uri: item.assetMetadata.image }} />;
-        else
-            return;
-    };
-    const showLink = (item: ThreadModel) => {
-        if (item.type == ContentType.LINK && item.assetUrl)
-            return <Text
-                style={[styles.linkText]}
-                onPress={() => Linking.openURL('www.google.com')}
-            >
-                {item.assetUrl}
-            </Text>;
-        else
-            return;
-    };
-    const showDate = (item: ThreadModel) => {
-        moment.locale();
-        if (item.updatedAt) {
-            return <Text>{moment(item.updatedAt).fromNow()}</Text>
-        }
-        return <Text>{moment(item.createdAt).fromNow()}</Text>
-
-    }
-    const checkUpdated = (item: ThreadModel) => {
-        if (item.updatedAt) {
-            return <Text>aangepast</Text>
-        }
-        else {
-            return <Text>aangemaakt</Text>
-        }
-    }
-
     const onBallPress = async () => {
         await performBall({
             variables: {
                 threadId: item._id!,
             }
         });
-        alert(data?.createBall.balls);
     };
 
     // WIP

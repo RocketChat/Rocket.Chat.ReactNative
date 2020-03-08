@@ -48,6 +48,13 @@ const styles = StyleSheet.create({
         backgroundColor: appColors.lightPrimary,
     },
 
+    loading: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        opacity: 0,
+    },
 
 });
 
@@ -87,6 +94,8 @@ const TimelinePage = ({ navigation }) => {
             },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
+
+                const ids: string[] = [];
 
                 return {
                     getThreads: {

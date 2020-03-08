@@ -16,6 +16,8 @@ export const OVERVIEW = gql`
             description,
             image,
         },
-        createdAt
+        createdAt,
+        balls,
+        balled
     }
 `;
