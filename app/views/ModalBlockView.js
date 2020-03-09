@@ -64,17 +64,17 @@ class ModalBlockView extends React.Component {
 		const { title, submit, close } = view;
 		return {
 			title: textParser([title]),
-			headerLeft: (
+			headerLeft: () => (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([close.text])}
 						style={styles.submit}
-						onPress={!submitting && (() => cancel({ closeModal: () => {} }))}
+						onPress={!submitting && (() => cancel())}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
 			),
-			headerRight: (
+			headerRight: () => (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([submit.text])}
@@ -154,16 +154,16 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
-	cancel = async({ closeModal }) => {
+	cancel = async() => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
 		// handle tablet case
-		if (closeModal) {
-			closeModal();
-		} else {
-			Navigation.back();
-		}
+		// if (closeModal) {
+		// 	closeModal();
+		// }
+
+		Navigation.goBack();
 
 		try {
 			await RocketChat.triggerCancel({

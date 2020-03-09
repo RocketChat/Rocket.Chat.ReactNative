@@ -152,7 +152,7 @@ export default function triggerBlockAction(options) {
 export async function triggerSubmitView({ viewId, ...options }) {
 	const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
 	if (!result || MODAL_ACTIONS.CLOSE === result) {
-		Navigation.back();
+		Navigation.goBack();
 	}
 }
 

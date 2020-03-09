@@ -40,6 +40,11 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+// InsideStackModal
+import AttachmentView from '../views/AttachmentView';
+import ModalBlockView from '../views/ModalBlockView';
+import JitsiMeetView from '../views/JitsiMeetView';
+
 // ChatsStack
 const Chats = createStackNavigator();
 const ChatsStack = () => (
@@ -219,14 +224,31 @@ const NewMessageStack = () => (
 // InsideStackModal
 const InsideStack = createStackNavigator();
 const InsideStackModal = () => (
-	<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, headerShown: false }}>
+	<InsideStack.Navigator mode='modal' screenOptions={defaultHeader}>
 		<InsideStack.Screen
 			name='ChatsDrawer'
 			component={ChatsDrawer}
+			options={{ headerShown: false }}
 		/>
 		<InsideStack.Screen
 			name='NewMessageStack'
 			component={NewMessageStack}
+			options={{ headerShown: false }}
+		/>
+		<InsideStack.Screen
+			name='AttachmentView'
+			component={AttachmentView}
+			options={AttachmentView.navigationOptions}
+		/>
+		<InsideStack.Screen
+			name='ModalBlockView'
+			component={ModalBlockView}
+			options={ModalBlockView.navigationOptions}
+		/>
+		<InsideStack.Screen
+			name='JitsiMeetView'
+			component={JitsiMeetView}
+			options={{ headerShown: false }}
 		/>
 	</InsideStack.Navigator>
 );

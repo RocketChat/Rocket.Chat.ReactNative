@@ -6,9 +6,9 @@ function setTopLevelNavigator(navigatorRef) {
 	_navigator = navigatorRef;
 }
 
-function back() {
+function goBack() {
 	_navigator.dispatch(
-		CommonActions.back()
+		CommonActions.goBack()
 	);
 }
 
@@ -22,7 +22,7 @@ function navigate(name, params) {
 }
 
 export default {
-	back,
+	goBack,
 	navigate,
 	setTopLevelNavigator
 };
