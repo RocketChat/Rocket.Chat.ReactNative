@@ -44,7 +44,9 @@ const UserItem = ({
 }) => {
 	const longPress = ({ nativeEvent }) => {
 		if (nativeEvent.state === State.ACTIVE) {
-			onLongPress();
+			if (onLongPress) {
+				onLongPress();
+			}
 		}
 	};
 

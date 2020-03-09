@@ -1,5 +1,5 @@
 import {
-	put, take, takeLatest, fork, cancel, race
+	put, take, takeLatest, fork, cancel, race, select
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
@@ -15,10 +15,11 @@ import {
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log from '../utils/log';
+import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -89,6 +90,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
+		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
+		setBasicAuth(basicAuth);
+
 		if (user) {
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
@@ -109,7 +113,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
+		const serverVersion = (serverInfo && serverInfo.version) || version;
+
+		// we'll set serverVersion as metadata for bugsnag
+		logServerVersion(serverVersion);
+		yield put(selectServerSuccess(server, serverVersion));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
@@ -126,7 +134,11 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 		if (serverInfo) {
 			const loginServicesLength = yield RocketChat.getLoginServices(server);
-			if (loginServicesLength === 0) {
+			yield RocketChat.getLoginSettings({ server });
+
+			const showFormLogin = yield select(state => state.settings.Accounts_ShowFormLogin);
+
+			if (!loginServicesLength && showFormLogin) {
 				Navigation.navigate('LoginView');
 			} else {
 				Navigation.navigate('LoginSignupView');

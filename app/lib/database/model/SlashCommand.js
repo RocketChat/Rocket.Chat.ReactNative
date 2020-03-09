@@ -11,4 +11,6 @@ export default class SlashCommand extends Model {
   @field('client_only') clientOnly;
 
   @field('provides_preview') providesPreview;
+
+  @field('app_id') appId;
 }

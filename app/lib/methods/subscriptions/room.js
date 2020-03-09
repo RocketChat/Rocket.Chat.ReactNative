@@ -9,26 +9,76 @@ import database from '../../database';
 import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
+import RocketChat from '../../rocketchat';
 
-const unsubscribe = (subscriptions = []) => Promise.all(subscriptions.map(sub => sub.unsubscribe));
-const removeListener = listener => listener.stop();
+const WINDOW_TIME = 1000;
 
-let promises;
-let connectedListener;
-let disconnectedListener;
-let notifyRoomListener;
-let messageReceivedListener;
+export default class RoomSubscription {
+	constructor(rid) {
+		this.rid = rid;
+		this.isAlive = true;
+		this.timer = null;
+		this.queue = {};
+		this.messagesBatch = {};
+		this.threadsBatch = {};
+		this.threadMessagesBatch = {};
+	}
 
-export default function subscribeRoom({ rid }) {
-	console.log(`[RCRN] Subscribed to room ${ rid }`);
+	subscribe = async() => {
+		console.log(`[RCRN] Subscribing to room ${ this.rid }`);
+		if (this.promises) {
+			await this.unsubscribe();
+		}
+		this.promises = RocketChat.subscribeRoom(this.rid);
 
-	const handleConnection = () => {
-		this.loadMissedMessages({ rid }).catch(e => console.log(e));
+		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
+		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
+		if (!this.isAlive) {
+			this.unsubscribe();
+		}
+	}
+
+	unsubscribe = async() => {
+		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
+		this.isAlive = false;
+		if (this.promises) {
+			try {
+				const subscriptions = await this.promises || [];
+				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+			} catch (e) {
+				// do nothing
+			}
+		}
+		this.removeListener(this.connectedListener);
+		this.removeListener(this.disconnectedListener);
+		this.removeListener(this.notifyRoomListener);
+		this.removeListener(this.messageReceivedListener);
+		reduxStore.dispatch(clearUserTyping());
+		if (this.timer) {
+			clearTimeout(this.timer);
+		}
+	}
+
+	removeListener = async(promise) => {
+		if (promise) {
+			try {
+				const listener = await promise;
+				listener.stop();
+			} catch (e) {
+				// do nothing
+			}
+		}
 	};
 
-	const handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
+	handleConnection = () => {
+		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
+	};
+
+	handleNotifyRoomReceived = protectedFunction((ddpMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-		if (rid !== _rid) {
+		if (this.rid !== _rid) {
 			return;
 		}
 		if (ev === 'typing') {
@@ -87,19 +137,17 @@ export default function subscribeRoom({ rid }) {
 		}
 	});
 
-	const read = debounce((lastOpen) => {
-		this.readMessages(rid, lastOpen);
+	read = debounce((lastOpen) => {
+		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
-	const handleMessageReceived = protectedFunction((ddpMessage) => {
-		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
-		const lastOpen = new Date();
-		if (rid !== message.rid) {
-			return;
-		}
-		InteractionManager.runAfterInteractions(async() => {
+	updateMessage = message => (
+		new Promise(async(resolve) => {
+			if (this.rid !== message.rid) {
+				return;
+			}
+
 			const db = database.active;
-			const batch = [];
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
@@ -114,22 +162,17 @@ export default function subscribeRoom({ rid }) {
 				// Do nothing
 			}
 			if (messageRecord) {
-				try {
-					const update = messageRecord.prepareUpdate((m) => {
-						Object.assign(m, message);
-					});
-					batch.push(update);
-				} catch (e) {
-					console.log(e);
-				}
+				const update = messageRecord.prepareUpdate((m) => {
+					Object.assign(m, message);
+				});
+				this._messagesBatch[message._id] = update;
 			} else {
-				batch.push(
-					msgCollection.prepareCreate(protectedFunction((m) => {
-						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-						m.subscription.id = rid;
-						Object.assign(m, message);
-					}))
-				);
+				const create = msgCollection.prepareCreate(protectedFunction((m) => {
+					m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+					m.subscription.id = this.rid;
+					Object.assign(m, message);
+				}));
+				this._messagesBatch[message._id] = create;
 			}
 
 			// Create or update thread
@@ -141,19 +184,17 @@ export default function subscribeRoom({ rid }) {
 				}
 
 				if (threadRecord) {
-					batch.push(
-						threadRecord.prepareUpdate(protectedFunction((t) => {
-							Object.assign(t, message);
-						}))
-					);
+					const updateThread = threadRecord.prepareUpdate(protectedFunction((t) => {
+						Object.assign(t, message);
+					}));
+					this._threadsBatch[message._id] = updateThread;
 				} else {
-					batch.push(
-						threadsCollection.prepareCreate(protectedFunction((t) => {
-							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
-							t.subscription.id = rid;
-							Object.assign(t, message);
-						}))
-					);
+					const createThread = threadsCollection.prepareCreate(protectedFunction((t) => {
+						t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
+						t.subscription.id = this.rid;
+						Object.assign(t, message);
+					}));
+					this._threadsBatch[message._id] = createThread;
 				}
 			}
 
@@ -166,80 +207,75 @@ export default function subscribeRoom({ rid }) {
 				}
 
 				if (threadMessageRecord) {
-					batch.push(
-						threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
-							Object.assign(tm, message);
-							tm.rid = message.tmid;
-							delete tm.tmid;
-						}))
-					);
+					const updateThreadMessage = threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
+						Object.assign(tm, message);
+						tm.rid = message.tmid;
+						delete tm.tmid;
+					}));
+					this._threadMessagesBatch[message._id] = updateThreadMessage;
 				} else {
-					batch.push(
-						threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
-							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
-							Object.assign(tm, message);
-							tm.subscription.id = rid;
-							tm.rid = message.tmid;
-							delete tm.tmid;
-						}))
-					);
+					const createThreadMessage = threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
+						tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
+						Object.assign(tm, message);
+						tm.subscription.id = this.rid;
+						tm.rid = message.tmid;
+						delete tm.tmid;
+					}));
+					this._threadMessagesBatch[message._id] = createThreadMessage;
 				}
 			}
 
-			read(lastOpen);
+			return resolve();
+		})
+	)
 
-			try {
-				await db.action(async() => {
-					await db.batch(...batch);
-				});
-			} catch (e) {
-				log(e);
-			}
-		});
-	});
+	handleMessageReceived = (ddpMessage) => {
+		if (!this.timer) {
+			this.timer = setTimeout(async() => {
+				// copy variables values to local and clean them
+				const _lastOpen = this.lastOpen;
+				const _queue = Object.keys(this.queue).map(key => this.queue[key]);
+				this._messagesBatch = this.messagesBatch;
+				this._threadsBatch = this.threadsBatch;
+				this._threadMessagesBatch = this.threadMessagesBatch;
+				this.queue = {};
+				this.messagesBatch = {};
+				this.threadsBatch = {};
+				this.threadMessagesBatch = {};
+				this.timer = null;
 
-	const stop = async() => {
-		let params;
-		if (promises) {
-			try {
-				params = await promises;
-				await unsubscribe(params);
-			} catch (error) {
-				// Do nothing
-			}
-			promises = false;
-		}
-		if (connectedListener) {
-			params = await connectedListener;
-			removeListener(params);
-			connectedListener = false;
-		}
-		if (disconnectedListener) {
-			params = await disconnectedListener;
-			removeListener(params);
-			disconnectedListener = false;
-		}
-		if (notifyRoomListener) {
-			params = await notifyRoomListener;
-			removeListener(params);
-			notifyRoomListener = false;
-		}
-		if (messageReceivedListener) {
-			params = await messageReceivedListener;
-			removeListener(params);
-			messageReceivedListener = false;
-		}
-		reduxStore.dispatch(clearUserTyping());
-	};
+				for (let i = 0; i < _queue.length; i += 1) {
+					try {
+						// eslint-disable-next-line no-await-in-loop
+						await this.updateMessage(_queue[i]);
+					} catch (e) {
+						log(e);
+					}
+				}
 
-	connectedListener = this.sdk.onStreamData('connected', handleConnection);
-	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
-	notifyRoomListener = this.sdk.onStreamData('stream-notify-room', handleNotifyRoomReceived);
-	messageReceivedListener = this.sdk.onStreamData('stream-room-messages', handleMessageReceived);
+				try {
+					const db = database.active;
+					await db.action(async() => {
+						await db.batch(
+							...Object.values(this._messagesBatch),
+							...Object.values(this._threadsBatch),
+							...Object.values(this._threadMessagesBatch)
+						);
+					});
 
-	promises = this.sdk.subscribeRoom(rid);
+					this.read(_lastOpen);
+				} catch (e) {
+					log(e);
+				}
 
-	return {
-		stop: () => stop()
+				// Clean local variables
+				this._messagesBatch = {};
+				this._threadsBatch = {};
+				this._threadMessagesBatch = {};
+			}, WINDOW_TIME);
+		}
+		this.lastOpen = new Date();
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		this.queue[message._id] = message;
 	};
 }

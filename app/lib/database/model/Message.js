@@ -73,4 +73,6 @@ export default class Message extends Model {
 	@json('translations', sanitizer) translations;
 
 	@field('tmsg') tmsg;
+
+	@json('blocks', sanitizer) blocks;
 }

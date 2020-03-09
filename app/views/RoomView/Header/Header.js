@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
-import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
+import Markdown from '../../../containers/markdown';
 
 const androidMarginLeft = isTablet ? 0 : 10;
 
@@ -69,23 +68,40 @@ Typing.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, scale, connecting, theme
+	title, tmid, prid, scale, connecting, theme
 }) => {
 	if (connecting) {
 		title = I18n.t('Connecting');
 	}
+
+	if (!tmid && !prid) {
+		return (
+			<Text
+				style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
+				numberOfLines={1}
+				testID={`room-view-title-${ title }`}
+			>
+				{title}
+			</Text>
+		);
+	}
+
 	return (
-		<Text
+		<Markdown
+			preview
+			msg={title}
 			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
 			numberOfLines={1}
+			theme={theme}
 			testID={`room-view-title-${ title }`}
-		>{title}
-		</Text>
+		/>
 	);
 });
 
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
+	tmid: PropTypes.string,
+	prid: PropTypes.string,
 	scale: PropTypes.number,
 	connecting: PropTypes.bool,
 	theme: PropTypes.string
@@ -102,12 +118,6 @@ const Header = React.memo(({
 			scale = 0.8;
 		}
 	}
-	if (title) {
-		title = shortnameToUnicode(title);
-		if (tmid) {
-			title = removeMarkdown(title);
-		}
-	}
 
 	const onPress = () => {
 		if (!tmid) {
@@ -116,7 +126,11 @@ const Header = React.memo(({
 	};
 
 	return (
-		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
+		<TouchableOpacity
+			testID='room-view-header-actions'
+			onPress={onPress}
+			style={[styles.container, { width: width - widthOffset }]}
+		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<ScrollView
 					showsHorizontalScrollIndicator={false}
@@ -127,6 +141,8 @@ const Header = React.memo(({
 					<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
 					<HeaderTitle
 						title={title}
+						tmid={tmid}
+						prid={prid}
 						scale={scale}
 						connecting={connecting}
 						theme={theme}
