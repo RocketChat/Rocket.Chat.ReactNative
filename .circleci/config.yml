@@ -32,10 +32,10 @@ jobs:
           at: ~/android
       - run: 
           command: bundle install
-          working_directory: android
+          working_directory: ~/android
       - run: 
           command: bundle exec fastlane assemble_build
-          working_directory: android
+          working_directory: ~/android
       - store_test_results:
           path: ~/android/reports
 
@@ -53,6 +53,7 @@ jobs:
       - run: 
           command: bundle install
           working_directory: ios
+      - run: ls
       - run: 
           command: bundle exec fastlane beta
           working_directory: ios
