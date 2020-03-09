@@ -199,21 +199,21 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					onPress={() => this.sidebarNavigate('ChatsStack')}
 					testID='sidebar-chats'
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ProfileView')}
+					onPress={() => this.sidebarNavigate('ProfileStack')}
 					testID='sidebar-profile'
 					current={activeItemKey === 'ProfileStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsView')}
+					onPress={() => this.sidebarNavigate('SettingsStack')}
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
@@ -221,7 +221,7 @@ class Sidebar extends Component {
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
 						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
-						onPress={() => this.sidebarNavigate('AdminPanelView')}
+						onPress={() => this.sidebarNavigate('AdminPanelStack')}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
 					/>

@@ -1,7 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { defaultHeader, themedHeader } from '../utils/navigation';
+import Sidebar from '../views/SidebarView';
 
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -21,6 +23,18 @@ import NotificationPrefView from '../views/NotificationPreferencesView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
+
+// Profile Stack
+import ProfileView from '../views/ProfileView';
+
+// Settings Stack
+import SettingsView from '../views/SettingsView';
+import LanguageView from '../views/LanguageView';
+import ThemeView from '../views/ThemeView';
+import DefaultBrowserView from '../views/DefaultBrowserView';
+
+// Admin Stack
+import AdminPanelView from '../views/AdminPanelView';
 
 // ChatsStack
 const Chats = createStackNavigator();
@@ -114,4 +128,66 @@ const ChatsStack = () => (
 	</Chats.Navigator>
 );
 
-export default ChatsStack;
+// ProfileStack
+const Profile = createStackNavigator();
+const ProfileStack = () => (
+	<Profile.Navigator screenOptions={defaultHeader}>
+		<Profile.Screen
+			name='ProfileView'
+			component={ProfileView}
+			options={ProfileView.navigationOptions}
+		/>
+	</Profile.Navigator>
+);
+
+// SettingsStack
+const Settings = createStackNavigator();
+const SettingsStack = () => (
+	<Settings.Navigator screenOptions={defaultHeader}>
+		<Settings.Screen
+			name='SettingsView'
+			component={SettingsView}
+			options={SettingsView.navigationOptions}
+		/>
+		<Settings.Screen
+			name='LanguageView'
+			component={LanguageView}
+			options={LanguageView.navigationOptions}
+		/>
+		<Settings.Screen
+			name='ThemeView'
+			component={ThemeView}
+			options={ThemeView.navigationOptions}
+		/>
+		<Settings.Screen
+			name='DefaultBrowserView'
+			component={DefaultBrowserView}
+			options={DefaultBrowserView.navigationOptions}
+		/>
+	</Settings.Navigator>
+);
+
+// AdminPanelStack
+const AdminPanel = createStackNavigator();
+const AdminPanelStack = () => (
+	<AdminPanel.Navigator screenOptions={defaultHeader}>
+		<AdminPanel.Screen
+			name='AdminPanelView'
+			component={AdminPanelView}
+			options={AdminPanelView.navigationOptions}
+		/>
+	</AdminPanel.Navigator>
+);
+
+// ChatsDrawer
+const Drawer = createDrawerNavigator();
+const ChatsDrawer = () => (
+	<Drawer.Navigator drawerContent={props => <Sidebar {...props} />}>
+		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
+		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
+		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
+		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} />
+	</Drawer.Navigator>
+);
+
+export default ChatsDrawer;

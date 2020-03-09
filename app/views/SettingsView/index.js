@@ -64,11 +64,11 @@ class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		// screenProps.split
 		// eslint-disable-next-line no-constant-condition
-		headerLeft: (0) ? (
+		headerLeft: () => ((0) ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
-		),
+		)),
 		title: I18n.t('Settings')
 	});
 

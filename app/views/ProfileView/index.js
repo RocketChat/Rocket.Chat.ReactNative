@@ -37,14 +37,14 @@ class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		// screenProps.split
 		// eslint-disable-next-line no-constant-condition
-		headerLeft: false ? (
+		headerLeft: () => (false ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
 				tintColor={themes.light.headerTintColor}
 			/>
 		) : (
 			<DrawerButton navigation={navigation} />
-		),
+		)),
 		title: I18n.t('Profile')
 	})
 
