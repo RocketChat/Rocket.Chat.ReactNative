@@ -159,17 +159,17 @@ class NotificationBadge extends React.Component {
 
 	goToRoom = async() => {
 		const { notification, navigation, baseUrl } = this.props;
-		const { payload } = notification;
+		const { payload, title } = notification;
 		const { rid, type, prid } = payload;
 		if (!rid) {
 			return;
 		}
-		const name = type === 'd' ? payload.sender.username : payload.name;
+		const name = type === 'd' ? payload.sender.username : title;
 		// if sub is not on local database, title will be null, so we use payload from notification
-		const { title = name } = notification;
+		// const { title = name } = notification;
 		await navigation.navigate('RoomsListView');
 		navigation.navigate('RoomView', {
-			rid, name: title, t: type, prid, baseUrl
+			rid, name, t: type, prid, baseUrl
 		});
 		this.hide();
 	}

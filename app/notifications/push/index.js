@@ -10,13 +10,13 @@ export const onNotification = (notification) => {
 		if (data) {
 			try {
 				const {
-					rid, name, sender, type, host
+					rid, title, sender, type, host
 				} = EJSON.parse(data.ejson);
 
 				const types = {
 					c: 'channel', d: 'direct', p: 'group', l: 'channels'
 				};
-				let roomName = type === 'd' ? sender.username : name;
+				let roomName = type === 'd' ? sender.username : title;
 				if (type === 'l') {
 					roomName = sender.name;
 				}
