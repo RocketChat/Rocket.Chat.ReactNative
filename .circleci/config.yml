@@ -33,6 +33,7 @@ jobs:
           at: ~/project
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run: yarn add @react-native-community/cli-platform-android
       - run:
           name: create build
           command: ./gradlew clean build -x test
