@@ -32,17 +32,17 @@ jobs:
           at: ~/android
       - run: 
           command: bundle install
-          working_directory: ~/android
+          working_directory: android
       - run: 
           command: bundle exec fastlane assemble_build
-          working_directory: ~/android
+          working_directory: android
       - store_test_results:
           path: ~/android/reports
 
   ios:
     macos:
       xcode: "11.1.0"
-    workspace: ~/ios
+    working_directory: ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
@@ -50,10 +50,10 @@ jobs:
       - checkout:
           path: ~/ios
       - run: yarn
+      - run: ls
       - run: 
           command: bundle install
           working_directory: ios
-      - run: ls
       - run: 
           command: bundle exec fastlane beta
           working_directory: ios
