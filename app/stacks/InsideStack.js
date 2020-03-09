@@ -131,7 +131,7 @@ const ChatsStack = () => (
 // ProfileStack
 const Profile = createStackNavigator();
 const ProfileStack = () => (
-	<Profile.Navigator screenOptions={defaultHeader}>
+	<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader('light') }}>
 		<Profile.Screen
 			name='ProfileView'
 			component={ProfileView}
@@ -143,7 +143,7 @@ const ProfileStack = () => (
 // SettingsStack
 const Settings = createStackNavigator();
 const SettingsStack = () => (
-	<Settings.Navigator screenOptions={defaultHeader}>
+	<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader('light') }}>
 		<Settings.Screen
 			name='SettingsView'
 			component={SettingsView}
@@ -170,7 +170,7 @@ const SettingsStack = () => (
 // AdminPanelStack
 const AdminPanel = createStackNavigator();
 const AdminPanelStack = () => (
-	<AdminPanel.Navigator screenOptions={defaultHeader}>
+	<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader('light') }}>
 		<AdminPanel.Screen
 			name='AdminPanelView'
 			component={AdminPanelView}
