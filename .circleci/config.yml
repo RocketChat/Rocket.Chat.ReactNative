@@ -30,8 +30,13 @@ jobs:
           path: ~/android
       - attach_workspace:
           at: ~/android
-      - run: cd ./android
+       restore_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run: bundle install
+      - save_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
       - run: bundle exec fastlane assemble_build
       - store_test_results:
           path: ~/android/reports
@@ -39,7 +44,7 @@ jobs:
   ios:
     macos:
       xcode: "11.1.0"
-    workspace: ./ios
+    working-directory: ~/ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
@@ -47,7 +52,7 @@ jobs:
       - checkout:
           path: ~/ios
       - run: yarn
-      - run: cd ./ios
+      - run: ls
       - run: bundle install
       - run: bundle exec fastlane beta
       - run:
