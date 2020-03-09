@@ -22,7 +22,7 @@ jobs:
             - ~/.cache/yarn
             
   android: 
-    working_directory: ./android
+    working_directory: ~/android
     docker:
       - image: circleci/android:api-29
     steps:
