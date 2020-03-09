@@ -6,6 +6,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import RNScreens from 'react-native-screens';
 
 import {
 	defaultTheme,
@@ -41,10 +42,7 @@ import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 
-if (isIOS) {
-	const RNScreens = require('react-native-screens');
-	RNScreens.enableScreens();
-}
+RNScreens.enableScreens();
 
 const parseDeepLinking = (url) => {
 	if (url) {

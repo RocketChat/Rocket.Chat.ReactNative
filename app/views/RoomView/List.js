@@ -47,11 +47,13 @@ class List extends React.Component {
 		};
 		this.init();
 		this.focusListener = props.navigation.addListener('focus', () => {
-			if (this.mounted) {
-				this.setState({ animated: true });
-			} else {
-				this.state.animated = true;
-			}
+			InteractionManager.runAfterInteractions(() => {
+				if (this.mounted) {
+					this.setState({ animated: true });
+				} else {
+					this.state.animated = true;
+				}
+			});
 		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}

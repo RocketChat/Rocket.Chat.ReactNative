@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard } from 'react-native';
+import {
+	View, Alert, Keyboard, InteractionManager
+} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -181,9 +183,11 @@ class MessageBox extends Component {
 		}
 
 		this.focusListener = navigation.addListener('focus', () => {
-			if (this.tracking && this.tracking.resetTracking) {
-				this.tracking.resetTracking();
-			}
+			InteractionManager.runAfterInteractions(() => {
+				if (this.tracking && this.tracking.resetTracking) {
+					this.tracking.resetTracking();
+				}
+			});
 		});
 	}
 
