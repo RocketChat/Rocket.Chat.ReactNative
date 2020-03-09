@@ -46,13 +46,13 @@ class RoomInfoView extends React.Component {
 		const t = route.params?.t;
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: showEdit
+			headerRight: () => (showEdit
 				? (
 					<CustomHeaderButtons>
 						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
 					</CustomHeaderButtons>
 				)
-				: null
+				: null)
 		};
 	}
 
