@@ -22,14 +22,15 @@ jobs:
             - ~/.cache/yarn
             
   android: 
-    working_directory: ~/android
+    working_directory: ~/project/android
     docker:
       - image: circleci/android:api-29
-    environment:
-        JVM_OPTS: -Xmx3200m
 
     steps:
       - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -48,24 +49,43 @@ jobs:
   ios:
     macos:
       xcode: "11.1.0"
-    working_directory: ~/ios
+    working_directory: ~/project
     environment:
-      FL_OUTPUT_DIR: ~/ios/output
+      FL_OUTPUT_DIR: ~/project/ios/output
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+
+      - run: yarn install
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - restore_cache:
           key: 1-gems-{{ checksum "Gemfile.lock" }}
+
       - run: bundle check || bundle install --path vendor/bundle
+
+
       - save_cache:
           key: 1-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+
       - run:
           name: fastlane
           command: fastlane gym
+
       - store_artifacts:
           path: output
+          
       - store_test_results:
           path: output/scan
 
