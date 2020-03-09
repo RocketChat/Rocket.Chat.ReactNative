@@ -110,7 +110,7 @@ const ChatsStack = () => (
 			options={DirectoryView.navigationOptions}
 		/>
 		<Chats.Screen
-			name='NotificationPreferencesView'
+			name='NotificationPrefView'
 			component={NotificationPrefView}
 			options={NotificationPrefView.navigationOptions}
 		/>
