@@ -34,13 +34,10 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Install fastlane
-          command: bundle install
-      - run:
-          name: Assemble the builds
-          command: bundle exec fastlane assemble_build
+          name: create build
+          command: ./gradlew clean build -x test
       - store_artifacts:
-          path: android/app/build/reports
+          path: android/app/build/
       - save_cache:
           paths:
             - ~/.gradle
@@ -85,7 +82,7 @@ jobs:
 
       - store_artifacts:
           path: output
-          
+
       - store_test_results:
           path: output/scan
 
