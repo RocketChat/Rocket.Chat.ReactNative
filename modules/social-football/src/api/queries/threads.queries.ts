@@ -11,7 +11,7 @@ export const TIMELINE = gql`
     query Timeline($offset: Int, $limit: Int) {
         getThreads(offset: $offset, limit: $limit){
             threads {
-                ...ThreadsOverview
+              ...ThreadsOverview
             }
             total,
             limit,

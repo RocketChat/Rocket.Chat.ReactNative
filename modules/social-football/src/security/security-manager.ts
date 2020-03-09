@@ -158,6 +158,22 @@ class SecurityManager {
     public isTokenExpired(payload: any) {
         return (Date.now() / 1000) > payload.exp;
     }
+
+    /**
+     * Gets an object with Rocket.Chat headers used for authenticating e.g. images
+     */
+    public async getRocketChatHeaders() {
+        const user = await this.getUser();
+
+        if (!user) {
+            throw new Error();
+        }
+
+        return {
+            'X-Auth-Token': user.rocketChatAccessToken,
+            'X-User-Id': user.rocketChatUserId,
+        }
+    }
 }
 
 export { SecurityManager as TestableSecurityManager };

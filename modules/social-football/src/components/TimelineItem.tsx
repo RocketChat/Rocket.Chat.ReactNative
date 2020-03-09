@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
-import {appColors} from "../theme/colors";
-import {appStyles} from "../theme/style";
+import { appColors } from "../theme/colors";
+import { appStyles } from "../theme/style";
+import moment from "moment";
+import 'moment/locale/nl';
+import Urls from "../../../../app/containers/message/Urls"
+import { ContentType } from '../enums/content-type';
+import SecurityManager from '../security/security-manager';
 
 /**
  * Defining the Metadata for an Item within the Timeline.
@@ -28,6 +33,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 80,
         borderRadius: 10,
+        resizeMode: 'cover',
     },
 
     allText: {
@@ -42,15 +48,68 @@ const styles = StyleSheet.create({
 });
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
-    return <View style={[styles.item]}>
-    <Text style={[styles.creatorText, appStyles.subTitle]}>Dick Advocaat  ●  Zondag.</Text>
+    const [rcAuthHeaders, setRcAuthHeaders] = useState({});
 
-    <View style={[styles.textAndPreview]}>
-        <View style={[styles.allText]}>
-            <Text style={[appStyles.heading]}>{item.title}</Text>
-            <Text style={[appStyles.text]}>{item.description}</Text>
+    useEffect(() => {
+        SecurityManager.getRocketChatHeaders().then(headers => setRcAuthHeaders(headers));
+    }, []);
+
+    //Gets and shows the userID
+    const getUserId = (item: ThreadModel) => {
+        return <Text>{item.createdByUser?.firstName}</Text>;
+    }
+
+    //shows the image preview for any thread with an image
+    const renderImageInfo = () => {
+        switch (item.type) {
+            case ContentType.IMAGE:
+                if (item.assetUrl) {
+                    return <Image style={[styles.preview]} source={{ uri: item.assetUrl, headers: rcAuthHeaders }} />;
+                }
+
+                return;
+            case ContentType.LINK:
+            case ContentType.YOUTUBE:
+                if (item.assetMetadata) {
+                    return <Image style={[styles.preview]} source={{ uri: item.assetMetadata!.image }} />;
+                }
+
+                return;
+        }
+    };
+
+    //Shows the date using moment.js
+    const showDate = (item: ThreadModel) => {
+        moment.locale();
+        if (item.updatedAt) {
+            return <Text>{moment(item.updatedAt).fromNow()}</Text>
+        }
+
+        return <Text>{moment(item.createdAt).fromNow()}</Text>;
+    }
+
+    //Shows an edited sign when a thread is edited.
+    const checkUpdated = (item: ThreadModel) => {
+        if (item.updatedAt) {
+            return <Text>{i18n.t('timeline.edited')}</Text>
+        }
+    }
+
+    if (!rcAuthHeaders) {
+        return <View></View>;
+    }
+
+    return <View style={[styles.item]}>
+        <Text style={[styles.creatorText]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
+        <View style={[styles.textAndPreview]}>
+            <View style={[styles.allText]}>
+                <Text style={[appStyles.heading]}>{item.title}</Text>
+                <Text style={[appStyles.text]}>{item.description}</Text>
+                {/* {showLink(item)} */}
+            </View>
+            {renderImageInfo()}
+
         </View>
-        <Image style={[styles.preview]} source={require('../assets/images/voetbalpreview.jpg')} />
     </View>
-</View>
+
 };
