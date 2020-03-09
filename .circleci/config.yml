@@ -30,7 +30,6 @@ jobs:
           path: ~/android
       - attach_workspace:
           at: ~/android
-      - run: cd ./android
       - run: bundle install
       - run: bundle exec fastlane assemble_build
       - store_test_results:
@@ -39,7 +38,7 @@ jobs:
   ios:
     macos:
       xcode: "11.1.0"
-    workspace: ./ios
+    workspace: ~/ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
@@ -47,9 +46,12 @@ jobs:
       - checkout:
           path: ~/ios
       - run: yarn
-      - run: cd ./ios
-      - run: bundle install
-      - run: bundle exec fastlane beta
+      - run: 
+          command: bundle install
+          working-directory: ios
+      - run: 
+          command: bundle exec fastlane beta
+          working-directory: ios
       - run:
           command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
           when: always
