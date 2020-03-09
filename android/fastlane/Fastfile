@@ -22,13 +22,12 @@ platform :android do
   end
 
   desc "Get a new build"
-  lane :beta do
+  lane :assemble_build do
     # Adjust the `build_type` and `flavor` params as needed to build the right APK for your setup
     gradle(
       task: 'assemble',
       build_type: 'Release'
     )
-    # ...
   end
 
   desc "Deploy a new version to the Google Play"
