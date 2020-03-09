@@ -155,7 +155,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
 
     return <View style={[styles.item, !item.published ? styles.hiddenItem : {}]}>
-        <Text style={[styles.creatorText]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
+        <Text style={[styles.creatorText, { color: appColors.muted }]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
         <View style={[styles.textAndPreview]}>
             <View style={[styles.allText]}>
                 <Text style={[appStyles.heading]}>{item.title}</Text>
