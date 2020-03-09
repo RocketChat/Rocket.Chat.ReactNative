@@ -58,10 +58,11 @@ const OutsideStack = () => (
 // OutsideStackModal
 const OutsideModal = createStackNavigator();
 const OutsideStackModal = () => (
-	<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, headerShown: false, ...themedHeader('light') }}>
+	<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader('light') }}>
 		<OutsideModal.Screen
 			name='OutsideStack'
 			component={OutsideStack}
+			options={{ headerShown: false }}
 		/>
 		<OutsideModal.Screen
 			name='AuthenticationWebView'
