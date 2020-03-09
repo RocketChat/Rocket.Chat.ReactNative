@@ -24,7 +24,7 @@ jobs:
             - ~/.cache/yarn
             
   android: 
-    working_directory: ~/android
+    working_directory: ./android
     docker:
       - image: circleci/android:api-29
     steps:
@@ -40,16 +40,13 @@ jobs:
   ios:
     macos:
       xcode: "11.1.0"
-    workspace: ~/ios
+    workspace: ./ios
     environment:
-      FL_OUTPUT_DIR: /Users/distiller/ios/output
+      FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout:
           path: ~/ios
-      - run:
-          name: Set Ruby Version
-          command: echo "ruby-2.4" >~/.ruby-version
       - run: yarn
       - run: bundle install
       - run: bundle exec fastlane beta
@@ -57,9 +54,9 @@ jobs:
           command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
           when: always
       - store_artifacts:
-          path: /Users/distiller/ios/output
+          path: ~/ios/output
       - store_test_results:
-          path: /Users/distiller/ios/output/scan
+          path: ~/ios/output/scan
 
 workflows:
   version: 2
