@@ -34,24 +34,22 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ route }) => {
+	static navigationOptions = ({ route, theme }) => {
 		const searching = route.params?.searching;
 		const initSearch = route.params?.initSearch ?? (() => {});
 		const cancelSearch = route.params?.cancelSearch ?? (() => {});
 		const search = route.params?.search ?? (() => {});
 
-		const screenProps = { theme: 'light' };
-
 		if (isIOS) {
 			return {
-				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
+				headerStyle: { backgroundColor: themes[theme].headerBackground },
 				headerTitle: () => (
 					<ShareListHeader
 						searching={searching}
 						initSearch={initSearch}
 						cancelSearch={cancelSearch}
 						search={search}
-						theme={screenProps.theme}
+						theme={theme}
 					/>
 				)
 			};
@@ -70,7 +68,7 @@ class ShareListView extends React.Component {
 						testID='share-extension-close'
 					/>
 				)),
-			headerTitle: () => <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
+			headerTitle: () => <ShareListHeader searching={searching} search={search} theme={theme} />,
 			headerRight: () => (
 				searching
 					? null

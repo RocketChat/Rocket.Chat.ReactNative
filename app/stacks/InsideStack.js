@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
+import { SplitContext } from '../split';
 import { defaultHeader, themedHeader } from '../utils/navigation';
 import Sidebar from '../views/SidebarView';
 
@@ -50,6 +51,7 @@ import JitsiMeetView from '../views/JitsiMeetView';
 const Chats = createStackNavigator();
 const ChatsStack = () => {
 	const { theme } = React.useContext(ThemeContext);
+	const { split } = React.useContext(SplitContext);
 
 	return (
 		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -111,7 +113,7 @@ const ChatsStack = () => {
 			<Chats.Screen
 				name='DirectoryView'
 				component={DirectoryView}
-				options={DirectoryView.navigationOptions}
+				options={props => DirectoryView.navigationOptions({ ...props, split })}
 			/>
 			<Chats.Screen
 				name='NotificationPrefView'
@@ -146,13 +148,14 @@ const ChatsStack = () => {
 const Profile = createStackNavigator();
 const ProfileStack = () => {
 	const { theme } = React.useContext(ThemeContext);
+	const { split } = React.useContext(SplitContext);
 
 	return (
 		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
-				options={ProfileView.navigationOptions}
+				options={props => ProfileView.navigationOptions({ ...props, split })}
 			/>
 		</Profile.Navigator>
 	);
@@ -162,13 +165,14 @@ const ProfileStack = () => {
 const Settings = createStackNavigator();
 const SettingsStack = () => {
 	const { theme } = React.useContext(ThemeContext);
+	const { split } = React.useContext(SplitContext);
 
 	return (
 		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
-				options={SettingsView.navigationOptions}
+				options={props => SettingsView.navigationOptions({ ...props, split })}
 			/>
 			<Settings.Screen
 				name='LanguageView'

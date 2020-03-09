@@ -55,6 +55,7 @@ import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Markdown from '../../containers/markdown';
 import Navigation from '../../lib/Navigation';
+import { withSplit } from '../../split';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -144,7 +145,7 @@ class RoomView extends React.Component {
 		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		screenProps: PropTypes.object,
+		split: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
@@ -667,11 +668,11 @@ class RoomView extends React.Component {
 
 	navToRoomInfo = (navParam) => {
 		const { room } = this.state;
-		const { navigation, user, screenProps } = this.props;
+		const { navigation, user, split } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		if (screenProps && screenProps.split) {
+		if (split) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
@@ -1025,4 +1026,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));
+export default connect(mapStateToProps, mapDispatchToProps)(withSplit(withTheme(RoomView)));

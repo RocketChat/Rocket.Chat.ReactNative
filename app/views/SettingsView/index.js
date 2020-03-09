@@ -61,10 +61,8 @@ ItemInfo.propTypes = {
 };
 
 class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		// screenProps.split
-		// eslint-disable-next-line no-constant-condition
-		headerLeft: () => ((0) ? (
+	static navigationOptions = ({ navigation, split }) => ({
+		headerLeft: () => (split ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />

@@ -38,7 +38,7 @@ const InsideStack = () => {
 			<Inside.Screen
 				name='ShareListView'
 				component={ShareListView}
-				options={ShareListView.navigationOptions}
+				options={props => ShareListView.navigationOptions({ ...props, theme })}
 			/>
 			<Inside.Screen
 				name='ShareView'

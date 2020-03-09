@@ -34,10 +34,8 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		// screenProps.split
-		// eslint-disable-next-line no-constant-condition
-		headerLeft: () => (false ? (
+	static navigationOptions = ({ navigation, split }) => ({
+		headerLeft: () => (split ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
 				tintColor={themes.light.headerTintColor}

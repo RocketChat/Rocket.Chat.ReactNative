@@ -21,17 +21,17 @@ import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-// import { CloseModalButton } from '../../containers/HeaderButton';
+import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = () => {
+	static navigationOptions = ({ navigation, split }) => {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		// if (screenProps.split) {
-		// 	options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
-		// }
+		if (split) {
+			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		}
 		return options;
 	}
 
