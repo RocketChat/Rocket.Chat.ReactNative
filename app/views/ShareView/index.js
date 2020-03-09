@@ -15,15 +15,13 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isReadOnly, isBlocked } from '../../utils/room';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 class ShareView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const canSend = route.params?.canSend ?? true;
 
 		return ({
 			title: I18n.t('Share'),
-			...themedHeader(screenProps.theme),
 			headerRight:
 				canSend
 					? (

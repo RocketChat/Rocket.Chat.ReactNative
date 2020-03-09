@@ -6,7 +6,6 @@ import {
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
@@ -59,10 +58,9 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Default_browser'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Default_browser')
+	}
 
 	static propTypes = {
 		theme: PropTypes.string

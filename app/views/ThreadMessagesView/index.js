@@ -22,7 +22,6 @@ import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import ModalNavigation from '../../lib/ModalNavigation';
 import { getUserSelector } from '../../selectors/login';
 
@@ -34,10 +33,9 @@ Separator.propTypes = {
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
+	static navigationOptions = {
 		title: I18n.t('Threads')
-	});
+	}
 
 	static propTypes = {
 		user: PropTypes.object,

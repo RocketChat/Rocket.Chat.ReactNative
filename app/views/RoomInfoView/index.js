@@ -20,7 +20,6 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 
@@ -41,13 +40,12 @@ const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const showEdit = route.params?.showEdit;
 		const rid = route.params?.rid;
 		const t = route.params?.t;
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>

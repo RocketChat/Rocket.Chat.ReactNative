@@ -16,7 +16,6 @@ import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 const SectionTitle = React.memo(({ title, theme }) => (
 	<Text
@@ -139,10 +138,9 @@ const OPTIONS = {
 };
 
 class NotificationPreferencesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Notification_Preferences'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Notification_Preferences')
+	}
 
 	static propTypes = {
 		route: PropTypes.object,

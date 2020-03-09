@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import EventEmitter from '../utils/events';
 import { themes } from '../constants/colors';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
@@ -57,8 +56,7 @@ const mapElementToState = ({ element, blockId, elements = [] }) => {
 const reduceState = (obj, el) => (Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] });
 
 class ModalBlockView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
-		const { theme, closeModal } = screenProps;
+	static navigationOptions = ({ route }) => {
 		const data = route.params?.data;
 		const cancel = route.params?.cancel ?? (() => {});
 		const submitting = route.params?.submitting ?? false;
@@ -66,13 +64,12 @@ class ModalBlockView extends React.Component {
 		const { title, submit, close } = view;
 		return {
 			title: textParser([title]),
-			...themedHeader(theme),
 			headerLeft: (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([close.text])}
 						style={styles.submit}
-						onPress={!submitting && (() => cancel({ closeModal }))}
+						onPress={!submitting && (() => cancel({ closeModal: () => {} }))}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>

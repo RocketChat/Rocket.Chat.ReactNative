@@ -21,20 +21,18 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const toggleStatus = route.params?.toggleStatus ?? (() => {});
 		const allUsers = route.params?.allUsers;
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
-			...themedHeader(screenProps.theme),
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />

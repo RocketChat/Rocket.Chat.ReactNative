@@ -19,14 +19,12 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 
 class SearchMessagesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Search'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Search')
+	}
 
 	static propTypes = {
 		route: PropTypes.object,

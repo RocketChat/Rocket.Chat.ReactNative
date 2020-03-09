@@ -14,7 +14,6 @@ import Separator from '../../containers/Separator';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -48,10 +47,9 @@ SectionSeparator.propTypes = {
 };
 
 class AutoTranslateView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Auto_Translate'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Auto_Translate')
+	}
 
 	static propTypes = {
 		route: PropTypes.object,

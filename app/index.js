@@ -224,7 +224,7 @@ export default class Root extends React.Component {
 					Navigation.setTopLevelNavigator(navigatorRef);
 				}}
 			>
-				<App screenProps={{ split, theme }} />
+				<App />
 			</NavigationContainer>
 		);
 

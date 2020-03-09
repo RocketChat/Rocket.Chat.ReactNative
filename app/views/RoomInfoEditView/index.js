@@ -26,7 +26,6 @@ import random from '../../utils/random';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -48,10 +47,9 @@ const PERMISSIONS_ARRAY = [
 ];
 
 class RoomInfoEditView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Room_Info_Edit'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Room_Info_Edit')
+	}
 
 	static propTypes = {
 		route: PropTypes.object,

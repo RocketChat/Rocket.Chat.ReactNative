@@ -26,7 +26,6 @@ import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import SidebarView from '../SidebarView';
 import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
@@ -62,9 +61,10 @@ ItemInfo.propTypes = {
 };
 
 class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
+	static navigationOptions = ({ navigation }) => ({
+		// screenProps.split
+		// eslint-disable-next-line no-constant-condition
+		headerLeft: (0) ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />

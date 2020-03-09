@@ -46,7 +46,6 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { themedHeader } from '../../utils/navigation';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -99,15 +98,14 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const searching = route.params?.searching;
 		const cancelSearch = route.params?.cancelSearch ?? (() => {});
 		const onPressItem = route.params?.onPressItem ?? (() => {});
 		const initSearching = route.params?.initSearching ?? (() => {});
 
 		return {
-			...themedHeader(screenProps.theme),
-			headerLeft: searching && isAndroid ? (
+			headerLeft: () => (searching && isAndroid ? (
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
@@ -120,9 +118,9 @@ class RoomsListView extends React.Component {
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
 				/>
-			),
-			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching && isAndroid ? null : (
+			)),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (searching && isAndroid ? null : (
 				<CustomHeaderButtons>
 					{isAndroid ? (
 						<Item
@@ -140,7 +138,7 @@ class RoomsListView extends React.Component {
 						testID='rooms-list-view-create-channel'
 					/>
 				</CustomHeaderButtons>
-			)
+			))
 		};
 	};
 

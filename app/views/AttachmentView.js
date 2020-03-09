@@ -13,7 +13,6 @@ import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import ImageViewer from '../presentation/ImageViewer';
-import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -28,15 +27,13 @@ const styles = StyleSheet.create({
 });
 
 class AttachmentView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
-		const { theme } = screenProps;
+	static navigationOptions = ({ route, navigation }) => {
 		const attachment = route.params?.attachment;
 		const from = route.params?.from;
 		const handleSave = route.params?.handleSave ?? (() => {});
 		const { title, video_url } = attachment;
 		const options = {
 			title,
-			...themedHeader(theme),
 			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
 		};
 		if (from !== 'MessagesView') {

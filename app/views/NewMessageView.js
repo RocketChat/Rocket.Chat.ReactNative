@@ -21,7 +21,6 @@ import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
@@ -50,8 +49,7 @@ const styles = StyleSheet.create({
 });
 
 class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
+	static navigationOptions = ({ navigation }) => ({
 		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})

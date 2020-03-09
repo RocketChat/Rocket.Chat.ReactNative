@@ -29,54 +29,67 @@ const ChatsStack = () => (
 		<Chats.Screen
 			name='RoomsListView'
 			component={RoomsListView}
+			options={RoomsListView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='RoomActionsView'
 			component={RoomActionsView}
+			options={RoomActionsView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='RoomInfoView'
 			component={RoomInfoView}
+			options={RoomInfoView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='RoomInfoEditView'
 			component={RoomInfoEditView}
+			options={RoomInfoEditView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='RoomMembersView'
 			component={RoomMembersView}
+			options={RoomMembersView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='SearchMessagesView'
 			component={SearchMessagesView}
+			options={SearchMessagesView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='SelectedUsersView'
 			component={SelectedUsersView}
+			options={SelectedUsersView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='InviteUsersView'
 			component={InviteUsersView}
+			options={InviteUsersView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='InviteUsersEditView'
 			component={InviteUsersEditView}
+			options={InviteUsersEditView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='MessagesView'
 			component={MessagesView}
+			options={MessagesView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='AutoTranslateView'
 			component={AutoTranslateView}
+			options={AutoTranslateView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='DirectoryView'
 			component={DirectoryView}
+			options={DirectoryView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='NotificationPreferencesView'
 			component={NotificationPrefView}
+			options={NotificationPrefView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='RoomView'
@@ -86,14 +99,17 @@ const ChatsStack = () => (
 		<Chats.Screen
 			name='ThreadMessagesView'
 			component={ThreadMessagesView}
+			options={ThreadMessagesView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='MarkdownTableView'
 			component={MarkdownTableView}
+			options={MarkdownTableView.navigationOptions}
 		/>
 		<Chats.Screen
 			name='ReadReceiptsView'
 			component={ReadReceiptsView}
+			options={ReadReceiptsView.navigationOptions}
 		/>
 	</Chats.Navigator>
 );

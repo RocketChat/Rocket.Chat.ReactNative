@@ -25,7 +25,6 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
@@ -38,11 +37,10 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const title = route.params?.title;
 		const nextAction = route.params?.nextAction ?? (() => {});
 		return {
-			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
 				<CustomHeaderButtons>

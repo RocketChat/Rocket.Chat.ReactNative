@@ -19,13 +19,11 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 class InviteUsersView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Invite_users'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Invite_users')
+	}
 
 	static propTypes = {
 		route: PropTypes.object,

@@ -41,7 +41,6 @@ import { isReadOnly, isBlocked } from '../../utils/room';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import {
 	KEY_COMMAND,
 	handleCommandScroll,
@@ -87,12 +86,9 @@ class RoomView extends React.Component {
 		const goRoomActionsView = route.params?.goRoomActionsView ?? (() => {});
 		const unreadsCount = route.params?.unreadsCount ?? null;
 		if (!rid) {
-			return {
-				...themedHeader('light')
-			};
+			return {};
 		}
 		return {
-			...themedHeader('light'),
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}

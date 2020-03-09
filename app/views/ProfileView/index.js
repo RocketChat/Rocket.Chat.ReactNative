@@ -31,16 +31,16 @@ import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
+	static navigationOptions = ({ navigation }) => ({
+		// screenProps.split
+		// eslint-disable-next-line no-constant-condition
+		headerLeft: false ? (
 			<HeaderBackButton
 				onPress={() => navigation.navigate('SettingsView')}
-				tintColor={themes[screenProps.theme].headerTintColor}
+				tintColor={themes.light.headerTintColor}
 			/>
 		) : (
 			<DrawerButton navigation={navigation} />

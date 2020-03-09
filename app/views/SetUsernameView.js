@@ -15,7 +15,6 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
@@ -30,10 +29,9 @@ const styles = StyleSheet.create({
 });
 
 class SetUsernameView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const title = route.params?.title;
 		return {
-			...themedHeader(screenProps.theme),
 			title
 		};
 	}
