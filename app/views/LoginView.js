@@ -19,7 +19,6 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
@@ -48,12 +47,11 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
 			title,
-			headerRight: <LegalButton navigation={navigation} testID='login-view-more' />,
-			...themedHeader(screenProps.theme)
+			headerRight: () => <LegalButton navigation={navigation} testID='login-view-more' />
 		};
 	}
 

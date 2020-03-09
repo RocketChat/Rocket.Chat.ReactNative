@@ -21,19 +21,17 @@ import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 
 const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
-			...themedHeader(screenProps.theme),
 			title,
-			headerRight: <LegalButton testID='register-view-more' navigation={navigation} />
+			headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
 		};
 	}
 

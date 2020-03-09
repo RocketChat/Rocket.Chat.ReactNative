@@ -18,7 +18,6 @@ import { LegalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
@@ -95,12 +94,11 @@ const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
 class LoginSignupView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
-			...themedHeader(screenProps.theme),
 			title,
-			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
+			headerRight: () => <LegalButton testID='welcome-view-more' navigation={navigation} />
 		};
 	}
 

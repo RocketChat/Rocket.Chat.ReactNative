@@ -14,14 +14,12 @@ import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
 
 class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const title = route.params?.title ?? 'Rocket.Chat';
 		return {
-			title,
-			...themedHeader(screenProps.theme)
+			title
 		};
 	}
 

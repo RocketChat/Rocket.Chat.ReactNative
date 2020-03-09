@@ -10,7 +10,6 @@ import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import debounce from '../utils/debounce';
 
 const userAgent = isIOS
@@ -18,10 +17,9 @@ const userAgent = isIOS
 	: 'Mozilla/5.0 (Linux; Android 6.0.1; SM-G920V Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36';
 
 class AuthenticationWebView extends React.PureComponent {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const authType = route.params?.authType ?? 'oauth';
 		return {
-			...themedHeader(screenProps.theme),
 			headerLeft: <CloseModalButton navigation={navigation} />,
 			title: authType === 'saml' || authType === 'cas' ? 'SSO' : 'OAuth'
 		};

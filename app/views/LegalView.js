@@ -14,7 +14,6 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,10 +50,9 @@ Separator.propTypes = {
 };
 
 class LegalView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Legal'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Legal')
+	}
 
 	static propTypes = {
 		server: PropTypes.string,

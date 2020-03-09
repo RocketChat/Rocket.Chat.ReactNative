@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -38,15 +38,8 @@ import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
 import SetUsernameView from './views/SetUsernameView';
 
-// Outside Stack
-import OnboardingView from './views/OnboardingView';
-import NewServerView from './views/NewServerView';
-import LoginSignupView from './views/LoginSignupView';
-import LoginView from './views/LoginView';
-import ForgotPasswordView from './views/ForgotPasswordView';
-import RegisterView from './views/RegisterView';
-import LegalView from './views/LegalView';
-import AuthenticationWebView from './views/AuthenticationWebView';
+import OutsideStack from './stacks/OutsideStack';
+import InsideStack from './stacks/InsideStack';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -67,59 +60,6 @@ const parseDeepLinking = (url) => {
 	return null;
 };
 
-// Outside
-const Outside = createStackNavigator();
-const OutsideStack = () => (
-	<Outside.Navigator screenOptions={defaultHeader}>
-		<Outside.Screen
-			name='OnboardingView'
-			component={OnboardingView}
-			options={{ headerShown: false }}
-		/>
-		<Outside.Screen
-			name='NewServerView'
-			component={NewServerView}
-			options={{ headerShown: false }}
-		/>
-		<Outside.Screen
-			name='LoginSignupView'
-			component={LoginSignupView}
-		/>
-		<Outside.Screen
-			name='LoginView'
-			component={LoginView}
-		/>
-		<Outside.Screen
-			name='ForgotPasswordView'
-			component={ForgotPasswordView}
-		/>
-		<Outside.Screen
-			name='RegisterView'
-			component={RegisterView}
-		/>
-		<Outside.Screen
-			name='LegalView'
-			component={LegalView}
-		/>
-	</Outside.Navigator>
-);
-
-// OutsideStackModal
-const OutsideModal = createStackNavigator();
-const OutsideStackModal = () => (
-	<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, headerShown: false }}>
-		<OutsideModal.Screen
-			name='OutsideStack'
-			component={OutsideStack}
-		/>
-		<OutsideModal.Screen
-			name='AuthenticationWebView'
-			component={AuthenticationWebView}
-			options={{ headerShown: true }}
-		/>
-	</OutsideModal.Navigator>
-);
-
 // SetUsernameStack
 const SetUsername = createStackNavigator();
 const SetUsernameStack = () => (
@@ -131,24 +71,41 @@ const SetUsernameStack = () => (
 	</SetUsername.Navigator>
 );
 
+const AuthContext = React.createContext();
+
 // App
 const Stack = createStackNavigator();
-export const App = () => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
-		<Stack.Screen
-			name='AuthLoading'
-			component={AuthLoadingView}
-		/>
-		<Stack.Screen
-			name='OutsideStack'
-			component={OutsideStackModal}
-		/>
-		<Stack.Screen
-			name='SetUsernameStack'
-			component={SetUsernameStack}
-		/>
-	</Stack.Navigator>
-);
+export const App = () => {
+	const [loading] = useState(false);
+
+	return (
+		<AuthContext.Provider value={{}}>
+			<Stack.Navigator screenOptions={{ headerShown: false }}>
+				{loading ? (
+					<Stack.Screen
+						name='AuthLoading'
+						component={AuthLoadingView}
+					/>
+				) : (
+					<>
+						<Stack.Screen
+							name='OutsideStack'
+							component={OutsideStack}
+						/>
+						<Stack.Screen
+							name='InsideStack'
+							component={InsideStack}
+						/>
+						<Stack.Screen
+							name='SetUsernameStack'
+							component={SetUsernameStack}
+						/>
+					</>
+				)}
+			</Stack.Navigator>
+		</AuthContext.Provider>
+	);
+};
 
 export default class Root extends React.Component {
 	constructor(props) {

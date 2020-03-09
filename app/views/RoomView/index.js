@@ -73,7 +73,7 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ route, navigation, screenProps }) => {
+	static navigationOptions = ({ route, navigation }) => {
 		const rid = route.params?.rid ?? null;
 		const prid = route.params?.prid;
 		const title = route.params?.name;
@@ -88,12 +88,12 @@ class RoomView extends React.Component {
 		const unreadsCount = route.params?.unreadsCount ?? null;
 		if (!rid) {
 			return {
-				...themedHeader(screenProps.theme)
+				...themedHeader('light')
 			};
 		}
 		return {
-			...themedHeader(screenProps.theme),
-			headerTitle: (
+			...themedHeader('light'),
+			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
 					prid={prid}
@@ -104,7 +104,7 @@ class RoomView extends React.Component {
 					goRoomActionsView={goRoomActionsView}
 				/>
 			),
-			headerRight: (
+			headerRight: () => (
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
@@ -113,7 +113,7 @@ class RoomView extends React.Component {
 					toggleFollowThread={toggleFollowThread}
 				/>
 			),
-			headerLeft: (
+			headerLeft: () => (
 				<RoomHeaderLeft
 					tmid={tmid}
 					unreadsCount={unreadsCount}
@@ -122,10 +122,10 @@ class RoomView extends React.Component {
 					userId={userId}
 					token={token}
 					title={avatar}
-					theme={screenProps.theme}
+					theme='light'
 					t={t}
 					goRoomActionsView={goRoomActionsView}
-					split={screenProps.split}
+					split={false}
 				/>
 			)
 		};
