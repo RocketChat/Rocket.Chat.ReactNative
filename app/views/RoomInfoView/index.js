@@ -208,7 +208,6 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderRoles = () => {
-		const { theme } = this.props;
 		const { parsedRoles } = this.state;
 		const { theme } = this.props;
 		if (parsedRoles && parsedRoles.length) {
@@ -356,9 +355,9 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-           <View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
 						{isDirect ? this.renderButtons() : null}
-					 </View>
+					</View>
 					{this.isDirect() ? this.renderDirect() : this.renderChannel()}
 					{this.t === 'd' && roomUser._id ? (
 						<View>

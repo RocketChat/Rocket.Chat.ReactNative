@@ -75,7 +75,7 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
-  roomButtonsContainer: {
+	roomButtonsContainer: {
 		flexDirection: 'row',
 		paddingTop: 30
 	},
@@ -86,5 +86,5 @@ export default StyleSheet.create({
 	},
 	roomButtonText: {
 		marginTop: 5
-  }
+	}
 });
