@@ -203,7 +203,10 @@ class RoomsListView extends React.Component {
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		Orientation.unlockAllOrientations();
-		this.willFocusListener = navigation.addListener('willFocus', () => {
+		this.focusListener = navigation.addListener('focus', () => {
+			this.animated = true;
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
 				// animateNextTransition();
@@ -211,11 +214,7 @@ class RoomsListView extends React.Component {
 				this.shouldUpdate = false;
 			}
 		});
-		this.didFocusListener = navigation.addListener('didFocus', () => {
-			this.animated = true;
-			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-		});
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.blurListener = navigation.addListener('blur', () => {
 			this.animated = false;
 			closeServerDropdown();
 			if (this.backHandler && this.backHandler.remove) {
@@ -321,14 +320,11 @@ class RoomsListView extends React.Component {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
+		if (this.focusListener && this.focusListener.remove) {
+			this.focusListener.remove();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.blurListener && this.blurListener.remove) {
+			this.blurListener.remove();
 		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);

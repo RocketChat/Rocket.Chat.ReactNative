@@ -64,7 +64,7 @@ class AttachmentView extends React.Component {
 		const { navigation } = this.props;
 		navigation.setParams({ handleSave: this.handleSave });
 
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.blurListener = navigation.addListener('blur', () => {
 			if (this.videoRef && this.videoRef.stopAsync) {
 				this.videoRef.stopAsync();
 			}
@@ -72,8 +72,8 @@ class AttachmentView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.blurListener && this.blurListener.remove) {
+			this.blurListener.remove();
 		}
 	}
 

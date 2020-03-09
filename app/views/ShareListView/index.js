@@ -106,8 +106,8 @@ class ShareListView extends React.Component {
 			loading: true,
 			serverInfo: null
 		};
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.focusListener = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.blurListener = props.navigation.addListener('blur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
@@ -178,6 +178,15 @@ class ShareListView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		if (this.focusListener && this.focusListener.remove) {
+			this.focusListener.remove();
+		}
+		if (this.blurListener && this.blurListener.remove) {
+			this.blurListener.remove();
+		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
