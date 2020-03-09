@@ -6,10 +6,10 @@ function setTopLevelNavigator(navigatorRef) {
 	_shareNavigator = navigatorRef;
 }
 
-function navigate(routeName, params) {
+function navigate(name, params) {
 	_shareNavigator.dispatch(
 		CommonActions.navigate({
-			routeName,
+			name,
 			params
 		})
 	);

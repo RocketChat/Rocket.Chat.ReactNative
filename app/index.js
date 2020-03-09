@@ -31,7 +31,7 @@ import {
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import { SplitContext } from './split';
-import { defaultHeader } from './utils/navigation';
+import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 
 // App Stack
 import AuthLoadingView from './views/AuthLoadingView';
@@ -221,6 +221,7 @@ export default class Root extends React.Component {
 				ref={(navigatorRef) => {
 					Navigation.setTopLevelNavigator(navigatorRef);
 				}}
+				onNavigationStateChange={onNavigationStateChange}
 			>
 				<App />
 			</NavigationContainer>

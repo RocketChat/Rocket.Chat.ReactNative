@@ -34,16 +34,18 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ route, screenProps }) => {
+	static navigationOptions = ({ route }) => {
 		const searching = route.params?.searching;
 		const initSearch = route.params?.initSearch ?? (() => {});
 		const cancelSearch = route.params?.cancelSearch ?? (() => {});
 		const search = route.params?.search ?? (() => {});
 
+		const screenProps = { theme: 'light' };
+
 		if (isIOS) {
 			return {
 				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
-				headerTitle: (
+				headerTitle: () => (
 					<ShareListHeader
 						searching={searching}
 						initSearch={initSearch}
@@ -56,7 +58,7 @@ class ShareListView extends React.Component {
 		}
 
 		return {
-			headerLeft: searching
+			headerLeft: () => (searching
 				? (
 					<CustomHeaderButtons left>
 						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
@@ -67,9 +69,9 @@ class ShareListView extends React.Component {
 						onPress={ShareExtension.close}
 						testID='share-extension-close'
 					/>
-				),
-			headerTitle: <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
-			headerRight: (
+				)),
+			headerTitle: () => <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
+			headerRight: () => (
 				searching
 					? null
 					: (

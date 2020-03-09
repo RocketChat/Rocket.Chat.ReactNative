@@ -6,10 +6,10 @@ function setTopLevelNavigator(navigatorRef) {
 	_navigatorModal = navigatorRef;
 }
 
-function navigate(routeName, params) {
+function navigate(name, params) {
 	_navigatorModal.dispatch(
 		CommonActions.navigate({
-			routeName,
+			name,
 			params
 		})
 	);
