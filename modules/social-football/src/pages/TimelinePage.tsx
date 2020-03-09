@@ -65,7 +65,7 @@ const TimelinePage = ({ navigation }) => {
     /**
      * Fetching more Threads
      */
-    const { data, fetchMore, refetch, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
+    const { data, fetchMore, refetch, error, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
             limit: initial,
             filterType,

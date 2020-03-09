@@ -65,7 +65,7 @@ export default {
         title: 'Nieuw',
         create: 'Maak',
         publish: 'Publiceren',
-        save: 'Aanmaken',
+        save: 'Concept opslaan',
         threadtitle: {
             label: 'Titel',
             placeholder: 'Item titel',
@@ -113,6 +113,7 @@ export default {
     timeline: {
         empty: 'Er zijn geen resultaten gevonden.',
         edited: '● Bewerkt',
+        publish: 'Publiceren',
         filterOptions: {
             all: 'Alle berichten',
             text: 'Tekstberichten',

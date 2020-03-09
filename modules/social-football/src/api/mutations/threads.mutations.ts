@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
+import {OVERVIEW} from "../fragments/threads.fragments";
 
 /**
  * Create a new Thread.
- * 
+ *
  * @param ThreadInput
  * @returns {createThread<thread>}
  */
@@ -14,7 +15,11 @@ export const CREATE_THREAD = gql`
 
 export const PUBLISH_THREAD = gql`
     mutation PublishThread($id:String!){
-        publishThread(id: $id)
+        publishThread(id: $id) {
+            ...ThreadsOverview
+        }
     }
+
+    ${OVERVIEW}
 `;
 

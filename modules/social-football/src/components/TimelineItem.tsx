@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import {Button} from "../components/Button";
-import {PublishButton} from "../components/PublishButton";
+import {Button} from "./Button";
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
 import { appColors } from "../theme/colors";
@@ -11,8 +10,8 @@ import 'moment/locale/nl';
 import Urls from "../../../../app/containers/message/Urls"
 import { ContentType } from '../enums/content-type';
 import SecurityManager from '../security/security-manager';
-import { useMutation } from 'react-apollo';
-import {PUBLISH_THREAD} from "../api/mutations/threads.mutations";
+import { useMutation } from 'refetch-queries';
+import {ThreadsMutations, ThreadsQueries} from "../api";
 
 /**
  * Defining the Metadata for an Item within the Timeline.
@@ -27,11 +26,7 @@ const styles = StyleSheet.create({
     },
 
     hiddenItem: {
-        padding: 30,
-        paddingTop: 0,
-        marginBottom: 10,
-        width: '100%',
-        backgroundColor: '#D3D3D3',
+        opacity: 0.5,
     },
 
     textAndPreview: {
@@ -48,10 +43,8 @@ const styles = StyleSheet.create({
     },
 
     publish: {
-        flex: 1,
         width: 100,
-        height: 20,
-        borderRadius: 10,
+        marginTop: 10,
     },
 
     threadTitle: {
@@ -85,6 +78,7 @@ const styles = StyleSheet.create({
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     const [rcAuthHeaders, setRcAuthHeaders] = useState({});
+    const [performPublish, { loading: publishLoading }] = useMutation(ThreadsMutations.PUBLISH_THREAD);
 
     useEffect(() => {
         SecurityManager.getRocketChatHeaders().then(headers => setRcAuthHeaders(headers));
@@ -93,7 +87,7 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     //Gets and shows the userID
     const getUserId = (item: ThreadModel) => {
         return <Text>{item.createdByUser?.firstName}</Text>;
-    }
+    };
 
     //shows the image preview for any thread with an image
     const renderImageInfo = () => {
@@ -122,7 +116,32 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         }
 
         return <Text>{moment(item.createdAt).fromNow()}</Text>;
-    }
+    };
+
+    // SHows an option to publish
+    const renderPublish = () => {
+        if (!item.published) {
+            return <View style={[styles.publish]}>
+                <Button title={i18n.t('timeline.publish')} loading={publishLoading} onPress={async () => {
+                    try {
+                        await performPublish({
+                            variables: {
+                                id: item._id,
+                            },
+                            refetchQueriesMatch: [
+                                {
+                                    query: ThreadsQueries.TIMELINE,
+                                    variables: {}
+                                }
+                            ]
+                        });
+                    } catch (error) {
+                        alert(error);
+                    }
+                }}/>
+            </View>;
+        }
+    };
 
     //Shows an edited sign when a thread is edited.
     const checkUpdated = (item: ThreadModel) => {
@@ -135,12 +154,13 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
         return <View></View>;
     }
 
-    return <View style={[styles.item]}>
+    return <View style={[styles.item, !item.published ? styles.hiddenItem : {}]}>
         <Text style={[styles.creatorText]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
         <View style={[styles.textAndPreview]}>
             <View style={[styles.allText]}>
                 <Text style={[appStyles.heading]}>{item.title}</Text>
                 <Text style={[appStyles.text]}>{item.description}</Text>
+                {renderPublish()}
                 {/* {showLink(item)} */}
             </View>
             {renderImageInfo()}

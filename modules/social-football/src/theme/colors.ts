@@ -12,4 +12,5 @@ export const appColors = {
     light: '#ffffff', //White
     error: '#e74c3c', //Bright red
     dark: '#000000', //Black
-}
+    secondary: '#888888', //Gray
+};

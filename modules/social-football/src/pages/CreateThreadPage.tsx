@@ -48,7 +48,10 @@ const styles = StyleSheet.create({
         },
         error: {
             marginBottom: 20,
-        }
+        },
+        publish: {
+            marginTop: 10,
+        },
     }
 );
 
@@ -116,7 +119,7 @@ const CreateThreadPage = ({navigation}) => {
         );
     };
 
-    const onCreatePress = async () => {
+    const onCreatePress = async (published: boolean) => {
         setSubmitted(true);
 
         if (!isValid()) {
@@ -128,7 +131,7 @@ const CreateThreadPage = ({navigation}) => {
             type,
             description,
             commentsEnabled,
-            published: false,
+            published,
             assetUrl: determineAssetUrl(),
             assetFile: determineAssetFile(),
         };
@@ -244,10 +247,6 @@ const CreateThreadPage = ({navigation}) => {
         </View>;
     };
 
-    if (error) {
-        console.error(error);
-    }
-
     /**
      * Makes sure that the Keyboard is rendered correctly.
      *
@@ -312,8 +311,11 @@ const CreateThreadPage = ({navigation}) => {
                         />
                     </View>
                     <View style={[appStyles.formGroup]}>
-                        <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
-                        <Button title={i18n.t('createThread.publish')} onPress={onPublishPress} loading={loading} />
+                        <Button type={'secondary'} title={i18n.t('createThread.save')} onPress={() => onCreatePress(false)} loading={loading} />
+
+                        <View style={[styles.publish]}>
+                            <Button title={i18n.t('createThread.publish')} onPress={() => onCreatePress(true)} loading={loading} />
+                        </View>
                     </View>
                 </View>
             </View>
