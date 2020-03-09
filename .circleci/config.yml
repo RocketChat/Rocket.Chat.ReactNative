@@ -41,7 +41,7 @@ jobs:
 
   ios:
     macos:
-      xcode: "11.3"
+      xcode: "11.1.0"
     working_directory: ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
@@ -57,7 +57,7 @@ jobs:
             - vendor/bundle
       - run:
           name: fastlane
-          command: bundle exec fastlane build_ios
+          command: fastlane gym
       - store_artifacts:
           path: output
       - store_test_results:

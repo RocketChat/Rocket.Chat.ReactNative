@@ -58,3 +58,8 @@ coverage
 
 .vscode/
 *.zip
+
+ios/fastlane/report.xml
+ios/fastlane/README.md
+ios/fastlane/Preview.html
+ios/Gemfile.lock

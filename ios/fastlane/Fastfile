@@ -15,15 +15,7 @@
 
 default_platform(:ios)
 
-platform :ios do
-  before_all do 
-    setup_circle_ci
-  end
-
-  desc dev build
-  lane :build_ios do
-    match(type: appstore)
-    build_app(scheme: "RocketChatRN",
-      workspace: "RocketChatRN.xcworkspace",
-      include_bitcode: true)
-  end
+lane :build_ios do
+  match(type: appstore)
+  gym(scheme: "RocketChatRN")
+end

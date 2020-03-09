@@ -15,9 +15,9 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-### beta
+### build_ios
 ```
-fastlane beta
+fastlane build_ios
 ```
 
 
