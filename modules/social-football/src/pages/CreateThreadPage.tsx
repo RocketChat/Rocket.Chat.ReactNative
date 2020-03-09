@@ -312,7 +312,8 @@ const CreateThreadPage = ({navigation}) => {
                         />
                     </View>
                     <View style={[appStyles.formGroup]}>
-                        <Button id={'submit'} title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                        <Button title={i18n.t('createThread.save')} onPress={onCreatePress} loading={loading} />
+                        <Button title={i18n.t('createThread.publish')} onPress={onPublishPress} loading={loading} />
                     </View>
                 </View>
             </View>

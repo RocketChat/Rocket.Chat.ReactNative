@@ -12,3 +12,9 @@ export const CREATE_THREAD = gql`
     }
 `;
 
+export const PUBLISH_THREAD = gql`
+    mutation PublishThread($id:String!){
+        publishThread(id: $id)
+    }
+`;
+

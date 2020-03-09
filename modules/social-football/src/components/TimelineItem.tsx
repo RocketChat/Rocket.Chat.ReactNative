@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import {Button} from "../components/Button";
+import {PublishButton} from "../components/PublishButton";
 import i18n from '../i18n';
 import { ThreadModel } from '../models/threads';
 import { appColors } from "../theme/colors";
@@ -9,11 +11,12 @@ import 'moment/locale/nl';
 import Urls from "../../../../app/containers/message/Urls"
 import { ContentType } from '../enums/content-type';
 import SecurityManager from '../security/security-manager';
+import { useMutation } from 'react-apollo';
+import {PUBLISH_THREAD} from "../api/mutations/threads.mutations";
 
 /**
  * Defining the Metadata for an Item within the Timeline.
  */
-
 const styles = StyleSheet.create({
     item: {
         padding: 30,
@@ -21,6 +24,14 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: '100%',
         backgroundColor: appColors.light,
+    },
+
+    hiddenItem: {
+        padding: 30,
+        paddingTop: 0,
+        marginBottom: 10,
+        width: '100%',
+        backgroundColor: '#D3D3D3',
     },
 
     textAndPreview: {
@@ -36,16 +47,41 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
 
+    publish: {
+        flex: 1,
+        width: 100,
+        height: 20,
+        borderRadius: 10,
+    },
+
+    threadTitle: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 15
+    },
+
     allText: {
         flex: 2,
     },
 
     creatorText: {
         marginBottom: 7,
-        marginTop: 5
+        marginTop: 5,
+    },
+
+    hiddenCreatorText: {
+        color: '#200000',
+        fontSize: 13,
+        marginBottom: 7,
+        marginTop: 5,
+    },
+
+    hiddenButton: {
+        color: '#DDDDDD'
     }
 
 });
+
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     const [rcAuthHeaders, setRcAuthHeaders] = useState({});
