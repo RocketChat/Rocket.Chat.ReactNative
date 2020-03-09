@@ -20,10 +20,9 @@ const RoomHeaderLeft = ({
 	if (!split || tmid) {
 		return (
 			<HeaderBackButton
-				title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-				backTitleVisible={isIOS}
 				onPress={() => navigation.goBack()}
 				tintColor={themes[theme].headerTintColor}
+				label={isIOS && (unreadsCount > 999 ? '+999' : unreadsCount || ' ')}
 			/>
 		);
 	}
