@@ -30,8 +30,12 @@ jobs:
           path: ~/android
       - attach_workspace:
           at: ~/android
-      - run: bundle install
-      - run: bundle exec fastlane assemble_build
+      - run: 
+          command: bundle install
+          working_directory: android
+      - run: 
+          command: bundle exec fastlane assemble_build
+          working_directory: android
       - store_test_results:
           path: ~/android/reports
 
@@ -48,10 +52,10 @@ jobs:
       - run: yarn
       - run: 
           command: bundle install
-          working-directory: ios
+          working_directory: ios
       - run: 
           command: bundle exec fastlane beta
-          working-directory: ios
+          working_directory: ios
       - run:
           command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
           when: always
