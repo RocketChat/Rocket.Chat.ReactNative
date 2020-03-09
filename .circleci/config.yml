@@ -53,12 +53,6 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-
       - run: yarn install
 
       - save_cache:
