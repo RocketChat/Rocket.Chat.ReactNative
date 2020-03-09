@@ -41,29 +41,27 @@ jobs:
 
   ios:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3"
     working_directory: ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
     steps:
-      - checkout:
-          path: ~/ios
-      - run: yarn
-      - run: ls
-      - run: 
-          command: bundle install
-          working_directory: ios
-      - run: 
-          command: bundle exec fastlane beta
-          working_directory: ios
+      - checkout
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install --path vendor/bundle
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
       - run:
-          command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
-          when: always
+          name: fastlane
+          command: bundle exec fastlane build_ios
       - store_artifacts:
-          path: ~/ios/output
+          path: output
       - store_test_results:
-          path: ~/ios/output/scan
+          path: output/scan
 
 workflows:
   version: 2
