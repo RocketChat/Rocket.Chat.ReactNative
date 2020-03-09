@@ -33,7 +33,7 @@ class RoomMembersView extends React.Component {
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
-			headerRight: (
+			headerRight: () => (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
 				</CustomHeaderButtons>
@@ -61,8 +61,7 @@ class RoomMembersView extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid } = props.navigation.state.params;
-		const room = props.route.params?.room;
+		const { rid, room } = props.route.params;
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -91,8 +90,8 @@ class RoomMembersView extends React.Component {
 		this.mounted = true;
 		this.fetchMembers();
 
-		const { navigation } = this.props;
-		const { rid } = navigation.state.params;
+		const { navigation, route } = this.props;
+		const { rid } = route.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
