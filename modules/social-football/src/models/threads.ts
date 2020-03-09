@@ -27,6 +27,8 @@ export interface ThreadModel extends CreateThreadModel {
     createdByUser: UserModel|null;
     createdAt: Date;
     updatedAt?: Date;
+    balled?: boolean;
+    balls?: number;
 }
 
 /**

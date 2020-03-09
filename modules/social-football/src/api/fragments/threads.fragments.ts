@@ -11,10 +11,10 @@ export const OVERVIEW = gql`
         assetUrl,
         rocketChatMessageID,
         assetMetadata {
+            url,
             title,
             description,
             image,
-            url,
         },
         createdAt,
         createdByUser {
@@ -24,6 +24,8 @@ export const OVERVIEW = gql`
         },
         createdAt,
         teamChannelId,
-        updatedAt
+        updatedAt,
+        balls,
+        balled
     }
 `;

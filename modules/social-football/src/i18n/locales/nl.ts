@@ -125,4 +125,8 @@ export default {
     imagePicker: {
         select: 'Selecteer een afbeelding',
     },
+    ballBar: {
+        balls: '{{count}} ballen',
+        ball: '1 bal',
+    }
 }

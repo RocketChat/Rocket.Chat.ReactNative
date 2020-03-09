@@ -12205,10 +12205,10 @@ react-native-tab-view@^1.2.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-unimodules@0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.5.3.tgz#24615ae71615d9aa76f128595286ad5fc4709ed2"
-  integrity sha512-v60EnYwo1CSLy0JPcZ9tyblCs+n86/mtXm64kSn6LCtFMU/cmFeRAmv5fTdgqLk/R7W2kV1+GroYjR/Z+7XyrQ==
+react-native-unimodules@0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.5.4.tgz#d4d779576a027f0455b14d396b0e002cb57963fe"
+  integrity sha512-47ZJzZriaVtvDJp24HLu6xcKBaDScDcx71yIDmahsKKJtbEHmXl7jPz1y/2FhAKSb174m9niu3F97Di5Bo+91g==
   dependencies:
     "@unimodules/core" "~3.0.2"
     "@unimodules/react-native-adapter" "~3.0.0"

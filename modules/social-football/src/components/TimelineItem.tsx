@@ -12,6 +12,7 @@ import { ContentType } from '../enums/content-type';
 import SecurityManager from '../security/security-manager';
 import { useMutation } from 'refetch-queries';
 import {ThreadsMutations, ThreadsQueries} from "../api";
+import {BallBar} from "./BallBar";
 
 /**
  * Defining the Metadata for an Item within the Timeline.
@@ -61,20 +62,7 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         marginTop: 5,
     },
-
-    hiddenCreatorText: {
-        color: '#200000',
-        fontSize: 13,
-        marginBottom: 7,
-        marginTop: 5,
-    },
-
-    hiddenButton: {
-        color: '#DDDDDD'
-    }
-
 });
-
 
 export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     const [rcAuthHeaders, setRcAuthHeaders] = useState({});
@@ -164,8 +152,8 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
                 {/* {showLink(item)} */}
             </View>
             {renderImageInfo()}
-
         </View>
+        {item.published && <BallBar item={item}/>}
     </View>
 
 };

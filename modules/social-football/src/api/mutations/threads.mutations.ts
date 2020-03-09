@@ -23,3 +23,12 @@ export const PUBLISH_THREAD = gql`
     ${OVERVIEW}
 `;
 
+export const CREATE_BALL = gql `
+    mutation CreateBall($threadId: String!) {
+        createBall(threadId: $threadId){
+            ...ThreadsOverview
+        }
+    }
+
+    ${OVERVIEW}
+`;

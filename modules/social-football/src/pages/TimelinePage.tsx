@@ -4,14 +4,14 @@ import {appStyles} from '../theme/style';
 import {SafeAreaView} from 'react-navigation';
 import {appColors} from '../theme/colors';
 import i18n from '../i18n'
-import {HeaderLogo} from '../components/header/HeaderLogo';
-import {HeaderCreateThreadButton} from '../components/header/HeaderCreateThreadButton';
-import {useQuery} from 'refetch-queries';
-import {ThreadsQueries} from '../api';
-import {PaginatedThreads} from '../models/threads';
-import {TimelineItem} from '../components/TimelineItem';
-import {InfiniteScrollView} from "../components/InfiniteScrollView";
-import {HeaderLeaderboardButton} from '../components/header/HeaderLeaderboardButton';
+import { HeaderLogo } from '../components/header/HeaderLogo';
+import { HeaderCreateThreadButton } from '../components/header/HeaderCreateThreadButton';
+import { useQuery } from 'refetch-queries';
+import { ThreadsQueries } from '../api';
+import { PaginatedThreads } from '../models/threads';
+import { TimelineItem } from '../components/TimelineItem';
+import { InfiniteScrollView } from "../components/InfiniteScrollView";
+import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
 import {ContentType} from '../enums/content-type';
 import {Filter} from "../components/Filter";
 
@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
     },
 
     icon: {
-        width: 25,
-        height: 25,
+        marginTop: 7,
     },
 
     loading: {
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
         height: 40,
         opacity: 0,
     },
+
 });
 
 /**
@@ -153,6 +153,7 @@ const TimelinePage = ({ navigation }) => {
             </View>
         </SafeAreaView>
     </>;
+
 };
 
 /**
