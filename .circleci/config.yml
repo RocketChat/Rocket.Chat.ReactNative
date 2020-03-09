@@ -25,24 +25,30 @@ jobs:
     working_directory: ~/android
     docker:
       - image: circleci/android:api-29
+    environment:
+        JVM_OPTS: -Xmx3200m
+
     steps:
       - checkout:
-          path: ~/android
-      - attach_workspace:
-          at: ~/android
-      - run: 
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Install fastlane
           command: bundle install
-          working_directory: android
-      - run: 
+      - run:
+          name: Assemble the builds
           command: bundle exec fastlane assemble_build
-          working_directory: android
-      - store_test_results:
-          path: ~/android/reports
+      - store_artifacts:
+          path: android/app/build/reports
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
 
   ios:
     macos:
       xcode: "11.1.0"
-    working_directory: ios
+    working_directory: ~/ios
     environment:
       FL_OUTPUT_DIR: ~/ios/output
     shell: /bin/bash --login -o pipefail
