@@ -11,7 +11,6 @@ jobs:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn
-      - run: yarn run test
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -58,7 +57,7 @@ jobs:
       - run: brew install node
       - run: yarn
       - run: bundle install
-      - run: bundle exec fastlane test
+      - run: bundle exec fastlane beta
       - run:
           command: cp $FL_OUTPUT_DIR/scan/report.junit $FL_OUTPUT_DIR/scan/results.xml
           when: always

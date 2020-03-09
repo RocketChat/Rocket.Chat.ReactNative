@@ -57,3 +57,4 @@ fastlane/screenshots
 coverage
 
 .vscode/
+*.zip

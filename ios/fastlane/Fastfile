@@ -1,95 +1,22 @@
-# Customize this file, documentation can be found here:
-# https://docs.fastlane.tools/actions/
-# All available actions: https://docs.fastlane.tools/actions
-# can also be listed using the `fastlane actions` command
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
 
-# Change the syntax highlighting to Ruby
-# All lines starting with a # are ignored when running `fastlane`
-
-# If you want to automatically update fastlane if a new version is available:
+# Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-# This is the minimum version number required.
-# Update this, if you use features of a newer version
-fastlane_version "2.63.0"
+default_platform(:ios)
 
-default_platform :ios
-
-platform :ios do
-  before_all do
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-    # cocoapods
-    # carthage
-    setup_circle_ci
-    create_keychain(
-      name: ENV["MATCH_KEYCHAIN_NAME"],
-      password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-      timeout: 1200
-    )
-  end
-
-  desc "Runs all the tests"
-  lane :test do
-    scan
-  end
-
-  desc "Submit a new Beta Build to Apple TestFlight"
-  lane :beta do
-    pilot(ipa: 'ios/RocketChatRN.ipa')
-  end
-
-  desc "Build App for release"
-  lane :release do
-    # match(type: "appstore")
-    # snapshot
-    match(
-      type: "appstore"
-    ) # more information: https://codesigning.guide
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
-    pem()
-    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
-    # frameit
-  end
-
-  desc "Build App for development"
-  lane :build do |options|
-    xcodebuild(
-      workspace: "RocketChatRN.xcworkspace",
-      scheme: "RocketChatRN",
-      configuration: "Debug",
-      clean: options[:clean],
-      build: true,
-      destination: "generic/platform=iOS",
-      build_settings: {
-        "CODE_SIGNING_REQUIRED" => "NO",
-        "CODE_SIGN_IDENTITY" => ""
-      }
-    )
-  end
-
-  # You can define as many lanes as you want
-
-  after_all do |lane|
-    # This block is called, only if the executed lane was successful
-
-    # slack(
-    #   message: "Successfully deployed new App Update."
-    # )
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
-  end
-
-  error do |lane, exception|
-    # slack(
-    #   message: exception.message,
-    #   success: false
-    # )
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
-  end
+lane :beta do
+  build_app(scheme: "RocketChatRN",
+            workspace: "RocketChatRN.xcworkspace",
+            include_bitcode: true)
 end
-
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
-# All available actions: https://docs.fastlane.tools/actions
-
-# fastlane reports which actions are used. No personal data is recorded.
-# Learn more at https://docs.fastlane.tools/#metrics
