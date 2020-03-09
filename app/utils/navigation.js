@@ -1,5 +1,3 @@
-import { StyleSheet } from 'react-native';
-
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
 
@@ -12,7 +10,6 @@ export const cardStyle = {
 };
 
 const borderBottom = theme => ({
-	borderBottomWidth: StyleSheet.hairlineWidth,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });

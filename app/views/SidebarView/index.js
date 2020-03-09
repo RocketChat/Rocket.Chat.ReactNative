@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'lodash/isEqual';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
@@ -44,7 +45,7 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		activeItemKey: PropTypes.string,
+		state: PropTypes.object,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
@@ -78,7 +79,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { status, showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
+			Site_Name, user, baseUrl, state, split, useRealName, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -92,7 +93,7 @@ class Sidebar extends Component {
 		if (nextProps.baseUrl !== baseUrl) {
 			return true;
 		}
-		if (nextProps.activeItemKey !== activeItemKey) {
+		if (!isEqual(nextProps.state, state)) {
 			return true;
 		}
 		if (nextProps.theme !== theme) {
@@ -193,7 +194,10 @@ class Sidebar extends Component {
 
 	renderNavigation = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey, theme } = this.props;
+		const { state, theme } = this.props;
+		const { routes, index } = state;
+		const activeItemKey = routes[index].name;
+
 		return (
 			<>
 				<SidebarItem
