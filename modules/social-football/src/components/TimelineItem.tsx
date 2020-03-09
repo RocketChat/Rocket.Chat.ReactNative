@@ -20,7 +20,6 @@ import {BallBar} from "./BallBar";
 const styles = StyleSheet.create({
     item: {
         padding: 30,
-        paddingTop: 0,
         marginBottom: 10,
         width: '100%',
         backgroundColor: appColors.light,
@@ -39,7 +38,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 100,
         height: 80,
-        borderRadius: 10,
         resizeMode: 'cover',
     },
 
@@ -58,9 +56,17 @@ const styles = StyleSheet.create({
         flex: 2,
     },
 
+    separator: {
+        marginTop: 10,
+        marginBottom: 10,
+        width: '100%',
+        height: 1,
+        backgroundColor: appColors.muted,
+        opacity: 0.6,
+    },
+
     creatorText: {
         marginBottom: 7,
-        marginTop: 5,
     },
 });
 
@@ -143,17 +149,19 @@ export const TimelineItem = ({ item }: { item: ThreadModel }) => {
     }
 
     return <View style={[styles.item, !item.published ? styles.hiddenItem : {}]}>
-        <Text style={[styles.creatorText, { color: appColors.muted }]}> {getUserId(item)}  ●  {showDate(item)}{checkUpdated(item)}</Text>
+        <Text style={[styles.creatorText, { color: appColors.muted }]}> {getUserId(item)}  -  {showDate(item)}{checkUpdated(item)}</Text>
         <View style={[styles.textAndPreview]}>
             <View style={[styles.allText]}>
                 <Text style={[appStyles.heading]}>{item.title}</Text>
                 <Text style={[appStyles.text]}>{item.description}</Text>
                 {renderPublish()}
-                {/* {showLink(item)} */}
             </View>
             {renderImageInfo()}
         </View>
-        {item.published && <BallBar item={item}/>}
+        {item.published && <>
+            <View style={styles.separator} />
+            <BallBar item={item}/>
+        </>}
     </View>
 
 };
