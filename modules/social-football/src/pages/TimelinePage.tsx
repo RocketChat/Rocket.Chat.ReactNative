@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, Button, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
-import { appStyles } from '../theme/style';
-import { SafeAreaView } from 'react-navigation';
-import { appColors } from '../theme/colors';
+import React, {useState} from 'react';
+import {ActivityIndicator, RefreshControl, StyleSheet, Text, View} from 'react-native';
+import {appStyles} from '../theme/style';
+import {SafeAreaView} from 'react-navigation';
+import {appColors} from '../theme/colors';
 import i18n from '../i18n'
-import { HeaderLogo } from '../components/header/HeaderLogo';
-import { HeaderCreateThreadButton } from '../components/header/HeaderCreateThreadButton';
-import { useQuery } from 'refetch-queries';
-import { ThreadsQueries } from '../api';
-import { PaginatedThreads } from '../models/threads';
-import { TimelineItem } from '../components/TimelineItem';
+import {HeaderLogo} from '../components/header/HeaderLogo';
+import {HeaderCreateThreadButton} from '../components/header/HeaderCreateThreadButton';
+import {useQuery} from 'refetch-queries';
+import {ThreadsQueries} from '../api';
+import {PaginatedThreads} from '../models/threads';
+import {TimelineItem} from '../components/TimelineItem';
 import {InfiniteScrollView} from "../components/InfiniteScrollView";
-import { HeaderLeaderboardButton } from '../components/header/HeaderLeaderboardButton';
-import { HeaderTitle } from 'react-navigation-stack';
+import {HeaderLeaderboardButton} from '../components/header/HeaderLeaderboardButton';
+import {ContentType} from '../enums/content-type';
+import {Filter} from "../components/Filter";
 
 /**
  * Defines the standard Stylesheet for the Timeline Page.
@@ -39,18 +40,6 @@ const styles = StyleSheet.create({
         height: 25,
     },
 
-    filterBar: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: 25,
-        width: '100%',
-        paddingLeft: 30,
-        paddingRight: 30,
-        backgroundColor: appColors.lightPrimary,
-    },
-
     loading: {
         flex: 1,
         alignItems: 'center',
@@ -64,10 +53,14 @@ const styles = StyleSheet.create({
  * Creates the Page.
  */
 const TimelinePage = ({ navigation }) => {
-    
     //The maximum amount of threads that are loaded at once by Lazy Loading
     const perPage = 6;
     const initial = 10;
+
+    /**
+     * Holds current filter
+     */
+    const [filterType, setFilterType] = useState<ContentType|undefined>(undefined);
 
     /**
      * Fetching more Threads
@@ -75,10 +68,11 @@ const TimelinePage = ({ navigation }) => {
     const { data, fetchMore, refetch, loading } = useQuery<{ getThreads: PaginatedThreads }>(ThreadsQueries.TIMELINE, {
         variables: {
             limit: initial,
+            filterType,
         },
         fetchPolicy: "cache-and-network"
     });
-    
+
     /**
      * Hold state whether pull-to-refresh was used
      */
@@ -93,6 +87,7 @@ const TimelinePage = ({ navigation }) => {
             variables: {
                 offset: data?.getThreads.threads.length,
                 limit: perPage,
+                filterType: filterType,
             },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
@@ -130,19 +125,17 @@ const TimelinePage = ({ navigation }) => {
     const reset = async () => {
         setRefreshing(true);
 
-        await refetch({});
+        await refetch({
+            filterType,
+        });
 
         setRefreshing(false);
     };
 
     return <>
-        {/*<View style={[styles.filterBar]} >*/}
-        {/*    <Text style={[appStyles.bold]}>Alle berichten.</Text>*/}
-        {/*    <Image style={[]} source={require('../assets/images/refresh.png')} />*/}
-
-        {/*</View>*/}
         <SafeAreaView>
             <View style={styles.page}>
+                <Filter value={filterType} onChange={(type) => setFilterType(type)} />
                 <InfiniteScrollView
                     onEndReached={() => fetchMoreResults()}
                     refreshControl={

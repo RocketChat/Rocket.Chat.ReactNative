@@ -112,6 +112,13 @@ export default {
     timeline: {
         empty: 'Er zijn geen resultaten gevonden.',
         edited: '● Bewerkt',
+        filterOptions: {
+            all: 'Alle berichten',
+            text: 'Tekstberichten',
+            image: 'Afbeeldingen',
+            video: 'Video\'s',
+            link: 'Links',
+        },
     },
     imagePicker: {
         select: 'Selecteer een afbeelding',
