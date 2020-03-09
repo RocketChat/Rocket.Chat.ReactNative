@@ -132,8 +132,9 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='edit-rounded'
-						onPress={() => navigation.navigate('NewMessageView', {
-							onPressItem
+						onPress={() => navigation.navigate('NewMessageStack', {
+							screen: 'NewMessageView',
+							params: { onPressItem }
 						})}
 						testID='rooms-list-view-create-channel'
 					/>
@@ -695,7 +696,10 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandNextRoom(event)) {
 			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
-			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
+			navigation.navigate('NewMessageStack', {
+				screen: 'NewMessageView',
+				params: { onPressItem: this._onPressItem }
+			});
 		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('OnboardingView', { previousServer: server });
 		}

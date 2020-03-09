@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
 class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
+		headerLeft: () => <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
 

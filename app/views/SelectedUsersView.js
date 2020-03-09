@@ -42,7 +42,7 @@ class SelectedUsersView extends React.Component {
 		const nextAction = route.params?.nextAction ?? (() => {});
 		return {
 			title,
-			headerRight: (
+			headerRight: () => (
 				<CustomHeaderButtons>
 					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
 				</CustomHeaderButtons>

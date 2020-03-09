@@ -36,6 +36,10 @@ import DefaultBrowserView from '../views/DefaultBrowserView';
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
 
+// NewMessage Stack
+import NewMessageView from '../views/NewMessageView';
+import CreateChannelView from '../views/CreateChannelView';
+
 // ChatsStack
 const Chats = createStackNavigator();
 const ChatsStack = () => (
@@ -190,4 +194,41 @@ const ChatsDrawer = () => (
 	</Drawer.Navigator>
 );
 
-export default ChatsDrawer;
+// NewMessageStack
+const NewMessage = createStackNavigator();
+const NewMessageStack = () => (
+	<NewMessage.Navigator screenOptions={defaultHeader}>
+		<NewMessage.Screen
+			name='NewMessageView'
+			component={NewMessageView}
+			options={NewMessageView.navigationOptions}
+		/>
+		<NewMessage.Screen
+			name='SelectedUsersViewCreateChannel'
+			component={SelectedUsersView}
+			options={SelectedUsersView.navigationOptions}
+		/>
+		<NewMessage.Screen
+			name='CreateChannelView'
+			component={CreateChannelView}
+			options={CreateChannelView.navigationOptions}
+		/>
+	</NewMessage.Navigator>
+);
+
+// InsideStackModal
+const InsideStack = createStackNavigator();
+const InsideStackModal = () => (
+	<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, headerShown: false }}>
+		<InsideStack.Screen
+			name='ChatsDrawer'
+			component={ChatsDrawer}
+		/>
+		<InsideStack.Screen
+			name='NewMessageStack'
+			component={NewMessageStack}
+		/>
+	</InsideStack.Navigator>
+);
+
+export default InsideStackModal;
