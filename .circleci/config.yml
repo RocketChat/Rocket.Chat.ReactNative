@@ -32,6 +32,7 @@ jobs:
           path: ~/android
       - attach_workspace:
           at: ~/android
+      - run: cd android
       - run: bundle install
       - run: bundle exec fastlane assemble_build
       - store_test_results:
@@ -48,6 +49,7 @@ jobs:
       - checkout:
           path: ~/ios
       - run: yarn
+      - run: cd ios
       - run: bundle install
       - run: bundle exec fastlane beta
       - run:
