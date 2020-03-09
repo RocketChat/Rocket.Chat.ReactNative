@@ -252,7 +252,7 @@ class NotificationPreferencesView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<Info info={I18n.t('Receive_notifications_from', { name: room.fname })} theme={theme} />
+					<Info info={I18n.t('Receive_notifications_from', { name: room.prid ? room.fname : room.name })} theme={theme} />
 					<SectionSeparator theme={theme} />
 
 					<Separator theme={theme} />
