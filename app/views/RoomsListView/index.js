@@ -208,14 +208,14 @@ class RoomsListView extends React.Component {
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 		Orientation.unlockAllOrientations();
-		this.willFocusListener = navigation.addListener('willFocus', () => {
-			// Check if there were changes while not focused (it's set on sCU)
-			if (this.shouldUpdate) {
-				// animateNextTransition();
-				this.forceUpdate();
-				this.shouldUpdate = false;
-			}
-		});
+		// this.willFocusListener = navigation.addListener('willFocus', () => {
+		// 	// Check if there were changes while not focused (it's set on sCU)
+		// 	if (this.shouldUpdate) {
+		// 		// animateNextTransition();
+		// 		this.forceUpdate();
+		// 		this.shouldUpdate = false;
+		// 	}
+		// });
 		this.didFocusListener = navigation.addListener('didFocus', () => {
 			this.animated = true;
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -257,21 +257,21 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+		// const chatsNotEqual = !isEqual(nextState.allChats, allChats);
 
 		// If they aren't equal, set to update if focused
-		if (chatsNotEqual) {
-			this.shouldUpdate = true;
-		}
+		// if (chatsNotEqual) {
+		// 	this.shouldUpdate = true;
+		// }
 
 		if (nextState.searching !== searching) {
 			return true;
 		}
 
 		// Abort if it's not focused
-		if (!nextProps.navigation.isFocused()) {
-			return false;
-		}
+		// if (!nextProps.navigation.isFocused()) {
+		// 	return false;
+		// }
 
 		const {
 			loading,
@@ -287,9 +287,8 @@ class RoomsListView extends React.Component {
 		if (!isEqual(nextState.search, search)) {
 			return true;
 		}
-		// If it's focused and there are changes, update
-		if (chatsNotEqual) {
-			this.shouldUpdate = false;
+
+		if (!isEqual(nextState.allChats, allChats)) {
 			return true;
 		}
 		return false;
