@@ -17,5 +17,6 @@ default_platform(:ios)
 xcversion(version: "11.3.1") # Selects Xcode 11.3.1
 
 lane :build_ios do
+  match(type: appstore)
   gym(scheme: "RocketChatRN")
 end
