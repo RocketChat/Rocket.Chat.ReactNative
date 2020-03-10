@@ -33,6 +33,11 @@ jobs:
           at: ~/project
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run: 
+          name: find where everything is
+          command: |
+            ls
+            cd android
       - run:
           name: create build
           command: home/circleci/project/project/.gradlew clean build -x test
