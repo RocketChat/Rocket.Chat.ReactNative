@@ -110,5 +110,7 @@
 		<string>firefox</string>
 		<string>brave</string>
 	</array>
+	<key>SuiteName</key>
+	<string>group.ios.chat.rocket</string>
 </dict>
 </plist>
