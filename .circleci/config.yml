@@ -52,7 +52,7 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run: bundle install
+      - run: cd ios; bundle install
       - restore_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
       - run: 
