@@ -1,11 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
 import { SplitContext } from '../split';
 import { defaultHeader, themedHeader } from '../utils/navigation';
+import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
+import NotificationBadge from '../notifications/inApp';
 
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -248,34 +251,50 @@ const NewMessageStack = () => {
 
 // InsideStackModal
 const InsideStack = createStackNavigator();
-const InsideStackModal = () => (
-	<InsideStack.Navigator mode='modal' screenOptions={defaultHeader}>
-		<InsideStack.Screen
-			name='ChatsDrawer'
-			component={ChatsDrawer}
-			options={{ headerShown: false }}
-		/>
-		<InsideStack.Screen
-			name='NewMessageStack'
-			component={NewMessageStack}
-			options={{ headerShown: false }}
-		/>
-		<InsideStack.Screen
-			name='AttachmentView'
-			component={AttachmentView}
-			options={AttachmentView.navigationOptions}
-		/>
-		<InsideStack.Screen
-			name='ModalBlockView'
-			component={ModalBlockView}
-			options={ModalBlockView.navigationOptions}
-		/>
-		<InsideStack.Screen
-			name='JitsiMeetView'
-			component={JitsiMeetView}
-			options={{ headerShown: false }}
-		/>
-	</InsideStack.Navigator>
-);
+const InsideStackModal = () => {
+	const { theme } = React.useContext(ThemeContext);
 
-export default InsideStackModal;
+	return (
+		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+			<InsideStack.Screen
+				name='ChatsDrawer'
+				component={ChatsDrawer}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='NewMessageStack'
+				component={NewMessageStack}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='AttachmentView'
+				component={AttachmentView}
+				options={AttachmentView.navigationOptions}
+			/>
+			<InsideStack.Screen
+				name='ModalBlockView'
+				component={ModalBlockView}
+				options={ModalBlockView.navigationOptions}
+			/>
+			<InsideStack.Screen
+				name='JitsiMeetView'
+				component={JitsiMeetView}
+				options={{ headerShown: false }}
+			/>
+		</InsideStack.Navigator>
+	);
+};
+
+const CustomInsideStack = ({ navigation, route }) => (
+	<>
+		<InsideStackModal navigation={navigation} />
+		<NotificationBadge navigation={navigation} route={route} />
+		<Toast />
+	</>
+);
+CustomInsideStack.propTypes = {
+	navigation: PropTypes.object,
+	route: PropTypes.object
+};
+
+export default CustomInsideStack;

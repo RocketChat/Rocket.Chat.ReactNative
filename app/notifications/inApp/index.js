@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
 
 class NotificationBadge extends React.Component {
 	static propTypes = {
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -103,8 +104,8 @@ class NotificationBadge extends React.Component {
 	}
 
 	componentDidUpdate() {
-		const { notification: { payload }, navigation } = this.props;
-		const navState = this.getNavState(navigation.state);
+		const { notification: { payload }, route } = this.props;
+		const navState = this.getNavState(route.state);
 		if (payload.rid) {
 			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
 				return;

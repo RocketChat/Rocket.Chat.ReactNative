@@ -77,31 +77,38 @@ export const App = () => {
 	const [loading] = useState(false);
 
 	return (
-		<AuthContext.Provider value={{}}>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				{loading ? (
-					<Stack.Screen
-						name='AuthLoading'
-						component={AuthLoadingView}
-					/>
-				) : (
-					<>
+		<NavigationContainer
+			ref={(navigatorRef) => {
+				Navigation.setTopLevelNavigator(navigatorRef);
+			}}
+			onNavigationStateChange={onNavigationStateChange}
+		>
+			<AuthContext.Provider value={{}}>
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					{loading ? (
 						<Stack.Screen
-							name='OutsideStack'
-							component={OutsideStack}
+							name='AuthLoading'
+							component={AuthLoadingView}
 						/>
-						<Stack.Screen
-							name='InsideStack'
-							component={InsideStack}
-						/>
-						<Stack.Screen
-							name='SetUsernameStack'
-							component={SetUsernameStack}
-						/>
-					</>
-				)}
-			</Stack.Navigator>
-		</AuthContext.Provider>
+					) : (
+						<>
+							<Stack.Screen
+								name='OutsideStack'
+								component={OutsideStack}
+							/>
+							<Stack.Screen
+								name='InsideStack'
+								component={InsideStack}
+							/>
+							<Stack.Screen
+								name='SetUsernameStack'
+								component={SetUsernameStack}
+							/>
+						</>
+					)}
+				</Stack.Navigator>
+			</AuthContext.Provider>
+		</NavigationContainer>
 	);
 };
 
@@ -216,16 +223,7 @@ export default class Root extends React.Component {
 	render() {
 		const { split, themePreferences, theme } = this.state;
 
-		let content = (
-			<NavigationContainer
-				ref={(navigatorRef) => {
-					Navigation.setTopLevelNavigator(navigatorRef);
-				}}
-				onNavigationStateChange={onNavigationStateChange}
-			>
-				<App />
-			</NavigationContainer>
-		);
+		let content = <App />;
 
 		if (isTablet) {
 			const { inside, showModal } = this.state;

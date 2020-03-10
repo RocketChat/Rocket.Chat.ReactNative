@@ -29,7 +29,7 @@ class DirectoryView extends React.Component {
 			title: I18n.t('Directory')
 		};
 		if (split) {
-			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
 	}
