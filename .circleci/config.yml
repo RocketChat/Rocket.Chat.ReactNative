@@ -35,7 +35,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: create build
-          command: gradlew clean build -x test
+          command: ./gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
