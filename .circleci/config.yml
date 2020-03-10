@@ -40,7 +40,7 @@ jobs:
             cd android
       - run:
           name: create build
-          command: home/circleci/project/project/.gradlew clean build -x test
+          command: home/circleci/project/project/gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
