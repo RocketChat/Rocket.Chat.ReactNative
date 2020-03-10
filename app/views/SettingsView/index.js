@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import CookieManager from '@react-native-community/cookies';
 
 import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
@@ -17,7 +18,7 @@ import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import RocketChat, { CRASH_REPORT_KEY } from '../../lib/rocketchat';
 import {
-	getReadableVersion, getDeviceModel, isAndroid
+	getReadableVersion, getDeviceModel, isAndroid, isIOS
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -90,22 +91,16 @@ class SettingsView extends React.Component {
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
-			onPress: () => {
+			onPress: async() => {
 				const { logout, split } = this.props;
 				if (split) {
 					Navigation.navigate('RoomView');
 				}
-				if (isAndroid) {
-					const CookieManager = require('@react-native-community/cookies');
-					CookieManager.clearAll()
-						.then(() => {
-							logout();
-						})
-						.catch((e) => {
-							logout();
-							log(e);
-						});
-				} else {
+				try {
+					await CookieManager.clearAll(isIOS);
+				} catch (e) {
+					log(e);
+				} finally {
 					logout();
 				}
 			}
