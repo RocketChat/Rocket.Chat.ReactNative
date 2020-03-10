@@ -16,6 +16,5 @@
 default_platform(:ios)
 
 lane :build_ios do
-  match(type: appstore)
   gym(scheme: "RocketChatRN")
 end

@@ -33,11 +33,6 @@ jobs:
           at: ~/project
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run: 
-          name: find where everything is
-          command: |
-            ls
-            cd android
       - run:
           name: create build
           command: gradlew clean build -x test
@@ -67,7 +62,7 @@ jobs:
 
       - run:
           name: fastlane
-          command: cd ios; fastlane gym
+          command: cd ios; fastlane build_ios
 
       - store_artifacts:
           path: output
