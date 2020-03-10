@@ -6,9 +6,12 @@ import {
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import isEqual from 'lodash/isEqual';
+import semver from 'semver';
 
 import database from '../../lib/database';
-import { eraseRoom as eraseRoomAction } from '../../actions/room';
+import { deleteRoomInit as deleteRoomInitAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -27,6 +30,8 @@ import StatusBar from '../../containers/StatusBar';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { MessageTypeValues } from '../../utils/messageTypes';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -51,7 +56,8 @@ class RoomInfoEditView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		eraseRoom: PropTypes.func,
+		deleteRoomInit: PropTypes.func,
+		serverVersion: PropTypes.string,
 		theme: PropTypes.string
 	};
 
@@ -70,7 +76,9 @@ class RoomInfoEditView extends React.Component {
 			t: false,
 			ro: false,
 			reactWhenReadOnly: false,
-			archived: false
+			archived: false,
+			systemMessages: [],
+			enableSysMes: false
 		};
 		this.loadRoom();
 	}
@@ -117,7 +125,7 @@ class RoomInfoEditView extends React.Component {
 
 	init = (room) => {
 		const {
-			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired
+			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
@@ -131,7 +139,9 @@ class RoomInfoEditView extends React.Component {
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
-			archived: room.archived
+			archived: room.archived,
+			systemMessages: sysMes,
+			enableSysMes: sysMes && sysMes.length > 0
 		});
 	}
 
@@ -148,7 +158,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -159,13 +169,15 @@ class RoomInfoEditView extends React.Component {
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
+			&& isEqual(room.sysMes, systemMessages)
+			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 		);
 	}
 
 	submit = async() => {
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -210,6 +222,10 @@ class RoomInfoEditView extends React.Component {
 			params.reactWhenReadOnly = reactWhenReadOnly;
 		}
 
+		if (!isEqual(room.sysMes, systemMessages)) {
+			params.systemMessages = systemMessages;
+		}
+
 		// Join Code
 		if (this.randomValue !== joinCode) {
 			params.joinCode = joinCode;
@@ -237,7 +253,7 @@ class RoomInfoEditView extends React.Component {
 
 	delete = () => {
 		const { room } = this.state;
-		const { eraseRoom } = this.props;
+		const { deleteRoomInit } = this.props;
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
@@ -250,7 +266,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => eraseRoom(room.rid, room.t)
+					onPress: () => deleteRoomInit(room.rid, room.t)
 				}
 			],
 			{ cancelable: false }
@@ -298,12 +314,34 @@ class RoomInfoEditView extends React.Component {
 		return (permissions[PERMISSION_ARCHIVE] || permissions[PERMISSION_UNARCHIVE]);
 	};
 
+	renderSystemMessages = () => {
+		const { systemMessages, enableSysMes } = this.state;
+		const { theme } = this.props;
+
+		if (!enableSysMes) {
+			return null;
+		}
+
+		return (
+			<MultiSelect
+				options={MessageTypeValues.map(m => ({ value: m.value, text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) } }))}
+				onChange={({ value }) => this.setState({ systemMessages: value })}
+				placeholder={{ text: I18n.t('Hide_System_Messages') }}
+				value={systemMessages}
+				context={BLOCK_CONTEXT.FORM}
+				multiselect
+				theme={theme}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
 		} = this.state;
-		const { theme } = this.props;
+		const { serverVersion, theme } = this.props;
 		const { dangerColor } = themes[theme];
+
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -408,6 +446,20 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
+						{serverVersion && !semver.lt(serverVersion, '3.0.0') ? (
+							<SwitchContainer
+								value={enableSysMes}
+								leftLabelPrimary={I18n.t('Hide_System_Messages')}
+								leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
+								theme={theme}
+								testID='room-info-edit-switch-system-messages'
+								onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
+								labelContainerStyle={styles.hideSystemMessages}
+								leftLabelStyle={styles.systemMessagesLabel}
+							>
+								{this.renderSystemMessages()}
+							</SwitchContainer>
+						) : null}
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
@@ -452,7 +504,7 @@ class RoomInfoEditView extends React.Component {
 								]}
 								onPress={this.toggleArchive}
 								disabled={!this.hasArchivePermission()}
-								testID='room-info-edit-view-archive'
+								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							>
 								<Text
 									style={[
@@ -460,7 +512,6 @@ class RoomInfoEditView extends React.Component {
 										styles.button_inverted,
 										{ color: dangerColor }
 									]}
-									accessibilityTraits='button'
 								>
 									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
 								</Text>
@@ -498,8 +549,12 @@ class RoomInfoEditView extends React.Component {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	eraseRoom: (rid, t) => dispatch(eraseRoomAction(rid, t))
+const mapStateToProps = state => ({
+	serverVersion: state.server.version
 });
 
-export default connect(null, mapDispatchToProps)(withTheme(RoomInfoEditView));
+const mapDispatchToProps = dispatch => ({
+	deleteRoomInit: (rid, t) => dispatch(deleteRoomInitAction(rid, t))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));

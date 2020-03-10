@@ -34,6 +34,7 @@ export default StyleSheet.create({
 	},
 	item: {
 		height: 48,
+		maxWidth: '85%',
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -59,7 +60,7 @@ export default StyleSheet.create({
 	chips: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginRight: 16
+		marginRight: 50
 	},
 	chip: {
 		flexDirection: 'row',
@@ -72,6 +73,7 @@ export default StyleSheet.create({
 	},
 	chipText: {
 		paddingHorizontal: 8,
+		flexShrink: 1,
 		...sharedStyles.textMedium,
 		fontSize: 14
 	},

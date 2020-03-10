@@ -21,10 +21,11 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getSetting, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
@@ -619,7 +620,7 @@ const RocketChat = {
 	cancelUpload,
 	isUploadActive,
 	getSettings,
-	getSetting,
+	getLoginSettings,
 	setSettings,
 	getPermissions,
 	getCustomEmojis,
@@ -786,7 +787,7 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.leave`, { roomId });
 	},
-	eraseRoom(roomId, t) {
+	deleteRoom(roomId, t) {
 		// RC 0.49.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.delete`, { roomId });
 	},
@@ -1065,42 +1066,9 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
 		}
 	},
-	getUserPresence() {
-		return new Promise(async(resolve) => {
-			const serverVersion = reduxStore.getState().server.version;
-
-			// if server is lower than 1.1.0
-			if (serverVersion && semver.lt(semver.coerce(serverVersion), '1.1.0')) {
-				if (this.activeUsersSubTimeout) {
-					clearTimeout(this.activeUsersSubTimeout);
-					this.activeUsersSubTimeout = false;
-				}
-				this.activeUsersSubTimeout = setTimeout(() => {
-					this.sdk.subscribe('activeUsers');
-				}, 5000);
-				return resolve();
-			} else {
-				const params = {};
-				// if (this.lastUserPresenceFetch) {
-				// 	params.from = this.lastUserPresenceFetch.toISOString();
-				// }
-
-				// RC 1.1.0
-				const result = await this.sdk.get('users.presence', params);
-				if (result.success) {
-					const activeUsers = result.users.reduce((ret, item) => {
-						ret[item._id] = item.status;
-						return ret;
-					}, {});
-					InteractionManager.runAfterInteractions(() => {
-						reduxStore.dispatch(setActiveUsers(activeUsers));
-					});
-					this.sdk.subscribe('stream-notify-logged', 'user-status');
-					return resolve();
-				}
-			}
-		});
-	},
+	getUsersPresence,
+	getUserPresence,
+	subscribeUsersPresence,
 	getDirectory({
 		query, count, offset, sort
 	}) {
