@@ -64,8 +64,8 @@ jobs:
       - run: 
           name: install dependencies
           command: |
-            gem update --system
-            gem install bundler
+            sudo gem update --system
+            sudo gem install bundler
       - run: cd ios; bundle install
 
 
