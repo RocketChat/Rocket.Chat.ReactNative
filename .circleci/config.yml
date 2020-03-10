@@ -40,12 +40,12 @@ jobs:
             cd android
       - run:
           name: create build
-          command: home/circleci/project/project/gradlew clean build -x test
+          command: gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
           paths:
-            - home/circleci/project/project/.gradle
+            - ~project/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
 
   ios:
@@ -57,17 +57,9 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run: cd ios; bundle install
       - restore_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run: 
-          name: install dependencies
-          command: |
-            sudo gem update --system
-            sudo gem install bundler
       - run: cd ios; bundle install
-
-
       - save_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
           paths:
