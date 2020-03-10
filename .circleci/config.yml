@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+orbs:
+  gradle: circleci/gradle@2.0.1
+
 jobs:
   build:
     working_directory: ~/project
@@ -11,6 +14,7 @@ jobs:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn
+      - run: yarn run test
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -20,64 +24,9 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-            
-  android: 
-    working_directory: ~/project/android
-    docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch
-
-    steps:
-      - checkout:
-          path: ~/project
-      - attach_workspace:
-          at: ~/project
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: create build
-          command: ./gradlew clean build -x test
-      - store_artifacts:
-          path: android/app/build/
-      - save_cache:
-          paths:
-            - ~project/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
-
-  ios:
-    macos:
-      xcode: "11.3.1"
-    working_directory: ~/project
-    environment:
-      FL_OUTPUT_DIR: ~/project/ios/output
-    shell: /bin/bash --login -o pipefail
-    steps:
-      - checkout
-      - restore_cache:
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run: cd ios; bundle install
-      - save_cache:
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - run:
-          name: fastlane
-          command: cd ios && pod install; fastlane build_ios
-
-      - store_artifacts:
-          path: output
-
-      - store_test_results:
-          path: output/scan
 
 workflows:
   version: 2
   node-android-ios:
     jobs:
       - build
-      - android:
-          requires:
-            - build
-      - ios:
-          requires:
-            - build
