@@ -24,7 +24,7 @@ jobs:
   android: 
     working_directory: ~/project/android
     docker:
-      - image: circleci/android:api-29
+      - image: circleci/openjdk:11.0.3-jdk-stretch
 
     steps:
       - checkout:
@@ -35,7 +35,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: create build
-          command: sdk install gradle && ./gradlew clean build -x test
+          command: ./gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
