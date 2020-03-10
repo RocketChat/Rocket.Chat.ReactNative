@@ -33,10 +33,9 @@ jobs:
           at: ~/project
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run: brew install gradle
       - run:
           name: create build
-          command: ./gradlew clean build -x test
+          command: sdk install gradle && ./gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
@@ -63,7 +62,7 @@ jobs:
 
       - run:
           name: fastlane
-          command: cd ios; fastlane build_ios
+          command: cd ios && pod install; fastlane build_ios
 
       - store_artifacts:
           path: output
