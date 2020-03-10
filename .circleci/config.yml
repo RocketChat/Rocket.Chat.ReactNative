@@ -35,30 +35,24 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: create build
-          command: ~project/.gradlew clean build -x test
+          command: home/circleci/project/project/.gradlew clean build -x test
       - store_artifacts:
           path: android/app/build/
       - save_cache:
           paths:
-            - ~project/.gradle
+            - home/circleci/project/project/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
 
   ios:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     working_directory: ~/project
     environment:
       FL_OUTPUT_DIR: ~/project/ios/output
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run: yarn install
-
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
+      - run: bundle install
       - restore_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
       - run: 
