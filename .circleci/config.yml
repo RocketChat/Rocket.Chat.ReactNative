@@ -61,13 +61,13 @@ jobs:
           paths:
             - ~/.cache/yarn
       - restore_cache:
-          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
 
       - run: cd ios; bundle install
 
 
       - save_cache:
-          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
 
