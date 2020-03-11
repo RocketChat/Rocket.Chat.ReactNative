@@ -1,6 +1,6 @@
 import { getBundleId, isIOS } from '../utils/deviceInfo';
 
-const APP_STORE_ID = '1272915472';
+import { appStoreID as APP_STORE_ID } from '../../app.json';
 
 export const PLAY_MARKET_LINK = `https://play.google.com/store/apps/details?id=${ getBundleId }`;
 export const APP_STORE_LINK = `https://itunes.apple.com/app/id${ APP_STORE_ID }`;
