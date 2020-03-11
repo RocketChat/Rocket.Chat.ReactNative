@@ -54,6 +54,7 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Markdown from '../../containers/markdown';
+import Navigation from '../../lib/Navigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -68,7 +69,7 @@ const stateAttrsUpdate = [
 	'reacting',
 	'showAnnouncementModal'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -229,7 +230,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-		EventEmitter.addEventListener('removed', this.handleRemoved);
+		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -312,7 +313,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		EventEmitter.removeListener('removed', this.handleRemoved);
+		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -553,11 +554,10 @@ class RoomView extends React.Component {
 		EventEmitter.removeListener('connected', this.handleConnected);
 	}
 
-	handleRemoved = ({ rid }) => {
+	handleRoomRemoved = ({ rid }) => {
 		const { room } = this.state;
-		const { navigation } = this.props;
 		if (rid === this.rid) {
-			navigation.pop();
+			Navigation.navigate('RoomsListView');
 			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
@@ -961,7 +961,7 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t } = room;
+		const { rid, t, sysMes } = room;
 
 		return (
 			<SafeAreaView
@@ -985,7 +985,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
-					hideSystemMessages={Hide_System_Messages}
+					hideSystemMessages={sysMes || Hide_System_Messages}
 				/>
 				{this.renderAnnouncementModal()}
 				{this.renderFooter()}

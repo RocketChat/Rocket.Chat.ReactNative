@@ -14,8 +14,10 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 	successBatch.push(
 		messageRecord.prepareUpdate((m) => {
 			m.status = status;
-			m.mentions = message.mentions;
-			m.channels = message.channels;
+			if (message) {
+				m.mentions = message.mentions;
+				m.channels = message.channels;
+			}
 		})
 	);
 
@@ -24,8 +26,10 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 		successBatch.push(
 			threadMessageRecord.prepareUpdate((tm) => {
 				tm.status = status;
-				tm.mentions = message.mentions;
-				tm.channels = message.channels;
+				if (message) {
+					tm.mentions = message.mentions;
+					tm.channels = message.channels;
+				}
 			})
 		);
 	}
@@ -51,10 +55,13 @@ export async function sendMessageCall(message) {
 				_id, rid, msg, tmid
 			}
 		});
-		await changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
-	} catch (e) {
-		await changeMessageStatus(_id, tmid, messagesStatus.ERROR);
+		if (result.success) {
+			return changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
+		}
+	} catch {
+		// do nothing
 	}
+	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 }
 
 export default async function(rid, msg, tmid, user) {
@@ -137,7 +144,7 @@ export default async function(rid, msg, tmid, user) {
 					_id: user.id || '1',
 					username: user.username
 				};
-				if (tmid) {
+				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
 					m.tlm = messageDate;
 					m.tmsg = tMessageRecord.msg;

@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
-import { logout as logoutAction, loginRequest as loginRequestAction } from '../../actions/login';
+import { logout as logoutAction } from '../../actions/login';
+import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
@@ -81,7 +82,7 @@ class SettingsView extends React.Component {
 		theme: PropTypes.string,
 		split: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
-		loginRequest: PropTypes.func,
+		selectServerRequest: PropTypes.func,
 		token: PropTypes.string,
 		appStart: PropTypes.func
 	}
@@ -106,11 +107,11 @@ class SettingsView extends React.Component {
 			callToAction: I18n.t('Clear'),
 			onPress: async() => {
 				const {
-					server: { server }, loginRequest, token, appStart
+					server: { server }, appStart, selectServerRequest
 				} = this.props;
 				await appStart('loading', I18n.t('Clear_cache_loading'));
 				await RocketChat.clearCache({ server });
-				await loginRequest({ resume: token }, true);
+				await selectServerRequest(server, null, true);
 			}
 		});
 	}
@@ -348,7 +349,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
-	loginRequest: (...params) => dispatch(loginRequestAction(...params)),
+	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	appStart: (...params) => dispatch(appStartAction(...params))
 });
