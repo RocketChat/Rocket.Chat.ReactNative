@@ -256,6 +256,7 @@ const RocketChat = {
 	},
 
 	async shareExtensionInit(server) {
+		database.setServersDB();
 		database.setShareDB(server);
 
 		if (this.shareSDK) {
