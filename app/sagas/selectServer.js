@@ -70,6 +70,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		let user = null;
 		if (userId) {
 			try {
+				// search credentials on database
 				const userRecord = yield userCollections.find(userId);
 				user = {
 					id: userRecord.id,
@@ -81,12 +82,21 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					roles: userRecord.roles
 				};
 			} catch (e) {
+				// search credentials on legacy native credentials
 				// We only run it if not has user on DB
 				const servers = yield RNUserDefaults.objectForKey(SERVERS);
 				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+				if (userCredentials) {
+					user = {
+						token: userCredentials[TOKEN]
+					};
+				} else {
+					// search credentials on shared credentials (Experimental/Official)
+					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+					if (token) {
+						user = { token };
+					}
+				}
 			}
 		}
 
