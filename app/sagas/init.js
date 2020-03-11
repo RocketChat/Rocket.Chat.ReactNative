@@ -17,6 +17,7 @@ import {
 } from '../constants/userDefaults';
 import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
+import databaseCopy from '../lib/database/databaseCopy';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 export const initLocalSettings = function* initLocalSettings() {
@@ -27,11 +28,46 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(toggleCrashReport(allowCrashReport));
 };
 
+// We'll reset roomsUpdatedAt of serversDB
+// after copy the database to the new location
+const resetRoomsUpdateAt = function* resetRoomsUpdateAt() {
+	const serversDB = database.servers;
+	yield serversDB.action(async() => {
+		const serversCollection = serversDB.collections.get('servers');
+		let allServerRecords = await serversCollection.query().fetch();
+
+		// Update
+		allServerRecords = allServerRecords.map(server => server.prepareUpdate((s) => {
+			s.roomsUpdatedAt = null;
+		}));
+
+		try {
+			await serversDB.batch(...allServerRecords);
+		} catch {
+			// do nothing
+		}
+	});
+};
+
 const restore = function* restore() {
 	try {
 		let hasMigration;
+		let wasCopied;
 		if (isIOS) {
 			hasMigration = yield AsyncStorage.getItem('hasMigration');
+			// We'll do a copy of database
+			// this is the flag to do the copy or not
+			wasCopied = yield AsyncStorage.getItem('wasCopied');
+		}
+
+		if (!wasCopied) {
+			yield databaseCopy();
+		}
+
+		database.setServersDB();
+
+		if (!wasCopied) {
+			yield resetRoomsUpdateAt();
 		}
 
 		let { token, server } = yield all({

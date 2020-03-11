@@ -25,23 +25,14 @@ import migrations from './model/migrations';
 
 import { isIOS } from '../../utils/deviceInfo';
 
-const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.ios.chat.rocket') }/` : '';
+const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.chat.rocket.experimental') }/` : '';
 
 if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
 class DB {
-	databases = {
-		serversDB: new Database({
-			adapter: new SQLiteAdapter({
-				dbName: `${ appGroupPath }default.db`,
-				schema: serversSchema
-			}),
-			modelClasses: [Server, User],
-			actionsEnabled: true
-		})
-	}
+	databases = {}
 
 	get active() {
 		return this.databases.shareDB || this.databases.activeDB;
@@ -57,6 +48,17 @@ class DB {
 
 	get servers() {
 		return this.databases.serversDB;
+	}
+
+	setServersDB() {
+		this.databases.serversDB = new Database({
+			adapter: new SQLiteAdapter({
+				dbName: `${ appGroupPath }default.db`,
+				schema: serversSchema
+			}),
+			modelClasses: [Server, User],
+			actionsEnabled: true
+		});
 	}
 
 	setShareDB(database = '') {
