@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1EC6ACAF22CB9FC300A41C61"
-               BuildableName = "ShareRocketChatRN.appex"
+               BuildableName = "Rocket.Chat Whitelabel.appex"
                BlueprintName = "ShareRocketChatRN"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "RocketChatRN.app"
+               BuildableName = "Rocket.Chat Whitelabel.app"
                BlueprintName = "RocketChatRN"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
@@ -42,25 +42,24 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1EC6ACAF22CB9FC300A41C61"
-            BuildableName = "ShareRocketChatRN.appex"
+            BuildableName = "Rocket.Chat Whitelabel.appex"
             BlueprintName = "ShareRocketChatRN"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = ""
       selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
+      askForAppToLaunch = "Yes"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
@@ -76,13 +75,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RocketChatRN.app"
+            BuildableName = "Rocket.Chat Whitelabel.app"
             BlueprintName = "RocketChatRN"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -96,7 +93,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RocketChatRN.app"
+            BuildableName = "Rocket.Chat Whitelabel.app"
             BlueprintName = "RocketChatRN"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
