@@ -397,7 +397,7 @@ PODS:
     - React
   - RNScreens (2.0.0-alpha.3):
     - React
-  - RNUserDefaults (1.7.0):
+  - RNUserDefaults (1.8.1):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -786,7 +786,7 @@ SPEC CHECKSUMS:
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
-  RNUserDefaults: af71a1cdf1c12baf8210bc741c65f5faba9826d6
+  RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   SDWebImage: 4d5c027c935438f341ed33dbac53ff9f479922ca
