@@ -60,5 +60,7 @@
 	<array>
 		<string>custom.ttf</string>
 	</array>
+	<key>AppGroup</key>
+	<string>group.ios.chat.rocket</string>
 </dict>
 </plist>
