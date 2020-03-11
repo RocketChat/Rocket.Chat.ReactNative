@@ -233,7 +233,7 @@ class RoomInfoView extends React.Component {
 
 		return (
 			<Avatar
-				text={room.name || roomUser.username}
+				text={room.prid ? room.topic : room.name || roomUser.username}
 				size={100}
 				style={styles.avatar}
 				type={this.t}

@@ -1109,7 +1109,7 @@ const RocketChat = {
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
-		return room.prid ? room.fname : room.name;
+		return room.prid ? room.topic : room.name;
 	},
 
 	findOrCreateInvite({ rid, days, maxUses }) {

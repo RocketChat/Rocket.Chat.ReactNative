@@ -424,14 +424,16 @@ class RoomActionsView extends React.Component {
 
 	renderRoomInfo = ({ item }) => {
 		const { room, member } = this.state;
-		const { name, t, topic } = room;
+		const {
+			name, t, topic, prid
+		} = room;
 		const { baseUrl, user, theme } = this.props;
 
 		return (
 			this.renderTouchableItem([
 				<Avatar
 					key='avatar'
-					text={name}
+					text={prid ? topic : name}
 					size={50}
 					style={styles.avatar}
 					type={t}
