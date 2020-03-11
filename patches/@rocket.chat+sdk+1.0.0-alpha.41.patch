@@ -20,7 +20,7 @@ index 5b7dc21..49f1af5 100644
          set: function (obj) {
              this._headers = obj;
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
-index e3510c7..e3216cc 100644
+index 8f04ff1..8e38b7b 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 @@ -110,6 +110,7 @@ tiny_events_1.EventEmitter.prototype.removeAllListeners = function (event) {
@@ -40,6 +40,24 @@ index e3510c7..e3216cc 100644
                                  connection.onerror = reject;
                              }
                              catch (err) {
+@@ -222,6 +223,8 @@ var Socket = /** @class */ (function (_super) {
+             _this.logger.debug("[ddp] messages received: " + e.data);
+             if (data.collection)
+                 _this.emit(data.collection, data);
++            if (data.id)
++                _this.emit(data.id, data);
+             if (data.msg)
+                 _this.emit(data.msg, data);
+         };
+@@ -272,7 +275,7 @@ var Socket = /** @class */ (function (_super) {
+                                         return [2 /*return*/];
+                                 }
+                             });
+-                        }); }, this.config.reopen);
++                        }); }, 0);
+                         return [2 /*return*/];
+                 }
+             });
 diff --git a/node_modules/@rocket.chat/sdk/lib/settings.d.ts b/node_modules/@rocket.chat/sdk/lib/settings.d.ts
 index 99eb828..8c99307 100644
 --- a/node_modules/@rocket.chat/sdk/lib/settings.d.ts
