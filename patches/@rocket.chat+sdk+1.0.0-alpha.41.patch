@@ -20,7 +20,7 @@ index 5b7dc21..49f1af5 100644
          set: function (obj) {
              this._headers = obj;
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
-index 8f04ff1..8e38b7b 100644
+index 8f04ff1..c676cb2 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.js
 @@ -110,6 +110,7 @@ tiny_events_1.EventEmitter.prototype.removeAllListeners = function (event) {
@@ -49,7 +49,15 @@ index 8f04ff1..8e38b7b 100644
              if (data.msg)
                  _this.emit(data.msg, data);
          };
-@@ -272,7 +275,7 @@ var Socket = /** @class */ (function (_super) {
+@@ -256,7 +259,6 @@ var Socket = /** @class */ (function (_super) {
+                     case 0:
+                         if (this.openTimeout)
+                             return [2 /*return*/];
+-                        return [4 /*yield*/, this.close()];
+                     case 1:
+                         _a.sent();
+                         this.openTimeout = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+@@ -272,7 +274,7 @@ var Socket = /** @class */ (function (_super) {
                                          return [2 /*return*/];
                                  }
                              });
