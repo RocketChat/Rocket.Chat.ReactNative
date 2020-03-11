@@ -60,6 +60,8 @@ const handleOpen = function* handleOpen({ params }) {
 		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
+	database.setServersDB();
+
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host && user) {
