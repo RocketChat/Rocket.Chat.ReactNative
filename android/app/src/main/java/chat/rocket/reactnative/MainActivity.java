@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.whitelabel;
 
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;

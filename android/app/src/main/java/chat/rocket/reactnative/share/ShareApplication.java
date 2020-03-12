@@ -1,6 +1,6 @@
-package chat.rocket.reactnative.share;
+package chat.rocket.whitelabel.share;
 
-import chat.rocket.reactnative.BuildConfig;
+import chat.rocket.whitelabel.BuildConfig;
 
 import chat.rocket.SharePackage;
 
