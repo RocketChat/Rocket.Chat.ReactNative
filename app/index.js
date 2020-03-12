@@ -493,7 +493,7 @@ class CustomModalStack extends React.Component {
 			</View>
 		);
 
-		if (isAndroid) {
+		if (isAndroid && !pageSheet) {
 			content = (
 				<ScrollView overScrollMode='never'>
 					{content}
