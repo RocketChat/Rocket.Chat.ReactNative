@@ -135,11 +135,12 @@ class MessageActions extends React.Component {
 	async setPermissions() {
 		try {
 			const { room } = this.props;
-			const permissions = ['edit-message', 'delete-message', 'force-delete-message'];
+			const permissions = ['edit-message', 'delete-message', 'force-delete-message', 'delete-own-message'];
 			const result = await RocketChat.hasPermission(permissions, room.rid);
 			this.hasEditPermission = result[permissions[0]];
 			this.hasDeletePermission = result[permissions[1]];
 			this.hasForceDeletePermission = result[permissions[2]];
+			this.hasDeleteOwnMsgPermission = result[permissions[3]];
 		} catch (e) {
 			log(e);
 		}
@@ -208,7 +209,7 @@ class MessageActions extends React.Component {
 		}
 		const deleteOwn = this.isOwn(props);
 		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
-		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn) || this.hasForceDeletePermission)) {
+		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn && this.hasDeleteOwnMsgPermission) || this.hasForceDeletePermission)) {
 			return false;
 		}
 		if (this.hasForceDeletePermission) {
