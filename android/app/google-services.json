@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "801394514609",
+    "firebase_url": "https://chat-rocket-whitelabel-test.firebaseio.com",
+    "project_id": "chat-rocket-whitelabel-test",
+    "storage_bucket": "chat-rocket-whitelabel-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801394514609:android:bb5a71e917cc8a88f6e090",
+        "android_client_info": {
+          "package_name": "chat.rocket.whitelabel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801394514609-36rajcmuqk8njmcq79tcabach65ntgju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNkXTGoTRv0zr1IjJfnWNXz0u3uuYyODQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801394514609-36rajcmuqk8njmcq79tcabach65ntgju.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "801394514609-gt4hc9opbqk8uba8marfij0jjp8c4qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.whitelabel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
