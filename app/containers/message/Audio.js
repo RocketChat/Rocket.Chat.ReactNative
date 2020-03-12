@@ -181,6 +181,7 @@ class Audio extends React.Component {
 						onEnd={this.onEnd}
 						paused={paused}
 						repeat={false}
+						ignoreSilentSwitch='ignore'
 					/>
 					<Button paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
