@@ -1000,6 +1000,31 @@ const RocketChat = {
 			searchText
 		});
 	},
+	toggleOwner(roomId, user, owner, t) {
+		// RC 1.0
+		if (owner) {
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, user });
+		}
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, user });
+	},
+	toggleLeader(roomId, user, leader, t) {
+		// RC 1.0
+		if (leader) {
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, user });
+		}
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, user });
+	},
+	toggleModerator(roomId, user, moderator, t) {
+		// RC 1.0
+		if (moderator) {
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, user });
+		}
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, user });
+	},
+	removeUser(roomId, user, t) {
+		// RC 1.0
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, user });
+	},
 	toggleFollowMessage(mid, follow) {
 		// RC 1.0
 		if (follow) {

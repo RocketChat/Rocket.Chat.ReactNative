@@ -25,12 +25,13 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import { showConfirmationAlert } from '../../utils/info';
 
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const toggleStatus = navigation.getParam('toggleStatus', () => {});
+		const toggleStatus = navigation.getParam('toggleStatus', () => { });
 		const allUsers = navigation.getParam('allUsers');
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
@@ -61,7 +62,6 @@ class RoomMembersView extends React.Component {
 		super(props);
 		this.mounted = false;
 		this.CANCEL_INDEX = 0;
-		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
 		const room = props.navigation.getParam('room');
@@ -90,13 +90,17 @@ class RoomMembersView extends React.Component {
 	}
 
 	async componentDidMount() {
+		await this.setPermissions();
 		this.mounted = true;
 		this.fetchMembers();
 
 		const { navigation } = this.props;
-		const { rid } = navigation.state.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
-		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
+		this.SET_OWNER_INDEX = this.actionSheetOptions.length - 1;
+		this.SET_LEADER_INDEX = this.actionSheetOptions.length - 1;
+		this.SET_MODERATOR_INDEX = this.actionSheetOptions.length - 1;
+		this.MUTE_INDEX = this.actionSheetOptions.length - 1;
+		this.REMOVE_USER_INDEX = this.actionSheetOptions.length - 1;
 	}
 
 	componentWillUnmount() {
@@ -134,16 +138,71 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	async setPermissions() {
+		try {
+			const { navigation } = this.props;
+			const { rid } = navigation.state.params;
+			const permissions = ['set-owner', 'set-leader', 'set-moderator', 'remove-user', 'mute-user'];
+			const result = await RocketChat.hasPermission(permissions, rid);
+			this.setOwnerPermission = result[permissions[0]];
+			this.setLeaderPermission = result[permissions[1]];
+			this.setModeratorPermission = result[permissions[2]];
+			this.removeUserPermission = result[permissions[3]];
+			this.muteUserPermission = result[permissions[4]];
+		} catch (e) {
+			log(e);
+		}
+		Promise.resolve();
+	}
+
 	onLongPressUser = (user) => {
-		if (!this.permissions['mute-user']) {
-			return;
+		if (!this.muteUserPermission) {
+			return false;
 		}
 		const { room } = this.state;
-		const { muted } = room;
-
+		this.isLeader = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'leader');
+		this.isOwner = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
+		this.isModerator = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'moderator');
 		this.actionSheetOptions = [I18n.t('Cancel')];
+
+		// setOwner
+		if (this.setOwnerPermission) {
+			if (this.isOwner) {
+				this.actionSheetOptions.push(I18n.t('Remove_As_Owner'));
+			} else {
+				this.actionSheetOptions.push(I18n.t('Set_As_Owner'));
+			}
+		} else {
+			return false;
+		}
+		// setLeader
+		if (this.setLeaderPermission) {
+			if (this.isLeader) {
+				this.actionSheetOptions.push(I18n.t('Remove_As_Leader'));
+			} else {
+				this.actionSheetOptions.push(I18n.t('Set_As_Leader'));
+			}
+		} else {
+			return false;
+		}
+		// setModerator
+		if (this.setModeratorPermission) {
+			if (this.isModerator) {
+				this.actionSheetOptions.push(I18n.t('Remove_As_Moderator'));
+			} else {
+				this.actionSheetOptions.push(I18n.t('Set_As_Moderator'));
+			}
+		} else {
+			return false;
+		}
+		// remove User
+		if (this.removeUserPermission) {
+			this.actionSheetOptions.push(I18n.t('Remove_user'));
+		}
+		const { muted } = room;
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
+		// mute User
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));
 		} else {
@@ -219,15 +278,83 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	handleActionPress = (actionIndex) => {
-		switch (actionIndex) {
-			case this.MUTE_INDEX:
-				this.handleMute();
-				break;
-			default:
-				break;
+	setLeader = async() => {
+		const { rid, userLongPressed } = this.state;
+		const room = await RocketChat.getRoom(rid);
+		try {
+			await RocketChat.toggleLeader(rid, userLongPressed, !room.roles.find('leader'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('leader') ? I18n.t('Set_As_Leader') : I18n.t('Remove_As_Leader') }) });
+		} catch (e) {
+			log(e);
 		}
 	}
+
+	setModerator = async() => {
+		const { rid, userLongPressed } = this.state;
+		const room = await RocketChat.getRoom(rid);
+		try {
+			await RocketChat.toggleModerator(rid, userLongPressed, !room.roles.find('moderator'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('moderator') ? I18n.t('Set_As_Moderator') : I18n.t('Remove_As_Moderator') }) });
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	setOwner = async() => {
+		const { rid, userLongPressed } = this.state;
+		const room = await RocketChat.getRoom(rid);
+		try {
+			await RocketChat.toggleOwner(rid, userLongPressed, !room.roles.find('owner'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('owner') ? I18n.t('Set_As_Owner') : I18n.t('Remove_As_Owner') }) });
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	removeUser = () => {
+		showConfirmationAlert({
+			message: I18n.t('User_will_be_removed_from_the_room'),
+			callToAction: I18n.t('Remove_user'),
+			onPress: async() => {
+				const { rid, userLongPressed } = this.state;
+				const room = await RocketChat.getRoom(rid);
+				try {
+					await RocketChat.removeUser(rid, userLongPressed, room.t);
+					EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_removed') });
+					let { members } = this.state;
+					members = members.filter(m => m.username !== userLongPressed.username);
+					this.setState({ members });
+				} catch (e) {
+					log(e);
+				}
+			}
+		});
+	}
+
+	handleActionPress = (actionIndex) => {
+		if (actionIndex) {
+			switch (actionIndex) {
+				case this.SET_OWNER_INDEX:
+					this.setOwner();
+					break;
+				case this.SET_LEADER_INDEX:
+					this.setLeader();
+					break;
+				case this.SET_MODERATOR_INDEX:
+					this.setModerator();
+					break;
+				case this.MUTE_INDEX:
+					this.handleMute();
+					break;
+				case this.REMOVE_USER_INDEX:
+					this.removeUser();
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
 
 	renderSearchBar = () => (
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
