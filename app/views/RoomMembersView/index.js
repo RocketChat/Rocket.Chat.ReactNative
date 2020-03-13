@@ -282,7 +282,7 @@ class RoomMembersView extends React.Component {
 		const { rid, userLongPressed } = this.state;
 		const room = await RocketChat.getRoom(rid);
 		try {
-			await RocketChat.toggleLeader(rid, userLongPressed, !room.roles.find('leader'), room.t);
+			await RocketChat.toggleLeader(rid, userLongPressed._id, !room.roles.find('leader'), room.t);
 			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('leader') ? I18n.t('Set_As_Leader') : I18n.t('Remove_As_Leader') }) });
 		} catch (e) {
 			log(e);
@@ -293,7 +293,7 @@ class RoomMembersView extends React.Component {
 		const { rid, userLongPressed } = this.state;
 		const room = await RocketChat.getRoom(rid);
 		try {
-			await RocketChat.toggleModerator(rid, userLongPressed, !room.roles.find('moderator'), room.t);
+			await RocketChat.toggleModerator(rid, userLongPressed._id, !room.roles.find('moderator'), room.t);
 			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('moderator') ? I18n.t('Set_As_Moderator') : I18n.t('Remove_As_Moderator') }) });
 		} catch (e) {
 			log(e);
@@ -304,7 +304,7 @@ class RoomMembersView extends React.Component {
 		const { rid, userLongPressed } = this.state;
 		const room = await RocketChat.getRoom(rid);
 		try {
-			await RocketChat.toggleOwner(rid, userLongPressed, !room.roles.find('owner'), room.t);
+			await RocketChat.toggleOwner(rid, userLongPressed._id, !room.roles.find('owner'), room.t);
 			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('owner') ? I18n.t('Set_As_Owner') : I18n.t('Remove_As_Owner') }) });
 		} catch (e) {
 			log(e);
@@ -319,7 +319,7 @@ class RoomMembersView extends React.Component {
 				const { rid, userLongPressed } = this.state;
 				const room = await RocketChat.getRoom(rid);
 				try {
-					await RocketChat.removeUser(rid, userLongPressed, room.t);
+					await RocketChat.removeUser(rid, userLongPressed._id, room.t);
 					EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_removed') });
 					let { members } = this.state;
 					members = members.filter(m => m.username !== userLongPressed.username);

@@ -1000,30 +1000,30 @@ const RocketChat = {
 			searchText
 		});
 	},
-	toggleOwner(roomId, user, owner, t) {
+	toggleOwner(roomId, userId, owner, t) {
 		// RC 1.0
 		if (owner) {
-			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, user });
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
 		}
-		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, user });
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
 	},
-	toggleLeader(roomId, user, leader, t) {
+	toggleLeader(roomId, userId, leader, t) {
 		// RC 1.0
 		if (leader) {
-			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, user });
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
 		}
-		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, user });
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
 	},
-	toggleModerator(roomId, user, moderator, t) {
+	toggleModerator(roomId, userId, moderator, t) {
 		// RC 1.0
 		if (moderator) {
-			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, user });
+			return this.sdk.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
 		}
-		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, user });
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
 	},
-	removeUser(roomId, user, t) {
+	removeUser(roomId, userId, t) {
 		// RC 1.0
-		return this.sdk.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, user });
+		return this.sdk.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
 	},
 	toggleFollowMessage(mid, follow) {
 		// RC 1.0
