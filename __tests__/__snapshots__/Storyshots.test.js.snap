@@ -10831,6 +10831,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -11012,6 +11013,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -11721,6 +11723,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -11800,6 +11803,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -11879,6 +11883,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -11958,6 +11963,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
@@ -12037,6 +12043,7 @@ exports[`Storyshots Message list message 1`] = `
                     <Text
                       style={
                         Object {
+                          "color": "#ffffff",
                           "fontSize": 13,
                           "marginLeft": 7,
                         }
