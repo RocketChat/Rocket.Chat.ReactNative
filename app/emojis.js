@@ -1401,7 +1401,7 @@ export const emojisByCategory = {
 		'flag_mp',
 		'flag_sx',
 		'flag_ss',
-		'flag_tc',
+		'flag_tc'
 	]
 };
 
