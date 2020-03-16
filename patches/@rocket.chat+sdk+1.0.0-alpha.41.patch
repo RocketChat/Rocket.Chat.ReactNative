@@ -1,7 +1,7 @@
-diff --git a/node_modules/@rocket.chat/sdk/.DS_Store b/node_modules/@rocket.chat/sdk/.DS_Store
-new file mode 100644
-index 0000000..5008ddf
-Binary files /dev/null and b/node_modules/@rocket.chat/sdk/.DS_Store differ
+diff --git a/node_modules/@rocket.chat/sdk/utils/livechat.d.ts b/node_modules/@rocket.chat/sdk/.DS_Store
+similarity index 100%
+rename from node_modules/@rocket.chat/sdk/utils/livechat.d.ts
+rename to node_modules/@rocket.chat/sdk/.DS_Store
 diff --git a/node_modules/@rocket.chat/sdk/clients/Bot.d.ts b/node_modules/@rocket.chat/sdk/clients/Bot.d.ts
 deleted file mode 100644
 index b56675d..0000000
@@ -6499,10 +6499,10 @@ index 0000000..ace207a
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 new file mode 100644
-index 0000000..2a2b10d
+index 0000000..c5a3cd8
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -0,0 +1,601 @@
+@@ -0,0 +1,600 @@
 +/**
 + * @module DDPDriver
 + * Handles low-level websocket ddp connections and event subscriptions
@@ -6591,12 +6591,15 @@ index 0000000..2a2b10d
 +  open = (ms: number = this.config.reopen) => {
 +    return new Promise(async (resolve, reject) => {
 +      let connection: WebSocket
-+      this.lastPing = Date.now()
-+      await this.close()
++
 +      if (this.reopenInterval) clearInterval(this.reopenInterval)
 +      this.reopenInterval = setInterval(() => {
-+        return !this.connected && this.reopen()
++        return !this.alive() && this.reopen()
 +      }, ms)
++
++      await this.close()
++      this.lastPing = Date.now()
++
 +      try {
 +        connection = new WebSocket(this.host)
 +        connection.onerror = reject
@@ -6659,7 +6662,6 @@ index 0000000..2a2b10d
 +    this.logger.debug(`[ddp] messages received: ${e.data}`)
 +    if (data.collection) this.emit(data.collection, data)
 +    if (data.msg) this.emit(data.msg, data)
-+    if (data.id) this.emit(data.id, data)
 +  }
 +
 +  /** Disconnect the DDP from server and clear all subscriptions. */
@@ -6682,14 +6684,11 @@ index 0000000..2a2b10d
 +  reopen = async () => {
 +    if (this.openTimeout) return
 +
-+    try {
-+      this.openTimeout = 1;
-+      await this.open();
-+    } catch (err) {
-+      this.logger.error(`[ddp] Reopen error: ${err.message}`)
-+    }
-+
-+    delete this.openTimeout
++    this.openTimeout = setTimeout(async () => {
++      delete this.openTimeout
++      await this.open()
++        .catch((err) => this.logger.error(`[ddp] Reopen error: ${err.message}`))
++    }, this.config.reopen)
 +  }
 +
 +  /** Check if websocket connected and ready. */
@@ -7777,7 +7776,7 @@ index f5fa928..0000000
 \ No newline at end of file
 diff --git a/node_modules/@rocket.chat/sdk/lib/log.ts b/node_modules/@rocket.chat/sdk/lib/log.ts
 new file mode 100644
-index 0000000..bc3cd96
+index 0000000..3366e55
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/log.ts
 @@ -0,0 +1,44 @@
@@ -7797,13 +7796,13 @@ index 0000000..bc3cd96
 +    // console.log(...args)
 +  }
 +  warning (...args: any[]) {
-+    // console.warn(...args)
++    // console.log(...args)
 +  }
 +  warn (...args: any[]) { // legacy method
 +    return this.warning(...args)
 +  }
 +  error (...args: any[]) {
-+    // console.error(...args)
++    // console.log(...args)
 +  }
 +}
 +
@@ -8366,8 +8365,7 @@ index 0000000..8d75cc2
 +}
 diff --git a/node_modules/@rocket.chat/sdk/utils/.DS_Store b/node_modules/@rocket.chat/sdk/utils/.DS_Store
 new file mode 100644
-index 0000000..d93b6c0
-Binary files /dev/null and b/node_modules/@rocket.chat/sdk/utils/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/@rocket.chat/sdk/utils/config.d.ts b/node_modules/@rocket.chat/sdk/utils/config.d.ts
 deleted file mode 100644
 index 5937d1f..0000000
@@ -8627,10 +8625,9 @@ index 65c6964..0000000
 @@ -1 +0,0 @@
 -{"version":3,"file":"livechat.js","sourceRoot":"","sources":["../../src/utils/livechat.ts"],"names":[],"mappings":"","sourcesContent":[""]}
 \ No newline at end of file
-diff --git a/node_modules/@rocket.chat/sdk/utils/livechat.d.ts b/node_modules/@rocket.chat/sdk/utils/livechat.ts
-similarity index 100%
-rename from node_modules/@rocket.chat/sdk/utils/livechat.d.ts
-rename to node_modules/@rocket.chat/sdk/utils/livechat.ts
+diff --git a/node_modules/@rocket.chat/sdk/utils/livechat.ts b/node_modules/@rocket.chat/sdk/utils/livechat.ts
+new file mode 100644
+index 0000000..e69de29
 diff --git a/node_modules/@rocket.chat/sdk/utils/livechat/agents.d.ts b/node_modules/@rocket.chat/sdk/utils/livechat/agents.d.ts
 deleted file mode 100644
 index cb0ff5c..0000000
