@@ -3753,7 +3753,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -4015,7 +4015,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -4277,7 +4277,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -4517,7 +4517,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -4947,7 +4947,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -5326,7 +5326,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -5584,7 +5584,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -5864,7 +5864,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -6126,7 +6126,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -6398,7 +6398,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -6731,7 +6731,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -7201,7 +7201,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -7586,7 +7586,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -8289,7 +8289,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -8551,7 +8551,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -8979,7 +8979,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -9246,7 +9246,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -9513,7 +9513,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -9908,7 +9908,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -10175,7 +10175,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -10474,7 +10474,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -10795,7 +10795,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -11057,7 +11057,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -11659,7 +11659,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -12702,7 +12702,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -12942,7 +12942,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -13182,7 +13182,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -13422,7 +13422,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -13684,7 +13684,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -13986,7 +13986,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -14366,7 +14366,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -14651,7 +14651,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -14913,7 +14913,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -15230,7 +15230,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -15601,7 +15601,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -15915,7 +15915,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -16182,7 +16182,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -17294,7 +17294,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -17655,7 +17655,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -18070,7 +18070,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -18405,7 +18405,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -18806,7 +18806,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -19141,7 +19141,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -19564,7 +19564,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -19796,7 +19796,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -20028,7 +20028,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -20260,7 +20260,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -20492,7 +20492,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -20724,7 +20724,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -20956,7 +20956,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -21120,7 +21120,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -21460,7 +21460,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -21609,7 +21609,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -21758,7 +21758,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22010,7 +22010,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22159,7 +22159,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22308,7 +22308,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22457,7 +22457,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22621,7 +22621,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -22955,7 +22955,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -23291,7 +23291,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -23627,7 +23627,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -23985,7 +23985,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -24364,7 +24364,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -24859,7 +24859,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -25492,7 +25492,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -26208,7 +26208,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -26553,7 +26553,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -26798,7 +26798,7 @@ exports[`Storyshots Message list message 1`] = `
                     Object {
                       "headers": Object {},
                       "priority": "high",
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                     }
                   }
                   style={
@@ -27308,7 +27308,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -27576,7 +27576,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -27843,7 +27843,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28012,7 +28012,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28181,7 +28181,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28350,7 +28350,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28519,7 +28519,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28688,7 +28688,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -28857,7 +28857,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29026,7 +29026,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29195,7 +29195,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29364,7 +29364,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29533,7 +29533,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29702,7 +29702,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -29871,7 +29871,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -30040,7 +30040,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -30209,7 +30209,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -30378,7 +30378,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -30640,7 +30640,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -31220,7 +31220,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -31665,7 +31665,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -32122,7 +32122,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -32371,7 +32371,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -32740,7 +32740,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
@@ -33034,7 +33034,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": Object {},
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&width=50&height=50&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50&&rc_token=79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz&rc_uid=y8bd77ptZswPj3EW8",
                       }
                     }
                     style={
