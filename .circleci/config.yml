@@ -300,8 +300,8 @@ jobs:
             set +e
             nvm install 8
 
-      - run:	
-          name: Install NPM modules	
+      - run:
+          name: Install NPM modules
           command: |
             yarn
 
