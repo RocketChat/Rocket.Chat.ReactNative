@@ -96,11 +96,6 @@ class RoomMembersView extends React.Component {
 
 		const { navigation } = this.props;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
-		this.SET_OWNER_INDEX = this.actionSheetOptions.length - 1;
-		this.SET_LEADER_INDEX = this.actionSheetOptions.length - 1;
-		this.SET_MODERATOR_INDEX = this.actionSheetOptions.length - 1;
-		this.MUTE_INDEX = this.actionSheetOptions.length - 1;
-		this.REMOVE_USER_INDEX = this.actionSheetOptions.length - 1;
 	}
 
 	componentWillUnmount() {
@@ -160,38 +155,41 @@ class RoomMembersView extends React.Component {
 			return false;
 		}
 		const { room } = this.state;
-		this.isLeader = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'leader');
-		this.isOwner = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
-		this.isModerator = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'moderator');
+		const isLeader = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'leader');
+		const isOwner = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
+		const isModerator = room && room.roles && room.roles.length && !!room.roles.find(role => role === 'moderator');
 		this.actionSheetOptions = [I18n.t('Cancel')];
 
 		// setOwner
 		if (this.setOwnerPermission) {
-			if (this.isOwner) {
+			if (isOwner) {
 				this.actionSheetOptions.push(I18n.t('Remove_As_Owner'));
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Owner'));
 			}
+			this.SET_OWNER_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
 		// setLeader
 		if (this.setLeaderPermission) {
-			if (this.isLeader) {
+			if (isLeader) {
 				this.actionSheetOptions.push(I18n.t('Remove_As_Leader'));
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Leader'));
 			}
+			this.SET_LEADER_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
 		// setModerator
 		if (this.setModeratorPermission) {
-			if (this.isModerator) {
+			if (isModerator) {
 				this.actionSheetOptions.push(I18n.t('Remove_As_Moderator'));
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Moderator'));
 			}
+			this.SET_MODERATOR_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
@@ -208,6 +206,8 @@ class RoomMembersView extends React.Component {
 		} else {
 			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
+		this.REMOVE_USER_INDEX = this.actionSheetOptions.length - 1;
+		this.MUTE_USER_INDEX = this.actionSheetOptions.length - 1;
 		this.setState({ userLongPressed: user });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		this.showActionSheet();
