@@ -47,7 +47,8 @@ export default StyleSheet.create({
 	},
 	categoryEmoji: {
 		backgroundColor: 'transparent',
-		textAlign: 'center'
+		textAlign: 'center',
+		color: '#ffffff'
 	},
 	customCategoryEmoji: {
 		margin: 8
