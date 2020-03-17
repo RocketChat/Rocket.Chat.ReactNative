@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	itemContainer: {
-		height: 50,
 		flexDirection: 'row'
 	},
 	listContainer: {
@@ -62,12 +61,12 @@ const Item = React.memo(({
 	item, user, baseUrl, getCustomEmoji, theme
 }) => {
 	const count = item.usernames.length;
-	let usernames = item.usernames.slice(0, 3)
+	let usernames = item.usernames
 		.map(username => (username === user.username ? I18n.t('you') : username)).join(', ');
 	if (count > 3) {
-		usernames = `${ usernames } ${ I18n.t('and_more') } ${ count - 3 }`;
+		usernames = usernames.split(',')
 	} else {
-		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${ I18n.t('and') }`);
+		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${ I18n.t('and') }`).split();
 	}
 	return (
 		<View style={styles.itemContainer}>
@@ -84,7 +83,9 @@ const Item = React.memo(({
 				<Text style={[styles.reactCount, { color: themes[theme].buttonText }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={[styles.peopleReacted, { color: themes[theme].buttonText }]}>{ usernames }</Text>
+                <FlatList
+				data={usernames}
+				renderItem={({item})=><Text style={[styles.peopleReacted, { color: themes[theme].buttonText }]}>{ item }</Text>}/>
 			</View>
 		</View>
 	);
