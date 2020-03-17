@@ -207,9 +207,12 @@ class MessageActions extends React.Component {
 		if (props.tmid && props.tmid === props.message.id) {
 			return false;
 		}
-		const deleteOwn = this.isOwn(props);
+		const deleteOwn = this.hasDeletePermission || this.isOwn(props) && this.hasDeleteOwnMsgPermission;
 		const { Message_AllowDeleting: isDeleteAllowed, Message_AllowDeleting_BlockDeleteInMinutes } = this.props;
-		if (!(this.hasDeletePermission || (isDeleteAllowed && deleteOwn && this.hasDeleteOwnMsgPermission) || this.hasForceDeletePermission)) {
+		if (!isDeleteAllowed) {
+			return false;
+		}
+		if (!(this.hasDeletePermission) && !(deleteOwn)) {
 			return false;
 		}
 		if (this.hasForceDeletePermission) {
