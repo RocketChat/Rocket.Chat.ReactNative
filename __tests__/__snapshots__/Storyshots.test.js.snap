@@ -3792,33 +3792,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -4036,33 +4054,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -4280,33 +4316,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -4502,33 +4556,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -4914,33 +4986,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -5275,51 +5365,69 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    Diego Mello
                     <Text
+                      numberOfLines={1}
                       style={
                         Array [
                           Object {
                             "backgroundColor": "transparent",
                             "fontFamily": "System",
-                            "fontSize": 14,
-                            "fontWeight": "400",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
                           },
                           Object {
-                            "color": "#9ca2a8",
+                            "color": "#0d0e12",
                           },
                         ]
                       }
                     >
-                       @
-                      diego.mello
+                      Diego Mello
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "color": "#9ca2a8",
+                            },
+                          ]
+                        }
+                      >
+                         @
+                        diego.mello
+                      </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -5515,51 +5623,69 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    Diego Mello
                     <Text
+                      numberOfLines={1}
                       style={
                         Array [
                           Object {
                             "backgroundColor": "transparent",
                             "fontFamily": "System",
-                            "fontSize": 14,
-                            "fontWeight": "400",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
                           },
                           Object {
-                            "color": "#9ca2a8",
+                            "color": "#0d0e12",
                           },
                         ]
                       }
                     >
-                       @
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      Diego Mello
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "color": "#9ca2a8",
+                            },
+                          ]
+                        }
+                      >
+                         @
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -5777,33 +5903,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -6021,33 +6165,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -6275,33 +6437,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -6590,33 +6770,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -7042,33 +7240,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -7409,33 +7625,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -7832,33 +8066,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -8076,33 +8328,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    Diego Mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      Diego Mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -8320,33 +8590,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -8730,33 +9018,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -8979,33 +9285,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -9228,33 +9552,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -9605,33 +9947,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -9854,33 +10214,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -10135,33 +10513,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -10438,33 +10834,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -10682,33 +11096,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -11266,33 +11698,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -12291,33 +12741,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    rocket.cat
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      rocket.cat
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -12513,33 +12981,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -12735,33 +13221,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    rocket.cat
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      rocket.cat
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -12957,33 +13461,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -13201,33 +13723,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    rocket.cat
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      rocket.cat
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -13485,33 +14025,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -13847,33 +14405,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    rocket.cat
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      rocket.cat
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -14114,33 +14690,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -14358,33 +14952,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -14657,33 +15269,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -15010,33 +15640,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -15306,33 +15954,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -15555,33 +16221,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -16649,33 +17333,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -16992,33 +17694,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -17389,33 +18109,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -17706,33 +18444,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -18089,33 +18845,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -18406,33 +19180,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -20367,33 +21159,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -21850,33 +22660,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -22166,33 +22994,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -22484,33 +23330,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -22802,33 +23666,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -23142,33 +24024,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -23503,33 +24403,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -23980,33 +24898,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -24595,33 +25531,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -25293,33 +26247,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -25620,33 +26592,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -25847,33 +26837,51 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <View
+                accessible={true}
+                focusable={true}
+                isTVSelectable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
+                    "opacity": 1,
                   }
                 }
               >
-                <Text
-                  numberOfLines={1}
+                <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "lineHeight": 22,
-                      },
-                      Object {
-                        "color": "#0d0e12",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
                   }
                 >
-                  diego.mello
-                </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
               </View>
               <Text
                 style={
@@ -26030,33 +27038,51 @@ exports[`Storyshots Message list message 1`] = `
               }
             >
               <View
+                accessible={true}
+                focusable={true}
+                isTVSelectable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
+                    "opacity": 1,
                   }
                 }
               >
-                <Text
-                  numberOfLines={1}
+                <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "lineHeight": 22,
-                      },
-                      Object {
-                        "color": "#0d0e12",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
                   }
                 >
-                  diego.mello
-                </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
               </View>
               <Text
                 style={
@@ -26321,33 +27347,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -26571,33 +27615,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -29355,33 +30417,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -29599,33 +30679,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -30161,33 +31259,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -30588,33 +31704,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -31027,33 +32161,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -31258,33 +32410,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -31609,33 +32779,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
@@ -31885,33 +33073,51 @@ exports[`Storyshots Message list message 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
+                      "opacity": 1,
                     }
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
                     }
                   >
-                    diego.mello
-                  </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "500",
+                            "lineHeight": 22,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                        ]
+                      }
+                    >
+                      diego.mello
+                    </Text>
+                  </View>
                 </View>
                 <Text
                   style={
