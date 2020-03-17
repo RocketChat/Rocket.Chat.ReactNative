@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { InteractionManager } from 'react-native';
 
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
@@ -9,6 +10,11 @@ import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
 import { notificationReceived } from '../../../actions/notification';
+import { handlePayloadUserInteraction } from '../actions';
+import buildMessage from '../helpers/buildMessage';
+import RocketChat from '../../rocketchat';
+import EventEmmiter from '../../../utils/events';
+import { deleteRoomFinish } from '../../../actions/room';
 
 const removeListener = listener => listener.stop();
 
@@ -16,8 +22,12 @@ let connectedListener;
 let disconnectedListener;
 let streamListener;
 let subServer;
+let subQueue = {};
+let subTimer = null;
+let roomQueue = {};
+let roomTimer = null;
+const WINDOW_TIME = 500;
 
-// TODO: batch execution
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
 		const db = database.active;
@@ -128,38 +138,70 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				}
 			}
 
-			// if (tmp.lastMessage) {
-			// 	const lastMessage = buildMessage(tmp.lastMessage);
-			// 	const messagesCollection = db.collections.get('messages');
-			// 	let messageRecord;
-			// 	try {
-			// 		messageRecord = await messagesCollection.find(lastMessage._id);
-			// 	} catch (error) {
-			// 		// Do nothing
-			// 	}
+			if (tmp.lastMessage) {
+				const lastMessage = buildMessage(tmp.lastMessage);
+				const messagesCollection = db.collections.get('messages');
+				let messageRecord;
+				try {
+					messageRecord = await messagesCollection.find(lastMessage._id);
+				} catch (error) {
+					// Do nothing
+				}
 
-			// 	if (messageRecord) {
-			// 		batch.push(
-			// 			messageRecord.prepareUpdate(() => {
-			// 				Object.assign(messageRecord, lastMessage);
-			// 			})
-			// 		);
-			// 	} else {
-			// 		batch.push(
-			// 			messagesCollection.prepareCreate((m) => {
-			// 				m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-			// 				m.subscription.id = lastMessage.rid;
-			// 				return Object.assign(m, lastMessage);
-			// 			})
-			// 		);
-			// 	}
-			// }
+				if (messageRecord) {
+					batch.push(
+						messageRecord.prepareUpdate(() => {
+							Object.assign(messageRecord, lastMessage);
+						})
+					);
+				} else {
+					batch.push(
+						messagesCollection.prepareCreate((m) => {
+							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+							m.subscription.id = lastMessage.rid;
+							return Object.assign(m, lastMessage);
+						})
+					);
+				}
+			}
 
 			await db.batch(...batch);
 		});
 	} catch (e) {
 		log(e);
 	}
+};
+
+const debouncedUpdateSub = (subscription) => {
+	if (!subTimer) {
+		subTimer = setTimeout(() => {
+			const subBatch = subQueue;
+			subQueue = {};
+			subTimer = null;
+			Object.keys(subBatch).forEach((key) => {
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(subBatch[key]);
+				});
+			});
+		}, WINDOW_TIME);
+	}
+	subQueue[subscription.rid] = subscription;
+};
+
+const debouncedUpdateRoom = (room) => {
+	if (!roomTimer) {
+		roomTimer = setTimeout(() => {
+			const roomBatch = roomQueue;
+			roomQueue = {};
+			roomTimer = null;
+			Object.keys(roomBatch).forEach((key) => {
+				InteractionManager.runAfterInteractions(() => {
+					createOrUpdateSubscription(null, roomBatch[key]);
+				});
+			});
+		}, WINDOW_TIME);
+	}
+	roomQueue[room._id] = room;
 };
 
 export default function subscribeRooms() {
@@ -198,16 +240,25 @@ export default function subscribeRooms() {
 							...threadMessagesToDelete
 						);
 					});
+
+					const roomState = store.getState().room;
+					// Delete and remove events come from this stream
+					// Here we identify which one was triggered
+					if (data.rid === roomState.rid && roomState.isDeleting) {
+						store.dispatch(deleteRoomFinish());
+					} else {
+						EventEmmiter.emit('ROOM_REMOVED', { rid: data.rid });
+					}
 				} catch (e) {
 					log(e);
 				}
 			} else {
-				await createOrUpdateSubscription(data);
+				debouncedUpdateSub(data);
 			}
 		}
 		if (/rooms/.test(ev)) {
 			if (type === 'updated' || type === 'inserted') {
-				await createOrUpdateSubscription(null, data);
+				debouncedUpdateRoom(data);
 			}
 		}
 		if (/message/.test(ev)) {
@@ -217,6 +268,7 @@ export default function subscribeRooms() {
 				_id,
 				rid: args.rid,
 				msg: args.msg,
+				blocks: args.blocks,
 				ts: new Date(),
 				_updatedAt: new Date(),
 				status: messagesStatus.SENT,
@@ -240,7 +292,19 @@ export default function subscribeRooms() {
 		}
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
+			try {
+				const { payload: { rid } } = notification;
+				const room = await RocketChat.getRoom(rid);
+				notification.title = RocketChat.getRoomTitle(room);
+				notification.avatar = RocketChat.getRoomAvatar(room);
+			} catch (e) {
+				// do nothing
+			}
 			store.dispatch(notificationReceived(notification));
+		}
+		if (/uiInteraction/.test(ev)) {
+			const { type: eventType, ...args } = type;
+			handlePayloadUserInteraction(eventType, args);
 		}
 	});
 
@@ -256,6 +320,16 @@ export default function subscribeRooms() {
 		if (streamListener) {
 			streamListener.then(removeListener);
 			streamListener = false;
+		}
+		subQueue = {};
+		roomQueue = {};
+		if (subTimer) {
+			clearTimeout(subTimer);
+			subTimer = false;
+		}
+		if (roomTimer) {
+			clearTimeout(roomTimer);
+			roomTimer = false;
 		}
 	};
 

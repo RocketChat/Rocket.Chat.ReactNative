@@ -1,8 +1,8 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import database from '../database';
 import log from '../../utils/log';
-import { headers } from '../../utils/fetch';
 
 const uploadQueue = {};
 
@@ -28,13 +28,9 @@ export async function cancelUpload(item) {
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.collections.get('servers');
-			const serverInfo = await serversCollection.find(server);
-			const { id: Site_Url } = serverInfo;
 			const { id, token } = user;
 
-			const uploadUrl = `${ Site_Url }/api/v1/rooms.upload/${ rid }`;
+			const uploadUrl = `${ server }/api/v1/rooms.upload/${ rid }`;
 
 			const xhr = new XMLHttpRequest();
 			const formData = new FormData();
@@ -79,7 +75,10 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
-			xhr.setRequestHeader('User-Agent', headers['User-Agent']);
+			const { customHeaders } = RocketChatSettings;
+			Object.keys(customHeaders).forEach((key) => {
+				xhr.setRequestHeader(key, customHeaders[key]);
+			});
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {

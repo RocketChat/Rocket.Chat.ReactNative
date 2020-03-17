@@ -25,6 +25,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { getUserSelector } from '../../selectors/login';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -253,6 +254,11 @@ class ThreadMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	onThreadPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -307,6 +313,7 @@ class ThreadMessagesView extends React.Component {
 				useRealName={useRealName}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				showAttachment={this.showAttachment}
 			/>
 		);
 	}
@@ -342,12 +349,8 @@ class ThreadMessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });

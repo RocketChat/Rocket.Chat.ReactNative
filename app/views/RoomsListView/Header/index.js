@@ -38,6 +38,7 @@ class RoomsListHeaderView extends PureComponent {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
 	handleCommands = ({ event }) => {
 		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
@@ -79,7 +80,7 @@ class RoomsListHeaderView extends PureComponent {
 				connecting={connecting}
 				isFetching={isFetching}
 				onPress={this.onPress}
-				onSearchChangeText={text => this.onSearchChangeText(text)}
+				onSearchChangeText={this.onSearchChangeText}
 			/>
 		);
 	}

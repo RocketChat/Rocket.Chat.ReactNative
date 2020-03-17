@@ -1,1 +1,1 @@
-../../../FirebaseCore/Firebase/Core/Private/FIRErrorCode.h
+../../../FirebaseCore/FirebaseCore/Sources/Private/FIRErrorCode.h

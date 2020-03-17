@@ -17,13 +17,14 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: navigation.state.params.name,
+		title: I18n.t(navigation.state.params.name),
 		...themedHeader(screenProps.theme)
 	});
 
@@ -73,6 +74,14 @@ class MessagesView extends React.Component {
 		return false;
 	}
 
+	navToRoomInfo = (navParam) => {
+		const { navigation, user } = this.props;
+		if (navParam.rid === user.id) {
+			return;
+		}
+		navigation.navigate('RoomInfoView', navParam);
+	}
+
 	defineMessagesViewContent = (name) => {
 		const { messages } = this.state;
 		const { user, baseUrl, theme } = this.props;
@@ -87,7 +96,8 @@ class MessagesView extends React.Component {
 			isHeader: true,
 			attachments: item.attachments || [],
 			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji
+			getCustomEmoji: this.getCustomEmoji,
+			navToRoomInfo: this.navToRoomInfo
 		});
 
 		return ({
@@ -306,12 +316,8 @@ class MessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	customEmojis: state.customEmojis
 });
 
