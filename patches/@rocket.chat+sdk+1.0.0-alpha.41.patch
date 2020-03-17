@@ -2931,10 +2931,10 @@ index 0000000..f8a7d0e
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.ts b/node_modules/@rocket.chat/sdk/lib/api/api.ts
 new file mode 100644
-index 0000000..b195d2b
+index 0000000..17c2c2b
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/api/api.ts
-@@ -0,0 +1,287 @@
+@@ -0,0 +1,289 @@
 +import { logger as Logger } from '../log'
 +
 +import {
@@ -2948,6 +2948,7 @@ index 0000000..b195d2b
 +import { Message } from '../message'
 +
 +import { EventEmitter } from 'tiny-events'
++import * as settings from '../settings';
 +
 +/** Check for existing login */
 +// export function loggedIn () {
@@ -3036,6 +3037,7 @@ index 0000000..b195d2b
 +  get headers (): any {
 +    return {
 +      'Content-Type': 'application/json',
++      ...settings.customHeaders,
 +      ...this._headers
 +    }
 +  }
@@ -6500,10 +6502,10 @@ index 0000000..ace207a
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 new file mode 100644
-index 0000000..f5957a5
+index 0000000..ddd1fb4
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -0,0 +1,625 @@
+@@ -0,0 +1,620 @@
 +/**
 + * @module DDPDriver
 + * Handles low-level websocket ddp connections and event subscriptions
@@ -6514,6 +6516,8 @@ index 0000000..f5957a5
 +
 +import { logger as Logger } from '../log'
 +import { ISocket, IDriver } from './index'
++
++import * as settings from '../settings';
 +
 +EventEmitter.prototype.removeAllListeners = function (event?: string | any): any {
 +  if (event) {
@@ -6560,13 +6564,6 @@ index 0000000..f5957a5
 +  session?: string
 +  logger: ILogger
 +
-+  opened = 0
-+  on_opened = 0
-+  on_close = 0
-+  closed = 0
-+  reopened = 0
-+  try_reopen = 0
-+
 +  /** Create a websocket handler */
 +  constructor (
 +    options?: ISocketOptions | any,
@@ -6609,7 +6606,7 @@ index 0000000..f5957a5
 +      }, ms)
 +
 +      try {
-+        connection = new WebSocket(this.host)
++        connection = new WebSocket(this.host, null, { headers: settings.customHeaders })
 +        connection.onerror = reject
 +      } catch (err) {
 +        this.logger.error(err)
@@ -8157,10 +8154,10 @@ index 0000000..0c44915
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/settings.ts b/node_modules/@rocket.chat/sdk/lib/settings.ts
 new file mode 100644
-index 0000000..a0461e8
+index 0000000..d23b011
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/settings.ts
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,38 @@
 +
 +// Login settings - LDAP needs to be explicitly enabled
 +export let username = process.env.ROCKETCHAT_USER || 'bot'
@@ -8196,6 +8193,9 @@ index 0000000..a0461e8
 +export let token = process.env.LIVECHAT_TOKEN || ''
 +export let rid = process.env.LIVECHAT_ROOM || ''
 +export let department = process.env.LIVECHAT_DEPARTMENT || ''
++
++// Headers settings
++export let customHeaders = {};
 diff --git a/node_modules/@rocket.chat/sdk/lib/util.d.ts b/node_modules/@rocket.chat/sdk/lib/util.d.ts
 deleted file mode 100644
 index 3bd5295..0000000
