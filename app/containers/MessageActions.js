@@ -294,6 +294,7 @@ class MessageActions extends React.Component {
 		const { message } = this.props;
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
+			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 		} catch (e) {
 			log(e);
 		}
