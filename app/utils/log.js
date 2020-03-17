@@ -8,9 +8,23 @@ export const { analytics } = firebase;
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 
+let metadata = {};
+
+export const logServerVersion = (serverVersion) => {
+	metadata = {
+		serverVersion
+	};
+};
+
 export default (e) => {
 	if (e instanceof Error && !__DEV__) {
-		bugsnag.notify(e);
+		bugsnag.notify(e, (report) => {
+			report.metadata = {
+				details: {
+					...metadata
+				}
+			};
+		});
 	} else {
 		console.log(e);
 	}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
+import equal from 'deep-equal';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -10,7 +11,14 @@ import { themes } from '../../constants/colors';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
-		return <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{getInfoMessage({ ...props })}</Text>;
+		const infoMessage = getInfoMessage({ ...props });
+		return (
+			<Text
+				style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
+				accessibilityLabel={infoMessage}
+			>{infoMessage}
+			</Text>
+		);
 	}
 
 	let content = null;
@@ -29,9 +37,9 @@ const Content = React.memo((props) => {
 				preview={props.tmid && !props.isThreadRoom}
 				channels={props.channels}
 				mentions={props.mentions}
-				useMarkdown={props.useMarkdown && (!props.tmid || props.isThreadRoom)}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
+				useRealName={props.useRealName}
 				theme={props.theme}
 			/>
 		);
@@ -42,7 +50,24 @@ const Content = React.memo((props) => {
 			{content}
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.isTemp === nextProps.isTemp && prevProps.msg === nextProps.msg && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => {
+	if (prevProps.isTemp !== nextProps.isTemp) {
+		return false;
+	}
+	if (prevProps.msg !== nextProps.msg) {
+		return false;
+	}
+	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
+	if (!equal(prevProps.mentions, nextProps.mentions)) {
+		return false;
+	}
+	if (!equal(prevProps.channels, nextProps.channels)) {
+		return false;
+	}
+	return true;
+});
 
 Content.propTypes = {
 	isTemp: PropTypes.bool,
@@ -52,13 +77,13 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
-	useMarkdown: PropTypes.bool,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	useRealName: PropTypes.bool
 };
 Content.displayName = 'MessageContent';
 

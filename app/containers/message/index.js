@@ -28,7 +28,6 @@ class MessageContainer extends React.Component {
 		isReadReceiptEnabled: PropTypes.bool,
 		isThreadRoom: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		useMarkdown: PropTypes.bool,
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
@@ -227,7 +226,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -272,7 +271,6 @@ class MessageContainer extends React.Component {
 				tcount={tcount}
 				tlm={tlm}
 				tmsg={tmsg}
-				useMarkdown={useMarkdown}
 				fetchThreadName={fetchThreadName}
 				mentions={mentions}
 				channels={channels}

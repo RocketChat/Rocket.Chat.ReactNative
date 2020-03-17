@@ -54,6 +54,7 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Markdown from '../../containers/markdown';
+import Navigation from '../../lib/Navigation';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -68,7 +69,7 @@ const stateAttrsUpdate = [
 	'reacting',
 	'showAnnouncementModal'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -146,7 +147,6 @@ class RoomView extends React.Component {
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
 		screenProps: PropTypes.object,
-		useMarkdown: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
@@ -230,6 +230,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
+		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -312,6 +313,7 @@ class RoomView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
+		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -366,14 +368,21 @@ class RoomView extends React.Component {
 			const subCollection = await db.collections.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
-			navigation.setParams({ room });
+			if (!this.tmid) {
+				navigation.setParams({
+					name: this.getRoomTitle(room),
+					avatar: room.name,
+					t: room.t
+				});
+			}
 			this.observeRoom(room);
 		} catch (error) {
 			if (this.t !== 'd') {
 				console.log('Room not found');
 				this.internalSetState({ joined: false });
-			} else if (this.rid) {
-				// We navigate to RoomView before the DM is inserted to the local db
+			}
+			if (this.rid) {
+				// We navigate to RoomView before the Room is inserted to the local db
 				// So we retry just to make sure we have the right content
 				this.retryFindCount = this.retryFindCount + 1 || 1;
 				if (this.retryFindCount <= 3) {
@@ -543,6 +552,14 @@ class RoomView extends React.Component {
 	handleConnected = () => {
 		this.init();
 		EventEmitter.removeListener('connected', this.handleConnected);
+	}
+
+	handleRoomRemoved = ({ rid }) => {
+		const { room } = this.state;
+		if (rid === this.rid) {
+			Navigation.navigate('RoomsListView');
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
+		}
 	}
 
 	internalSetState = (...args) => {
@@ -721,7 +738,7 @@ class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, useMarkdown, Message_Read_Receipt_Enabled, theme
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -731,7 +748,7 @@ class RoomView extends React.Component {
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
 		} else {
 			showUnreadSeparator = lastOpen
-				&& moment(item.ts).isAfter(lastOpen)
+				&& moment(item.ts).isSameOrAfter(lastOpen)
 				&& moment(previousItem.ts).isBefore(lastOpen);
 			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
@@ -762,7 +779,6 @@ class RoomView extends React.Component {
 				Message_GroupingPeriod={Message_GroupingPeriod}
 				timeFormat={Message_TimeFormat}
 				useRealName={useRealName}
-				useMarkdown={useMarkdown}
 				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
 				autoTranslateLanguage={room.autoTranslateLanguage}
@@ -800,7 +816,6 @@ class RoomView extends React.Component {
 			return (
 				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
 					<Markdown
-						useMarkdown
 						msg={room.announcement}
 						theme={theme}
 						numberOfLines={1}
@@ -829,7 +844,6 @@ class RoomView extends React.Component {
 					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
 					<ScrollView style={styles.modalScrollView}>
 						<Markdown
-							useMarkdown
 							msg={room.announcement}
 							theme={theme}
 						/>
@@ -851,7 +865,7 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -865,7 +879,7 @@ class RoomView extends React.Component {
 		if (this.isReadOnly || room.archived) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]} accessibilityLabel={I18n.t('This_room_is_read_only')}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
@@ -893,6 +907,7 @@ class RoomView extends React.Component {
 				replyWithMention={replyWithMention}
 				replyCancel={this.onReplyCancel}
 				getCustomEmoji={this.getCustomEmoji}
+				navigation={navigation}
 			/>
 		);
 	};
@@ -946,7 +961,7 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t } = room;
+		const { rid, t, sysMes } = room;
 
 		return (
 			<SafeAreaView
@@ -970,7 +985,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
-					hideSystemMessages={Hide_System_Messages}
+					hideSystemMessages={sysMes || Hide_System_Messages}
 				/>
 				{this.renderAnnouncementModal()}
 				{this.renderFooter()}
@@ -1002,7 +1017,6 @@ const mapStateToProps = state => ({
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	useMarkdown: state.markdown.useMarkdown,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,

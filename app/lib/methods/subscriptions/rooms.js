@@ -13,6 +13,8 @@ import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
+import EventEmmiter from '../../../utils/events';
+import { deleteRoomFinish } from '../../../actions/room';
 
 const removeListener = listener => listener.stop();
 
@@ -238,6 +240,15 @@ export default function subscribeRooms() {
 							...threadMessagesToDelete
 						);
 					});
+
+					const roomState = store.getState().room;
+					// Delete and remove events come from this stream
+					// Here we identify which one was triggered
+					if (data.rid === roomState.rid && roomState.isDeleting) {
+						store.dispatch(deleteRoomFinish());
+					} else {
+						EventEmmiter.emit('ROOM_REMOVED', { rid: data.rid });
+					}
 				} catch (e) {
 					log(e);
 				}
@@ -283,10 +294,9 @@ export default function subscribeRooms() {
 			const [notification] = ddpMessage.fields.args;
 			try {
 				const { payload: { rid } } = notification;
-				const subCollection = db.collections.get('subscriptions');
-				const sub = await subCollection.find(rid);
-				notification.title = RocketChat.getRoomTitle(sub);
-				notification.avatar = RocketChat.getRoomAvatar(sub);
+				const room = await RocketChat.getRoom(rid);
+				notification.title = RocketChat.getRoomTitle(room);
+				notification.avatar = RocketChat.getRoomAvatar(room);
 			} catch (e) {
 				// do nothing
 			}

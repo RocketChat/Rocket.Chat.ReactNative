@@ -35,7 +35,13 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
-		return yield put(loginSuccess(result));
+		if (!result.username) {
+			yield put(serverFinishAdd());
+			yield put(setUser(result));
+			yield put(appStart('setUsername'));
+		} else {
+			yield put(loginSuccess(result));
+		}
 	} catch (e) {
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
 			yield put(logout(true));
@@ -65,8 +71,9 @@ const registerPushToken = function* registerPushToken() {
 	yield RocketChat.registerPushToken();
 };
 
-const fetchUserPresence = function* fetchUserPresence() {
-	yield RocketChat.getUserPresence();
+const fetchUsersPresence = function* fetchUserPresence() {
+	yield RocketChat.getUsersPresence();
+	yield RocketChat.subscribeUsersPresence();
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -81,7 +88,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchRoles);
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
-		yield fork(fetchUserPresence);
+		yield fork(fetchUsersPresence);
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
@@ -117,9 +124,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		EventEmitter.emit('connected');
 
 		let currentRoot;
-		if (!user.username) {
-			yield put(appStart('setUsername'));
-		} else if (adding) {
+		if (adding) {
 			yield put(serverFinishAdd());
 			yield put(appStart('inside'));
 		} else {
@@ -143,7 +148,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
-	yield put(appStart('loading'));
+	yield put(appStart('loading', I18n.t('Logging_out')));
 	const server = yield select(getServer);
 	if (server) {
 		try {
@@ -162,10 +167,12 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 				// see if there're other logged in servers and selects first one
 				if (servers.length > 0) {
-					const newServer = servers[0].id;
-					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-					if (token) {
-						return yield put(selectServerRequest(newServer));
+					for (let i = 0; i < servers.length; i += 1) {
+						const newServer = servers[i].id;
+						const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+						if (token) {
+							return yield put(selectServerRequest(newServer));
+						}
 					}
 				}
 				// if there's no servers, go outside
@@ -193,7 +200,6 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		// yield take(types.SERVER.SELECT_REQUEST);
 		yield race({
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)

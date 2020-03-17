@@ -6,10 +6,9 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
 
 const formatMsg = ({
-	lastMessage, type, showLastMessage, username
+	lastMessage, type, showLastMessage, username, useRealName
 }) => {
 	if (!showLastMessage) {
 		return '';
@@ -33,27 +32,25 @@ const formatMsg = ({
 	if (isLastMessageSentByMe) {
 		prefix = I18n.t('You_colon');
 	}	else if (type !== 'd') {
-		prefix = `${ lastMessage.u.username }: `;
+		const { u: { name } } = lastMessage;
+		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
 	}
 
-	let msg = `${ prefix }${ lastMessage.msg.replace(/[\n\t\r]/igm, '') }`;
-	if (msg) {
-		msg = shortnameToUnicode(msg);
-	}
-	return msg;
+	return `${ prefix }${ lastMessage.msg }`;
 };
 
 const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert, theme
+	lastMessage, type, showLastMessage, username, alert, useRealName, theme
 }) => (
 	<Markdown
 		msg={formatMsg({
-			lastMessage, type, showLastMessage, username
+			lastMessage, type, showLastMessage, username, useRealName
 		})}
 		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
 		customEmojis={false}
+		useRealName={useRealName}
 		numberOfLines={2}
 		preview
 		theme={theme}
@@ -66,6 +63,7 @@ LastMessage.propTypes = {
 	type: PropTypes.string,
 	showLastMessage: PropTypes.bool,
 	username: PropTypes.string,
+	useRealName: PropTypes.bool,
 	alert: PropTypes.bool
 };
 
