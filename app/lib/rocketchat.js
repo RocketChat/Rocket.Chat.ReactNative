@@ -203,9 +203,7 @@ const RocketChat = {
 			// Use useSsl: false only if server url starts with http://
 			const useSsl = !/http:\/\//.test(server);
 
-			this.sdk = new RocketchatClient({
-				host: server, protocol: 'ddp', useSsl, timeout: 5000
-			});
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 			this.getSettings();
 
 			this.sdk.connect()
