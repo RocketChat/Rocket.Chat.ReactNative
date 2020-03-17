@@ -406,7 +406,7 @@ class ShareListView extends React.Component {
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={this.renderHeader}
+				// ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={!searching && this.renderBorderBottom}
 				ListHeaderComponentStyle={!searching ? { ...styles.borderBottom, borderColor: themes[theme].separatorColor } : {}}
 				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
