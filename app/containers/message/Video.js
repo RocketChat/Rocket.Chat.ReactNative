@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const Video = React.memo(({
-	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, theme
+	file, baseUrl, user, showAttachment, getCustomEmoji, theme
 }) => {
 	if (!baseUrl) {
 		return null;
@@ -54,7 +54,7 @@ const Video = React.memo(({
 					color={themes[theme].buttonText}
 				/>
 			</Touchable>
-			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
+			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 		</>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
@@ -63,7 +63,6 @@ Video.propTypes = {
 	file: PropTypes.object,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	useMarkdown: PropTypes.bool,
 	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string

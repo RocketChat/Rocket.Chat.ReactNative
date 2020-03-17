@@ -24,6 +24,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
+import { getUserSelector } from '../../selectors/login';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -62,7 +63,8 @@ class RoomActionsView extends React.Component {
 			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
-			canAddUser: false
+			canAddUser: false,
+			canInviteUser: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -108,6 +110,7 @@ class RoomActionsView extends React.Component {
 		this.setState({ canAutoTranslate });
 
 		this.canAddUser();
+		this.canInviteUser();
 	}
 
 	componentWillUnmount() {
@@ -126,7 +129,6 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	// TODO: move to componentDidMount
 	// eslint-disable-next-line react/sort-comp
 	canAddUser = async() => {
 		const { room, joined } = this.state;
@@ -150,8 +152,15 @@ class RoomActionsView extends React.Component {
 		this.setState({ canAddUser: canAdd });
 	}
 
-	// TODO: move to componentDidMount
-	// eslint-disable-next-line react/sort-comp
+	canInviteUser = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission(['create-invite-links'], rid);
+
+		const canInviteUser = permissions && permissions['create-invite-links'];
+		this.setState({ canInviteUser });
+	}
+
 	canViewMembers = async() => {
 		const { room } = this.state;
 		const { rid, t, broadcast } = room;
@@ -172,7 +181,7 @@ class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, membersCount, canViewMembers, canAddUser, joined, canAutoTranslate
+			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
@@ -302,15 +311,26 @@ class RoomActionsView extends React.Component {
 
 			if (canAddUser) {
 				actions.push({
-					icon: 'user-plus',
-					name: I18n.t('Add_user'),
+					icon: 'plus',
+					name: I18n.t('Add_users'),
 					route: 'SelectedUsersView',
 					params: {
 						nextActionID: 'ADD_USER',
 						rid,
-						title: I18n.t('Add_user')
+						title: I18n.t('Add_users')
 					},
 					testID: 'room-actions-add-user'
+				});
+			}
+			if (canInviteUser) {
+				actions.push({
+					icon: 'user-plus',
+					name: I18n.t('Invite_users'),
+					route: 'InviteUsersView',
+					params: {
+						rid
+					},
+					testID: 'room-actions-invite-user'
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];
@@ -330,7 +350,10 @@ class RoomActionsView extends React.Component {
 					renderItem: this.renderItem
 				});
 			}
+		} else if (t === 'l') {
+			sections[2].data = [notificationsAction];
 		}
+
 		return sections;
 	}
 
@@ -370,6 +393,9 @@ class RoomActionsView extends React.Component {
 	handleShare = () => {
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
+		if (!permalink) {
+			return;
+		}
 		Share.share({
 			message: permalink
 		});
@@ -498,11 +524,8 @@ class RoomActionsView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 

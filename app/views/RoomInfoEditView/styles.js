@@ -63,5 +63,14 @@ export default StyleSheet.create({
 	broadcast: {
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
+	},
+	hideSystemMessages: {
+		alignItems: 'flex-start'
+	},
+	systemMessagesLabel: {
+		textAlign: 'left'
+	},
+	switchMargin: {
+		marginBottom: 16
 	}
 });

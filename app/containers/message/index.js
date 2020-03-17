@@ -16,6 +16,7 @@ class MessageContainer extends React.Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
+		rid: PropTypes.string,
 		timeFormat: PropTypes.string,
 		customThreadTimeFormat: PropTypes.string,
 		style: PropTypes.any,
@@ -27,7 +28,6 @@ class MessageContainer extends React.Component {
 		isReadReceiptEnabled: PropTypes.bool,
 		isThreadRoom: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		useMarkdown: PropTypes.bool,
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
@@ -44,11 +44,25 @@ class MessageContainer extends React.Component {
 		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
+		blockAction: PropTypes.func,
 		theme: PropTypes.string
 	}
 
 	static defaultProps = {
+		getCustomEmoji: () => {},
 		onLongPress: () => {},
+		onReactionPress: () => {},
+		onDiscussionPress: () => {},
+		onThreadPress: () => {},
+		errorActionsShow: () => {},
+		replyBroadcast: () => {},
+		reactionInit: () => {},
+		fetchThreadName: () => {},
+		showAttachment: () => {},
+		onReactionLongPress: () => {},
+		navToRoomInfo: () => {},
+		callJitsi: () => {},
+		blockAction: () => {},
 		archived: false,
 		broadcast: false,
 		theme: 'light'
@@ -212,10 +226,10 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, useMarkdown, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
 		} = this.props;
 		const {
-			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
 		} = item;
 
 		let message = msg;
@@ -229,10 +243,12 @@ class MessageContainer extends React.Component {
 			<Message
 				id={id}
 				msg={message}
+				rid={rid}
 				author={u}
 				ts={ts}
 				type={t}
 				attachments={attachments}
+				blocks={blocks}
 				urls={urls}
 				reactions={reactions}
 				alias={alias}
@@ -255,7 +271,6 @@ class MessageContainer extends React.Component {
 				tcount={tcount}
 				tlm={tlm}
 				tmsg={tmsg}
-				useMarkdown={useMarkdown}
 				fetchThreadName={fetchThreadName}
 				mentions={mentions}
 				channels={channels}
@@ -279,6 +294,7 @@ class MessageContainer extends React.Component {
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				callJitsi={callJitsi}
+				blockAction={blockAction}
 				theme={theme}
 			/>
 		);

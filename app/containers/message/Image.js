@@ -28,7 +28,7 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-const Image = React.memo(({ img, theme }) => (
+export const MessageImage = React.memo(({ img, theme }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
@@ -41,9 +41,9 @@ const Image = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, showAttachment, getCustomEmoji, split, theme
+	file, imageUrl, baseUrl, user, showAttachment, getCustomEmoji, split, theme
 }) => {
-	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}
@@ -54,8 +54,8 @@ const ImageContainer = React.memo(({
 		return (
 			<Button split={split} theme={theme} onPress={onPress}>
 				<View>
-					<Image img={img} theme={theme} />
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
+					<MessageImage img={img} theme={theme} />
+					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>
 			</Button>
 		);
@@ -63,16 +63,16 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button split={split} theme={theme} onPress={onPress}>
-			<Image img={img} theme={theme} />
+			<MessageImage img={img} theme={theme} />
 		</Button>
 	);
 }, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
+	imageUrl: PropTypes.string,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	useMarkdown: PropTypes.bool,
 	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
@@ -80,7 +80,7 @@ ImageContainer.propTypes = {
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
-Image.propTypes = {
+MessageImage.propTypes = {
 	img: PropTypes.string,
 	theme: PropTypes.string
 };

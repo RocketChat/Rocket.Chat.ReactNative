@@ -22,6 +22,8 @@ import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { Review } from '../utils/review';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	container: {
@@ -201,13 +203,12 @@ class CreateChannelView extends React.Component {
 		create({
 			name: channelName, users, type, readOnly, broadcast
 		});
+
+		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {
-		const { users, removeUser } = this.props;
-		if (users.length === 1) {
-			return;
-		}
+		const { removeUser } = this.props;
 		removeUser(user);
 	}
 
@@ -281,6 +282,7 @@ class CreateChannelView extends React.Component {
 				username={item.name}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${ item.name }`}
+				icon='check'
 				baseUrl={baseUrl}
 				user={user}
 				theme={theme}
@@ -362,16 +364,13 @@ class CreateChannelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
+	baseUrl: state.server.server,
 	error: state.createChannel.error,
 	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,
 	result: state.createChannel.result,
 	users: state.selectedUsers.users,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

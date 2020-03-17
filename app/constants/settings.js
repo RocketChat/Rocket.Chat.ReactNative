@@ -1,9 +1,30 @@
 export default {
+	Accounts_AllowEmailChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowPasswordChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowRealNameChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserAvatarChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUserProfileChange: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowUsernameChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
+	},
+	Accounts_EmailVerification: {
+		type: 'valueAsBoolean'
 	},
 	Accounts_NamePlaceholder: {
 		type: 'valueAsString'
@@ -14,11 +35,23 @@ export default {
 	Accounts_PasswordReset: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_RegistrationForm: {
+		type: 'valueAsString'
+	},
+	Accounts_RegistrationForm_LinkReplacementText: {
+		type: 'valueAsString'
+	},
+	Accounts_ShowFormLogin: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
+	},
+	Hide_System_Messages: {
+		type: 'valueAsArray'
 	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
@@ -31,6 +64,9 @@ export default {
 	},
 	Jitsi_Domain: {
 		type: 'valueAsString'
+	},
+	Jitsi_Enabled_TokenAuth: {
+		type: 'valueAsBoolean'
 	},
 	Jitsi_URL_Room_Prefix: {
 		type: 'valueAsString'
@@ -53,10 +89,16 @@ export default {
 	Message_AllowStarring: {
 		type: 'valueAsBoolean'
 	},
+	Message_AudioRecorderEnabled: {
+		type: 'valueAsBoolean'
+	},
 	Message_GroupingPeriod: {
 		type: 'valueAsNumber'
 	},
 	Message_TimeFormat: {
+		type: 'valueAsString'
+	},
+	Message_TimeAndDateFormat: {
 		type: 'valueAsString'
 	},
 	Site_Name: {
@@ -84,7 +126,7 @@ export default {
 		type: 'valueAsBoolean'
 	},
 	Threads_enabled: {
-		type: null
+		type: 'valueAsBoolean'
 	},
 	FileUpload_MediaTypeWhiteList: {
 		type: 'valueAsString'
