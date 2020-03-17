@@ -5349,10 +5349,10 @@ index 0000000..921b609
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
 new file mode 100644
-index 0000000..b5f09ad
+index 0000000..1987443
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,54 @@
 +import { ISocket, IDriver, Protocols } from '../drivers'
 +import ClientRest from '../api/RocketChat'
 +import { ILogger, ISocketOptions, ICallback, ISubscription, ICredentials } from '../../interfaces'
@@ -5389,6 +5389,7 @@ index 0000000..b5f09ad
 +
 +  async connect (options: ISocketOptions): Promise<any> { return (await this.socket as ISocket).connect(options) }
 +  async disconnect (): Promise<any> { return (await this.socket as ISocket).disconnect() }
++  async tryReopen (): Promise<any> { return (await this.socket as ISocket).tryReopen() }
 +  async onStreamData (event: string, cb: ICallback): Promise<any> { return (await this.socket as ISocket).onStreamData(event, cb) }
 +  async subscribe (topic: string, ...args: any[]): Promise<ISubscription> { return (await this.socket as ISocket).subscribe(topic, ...args) }
 +  async unsubscribe (subscription: ISubscription): Promise<any> { return (await this.socket as ISocket).unsubscribe(subscription) }
@@ -6499,10 +6500,10 @@ index 0000000..ace207a
 +})
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 new file mode 100644
-index 0000000..c5a3cd8
+index 0000000..f5957a5
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -0,0 +1,600 @@
+@@ -0,0 +1,625 @@
 +/**
 + * @module DDPDriver
 + * Handles low-level websocket ddp connections and event subscriptions
@@ -6559,6 +6560,13 @@ index 0000000..c5a3cd8
 +  session?: string
 +  logger: ILogger
 +
++  opened = 0
++  on_opened = 0
++  on_close = 0
++  closed = 0
++  reopened = 0
++  try_reopen = 0
++
 +  /** Create a websocket handler */
 +  constructor (
 +    options?: ISocketOptions | any,
@@ -6592,13 +6600,13 @@ index 0000000..c5a3cd8
 +    return new Promise(async (resolve, reject) => {
 +      let connection: WebSocket
 +
++      await this.close()
++      this.lastPing = Date.now()
++
 +      if (this.reopenInterval) clearInterval(this.reopenInterval)
 +      this.reopenInterval = setInterval(() => {
 +        return !this.alive() && this.reopen()
 +      }, ms)
-+
-+      await this.close()
-+      this.lastPing = Date.now()
 +
 +      try {
 +        connection = new WebSocket(this.host)
@@ -6616,16 +6624,19 @@ index 0000000..c5a3cd8
 +
 +  /** Send handshake message to confirm connection, start pinging. */
 +  onOpen = async (callback: Function) => {
-+    const connected = await this.send({
-+      msg: 'connect',
-+      version: '1',
-+      support: ['1', 'pre2', 'pre1']
-+    })
-+    this.session = connected.session
-+    this.ping().catch((err) => this.logger.error(`[ddp] Unable to ping server: ${err.message}`))
-+    this.emit('open')
-+    if (this.resume) await this.login(this.resume)
-+    return callback(this.connection)
++    try {
++      const connected = await this.send({
++        msg: 'connect',
++        version: '1',
++        support: ['1', 'pre2', 'pre1']
++      })
++      this.session = connected.session
++      this.ping().catch((err) => this.logger.error(`[ddp] Unable to ping server: ${err.message}`))
++      this.emit('open')
++      if (this.resume) await this.login(this.resume)
++      return callback(this.connection)
++    } catch {
++    }
 +  }
 +
 +  /** Emit close event so it can be used for promise resolve in close() */
@@ -6657,11 +6668,13 @@ index 0000000..c5a3cd8
 +    this.lastPing = Date.now()
 +    void this.ping()
 +    const data = (e.data) ? JSON.parse(e.data) : undefined
++  
 +    this.logger.debug(data) // 👈  very useful for debugging missing responses
 +    if (!data) return this.logger.error(`[ddp] JSON parse error: ${e.message}`)
 +    this.logger.debug(`[ddp] messages received: ${e.data}`)
 +    if (data.collection) this.emit(data.collection, data)
 +    if (data.msg) this.emit(data.msg, data)
++    if (data.id) this.emit(data.id, data)
 +  }
 +
 +  /** Disconnect the DDP from server and clear all subscriptions. */
@@ -6687,8 +6700,17 @@ index 0000000..c5a3cd8
 +    this.openTimeout = setTimeout(async () => {
 +      delete this.openTimeout
 +      await this.open()
-+        .catch((err) => this.logger.error(`[ddp] Reopen error: ${err.message}`))
++        .catch((err) => {
++          this.logger.error(`[ddp] Reopen error: ${err.message}`)
++          this.reopen();
++        })
 +    }, this.config.reopen)
++  }
++
++  tryReopen = () => {
++    if (!this.connected) {
++      this.reopen()
++    }
 +  }
 +
 +  /** Check if websocket connected and ready. */
@@ -6778,7 +6800,7 @@ index 0000000..c5a3cd8
 +    const params = this.loginParams(credentials)
 +    this.resume = (await this.call('login', params) as ILoginResult)
 +    await this.subscribeAll()
-+    this.emit('login', this.resume)
++    this.emit('login', this.resume.toString())
 +    return this.resume
 +  }
 +
@@ -6991,6 +7013,10 @@ index 0000000..c5a3cd8
 +    return this.ddp.close()
 +  }
 +
++  tryReopen = () => {
++    return this.ddp.tryReopen()
++  }
++
 +  subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
 +    this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
 +    return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
@@ -7177,10 +7203,10 @@ index ba56af4..0000000
 \ No newline at end of file
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/index.ts b/node_modules/@rocket.chat/sdk/lib/drivers/index.ts
 new file mode 100644
-index 0000000..390accd
+index 0000000..7b142bc
 --- /dev/null
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/index.ts
-@@ -0,0 +1,60 @@
+@@ -0,0 +1,61 @@
 +/**
 + * @module Socket
 + * Provides high-level helpers for DDP connection, method calls, subscriptions.
@@ -7199,6 +7225,7 @@ index 0000000..390accd
 +  logger: ILogger
 +  connect (options: ISocketOptions): Promise<ISocket | IDriver>
 +  disconnect (): Promise<ISocket>
++  tryReopen (): Promise<ISocket>
 +  subscribe (topic: string, ...args: any[]): Promise<ISubscription>
 +  unsubscribe (subscription: ISubscription): Promise<ISocket>
 +  unsubscribeAll (): Promise<ISocket>

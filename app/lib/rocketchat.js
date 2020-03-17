@@ -61,6 +61,11 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	callJitsi,
+	tryReopen() {
+		if (this.sdk) {
+			this.sdk.tryReopen();
+		}
+	},
 	async subscribeRooms() {
 		if (this.roomsSub) {
 			this.roomsSub.stop();

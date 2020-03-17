@@ -319,6 +319,7 @@ class RoomsListView extends React.Component {
 			&& appState !== prevProps.appState
 		) {
 			roomsRequest();
+			RocketChat.tryReopen();
 		}
 	}
 
