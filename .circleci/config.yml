@@ -300,6 +300,11 @@ jobs:
             set +e
             nvm install 8
 
+      - run:	
+          name: Install NPM modules	
+          command: |
+            yarn
+
       - run:
           name: Update Fastlane
           command: |
