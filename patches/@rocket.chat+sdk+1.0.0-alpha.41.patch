@@ -1,0 +1,15 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index ddd1fb4..0efb0ec 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+@@ -66,8 +66,8 @@ export class Socket extends EventEmitter {
+     this.config = {
+       host: options.host || 'http://localhost:3000',
+       useSsl: options.useSsl || false,
+-      reopen: options.reopen || 10000,
+-      ping: options.timeout || 30000
++      reopen: options.reopen || 5000,
++      ping: options.timeout || 15000
+     }
+ 
+     this.host = `${hostToWS(this.config.host, this.config.useSsl)}/websocket`
