@@ -1,6 +1,6 @@
 {
   "name": "RNUserDefaults",
-  "version": "1.7.0",
+  "version": "1.8.1",
   "summary": "Use `UserDefaults` (iOS) with React Native and `SharedPreferences` on AndroidOS.",
   "description": "Use `UserDefaults` (iOS) with React Native and `SharedPreferences` on AndroidOS.",
   "license": "MIT",
