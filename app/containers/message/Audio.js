@@ -149,7 +149,14 @@ class Audio extends React.Component {
 		this.setState({ paused: !paused });
 	}
 
-	onValueChange = value => this.setState({ currentTime: value });
+	onSlidingStart = () => {
+		this.setState({ paused: true });
+	}
+
+	onSlidingComplete = (value) => {
+		this.player.seek(value);
+		this.setState({ paused: false });
+	}
 
 	render() {
 		const {
@@ -178,6 +185,7 @@ class Audio extends React.Component {
 						source={{ uri }}
 						onLoad={this.onLoad}
 						onProgress={this.onProgress}
+						progressUpdateInterval={50.0}
 						onEnd={this.onEnd}
 						paused={paused}
 						repeat={false}
@@ -194,7 +202,8 @@ class Audio extends React.Component {
 						thumbTintColor={isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
-						onValueChange={this.onValueChange}
+						onSlidingStart={this.onSlidingStart}
+						onSlidingComplete={this.onSlidingComplete}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
