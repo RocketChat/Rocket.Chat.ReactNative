@@ -11,7 +11,7 @@ import isEqual from 'lodash/isEqual';
 import semver from 'semver';
 
 import database from '../../lib/database';
-import { deleteRoomInit as deleteRoomInitAction } from '../../actions/room';
+import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
@@ -56,7 +56,7 @@ class RoomInfoEditView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		deleteRoomInit: PropTypes.func,
+		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
 		theme: PropTypes.string
 	};
@@ -253,7 +253,7 @@ class RoomInfoEditView extends React.Component {
 
 	delete = () => {
 		const { room } = this.state;
-		const { deleteRoomInit } = this.props;
+		const { deleteRoom } = this.props;
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
@@ -266,7 +266,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoomInit(room.rid, room.t)
+					onPress: () => deleteRoom(room.rid, room.t)
 				}
 			],
 			{ cancelable: false }
@@ -554,7 +554,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	deleteRoomInit: (rid, t) => dispatch(deleteRoomInitAction(rid, t))
+	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));
