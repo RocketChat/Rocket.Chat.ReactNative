@@ -1,6 +1,6 @@
 {
   "name": "react-native-keyboard-input",
-  "version": "5.3.1",
+  "version": "5.4.1",
   "summary": "React Native Custom Input Controller",
   "license": "MIT",
   "authors": "Leo Natan <lnatan@wix.com>",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/wix/react-native-keyboard-input.git",
-    "tag": "v5.3.1"
+    "tag": "v5.4.1"
   },
   "source_files": "lib/ios/**/*.{h,m}",
   "dependencies": {

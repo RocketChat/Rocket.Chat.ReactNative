@@ -40,6 +40,28 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'settings',
+					columns: [
+						{ name: 'value_as_array', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'sys_mes', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

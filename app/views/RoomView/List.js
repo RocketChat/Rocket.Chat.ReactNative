@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
+import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -27,6 +28,7 @@ class List extends React.Component {
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		listRef: PropTypes.func,
+		hideSystemMessages: PropTypes.array,
 		navigation: PropTypes.object
 	};
 
@@ -64,6 +66,12 @@ class List extends React.Component {
 		const { rid, tmid } = this.props;
 		const db = database.active;
 
+		// handle servers with version < 3.0.0
+		let { hideSystemMessages = [] } = this.props;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+
 		if (tmid) {
 			try {
 				this.thread = await db.collections
@@ -74,12 +82,12 @@ class List extends React.Component {
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(Q.where('rid', tmid))
+				.query(Q.where('rid', tmid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(Q.where('rid', rid))
+				.query(Q.where('rid', rid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
 				.observe();
 		}
 
@@ -102,6 +110,12 @@ class List extends React.Component {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
+	reload = () => {
+		this.unsubscribeMessages();
+		this.init();
+	}
+
 	// this.state.loading works for this.onEndReached and RoomView.init
 	static getDerivedStateFromProps(props, state) {
 		if (props.loading !== state.loading) {
@@ -114,7 +128,7 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end, refreshing } = this.state;
-		const { theme } = this.props;
+		const { hideSystemMessages, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -127,7 +141,17 @@ class List extends React.Component {
 		if (refreshing !== nextState.refreshing) {
 			return true;
 		}
+		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { hideSystemMessages } = this.props;
+		if (!isEqual(hideSystemMessages, prevProps.hideSystemMessages)) {
+			this.reload();
+		}
 	}
 
 	componentWillUnmount() {

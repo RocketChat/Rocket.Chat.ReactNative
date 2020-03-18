@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 10
 	},
+	registerDisabled: {
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter,
+		fontSize: 13
+	},
 	dontHaveAccount: {
 		...sharedStyles.textRegular,
 		fontSize: 13
@@ -61,6 +66,8 @@ class LoginView extends React.Component {
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_PasswordReset: PropTypes.bool,
+		Accounts_RegistrationForm: PropTypes.string,
+		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
 		isFetching: PropTypes.bool,
 		failure: PropTypes.bool,
 		theme: PropTypes.string
@@ -101,7 +108,7 @@ class LoginView extends React.Component {
 			user, password, code, showTOTP
 		} = this.state;
 		const {
-			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, theme
+			isFetching, failure, error, Site_Name, Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
 		} = this.props;
 		if (nextState.user !== user) {
 			return true;
@@ -131,6 +138,12 @@ class LoginView extends React.Component {
 			return true;
 		}
 		if (nextProps.Accounts_PasswordPlaceholder !== Accounts_PasswordPlaceholder) {
+			return true;
+		}
+		if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
+			return true;
+		}
+		if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
 			return true;
 		}
 		if (!equal(nextProps.error, error)) {
@@ -225,7 +238,7 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, isFetching, theme
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme
 		} = this.props;
 		return (
 			<SafeAreaView
@@ -283,15 +296,17 @@ class LoginView extends React.Component {
 						theme={theme}
 					/>
 				)}
-				<View style={styles.bottomContainer}>
-					<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
-					<Text
-						style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
-						onPress={this.register}
-						testID='login-view-register'
-					>{I18n.t('Create_account')}
-					</Text>
-				</View>
+				{Accounts_RegistrationForm === 'Public' ? (
+					<View style={styles.bottomContainer}>
+						<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+						<Text
+							style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+							onPress={this.register}
+							testID='login-view-register'
+						>{I18n.t('Create_account')}
+						</Text>
+					</View>
+				) : (<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>{Accounts_RegistrationForm_LinkReplacementText}</Text>)}
 			</SafeAreaView>
 		);
 	}
@@ -323,6 +338,8 @@ const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
+	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
 });
 

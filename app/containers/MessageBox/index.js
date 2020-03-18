@@ -85,13 +85,15 @@ class MessageBox extends Component {
 		replyWithMention: PropTypes.bool,
 		FileUpload_MediaTypeWhiteList: PropTypes.string,
 		FileUpload_MaxFileSize: PropTypes.number,
+		Message_AudioRecorderEnabled: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		editCancel: PropTypes.func.isRequired,
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
 		theme: PropTypes.string,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -139,7 +141,7 @@ class MessageBox extends Component {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid } = this.props;
+		const { rid, tmid, navigation } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.collections.get('threads');
@@ -177,6 +179,12 @@ class MessageBox extends Component {
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
+
+		this.didFocusListener = navigation.addListener('didFocus', () => {
+			if (this.tracking && this.tracking.resetTracking) {
+				this.tracking.resetTracking();
+			}
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -256,6 +264,9 @@ class MessageBox extends Component {
 		}
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
+		}
+		if (this.didFocusListener && this.didFocusListener.remove) {
+			this.didFocusListener.remove();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -781,7 +792,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -842,6 +853,7 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
+							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showFileActions={this.showFileActions}
 						/>
 					</View>
@@ -864,6 +876,7 @@ class MessageBox extends Component {
 				}}
 			>
 				<KeyboardAccessoryView
+					ref={ref => this.tracking = ref}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
@@ -891,7 +904,8 @@ const mapStateToProps = state => ({
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
 const dispatchToProps = ({

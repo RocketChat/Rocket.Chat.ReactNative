@@ -21,9 +21,9 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import Markdown from '../../containers/markdown';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-const camelize = str => str.replace(/^(.)/, (match, chr) => chr.toUpperCase());
 const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
 	? (
 		<>
@@ -150,14 +150,14 @@ class RoomInfoView extends React.Component {
 
 	goRoom = async() => {
 		const { roomUser } = this.state;
-		const { username: name } = roomUser;
+		const { username } = roomUser;
 		const { navigation } = this.props;
 		try {
-			const result = await RocketChat.createDirectMessage(name);
+			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				await navigation.navigate('RoomsListView');
 				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name, t: 'd' });
+				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
 			}
 		} catch (e) {
 			// do nothing
@@ -168,16 +168,16 @@ class RoomInfoView extends React.Component {
 
 	isDirect = () => this.t === 'd'
 
-	renderItem = (key, room) => {
+	renderItem = ({ label, content }) => {
 		const { theme } = this.props;
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t(camelize(key))}</Text>
-				<Text
-					style={[styles.itemContent, !room[key] && styles.itemContent__empty, { color: themes[theme].auxiliaryText }]}
-					testID={`room-info-view-${ key }`}
-				>{ room[key] ? room[key] : I18n.t(`No_${ key }_provided`) }
-				</Text>
+				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
+				<Markdown
+					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
+					msg={content || `__${ I18n.t('No_label_provided', { label: label.toLowerCase() }) }__`}
+					theme={theme}
+				/>
 			</View>
 		);
 	}
@@ -212,7 +212,7 @@ class RoomInfoView extends React.Component {
 
 	renderTimezone = () => {
 		const { roomUser } = this.state;
-		const { Message_TimeFormat, theme } = this.props;
+		const { Message_TimeFormat } = this.props;
 
 		if (roomUser) {
 			const { utcOffset } = roomUser;
@@ -220,12 +220,10 @@ class RoomInfoView extends React.Component {
 			if (!utcOffset) {
 				return null;
 			}
-			return (
-				<View style={styles.item}>
-					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Timezone')}</Text>
-					<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{moment().utcOffset(utcOffset).format(Message_TimeFormat)} (UTC { utcOffset })</Text>
-				</View>
-			);
+			return this.renderItem({
+				label: I18n.t('Timezone'),
+				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`
+			});
 		}
 		return null;
 	}
@@ -248,16 +246,10 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderBroadcast = () => (
-		<View style={styles.item}>
-			<Text style={styles.itemLabel}>{I18n.t('Broadcast_Channel')}</Text>
-			<Text
-				style={styles.itemContent}
-				testID='room-info-view-broadcast'
-			>{I18n.t('Broadcast_channel_Description')}
-			</Text>
-		</View>
-	)
+	renderBroadcast = () => this.renderItem({
+		label: I18n.t('Broadcast_Channel'),
+		content: I18n.t('Broadcast_channel_Description')
+	});
 
 	renderCustomFields = () => {
 		const { roomUser } = this.state;
@@ -311,11 +303,12 @@ class RoomInfoView extends React.Component {
 
 	renderChannel = () => {
 		const { room } = this.state;
+		const { description, topic, announcement } = room;
 		return (
 			<>
-				{this.renderItem('description', room)}
-				{this.renderItem('topic', room)}
-				{this.renderItem('announcement', room)}
+				{this.renderItem({ label: I18n.t('Description'), content: description })}
+				{this.renderItem({ label: I18n.t('Topic'), content: topic })}
+				{this.renderItem({ label: I18n.t('Announcement'), content: announcement })}
 				{room.broadcast ? this.renderBroadcast() : null}
 			</>
 		);

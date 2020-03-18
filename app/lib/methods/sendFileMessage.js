@@ -1,8 +1,8 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import database from '../database';
 import log from '../../utils/log';
-import { headers } from '../../utils/fetch';
 
 const uploadQueue = {};
 
@@ -75,7 +75,10 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			xhr.setRequestHeader('X-Auth-Token', token);
 			xhr.setRequestHeader('X-User-Id', id);
-			xhr.setRequestHeader('User-Agent', headers['User-Agent']);
+			const { customHeaders } = RocketChatSettings;
+			Object.keys(customHeaders).forEach((key) => {
+				xhr.setRequestHeader(key, customHeaders[key]);
+			});
 
 			xhr.upload.onprogress = async({ total, loaded }) => {
 				try {

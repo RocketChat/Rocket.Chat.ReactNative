@@ -217,6 +217,9 @@ const SettingsStack = createStackNavigator({
 	},
 	ThemeView: {
 		getScreen: () => require('./views/ThemeView').default
+	},
+	DefaultBrowserView: {
+		getScreen: () => require('./views/DefaultBrowserView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -466,7 +469,7 @@ class CustomModalStack extends React.Component {
 			closeModal();
 			return true;
 		}
-		if (state && state.routes[state.index] && state.routes[state.index].routes.length > 1) {
+		if (state && state.routes[state.index] && state.routes[state.index].routes && state.routes[state.index].routes.length > 1) {
 			navigation.goBack();
 		}
 		return false;
@@ -602,9 +605,6 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
-		}
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);

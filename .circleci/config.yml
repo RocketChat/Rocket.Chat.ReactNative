@@ -44,7 +44,7 @@ jobs:
           paths:
             - ./node_modules
 
-  e2e-test:
+  e2e-build:
     macos:
       xcode: "11.2.1"
 
@@ -81,9 +81,71 @@ jobs:
             yarn
 
       - run:
+          name: Rebuild Detox framework cache
+          command: |
+            detox clean-framework-cache
+            detox build-framework-cache
+
+      - run:
           name: Build
           command: |
             detox build --configuration ios.sim.release
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
+
+      - save_cache:
+          name: Save NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+  e2e-test:
+    macos:
+      xcode: "11.2.1"
+
+    environment:
+      BASH_ENV: "~/.nvm/nvm.sh"
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-v1-mac-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install Node 8
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 8
+
+      - run:
+          name: Install appleSimUtils
+          command: |
+            brew update
+            brew tap wix/brew
+            brew install wix/brew/applesimutils
+
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn global add detox-cli
+            yarn
+      
+      - run:
+          name: Rebuild Detox framework cache
+          command: |
+            detox clean-framework-cache
+            detox build-framework-cache
 
       - run:
           name: Test
@@ -95,9 +157,6 @@ jobs:
           key: node-v1-mac-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-
-      - store_artifacts:
-          path: /tmp/screenshots
 
   android-build:
     <<: *defaults
@@ -359,9 +418,12 @@ workflows:
           type: approval
           requires:
             - lint-testunit
-      - e2e-test:
+      - e2e-build:
           requires:
             - e2e-hold
+      - e2e-test:
+          requires:
+            - e2e-build
 
       - ios-build:
           requires:

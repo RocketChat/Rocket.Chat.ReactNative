@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
 	serviceName: {
 		...sharedStyles.textBold
 	},
+	registerDisabled: {
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter,
+		fontSize: 16
+	},
 	servicesTogglerContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -108,6 +113,9 @@ class LoginSignupView extends React.Component {
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
 		CAS_login_url: PropTypes.string,
+		Accounts_ShowFormLogin: PropTypes.bool,
+		Accounts_RegistrationForm: PropTypes.string,
+		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -124,7 +132,7 @@ class LoginSignupView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { collapsed, servicesHeight } = this.state;
 		const {
-			server, Site_Name, services, theme
+			server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
 		} = this.props;
 		if (nextState.collapsed !== collapsed) {
 			return true;
@@ -139,6 +147,15 @@ class LoginSignupView extends React.Component {
 			return true;
 		}
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.Accounts_ShowFormLogin !== Accounts_ShowFormLogin) {
+			return true;
+		}
+		if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
+			return true;
+		}
+		if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
 			return true;
 		}
 		if (!equal(nextProps.services, services)) {
@@ -333,10 +350,12 @@ class LoginSignupView extends React.Component {
 
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
-		const { services, theme } = this.props;
+		const {
+			services, theme, Accounts_ShowFormLogin, Accounts_RegistrationForm
+		} = this.props;
 		const { length } = Object.values(services);
 
-		if (length > 3) {
+		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
 			return (
 				<View style={styles.servicesTogglerContainer}>
 					<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
@@ -358,6 +377,7 @@ class LoginSignupView extends React.Component {
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
+		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
 		switch (service.authType) {
@@ -383,8 +403,8 @@ class LoginSignupView extends React.Component {
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		const { CAS_enabled, theme } = this.props;
 		let buttonText;
-		if (service.service === 'saml' || (service.service === 'cas' && CAS_enabled)) {
-			buttonText = <Text style={styles.serviceName}>{name}</Text>;
+		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
+			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{name}</Text>;
 		} else {
 			buttonText = (
 				<>
@@ -396,7 +416,7 @@ class LoginSignupView extends React.Component {
 			<Touch
 				key={service.name}
 				onPress={onPress}
-				style={styles.serviceButton}
+				style={[styles.serviceButton, isSaml && { backgroundColor: service.buttonColor }]}
 				theme={theme}
 			>
 				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
@@ -409,15 +429,14 @@ class LoginSignupView extends React.Component {
 
 	renderServices = () => {
 		const { servicesHeight } = this.state;
-		const { services } = this.props;
+		const { services, Accounts_ShowFormLogin, Accounts_RegistrationForm } = this.props;
 		const { length } = Object.values(services);
 		const style = {
 			overflow: 'hidden',
 			height: servicesHeight
 		};
 
-
-		if (length > 3) {
+		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
 			return (
 				<Animated.View style={style}>
 					{Object.values(services).map(service => this.renderItem(service))}
@@ -428,6 +447,38 @@ class LoginSignupView extends React.Component {
 			<View>
 				{Object.values(services).map(service => this.renderItem(service))}
 			</View>
+		);
+	}
+
+	renderLogin = () => {
+		const { Accounts_ShowFormLogin, theme } = this.props;
+		if (!Accounts_ShowFormLogin) {
+			return null;
+		}
+		return (
+			<Button
+				title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
+				type='primary'
+				onPress={() => this.login()}
+				theme={theme}
+				testID='welcome-view-login'
+			/>
+		);
+	}
+
+	renderRegister = () => {
+		const { Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme } = this.props;
+		if (Accounts_RegistrationForm !== 'Public') {
+			return <Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>{Accounts_RegistrationForm_LinkReplacementText}</Text>;
+		}
+		return (
+			<Button
+				title={I18n.t('Create_account')}
+				type='secondary'
+				onPress={() => this.register()}
+				theme={theme}
+				testID='welcome-view-register'
+			/>
 		);
 	}
 
@@ -452,20 +503,8 @@ class LoginSignupView extends React.Component {
 					<StatusBar theme={theme} />
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
-					<Button
-						title={<Text>{I18n.t('Login_with')} <Text style={{ ...sharedStyles.textBold }}>{I18n.t('email')}</Text></Text>}
-						type='primary'
-						onPress={() => this.login()}
-						theme={theme}
-						testID='welcome-view-login'
-					/>
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						onPress={() => this.register()}
-						theme={theme}
-						testID='welcome-view-register'
-					/>
+					{this.renderLogin()}
+					{this.renderRegister()}
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -478,6 +517,9 @@ const mapStateToProps = state => ({
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
+	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
+	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
+	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	services: state.login.services
 });
 

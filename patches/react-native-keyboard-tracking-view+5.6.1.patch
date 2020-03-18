@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
-index 800bd35..edb3030 100644
+index 800bd35..8fcd559 100644
 --- a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
 +++ b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
 @@ -49,6 +49,7 @@ @interface KeyboardTrackingView : UIView
@@ -63,7 +63,21 @@ index 800bd35..edb3030 100644
          {
              [self setupTextView:(UITextView*)subview];
          }
-@@ -442,12 +445,28 @@ -(void)setAddBottomView:(BOOL)addBottomView
+@@ -266,6 +269,13 @@ - (void)initializeAccessoryViewsAndHandleInsets
+     [self addBottomViewIfNecessary];
+ }
+ 
++- (void)resetTracking
++{
++    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
++        [self deferedInitializeAccessoryViewsAndHandleInsets];
++    });
++}
++
+ - (void)setupTextView:(UITextView*)textView
+ {
+     if (textView != nil)
+@@ -442,12 +452,28 @@ -(void)setAddBottomView:(BOOL)addBottomView
      [self addBottomViewIfNecessary];
  }
  
@@ -93,7 +107,7 @@ index 800bd35..edb3030 100644
          [self addSubview:_bottomView];
          [self updateBottomViewFrame];
      }
-@@ -631,6 +650,7 @@ @implementation KeyboardTrackingViewManager
+@@ -631,6 +657,7 @@ @implementation KeyboardTrackingViewManager
  RCT_REMAP_VIEW_PROPERTY(manageScrollView, manageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(requiresSameParentToManageScrollView, requiresSameParentToManageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(addBottomView, addBottomView, BOOL)
@@ -101,6 +115,28 @@ index 800bd35..edb3030 100644
  RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)
  RCT_REMAP_VIEW_PROPERTY(allowHitsOutsideBounds, allowHitsOutsideBounds, BOOL)
  
+@@ -687,6 +714,21 @@ - (UIView *)view
+      }];
+ }
+ 
++RCT_EXPORT_METHOD(resetTracking:(nonnull NSNumber *)reactTag)
++{
++    [self.bridge.uiManager addUIBlock:
++     ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, KeyboardTrackingView *> *viewRegistry) {
++         
++         KeyboardTrackingView *view = viewRegistry[reactTag];
++         if (!view || ![view isKindOfClass:[KeyboardTrackingView class]]) {
++             RCTLogError(@"Error: cannot find KeyboardTrackingView with tag #%@", reactTag);
++             return;
++         }
++         
++         [view resetTracking];
++     }];
++}
++
+ #pragma mark - helper methods
+ 
+ -(void)rejectPromise:(RCTPromiseRejectBlock)reject withErrorMessage:(NSString*)errorMessage errorCode:(NSInteger)errorCode
 diff --git a/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec b/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec
 new file mode 100644
 index 0000000..a6dbe01
@@ -127,3 +163,28 @@ index 0000000..a6dbe01
 +  s.dependency 'React'
 +end
 \ No newline at end of file
+diff --git a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js
+index af15edf..1e1bd35 100644
+--- a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js
++++ b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js
+@@ -14,4 +14,5 @@ export default class KeyboardTrackingView extends PureComponent {
+     return {trackingViewHeight: 0, keyboardHeight: 0, contentTopInset: 0};
+   }
+   scrollToStart() {}
++  resetTracking() {}
+ }
+diff --git a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
+index 5e2c207..43bc252 100644
+--- a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
++++ b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.ios.js
+@@ -30,4 +30,10 @@ export default class KeyboardTrackingView extends PureComponent {
+       KeyboardTrackingViewManager.scrollToStart(ReactNative.findNodeHandle(this.ref));
+     }
+   }
++
++  resetTracking() {
++    if (this.ref && KeyboardTrackingViewManager && KeyboardTrackingViewManager.resetTracking) {
++      KeyboardTrackingViewManager.resetTracking(ReactNative.findNodeHandle(this.ref));
++    }
++  }
+ }

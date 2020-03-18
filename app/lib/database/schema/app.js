@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 4,
+	version: 6,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -39,7 +39,8 @@ export default appSchema({
 				{ name: 'jitsi_timeout', type: 'number', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate_language', type: 'string' },
-				{ name: 'hide_unread_status', type: 'boolean', isOptional: true }
+				{ name: 'hide_unread_status', type: 'boolean', isOptional: true },
+				{ name: 'sys_mes', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -196,6 +197,7 @@ export default appSchema({
 				{ name: 'value_as_string', type: 'string', isOptional: true },
 				{ name: 'value_as_boolean', type: 'boolean', isOptional: true },
 				{ name: 'value_as_number', type: 'number', isOptional: true },
+				{ name: 'value_as_array', type: 'string', isOptional: true },
 				{ name: '_updated_at', type: 'number', isOptional: true }
 			]
 		}),

@@ -1,8 +1,16 @@
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index e72e943..ec0a0ba 100644
+index e72e943..ee0c7a1 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -55,6 +55,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+@@ -10,6 +10,7 @@
+ #import <mutex>
+ 
+ #import <React/RCTNetworking.h>
++#import "RNUserDefaults.h"
+ 
+ @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate>
+ 
+@@ -55,6 +56,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -62,14 +70,14 @@ index e72e943..ec0a0ba 100644
  - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
-@@ -171,4 +224,20 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+@@ -171,4 +225,20 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
    [delegate URLRequest:task didCompleteWithError:error];
  }
  
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
-+  NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.chat.rocket"] objectForKey:host];
++  NSDictionary *clientSSL = [[RNUserDefaults getDefaultUser] objectForKey:host];
 +
 +  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +
@@ -84,10 +92,19 @@ index e72e943..ec0a0ba 100644
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index a134d2e..a88c099 100644
+index a134d2e..1526d60 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -481,6 +481,29 @@ - (void)didConnect
+@@ -27,6 +27,8 @@
+ #import <React/RCTAssert.h>
+ #import <React/RCTLog.h>
+ 
++#import "RNUserDefaults.h"
++
+ typedef NS_ENUM(NSInteger, RCTSROpCode)  {
+   RCTSROpCodeTextFrame = 0x1,
+   RCTSROpCodeBinaryFrame = 0x2,
+@@ -481,6 +483,29 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
@@ -117,12 +134,12 @@ index a134d2e..a88c099 100644
  - (void)_initializeStreams;
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -518,6 +541,15 @@ - (void)_initializeStreams;
+@@ -518,6 +543,15 @@ - (void)_initializeStreams;
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
 +    // SSL Pinning
-+    NSDictionary *clientSSL = [[[NSUserDefaults alloc] initWithSuiteName:@"group.ios.chat.rocket"] objectForKey:host];
++    NSDictionary *clientSSL = [[RNUserDefaults getDefaultUser] objectForKey:host];
 +    if (clientSSL != (id)[NSNull null]) {
 +      NSString *path = [clientSSL objectForKey:@"path"];
 +      NSString *password = [clientSSL objectForKey:@"password"];
@@ -133,7 +150,7 @@ index a134d2e..a88c099 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -597,6 +629,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
+@@ -597,6 +631,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
        }
      }
  
