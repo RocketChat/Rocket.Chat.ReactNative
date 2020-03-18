@@ -28,20 +28,24 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	}
 };
 
+const handleRemovedRoom = function* handleLeaveRoom({ result }) {
+	if (result.success) {
+		yield Navigation.navigate('RoomsListView');
+	}
+	// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
+	const { timeout } = yield race({
+		deleteFinished: take(types.ROOM.REMOVED),
+		timeout: delay(3000)
+	});
+	if (timeout) {
+		put(removedRoom());
+	}
+};
+
 const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	try {
 		const result = yield RocketChat.leaveRoom(rid, t);
-		if (result.success) {
-			yield Navigation.navigate('RoomsListView');
-		}
-		// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
-		const { timeout } = yield race({
-			deleteFinished: take(types.ROOM.REMOVED),
-			timeout: delay(3000)
-		});
-		if (timeout) {
-			put(removedRoom());
-		}
+		yield handleRemovedRoom({ result });
 	} catch (e) {
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
@@ -54,17 +58,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 	try {
 		const result = yield RocketChat.deleteRoom(rid, t);
-		if (result.success) {
-			yield Navigation.navigate('RoomsListView');
-		}
-		// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
-		const { timeout } = yield race({
-			deleteFinished: take(types.ROOM.REMOVED),
-			timeout: delay(3000)
-		});
-		if (timeout) {
-			put(removedRoom());
-		}
+		yield handleRemovedRoom({ result });
 	} catch (e) {
 		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_room') }));
 	}
