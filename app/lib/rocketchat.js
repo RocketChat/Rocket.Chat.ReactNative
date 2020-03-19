@@ -61,19 +61,16 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	callJitsi,
-	tryReopen() {
-		if (this.sdk) {
-			this.sdk.tryReopen();
-		}
-	},
 	async subscribeRooms() {
-		if (this.roomsSub) {
-			this.roomsSub.stop();
-		}
-		try {
-			this.roomsSub = await subscribeRooms.call(this);
-		} catch (e) {
-			log(e);
+		// if (this.roomsSub) {
+		// 	this.roomsSub.stop();
+		// }
+		if (!this.roomsSub) {
+			try {
+				this.roomsSub = await subscribeRooms.call(this);
+			} catch (e) {
+				log(e);
+			}
 		}
 	},
 	canOpenRoom,

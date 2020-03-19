@@ -1631,7 +1631,7 @@
 
 "@rocket.chat/sdk@djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp":
   version "1.0.0-alpha.41"
-  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/e6b0385439fe833ae45e126cf735f2973d0e10c3"
+  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/91ed3ffb23666be55df7dfcafeea36738a088d41"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"

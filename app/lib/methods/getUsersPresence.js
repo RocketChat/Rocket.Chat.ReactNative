@@ -3,6 +3,7 @@ import semver from 'semver';
 
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
+import { setUser } from '../../actions/login';
 
 export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
@@ -25,6 +26,7 @@ let ids = [];
 
 export default async function getUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
+	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
 	if (serverVersion && !semver.lt(semver.coerce(serverVersion), '1.1.0')) {
@@ -45,7 +47,13 @@ export default async function getUsersPresence() {
 		const result = await this.sdk.get('users.presence', params);
 		if (result.success) {
 			const activeUsers = result.users.reduce((ret, item) => {
-				ret[item._id] = item.status;
+				const { _id, status } = item;
+
+				if (loggedUser && loggedUser.id === _id) {
+					reduxStore.dispatch(setUser({ status }));
+				}
+
+				ret[_id] = status;
 				return ret;
 			}, {});
 			InteractionManager.runAfterInteractions(() => {
