@@ -15716,6 +15716,110 @@ exports[`Storyshots Message list message 1`] = `
                   thumbTintColor={false}
                   value={0}
                 />
+                <View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      0.5
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      2
+                      x
+                    </Text>
+                  </View>
+                </View>
                 <Text
                   style={
                     Array [
@@ -16066,6 +16170,110 @@ exports[`Storyshots Message list message 1`] = `
                   thumbTintColor={false}
                   value={0}
                 />
+                <View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      0.5
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      2
+                      x
+                    </Text>
+                  </View>
+                </View>
                 <Text
                   style={
                     Array [
@@ -16289,6 +16497,110 @@ exports[`Storyshots Message list message 1`] = `
                   thumbTintColor={false}
                   value={0}
                 />
+                <View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      0.5
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      2
+                      x
+                    </Text>
+                  </View>
+                </View>
                 <Text
                   style={
                     Array [
@@ -16475,6 +16787,110 @@ exports[`Storyshots Message list message 1`] = `
                   thumbTintColor={false}
                   value={0}
                 />
+                <View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      0.5
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                      x
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          undefined,
+                          Object {
+                            "fontWeight": "normal",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                      2
+                      x
+                    </Text>
+                  </View>
+                </View>
                 <Text
                   style={
                     Array [

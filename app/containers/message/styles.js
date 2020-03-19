@@ -161,5 +161,17 @@ export default StyleSheet.create({
 	},
 	readReceipt: {
 		lineHeight: 20
+	},
+	controlOption: {
+		alignSelf: 'center',
+		fontSize: 11,
+		paddingLeft: 2,
+		paddingRight: 2,
+		lineHeight: 12
+	},
+	rateControl: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center'
 	}
 });

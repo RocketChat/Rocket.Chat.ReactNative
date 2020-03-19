@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, Text, Easing, Dimensions
+	View, StyleSheet, Text, Easing, Dimensions, TouchableOpacity
 } from 'react-native';
 import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
@@ -86,6 +86,7 @@ class Audio extends React.Component {
 			currentTime: 0,
 			duration: 0,
 			paused: true,
+			rate: 1,
 			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
@@ -142,6 +143,29 @@ class Audio extends React.Component {
 		return formatTime(duration);
 	}
 
+	renderRateControl = (r) => {
+		const { theme } = this.props;
+		const { rate } = this.state;
+		const isSelected = (rate === r);
+		return (
+			<TouchableOpacity
+				onPress={() => {
+					this.setState({ rate: r });
+				}}
+			>
+				<Text
+					style={[
+						styles.controlOption,
+						{ fontWeight: isSelected ? 'bold' : 'normal' },
+						{ color: themes[theme].auxiliaryText }
+					]}
+				>
+					{r}x
+				</Text>
+			</TouchableOpacity>
+		);
+	};
+
 	setRef = ref => this.player = ref;
 
 	togglePlayPause = () => {
@@ -153,7 +177,7 @@ class Audio extends React.Component {
 
 	render() {
 		const {
-			uri, paused, currentTime, duration
+			uri, paused, currentTime, duration, rate
 		} = this.state;
 		const {
 			user, baseUrl, file, getCustomEmoji, split, theme
@@ -177,6 +201,7 @@ class Audio extends React.Component {
 						ref={this.setRef}
 						source={{ uri }}
 						onLoad={this.onLoad}
+						rate={rate}
 						onProgress={this.onProgress}
 						onEnd={this.onEnd}
 						paused={paused}
@@ -197,6 +222,11 @@ class Audio extends React.Component {
 						onValueChange={this.onValueChange}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
+					<View style={styles.rateControl}>
+						{this.renderRateControl(0.5)}
+						{this.renderRateControl(1.0)}
+						{this.renderRateControl(2.0)}
+					</View>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
