@@ -62,9 +62,6 @@ const RocketChat = {
 	TOKEN_KEY,
 	callJitsi,
 	async subscribeRooms() {
-		// if (this.roomsSub) {
-		// 	this.roomsSub.stop();
-		// }
 		if (!this.roomsSub) {
 			try {
 				this.roomsSub = await subscribeRooms.call(this);
