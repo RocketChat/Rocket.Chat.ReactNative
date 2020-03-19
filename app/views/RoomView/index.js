@@ -220,7 +220,6 @@ class RoomView extends React.Component {
 			}
 			if (isAuthenticated && this.rid) {
 				this.init();
-				this.sub.subscribe();
 			} else if (this.rid) {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
@@ -332,6 +331,7 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				await this.getThreadMessages();
 			} else {
+				this.sub.subscribe();
 				const newLastOpen = new Date();
 				await this.getMessages(room);
 
