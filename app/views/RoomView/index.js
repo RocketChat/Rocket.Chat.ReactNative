@@ -220,6 +220,7 @@ class RoomView extends React.Component {
 			}
 			if (isAuthenticated && this.rid) {
 				this.init();
+				this.sub.subscribe();
 			} else if (this.rid) {
 				EventEmitter.addEventListener('connected', this.handleConnected);
 			}
@@ -342,7 +343,6 @@ class RoomView extends React.Component {
 						this.setLastOpen(null);
 					}
 					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
-					this.sub.subscribe();
 				}
 			}
 
