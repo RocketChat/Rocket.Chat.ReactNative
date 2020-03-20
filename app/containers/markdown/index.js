@@ -22,6 +22,7 @@ import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 
 import styles from './styles';
+import { isValidURL } from '../../utils/url';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -278,7 +279,18 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
+	renderImage = ({ src }) => {
+		if (!isValidURL(src)) {
+			return null;
+		}
+
+		return (
+			<Image
+				style={styles.inlineImage}
+				source={{ uri: encodeURI(src) }}
+			/>
+		);
+	}
 
 	renderEditedIndicator = () => {
 		const { theme } = this.props;
