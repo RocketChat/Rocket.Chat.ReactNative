@@ -187,6 +187,7 @@ const RocketChat = {
 
 			if (this.roomsSub) {
 				this.roomsSub.stop();
+				this.roomsSub = null;
 			}
 
 			if (this.sdk) {
@@ -389,6 +390,7 @@ const RocketChat = {
 	async logout({ server }) {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
+			this.roomsSub = null;
 		}
 
 		if (this.activeUsersSubTimeout) {
