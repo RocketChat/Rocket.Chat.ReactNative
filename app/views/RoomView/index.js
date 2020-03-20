@@ -954,9 +954,8 @@ class RoomView extends React.Component {
 				<StatusBar theme={theme} />
 				<Banner
 					rid={rid}
-					announcement={room.announcement}
-					statusText={member.statusText}
-					type={t}
+					title={I18n.t('Announcement')}
+					text={room.announcement}
 					theme={theme}
 				/>
 				<List
