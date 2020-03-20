@@ -7,13 +7,19 @@ const initialState = {
 
 export default function(state = initialState, action) {
 	switch (action.type) {
-		case ROOM.DELETE_INIT:
+		case ROOM.LEAVE:
 			return {
 				...state,
 				rid: action.rid,
 				isDeleting: true
 			};
-		case ROOM.DELETE_FINISH:
+		case ROOM.DELETE:
+			return {
+				...state,
+				rid: action.rid,
+				isDeleting: true
+			};
+		case ROOM.REMOVED:
 			return {
 				...state,
 				isDeleting: false
