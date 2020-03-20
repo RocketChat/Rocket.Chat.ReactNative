@@ -218,10 +218,13 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				navigation.setParams({ toggleFollowThread: this.toggleFollowThread, goRoomActionsView: this.goRoomActionsView });
 			}
-			if (isAuthenticated && this.rid) {
-				this.init();
-			} else if (this.rid) {
-				EventEmitter.addEventListener('connected', this.handleConnected);
+			if (this.rid) {
+				this.sub.subscribe();
+				if (isAuthenticated) {
+					this.init();
+				} else {
+					EventEmitter.addEventListener('connected', this.handleConnected);
+				}
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
@@ -331,7 +334,6 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				await this.getThreadMessages();
 			} else {
-				this.sub.subscribe();
 				const newLastOpen = new Date();
 				await this.getMessages(room);
 
