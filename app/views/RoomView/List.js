@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
+import isEqual from 'lodash/isEqual';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -62,8 +63,14 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	async init() {
-		const { rid, tmid, hideSystemMessages = [] } = this.props;
+		const { rid, tmid } = this.props;
 		const db = database.active;
+
+		// handle servers with version < 3.0.0
+		let { hideSystemMessages = [] } = this.props;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
 
 		if (tmid) {
 			try {
@@ -103,6 +110,12 @@ class List extends React.Component {
 		}
 	}
 
+	// eslint-disable-next-line react/sort-comp
+	reload = () => {
+		this.unsubscribeMessages();
+		this.init();
+	}
+
 	// this.state.loading works for this.onEndReached and RoomView.init
 	static getDerivedStateFromProps(props, state) {
 		if (props.loading !== state.loading) {
@@ -115,7 +128,7 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end, refreshing } = this.state;
-		const { theme } = this.props;
+		const { hideSystemMessages, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -128,7 +141,17 @@ class List extends React.Component {
 		if (refreshing !== nextState.refreshing) {
 			return true;
 		}
+		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { hideSystemMessages } = this.props;
+		if (!isEqual(hideSystemMessages, prevProps.hideSystemMessages)) {
+			this.reload();
+		}
 	}
 
 	componentWillUnmount() {
