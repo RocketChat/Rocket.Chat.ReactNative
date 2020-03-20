@@ -278,7 +278,7 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
+	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
 
 	renderEditedIndicator = () => {
 		const { theme } = this.props;
