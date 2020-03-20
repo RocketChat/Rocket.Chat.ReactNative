@@ -524,5 +524,7 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
-	Mark_unread: 'Mark Unread'
+	Mark_unread: 'Mark Unread',
+	Manual_Authentication_Title: 'Waiting for user to be activated',
+	Manual_Authentication_Desc: 'User registered, waiting for admin to approve the new user'
 };
