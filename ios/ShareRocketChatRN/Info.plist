@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.5.0</string>
+	<string>4.6.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSAppTransportSecurity</key>
@@ -60,5 +60,7 @@
 	<array>
 		<string>custom.ttf</string>
 	</array>
+	<key>AppGroup</key>
+	<string>group.ios.chat.rocket</string>
 </dict>
 </plist>

@@ -42,6 +42,12 @@ export const MultiSelect = React.memo(({
 	const [showContent, setShowContent] = useState(false);
 
 	useEffect(() => {
+		if (values) {
+			select(values);
+		}
+	}, [values]);
+
+	useEffect(() => {
 		setOpen(showContent);
 	}, [showContent]);
 
