@@ -137,7 +137,7 @@ class RegisterView extends React.Component {
 				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
 			} else if (Accounts_ManuallyApproveNewUsers) {
 				await navigation.goBack();
-				showErrorAlert(I18n.t('Manual_Authentication_Desc'), I18n.t('Manual_Authentication_Title'))
+				showErrorAlert(I18n.t('Manual_Authentication_Desc'), I18n.t('Manual_Authentication_Title'));
 			} else {
 				await loginRequest({ user: email, password });
 			}
