@@ -90,7 +90,7 @@ const mapStateToProps = (state, ownProps) => {
 		const user = getUserSelector(state);
 		if (user.id) {
 			const userId = rid.replace(user.id, '').trim();
-			status = state.activeUsers[userId];
+			status = state.meteor.connected ? state.activeUsers[userId] : 'offline';
 		}
 	}
 
