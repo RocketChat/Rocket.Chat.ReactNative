@@ -334,6 +334,7 @@ export default {
 	Username_is_empty: 'Nom d\'utilisateur est vide',
 	Username: 'Nom d\'utilisateur',
 	Username_or_email: 'Nom d\'utilisateur ou address e-mail',
+	UseLocation: 'emplacement de l\'utilisateur',
 	Validating: 'Validation',
 	Video_call: 'Appel vidéo',
 	Voice_call: 'Appel vocal',

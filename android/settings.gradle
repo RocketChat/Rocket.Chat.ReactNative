@@ -1,4 +1,8 @@
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
+include ':@react-native-community_geolocation'
+project(':@react-native-community_geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/geolocation/android')
+include ':@react-native-mapbox-gl_maps'
+project(':@react-native-mapbox-gl_maps').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-mapbox-gl/maps/android/rctmgl')
 includeUnimodulesProjects()
 
 rootProject.name = 'RocketChatRN'

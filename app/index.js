@@ -245,10 +245,20 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 	};
 };
 
+const UserLocationStack = createStackNavigator({
+	UserLocationView: {
+		getScreen: () => require('./views/UserLocationView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const ChatsDrawer = createDrawerNavigator({
 	ChatsStack,
 	ProfileStack,
 	SettingsStack,
+	UserLocationStack,
 	AdminPanelStack
 }, {
 	contentComponent: Sidebar,
@@ -385,6 +395,9 @@ const SidebarStack = createStackNavigator({
 	},
 	AdminPanelView: {
 		getScreen: () => require('./views/AdminPanelView').default
+	},
+	UserLocationView: {
+		getScreen: () => require('./views/UserLocationView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

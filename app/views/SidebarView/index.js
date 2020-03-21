@@ -217,6 +217,13 @@ class Sidebar extends Component {
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
+				<SidebarItem
+					text={I18n.t('UserLocation')}
+					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate('UserLocationView')}
+					testID='sidebar-settings'
+					current={activeItemKey === 'UserLocationStack'}
+				/>
 				{isAdmin ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}

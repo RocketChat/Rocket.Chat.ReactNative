@@ -37,6 +37,10 @@ target 'RocketChatRN' do
   use_native_modules!
   use_unimodules!
 
+  pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
+
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
 end
 
 target 'ShareRocketChatRN' do
