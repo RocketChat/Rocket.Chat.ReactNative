@@ -135,9 +135,9 @@ class RegisterView extends React.Component {
 				return false;
 			} else if (Accounts_Password_Policy_AtLeastOneUppercase && !((/[A-Z]/).test(password))) {
 				return false;
-			} else if (Accounts_Password_Policy_AtLeastOneNumber && !((/.* [0 - 9].*/).test(password))) {
+			} else if (Accounts_Password_Policy_AtLeastOneNumber && !((/[0 - 9]/).test(password))) {
 				return false;
-			} else if (Accounts_Password_Policy_AtLeastOneSpecialCharacter && !((/[\'^�$%&*()}{@#~?><>,|=_+�-]/).test(password))) {
+			} else if (Accounts_Password_Policy_AtLeastOneSpecialCharacter && !((/[^A-Za-z0-9 ]/).test(password))) {
 				return false;
 			} else if (Accounts_Password_Policy_ForbidRepeatingCharacters && !((`(.)\\1{${ Accounts_Password_Policy_ForbidRepeatingCharactersCount },}`).test(password))) {
 				return false;
