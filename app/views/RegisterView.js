@@ -42,6 +42,15 @@ class RegisterView extends React.Component {
 		Site_Name: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
 		Accounts_EmailVerification: PropTypes.bool,
+		Accounts_Password_Policy_Enabled: PropTypes.bool,
+		Accounts_Password_Policy_AtLeastOneLowercase: PropTypes.bool,
+		Accounts_Password_Policy_AtLeastOneNumber: PropTypes.bool,
+		Accounts_Password_Policy_AtLeastOneUppercase: PropTypes.bool,
+		Accounts_Password_Policy_AtLeastOneSpecialCharacter: PropTypes.bool,
+		Accounts_Password_Policy_ForbidRepeatingCharacters: PropTypes.bool,
+		Accounts_Password_Policy_MaxLength: PropTypes.number,
+		Accounts_Password_Policy_MinLength: PropTypes.number,
+		Accounts_Password_Policy_ForbidRepeatingCharactersCount: PropTypes.number,
 		theme: PropTypes.string
 	}
 
@@ -100,12 +109,42 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		let requiredCheck = true;
+		const {
+			Accounts_Password_Policy_Enabled,
+			Accounts_Password_Policy_AtLeastOneLowercase,
+			Accounts_Password_Policy_AtLeastOneUppercase,
+			Accounts_Password_Policy_MaxLength,
+			Accounts_Password_Policy_MinLength,
+			Accounts_Password_Policy_AtLeastOneNumber,
+			Accounts_Password_Policy_AtLeastOneSpecialCharacter,
+			Accounts_Password_Policy_ForbidRepeatingCharacters,
+			Accounts_Password_Policy_ForbidRepeatingCharactersCount
+		} = this.props;
+        let requiredCheck = true;
 		Object.keys(this.parsedCustomFields).forEach((key) => {
 			if (this.parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
 		});
+		if (Accounts_Password_Policy_Enabled) {
+			if (password.trim().length < Accounts_Password_Policy_MinLength) {
+				return false;
+			} else if (password.trim().length > Accounts_Password_Policy_MaxLength) {
+				return false;
+			} else if (Accounts_Password_Policy_AtLeastOneLowercase && !((/[a-z]/).test(password))) {
+				return false;
+			} else if (Accounts_Password_Policy_AtLeastOneUppercase && !((/[A-Z]/).test(password))) {
+				return false;
+			} else if (Accounts_Password_Policy_AtLeastOneNumber && !((/.* [0 - 9].*/).test(password))) {
+				return false;
+			} else if (Accounts_Password_Policy_AtLeastOneSpecialCharacter && !((/[\'^�$%&*()}{@#~?><>,|=_+�-]/).test(password))) {
+				return false;
+			} else if (Accounts_Password_Policy_ForbidRepeatingCharacters && !((`(.)\\1{${ Accounts_Password_Policy_ForbidRepeatingCharactersCount },}`).test(password))) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
 	}
 
@@ -120,7 +159,6 @@ class RegisterView extends React.Component {
 			name, email, password, username, customFields
 		} = this.state;
 		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
-
 		try {
 			await RocketChat.register({
 				name, email, pass: password, username, ...customFields
@@ -277,7 +315,16 @@ class RegisterView extends React.Component {
 
 const mapStateToProps = state => ({
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
+	Accounts_Password_Policy_Enabled: state.settings.Accounts_Password_Policy_Enabled,
+	Accounts_Password_Policy_MinLength: state.settings.Accounts_Password_Policy_MinLength,
+	Accounts_Password_Policy_MaxLength: state.settings.Accounts_Password_Policy_MaxLength,
+	Accounts_Password_Policy_ForbidRepeatingCharacters: state.settings.Accounts_Password_Policy_ForbidRepeatingCharacters,
+	Accounts_Password_Policy_ForbidRepeatingCharactersCount: state.settings.Accounts_Password_Policy_ForbidRepeatingCharactersCount,
+	Accounts_Password_Policy_AtLeastOneLowercase: state.settings.Accounts_Password_Policy_AtLeastOneLowercase,
+	Accounts_Password_Policy_AtLeastOneUppercase: state.settings.Accounts_Password_Policy_AtLeastOneUppercase,
+	Accounts_Password_Policy_AtLeastOneSpecialCharacter: state.settings.Accounts_Password_Policy_AtLeastOneSpecialCharacter,
+	Accounts_Password_Policy_AtLeastOneNumber: state.settings.Accounts_Password_Policy_AtLeastOneNumber
 });
 
 const mapDispatchToProps = dispatch => ({

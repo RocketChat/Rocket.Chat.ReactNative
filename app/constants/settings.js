@@ -44,6 +44,33 @@ export default {
 	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_Password_Policy_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_MinLength: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_MaxLength: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_ForbidRepeatingCharacters: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_ForbidRepeatingCharactersCount: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_AtLeastOneLowercase: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneUppercase: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneSpecialCharacter: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneNumber: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
