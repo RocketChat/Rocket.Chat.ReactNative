@@ -44,6 +44,9 @@ export default {
 	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_AvatarBlockUnauthenticatedAccess: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
