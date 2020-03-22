@@ -25,6 +25,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
+import { showConfirmationAlert } from '../../utils/info';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -381,13 +382,25 @@ class RoomActionsView extends React.Component {
 
 	toggleBlockUser = () => {
 		const { room } = this.state;
-		const { rid, blocker } = room;
 		const { member } = this.state;
-		try {
-			RocketChat.toggleBlockUser(rid, member._id, !blocker);
-		} catch (e) {
-			log(e);
+		const { rid, blocker } = room;
+		let message = I18n.t('User_will_be_unblocked');
+		let callToAction = I18n.t('Unblock_user');
+		if (!blocker) {
+			message = I18n.t('User_will_be_blocked');
+			callToAction = I18n.t('Block_user');
 		}
+		showConfirmationAlert({
+			message,
+			callToAction,
+			onPress: () => {
+				try {
+					RocketChat.toggleBlockUser(rid, member._id, !blocker);
+				} catch (e) {
+					log(e);
+				}
+			}
+		});
 	}
 
 	handleShare = () => {
