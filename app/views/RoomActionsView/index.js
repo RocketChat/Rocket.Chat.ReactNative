@@ -387,7 +387,7 @@ class RoomActionsView extends React.Component {
 		let message = I18n.t('User_will_be_unblocked');
 		let callToAction = I18n.t('Unblock_user');
 		if (!blocker) {
-			message = I18n.t('User_will_be_blocked');
+			message = I18n.t('User_will_be_blocked', { user: member.username });
 			callToAction = I18n.t('Block_user');
 		}
 		showConfirmationAlert({
