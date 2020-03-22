@@ -469,7 +469,7 @@ export default {
 	User_sent_an_attachment: '{{user}} sent an attachment',
 	User_unmuted_by: 'User {{userUnmuted}} unmuted by {{userBy}}',
 	User_was_set_role_by_: '{{user}} was set {{role}} by {{userBy}}',
-    User_will_be_blocked: 'User will be blocked',
+	User_will_be_blocked: 'User will be blocked',
 	User_will_be_unblocked: 'User will be unblocked',
 	Username_is_empty: 'Username is empty',
 	Username: 'Username',
