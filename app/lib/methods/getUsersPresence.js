@@ -29,11 +29,11 @@ export default async function getUsersPresence() {
 	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
-	if (serverVersion && !semver.lt(serverVersion, '1.1.0')) {
+	if (serverVersion && semver.gte(serverVersion, '1.1.0')) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0
-		if (serverVersion && !semver.lt(serverVersion, '3.0.0')) {
+		if (serverVersion && semver.gte(serverVersion, '3.0.0')) {
 			// if not have any id
 			if (!ids.length) {
 				return;
