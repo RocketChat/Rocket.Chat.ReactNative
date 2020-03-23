@@ -74,6 +74,7 @@ class RoomView extends React.Component {
 		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
+		const subtitle = navigation.getParam('subtitle');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const baseUrl = navigation.getParam('baseUrl');
@@ -96,6 +97,7 @@ class RoomView extends React.Component {
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					subtitle={subtitle}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
 					goRoomActionsView={goRoomActionsView}
@@ -205,6 +207,7 @@ class RoomView extends React.Component {
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
 					token: user.token,
@@ -935,7 +938,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, reactionsModalVisible, selectedMessage, loading, reacting, member
+			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages

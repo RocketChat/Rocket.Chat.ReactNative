@@ -13,6 +13,7 @@ import { getUserSelector } from '../../../selectors/login';
 class RoomHeaderView extends Component {
 	static propTypes = {
 		title: PropTypes.string,
+		subtitle: PropTypes.string,
 		type: PropTypes.string,
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
@@ -27,7 +28,7 @@ class RoomHeaderView extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, status, window, connecting, goRoomActionsView, usersTyping, theme
+			type, title, subtitle, status, window, connecting, goRoomActionsView, usersTyping, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -36,6 +37,9 @@ class RoomHeaderView extends Component {
 			return true;
 		}
 		if (nextProps.title !== title) {
+			return true;
+		}
+		if (nextProps.subtitle !== subtitle) {
 			return true;
 		}
 		if (nextProps.status !== status) {
@@ -61,7 +65,7 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			window, title, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView, theme
+			window, title, subtitle, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView, theme
 		} = this.props;
 
 		return (
@@ -69,6 +73,7 @@ class RoomHeaderView extends Component {
 				prid={prid}
 				tmid={tmid}
 				title={title}
+				subtitle={subtitle}
 				type={type}
 				status={status}
 				width={window.width}
