@@ -142,6 +142,17 @@ class DirectoryView extends React.Component {
 		}
 	}
 
+	renderEmptyList = () => {
+		const { theme } = this.props;
+		const { loading } = this.state;
+		if (!loading) {
+			return (
+				<Text style={[styles.emptyList, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			);
+		}
+		return null;
+	};
+
 	renderHeader = () => {
 		const { type } = this.state;
 		const { theme } = this.props;
@@ -232,6 +243,7 @@ class DirectoryView extends React.Component {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
+					ListEmptyComponent={this.renderEmptyList}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
 				/>

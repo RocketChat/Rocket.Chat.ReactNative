@@ -91,5 +91,12 @@ export default StyleSheet.create({
 	globalUsersTextContainer: {
 		flex: 1,
 		flexDirection: 'column'
+	},
+	emptyList: {
+		fontSize: 14,
+		flex: 1,
+		marginTop: 20,
+		textAlign: 'center',
+		...sharedStyles.textBold
 	}
 });
