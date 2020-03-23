@@ -20,6 +20,7 @@ class RoomHeaderView extends Component {
 		usersTyping: PropTypes.string,
 		window: PropTypes.object,
 		status: PropTypes.string,
+		statusText: PropTypes.string,
 		connecting: PropTypes.bool,
 		theme: PropTypes.string,
 		widthOffset: PropTypes.number,
@@ -28,7 +29,7 @@ class RoomHeaderView extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, window, connecting, goRoomActionsView, usersTyping, theme
+			type, title, subtitle, status, statusText, window, connecting, goRoomActionsView, usersTyping, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -43,6 +44,9 @@ class RoomHeaderView extends Component {
 			return true;
 		}
 		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.statusText !== statusText) {
 			return true;
 		}
 		if (nextProps.connecting !== connecting) {
@@ -65,7 +69,7 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			window, title, subtitle, type, prid, tmid, widthOffset, status = 'offline', connecting, usersTyping, goRoomActionsView, theme
+			window, title, subtitle, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, usersTyping, goRoomActionsView, theme
 		} = this.props;
 
 		return (
@@ -73,7 +77,7 @@ class RoomHeaderView extends Component {
 				prid={prid}
 				tmid={tmid}
 				title={title}
-				subtitle={subtitle}
+				subtitle={type === 'd' ? statusText : subtitle}
 				type={type}
 				status={status}
 				width={window.width}
@@ -90,19 +94,23 @@ class RoomHeaderView extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	let status;
+	let statusText;
 	const { rid, type } = ownProps;
 	if (type === 'd') {
 		const user = getUserSelector(state);
 		if (user.id) {
 			const userId = rid.replace(user.id, '').trim();
-			status = state.activeUsers[userId] && state.activeUsers[userId].status;
+			if (state.activeUsers[userId]) {
+				({ status, statusText } = state.activeUsers[userId]);
+			}
 		}
 	}
 
 	return {
 		connecting: state.meteor.connecting,
 		usersTyping: state.usersTyping,
-		status
+		status,
+		statusText
 	};
 };
 
