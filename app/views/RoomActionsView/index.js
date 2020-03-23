@@ -381,8 +381,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	toggleBlockUser = () => {
-		const { room } = this.state;
-		const { member } = this.state;
+		const { room, member } = this.state;
 		const { rid, blocker } = room;
 		let message = I18n.t('User_will_be_unblocked');
 		let callToAction = I18n.t('Unblock_user');
