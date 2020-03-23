@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-	View, Text, FlatList, StyleSheet, SafeAreaView
+	View, Text, StyleSheet, SafeAreaView
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
-
 import Emoji from './message/Emoji';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
@@ -25,10 +25,13 @@ const styles = StyleSheet.create({
 	},
 	reactCount: {
 		fontSize: 13,
+		marginLeft: 5,
+		marginTop: 5,
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {
-		fontSize: 14,
+		fontSize: 18,
+		marginBottom: 10,
 		...sharedStyles.textMedium
 	},
 	peopleItemContainer: {
@@ -37,55 +40,69 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	emojiContainer: {
-		width: 50,
+		width: 60,
 		height: 50,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	itemContainer: {
-		height: 50,
-		flexDirection: 'row'
-	},
-	listContainer: {
 		flex: 1
 	},
 	closeButton: {
 		position: 'absolute',
 		left: 0,
 		top: 10
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	scrollContainer: {
+		height: 90
 	}
 });
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
 
+const renderPeopleList = (item, theme, user) => item.usernames.map(username => (
+	<Text style={[styles.peopleReacted, { color: themes[theme].buttonText }]}>
+		{username === user.username ? I18n.t('you') : username}
+	</Text>
+));
+
 const Item = React.memo(({
-	item, user, baseUrl, getCustomEmoji, theme
+	item, baseUrl, getCustomEmoji, theme, user
 }) => {
-	const count = item.usernames.length;
-	let usernames = item.usernames.slice(0, 3)
-		.map(username => (username === user.username ? I18n.t('you') : username)).join(', ');
-	if (count > 3) {
-		usernames = `${ usernames } ${ I18n.t('and_more') } ${ count - 3 }`;
-	} else {
-		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${ I18n.t('and') }`);
-	}
+	const [users, setUsers] = useState(item[0]);
+	const emojiList = item.map(emoji => (
+		<View style={styles.emojiContainer}>
+			<Touchable onPress={() => { setUsers(emoji); }}>
+				<View style={styles.buttonContainer}>
+					<Emoji
+						content={emoji.emoji}
+						standardEmojiStyle={standardEmojiStyle}
+						customEmojiStyle={customEmojiStyle}
+						baseUrl={baseUrl}
+						getCustomEmoji={getCustomEmoji}
+					/>
+					<Text style={[styles.reactCount, { color: themes[theme].buttonText }]}>
+						{emoji.usernames.length}
+					</Text>
+				</View>
+			</Touchable>
+		</View>
+	));
 	return (
-		<View style={styles.itemContainer}>
-			<View style={styles.emojiContainer}>
-				<Emoji
-					content={item.emoji}
-					standardEmojiStyle={standardEmojiStyle}
-					customEmojiStyle={customEmojiStyle}
-					baseUrl={baseUrl}
-					getCustomEmoji={getCustomEmoji}
-				/>
+		<View style={styles.peopleItemContainer}>
+			<View style={styles.scrollContainer}>
+				<ScrollView style={styles.itemContainer} horizontal showsHorizontalScrollIndicator={false}>
+					{emojiList}
+				</ScrollView>
 			</View>
-			<View style={styles.peopleItemContainer}>
-				<Text style={[styles.reactCount, { color: themes[theme].buttonText }]}>
-					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
-				</Text>
-				<Text style={[styles.peopleReacted, { color: themes[theme].buttonText }]}>{ usernames }</Text>
-			</View>
+			<ScrollView horizontal={false} showsVerticalScrollIndicator={false}>
+				{renderPeopleList(users, theme, user)}
+			</ScrollView>
 		</View>
 	);
 });
@@ -103,15 +120,12 @@ const ModalContent = React.memo(({
 							name='cross'
 							size={20}
 						/>
-						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>
+						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>
+							{I18n.t('Reactions')}
+						</Text>
 					</View>
 				</Touchable>
-				<FlatList
-					style={styles.listContainer}
-					data={message.reactions}
-					renderItem={({ item }) => <Item item={item} {...props} />}
-					keyExtractor={item => item.emoji}
-				/>
+				<Item item={message.reactions} {...props} />
 			</SafeAreaView>
 		);
 	}
@@ -127,7 +141,6 @@ const ReactionsModal = React.memo(({
 		onBackButtonPress={onClose}
 		backdropOpacity={0.8}
 		onSwipeComplete={onClose}
-		swipeDirection={['up', 'left', 'right', 'down']}
 	>
 		<ModalContent onClose={onClose} theme={theme} {...props} />
 	</Modal>
