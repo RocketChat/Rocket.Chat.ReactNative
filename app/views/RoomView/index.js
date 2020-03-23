@@ -207,6 +207,7 @@ class RoomView extends React.Component {
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
 					token: user.token,
