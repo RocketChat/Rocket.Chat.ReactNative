@@ -37,7 +37,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		const { version: validVersion } = semver.coerce(serverInfo.version);
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
