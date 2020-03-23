@@ -143,26 +143,30 @@ class Audio extends React.Component {
 		return formatTime(duration);
 	}
 
-	renderRateControl = (r) => {
+	renderRateControl = () => {
 		const { theme } = this.props;
 		const { rate } = this.state;
-		const isSelected = (rate === r);
 		return (
-			<TouchableOpacity
-				onPress={() => {
-					this.setState({ rate: r });
-				}}
-			>
-				<Text
-					style={[
-						styles.controlOption,
-						{ fontWeight: isSelected ? 'bold' : 'normal' },
-						{ color: themes[theme].auxiliaryText }
-					]}
+			<View style={styles.rateControl}>
+				<TouchableOpacity
+					onPress={() => {
+						if (rate === 1) {
+							this.setState({ rate: 2 });
+						} else {
+							this.setState({ rate: 1 });
+						}
+					}}
 				>
-					{r}x
-				</Text>
-			</TouchableOpacity>
+					<Text
+						style={[
+							styles.controlOption,
+							{ color: themes[theme].auxiliaryText }
+						]}
+					>
+						{rate}x
+					</Text>
+				</TouchableOpacity>
+			</View>
 		);
 	};
 
@@ -222,11 +226,7 @@ class Audio extends React.Component {
 						onValueChange={this.onValueChange}
 						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
 					/>
-					<View style={styles.rateControl}>
-						{this.renderRateControl(0.5)}
-						{this.renderRateControl(1.0)}
-						{this.renderRateControl(2.0)}
-					</View>
+					{this.renderRateControl()}
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
