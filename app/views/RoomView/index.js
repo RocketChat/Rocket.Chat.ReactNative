@@ -67,7 +67,7 @@ const stateAttrsUpdate = [
 	'reacting',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -207,7 +207,6 @@ class RoomView extends React.Component {
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
-					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
 					token: user.token,
@@ -255,8 +254,9 @@ class RoomView extends React.Component {
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
-	componentDidUpdate(prevProps) {
-		const { appState } = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		const { roomUpdate, room } = this.state;
+		const { appState, navigation } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
@@ -265,6 +265,15 @@ class RoomView extends React.Component {
 					this.list.current.init();
 				}
 			});
+		}
+		// If it's not direct message
+		if (this.t !== 'd') {
+			if (roomUpdate.topic !== prevState.roomUpdate.topic) {
+				navigation.setParams({ subtitle: roomUpdate.topic });
+			}
+		}
+		if ((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) {
+			navigation.setParams({ name: this.getRoomTitle(room) });
 		}
 	}
 
@@ -401,6 +410,7 @@ class RoomView extends React.Component {
 			if (!this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t
 				});

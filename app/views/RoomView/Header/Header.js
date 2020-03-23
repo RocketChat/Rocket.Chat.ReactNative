@@ -48,6 +48,22 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 		return null;
 	}
 
+	// typing
+	if (usersTyping.length) {
+		let usersText;
+		if (usersTyping.length === 2) {
+			usersText = usersTyping.join(` ${ I18n.t('and') } `);
+		} else {
+			usersText = usersTyping.join(', ');
+		}
+		return (
+			<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText} </Text>
+				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+			</Text>
+		);
+	}
+
 	// subtitle
 	if (subtitle) {
 		return (
@@ -58,22 +74,8 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 				numberOfLines={1}
 				theme={theme}
 			/>
-		)
+		);
 	}
-
-	// typing
-	let usersText;
-	if (usersTyping.length === 2) {
-		usersText = usersTyping.join(` ${ I18n.t('and') } `);
-	} else {
-		usersText = usersTyping.join(', ');
-	}
-	return (
-		<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-			<Text style={styles.typingUsers}>{usersText} </Text>
-			{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
-		</Text>
-	);
 });
 
 SubTitle.propTypes = {
