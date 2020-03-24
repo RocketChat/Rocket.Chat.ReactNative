@@ -92,11 +92,14 @@ export default StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column'
 	},
-	emptyList: {
-		fontSize: 14,
+	listEmptyContainer: {
+		margin: 30,
 		flex: 1,
-		marginTop: 20,
-		textAlign: 'center',
-		...sharedStyles.textBold
+		alignItems: 'center',
+		justifyContent: 'flex-start'
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular
 	}
 });

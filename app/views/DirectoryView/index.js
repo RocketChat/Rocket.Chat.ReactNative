@@ -144,10 +144,12 @@ class DirectoryView extends React.Component {
 
 	renderEmptyList = () => {
 		const { theme } = this.props;
-		const { loading } = this.state;
-		if (!loading) {
+		const { loading, text } = this.state;
+		if (!loading && text.length) {
 			return (
-				<Text style={[styles.emptyList, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+				<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+					<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+				</View>
 			);
 		}
 		return null;
