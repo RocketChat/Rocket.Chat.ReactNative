@@ -11,7 +11,7 @@ import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
 
-const androidMarginLeft = isTablet ? 0 : 10;
+const androidMarginLeft = isTablet ? 0 : 4;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
