@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -32,7 +33,10 @@ const Button = React.memo(({
 export const MessageImage = React.memo(({ img, theme }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
-		source={{ uri: encodeURI(img) }}
+		source={{
+			uri: encodeURI(img),
+			headers: RocketChatSettings.customHeaders
+		}}
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{

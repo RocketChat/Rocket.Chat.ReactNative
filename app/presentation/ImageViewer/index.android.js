@@ -9,6 +9,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import Animated, { Easing } from 'react-native-reanimated';
 import { ResponsiveComponent } from 'react-native-responsive-ui';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
@@ -428,7 +429,10 @@ class ImageViewer extends ResponsiveComponent {
 									}
 								]}
 								resizeMode='contain'
-								source={{ uri }}
+								source={{
+									uri,
+									headers: RocketChatSettings.customHeaders
+								}}
 								{...props}
 							/>
 						</PanGestureHandler>

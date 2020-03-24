@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 const styles = StyleSheet.create({
 	scrollContent: {
@@ -25,7 +26,10 @@ const ImageViewer = ({
 		<FastImage
 			style={styles.image}
 			resizeMode='contain'
-			source={{ uri }}
+			source={{
+				uri,
+				headers: RocketChatSettings.customHeaders
+			}}
 			{...props}
 		/>
 	</ScrollView>
