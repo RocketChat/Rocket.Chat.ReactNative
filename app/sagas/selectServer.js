@@ -38,7 +38,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		}
 
 		let serverVersion = semver.valid(serverInfo.version);
-		if (serverVersion) {
+		if (!serverVersion) {
 			({ version: serverVersion } = semver.coerce(serverInfo.version));
 		}
 
