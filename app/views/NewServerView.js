@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import isEqual from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
@@ -80,7 +80,8 @@ class NewServerView extends React.Component {
 		server: PropTypes.string,
 		theme: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
-		connectServer: PropTypes.func.isRequired
+		connectServer: PropTypes.func.isRequired,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -229,10 +230,14 @@ class NewServerView extends React.Component {
 	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions, theme } = this.props;
+		showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX
+			destructiveButtonIndex: this.DELETE_INDEX,
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText },
+			titleTextStyle: { color: themes[theme].actionSheetTitleText }
 		}, (actionIndex) => {
 			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
 		});
@@ -347,4 +352,4 @@ const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(connectActionSheet(NewServerView)));

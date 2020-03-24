@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import I18n from '../i18n';
+import { themes } from '../constants/colors';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
@@ -32,7 +33,9 @@ class MessageActions extends React.Component {
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
-		Message_Read_Receipt_Store_Users: PropTypes.bool
+		Message_Read_Receipt_Store_Users: PropTypes.bool,
+		showActionSheetWithOptions: PropTypes.func,
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -141,11 +144,15 @@ class MessageActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions, theme } = this.props;
+		showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
 			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
+			title: I18n.t('Message_actions'),
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText },
+			titleTextStyle: { color: themes[theme].actionSheetTitleText }
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
@@ -407,4 +414,4 @@ const mapStateToProps = state => ({
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 });
 
-export default connect(mapStateToProps)(MessageActions);
+export default connect(mapStateToProps)(connectActionSheet(MessageActions));

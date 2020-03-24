@@ -6,7 +6,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -92,7 +92,8 @@ class MessageBox extends Component {
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
 		theme: PropTypes.string,
-		replyCancel: PropTypes.func
+		replyCancel: PropTypes.func,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -583,9 +584,13 @@ class MessageBox extends Component {
 	}
 
 	showFileActions = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { theme, showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
 			options: this.fileOptions,
-			cancelButtonIndex: FILE_CANCEL_INDEX
+			cancelButtonIndex: FILE_CANCEL_INDEX,
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText },
+			titleTextStyle: { color: themes[theme].actionSheetTitleText }
 		}, (actionIndex) => {
 			this.handleFileActionPress(actionIndex);
 		});
@@ -901,4 +906,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(connectActionSheet(MessageBox));

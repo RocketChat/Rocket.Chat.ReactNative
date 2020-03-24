@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { themes } from '../constants/colors';
 
 class MessageErrorActions extends React.Component {
 	static propTypes = {
 		actionsHide: PropTypes.func.isRequired,
 		message: PropTypes.object,
-		tmid: PropTypes.string
+		tmid: PropTypes.string,
+		showActionSheetWithOptions: PropTypes.func,
+		theme: PropTypes.string
 	};
 
 	// eslint-disable-next-line react/sort-comp
@@ -91,11 +94,14 @@ class MessageErrorActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions, theme } = this.props;
+		showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
 			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
+			title: I18n.t('Message_actions'),
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText }
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
@@ -123,4 +129,4 @@ class MessageErrorActions extends React.Component {
 	}
 }
 
-export default MessageErrorActions;
+export default connectActionSheet(MessageErrorActions);

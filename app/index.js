@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
@@ -699,7 +700,9 @@ export default class Root extends React.Component {
 							setTheme: this.setTheme
 						}}
 					>
-						{content}
+						<ActionSheetProvider>
+							{content}
+						</ActionSheetProvider>
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>

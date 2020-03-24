@@ -4,7 +4,7 @@ import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message/Message';
@@ -34,7 +34,8 @@ class MessagesView extends React.Component {
 		navigation: PropTypes.object,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
-		split: PropTypes.bool
+		split: PropTypes.bool,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -236,10 +237,14 @@ class MessagesView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions, theme } = this.props;
+		showActionSheetWithOptions({
 			options: [this.content.actionTitle, I18n.t('Cancel')],
 			cancelButtonIndex: CANCEL_INDEX,
-			title: I18n.t('Actions')
+			title: I18n.t('Actions'),
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText },
+			titleTextStyle: { color: themes[theme].actionSheetTitleText }
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
@@ -321,4 +326,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));
+export default connect(mapStateToProps)(withSplit(withTheme(connectActionSheet(MessagesView))));

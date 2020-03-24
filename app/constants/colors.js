@@ -46,7 +46,10 @@ export const themes = {
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		actionSheetBackground: '#FFFFFF',
+		actionSheetText: '#000000',
+		actionSheetTitleText: '#0d0e12'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -81,7 +84,10 @@ export const themes = {
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		actionSheetBackground: '#030b1b',
+		actionSheetText: '#1d74f5',
+		actionSheetTitleText: '#FFFFFF'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -116,6 +122,9 @@ export const themes = {
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		actionSheetBackground: '#000000',
+		actionSheetText: '#1ea1fe',
+		actionSheetTitleText: '#f9f9f9'
 	}
 };

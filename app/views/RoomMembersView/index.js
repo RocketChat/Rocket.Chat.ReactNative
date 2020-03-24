@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View } from 'react-native';
-import ActionSheet from 'react-native-action-sheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
@@ -54,7 +54,8 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -166,10 +167,14 @@ class RoomMembersView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions, theme } = this.props;
+		showActionSheetWithOptions({
 			options: this.actionSheetOptions,
 			cancelButtonIndex: this.CANCEL_INDEX,
-			title: I18n.t('Actions')
+			title: I18n.t('Actions'),
+			containerStyle: { backgroundColor: themes[theme].actionSheetBackground },
+			textStyle: { color: themes[theme].actionSheetText },
+			titleTextStyle: { color: themes[theme].actionSheetTitleText }
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});
@@ -292,4 +297,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(RoomMembersView));
+export default connect(mapStateToProps)(withTheme(connectActionSheet(RoomMembersView)));

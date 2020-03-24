@@ -907,7 +907,7 @@ class RoomView extends React.Component {
 			room, selectedMessage, showActions, showErrorActions, joined
 		} = this.state;
 		const {
-			user, navigation
+			user, navigation, theme
 		} = this.props;
 		if (!navigation.isFocused()) {
 			return null;
@@ -926,6 +926,7 @@ class RoomView extends React.Component {
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
 							isReadOnly={this.isReadOnly}
+							theme={theme}
 						/>
 					)
 					: null
@@ -935,6 +936,7 @@ class RoomView extends React.Component {
 						tmid={this.tmid}
 						message={selectedMessage}
 						actionsHide={this.onErrorActionsHide}
+						theme={theme}
 					/>
 				) : null}
 			</>
