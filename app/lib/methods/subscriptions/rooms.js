@@ -14,7 +14,7 @@ import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
 import EventEmmiter from '../../../utils/events';
-import { deleteRoomFinish } from '../../../actions/room';
+import { removedRoom } from '../../../actions/room';
 
 const removeListener = listener => listener.stop();
 
@@ -245,7 +245,7 @@ export default function subscribeRooms() {
 					// Delete and remove events come from this stream
 					// Here we identify which one was triggered
 					if (data.rid === roomState.rid && roomState.isDeleting) {
-						store.dispatch(deleteRoomFinish());
+						store.dispatch(removedRoom());
 					} else {
 						EventEmmiter.emit('ROOM_REMOVED', { rid: data.rid });
 					}
