@@ -474,7 +474,7 @@ export default {
 	Username_or_email: 'Username or email',
 	Uses_server_configuration: 'Uses server configuration',
 	Validating: 'Validating',
-	Verify_email_title: 'Registration Succeeded!',
+	Manual_or_Verify_email_title: 'Registration Succeeded!',
 	Verify_email_desc: 'We have sent you an email to confirm your registration. If you do not receive an email shortly, please come back and try again.',
 	Video_call: 'Video call',
 	View_Original: 'View Original',
@@ -525,6 +525,5 @@ export default {
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
 	Mark_unread: 'Mark Unread',
-	Manual_Authentication_Title: 'Waiting for user to be activated',
-	Manual_Authentication_Desc: 'User registered, waiting for admin to approve the new user'
+	Manual_Authentication_Desc: 'Before you can login, your account must be manually activated by an administrator.'
 };
