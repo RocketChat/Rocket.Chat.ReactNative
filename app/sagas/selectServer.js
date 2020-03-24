@@ -81,6 +81,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					name: userRecord.name,
 					language: userRecord.language,
 					status: userRecord.status,
+					statusText: userRecord.statusText,
 					roles: userRecord.roles
 				};
 			} catch (e) {

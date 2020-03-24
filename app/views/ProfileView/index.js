@@ -62,6 +62,7 @@ class ProfileView extends React.Component {
 
 	state = {
 		saving: false,
+		statusText: null,
 		name: null,
 		username: null,
 		email: null,
@@ -114,10 +115,11 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields
+			statusText, name, username, emails, customFields
 		} = user || userProps;
 
 		this.setState({
+			statusText,
 			name,
 			username,
 			email: emails ? emails[0].address : null,
@@ -131,7 +133,7 @@ class ProfileView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields
+			statusText, name, username, email, newPassword, avatar, customFields
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -145,7 +147,8 @@ class ProfileView extends React.Component {
 			});
 		}
 
-		return !(user.name === name
+		return !(user.statusText === statusText
+			&& user.name === name
 			&& user.username === username
 			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
@@ -171,10 +174,15 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
+			statusText, name, username, email, newPassword, currentPassword, avatar, customFields
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
+
+		// Status Text
+		if (user.statusText !== statusText) {
+			params.statusText = statusText;
+		}
 
 		// Name
 		if (user.name !== name) {
@@ -419,7 +427,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
+			statusText, name, username, email, newPassword, avatarUrl, customFields, avatar, saving
 		} = this.state;
 		const {
 			baseUrl,
@@ -456,6 +464,16 @@ class ProfileView extends React.Component {
 								token={user.token}
 							/>
 						</View>
+						<RCTextInput
+							inputRef={(e) => { this.statusText = e; }}
+							label={I18n.t('Custom_Status')}
+							placeholder={I18n.t('Custom_Status')}
+							value={statusText}
+							onChangeText={value => this.setState({ statusText: value })}
+							onSubmitEditing={() => { this.name.focus(); }}
+							testID='profile-view-custom-status'
+							theme={theme}
+						/>
 						<RCTextInput
 							editable={Accounts_AllowRealNameChange}
 							inputStyle={[

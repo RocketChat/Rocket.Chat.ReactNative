@@ -289,11 +289,21 @@ const ModalBlockStack = createStackNavigator({
 	cardStyle
 });
 
+const StatusStack = createStackNavigator({
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
 	ModalBlockStack,
+	StatusStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -385,6 +395,9 @@ const SidebarStack = createStackNavigator({
 	},
 	AdminPanelView: {
 		getScreen: () => require('./views/AdminPanelView').default
+	},
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

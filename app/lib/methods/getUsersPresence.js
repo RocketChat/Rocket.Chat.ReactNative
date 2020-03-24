@@ -53,7 +53,10 @@ export default async function getUsersPresence() {
 						reduxStore.dispatch(setUser({ status }));
 					}
 
-					ret[_id] = status;
+					ret[item._id] = {
+						status: item.status,
+						statusText: item.statusText
+					};
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {

@@ -25,12 +25,12 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		overflow: 'hidden'
 	},
-	announcementTextContainer: {
+	bannerContainer: {
 		paddingVertical: 12,
 		paddingHorizontal: 15,
 		alignItems: 'center'
 	},
-	announcementTitle: {
+	bannerModalTitle: {
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
