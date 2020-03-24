@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight
+	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight,FlatList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -16,6 +16,7 @@ import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
+
 
 const styles = StyleSheet.create({
 	modal: {
@@ -95,9 +96,10 @@ class UploadModal extends Component {
 	}
 
 	state = {
-		name: '',
+		name: {},
 		description: '',
-		file: {}
+		file: {},
+		files: []
 	};
 
 	static getDerivedStateFromProps(props, state) {
@@ -105,7 +107,8 @@ class UploadModal extends Component {
 			return {
 				file: props.file,
 				name: props.file.filename || 'Filename',
-				description: ''
+				description: '',
+				files: [...state.files,props.file]
 			};
 		}
 		return null;
@@ -143,8 +146,8 @@ class UploadModal extends Component {
 
 	submit = () => {
 		const { file, submit } = this.props;
-		const { name, description } = this.state;
-		submit({ ...file, name, description });
+		const { files, description } = this.state;
+		submit({files, description });
 	}
 
 	renderButtons = () => {
@@ -193,26 +196,32 @@ class UploadModal extends Component {
 		);
 	}
 
-	renderPreview() {
-		const { file, split, theme } = this.props;
-		if (file.mime && file.mime.match(/image/)) {
-			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />);
-		}
-		if (file.mime && file.mime.match(/video/)) {
-			return (
-				<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
-					<CustomIcon name='play' size={72} color={themes[theme].buttonText} />
-				</View>
-			);
-		}
-		return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />);
+	 renderPreview(file) {
+		const {  split, theme } = this.props;
+		const {files} = this.state
+		
+			if (file.mime && file.mime.match(/image/)) {
+				return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />)
+				
+			}
+			if (file.mime && file.mime.match(/video/)) {
+				return (
+					<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
+						<CustomIcon name='play' size={72} color={themes[theme].buttonText} />
+					</View>
+				);
+			}
+			return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />)
+
+		
 	}
 
 	render() {
 		const {
 			window: { width }, isVisible, close, split, theme
 		} = this.props;
-		const { name, description } = this.state;
+		const { name, description , files } = this.state;
+		alert(name)
 		return (
 			<Modal
 				isVisible={isVisible}
@@ -230,8 +239,15 @@ class UploadModal extends Component {
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
 
-					<ScrollView style={styles.scrollView}>
-						{this.renderPreview()}
+					<ScrollView  >
+					   <FlatList
+					   data={files}
+					   renderItem= {({item})=>this.renderPreview(item)}
+					   />
+
+						</ScrollView>
+
+						
 						<TextInput
 							placeholder={I18n.t('File_name')}
 							value={name}
@@ -244,7 +260,7 @@ class UploadModal extends Component {
 							onChangeText={value => this.setState({ description: value })}
 							theme={theme}
 						/>
-					</ScrollView>
+					
 					{this.renderButtons()}
 				</View>
 			</Modal>

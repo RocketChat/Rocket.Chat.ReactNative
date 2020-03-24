@@ -133,7 +133,7 @@ export default {
 	Change_language_loading: 'Changing language.',
 	Choose: 'Choose',
 	Choose_from_library: 'Choose from library',
-	Choose_file: 'Choose file',
+	Choose_files: 'Choose files',
 	Choose_where_you_want_links_be_opened: 'Choose where you want links be opened',
 	Code: 'Code',
 	Collaborative: 'Collaborative',

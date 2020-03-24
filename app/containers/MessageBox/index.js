@@ -118,7 +118,7 @@ class MessageBox extends Component {
 			I18n.t('Take_a_photo'),
 			I18n.t('Take_a_video'),
 			I18n.t('Choose_from_library'),
-			I18n.t('Choose_file')
+			I18n.t('Choose_files')
 		];
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -512,19 +512,23 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	sendMediaMessage = async(file) => {
+	sendMediaMessage = ({files,description}) => {
+		alert(files[0])
 		const {
 			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
-		this.setState({ file: { isVisible: false } });
+		files.map(async(file)=>{
+			alert(file)
+			this.setState({ file: { isVisible: false } });
 		const fileInfo = {
-			name: file.name,
-			description: file.description,
+			name: file.filename,
+			description: description,
 			size: file.size,
 			type: file.mime,
 			store: 'Uploads',
 			path: file.path
 		};
+		
 		try {
 			replyCancel();
 			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
@@ -532,8 +536,10 @@ class MessageBox extends Component {
 		} catch (e) {
 			log(e);
 		}
-	}
 
+		})
+		
+	}
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
@@ -569,18 +575,23 @@ class MessageBox extends Component {
 
 	chooseFile = async() => {
 		try {
-			const res = await DocumentPicker.pick({
+			const results = await DocumentPicker.pickMultiple({
 				type: [DocumentPicker.types.allFiles]
 			});
-			const file = {
-				filename: res.name,
-				size: res.size,
-				mime: res.type,
-				path: res.uri
-			};
-			if (this.canUploadFile(file)) {
-				this.showUploadModal(file);
-			}
+			for (const res of results) {
+				const file = {
+					filename: res.name,
+					size: res.size,
+					mime: res.type,
+					path: res.uri
+				};
+				if (this.canUploadFile(file)) {
+					this.showUploadModal(file);
+				}
+				
+			
+			  }
+			
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
