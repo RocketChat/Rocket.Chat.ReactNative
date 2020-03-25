@@ -264,9 +264,6 @@ const NewMessageStack = createStackNavigator({
 	},
 	CreateChannelView: {
 		getScreen: () => require('./views/CreateChannelView').default
-	},
-	CreateDiscussionView: {
-		getScreen: () => require('./views/CreateDiscussionView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -292,11 +289,21 @@ const ModalBlockStack = createStackNavigator({
 	cardStyle
 });
 
+const CreateDiscussionStack = createStackNavigator({
+	CreateDiscussionView: {
+		getScreen: () => require('./views/CreateDiscussionView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
 	ModalBlockStack,
+	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}

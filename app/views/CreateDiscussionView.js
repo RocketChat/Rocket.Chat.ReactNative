@@ -63,7 +63,7 @@ const SelectChannel = ({ onChannelSelect, theme }) => {
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
 				onSearch={getChannels}
-				options={channels.map(channel => ({ value: channel.rid, text: { text: channel.name } }))}
+				options={channels.map(channel => ({ value: channel.rid, text: { text: RocketChat.getRoomTitle(channel) } }))}
 				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
 			/>
@@ -134,18 +134,20 @@ class CreateChannelView extends React.Component {
 		theme: PropTypes.string
 	}
 
-	state = {
-		channel: '',
-		name: '',
-		users: [],
-		reply: '',
-		loading: false
-	}
-
 	constructor(props) {
 		super(props);
 		const { navigation } = props;
 		navigation.setParams({ submit: this.submit });
+		const channel = navigation.getParam('channel', {});
+		const message = navigation.getParam('message', {});
+		this.state = {
+			channel: channel.rid,
+			message: message.id,
+			name: message.msg,
+			users: [],
+			reply: '',
+			loading: false
+		};
 	}
 
 	componentDidUpdate(_, prevState) {
@@ -157,13 +159,13 @@ class CreateChannelView extends React.Component {
 
 	submit = async() => {
 		const {
-			name: t_name, channel: prid, reply, users
+			name: t_name, channel: prid, message: pmid, reply, users
 		} = this.state;
 
 		this.setState({ loading: true });
 		try {
 			await RocketChat.createDiscussion({
-				prid, t_name, reply, users
+				prid, pmid, t_name, reply, users
 			});
 		} catch {
 			// do nothing
