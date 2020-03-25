@@ -1,4 +1,4 @@
-export default urls => urls.filter(url => url.meta && !url.ignoreParse).map((url, index) => {
+export default urls => urls.filter(url => !url.ignoreParse).map((url, index) => {
 	const tmp = {};
 	const { meta } = url;
 	tmp._id = index;
