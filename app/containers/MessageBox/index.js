@@ -45,6 +45,7 @@ import {
 import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
+import Navigation from '../../lib/Navigation';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -591,8 +592,7 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
-		const { navigation } = this.props;
-		navigation.navigate('CreateDiscussionView', { channel: this.room });
+		Navigation.navigate('CreateDiscussionView', { channel: this.room });
 	}
 
 	showUploadModal = (file) => {

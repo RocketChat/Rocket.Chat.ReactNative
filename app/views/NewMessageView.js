@@ -24,6 +24,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
+import Navigation from '../lib/Navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -146,8 +147,7 @@ class NewMessageView extends React.Component {
 	}
 
 	createDiscussion = () => {
-		const { navigation } = this.props;
-		navigation.navigate('CreateDiscussionView');
+		Navigation.navigate('CreateDiscussionView');
 	}
 
 	renderHeader = () => {

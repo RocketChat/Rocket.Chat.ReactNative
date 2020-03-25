@@ -22,6 +22,9 @@ import TextInput from '../containers/TextInput';
 import debounce from '../utils/debounce';
 import RocketChat from '../lib/rocketchat';
 import { avatarURL } from '../utils/avatar';
+import Navigation from '../lib/Navigation';
+import { createDiscussionRequest } from '../actions/createDiscussion';
+import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	container: {
@@ -164,6 +167,11 @@ class CreateChannelView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
 		user: PropTypes.object,
+		create: PropTypes.func,
+		loading: PropTypes.bool,
+		result: PropTypes.object,
+		failure: PropTypes.bool,
+		error: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -178,32 +186,42 @@ class CreateChannelView extends React.Component {
 			message,
 			name: message.msg || '',
 			users: [],
-			reply: '',
-			loading: false
+			reply: ''
 		};
 	}
 
-	componentDidUpdate(_, prevState) {
+	componentDidUpdate(prevProps, prevState) {
+		const {
+			loading, failure, error, result, navigation
+		} = this.props;
+
 		if (!isEqual(this.state, prevState)) {
-			const { navigation } = this.props;
 			navigation.setParams({ showSubmit: this.valid() });
+		}
+
+		if (!loading && loading !== prevProps.loading) {
+			setTimeout(() => {
+				if (failure) {
+					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+					showErrorAlert(msg);
+				} else {
+					const { rid, name, t } = result;
+					Navigation.navigate('RoomView', { rid, name, t });
+				}
+			}, 300);
 		}
 	}
 
-	submit = async() => {
+	submit = () => {
 		const {
 			name: t_name, channel: { rid: prid }, message: { id: pmid }, reply, users
 		} = this.state;
+		const { create } = this.props;
 
-		this.setState({ loading: true });
-		try {
-			await RocketChat.createDiscussion({
-				prid, pmid, t_name, reply, users
-			});
-		} catch {
-			// do nothing
-		}
-		this.setState({ loading: false });
+		// create discussion
+		create({
+			prid, pmid, t_name, reply, users
+		});
 	};
 
 	valid = () => {
@@ -220,8 +238,10 @@ class CreateChannelView extends React.Component {
 	};
 
 	render() {
-		const { loading, name, users } = this.state;
-		const { server, user, theme } = this.props;
+		const { name, users } = this.state;
+		const {
+			server, user, loading, theme
+		} = this.props;
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
@@ -273,7 +293,15 @@ class CreateChannelView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	server: state.server.server
+	server: state.server.server,
+	error: state.createDiscussion.error,
+	failure: state.createDiscussion.failure,
+	loading: state.createDiscussion.isFetching,
+	result: state.createDiscussion.result
 });
 
-export default connect(mapStateToProps)(withTheme(CreateChannelView));
+const mapDispatchToProps = dispatch => ({
+	create: data => dispatch(createDiscussionRequest(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));
