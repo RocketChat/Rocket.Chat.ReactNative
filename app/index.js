@@ -264,6 +264,9 @@ const NewMessageStack = createStackNavigator({
 	},
 	CreateChannelView: {
 		getScreen: () => require('./views/CreateChannelView').default
+	},
+	CreateDiscussionView: {
+		getScreen: () => require('./views/CreateDiscussionView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

@@ -33,6 +33,8 @@ export const MultiSelect = React.memo(({
 	loading,
 	value: values,
 	multiselect = false,
+	onSearch,
+	inputStyle,
 	theme
 }) => {
 	const [selected, select] = useState(values || []);
@@ -73,7 +75,7 @@ export const MultiSelect = React.memo(({
 	};
 
 	const onSelect = (item) => {
-		const { value } = item;
+		const { value, text: { text } } = item;
 		if (multiselect) {
 			let newSelect = [];
 			if (!selected.includes(value)) {
@@ -85,19 +87,19 @@ export const MultiSelect = React.memo(({
 			onChange({ value: newSelect });
 		} else {
 			onChange({ value });
-			setCurrentValue(value);
-			setOpen(false);
+			setCurrentValue(text);
+			onHide();
 		}
 	};
 
 	const renderContent = () => {
-		const items = options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
+		const items = onSearch ? options : options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
 		return (
 			<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
-						onChangeText={onSearchChange}
+						onChangeText={onSearch || onSearchChange}
 						placeholder={placeholder.text}
 						theme={theme}
 					/>
@@ -124,19 +126,22 @@ export const MultiSelect = React.memo(({
 			open={onShow}
 			theme={theme}
 			loading={loading}
+			inputStyle={inputStyle}
 		>
-			<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{currentValue}</Text>
+			<Text style={[styles.pickerText, { color: currentValue ? themes[theme].titleText : themes[theme].auxiliaryText }]}>{currentValue || placeholder.text}</Text>
 		</Input>
 	);
 
 	if (context === BLOCK_CONTEXT.FORM) {
+		const items = options.filter(option => selected.includes(option.value));
 		button = (
 			<Input
 				open={onShow}
 				theme={theme}
 				loading={loading}
+				inputStyle={inputStyle}
 			>
-				<Chips items={options.filter(option => selected.includes(option.value))} onSelect={onSelect} theme={theme} />
+				{items.length ? <Chips items={items} onSelect={onSelect} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
 		);
 	}
@@ -172,6 +177,8 @@ MultiSelect.propTypes = {
 	context: PropTypes.number,
 	loading: PropTypes.bool,
 	multiselect: PropTypes.bool,
+	onSearch: PropTypes.func,
+	inputStyle: PropTypes.object,
 	value: PropTypes.array,
 	theme: PropTypes.string
 };

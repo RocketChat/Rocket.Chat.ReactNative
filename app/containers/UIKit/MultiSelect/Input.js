@@ -9,11 +9,11 @@ import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
 
 const Input = ({
-	children, open, theme, loading
+	children, open, theme, loading, inputStyle
 }) => (
 	<Touchable
 		onPress={() => open(true)}
-		style={{ backgroundColor: themes[theme].backgroundColor }}
+		style={[{ backgroundColor: themes[theme].backgroundColor }, inputStyle]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
@@ -30,6 +30,7 @@ Input.propTypes = {
 	children: PropTypes.node,
 	open: PropTypes.func,
 	theme: PropTypes.string,
+	inputStyle: PropTypes.object,
 	loading: PropTypes.bool
 };
 

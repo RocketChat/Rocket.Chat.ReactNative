@@ -142,6 +142,11 @@ class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
+	createDiscussion = () => {
+		const { navigation } = this.props;
+		navigation.navigate('CreateDiscussionView');
+	}
+
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
@@ -156,6 +161,17 @@ class NewMessageView extends React.Component {
 					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
+					</View>
+				</Touch>
+				<Touch
+					onPress={this.createDiscussion}
+					style={[styles.createChannelButton, { backgroundColor: themes[theme].backgroundColor }]}
+					testID='new-message-view-create-channel'
+					theme={theme}
+				>
+					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
+						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Discussion')}</Text>
 					</View>
 				</Touch>
 			</View>
