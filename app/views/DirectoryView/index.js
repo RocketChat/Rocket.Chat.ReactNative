@@ -65,10 +65,6 @@ class DirectoryView extends React.Component {
 		this.load({});
 	}
 
-	onSearchChangeText = (text) => {
-		this.setState({ text });
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
 		if (newSearch) {
@@ -108,8 +104,9 @@ class DirectoryView extends React.Component {
 		}
 	}, 200)
 
-	search = () => {
+	search = (text) => {
 		this.load({ newSearch: true });
+		this.setState({ text });
 	}
 
 	changeType = (type) => {
@@ -148,8 +145,7 @@ class DirectoryView extends React.Component {
 		return (
 			<>
 				<SearchBox
-					onChangeText={this.onSearchChangeText}
-					onSubmitEditing={this.search}
+					onChangeText={this.search}
 					testID='federation-view-search'
 				/>
 				<Touch
