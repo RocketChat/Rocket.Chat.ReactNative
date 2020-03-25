@@ -56,6 +56,12 @@ export const MultiSelect = React.memo(({
 		setOpen(showContent);
 	}, [showContent]);
 
+	useEffect(() => {
+		if (values && values.length && !multiselect) {
+			setCurrentValue(values[0].text);
+		}
+	}, []);
+
 	const onShow = () => {
 		Animated.timing(
 			animatedValue,
@@ -189,4 +195,7 @@ MultiSelect.propTypes = {
 	value: PropTypes.array,
 	disabled: PropTypes.bool,
 	theme: PropTypes.string
+};
+MultiSelect.defaultProps = {
+	onClose: () => {}
 };

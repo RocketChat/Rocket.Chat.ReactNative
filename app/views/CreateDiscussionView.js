@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SelectChannel = ({ onChannelSelect, theme }) => {
+const SelectChannel = ({ onChannelSelect, initial, theme }) => {
 	const [channels, setChannels] = useState([]);
 
 	const getChannels = debounce(async(keyword = '') => {
@@ -63,6 +63,8 @@ const SelectChannel = ({ onChannelSelect, theme }) => {
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
 				onSearch={getChannels}
+				value={initial && [initial]}
+				disabled={initial}
 				options={channels.map(channel => ({ value: channel.rid, text: { text: RocketChat.getRoomTitle(channel) } }))}
 				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
@@ -71,6 +73,7 @@ const SelectChannel = ({ onChannelSelect, theme }) => {
 	);
 };
 SelectChannel.propTypes = {
+	initial: PropTypes.object,
 	onChannelSelect: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -112,7 +115,7 @@ SelectUsers.propTypes = {
 class CreateChannelView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit');
+		const showSubmit = navigation.getParam('showSubmit', navigation.getParam('message'));
 		return {
 			...themedHeader(screenProps.theme),
 			title: I18n.t('Create_Discussion'),
@@ -138,12 +141,12 @@ class CreateChannelView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		navigation.setParams({ submit: this.submit });
-		const channel = navigation.getParam('channel', {});
+		const channel = navigation.getParam('channel');
 		const message = navigation.getParam('message', {});
 		this.state = {
-			channel: channel.rid,
-			message: message.id,
-			name: message.msg,
+			channel,
+			message,
+			name: message.msg || '',
 			users: [],
 			reply: '',
 			loading: false
@@ -159,7 +162,7 @@ class CreateChannelView extends React.Component {
 
 	submit = async() => {
 		const {
-			name: t_name, channel: prid, message: pmid, reply, users
+			name: t_name, channel: { rid: prid }, message: { id: pmid }, reply, users
 		} = this.state;
 
 		this.setState({ loading: true });
@@ -175,19 +178,17 @@ class CreateChannelView extends React.Component {
 
 	valid = () => {
 		const {
-			channel, name, users, reply
+			channel, name
 		} = this.state;
 
 		return (
-			channel.trim().length
+			channel.rid.trim().length
 			&& name.trim().length
-			&& users.length
-			&& reply.trim().length
 		);
 	};
 
 	render() {
-		const { loading } = this.state;
+		const { loading, channel, name } = this.state;
 		const { theme } = this.props;
 		return (
 			<KeyboardView
@@ -200,13 +201,15 @@ class CreateChannelView extends React.Component {
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
-							onChannelSelect={({ value }) => this.setState({ channel: value })}
+							initial={channel && { text: RocketChat.getRoomTitle(channel) }}
+							onChannelSelect={({ value }) => this.setState({ channel: { rid: value } })}
 							theme={theme}
 						/>
 						<TextInput
 							label={I18n.t('Discussion_name')}
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
+							defaultValue={name}
 							onChangeText={text => this.setState({ name: text })}
 						/>
 						<SelectUsers
