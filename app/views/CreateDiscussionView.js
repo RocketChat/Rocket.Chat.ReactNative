@@ -64,6 +64,7 @@ const SelectChannel = ({ onChannelSelect, theme }) => {
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				options={channels.map(channel => ({ value: channel.rid, text: { text: channel.name } }))}
+				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
 			/>
 		</>
@@ -96,6 +97,7 @@ const SelectUsers = ({ onUserSelect, theme }) => {
 				onChange={onUserSelect}
 				options={users.map(user => ({ value: user.name, text: { text: user.name } }))}
 				placeholder={{ text: `${ I18n.t('Select_Users') }...` }}
+				onClose={() => setUsers([])}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
 			/>
@@ -201,7 +203,7 @@ class CreateChannelView extends React.Component {
 						/>
 						<TextInput
 							label={I18n.t('Discussion_name')}
-							placeholder='A meaningful name for the discussion room'
+							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
 							onChangeText={text => this.setState({ name: text })}
 						/>
@@ -214,7 +216,7 @@ class CreateChannelView extends React.Component {
 							label={I18n.t('Your_message')}
 							inputStyle={styles.multiline}
 							theme={theme}
-							placeholder='Usually, a discussion starts with a question, like "How do I upload a picture?"'
+							placeholder={I18n.t('Usually_a_discussion_starts_with_a_question_like_How_do_I_upload_a_picture')}
 							onChangeText={text => this.setState({ reply: text })}
 						/>
 						<Loading visible={loading} />

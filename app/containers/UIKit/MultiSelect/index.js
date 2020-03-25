@@ -10,6 +10,7 @@ import TextInput from '../../TextInput';
 
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
+import I18n from '../../../i18n';
 
 import Chips from './Chips';
 import Items from './Items';
@@ -34,6 +35,7 @@ export const MultiSelect = React.memo(({
 	value: values,
 	multiselect = false,
 	onSearch,
+	onClose,
 	inputStyle,
 	theme
 }) => {
@@ -65,6 +67,7 @@ export const MultiSelect = React.memo(({
 	};
 
 	const onHide = () => {
+		onClose();
 		Animated.timing(
 			animatedValue,
 			{
@@ -100,7 +103,7 @@ export const MultiSelect = React.memo(({
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
 						onChangeText={onSearch || onSearchChange}
-						placeholder={placeholder.text}
+						placeholder={I18n.t('Search')}
 						theme={theme}
 					/>
 					<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
@@ -178,6 +181,7 @@ MultiSelect.propTypes = {
 	loading: PropTypes.bool,
 	multiselect: PropTypes.bool,
 	onSearch: PropTypes.func,
+	onClose: PropTypes.func,
 	inputStyle: PropTypes.object,
 	value: PropTypes.array,
 	theme: PropTypes.string
