@@ -33,7 +33,10 @@ const styles = StyleSheet.create({
 		marginLeft: 60
 	},
 	createChannelButton: {
-		marginVertical: 25
+		marginTop: 25
+	},
+	createDiscussionButton: {
+		marginBottom: 25
 	},
 	createChannelContainer: {
 		height: 46,
@@ -165,11 +168,11 @@ class NewMessageView extends React.Component {
 				</Touch>
 				<Touch
 					onPress={this.createDiscussion}
-					style={[styles.createChannelButton, { backgroundColor: themes[theme].backgroundColor }]}
-					testID='new-message-view-create-channel'
+					style={[styles.createDiscussionButton, { backgroundColor: themes[theme].backgroundColor }]}
+					testID='new-message-view-create-discussion'
 					theme={theme}
 				>
-					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
+					<View style={[sharedStyles.separatorBottom, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Discussion')}</Text>
 					</View>
