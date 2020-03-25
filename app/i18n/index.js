@@ -14,6 +14,7 @@ import esES from './locales/es-ES';
 import it from './locales/it';
 import ja from './locales/ja';
 import ar from './locales/ar';
+
 i18n.translations = {
 	en,
 	ru,
