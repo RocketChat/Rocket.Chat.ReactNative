@@ -55,6 +55,9 @@ const LANGUAGES = [
 	}, {
 		label: '日本語',
 		value: 'ja'
+	}, {
+		label: 'العربية',
+		value: 'ar'
 	}
 ];
 

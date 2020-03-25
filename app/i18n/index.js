@@ -13,7 +13,7 @@ import ptPT from './locales/pt-PT';
 import esES from './locales/es-ES';
 import it from './locales/it';
 import ja from './locales/ja';
-
+import ar from './locales/ar';
 i18n.translations = {
 	en,
 	ru,
@@ -25,7 +25,8 @@ i18n.translations = {
 	'es-ES': esES,
 	nl,
 	it,
-	ja
+	ja,
+	ar
 };
 i18n.fallbacks = true;
 
