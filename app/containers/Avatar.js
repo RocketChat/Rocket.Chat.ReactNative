@@ -29,7 +29,7 @@ const Avatar = React.memo(({
 	const uriSize = size === 100 ? 100 : 50;
 
 	let avatarAuthURLFragment = '';
-	if (userId && token && !Accounts_AvatarBlockUnauthenticatedAccess) {
+	if (userId && token && Accounts_AvatarBlockUnauthenticatedAccess) {
 		avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
 	}
 
