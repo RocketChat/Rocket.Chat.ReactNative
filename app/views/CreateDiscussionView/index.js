@@ -1,147 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import isEqual from 'lodash/isEqual';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import Loading from '../containers/Loading';
-import sharedStyles from './Styles';
-import KeyboardView from '../presentation/KeyboardView';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
-import I18n from '../i18n';
-import { CustomHeaderButtons, Item, CloseModalButton } from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
-import { getUserSelector } from '../selectors/login';
-import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import TextInput from '../containers/TextInput';
-import debounce from '../utils/debounce';
-import RocketChat from '../lib/rocketchat';
-import { avatarURL } from '../utils/avatar';
-import Navigation from '../lib/Navigation';
-import { createDiscussionRequest } from '../actions/createDiscussion';
-import { showErrorAlert } from '../utils/info';
+import Loading from '../../containers/Loading';
+import KeyboardView from '../../presentation/KeyboardView';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import I18n from '../../i18n';
+import { CustomHeaderButtons, Item, CloseModalButton } from '../../containers/HeaderButton';
+import StatusBar from '../../containers/StatusBar';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import { themedHeader } from '../../utils/navigation';
+import { getUserSelector } from '../../selectors/login';
+import TextInput from '../../containers/TextInput';
+import RocketChat from '../../lib/rocketchat';
+import Navigation from '../../lib/Navigation';
+import { createDiscussionRequest } from '../../actions/createDiscussion';
+import { showErrorAlert } from '../../utils/info';
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 8
-	},
-	multiline: {
-		height: 130
-	},
-	label: {
-		marginBottom: 10,
-		fontSize: 14,
-		...sharedStyles.textSemibold
-	},
-	inputStyle: {
-		marginBottom: 16
-	},
-	description: {
-		paddingBottom: 16
-	}
-});
+import SelectChannel from './SelectChannel';
+import SelectUsers from './SelectUsers';
 
-const SelectChannel = ({
-	server, token, userId, onChannelSelect, initial, theme
-}) => {
-	const [channels, setChannels] = useState([]);
-
-	const getChannels = debounce(async(keyword = '') => {
-		try {
-			const res = await RocketChat.search({ text: keyword, filterUsers: false });
-			setChannels(res);
-		} catch {
-			// do nothing
-		}
-	}, 300);
-
-	const getAvatar = (text, type) => avatarURL({
-		text, type, size: 24, userId, token, baseUrl: server
-	});
-
-	return (
-		<>
-			<Text style={styles.label}>{I18n.t('Parent_channel_or_group')}</Text>
-			<MultiSelect
-				theme={theme}
-				inputStyle={styles.inputStyle}
-				onChange={onChannelSelect}
-				onSearch={getChannels}
-				value={initial && [initial]}
-				disabled={initial}
-				options={channels.map(channel => ({
-					value: channel.rid,
-					text: { text: RocketChat.getRoomTitle(channel) },
-					imageUrl: getAvatar(RocketChat.getRoomAvatar(channel), channel.t)
-				}))}
-				onClose={() => setChannels([])}
-				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
-			/>
-		</>
-	);
-};
-SelectChannel.propTypes = {
-	server: PropTypes.string,
-	token: PropTypes.string,
-	userId: PropTypes.string,
-	initial: PropTypes.object,
-	onChannelSelect: PropTypes.func,
-	theme: PropTypes.string
-};
-
-const SelectUsers = ({
-	server, token, userId, selected, onUserSelect, theme
-}) => {
-	const [users, setUsers] = useState([]);
-
-	const getUsers = debounce(async(keyword = '') => {
-		try {
-			const res = await RocketChat.search({ text: keyword, filterRooms: false });
-			setUsers([...users.filter(u => selected.includes(u.name)), ...res.filter(r => !users.find(u => u.name === r.name))]);
-		} catch {
-			// do nothing
-		}
-	}, 300);
-
-	const getAvatar = text => avatarURL({
-		text, type: 'd', size: 24, userId, token, baseUrl: server
-	});
-
-	return (
-		<>
-			<Text style={styles.label}>{I18n.t('Invite_users')}</Text>
-			<MultiSelect
-				theme={theme}
-				inputStyle={styles.inputStyle}
-				onSearch={getUsers}
-				onChange={onUserSelect}
-				options={users.map(user => ({
-					value: user.name,
-					text: { text: RocketChat.getRoomTitle(user) },
-					imageUrl: getAvatar(RocketChat.getRoomAvatar(user))
-				}))}
-				onClose={() => setUsers(users.filter(u => selected.includes(u.name)))}
-				placeholder={{ text: `${ I18n.t('Select_Users') }...` }}
-				context={BLOCK_CONTEXT.FORM}
-				multiselect
-			/>
-		</>
-	);
-};
-SelectUsers.propTypes = {
-	server: PropTypes.string,
-	token: PropTypes.string,
-	userId: PropTypes.string,
-	selected: PropTypes.array,
-	onUserSelect: PropTypes.func,
-	theme: PropTypes.string
-};
+import styles from './styles';
 
 class CreateChannelView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -245,7 +128,7 @@ class CreateChannelView extends React.Component {
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-				contentContainerStyle={[sharedStyles.container, styles.container]}
+				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
