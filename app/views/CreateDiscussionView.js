@@ -141,10 +141,10 @@ class CreateChannelView extends React.Component {
 		super(props);
 		const { navigation } = props;
 		navigation.setParams({ submit: this.submit });
-		const channel = navigation.getParam('channel');
+		this.channel = navigation.getParam('channel');
 		const message = navigation.getParam('message', {});
 		this.state = {
-			channel,
+			channel: this.channel,
 			message,
 			name: message.msg || '',
 			users: [],
@@ -182,13 +182,15 @@ class CreateChannelView extends React.Component {
 		} = this.state;
 
 		return (
-			channel.rid.trim().length
+			channel
+			&& channel.rid
+			&& channel.rid.trim().length
 			&& name.trim().length
 		);
 	};
 
 	render() {
-		const { loading, channel, name } = this.state;
+		const { loading, name } = this.state;
 		const { theme } = this.props;
 		return (
 			<KeyboardView
@@ -201,7 +203,7 @@ class CreateChannelView extends React.Component {
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
-							initial={channel && { text: RocketChat.getRoomTitle(channel) }}
+							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={({ value }) => this.setState({ channel: { rid: value } })}
 							theme={theme}
 						/>
