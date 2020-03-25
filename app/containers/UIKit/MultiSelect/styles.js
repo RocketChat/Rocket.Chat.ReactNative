@@ -84,5 +84,11 @@ export default StyleSheet.create({
 		borderRadius: 2,
 		width: 20,
 		height: 20
+	},
+	itemImage: {
+		marginRight: 8,
+		borderRadius: 2,
+		width: 24,
+		height: 24
 	}
 });

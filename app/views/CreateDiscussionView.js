@@ -21,6 +21,7 @@ import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import TextInput from '../containers/TextInput';
 import debounce from '../utils/debounce';
 import RocketChat from '../lib/rocketchat';
+import { avatarURL } from '../utils/avatar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +44,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SelectChannel = ({ onChannelSelect, initial, theme }) => {
+const SelectChannel = ({
+	server, token, userId, onChannelSelect, initial, theme
+}) => {
 	const [channels, setChannels] = useState([]);
 
 	const getChannels = debounce(async(keyword = '') => {
@@ -55,6 +58,10 @@ const SelectChannel = ({ onChannelSelect, initial, theme }) => {
 		}
 	}, 300);
 
+	const getAvatar = (text, type) => avatarURL({
+		text, type, size: 24, userId, token, baseUrl: server
+	});
+
 	return (
 		<>
 			<Text style={styles.label}>{I18n.t('Parent_channel_or_group')}</Text>
@@ -65,20 +72,28 @@ const SelectChannel = ({ onChannelSelect, initial, theme }) => {
 				onSearch={getChannels}
 				value={initial && [initial]}
 				disabled={initial}
-				options={channels.map(channel => ({ value: channel.rid, text: { text: RocketChat.getRoomTitle(channel) } }))}
-				onClose={() => setChannels([])}
+				options={channels.map(channel => ({
+					value: channel.rid,
+					text: { text: RocketChat.getRoomTitle(channel) },
+					imageUrl: getAvatar(RocketChat.getRoomAvatar(channel), channel.t)
+				}))}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
 			/>
 		</>
 	);
 };
 SelectChannel.propTypes = {
+	server: PropTypes.string,
+	token: PropTypes.string,
+	userId: PropTypes.string,
 	initial: PropTypes.object,
 	onChannelSelect: PropTypes.func,
 	theme: PropTypes.string
 };
 
-const SelectUsers = ({ onUserSelect, theme }) => {
+const SelectUsers = ({
+	server, token, userId, onUserSelect, theme
+}) => {
 	const [users, setUsers] = useState([]);
 
 	const getUsers = debounce(async(keyword = '') => {
@@ -90,6 +105,10 @@ const SelectUsers = ({ onUserSelect, theme }) => {
 		}
 	}, 300);
 
+	const getAvatar = text => avatarURL({
+		text, type: 'd', size: 24, userId, token, baseUrl: server
+	});
+
 	return (
 		<>
 			<Text style={styles.label}>{I18n.t('Invite_users')}</Text>
@@ -98,9 +117,12 @@ const SelectUsers = ({ onUserSelect, theme }) => {
 				inputStyle={styles.inputStyle}
 				onSearch={getUsers}
 				onChange={onUserSelect}
-				options={users.map(user => ({ value: user.name, text: { text: user.name } }))}
+				options={users.map(user => ({
+					value: user.name,
+					text: { text: RocketChat.getRoomTitle(user) },
+					imageUrl: getAvatar(RocketChat.getRoomAvatar(user))
+				}))}
 				placeholder={{ text: `${ I18n.t('Select_Users') }...` }}
-				onClose={() => setUsers([])}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
 			/>
@@ -108,6 +130,9 @@ const SelectUsers = ({ onUserSelect, theme }) => {
 	);
 };
 SelectUsers.propTypes = {
+	server: PropTypes.string,
+	token: PropTypes.string,
+	userId: PropTypes.string,
 	onUserSelect: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -134,6 +159,8 @@ class CreateChannelView extends React.Component {
 
 	propTypes = {
 		navigation: PropTypes.object,
+		server: PropTypes.string,
+		user: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -191,7 +218,7 @@ class CreateChannelView extends React.Component {
 
 	render() {
 		const { loading, name } = this.state;
-		const { theme } = this.props;
+		const { server, user, theme } = this.props;
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
@@ -203,6 +230,9 @@ class CreateChannelView extends React.Component {
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
+							server={server}
+							userId={user.id}
+							token={user.token}
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={({ value }) => this.setState({ channel: { rid: value } })}
 							theme={theme}
@@ -215,6 +245,9 @@ class CreateChannelView extends React.Component {
 							onChangeText={text => this.setState({ name: text })}
 						/>
 						<SelectUsers
+							server={server}
+							userId={user.id}
+							token={user.token}
 							onUserSelect={({ value }) => this.setState({ users: value })}
 							theme={theme}
 						/>
@@ -235,7 +268,8 @@ class CreateChannelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	server: state.server.server
 });
 
 export default connect(mapStateToProps)(withTheme(CreateChannelView));
