@@ -77,6 +77,7 @@ const SelectChannel = ({
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(RocketChat.getRoomAvatar(channel), channel.t)
 				}))}
+				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
 			/>
 		</>
@@ -92,14 +93,14 @@ SelectChannel.propTypes = {
 };
 
 const SelectUsers = ({
-	server, token, userId, onUserSelect, theme
+	server, token, userId, selected, onUserSelect, theme
 }) => {
 	const [users, setUsers] = useState([]);
 
 	const getUsers = debounce(async(keyword = '') => {
 		try {
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
-			setUsers(res);
+			setUsers([...users.filter(u => selected.includes(u.name)), ...res.filter(r => !users.find(u => u.name === r.name))]);
 		} catch {
 			// do nothing
 		}
@@ -122,6 +123,7 @@ const SelectUsers = ({
 					text: { text: RocketChat.getRoomTitle(user) },
 					imageUrl: getAvatar(RocketChat.getRoomAvatar(user))
 				}))}
+				onClose={() => setUsers(users.filter(u => selected.includes(u.name)))}
 				placeholder={{ text: `${ I18n.t('Select_Users') }...` }}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
@@ -133,6 +135,7 @@ SelectUsers.propTypes = {
 	server: PropTypes.string,
 	token: PropTypes.string,
 	userId: PropTypes.string,
+	selected: PropTypes.array,
 	onUserSelect: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -217,7 +220,7 @@ class CreateChannelView extends React.Component {
 	};
 
 	render() {
-		const { loading, name } = this.state;
+		const { loading, name, users } = this.state;
 		const { server, user, theme } = this.props;
 		return (
 			<KeyboardView
@@ -248,6 +251,7 @@ class CreateChannelView extends React.Component {
 							server={server}
 							userId={user.id}
 							token={user.token}
+							selected={users}
 							onUserSelect={({ value }) => this.setState({ users: value })}
 							theme={theme}
 						/>
