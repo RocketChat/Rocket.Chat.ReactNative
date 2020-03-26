@@ -198,7 +198,7 @@ class NewServerView extends React.Component {
 	completeUrl = (url) => {
 		const parsedUrl = parse(url, true);
 		if (parsedUrl.auth.length) {
-			url = parsedUrl.host;
+			url = parsedUrl.origin;
 		}
 
 		url = url && url.replace(/\s/g, '');
