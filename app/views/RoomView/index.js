@@ -273,7 +273,7 @@ class RoomView extends React.Component {
 				navigation.setParams({ subtitle: roomUpdate.topic });
 			}
 		}
-		if ((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) {
+		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
 			navigation.setParams({ name: this.getRoomTitle(room) });
 		}
 	}
