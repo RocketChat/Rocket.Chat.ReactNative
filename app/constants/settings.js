@@ -47,6 +47,9 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
+	DirectMesssage_maxUsers: {
+		type: 'valueAsNumber'
+	},
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},

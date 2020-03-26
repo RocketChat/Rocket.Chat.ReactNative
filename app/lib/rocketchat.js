@@ -605,6 +605,12 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('im.create', { username });
 	},
+
+	createGroupChat(usernames) {
+		// RC 3.1.0
+		return this.sdk.methodCall('createDirectMessage', ...usernames);
+	},
+
 	joinRoom(roomId, type) {
 		// TODO: join code
 		// RC 0.48.0

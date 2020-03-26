@@ -26,6 +26,10 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
+import { createChannelRequest } from '../actions/createChannel';
+
+const CREATE_CHANNEL = 'CREATE_CHANNEL';
+const CREATE_GROUP_CHAT = 'CREATE_GROUP_CHAT';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -60,6 +64,8 @@ class SelectedUsersView extends React.Component {
 		users: PropTypes.array,
 		loading: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
+		createChannel: PropTypes.func,
+		maxUsers: PropTypes.number,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -70,7 +76,9 @@ class SelectedUsersView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
+		const nextActionID = props.navigation.getParam('nextActionID');
 		this.state = {
+			nextActionID,
 			search: [],
 			chats: []
 		};
@@ -133,10 +141,14 @@ class SelectedUsersView extends React.Component {
 	}
 
 	nextAction = async() => {
-		const { navigation, setLoadingInvite } = this.props;
+		const {
+			navigation, setLoadingInvite, users, createChannel
+		} = this.props;
 		const nextActionID = navigation.getParam('nextActionID');
-		if (nextActionID === 'CREATE_CHANNEL') {
+		if (nextActionID === CREATE_CHANNEL) {
 			navigation.navigate('CreateChannelView');
+		} else if (nextActionID === CREATE_GROUP_CHAT) {
+			createChannel({ users: users.map(user => user.name), group: true });
 		} else {
 			const rid = navigation.getParam('rid');
 			try {
@@ -180,6 +192,13 @@ class SelectedUsersView extends React.Component {
 	}
 
 	_onPressItem = (id, item = {}) => {
+		const { nextActionID } = this.state;
+		const { maxUsers, users } = this.props;
+
+		if (nextActionID === CREATE_GROUP_CHAT && maxUsers === users.length) {
+			return;
+		}
+
 		if (item.search) {
 			this.toggleUser({ _id: item._id, name: item.username, fname: item.name });
 		} else {
@@ -309,6 +328,7 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
+	maxUsers: state.settings.DirectMesssage_maxUsers,
 	user: getUserSelector(state)
 });
 
@@ -316,7 +336,8 @@ const mapDispatchToProps = dispatch => ({
 	addUser: user => dispatch(addUserAction(user)),
 	removeUser: user => dispatch(removeUserAction(user)),
 	reset: () => dispatch(resetAction()),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading)),
+	createChannel: data => dispatch(createChannelRequest(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));

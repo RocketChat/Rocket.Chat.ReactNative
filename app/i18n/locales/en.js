@@ -155,6 +155,7 @@ export default {
 	Whats_the_password_for_your_certificate: 'What\'s the password for your certificate?',
 	Create_account: 'Create an account',
 	Create_Channel: 'Create Channel',
+	Create_Direct_Message: 'Create Direct Message',
 	Created_snippet: 'Created a snippet',
 	Create_a_new_workspace: 'Create a new workspace',
 	Create: 'Create',

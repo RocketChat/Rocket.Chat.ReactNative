@@ -8,8 +8,12 @@ import { createChannelSuccess, createChannelFailure } from '../actions/createCha
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 
-const create = function* create(data) {
-	return yield RocketChat.createChannel(data);
+const createChannel = function createChannel(data) {
+	return RocketChat.createChannel(data);
+};
+
+const createGroupChat = function createGroupChat(data) {
+	return RocketChat.createGroupChat(data);
 };
 
 const handleRequest = function* handleRequest({ data }) {
@@ -18,7 +22,13 @@ const handleRequest = function* handleRequest({ data }) {
 		if (!auth) {
 			yield take(LOGIN.SUCCESS);
 		}
-		const sub = yield call(create, data);
+
+		let sub;
+		if (data.group) {
+			sub = yield call(createGroupChat, data.users);
+		} else {
+			sub = yield call(createChannel, data);
+		}
 
 		try {
 			const db = database.active;

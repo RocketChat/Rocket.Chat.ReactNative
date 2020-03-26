@@ -281,7 +281,7 @@ class RoomActionsView extends React.Component {
 			});
 		}
 
-		if (t === 'd') {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			sections.push({
 				data: [
 					{
@@ -364,14 +364,15 @@ class RoomActionsView extends React.Component {
 
 	updateRoomMember = async() => {
 		const { room } = this.state;
-		const { rid } = room;
 		const { user } = this.props;
 
 		try {
-			const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
-			const result = await RocketChat.getUserInfo(roomUserId);
-			if (result.success) {
-				this.setState({ member: result.user });
+			if (!RocketChat.isGroupChat(room)) {
+				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				if (result.success) {
+					this.setState({ member: result.user });
+				}
 			}
 		} catch (e) {
 			log(e);
