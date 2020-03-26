@@ -11,9 +11,8 @@ import { appStart as appStartAction } from '../../actions';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
-import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
-import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import sharedStyles from '../Styles';
@@ -107,30 +106,6 @@ class OnboardingView extends React.Component {
 		}
 	}
 
-	renderClose = () => {
-		const { theme } = this.props;
-		if (this.previousServer) {
-			let top = 15;
-			if (isIOS) {
-				top = isNotch ? 45 : 30;
-			}
-			return (
-				<TouchableOpacity
-					style={[styles.closeModal, { top }]}
-					onPress={this.close}
-					testID='onboarding-close'
-				>
-					<CustomIcon
-						name='cross'
-						size={30}
-						color={themes[theme].actionTintColor}
-					/>
-				</TouchableOpacity>
-			);
-		}
-		return null;
-	}
-
 	render() {
 		const { theme } = this.props;
 		return (
@@ -156,7 +131,6 @@ class OnboardingView extends React.Component {
 						/>
 					</View>
 				</View>
-				{this.renderClose()}
 			</FormContainer>
 		);
 	}

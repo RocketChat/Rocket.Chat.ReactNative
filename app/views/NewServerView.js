@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
 	},
 	certificatePicker: {
 		flex: 1,
-		marginTop: 40,
+		marginBottom: 32,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'flex-end'
 	},
 	chooseCertificateTitle: {
 		fontSize: 15,
@@ -264,8 +264,8 @@ class NewServerView extends React.Component {
 		const { text } = this.state;
 		return (
 			<FormContainer theme={theme}>
-				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 				<View style={isTablet && sharedStyles.tabletScreenContent}>
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
 						label='Enter workspace URL'
 						placeholder='Ex. your-company.rocket.chat'
