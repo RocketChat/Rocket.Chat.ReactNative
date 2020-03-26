@@ -15,6 +15,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -86,6 +87,7 @@ class Audio extends React.Component {
 			currentTime: 0,
 			duration: 0,
 			paused: true,
+			loaded: false,
 			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
 	}
@@ -120,7 +122,7 @@ class Audio extends React.Component {
 	}
 
 	onLoad = (data) => {
-		this.setState({ duration: data.duration > 0 ? data.duration : 0 });
+		this.setState({ duration: data.duration > 0 ? data.duration : 0, loaded: true });
 	}
 
 	onProgress = (data) => {
@@ -151,9 +153,17 @@ class Audio extends React.Component {
 
 	onValueChange = value => this.setState({ currentTime: value });
 
+	// renderWhenLoaded = (loaded) => {
+	// 	if (loaded) {
+	// 		return (
+
+	// 		);
+	// 	}
+	// }
+
 	render() {
 		const {
-			uri, paused, currentTime, duration
+			uri, paused, currentTime, duration, loaded
 		} = this.state;
 		const {
 			user, baseUrl, file, getCustomEmoji, split, theme
@@ -183,21 +193,29 @@ class Audio extends React.Component {
 						repeat={false}
 						ignoreSilentSwitch='ignore'
 					/>
-					<Button paused={paused} onPress={this.togglePlayPause} theme={theme} />
-					<Slider
-						style={styles.slider}
-						value={currentTime}
-						maximumValue={duration}
-						minimumValue={0}
-						animateTransitions
-						animationConfig={sliderAnimationConfig}
-						thumbTintColor={isAndroid && themes[theme].tintColor}
-						minimumTrackTintColor={themes[theme].tintColor}
-						maximumTrackTintColor={themes[theme].auxiliaryText}
-						onValueChange={this.onValueChange}
-						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
-					/>
-					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
+					{
+						loaded
+							?							(
+								<>
+									<Button paused={paused} onPress={this.togglePlayPause} theme={theme} loaded={loaded} />
+									<Slider
+										style={styles.slider}
+										value={currentTime}
+										maximumValue={duration}
+										minimumValue={0}
+										animateTransitions
+										animationConfig={sliderAnimationConfig}
+										thumbTintColor={isAndroid && themes[theme].tintColor}
+										minimumTrackTintColor={themes[theme].tintColor}
+										maximumTrackTintColor={themes[theme].auxiliaryText}
+										onValueChange={this.onValueChange}
+										thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
+									/>
+									<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
+								</>
+							)
+							:						<ActivityIndicator theme={theme} />
+					}
 				</View>
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
