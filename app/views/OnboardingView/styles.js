@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	onboarding: {
 		alignSelf: 'center',
-		marginTop: !isTablet && verticalScale(116),
+		marginTop: isTablet ? 0 : verticalScale(116),
 		marginBottom: verticalScale(50),
 		maxHeight: verticalScale(150),
 		resizeMode: 'contain',

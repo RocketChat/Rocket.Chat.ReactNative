@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 		marginBottom: 32
 	},
 	certificatePicker: {
-		flex: 1,
+		// flex: 1,
 		marginBottom: 32,
 		alignItems: 'center',
 		justifyContent: 'flex-end'
@@ -264,7 +264,7 @@ class NewServerView extends React.Component {
 		const { text } = this.state;
 		return (
 			<FormContainer theme={theme}>
-				<View style={isTablet && sharedStyles.tabletScreenContent}>
+				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
 						label='Enter workspace URL'

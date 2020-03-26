@@ -19,6 +19,7 @@ export default StyleSheet.create({
 		maxWidth: MAX_CONTENT_WIDTH
 	},
 	tabletScreenContent: {
+		justifyContent: 'center',
 		alignSelf: 'center',
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 
@@ -9,36 +9,11 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import KeyboardView from '../presentation/KeyboardView';
 import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
+import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
-	title: {
-		...sharedStyles.textBold,
-		fontSize: 22,
-		letterSpacing: 0,
-		textAlign: 'auto'
-	},
-	inputContainer: {
-		marginTop: 24,
-		marginBottom: 32
-	},
-	backButton: {
-		position: 'absolute',
-		paddingHorizontal: 9,
-		left: 15
-	},
-	certificatePicker: {
-		flex: 1,
-		marginTop: 40,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	chooseCertificateTitle: {
-		fontSize: 15,
-		...sharedStyles.textRegular
-	},
-	chooseCertificate: {
-		fontSize: 15,
-		...sharedStyles.textSemibold
+	scrollView: {
+		height: '100%'
 	}
 });
 
@@ -47,12 +22,13 @@ const FormContainer = ({ children, theme }) => (
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
 		keyboardVerticalOffset={128}
-		// key='login-view'
 	>
 		<StatusBar theme={theme} />
-		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, { height: '100%' }]}>
-			<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-				{children}
+		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
+			<SafeAreaView style={sharedStyles.container}>
+				<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
+					{children}
+				</View>
 			</SafeAreaView>
 			<AppVersion theme={theme} />
 		</ScrollView>
@@ -60,7 +36,8 @@ const FormContainer = ({ children, theme }) => (
 );
 
 FormContainer.propTypes = {
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	children: PropTypes.element
 };
 
 export default FormContainer;
