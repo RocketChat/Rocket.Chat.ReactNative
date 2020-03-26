@@ -147,9 +147,10 @@ class OnboardingView extends React.Component {
 				testID='onboarding-view'
 			>
 				<StatusBar theme={theme} />
-				<Image style={styles.onboarding} source={{ uri: 'onboarding' }} fadeDuration={0} />
+				<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
 				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Welcome_to_RocketChat')}</Text>
-				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Open_Source_Communication')}</Text>
+				<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>Beyond Team Collaboration</Text>
+				<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.</Text>
 				<View style={[styles.buttonsContainer, isTablet && sharedStyles.tabletScreenContent]}>
 					<Button
 						type='secondary'

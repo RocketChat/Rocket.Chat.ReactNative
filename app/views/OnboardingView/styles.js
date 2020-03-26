@@ -12,12 +12,12 @@ export default StyleSheet.create({
 	},
 	onboarding: {
 		alignSelf: 'center',
-		marginTop: verticalScale(30),
-		marginBottom: verticalScale(35),
+		marginTop: verticalScale(116),
+		marginBottom: verticalScale(50),
 		maxHeight: verticalScale(150),
 		resizeMode: 'contain',
-		width: 309,
-		height: 250
+		width: 80,
+		height: 70
 	},
 	title: {
 		...sharedStyles.textBold,
@@ -29,8 +29,15 @@ export default StyleSheet.create({
 	subtitle: {
 		...sharedStyles.textRegular,
 		fontSize: moderateScale(16),
-		color: '#54585E',
-		alignSelf: 'center'
+		alignSelf: 'center',
+		marginBottom: verticalScale(24)
+	},
+	description: {
+		...sharedStyles.textRegular,
+		fontSize: moderateScale(14),
+		alignSelf: 'center',
+		textAlign: 'center',
+		marginHorizontal: 20
 	},
 	buttonsContainer: {
 		marginBottom: verticalScale(10),
