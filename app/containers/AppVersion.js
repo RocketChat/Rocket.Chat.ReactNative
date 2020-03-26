@@ -9,8 +9,7 @@ import { getReadableVersion } from '../utils/deviceInfo';
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		justifyContent: 'flex-end',
-		backgroundColor: '#ccc'
+		justifyContent: 'flex-end'
 	},
 	text: {
 		...sharedStyles.textRegular,

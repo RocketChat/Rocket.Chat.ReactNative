@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
@@ -15,8 +14,6 @@ import styles from './styles';
 import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
-import StatusBar from '../../containers/StatusBar';
-import AppVersion from '../../containers/AppVersion';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import sharedStyles from '../Styles';
@@ -163,7 +160,7 @@ class OnboardingView extends React.Component {
 						/>
 					</View>
 				</View>
-				{/* {this.renderClose()} */}
+				{this.renderClose()}
 			</FormContainer>
 		);
 	}
