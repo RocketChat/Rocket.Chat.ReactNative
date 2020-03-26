@@ -18,34 +18,30 @@ import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
+import FormContainer from '../containers/FormContainer';
 import I18n from '../i18n';
-import { verticalScale, moderateScale } from '../utils/scaling';
 import KeyboardView from '../presentation/KeyboardView';
 import { isIOS, isNotch, isTablet } from '../utils/deviceInfo';
 import { CustomIcon } from '../lib/Icons';
 import StatusBar from '../containers/StatusBar';
+import AppVersion from '../containers/AppVersion';
 import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
+import { themedHeader } from '../utils/navigation';
 
 const styles = StyleSheet.create({
-	image: {
-		alignSelf: 'center',
-		marginVertical: verticalScale(20),
-		width: 210,
-		height: 171
-	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: moderateScale(22),
+		fontSize: 22,
 		letterSpacing: 0,
-		alignSelf: 'center'
+		textAlign: 'auto'
 	},
 	inputContainer: {
-		marginTop: 25,
-		marginBottom: 15
+		marginTop: 24,
+		marginBottom: 32
 	},
 	backButton: {
 		position: 'absolute',
@@ -68,11 +64,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const defaultServer = 'https://open.rocket.chat';
-
 class NewServerView extends React.Component {
-	static navigationOptions = () => ({
-		header: null
+	static navigationOptions = ({ screenProps }) => ({
+		title: I18n.t('Workspaces'),
+		...themedHeader(screenProps.theme)
 	})
 
 	static propTypes = {
@@ -97,7 +92,6 @@ class NewServerView extends React.Component {
 
 		this.state = {
 			text: server || '',
-			autoFocus: !server,
 			certificate: null
 		};
 	}
@@ -292,49 +286,38 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text, autoFocus } = this.state;
+		const { text } = this.state;
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-				key='login-view'
-			>
-				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-						<Image style={styles.image} source={{ uri: 'new_server' }} />
-						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
-						<View style={isTablet && sharedStyles.tabletScreenContent}>
-							<TextInput
-								autoFocus={autoFocus}
-								containerStyle={styles.inputContainer}
-								placeholder={defaultServer}
-								value={text}
-								returnKeyType='send'
-								onChangeText={this.onChangeText}
-								testID='new-server-view-input'
-								onSubmitEditing={this.submit}
-								clearButtonMode='while-editing'
-								keyboardType='url'
-								textContentType='URL'
-								theme={theme}
-							/>
-							<Button
-								title={I18n.t('Connect')}
-								type='primary'
-								onPress={this.submit}
-								disabled={!text}
-								loading={connecting}
-								testID='new-server-view-button'
-								theme={theme}
-							/>
-							{ isIOS ? this.renderCertificatePicker() : null }
-						</View>
-					</SafeAreaView>
-				</ScrollView>
-				{this.renderBack()}
-			</KeyboardView>
+			<FormContainer theme={theme}>
+				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
+				<View style={isTablet && sharedStyles.tabletScreenContent}>
+					<TextInput
+						label='Enter workspace URL'
+						placeholder='Ex. your-company.rocket.chat'
+						containerStyle={styles.inputContainer}
+						value={text}
+						returnKeyType='send'
+						onChangeText={this.onChangeText}
+						testID='new-server-view-input'
+						onSubmitEditing={this.submit}
+						clearButtonMode='while-editing'
+						keyboardType='url'
+						textContentType='URL'
+						theme={theme}
+					/>
+					<Button
+						title={I18n.t('Connect')}
+						type='primary'
+						onPress={this.submit}
+						disabled={!text}
+						loading={connecting}
+						testID='new-server-view-button'
+						theme={theme}
+					/>
+				</View>
+				{ isIOS ? this.renderCertificatePicker() : null }
+				{/* <AppVersion theme={theme} /> */}
+			</FormContainer>
 		);
 	}
 }

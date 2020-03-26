@@ -41,8 +41,7 @@ export default StyleSheet.create({
 	},
 	buttonsContainer: {
 		marginBottom: verticalScale(10),
-		marginTop: verticalScale(30),
-		marginHorizontal: 16
+		marginTop: verticalScale(30)
 	},
 	closeModal: {
 		position: 'absolute',

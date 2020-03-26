@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, ScrollView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { selectServerRequest, serverInitAdd, serverFinishAdd } from '../../actions/server';
@@ -16,9 +16,11 @@ import { isIOS, isNotch, isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
+import AppVersion from '../../containers/AppVersion';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import sharedStyles from '../Styles';
+import FormContainer from '../../containers/FormContainer';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -139,64 +141,30 @@ class OnboardingView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[
-					styles.container,
-					{ backgroundColor: themes[theme].backgroundColor }
-				]}
-				testID='onboarding-view'
-			>
-				<StatusBar theme={theme} />
-				<View style={isTablet && sharedStyles.tabletScreenContent}>
+			<FormContainer theme={theme}>
+				<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
 					<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
 					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>
 					<View style={[styles.buttonsContainer]}>
-						{/* <Button
-							type='secondary'
-							title={I18n.t('Connect_to_a_server')}
-							icon={<CustomIcon name='permalink' size={30} color={themes[theme].actionTintColor} />}
-							onPress={this.connectServer}
-							testID='connect-server-button'
-							theme={theme}
-						/>
-						<Button
-							type='secondary'
-							title={I18n.t('Join_the_community')}
-							subtitle='open.rocket.chat'
-							icon={<Image source={{ uri: 'logo_onboarding' }} style={{ width: 32, height: 27 }} fadeDuration={0} />}
-							onPress={this.joinCommunity}
-							testID='join-community-button'
-							theme={theme}
-						/>
-						<Button
-							type='primary'
-							title={I18n.t('Create_a_new_workspace')}
-							icon={<CustomIcon name='plus' size={30} color={themes[theme].buttonText} />}
-							onPress={this.createWorkspace}
-							testID='create-workspace-button'
-							theme={theme}
-						/> */}
 						<Button
 							title={I18n.t('Onboarding_join_workspace')}
 							type='primary'
-							style={styles.button}
 							onPress={this.connectServer}
 							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Create_a_new_workspace')}
 							type='secondary'
-							style={styles.button}
 							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.createWorkspace}
 							theme={theme}
 						/>
 					</View>
 				</View>
-				{this.renderClose()}
-			</SafeAreaView>
+				{/* {this.renderClose()} */}
+			</FormContainer>
 		);
 	}
 }
