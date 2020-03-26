@@ -138,11 +138,12 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 			const showFormLogin = yield select(state => state.settings.Accounts_ShowFormLogin);
 
-			if (!loginServicesLength && showFormLogin) {
-				Navigation.navigate('LoginView');
-			} else {
-				Navigation.navigate('LoginSignupView');
-			}
+			// if (!loginServicesLength && showFormLogin) {
+			// 	Navigation.navigate('LoginView');
+			// } else {
+			// 	Navigation.navigate('LoginSignupView');
+			// }
+			Navigation.navigate('WorkspaceView');
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {

@@ -509,6 +509,7 @@ export default {
 	Your_invite_link_will_expire_on__date__or_after__usesLeft__uses: 'Your invite link will expire on {{date}} or after {{usesLeft}} uses.',
 	Your_invite_link_will_expire_on__date__: 'Your invite link will expire on {{date}}.',
 	Your_invite_link_will_never_expire: 'Your invite link will never expire.',
+	Your_workspace: 'Your workspace',
 	Version_no: 'Version: {{version}}',
 	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	Change_Language: 'Change Language',

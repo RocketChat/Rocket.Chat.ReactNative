@@ -25,7 +25,7 @@ const FormContainer = ({ children, theme }) => (
 	>
 		<StatusBar theme={theme} />
 		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
-			<SafeAreaView style={sharedStyles.container}>
+			<SafeAreaView style={sharedStyles.container} forceInset={{ top: 'never' }}>
 				<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
 					{children}
 				</View>

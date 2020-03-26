@@ -264,7 +264,7 @@ class NewServerView extends React.Component {
 		const { text } = this.state;
 		return (
 			<FormContainer theme={theme}>
-				<View style={{ flex: 1, justifyContent: 'center' }}>
+				<View style={[sharedStyles.container, isTablet && { justifyContent: 'center' }]}>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
 						label='Enter workspace URL'

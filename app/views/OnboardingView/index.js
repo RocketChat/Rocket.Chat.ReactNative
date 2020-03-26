@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, Image, TouchableOpacity, BackHandler, Linking
+	View, Text, Image, BackHandler, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,7 +15,6 @@ import { isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import sharedStyles from '../Styles';
 import FormContainer from '../../containers/FormContainer';
 
 class OnboardingView extends React.Component {
