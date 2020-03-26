@@ -97,7 +97,7 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			name: t_name, channel: { rid: prid }, message: { id: pmid }, reply, users
+			name: t_name, channel: { prid = this.channel.rid }, message: { id: pmid }, reply, users
 		} = this.state;
 		const { create } = this.props;
 
