@@ -57,7 +57,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: 'channels'
+			type: 'users'
 		};
 	}
 
