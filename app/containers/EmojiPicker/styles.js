@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import sharedStyles from '../../views/Styles';
+
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -52,5 +54,14 @@ export default StyleSheet.create({
 	},
 	customCategoryEmoji: {
 		margin: 8
+	},
+	headerText: {
+		paddingTop: 12,
+		paddingBottom: 12,
+		paddingLeft: 0,
+		paddingRight: 0,
+		fontSize: 17,
+		letterSpacing: 0,
+		...sharedStyles.textSemibold
 	}
 });

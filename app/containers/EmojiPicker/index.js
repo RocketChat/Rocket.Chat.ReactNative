@@ -133,9 +133,9 @@ class EmojiPicker extends Component {
 
 	onLayout = ({ nativeEvent: { layout: { width } } }) => this.setState({ width });
 
-	renderCategory(category, i, label) {
+	renderCategory(category, i, label, header) {
 		const { frequentlyUsed, customEmojis, width } = this.state;
-		const { baseUrl } = this.props;
+		const { baseUrl, theme } = this.props;
 
 		let emojis = [];
 		if (i === 0) {
@@ -147,6 +147,8 @@ class EmojiPicker extends Component {
 		}
 		return (
 			<EmojiCategory
+				theme={themes[theme].titleText}
+				emojiCategoryHeader={header}
 				emojis={emojis}
 				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
@@ -175,7 +177,7 @@ class EmojiPicker extends Component {
 						categories.tabs.map((tab, i) => (
 							(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
 								: (
-									this.renderCategory(tab.category, i, tab.tabLabel)
+									this.renderCategory(tab.category, i, tab.tabLabel, tab.name)
 								)))
 					}
 				</ScrollableTabView>

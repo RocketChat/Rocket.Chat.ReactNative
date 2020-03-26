@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, FlatList } from 'react-native';
+import {
+	Text,
+	TouchableOpacity,
+	FlatList,
+	View
+} from 'react-native';
 import { responsive } from 'react-native-responsive-ui';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -28,7 +33,9 @@ class EmojiCategory extends React.Component {
 		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
-		width: PropTypes.number
+		width: PropTypes.number,
+		emojiCategoryHeader: PropTypes.string,
+		theme: PropTypes.string
 	}
 
 	renderItem(emoji) {
@@ -45,8 +52,19 @@ class EmojiCategory extends React.Component {
 		);
 	}
 
+	renderHeader(emojiCategoryHeader) {
+		const { theme } = this.props;
+		return (
+			<View>
+				<Text style={[styles.headerText, { color: theme }]}>
+					{emojiCategoryHeader}
+				</Text>
+			</View>
+		);
+	}
+
 	render() {
-		const { emojis, width } = this.props;
+		const { emojis, width, emojiCategoryHeader } = this.props;
 
 		if (!width) {
 			return null;
@@ -57,6 +75,7 @@ class EmojiCategory extends React.Component {
 
 		return (
 			<FlatList
+				ListHeaderComponent={() => this.renderHeader(emojiCategoryHeader)}
 				contentContainerStyle={{ marginHorizontal }}
 				// rerender FlatList in case of width changes
 				key={`emoji-category-${ width }`}
