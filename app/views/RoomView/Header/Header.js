@@ -136,17 +136,14 @@ const Header = React.memo(({
 		}
 	}
 
-	const onPress = () => {
-		if (!tmid) {
-			goRoomActionsView();
-		}
-	};
+	const onPress = () => goRoomActionsView();
 
 	return (
 		<TouchableOpacity
 			testID='room-view-header-actions'
 			onPress={onPress}
 			style={[styles.container, { width: width - widthOffset }]}
+			disabled={tmid}
 		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
 				<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
@@ -159,7 +156,7 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			{type === 'thread' ? null : <SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} />}
+			{tmid ? null : <SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} />}
 		</TouchableOpacity>
 	);
 });
