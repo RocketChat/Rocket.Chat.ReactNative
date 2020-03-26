@@ -15,16 +15,12 @@ import parse from 'url-parse';
 
 import { serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
+import OnboardingSeparator from '../containers/OnboardingSeparator';
 import FormContainer from '../containers/FormContainer';
 import I18n from '../i18n';
-import KeyboardView from '../presentation/KeyboardView';
-import { isIOS, isNotch, isTablet } from '../utils/deviceInfo';
-import { CustomIcon } from '../lib/Icons';
-import StatusBar from '../containers/StatusBar';
-import AppVersion from '../containers/AppVersion';
+import { isIOS, isTablet } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
@@ -43,11 +39,6 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginBottom: 32
 	},
-	backButton: {
-		position: 'absolute',
-		paddingHorizontal: 9,
-		left: 15
-	},
 	certificatePicker: {
 		flex: 1,
 		marginTop: 40,
@@ -61,6 +52,12 @@ const styles = StyleSheet.create({
 	chooseCertificate: {
 		fontSize: 15,
 		...sharedStyles.textSemibold
+	},
+	description: {
+		...sharedStyles.textRegular,
+		fontSize: 14,
+		textAlign: 'left',
+		marginBottom: 24
 	}
 });
 
@@ -232,28 +229,6 @@ class NewServerView extends React.Component {
 		});
 	}
 
-	renderBack = () => {
-		const { navigation, theme } = this.props;
-
-		let top = 15;
-		if (isIOS) {
-			top = isNotch ? 45 : 30;
-		}
-
-		return (
-			<TouchableOpacity
-				style={[styles.backButton, { top }]}
-				onPress={() => navigation.pop()}
-			>
-				<CustomIcon
-					name='back'
-					size={30}
-					color={themes[theme].tintColor}
-				/>
-			</TouchableOpacity>
-		);
-	}
-
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
 		const { theme } = this.props;
@@ -311,12 +286,22 @@ class NewServerView extends React.Component {
 						onPress={this.submit}
 						disabled={!text}
 						loading={connecting}
+						style={{ marginBottom: 0 }}
 						testID='new-server-view-button'
+						theme={theme}
+					/>
+					<OnboardingSeparator theme={theme} />
+					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
+					<Button
+						title={I18n.t('Join_our_open_workspace')}
+						type='secondary'
+						backgroundColor={themes[theme].chatComponentBackground}
+						onPress={this.submit}
+						// loading={connecting} TODO: connecting to open
 						theme={theme}
 					/>
 				</View>
 				{ isIOS ? this.renderCertificatePicker() : null }
-				{/* <AppVersion theme={theme} /> */}
 			</FormContainer>
 		);
 	}

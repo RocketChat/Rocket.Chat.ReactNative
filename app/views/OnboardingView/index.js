@@ -99,10 +99,6 @@ class OnboardingView extends React.Component {
 		this.newServer();
 	}
 
-	joinCommunity = () => {
-		this.newServer('https://open.rocket.chat');
-	}
-
 	createWorkspace = async() => {
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
