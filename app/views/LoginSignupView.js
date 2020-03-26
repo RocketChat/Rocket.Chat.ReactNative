@@ -224,7 +224,7 @@ class LoginSignupView extends React.Component {
 	onPressLinkedin = () => {
 		const { services, server } = this.props;
 		const { clientId } = services.linkedin;
-		const endpoint = 'https://www.linkedin.com/uas/oauth2/authorization';
+		const endpoint = 'https://www.linkedin.com/oauth/v2/authorization';
 		const redirect_uri = `${ server }/_oauth/linkedin?close`;
 		const scope = 'r_liteprofile,r_emailaddress';
 		const state = this.getOAuthState();
