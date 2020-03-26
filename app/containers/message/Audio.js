@@ -153,14 +153,6 @@ class Audio extends React.Component {
 
 	onValueChange = value => this.setState({ currentTime: value });
 
-	// renderWhenLoaded = (loaded) => {
-	// 	if (loaded) {
-	// 		return (
-
-	// 		);
-	// 	}
-	// }
-
 	render() {
 		const {
 			uri, paused, currentTime, duration, loaded
