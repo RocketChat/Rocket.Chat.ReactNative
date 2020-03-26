@@ -14,7 +14,9 @@ import { isIOS, getBundleId } from '../utils/deviceInfo';
 import { extractHostname } from '../utils/server';
 import fetch, { BASIC_AUTH_KEY } from '../utils/fetch';
 
-import { setUser, setLoginServices, loginRequest } from '../actions/login';
+import {
+	setUser, setLoginServices, loginRequest, logout
+} from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import {
 	shareSelectServer, shareSetUser
@@ -178,6 +180,10 @@ const RocketChat = {
 				this.closeListener.then(this.stopListener);
 			}
 
+			if (this.unauthorizedListener) {
+				this.unauthorizedListener.then(this.unauthorizedListener);
+			}
+
 			if (this.usersListener) {
 				this.usersListener.then(this.stopListener);
 			}
@@ -222,6 +228,10 @@ const RocketChat = {
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
 				reduxStore.dispatch(disconnect());
+			});
+
+			this.unauthorizedListener = this.sdk.onStreamData('unauthorized', () => {
+				reduxStore.dispatch(logout(true));
 			});
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
