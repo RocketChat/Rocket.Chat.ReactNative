@@ -775,6 +775,26 @@ const RocketChat = {
 		}
 		return rid.replace(currentUserId, '').trim();
 	},
+
+	getUidDirectMessage(room, userId) {
+		// legacy method
+		if (!room.uids && room.rid && room.t === 'd') {
+			return room.rid.replace(userId, '').trim();
+		}
+
+		if (!room.uids || room.uids.length > 2) {
+			return false;
+		}
+
+		const other = room && room.uids.filter(uid => uid !== userId);
+
+		return other && other[0];
+	},
+
+	isGroupChat(room) {
+		return room.uids && room.uids.length > 2;
+	},
+
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			// RC 0.49.0
