@@ -120,7 +120,7 @@ class RegisterView extends React.Component {
 			Accounts_Password_Policy_ForbidRepeatingCharacters,
 			Accounts_Password_Policy_ForbidRepeatingCharactersCount
 		} = this.props;
-        let requiredCheck = true;
+		let requiredCheck = true;
 		Object.keys(this.parsedCustomFields).forEach((key) => {
 			if (this.parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
@@ -173,8 +173,23 @@ class RegisterView extends React.Component {
 		} catch (e) {
 			if (e.data && e.data.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-minLength]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-minLength'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-maxLength]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-maxLength'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneLowercase]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneLowercase'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneUppercase]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneUppercase'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneNumber]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneNumber'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneSpecial]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneSpecial'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-repeatingCharacters]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-repeatingCharacters'), I18n.t('Oops'));
+			} else {
+				showErrorAlert(e.data.error, I18n.t('Oops'));
 			}
-			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
 	}
