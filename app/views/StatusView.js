@@ -116,7 +116,7 @@ class StatusView extends React.Component {
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.saveUserProfile({ statusText }, {});
+			const result = await RocketChat.setUserStatus(statusText);
 			if (result.success) {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {

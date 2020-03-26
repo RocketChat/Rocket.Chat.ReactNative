@@ -43,6 +43,7 @@ class Sidebar extends Component {
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
+		allowStatusMessage: PropTypes.bool,
 		split: PropTypes.bool
 	}
 
@@ -191,7 +192,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, split, theme
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, split, theme
 		} = this.props;
 
 		if (!user) {
@@ -229,7 +230,7 @@ class Sidebar extends Component {
 
 					<Separator theme={theme} />
 
-					{this.renderCustomStatus()}
+					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!split ? (
 						<>
 							<Separator theme={theme} />
@@ -248,7 +249,8 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
 	loadingServer: state.server.loading,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange
 });
 
 export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));

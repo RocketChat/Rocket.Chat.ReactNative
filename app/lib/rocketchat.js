@@ -735,6 +735,10 @@ const RocketChat = {
 	setUserPresenceDefaultStatus(status) {
 		return this.sdk.methodCall('UserPresence:setDefaultStatus', status);
 	},
+	setUserStatus(message) {
+		// RC 1.2.0
+		return this.sdk.post('users.setStatus', { message });
+	},
 	setReaction(emoji, messageId) {
 		// RC 0.62.2
 		return this.sdk.post('chat.react', { emoji, messageId });
