@@ -21,6 +21,9 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { isTablet } from '../utils/deviceInfo';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
+import OnboardingSeparator from '../containers/OnboardingSeparator';
+import TextInput from '../containers/TextInput';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,7 +39,6 @@ const styles = StyleSheet.create({
 	},
 	serviceButtonContainer: {
 		borderRadius: 2,
-		borderWidth: 1,
 		width: '100%',
 		height: 48,
 		flexDirection: 'row',
@@ -89,7 +91,20 @@ const styles = StyleSheet.create({
 	},
 	inverted: {
 		transform: [{ scaleY: -1 }]
-	}
+	},
+	title: {
+		...sharedStyles.textBold,
+		fontSize: 22
+	},
+	inputContainer: {
+		marginTop: 24,
+		marginBottom: 32
+	},
+	bottomContainer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginBottom: 32
+	},
 });
 
 const SERVICE_HEIGHT = 58;
@@ -123,7 +138,11 @@ class LoginSignupView extends React.Component {
 		super(props);
 		this.state = {
 			collapsed: true,
-			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
+			servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT),
+			user: '',
+			password: '',
+			code: '',
+			showTOTP: false
 		};
 		const { Site_Name } = this.props;
 		this.setTitle(Site_Name);
@@ -348,6 +367,16 @@ class LoginSignupView extends React.Component {
 		return oauthProviders[name];
 	}
 
+	valid = () => {
+		const {
+			user, password, code, showTOTP
+		} = this.state;
+		if (showTOTP) {
+			return code.trim();
+		}
+		return user.trim() && password.trim();
+	}
+
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
 		const {
@@ -356,21 +385,30 @@ class LoginSignupView extends React.Component {
 		const { length } = Object.values(services);
 
 		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
+			// return (
+			// 	<View style={styles.servicesTogglerContainer}>
+			// 		<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
+			// 		<BorderlessButton onPress={this.toggleServices}>
+			// 			<Image source={{ uri: 'options' }} style={[styles.servicesToggler, !collapsed && styles.inverted]} />
+			// 		</BorderlessButton>
+			// 		<View style={[styles.separatorLine, styles.separatorLineRight, { backgroundColor: themes[theme].auxiliaryText }]} />
+			// 	</View>
+			// );
 			return (
-				<View style={styles.servicesTogglerContainer}>
-					<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
-					<BorderlessButton onPress={this.toggleServices}>
-						<Image source={{ uri: 'options' }} style={[styles.servicesToggler, !collapsed && styles.inverted]} />
-					</BorderlessButton>
-					<View style={[styles.separatorLine, styles.separatorLineRight, { backgroundColor: themes[theme].auxiliaryText }]} />
-				</View>
+				<>
+					<Button
+						title='More options'
+						type='secondary'
+						onPress={this.toggleServices}
+						theme={theme}
+						style={{ marginBottom: 0 }}
+						color={themes[theme].actionTintColor}
+					/>
+					<OnboardingSeparator theme={theme} />
+				</>
 			);
 		}
-		return (
-			<View style={styles.separatorContainer}>
-				<View style={styles.separatorLine} />
-			</View>
-		);
+		return <OnboardingSeparator theme={theme} />;
 	}
 
 	renderItem = (service) => {
@@ -412,14 +450,19 @@ class LoginSignupView extends React.Component {
 				</>
 			);
 		}
+
+		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : themes[theme].chatComponentBackground;
+
 		return (
 			<Touch
 				key={service.name}
 				onPress={onPress}
-				style={[styles.serviceButton, isSaml && { backgroundColor: service.buttonColor }]}
+				style={[styles.serviceButton, { backgroundColor }]}
 				theme={theme}
+				activeOpacity={0.5}
+				underlayColor={themes[theme].buttonText}
 			>
-				<View style={[styles.serviceButtonContainer, { borderColor: themes[theme].borderColor }]}>
+				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
@@ -482,31 +525,89 @@ class LoginSignupView extends React.Component {
 		);
 	}
 
+	renderUserForm = () => {
+		const {
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme
+		} = this.props;
+		return (
+			<>
+				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
+				<TextInput
+					label='Email or username'
+					containerStyle={styles.inputContainer}
+					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+					keyboardType='email-address'
+					returnKeyType='next'
+					iconLeft='at'
+					onChangeText={value => this.setState({ user: value })}
+					onSubmitEditing={() => { this.passwordInput.focus(); }}
+					testID='login-view-email'
+					textContentType='username'
+					autoCompleteType='username'
+					theme={theme}
+				/>
+				<TextInput
+					label='Password'
+					containerStyle={styles.inputContainer}
+					inputRef={(e) => { this.passwordInput = e; }}
+					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+					returnKeyType='send'
+					iconLeft='key'
+					secureTextEntry
+					onSubmitEditing={this.submit}
+					onChangeText={value => this.setState({ password: value })}
+					testID='login-view-password'
+					textContentType='password'
+					autoCompleteType='password'
+					theme={theme}
+				/>
+				<Button
+					title={I18n.t('Login')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!this.valid()}
+					theme={theme}
+				/>
+				{Accounts_PasswordReset && (
+					<Button
+						title={I18n.t('Forgot_password')}
+						type='secondary'
+						onPress={this.forgotPassword}
+						testID='login-view-forgot-password'
+						theme={theme}
+					/>
+				)}
+				{Accounts_RegistrationForm === 'Public' ? (
+					<View style={styles.bottomContainer}>
+						<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+						<Text
+							style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+							onPress={this.register}
+							testID='login-view-register'
+						>{I18n.t('Create_account')}
+						</Text>
+					</View>
+				) : (<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>{Accounts_RegistrationForm_LinkReplacementText}</Text>)}
+			</>
+		);
+	}
+
 	render() {
+		const { showTOTP } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				testID='welcome-view'
-				forceInset={{ vertical: 'never' }}
-				style={[styles.safeArea, { backgroundColor: themes[theme].backgroundColor }]}
-			>
-				<ScrollView
-					style={[
-						sharedStyles.containerScrollView,
-						sharedStyles.container,
-						styles.container,
-						{ backgroundColor: themes[theme].backgroundColor },
-						isTablet && sharedStyles.tabletScreenContent
-					]}
-					{...scrollPersistTaps}
-				>
-					<StatusBar theme={theme} />
+			<FormContainer theme={theme}>
+				<FormContainerInner>
 					{this.renderServices()}
 					{this.renderServicesSeparator()}
-					{this.renderLogin()}
-					{this.renderRegister()}
-				</ScrollView>
-			</SafeAreaView>
+					{/* {this.renderLogin()}
+					{this.renderRegister()} */}
+					{!showTOTP ? this.renderUserForm() : null}
+					{showTOTP ? this.renderTOTP() : null}
+				</FormContainerInner>
+			</FormContainer>
 		);
 	}
 }
@@ -520,7 +621,16 @@ const mapStateToProps = state => ({
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
 	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
 	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
-	services: state.login.services
+	services: state.login.services,
+	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error && state.login.error.data,
+	// Site_Name: state.settings.Site_Name,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
+	// Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
+	// Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
+	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
 });
 
 export default connect(mapStateToProps)(withTheme(LoginSignupView));

@@ -15,7 +15,7 @@ import { isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import FormContainer from '../../containers/FormContainer';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -109,25 +109,27 @@ class OnboardingView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<FormContainer theme={theme}>
-				<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
-				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
-				<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
-				<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>
-				<View style={[styles.buttonsContainer]}>
-					<Button
-						title={I18n.t('Onboarding_join_workspace')}
-						type='primary'
-						onPress={this.connectServer}
-						theme={theme}
-					/>
-					<Button
-						title={I18n.t('Create_a_new_workspace')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.createWorkspace}
-						theme={theme}
-					/>
-				</View>
+				<FormContainerInner>
+					<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
+					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
+					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>
+					<View style={[styles.buttonsContainer]}>
+						<Button
+							title={I18n.t('Onboarding_join_workspace')}
+							type='primary'
+							onPress={this.connectServer}
+							theme={theme}
+						/>
+						<Button
+							title={I18n.t('Create_a_new_workspace')}
+							type='secondary'
+							backgroundColor={themes[theme].chatComponentBackground}
+							onPress={this.createWorkspace}
+							theme={theme}
+						/>
+					</View>
+				</FormContainerInner>
 			</FormContainer>
 		);
 	}

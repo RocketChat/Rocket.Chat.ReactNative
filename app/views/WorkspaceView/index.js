@@ -10,11 +10,12 @@ import { appStart as appStartAction } from '../../actions';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
+import sharedStyles from '../Styles';
 import { isTablet } from '../../utils/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import FormContainer from '../../containers/FormContainer';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { themedHeader } from '../../utils/navigation';
 import ServerAvatar from './ServerAvatar';
 
@@ -37,7 +38,7 @@ class WorkspaceView extends React.Component {
 
 	login = () => {
 		const { navigation } = this.props;
-		navigation.navigate('LoginView');
+		navigation.navigate('LoginSignupView');
 	}
 
 	register = () => {
@@ -49,24 +50,26 @@ class WorkspaceView extends React.Component {
 		const { theme, Site_Name, Site_Url, Assets_favicon_512, server } = this.props;
 		return (
 			<FormContainer theme={theme}>
-				<View style={{ alignItems: 'center' }}>
-					<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
-					<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
-					<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
-				</View>
-				<Button
-					title={I18n.t('Login')}
-					type='primary'
-					onPress={this.login}
-					theme={theme}
-				/>
-				<Button
-					title={I18n.t('Create_account')}
-					type='secondary'
-					backgroundColor={themes[theme].chatComponentBackground}
-					onPress={this.register}
-					theme={theme}
-				/>
+				<FormContainerInner>
+					<View style={{ alignItems: 'center' }}>
+						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
+						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
+					</View>
+					<Button
+						title={I18n.t('Login')}
+						type='primary'
+						onPress={this.login}
+						theme={theme}
+					/>
+					<Button
+						title={I18n.t('Create_account')}
+						type='secondary'
+						backgroundColor={themes[theme].chatComponentBackground}
+						onPress={this.register}
+						theme={theme}
+					/>
+				</FormContainerInner>
 			</FormContainer>
 		);
 	}

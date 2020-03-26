@@ -18,7 +18,7 @@ import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
-import FormContainer from '../containers/FormContainer';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS, isTablet } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
@@ -31,9 +31,7 @@ import { themedHeader } from '../utils/navigation';
 const styles = StyleSheet.create({
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 22,
-		letterSpacing: 0,
-		textAlign: 'auto'
+		fontSize: 22
 	},
 	inputContainer: {
 		marginTop: 24,
@@ -264,7 +262,7 @@ class NewServerView extends React.Component {
 		const { text } = this.state;
 		return (
 			<FormContainer theme={theme}>
-				<View style={[sharedStyles.container, isTablet && { justifyContent: 'center' }]}>
+				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
 						label='Enter workspace URL'
@@ -300,7 +298,7 @@ class NewServerView extends React.Component {
 						// loading={connecting} TODO: connecting to open
 						theme={theme}
 					/>
-				</View>
+				</FormContainerInner>
 				{ isIOS ? this.renderCertificatePicker() : null }
 			</FormContainer>
 		);

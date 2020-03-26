@@ -13,9 +13,15 @@ import { isTablet } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	scrollView: {
-		height: '100%'
+		minHeight: '100%'
 	}
 });
+
+export const FormContainerInner = ({ children }) => (
+	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
+		{children}
+	</View>
+);
 
 const FormContainer = ({ children, theme }) => (
 	<KeyboardView
@@ -26,11 +32,11 @@ const FormContainer = ({ children, theme }) => (
 		<StatusBar theme={theme} />
 		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
 			<SafeAreaView style={sharedStyles.container} forceInset={{ top: 'never' }}>
-				<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
-					{children}
-				</View>
+				{/* <View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}> */}
+				{children}
+				<AppVersion theme={theme} />
+				{/* </View> */}
 			</SafeAreaView>
-			<AppVersion theme={theme} />
 		</ScrollView>
 	</KeyboardView>
 );
