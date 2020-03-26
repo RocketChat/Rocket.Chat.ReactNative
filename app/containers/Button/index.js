@@ -9,15 +9,16 @@ import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 15,
+		paddingHorizontal: 14,
 		justifyContent: 'center',
 		height: 48,
 		borderRadius: 2,
-		marginBottom: 10
+		marginBottom: 12
 	},
 	text: {
-		fontSize: 18,
-		textAlign: 'center'
+		fontSize: 16,
+		textAlign: 'center',
+		...sharedStyles.textMedium
 	}
 });
 
@@ -55,7 +56,7 @@ export default class Button extends React.PureComponent {
 					backgroundColor
 						? { backgroundColor }
 						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor },
-					disabled && { backgroundColor: themes[theme].borderColor },
+					disabled && { opacity: 0.3 },
 					style
 				]}
 				{...otherProps}
@@ -67,8 +68,7 @@ export default class Button extends React.PureComponent {
 							<Text
 								style={[
 									styles.text,
-									isPrimary ? sharedStyles.textMedium : sharedStyles.textBold,
-									{ color: isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor }
+									{ color: isPrimary ? themes[theme].buttonText : themes[theme].bodyText }
 								]}
 							>
 								{title}

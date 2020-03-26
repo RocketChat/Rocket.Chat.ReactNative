@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	onboarding: {
 		alignSelf: 'center',
-		marginTop: verticalScale(116),
+		marginTop: !isTablet && verticalScale(116),
 		marginBottom: verticalScale(50),
 		maxHeight: verticalScale(150),
 		resizeMode: 'contain',
@@ -41,42 +41,8 @@ export default StyleSheet.create({
 	},
 	buttonsContainer: {
 		marginBottom: verticalScale(10),
-		marginTop: verticalScale(30)
-	},
-	buttonContainer: {
-		marginHorizontal: 15,
-		marginVertical: 5,
-		flexDirection: 'row',
-		height: 60,
-		alignItems: 'center',
-		borderWidth: 1,
-		borderRadius: 2
-	},
-	buttonCenter: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center'
-	},
-	buttonTitle: {
-		...sharedStyles.textSemibold,
-		fontSize: 17
-	},
-	buttonSubtitle: {
-		...sharedStyles.textRegular,
-		fontSize: 15
-	},
-	buttonIconContainer: {
-		width: 65,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	buttonIcon: {
-		marginHorizontal: 10,
-		width: 20,
-		height: 20
-	},
-	buttonActive: {
-		opacity: 0.5
+		marginTop: verticalScale(30),
+		marginHorizontal: 16
 	},
 	closeModal: {
 		position: 'absolute',

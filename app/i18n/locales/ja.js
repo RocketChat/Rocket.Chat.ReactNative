@@ -153,7 +153,6 @@ export default {
 	Collaborative: 'コラボ',
 	Confirm: '承認',
 	Connect: '接続',
-	Connect_to_a_server: 'サーバーに接続',
 	Connected: '接続しました',
 	connecting_server: 'サーバーに接続中',
 	Connecting: '接続中...',
@@ -311,6 +310,7 @@ export default {
 	Notification_Preferences: '通知設定',
 	Offline: 'オフライン',
 	Oops: 'おっと！',
+	Onboarding_title: 'Rocket.Chatへようこそ',
 	Online: 'オンライン',
 	Only_authorized_users_can_write_new_messages:
     '承認されたユーザーだけが新しいメッセージを書き込めます',
@@ -487,7 +487,6 @@ export default {
 	Voice_call: '音声通話',
 	Websocket_disabled: 'Websocketはこのサーバーでは無効化されています。\n{{contact}}',
 	Welcome: 'ようこそ',
-	Welcome_to_RocketChat: 'Rocket.Chatへようこそ',
 	Whats_your_2fa: '2段階認証のコードを入力してください',
 	Without_Servers: 'サーバーを除く',
 	Write_External_Permission_Message:
