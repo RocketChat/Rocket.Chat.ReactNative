@@ -46,16 +46,16 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
-				await Promise.all(subscriptions.map(sub => sub.unsubscribe()));
-			} catch {
-				console.log('unsubcribeRoom');
+				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+			} catch (e) {
+				// do nothing
 			}
 		}
+		reduxStore.dispatch(clearUserTyping());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
-		reduxStore.dispatch(clearUserTyping());
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
