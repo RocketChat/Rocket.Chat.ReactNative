@@ -82,11 +82,14 @@ export default class RoomSubscription {
 			return;
 		}
 		if (ev === 'typing') {
+			const { user } = reduxStore.getState().login;
 			const [username, typing] = ddpMessage.fields.args;
-			if (typing) {
-				reduxStore.dispatch(addUserTyping(username));
-			} else {
-				reduxStore.dispatch(removeUserTyping(username));
+			if (username !== user.username) {
+				if (typing) {
+					reduxStore.dispatch(addUserTyping(username));
+				} else {
+					reduxStore.dispatch(removeUserTyping(username));
+				}
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async() => {
