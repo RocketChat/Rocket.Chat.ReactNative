@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 		width: SIZE,
 		height: SIZE,
 		borderRadius: BORDER_RADIUS,
-		backgroundColor: '#F5455C',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -45,31 +44,36 @@ const styles = StyleSheet.create({
 const getInitial = url => url && url.replace(/http(s?):\/\//, '').slice(0, 1);
 
 const Fallback = ({ theme, initial }) => (
-	<View style={[styles.container, styles.fallback]}>
+	<View style={[styles.container, styles.fallback, { backgroundColor: themes[theme].dangerColor }]}>
 		<Text style={[styles.initial, { color: themes[theme].buttonText }]}>{initial}</Text>
 	</View>
 );
 
-const ServerAvatar = React.memo(({ theme, url, image }) => {
-	return (
-		<View style={styles.container}>
-			<ImageProgress
-				style={[styles.image, { borderColor: themes[theme].borderColor }]}
-				source={{ uri: `${ url }/${ image }` }}
-				resizeMode={FastImage.resizeMode.cover}
-				indicator={Progress.Pie}
-				indicatorProps={{
-					color: themes[theme].actionTintColor
-				}}
-				renderError={() => <Fallback theme={theme} initial={'D'} />}
-			/>
-		</View>
-	);
-});
+const ServerAvatar = React.memo(({ theme, url, image }) => (
+	<View style={styles.container}>
+		<ImageProgress
+			style={[styles.image, { borderColor: themes[theme].borderColor }]}
+			source={{ uri: `${ url }/${ image }` }}
+			resizeMode={FastImage.resizeMode.cover}
+			indicator={Progress.Pie}
+			indicatorProps={{
+				color: themes[theme].actionTintColor
+			}}
+			renderError={() => <Fallback theme={theme} initial={getInitial(url)} />}
+		/>
+	</View>
+));
 
 ServerAvatar.propTypes = {
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	url: PropTypes.string,
+	image: PropTypes.string
 };
 ServerAvatar.displayName = 'ServerAvatar';
+
+Fallback.propTypes = {
+	theme: PropTypes.string,
+	initial: PropTypes.string
+};
 
 export default ServerAvatar;

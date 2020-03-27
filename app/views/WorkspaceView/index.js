@@ -1,18 +1,13 @@
 import React from 'react';
 import {
-	View, Text, Image, BackHandler, Linking
+	View, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Orientation from 'react-native-orientation-locker';
 
-import { appStart as appStartAction } from '../../actions';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
-import sharedStyles from '../Styles';
-import { isTablet } from '../../utils/deviceInfo';
-import EventEmitter from '../../utils/events';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
@@ -27,13 +22,11 @@ class WorkspaceView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		adding: PropTypes.bool,
-		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func,
-		appStart: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		Site_Name: PropTypes.string,
+		Site_Url: PropTypes.string,
+		server: PropTypes.string,
+		Assets_favicon_512: PropTypes.object
 	}
 
 	login = () => {
@@ -47,7 +40,9 @@ class WorkspaceView extends React.Component {
 	}
 
 	render() {
-		const { theme, Site_Name, Site_Url, Assets_favicon_512, server } = this.props;
+		const {
+			theme, Site_Name, Site_Url, Assets_favicon_512, server
+		} = this.props;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>

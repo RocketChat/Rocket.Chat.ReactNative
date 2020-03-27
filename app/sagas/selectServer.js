@@ -1,5 +1,5 @@
 import {
-	put, take, takeLatest, fork, cancel, race, select
+	put, take, takeLatest, fork, cancel, race
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';

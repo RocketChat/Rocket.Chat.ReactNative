@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, Image, StyleSheet, Animated, Easing, Keyboard
+	Text, View, StyleSheet, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Base64 } from 'js-base64';
 import equal from 'deep-equal';
 
 import { analytics } from '../utils/log';
-import Touch from '../utils/touch';
 import sharedStyles from './Styles';
-import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
@@ -18,40 +15,12 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import OnboardingSeparator from '../containers/OnboardingSeparator';
 import TextInput from '../containers/TextInput';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
 
 const styles = StyleSheet.create({
-	serviceButton: {
-		borderRadius: 2,
-		marginBottom: 10
-	},
-	serviceButtonContainer: {
-		borderRadius: 2,
-		width: '100%',
-		height: 48,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingHorizontal: 15
-	},
-	serviceIcon: {
-		position: 'absolute',
-		left: 15,
-		top: 12,
-		width: 24,
-		height: 24
-	},
-	serviceText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
-	},
-	serviceName: {
-		...sharedStyles.textSemibold
-	},
 	registerDisabled: {
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter,
@@ -97,6 +66,7 @@ class LoginView extends React.Component {
 		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
 		Accounts_PasswordPlaceholder: PropTypes.string,
 		Accounts_PasswordReset: PropTypes.bool,
+		Accounts_ShowFormLogin: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		theme: PropTypes.string,
 		loginRequest: PropTypes.func

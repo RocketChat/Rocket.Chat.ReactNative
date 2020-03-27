@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
@@ -20,7 +19,7 @@ import TextInput from '../containers/TextInput';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
-import { isIOS, isTablet } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
@@ -67,7 +66,6 @@ class NewServerView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		server: PropTypes.string,
 		theme: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired

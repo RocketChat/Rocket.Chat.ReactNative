@@ -65,7 +65,7 @@ class LoginServices extends React.PureComponent {
 
 	state = {
 		collapsed: true,
-		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT),
+		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
 	}
 
 	onPressFacebook = () => {

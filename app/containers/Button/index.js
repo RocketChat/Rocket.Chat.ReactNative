@@ -31,6 +31,8 @@ export default class Button extends React.PureComponent {
 		backgroundColor: PropTypes.string,
 		loading: PropTypes.bool,
 		theme: PropTypes.string,
+		color: PropTypes.string,
+		fontSize: PropTypes.string,
 		style: PropTypes.any
 	}
 
