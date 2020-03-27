@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
-import isEqual from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
@@ -42,7 +41,6 @@ const styles = StyleSheet.create({
 		marginBottom: 32
 	},
 	certificatePicker: {
-		// flex: 1,
 		marginBottom: 32,
 		alignItems: 'center',
 		justifyContent: 'flex-end'
@@ -112,24 +110,6 @@ class NewServerView extends React.Component {
 			initAdd();
 		}
 	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { text, certificate } = this.state;
-	// 	const { connecting, theme } = this.props;
-	// 	if (nextState.text !== text) {
-	// 		return true;
-	// 	}
-	// 	if (!isEqual(nextState.certificate, certificate)) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.connecting !== connecting) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);

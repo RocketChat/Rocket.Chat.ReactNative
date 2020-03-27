@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 32
 	},
-	dontHaveAccount: {
+	bottomContainerText: {
 		...sharedStyles.textRegular,
 		fontSize: 13
 	},
-	createAccount: {
+	bottomContainerTextBold: {
 		...sharedStyles.textSemibold,
 		fontSize: 13
 	}
@@ -83,41 +83,6 @@ class LoginView extends React.Component {
 		const { Site_Name } = this.props;
 		this.setTitle(Site_Name);
 	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { collapsed, servicesHeight } = this.state;
-	// 	const {
-	// 		server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
-	// 	} = this.props;
-	// 	if (nextState.collapsed !== collapsed) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.servicesHeight !== servicesHeight) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.server !== server) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Site_Name !== Site_Name) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_ShowFormLogin !== Accounts_ShowFormLogin) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextProps.services, services)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentDidUpdate(prevProps) {
 		const { Site_Name } = this.props;
@@ -230,9 +195,9 @@ class LoginView extends React.Component {
 				)}
 				{Accounts_RegistrationForm === 'Public' ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 						<Text
-							style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.register}
 							testID='login-view-register'
 						>{I18n.t('Create_account')}

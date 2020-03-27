@@ -5,11 +5,6 @@ import { isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: isTablet ? 'center' : 'flex-start'
-	},
 	onboarding: {
 		alignSelf: 'center',
 		marginTop: isTablet ? 0 : verticalScale(116),
@@ -42,9 +37,5 @@ export default StyleSheet.create({
 	buttonsContainer: {
 		marginBottom: verticalScale(10),
 		marginTop: verticalScale(30)
-	},
-	closeModal: {
-		position: 'absolute',
-		left: 15
 	}
 });

@@ -4,7 +4,6 @@ import {
 	Text, View, StyleSheet, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
-// import equal from 'deep-equal';
 import RNPickerSelect from 'react-native-picker-select';
 
 import log from '../utils/log';
@@ -38,11 +37,11 @@ const styles = StyleSheet.create({
 		marginBottom: 32,
 		marginHorizontal: 30
 	},
-	dontHaveAccount: {
+	bottomContainerText: {
 		...sharedStyles.textRegular,
 		fontSize: 13
 	},
-	createAccount: {
+	bottomContainerTextBold: {
 		...sharedStyles.textSemibold,
 		fontSize: 13
 	}
@@ -95,41 +94,6 @@ class RegisterView extends React.Component {
 		const { Site_Name } = this.props;
 		this.setTitle(Site_Name);
 	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { collapsed, servicesHeight } = this.state;
-	// 	const {
-	// 		server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
-	// 	} = this.props;
-	// 	if (nextState.collapsed !== collapsed) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.servicesHeight !== servicesHeight) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.server !== server) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Site_Name !== Site_Name) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_ShowFormLogin !== Accounts_ShowFormLogin) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextProps.services, services)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentDidUpdate(prevProps) {
 		const { Site_Name } = this.props;
@@ -327,15 +291,15 @@ class RegisterView extends React.Component {
 					/>
 
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>
+						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
 							{`${ I18n.t('Onboarding_agree_terms') }\n`}
 							<Text
-								style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 								onPress={() => this.openContract('terms-of-service')}
 							>{I18n.t('Terms_of_Service')}
 							</Text> {I18n.t('and')}
 							<Text
-								style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 								onPress={() => this.openContract('privacy-policy')}
 							> {I18n.t('Privacy_Policy')}
 							</Text>
@@ -343,9 +307,9 @@ class RegisterView extends React.Component {
 					</View>
 
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.dontHaveAccount, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
+						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
 						<Text
-							style={[styles.createAccount, { color: themes[theme].actionTintColor }]}
+							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.login}
 						>{I18n.t('Login')}
 						</Text>
