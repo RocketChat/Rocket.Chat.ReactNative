@@ -124,6 +124,7 @@ export default {
 	Connect: 'Ligar',
 	Connected: 'Ligado',
 	Connecting: 'A ligar...',
+	Continue_with: 'Continuar com',
 	Copied_to_clipboard: 'Copiado para a área de transferência!',
 	Copy: 'Copiar',
 	Permalink: 'Link permanente',

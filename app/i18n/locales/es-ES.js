@@ -139,6 +139,7 @@ export default {
 	Connecting: 'Conectando...',
 	Contact_us: 'Contactar',
 	Contact_your_server_admin: 'Contacta con el administrador.',
+	Continue_with: 'Continuar con',
 	Copied_to_clipboard: 'Copiado al portapapeles!',
 	Copy: 'Copiar',
 	Permalink: 'Enlace permanente',

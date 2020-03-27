@@ -124,6 +124,7 @@ export default {
 	Connect: 'Se connecter',
 	Connected: 'Connecté',
 	Connecting: 'Connexion ...',
+	Continue_with: 'Continuer avec',
 	Copied_to_clipboard: 'Copié dans le presse-papier!',
 	Copy: 'Copier',
 	Permalink: 'Lien permanent',

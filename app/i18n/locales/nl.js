@@ -141,6 +141,7 @@ export default {
 	Connecting: 'Aan het verbinden...',
 	Contact_us: 'Contact opnemen',
 	Contact_your_server_admin: 'Neem contact op met je server admin.',
+	Continue_with: 'Ga verder met',
 	Copied_to_clipboard: 'Gekopïeerd naar klembord!',
 	Copy: 'Kopïeer',
 	Permalink: 'Permalink',
