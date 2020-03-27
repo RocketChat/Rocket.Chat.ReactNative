@@ -248,8 +248,24 @@ class ProfileView extends React.Component {
 				this.init();
 			}
 		} catch (e) {
+			if (e.data && e.data.error.includes('[error-password-policy-not-met-minLength]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-minLength'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-maxLength]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-maxLength'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneLowercase]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneLowercase'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneUppercase]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneUppercase'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneNumber]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneNumber'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-oneSpecial]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-oneSpecial'), I18n.t('Oops'));
+			} else if (e.data && e.data.error.includes('[error-password-policy-not-met-repeatingCharacters]')) {
+				showErrorAlert(I18n.t('error-password-policy-not-met-repeatingCharacters'), I18n.t('Oops'));
+			} else {
+				this.handleError(e, 'saveUserProfile', 'saving_profile');
+			}
 			this.setState({ saving: false, currentPassword: null });
-			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
 	}
 
