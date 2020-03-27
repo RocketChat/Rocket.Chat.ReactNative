@@ -168,7 +168,6 @@ export default {
 	is_a_valid_RocketChat_instance: '是一个有效的 Rocket.Chat 实例',
 	is_not_a_valid_RocketChat_instance: '不是有效的 Rocket.Chat 实例',
 	is_typing: '正在输入',
-	Join_the_community: '加入社区',
 	Join: '加入',
 	Just_invited_people_can_access_this_channel: '刚被邀请的人可以进入这个频道',
 	Language: '语言',

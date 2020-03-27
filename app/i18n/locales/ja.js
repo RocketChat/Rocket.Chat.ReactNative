@@ -240,7 +240,6 @@ export default {
     '接続しようとしているサーバーのバージョン（{{currentVersion}}）はサポートされていません。\n\nサポートする最低バージョンは {{minVersion}} です',
 	Invite_Link: '招待リンク',
 	Invite_users: 'ユーザーを招待',
-	Join_the_community: 'コミュニティに参加',
 	Join: '参加',
 	Just_invited_people_can_access_this_channel:
     '招待されたユーザーだけがこのチャンネルに参加できます',

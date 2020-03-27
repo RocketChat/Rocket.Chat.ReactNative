@@ -200,7 +200,6 @@ export default {
 	is_not_a_valid_RocketChat_instance: 'не является действительным сервером Rocket.Chat',
 	is_typing: 'печатает',
 	Invalid_server_version: 'Сервер, к которому вы пытаетесь подключиться, использует версию, которая больше не поддерживается приложением: {{currentVersion}}.\n\nНам нужна версия {{minVersion}}',
-	Join_the_community: 'Присоединиться к сообществу',
 	Join: 'Присоединиться',
 	Just_invited_people_can_access_this_channel: 'Только приглашенные люди могут получить доступ к этому каналу',
 	Language: 'Язык',

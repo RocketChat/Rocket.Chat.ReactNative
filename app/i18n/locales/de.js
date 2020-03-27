@@ -235,7 +235,6 @@ export default {
 	Invalid_server_version: 'Der Server, zu dem Sie eine Verbindung herstellen möchten, verwendet eine Version, die von der App nicht mehr unterstützt wird: {{currentVersion}}.\n\nWir benötigen Version {{MinVersion}}.',
 	Invite_Link: 'Einladungs-Link',
 	Invite_users: 'Benutzer einladen',
-	Join_the_community: 'Trete der Community bei',
 	Join: 'Beitreten',
 	Just_invited_people_can_access_this_channel: 'Nur eingeladene Personen können auf diesen Kanal zugreifen',
 	Language: 'Sprache',

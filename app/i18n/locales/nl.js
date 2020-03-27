@@ -213,7 +213,6 @@ export default {
 	Invalid_server_version: 'De server die je probeert te bereiken gebruikt een versie die niet meer door de app ondersteunt wordt: {{currentVersion}}.\n\nMinimale versienummer {{minVersion}}',
 	Invite_Link: 'Uitnodigingslink',
 	Invite_users: 'Nodig gebruikers uit',
-	Join_the_community: 'Word lid van de community',
 	Join: 'Word lid',
 	Just_invited_people_can_access_this_channel: 'Alleen genodigden kunnen bij dit kanaal',
 	Language: 'Taal',

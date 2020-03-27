@@ -213,7 +213,6 @@ export default {
 	Invalid_server_version: 'Il server a cui stai cercando di connetterti sta utilizzando una versione non più supportata dall\'app: {{currentVersion}}.\n\nVersione minima richiesta: {{minVersion}}',
 	Invite_Link: 'Link di invito',
 	Invite_users: 'Invita utenti',
-	Join_the_community: 'Unisciti alla community',
 	Join: 'Entra',
 	Just_invited_people_can_access_this_channel: 'Solo le persone invitate possono accedere a questo canale',
 	Language: 'Lingua',

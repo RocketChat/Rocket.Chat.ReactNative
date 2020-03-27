@@ -205,7 +205,6 @@ export default {
 	is_not_a_valid_RocketChat_instance: 'no es una instancia válida Rocket.Chat',
 	is_typing: 'escribiendo',
 	Invalid_server_version: 'El servidor que intentas conectar está usando una versión que ya no es soportada por la aplicación : {{currentVersion}}. Requerimos una versión {{minVersion}}.',
-	Join_the_community: 'Conectar con la comunidad',
 	Join: 'Conectar',
 	Just_invited_people_can_access_this_channel: 'Sólo gente invitada puede acceder a este canal.',
 	Language: 'Idioma',
