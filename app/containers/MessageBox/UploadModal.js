@@ -145,7 +145,7 @@ class UploadModal extends Component {
 	}
 
 	submit = () => {
-		const { file, submit } = this.props;
+		const { submit } = this.props;
 		const { files, description } = this.state;
 		submit({files, description });
 	}
@@ -198,7 +198,6 @@ class UploadModal extends Component {
 
 	 renderPreview(file) {
 		const {  split, theme } = this.props;
-		const {files} = this.state
 		
 			if (file.mime && file.mime.match(/image/)) {
 				return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />)
@@ -221,7 +220,6 @@ class UploadModal extends Component {
 			window: { width }, isVisible, close, split, theme
 		} = this.props;
 		const { name, description , files } = this.state;
-		alert(name)
 		return (
 			<Modal
 				isVisible={isVisible}
