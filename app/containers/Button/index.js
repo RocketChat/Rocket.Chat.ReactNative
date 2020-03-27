@@ -47,6 +47,12 @@ export default class Button extends React.PureComponent {
 			title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, ...otherProps
 		} = this.props;
 		const isPrimary = type === 'primary';
+
+		let textColor = isPrimary ? themes[theme].buttonText : themes[theme].bodyText;
+		if (color) {
+			textColor = color;
+		}
+
 		return (
 			<Touchable
 				onPress={onPress}
@@ -63,13 +69,12 @@ export default class Button extends React.PureComponent {
 			>
 				{
 					loading
-						? <ActivityIndicator color={isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor} />
+						? <ActivityIndicator color={textColor} />
 						: (
 							<Text
 								style={[
 									styles.text,
-									{ color: isPrimary ? themes[theme].buttonText : themes[theme].bodyText },
-									color && { color },
+									{ color: textColor },
 									fontSize && { fontSize }
 								]}
 							>

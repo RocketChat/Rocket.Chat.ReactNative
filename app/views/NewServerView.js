@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	chooseCertificateTitle: {
-		fontSize: 15,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	chooseCertificate: {
-		fontSize: 15,
+		fontSize: 13,
 		...sharedStyles.textSemibold
 	},
 	description: {
@@ -87,6 +87,7 @@ class NewServerView extends React.Component {
 
 		this.state = {
 			text: server || '',
+			connectingOpen: false,
 			certificate: null
 		};
 	}
@@ -99,23 +100,23 @@ class NewServerView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { text, certificate } = this.state;
-		const { connecting, theme } = this.props;
-		if (nextState.text !== text) {
-			return true;
-		}
-		if (!isEqual(nextState.certificate, certificate)) {
-			return true;
-		}
-		if (nextProps.connecting !== connecting) {
-			return true;
-		}
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { text, certificate } = this.state;
+	// 	const { connecting, theme } = this.props;
+	// 	if (nextState.text !== text) {
+	// 		return true;
+	// 	}
+	// 	if (!isEqual(nextState.certificate, certificate)) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.connecting !== connecting) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.theme !== theme) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	onChangeText = (text) => {
 		this.setState({ text });
@@ -125,6 +126,8 @@ class NewServerView extends React.Component {
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
+
+		this.setState({ connectingOpen: false });
 
 		if (certificate) {
 			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
@@ -145,6 +148,12 @@ class NewServerView extends React.Component {
 			await this.basicAuth(server, text);
 			connectServer(server, cert);
 		}
+	}
+
+	connectOpen = () => {
+		this.setState({ connectingOpen: true });
+		const { connectServer } = this.props;
+		connectServer('https://open.rocket.chat');
 	}
 
 	basicAuth = async(server, text) => {
@@ -259,7 +268,7 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text } = this.state;
+		const { text, connectingOpen } = this.state;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
@@ -282,8 +291,8 @@ class NewServerView extends React.Component {
 						title={I18n.t('Connect')}
 						type='primary'
 						onPress={this.submit}
-						disabled={!text}
-						loading={connecting}
+						disabled={!text || connecting}
+						loading={!connectingOpen && connecting}
 						style={{ marginBottom: 0 }}
 						testID='new-server-view-button'
 						theme={theme}
@@ -294,8 +303,9 @@ class NewServerView extends React.Component {
 						title={I18n.t('Join_our_open_workspace')}
 						type='secondary'
 						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.submit}
-						// loading={connecting} TODO: connecting to open
+						onPress={this.connectOpen}
+						disabled={connecting}
+						loading={connectingOpen && connecting}
 						theme={theme}
 					/>
 				</FormContainerInner>
