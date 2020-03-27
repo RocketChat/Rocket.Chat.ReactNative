@@ -51,11 +51,11 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
+		reduxStore.dispatch(clearUserTyping());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
-		reduxStore.dispatch(clearUserTyping());
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
