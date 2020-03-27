@@ -512,32 +512,31 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	sendMediaMessage = ({files,description}) => {
+	sendMediaMessage = ({ files, description }) => {
 		const {
 			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
-		files.map(async(file)=>{
+		files.map(async(file) => {
 			this.setState({ file: { isVisible: false } });
-		const fileInfo = {
-			name: file.filename,
-			description: description,
-			size: file.size,
-			type: file.mime,
-			store: 'Uploads',
-			path: file.path
-		};
-		
-		try {
-			replyCancel();
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
+			const fileInfo = {
+				name: file.filename,
+				description,
+				size: file.size,
+				type: file.mime,
+				store: 'Uploads',
+				path: file.path
+			};
 
-		})
-		
+			try {
+				replyCancel();
+				await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
+				Review.pushPositiveEvent();
+			} catch (e) {
+				log(e);
+			}
+		});
 	}
+
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
@@ -576,7 +575,7 @@ class MessageBox extends Component {
 			const results = await DocumentPicker.pickMultiple({
 				type: [DocumentPicker.types.allFiles]
 			});
-			results.forEach(file => {
+			results.forEach((file) => {
 				file = {
 					filename: file.name,
 					size: file.size,
@@ -586,8 +585,7 @@ class MessageBox extends Component {
 				if (this.canUploadFile(file)) {
 					this.showUploadModal(file);
 				}
-			})
-			
+			});
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
