@@ -577,7 +577,7 @@ class MessageBox extends Component {
 				type: [DocumentPicker.types.allFiles]
 			});
 			results.forEach(file => {
-				const file = {
+				file = {
 					filename: res.name,
 					size: res.size,
 					mime: res.type,
