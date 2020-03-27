@@ -1,27 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, Image, StyleSheet, Animated, Easing, Keyboard
+	Text, View, Image, StyleSheet, Animated, Easing, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
-import { SafeAreaView } from 'react-navigation';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
+import RNPickerSelect from 'react-native-picker-select';
 
-import log, { analytics } from '../utils/log';
+import log from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
 import random from '../utils/random';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
-import { isTablet } from '../utils/deviceInfo';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
 import TextInput from '../containers/TextInput';
@@ -29,17 +25,10 @@ import isValidEmail from '../utils/isValidEmail';
 import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
-import { animateNextTransition } from '../utils/layoutAnimation';
 import openLink from '../utils/openLink';
+import LoginServices from '../containers/LoginServices';
 
 const styles = StyleSheet.create({
-	container: {
-		paddingVertical: 30
-	},
-	safeArea: {
-		paddingBottom: 30,
-		flex: 1
-	},
 	serviceButton: {
 		borderRadius: 2,
 		marginBottom: 10
@@ -72,33 +61,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textAlignCenter,
 		fontSize: 16
 	},
-	servicesTogglerContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginTop: 5,
-		marginBottom: 30
-	},
-	servicesToggler: {
-		width: 32,
-		height: 31
-	},
-	separatorContainer: {
-		marginTop: 5,
-		marginBottom: 15
-	},
-	separatorLine: {
-		flex: 1,
-		height: 1
-	},
-	separatorLineLeft: {
-		marginRight: 15
-	},
-	separatorLineRight: {
-		marginLeft: 15
-	},
-	inverted: {
-		transform: [{ scaleY: -1 }]
-	},
 	title: {
 		...sharedStyles.textBold,
 		fontSize: 22
@@ -119,8 +81,7 @@ const styles = StyleSheet.create({
 	createAccount: {
 		...sharedStyles.textSemibold,
 		fontSize: 13
-	},
-
+	}
 });
 
 const SERVICE_HEIGHT = 58;
@@ -147,7 +108,10 @@ class RegisterView extends React.Component {
 		Accounts_ShowFormLogin: PropTypes.bool,
 		Accounts_RegistrationForm: PropTypes.string,
 		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
-		theme: PropTypes.string
+		Accounts_CustomFields: PropTypes.string,
+		Accounts_EmailVerification: PropTypes.bool,
+		theme: PropTypes.string,
+		loginRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -660,8 +624,7 @@ class RegisterView extends React.Component {
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
-					{this.renderServices()}
-					{this.renderServicesSeparator()}
+					<LoginServices />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
 						label='Name'
@@ -769,11 +732,8 @@ const mapStateToProps = state => ({
 	isFetching: state.login.isFetching,
 	failure: state.login.failure,
 	error: state.login.error && state.login.error.data,
-	// Site_Name: state.settings.Site_Name,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	// Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
-	// Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	Accounts_PasswordReset: state.settings.Accounts_PasswordReset,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
