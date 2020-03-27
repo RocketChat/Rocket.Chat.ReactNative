@@ -44,7 +44,7 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, backgroundColor, color, loading, style, theme, ...otherProps
+			title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, ...otherProps
 		} = this.props;
 		const isPrimary = type === 'primary';
 		return (
@@ -69,7 +69,8 @@ export default class Button extends React.PureComponent {
 								style={[
 									styles.text,
 									{ color: isPrimary ? themes[theme].buttonText : themes[theme].bodyText },
-									color && { color }
+									color && { color },
+									fontSize && { fontSize }
 								]}
 							>
 								{title}

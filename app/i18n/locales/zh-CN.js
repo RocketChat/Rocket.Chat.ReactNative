@@ -155,7 +155,6 @@ export default {
 	Files: '文件',
 	Finish_recording: '完成录制',
 	For_your_security_you_must_enter_your_current_password_to_continue: '为了安全起见，您必须输入当前密码才能继续',
-	Forgot_my_password: '忘记密码',
 	Forgot_password_If_this_email_is_registered: '如果这封邮件已注册，我们将发送如何重置密码的说明。如果您没有立即收到电子邮件，请回来再试一次。',
 	Forgot_password: '忘记密码',
 	Forgot_Password: '忘记密码',

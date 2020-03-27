@@ -197,7 +197,6 @@ export default {
 	Finish_recording: 'Beenden Sie die Aufnahme',
 	Following_thread: 'Thread folgen',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Zu Ihrer Sicherheit müssen Sie Ihr aktuelles Passwort eingeben, um fortzufahren',
-	Forgot_my_password: 'Ich habe mein Passwort vergessen',
 	Forgot_password_If_this_email_is_registered: 'Wenn diese E-Mail registriert ist, senden wir Anweisungen zum Zurücksetzen Ihres Passworts. Wenn Sie in Kürze keine E-Mail erhalten, kommen Sie bitte zurück und versuchen Sie es erneut.',
 	Forgot_password: 'Passwort vergessen',
 	Forgot_Password: 'Passwort vergessen',

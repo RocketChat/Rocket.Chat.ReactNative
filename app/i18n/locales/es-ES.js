@@ -187,7 +187,6 @@ export default {
 	Finish_recording: 'Finalizar grabación',
 	Following_thread: 'Siguiendo hilo',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Por seguridad, debes introducir tu contraseña para continuar',
-	Forgot_my_password: 'He olvidado mi contraseña',
 	Forgot_password_If_this_email_is_registered: 'Si este email está registrado, te enviaremos las instrucciones para resetear tu contraseña.Si no recibes un email en un rato, vuelve aquí e inténtalo de nuevo.',
 	Forgot_password: 'Restablecer mi contraseña',
 	Forgot_Password: 'Restabler mi Contraseña',

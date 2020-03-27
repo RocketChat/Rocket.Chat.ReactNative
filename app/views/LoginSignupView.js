@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, Image, StyleSheet, Animated, Easing
+	Text, View, ScrollView, Image, StyleSheet, Animated, Easing, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-navigation';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
+import { analytics } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -24,6 +25,9 @@ import { isTablet } from '../utils/deviceInfo';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
 import TextInput from '../containers/TextInput';
+
+import { loginRequest as loginRequestAction } from '../actions/login';
+import { animateNextTransition } from '../utils/layoutAnimation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -97,8 +101,7 @@ const styles = StyleSheet.create({
 		fontSize: 22
 	},
 	inputContainer: {
-		marginTop: 24,
-		marginBottom: 32
+		marginVertical: 16
 	},
 	bottomContainer: {
 		flexDirection: 'column',
@@ -148,40 +151,40 @@ class LoginSignupView extends React.Component {
 		this.setTitle(Site_Name);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { collapsed, servicesHeight } = this.state;
-		const {
-			server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
-		} = this.props;
-		if (nextState.collapsed !== collapsed) {
-			return true;
-		}
-		if (nextState.servicesHeight !== servicesHeight) {
-			return true;
-		}
-		if (nextProps.server !== server) {
-			return true;
-		}
-		if (nextProps.Site_Name !== Site_Name) {
-			return true;
-		}
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextProps.Accounts_ShowFormLogin !== Accounts_ShowFormLogin) {
-			return true;
-		}
-		if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
-			return true;
-		}
-		if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
-			return true;
-		}
-		if (!equal(nextProps.services, services)) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { collapsed, servicesHeight } = this.state;
+	// 	const {
+	// 		server, Site_Name, services, Accounts_ShowFormLogin, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, theme
+	// 	} = this.props;
+	// 	if (nextState.collapsed !== collapsed) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.servicesHeight !== servicesHeight) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.server !== server) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.Site_Name !== Site_Name) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.theme !== theme) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.Accounts_ShowFormLogin !== Accounts_ShowFormLogin) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.Accounts_RegistrationForm !== Accounts_RegistrationForm) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.Accounts_RegistrationForm_LinkReplacementText !== Accounts_RegistrationForm_LinkReplacementText) {
+	// 		return true;
+	// 	}
+	// 	if (!equal(nextProps.services, services)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps) {
 		const { Site_Name } = this.props;
@@ -377,6 +380,18 @@ class LoginSignupView extends React.Component {
 		return user.trim() && password.trim();
 	}
 
+	submit = () => {
+		if (!this.valid()) {
+			return;
+		}
+
+		const { user, password, code } = this.state;
+		const { loginRequest } = this.props;
+		Keyboard.dismiss();
+		loginRequest({ user, password, code });
+		analytics().logEvent('login');
+	}
+
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
 		const {
@@ -397,7 +412,7 @@ class LoginSignupView extends React.Component {
 			return (
 				<>
 					<Button
-						title='More options'
+						title={collapsed ? 'More options' : 'Less options'}
 						type='secondary'
 						onPress={this.toggleServices}
 						theme={theme}
@@ -569,6 +584,7 @@ class LoginSignupView extends React.Component {
 					loading={isFetching}
 					disabled={!this.valid()}
 					theme={theme}
+					style={{ marginTop: 16 }}
 				/>
 				{Accounts_PasswordReset && (
 					<Button
@@ -577,6 +593,8 @@ class LoginSignupView extends React.Component {
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
 						theme={theme}
+						color={themes[theme].auxiliaryText}
+						fontSize={14}
 					/>
 				)}
 				{Accounts_RegistrationForm === 'Public' ? (
@@ -600,10 +618,8 @@ class LoginSignupView extends React.Component {
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
-					{this.renderServices()}
-					{this.renderServicesSeparator()}
-					{/* {this.renderLogin()}
-					{this.renderRegister()} */}
+					{!showTOTP ? this.renderServices() : null}
+					{!showTOTP ? this.renderServicesSeparator() : null}
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}
 				</FormContainerInner>
@@ -633,4 +649,8 @@ const mapStateToProps = state => ({
 	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
 });
 
-export default connect(mapStateToProps)(withTheme(LoginSignupView));
+const mapDispatchToProps = dispatch => ({
+	loginRequest: params => dispatch(loginRequestAction(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginSignupView));

@@ -191,7 +191,6 @@ export default {
 	Finish_recording: 'Termina registrazione',
 	Following_thread: 'Thread seguito',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Per garantire la sicurezza del tuo account, inserisci la password per continuare.',
-	Forgot_my_password: 'Ho dimenticato la password',
 	Forgot_password_If_this_email_is_registered: 'Se questa e-mail è registrata, manderemo istruzioni su come resettare la tua password. Se non ricevi nulla, torna qui e riprova di nuovo.',
 	Forgot_password: 'Password dimenticata',
 	Forgot_Password: 'Password dimenticata',

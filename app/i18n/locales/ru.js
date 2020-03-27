@@ -182,7 +182,6 @@ export default {
 	Finish_recording: 'Завершить запись',
 	Following_thread: 'Следить за темой',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'В целях вашей безопасности вы должны ввести свой текущий пароль для продолжения',
-	Forgot_my_password: 'Забыл свой пароль',
 	Forgot_password_If_this_email_is_registered: 'Если эта электронная почта зарегистрирована, мы отправим инструкции о том, как сбросить пароль. Если вы не получите письмо в ближайшее время, вернитесь и повторите попытку.',
 	Forgot_password: 'Забыли пароль',
 	Forgot_Password: 'Забыли Пароль',

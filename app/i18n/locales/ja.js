@@ -215,7 +215,6 @@ export default {
 	Following_thread: 'スレッド更新時に通知',
 	For_your_security_you_must_enter_your_current_password_to_continue:
     'セキュリティのため、続けるには現在のパスワードを入力してください。',
-	Forgot_my_password: 'パスワードを忘れた',
 	Forgot_password_If_this_email_is_registered:
     '送信したメールアドレスが登録されていれば、パスワードのリセット方法を送信しました。メールアドレスがすぐに来ない場合はやり直してください。',
 	Forgot_password: 'パスワードを忘れた',

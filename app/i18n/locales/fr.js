@@ -158,7 +158,6 @@ export default {
 	File_name: 'Nom de fichier',
 	Finish_recording: 'Terminer l\'enregistrement',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Pour votre sécurité, vous devez entrer votre mot de passe actuel pour continuer.',
-	Forgot_my_password: 'J\'ai oublié mon mot de passe',
 	Forgot_password_If_this_email_is_registered: 'Si cet e-mail est enregistré, nous vous enverrons des instructions pour réinitialiser votre mot de passe. Si vous ne recevez pas d\'e-mail sous peu, veuillez revenir et réessayer.',
 	Forgot_password: 'Mot de passe oublié',
 	Forgot_Password: 'Mot de passe oublié',

@@ -189,7 +189,6 @@ export default {
 	Finish_recording: 'Encerrar gravação',
 	Following_thread: 'Começou a seguir tópico',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Para sua segurança, você precisa digitar sua senha',
-	Forgot_my_password: 'Esqueci minha senha',
 	Forgot_password_If_this_email_is_registered: 'Se este e-mail estiver cadastrado, enviaremos instruções sobre como redefinir sua senha. Se você não receber um e-mail em breve, volte e tente novamente.',
 	Forgot_password: 'Esqueci minha senha',
 	Forgot_Password: 'Esqueci minha senha',

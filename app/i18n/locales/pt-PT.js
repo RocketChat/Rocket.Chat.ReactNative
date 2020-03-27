@@ -158,7 +158,6 @@ export default {
 	File_name: 'Nome do ficheiro',
 	Finish_recording: 'Terminar a gravação',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Para sua segurança, você deve escrever a sua palavra-passe actual para continuar',
-	Forgot_my_password: 'Esqueci minha palavra-passe',
 	Forgot_password_If_this_email_is_registered: 'Se este e-mail estiver registado, enviaremos instruções sobre como repor a sua palavra-passe. Se você não receber um e-mail em breve, volte e tente novamente.',
 	Forgot_password: 'Esquecer palavra-passe',
 	Forgot_Password: 'Esquecer Palavra-passe',

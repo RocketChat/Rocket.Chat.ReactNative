@@ -191,7 +191,6 @@ export default {
 	Finish_recording: 'Beëindig opname',
 	Following_thread: 'Volg thread',
 	For_your_security_you_must_enter_your_current_password_to_continue: 'Voor je veiligheid moet je je wachtwoord invullen om door te gaan',
-	Forgot_my_password: 'Wachtwoord vergeten',
 	Forgot_password_If_this_email_is_registered: 'Als dit email adres bij ons bekend is, sturen we je instructies op om je wachtwoord te resetten. Als je geen email krijgt, probeer het dan nogmaals.',
 	Forgot_password: 'Wachtwoord vergeten',
 	Forgot_Password: 'Wachtwoord Vergeten',
