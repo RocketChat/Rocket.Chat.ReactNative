@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-navigation';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import equal from 'deep-equal';
 
-import { analytics } from '../utils/log';
+import log, { analytics } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -460,15 +460,6 @@ class RegisterView extends React.Component {
 		const { length } = Object.values(services);
 
 		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
-			// return (
-			// 	<View style={styles.servicesTogglerContainer}>
-			// 		<View style={[styles.separatorLine, styles.separatorLineLeft, { backgroundColor: themes[theme].auxiliaryText }]} />
-			// 		<BorderlessButton onPress={this.toggleServices}>
-			// 			<Image source={{ uri: 'options' }} style={[styles.servicesToggler, !collapsed && styles.inverted]} />
-			// 		</BorderlessButton>
-			// 		<View style={[styles.separatorLine, styles.separatorLineRight, { backgroundColor: themes[theme].auxiliaryText }]} />
-			// 	</View>
-			// );
 			return (
 				<>
 					<Button
@@ -483,7 +474,10 @@ class RegisterView extends React.Component {
 				</>
 			);
 		}
-		return <OnboardingSeparator theme={theme} />;
+		if (length > 0) {
+			return <OnboardingSeparator theme={theme} />;
+		}
+		return null;
 	}
 
 	renderItem = (service) => {

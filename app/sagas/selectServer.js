@@ -133,16 +133,7 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
-			const loginServicesLength = yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
-
-			const showFormLogin = yield select(state => state.settings.Accounts_ShowFormLogin);
-
-			// if (!loginServicesLength && showFormLogin) {
-			// 	Navigation.navigate('LoginView');
-			// } else {
-			// 	Navigation.navigate('LoginSignupView');
-			// }
 			Navigation.navigate('WorkspaceView');
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}

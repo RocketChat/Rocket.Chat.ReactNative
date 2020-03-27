@@ -77,9 +77,6 @@ const OutsideStack = createStackNavigator({
 	WorkspaceView: {
 		getScreen: () => require('./views/WorkspaceView').default
 	},
-	LoginSignupView: {
-		getScreen: () => require('./views/LoginSignupView').default
-	},
 	LoginView: {
 		getScreen: () => require('./views/LoginView').default
 	},

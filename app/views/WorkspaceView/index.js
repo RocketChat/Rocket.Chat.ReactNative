@@ -38,7 +38,7 @@ class WorkspaceView extends React.Component {
 
 	login = () => {
 		const { navigation } = this.props;
-		navigation.navigate('LoginSignupView');
+		navigation.navigate('LoginView');
 	}
 
 	register = () => {
