@@ -126,7 +126,7 @@ class ServerDropdown extends Component {
 
 		this.close();
 		setTimeout(() => {
-			navigation.navigate('OnboardingView', { previousServer: server });
+			navigation.navigate('NewServerView', { previousServer: server });
 		}, ANIMATION_DURATION);
 	}
 
