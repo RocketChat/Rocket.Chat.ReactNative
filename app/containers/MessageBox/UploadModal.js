@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight,FlatList
+	View, Text, StyleSheet, Image, ScrollView, TouchableHighlight, FlatList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -36,10 +36,6 @@ const styles = StyleSheet.create({
 	container: {
 		height: 430,
 		flexDirection: 'column'
-	},
-	scrollView: {
-		flex: 1,
-		padding: 16
 	},
 	image: {
 		height: 150,
@@ -87,7 +83,6 @@ const styles = StyleSheet.create({
 class UploadModal extends Component {
 	static propTypes = {
 		isVisible: PropTypes.bool,
-		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
 		window: PropTypes.object,
@@ -108,7 +103,7 @@ class UploadModal extends Component {
 				file: props.file,
 				name: props.file.filename || 'Filename',
 				description: '',
-				files: [...state.files,props.file]
+				files: [...state.files, props.file]
 			};
 		}
 		return null;
@@ -147,7 +142,7 @@ class UploadModal extends Component {
 	submit = () => {
 		const { submit } = this.props;
 		const { files, description } = this.state;
-		submit({files, description });
+		submit({ files, description });
 	}
 
 	renderButtons = () => {
@@ -196,30 +191,27 @@ class UploadModal extends Component {
 		);
 	}
 
-	 renderPreview(file) {
-		const {  split, theme } = this.props;
-		
-			if (file.mime && file.mime.match(/image/)) {
-				return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />)
-				
-			}
-			if (file.mime && file.mime.match(/video/)) {
-				return (
-					<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
-						<CustomIcon name='play' size={72} color={themes[theme].buttonText} />
-					</View>
-				);
-			}
-			return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />)
+	renderPreview(file) {
+		const { split, theme } = this.props;
 
-		
+		if (file.mime && file.mime.match(/image/)) {
+			return (<Image source={{ isStatic: true, uri: file.path }} style={[styles.image, split && styles.bigPreview]} />);
+		}
+		if (file.mime && file.mime.match(/video/)) {
+			return (
+				<View style={[styles.video, { backgroundColor: themes[theme].bannerBackground }]}>
+					<CustomIcon name='play' size={72} color={themes[theme].buttonText} />
+				</View>
+			);
+		}
+		return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />);
 	}
 
 	render() {
 		const {
 			window: { width }, isVisible, close, split, theme
 		} = this.props;
-		const { name, description , files } = this.state;
+		const { name, description, files } = this.state;
 		return (
 			<Modal
 				isVisible={isVisible}
@@ -237,28 +229,28 @@ class UploadModal extends Component {
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Upload_file_question_mark')}</Text>
 					</View>
 
-					<ScrollView  >
-					   <FlatList
-					   data={files}
-					   renderItem= {({item})=>this.renderPreview(item)}
-					   />
-
-						</ScrollView>
-
-						
-						<TextInput
-							placeholder={I18n.t('File_name')}
-							value={name}
-							onChangeText={value => this.setState({ name: value })}
-							theme={theme}
+					<ScrollView>
+						<FlatList
+							data={files}
+							renderItem={({ item }) => this.renderPreview(item)}
 						/>
-						<TextInput
-							placeholder={I18n.t('File_description')}
-							value={description}
-							onChangeText={value => this.setState({ description: value })}
-							theme={theme}
-						/>
-					
+
+					</ScrollView>
+
+
+					<TextInput
+						placeholder={I18n.t('File_name')}
+						value={name}
+						onChangeText={value => this.setState({ name: value })}
+						theme={theme}
+					/>
+					<TextInput
+						placeholder={I18n.t('File_description')}
+						value={description}
+						onChangeText={value => this.setState({ description: value })}
+						theme={theme}
+					/>
+
 					{this.renderButtons()}
 				</View>
 			</Modal>
