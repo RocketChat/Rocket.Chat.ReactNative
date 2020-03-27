@@ -578,10 +578,10 @@ class MessageBox extends Component {
 			});
 			results.forEach(file => {
 				file = {
-					filename: res.name,
-					size: res.size,
-					mime: res.type,
-					path: res.uri
+					filename: file.name,
+					size: file.size,
+					mime: file.type,
+					path: file.uri
 				};
 				if (this.canUploadFile(file)) {
 					this.showUploadModal(file);
