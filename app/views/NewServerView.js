@@ -12,7 +12,11 @@ import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
 
-import { serverRequest } from '../actions/server';
+import EventEmitter from '../utils/events';
+import {
+	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
+} from '../actions/server';
+import { appStart as appStartAction } from '../actions';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -26,6 +30,7 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	title: {
@@ -59,21 +64,31 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Workspaces'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = ({ screenProps, navigation }) => {
+		const previousServer = navigation.getParam('previousServer', null);
+		const close = navigation.getParam('close', () => {});
+		return {
+			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
+			title: I18n.t('Workspaces'),
+			...themedHeader(screenProps.theme)
+		};
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
-		connectServer: PropTypes.func.isRequired
+		connectServer: PropTypes.func.isRequired,
+		selectServer: PropTypes.func.isRequired,
+		currentServer: PropTypes.string,
+		initAdd: PropTypes.func,
+		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		const server = props.navigation.getParam('server');
+		this.previousServer = props.navigation.getParam('previousServer');
+		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -84,17 +99,17 @@ class NewServerView extends React.Component {
 		this.DELETE_INDEX = 1;
 
 		this.state = {
-			text: server || '',
+			text: '',
 			connectingOpen: false,
 			certificate: null
 		};
+		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
 	componentDidMount() {
-		const { text } = this.state;
-		const { connectServer } = this.props;
-		if (text) {
-			connectServer(text);
+		const { initAdd } = this.props;
+		if (this.previousServer) {
+			initAdd();
 		}
 	}
 
@@ -116,8 +131,28 @@ class NewServerView extends React.Component {
 	// 	return false;
 	// }
 
+	componentWillUnmount() {
+		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
+	}
+
 	onChangeText = (text) => {
 		this.setState({ text });
+	}
+
+	close = () => {
+		const { selectServer, currentServer, finishAdd } = this.props;
+		if (this.previousServer !== currentServer) {
+			selectServer(this.previousServer);
+		}
+		finishAdd();
+	}
+
+	handleNewServerEvent = (event) => {
+		let { server } = event;
+		const { connectServer } = this.props;
+		this.setState({ text: server });
+		server = this.completeUrl(server);
+		connectServer(server);
 	}
 
 	submit = async() => {
@@ -318,7 +353,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
+	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	selectServer: server => dispatch(selectServerRequest(server)),
+	appStart: root => dispatch(appStartAction(root))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

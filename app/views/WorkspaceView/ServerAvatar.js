@@ -51,16 +51,18 @@ const Fallback = ({ theme, initial }) => (
 
 const ServerAvatar = React.memo(({ theme, url, image }) => (
 	<View style={styles.container}>
-		<ImageProgress
-			style={[styles.image, { borderColor: themes[theme].borderColor }]}
-			source={{ uri: `${ url }/${ image }` }}
-			resizeMode={FastImage.resizeMode.cover}
-			indicator={Progress.Pie}
-			indicatorProps={{
-				color: themes[theme].actionTintColor
-			}}
-			renderError={() => <Fallback theme={theme} initial={getInitial(url)} />}
-		/>
+		{image && (
+			<ImageProgress
+				style={[styles.image, { borderColor: themes[theme].borderColor }]}
+				source={{ uri: `${ url }/${ image }` }}
+				resizeMode={FastImage.resizeMode.cover}
+				indicator={Progress.Pie}
+				indicatorProps={{
+					color: themes[theme].actionTintColor
+				}}
+				renderError={() => <Fallback theme={theme} initial={getInitial(url)} />}
+			/>
+		)}
 	</View>
 ));
 

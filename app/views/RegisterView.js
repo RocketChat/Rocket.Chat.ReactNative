@@ -4,7 +4,7 @@ import {
 	Text, View, StyleSheet, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+// import equal from 'deep-equal';
 import RNPickerSelect from 'react-native-picker-select';
 
 import log from '../utils/log';
@@ -143,6 +143,11 @@ class RegisterView extends React.Component {
 		navigation.setParams({ title });
 	}
 
+	login = () => {
+		const { navigation } = this.props;
+		navigation.navigate('LoginView');
+	}
+
 	valid = () => {
 		const {
 			name, email, password, username, customFields
@@ -221,7 +226,6 @@ class RegisterView extends React.Component {
 								inputRef={(e) => { this[key] = e; }}
 								placeholder={key}
 								value={customFields[key]}
-								iconLeft='flag'
 								testID='register-view-custom-picker'
 								theme={theme}
 							/>
@@ -235,7 +239,6 @@ class RegisterView extends React.Component {
 						key={key}
 						placeholder={key}
 						value={customFields[key]}
-						iconLeft='flag'
 						onChangeText={(value) => {
 							const newValue = {};
 							newValue[key] = value;
@@ -269,7 +272,6 @@ class RegisterView extends React.Component {
 						containerStyle={styles.inputContainer}
 						placeholder={I18n.t('Name')}
 						returnKeyType='next'
-						iconLeft='user'
 						onChangeText={name => this.setState({ name })}
 						onSubmitEditing={() => { this.usernameInput.focus(); }}
 						testID='register-view-name'
@@ -281,7 +283,6 @@ class RegisterView extends React.Component {
 						inputRef={(e) => { this.usernameInput = e; }}
 						placeholder={I18n.t('Username')}
 						returnKeyType='next'
-						iconLeft='at'
 						onChangeText={username => this.setState({ username })}
 						onSubmitEditing={() => { this.emailInput.focus(); }}
 						testID='register-view-username'
@@ -294,7 +295,6 @@ class RegisterView extends React.Component {
 						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						keyboardType='email-address'
-						iconLeft='mail'
 						onChangeText={email => this.setState({ email })}
 						onSubmitEditing={() => { this.passwordInput.focus(); }}
 						testID='register-view-email'
@@ -306,7 +306,6 @@ class RegisterView extends React.Component {
 						inputRef={(e) => { this.passwordInput = e; }}
 						placeholder={I18n.t('Password')}
 						returnKeyType='send'
-						iconLeft='key'
 						secureTextEntry
 						onChangeText={value => this.setState({ password: value })}
 						onSubmitEditing={this.submit}

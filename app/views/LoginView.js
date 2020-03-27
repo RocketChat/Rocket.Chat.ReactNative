@@ -4,7 +4,7 @@ import {
 	Text, View, StyleSheet, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+// import equal from 'deep-equal';
 
 import { analytics } from '../utils/log';
 import sharedStyles from './Styles';
@@ -186,7 +186,6 @@ class LoginView extends React.Component {
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'
-					iconLeft='at'
 					onChangeText={value => this.setState({ user: value })}
 					onSubmitEditing={() => { this.passwordInput.focus(); }}
 					testID='login-view-email'
@@ -200,7 +199,6 @@ class LoginView extends React.Component {
 					inputRef={(e) => { this.passwordInput = e; }}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					returnKeyType='send'
-					iconLeft='key'
 					secureTextEntry
 					onSubmitEditing={this.submit}
 					onChangeText={value => this.setState({ password: value })}
