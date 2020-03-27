@@ -54,7 +54,7 @@ class LoginView extends React.Component {
 		return {
 			...themedHeader(screenProps.theme),
 			title,
-			headerRight: <LegalButton testID='welcome-view-more' navigation={navigation} />
+			headerRight: <LegalButton testID='login-view-more' navigation={navigation} />
 		};
 	}
 
