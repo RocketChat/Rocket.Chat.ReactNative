@@ -513,12 +513,10 @@ class MessageBox extends Component {
 	}
 
 	sendMediaMessage = ({files,description}) => {
-		alert(files[0])
 		const {
 			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
 		files.map(async(file)=>{
-			alert(file)
 			this.setState({ file: { isVisible: false } });
 		const fileInfo = {
 			name: file.filename,
@@ -578,7 +576,7 @@ class MessageBox extends Component {
 			const results = await DocumentPicker.pickMultiple({
 				type: [DocumentPicker.types.allFiles]
 			});
-			for (const res of results) {
+			results.forEach(file => {
 				const file = {
 					filename: res.name,
 					size: res.size,
@@ -588,9 +586,7 @@ class MessageBox extends Component {
 				if (this.canUploadFile(file)) {
 					this.showUploadModal(file);
 				}
-				
-			
-			  }
+			})
 			
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
