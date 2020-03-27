@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	serviceName: {
-		...sharedStyles.textBold
+		...sharedStyles.textSemibold
 	},
 	registerDisabled: {
 		...sharedStyles.textRegular,
@@ -107,6 +107,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		alignItems: 'center',
 		marginBottom: 32
+	},
+	dontHaveAccount: {
+		...sharedStyles.textRegular,
+		fontSize: 13
+	},
+	createAccount: {
+		...sharedStyles.textSemibold,
+		fontSize: 13
 	},
 });
 
@@ -461,7 +469,7 @@ class LoginSignupView extends React.Component {
 		} else {
 			buttonText = (
 				<>
-					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
+					{I18n.t('Login_with')} <Text style={styles.serviceName}>{name}</Text>
 				</>
 			);
 		}

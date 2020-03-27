@@ -158,7 +158,6 @@ export default {
 	Connecting: '接続中...',
 	Contact_us: 'お問い合わせ',
 	Contact_your_server_admin: 'サーバー管理者にお問い合わせください。',
-	Continue_with: '次でログイン: ',
 	Copied_to_clipboard: 'クリップボードにコピー！',
 	Copy: 'コピー',
 	Permalink: 'パーマリンク',

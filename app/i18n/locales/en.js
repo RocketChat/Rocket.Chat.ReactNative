@@ -144,7 +144,6 @@ export default {
 	Connecting: 'Connecting...',
 	Contact_us: 'Contact us',
 	Contact_your_server_admin: 'Contact your server admin.',
-	Continue_with: 'Continue with',
 	Copied_to_clipboard: 'Copied to clipboard!',
 	Copy: 'Copy',
 	Permalink: 'Permalink',

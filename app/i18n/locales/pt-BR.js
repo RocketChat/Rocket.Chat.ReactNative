@@ -145,7 +145,6 @@ export default {
 	Connected: 'Conectado',
 	connecting_server: 'conectando no servidor',
 	Connecting: 'Conectando...',
-	Continue_with: 'Entrar com',
 	Contact_your_server_admin: 'Contate o administrador do servidor.',
 	Copied_to_clipboard: 'Copiado para a área de transferência!',
 	Copy: 'Copiar',

@@ -124,7 +124,6 @@ export default {
 	Connect: '连接',
 	Connected: '已连接',
 	Connecting: '连接中',
-	Continue_with: '继续采用',
 	Copied_to_clipboard: '复制到剪贴板',
 	Copy: '复制',
 	Permalink: '永久链接',

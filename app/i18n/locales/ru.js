@@ -136,7 +136,6 @@ export default {
 	Connecting: 'Соединение...',
 	Contact_us: 'Связаться с нами',
 	Contact_your_server_admin: 'Свяжитесь с администратором сервера.',
-	Continue_with: 'Продолжить с',
 	Copied_to_clipboard: 'Скопировано в буфер обмена!',
 	Copy: 'Копировать',
 	Permalink: 'Постоянная ссылка',

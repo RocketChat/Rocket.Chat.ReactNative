@@ -141,7 +141,6 @@ export default {
 	Connecting: 'Connessione...',
 	Contact_us: 'Contattaci',
 	Contact_your_server_admin: 'Contatta l\'amministratore.',
-	Continue_with: 'Continua con',
 	Copied_to_clipboard: 'Copiato in Appunti!',
 	Copy: 'Copia',
 	Permalink: 'Permalink',
