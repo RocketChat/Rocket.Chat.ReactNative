@@ -237,12 +237,19 @@ public class CustomPushNotification extends PushNotification {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                         messageStyle.addMessage(m, timestamp, username);
                     } else {
-                        Person sender = new Person.Builder()
+                        Bitmap avatar = getAvatar(avatarUri);
+
+                        Person.Builder sender = new Person.Builder()
                             .setKey(senderId)
-                            .setName(username)
-                            .setIcon(Icon.createWithBitmap(getAvatar(avatarUri)))
-                            .build();
-                        messageStyle.addMessage(m, timestamp, sender);
+                            .setName(username);
+
+                        if (avatar != null) {
+                            sender.setIcon(Icon.createWithBitmap(avatar));
+                        }
+
+                        Person person = sender.build();
+
+                        messageStyle.addMessage(m, timestamp, person);
                     }
                 }
             }
