@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	serviceName: {
-		...sharedStyles.textBold
+		...sharedStyles.textSemibold
 	},
 	registerDisabled: {
 		...sharedStyles.textRegular,
@@ -108,6 +108,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 32
 	},
+	dontHaveAccount: {
+		...sharedStyles.textRegular,
+		fontSize: 13
+	},
+	createAccount: {
+		...sharedStyles.textSemibold,
+		fontSize: 13
+	},
+
 });
 
 const SERVICE_HEIGHT = 58;
