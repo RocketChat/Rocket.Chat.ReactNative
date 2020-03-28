@@ -1916,8 +1916,8 @@
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
 "@rocket.chat/sdk@djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp":
-  version "1.0.0-dj.13"
-  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/31a3a245131b7b6e3f970f4975d4a8a8c57d5b7b"
+  version "1.0.0-dj.14"
+  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/3248ecac736247e319cdc6f0d188f8df02ca1846"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
