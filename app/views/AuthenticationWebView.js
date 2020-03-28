@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
@@ -112,10 +111,7 @@ class AuthenticationWebView extends React.PureComponent {
 			<>
 				<StatusBar theme={theme} />
 				<WebView
-					source={{
-						uri,
-						headers: RocketChatSettings.customHeaders
-					}}
+					source={{ uri }}
 					userAgent={userAgent}
 					onNavigationStateChange={this.onNavigationStateChange}
 					onLoadStart={() => {
