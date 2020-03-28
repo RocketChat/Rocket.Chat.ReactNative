@@ -63,6 +63,11 @@ class RoomMembersView extends React.Component {
 		this.mounted = false;
 		this.CANCEL_INDEX = 0;
 		this.actionSheetOptions = [''];
+		this.SET_OWNER_INDEX = 1;
+		this.SET_LEADER_INDEX = 2;
+		this.SET_MODERATOR_INDEX = 3;
+		this.REMOVE_INDEX = 4;
+		this.MUTE_INDEX = 5;
 		const { rid } = props.navigation.state.params;
 		const room = props.navigation.getParam('room');
 		this.state = {
@@ -90,12 +95,23 @@ class RoomMembersView extends React.Component {
 	}
 
 	async componentDidMount() {
-		await this.setPermissions();
 		this.mounted = true;
 		this.fetchMembers();
 
 		const { navigation } = this.props;
+		const { rid } = navigation.state.params;
 		navigation.setParams({ toggleStatus: this.toggleStatus });
+		try {
+			const permissions = ['set-owner', 'set-leader', 'set-moderator', 'remove-user', 'mute-user'];
+			const result = await RocketChat.hasPermission(permissions, rid);
+			this.setOwnerPermission = result[permissions[0]];
+			this.setLeaderPermission = result[permissions[1]];
+			this.setModeratorPermission = result[permissions[2]];
+			this.removeUserPermission = result[permissions[3]];
+			this.muteUserPermission = result[permissions[4]];
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	componentWillUnmount() {
@@ -133,23 +149,6 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	async setPermissions() {
-		try {
-			const { navigation } = this.props;
-			const { rid } = navigation.state.params;
-			const permissions = ['set-owner', 'set-leader', 'set-moderator', 'remove-user', 'mute-user'];
-			const result = await RocketChat.hasPermission(permissions, rid);
-			this.setOwnerPermission = result[permissions[0]];
-			this.setLeaderPermission = result[permissions[1]];
-			this.setModeratorPermission = result[permissions[2]];
-			this.removeUserPermission = result[permissions[3]];
-			this.muteUserPermission = result[permissions[4]];
-		} catch (e) {
-			log(e);
-		}
-		Promise.resolve();
-	}
-
 	onLongPressUser = (user) => {
 		if (!this.muteUserPermission) {
 			return false;
@@ -167,10 +166,10 @@ class RoomMembersView extends React.Component {
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Owner'));
 			}
-			this.SET_OWNER_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
+
 		// setLeader
 		if (this.setLeaderPermission) {
 			if (isLeader) {
@@ -178,7 +177,6 @@ class RoomMembersView extends React.Component {
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Leader'));
 			}
-			this.SET_LEADER_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
@@ -189,10 +187,10 @@ class RoomMembersView extends React.Component {
 			} else {
 				this.actionSheetOptions.push(I18n.t('Set_As_Moderator'));
 			}
-			this.SET_MODERATOR_INDEX = this.actionSheetOptions.length - 1;
 		} else {
 			return false;
 		}
+
 		// remove User
 		if (this.removeUserPermission) {
 			this.actionSheetOptions.push(I18n.t('Remove_user'));
@@ -200,14 +198,13 @@ class RoomMembersView extends React.Component {
 		const { muted } = room;
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
+
 		// mute User
 		if (userIsMuted) {
 			this.actionSheetOptions.push(I18n.t('Unmute'));
 		} else {
 			this.actionSheetOptions.push(I18n.t('Mute'));
 		}
-		this.REMOVE_USER_INDEX = this.actionSheetOptions.length - 1;
-		this.MUTE_USER_INDEX = this.actionSheetOptions.length - 1;
 		this.setState({ userLongPressed: user });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		this.showActionSheet();
@@ -279,33 +276,30 @@ class RoomMembersView extends React.Component {
 	}
 
 	setLeader = async() => {
-		const { rid, userLongPressed } = this.state;
-		const room = await RocketChat.getRoom(rid);
+		const { rid, userLongPressed, room } = this.state;
 		try {
-			await RocketChat.toggleLeader(rid, userLongPressed._id, !room.roles.find('leader'), room.t);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('leader') ? I18n.t('Set_As_Leader') : I18n.t('Remove_As_Leader') }) });
+			await RocketChat.toggleLeader(rid, userLongPressed._id, !room.roles.find(role => role === 'leader'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: !room.roles.find(role => role === 'leader') ? I18n.t('Set_As_Leader') : I18n.t('Remove_As_Leader') }) });
 		} catch (e) {
 			log(e);
 		}
 	}
 
 	setModerator = async() => {
-		const { rid, userLongPressed } = this.state;
-		const room = await RocketChat.getRoom(rid);
+		const { rid, userLongPressed, room } = this.state;
 		try {
-			await RocketChat.toggleModerator(rid, userLongPressed._id, !room.roles.find('moderator'), room.t);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('moderator') ? I18n.t('Set_As_Moderator') : I18n.t('Remove_As_Moderator') }) });
+			await RocketChat.toggleModerator(rid, userLongPressed._id, !room.roles.find(role => role === 'moderator'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: !room.roles.find(role => role === 'moderator') ? I18n.t('Set_As_Moderator') : I18n.t('Remove_As_Moderator') }) });
 		} catch (e) {
 			log(e);
 		}
 	}
 
 	setOwner = async() => {
-		const { rid, userLongPressed } = this.state;
-		const room = await RocketChat.getRoom(rid);
+		const { rid, userLongPressed, room } = this.state;
 		try {
-			await RocketChat.toggleOwner(rid, userLongPressed._id, !room.roles.find('owner'), room.t);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: room.roles.find('owner') ? I18n.t('Set_As_Owner') : I18n.t('Remove_As_Owner') }) });
+			await RocketChat.toggleOwner(rid, userLongPressed._id, !room.roles.find(role => role === 'owner'), room.t);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: !room.roles.find(role => role === 'owner') ? I18n.t('Set_As_Owner') : I18n.t('Remove_As_Owner') }) });
 		} catch (e) {
 			log(e);
 		}
@@ -343,11 +337,11 @@ class RoomMembersView extends React.Component {
 				case this.SET_MODERATOR_INDEX:
 					this.setModerator();
 					break;
+				case this.REMOVE_INDEX:
+					this.removeUser();
+					break;
 				case this.MUTE_INDEX:
 					this.handleMute();
-					break;
-				case this.REMOVE_USER_INDEX:
-					this.removeUser();
 					break;
 				default:
 					break;
@@ -372,8 +366,8 @@ class RoomMembersView extends React.Component {
 			<UserItem
 				name={item.name}
 				username={item.username}
-				onPress={() => this.onPressUser(item)}
-				onLongPress={() => this.onLongPressUser(item)}
+				onPress={() => this.onLongPressUser(item)}
+				onLongPress={() => this.onPressUser(item)}
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
 				user={user}

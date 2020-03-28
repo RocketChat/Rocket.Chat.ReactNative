@@ -1022,7 +1022,7 @@ const RocketChat = {
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
 	},
 	removeUser(roomId, userId, t) {
-		// RC 0.49.4
+		// RC 0.48.0
 		return this.sdk.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
 	},
 	toggleFollowMessage(mid, follow) {
