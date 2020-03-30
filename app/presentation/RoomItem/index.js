@@ -212,7 +212,7 @@ const mapStateToProps = (state, ownProps) => ({
 	connected: state.meteor.connected,
 	status:
 		state.meteor.connected && ownProps.type === 'd'
-			? state.activeUsers[ownProps.id]
+			? state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status
 			: 'offline'
 });
 

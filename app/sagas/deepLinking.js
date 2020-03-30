@@ -89,7 +89,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!result.success) {
 			return;
 		}
-		Navigation.navigate('OnboardingView', { previousServer: server });
+		Navigation.navigate('NewServerView', { previousServer: server });
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 

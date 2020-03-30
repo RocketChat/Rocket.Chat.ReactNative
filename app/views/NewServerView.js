@@ -1,91 +1,95 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, Keyboard, Image, StyleSheet, TouchableOpacity, View, Alert
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
-import isEqual from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
 
-import { serverRequest } from '../actions/server';
+import EventEmitter from '../utils/events';
+import {
+	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
+} from '../actions/server';
+import { appStart as appStartAction } from '../actions';
 import sharedStyles from './Styles';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
+import OnboardingSeparator from '../containers/OnboardingSeparator';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
-import { verticalScale, moderateScale } from '../utils/scaling';
-import KeyboardView from '../presentation/KeyboardView';
-import { isIOS, isNotch, isTablet } from '../utils/deviceInfo';
-import { CustomIcon } from '../lib/Icons';
-import StatusBar from '../containers/StatusBar';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
+import { themedHeader } from '../utils/navigation';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
-	image: {
-		alignSelf: 'center',
-		marginVertical: verticalScale(20),
-		width: 210,
-		height: 171
-	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: moderateScale(22),
-		letterSpacing: 0,
-		alignSelf: 'center'
+		fontSize: 22
 	},
 	inputContainer: {
-		marginTop: 25,
-		marginBottom: 15
-	},
-	backButton: {
-		position: 'absolute',
-		paddingHorizontal: 9,
-		left: 15
+		marginTop: 24,
+		marginBottom: 32
 	},
 	certificatePicker: {
-		flex: 1,
-		marginTop: 40,
+		marginBottom: 32,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'flex-end'
 	},
 	chooseCertificateTitle: {
-		fontSize: 15,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	chooseCertificate: {
-		fontSize: 15,
+		fontSize: 13,
 		...sharedStyles.textSemibold
+	},
+	description: {
+		...sharedStyles.textRegular,
+		fontSize: 14,
+		textAlign: 'left',
+		marginBottom: 24
+	},
+	connectButton: {
+		marginBottom: 0
 	}
 });
 
-const defaultServer = 'https://open.rocket.chat';
-
 class NewServerView extends React.Component {
-	static navigationOptions = () => ({
-		header: null
-	})
+	static navigationOptions = ({ screenProps, navigation }) => {
+		const previousServer = navigation.getParam('previousServer', null);
+		const close = navigation.getParam('close', () => {});
+		return {
+			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
+			title: I18n.t('Workspaces'),
+			...themedHeader(screenProps.theme)
+		};
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		server: PropTypes.string,
 		theme: PropTypes.string,
 		connecting: PropTypes.bool.isRequired,
-		connectServer: PropTypes.func.isRequired
+		connectServer: PropTypes.func.isRequired,
+		selectServer: PropTypes.func.isRequired,
+		currentServer: PropTypes.string,
+		initAdd: PropTypes.func,
+		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		const server = props.navigation.getParam('server');
+		this.previousServer = props.navigation.getParam('previousServer');
+		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -96,46 +100,50 @@ class NewServerView extends React.Component {
 		this.DELETE_INDEX = 1;
 
 		this.state = {
-			text: server || '',
-			autoFocus: !server,
+			text: '',
+			connectingOpen: false,
 			certificate: null
 		};
+		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 	}
 
 	componentDidMount() {
-		const { text } = this.state;
-		const { connectServer } = this.props;
-		if (text) {
-			connectServer(text);
+		const { initAdd } = this.props;
+		if (this.previousServer) {
+			initAdd();
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { text, certificate } = this.state;
-		const { connecting, theme } = this.props;
-		if (nextState.text !== text) {
-			return true;
-		}
-		if (!isEqual(nextState.certificate, certificate)) {
-			return true;
-		}
-		if (nextProps.connecting !== connecting) {
-			return true;
-		}
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		return false;
+	componentWillUnmount() {
+		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 	}
 
 	onChangeText = (text) => {
 		this.setState({ text });
 	}
 
+	close = () => {
+		const { selectServer, currentServer, finishAdd } = this.props;
+		if (this.previousServer !== currentServer) {
+			selectServer(this.previousServer);
+		}
+		finishAdd();
+	}
+
+	handleNewServerEvent = (event) => {
+		let { server } = event;
+		const { connectServer } = this.props;
+		this.setState({ text: server });
+		server = this.completeUrl(server);
+		connectServer(server);
+	}
+
 	submit = async() => {
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
+
+		this.setState({ connectingOpen: false });
 
 		if (certificate) {
 			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
@@ -156,6 +164,12 @@ class NewServerView extends React.Component {
 			await this.basicAuth(server, text);
 			connectServer(server, cert);
 		}
+	}
+
+	connectOpen = () => {
+		this.setState({ connectingOpen: true });
+		const { connectServer } = this.props;
+		connectServer('https://open.rocket.chat');
 	}
 
 	basicAuth = async(server, text) => {
@@ -238,28 +252,6 @@ class NewServerView extends React.Component {
 		});
 	}
 
-	renderBack = () => {
-		const { navigation, theme } = this.props;
-
-		let top = 15;
-		if (isIOS) {
-			top = isNotch ? 45 : 30;
-		}
-
-		return (
-			<TouchableOpacity
-				style={[styles.backButton, { top }]}
-				onPress={() => navigation.pop()}
-			>
-				<CustomIcon
-					name='back'
-					size={30}
-					color={themes[theme].tintColor}
-				/>
-			</TouchableOpacity>
-		);
-	}
-
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
 		const { theme } = this.props;
@@ -292,49 +284,49 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text, autoFocus } = this.state;
+		const { text, connectingOpen } = this.state;
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-				key='login-view'
-			>
-				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='new-server-view'>
-						<Image style={styles.image} source={{ uri: 'new_server' }} />
-						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Sign_in_your_server')}</Text>
-						<View style={isTablet && sharedStyles.tabletScreenContent}>
-							<TextInput
-								autoFocus={autoFocus}
-								containerStyle={styles.inputContainer}
-								placeholder={defaultServer}
-								value={text}
-								returnKeyType='send'
-								onChangeText={this.onChangeText}
-								testID='new-server-view-input'
-								onSubmitEditing={this.submit}
-								clearButtonMode='while-editing'
-								keyboardType='url'
-								textContentType='URL'
-								theme={theme}
-							/>
-							<Button
-								title={I18n.t('Connect')}
-								type='primary'
-								onPress={this.submit}
-								disabled={!text}
-								loading={connecting}
-								testID='new-server-view-button'
-								theme={theme}
-							/>
-							{ isIOS ? this.renderCertificatePicker() : null }
-						</View>
-					</SafeAreaView>
-				</ScrollView>
-				{this.renderBack()}
-			</KeyboardView>
+			<FormContainer theme={theme}>
+				<FormContainerInner>
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
+					<TextInput
+						label='Enter workspace URL'
+						placeholder='Ex. your-company.rocket.chat'
+						containerStyle={styles.inputContainer}
+						value={text}
+						returnKeyType='send'
+						onChangeText={this.onChangeText}
+						testID='new-server-view-input'
+						onSubmitEditing={this.submit}
+						clearButtonMode='while-editing'
+						keyboardType='url'
+						textContentType='URL'
+						theme={theme}
+					/>
+					<Button
+						title={I18n.t('Connect')}
+						type='primary'
+						onPress={this.submit}
+						disabled={!text || connecting}
+						loading={!connectingOpen && connecting}
+						style={styles.connectButton}
+						testID='new-server-view-button'
+						theme={theme}
+					/>
+					<OnboardingSeparator theme={theme} />
+					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
+					<Button
+						title={I18n.t('Join_our_open_workspace')}
+						type='secondary'
+						backgroundColor={themes[theme].chatComponentBackground}
+						onPress={this.connectOpen}
+						disabled={connecting}
+						loading={connectingOpen && connecting}
+						theme={theme}
+					/>
+				</FormContainerInner>
+				{ isIOS ? this.renderCertificatePicker() : null }
+			</FormContainer>
 		);
 	}
 }
@@ -344,7 +336,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate))
+	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
+	initAdd: () => dispatch(serverInitAdd()),
+	finishAdd: () => dispatch(serverFinishAdd()),
+	selectServer: server => dispatch(selectServerRequest(server)),
+	appStart: root => dispatch(appStartAction(root))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
