@@ -706,7 +706,7 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandShowNewMessage(event)) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		} else if (handleCommandAddNewServer(event)) {
-			navigation.navigate('OnboardingView', { previousServer: server });
+			navigation.navigate('NewServerView', { previousServer: server });
 		}
 	};
 

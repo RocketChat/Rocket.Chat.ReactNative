@@ -91,7 +91,7 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
-		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
+		const filteredSettings = this._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
 		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));

@@ -108,21 +108,15 @@ export const initTabletNav = (setState) => {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-				if (routeName === 'OnboardingView') {
+				if (routeName === 'OnboardingView' || routeName === 'NewServerView') {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-				if (routeName === 'ModalBlockView') {
+				if (routeName === 'ModalBlockView' || routeName === 'StatusView' || routeName === 'CreateDiscussionView') {
 					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
 					setState({ showModal: true });
 					return null;
 				}
-				if (routeName === 'StatusView') {
-					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-					setState({ showModal: true });
-					return null;
-				}
-
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
 						index: 0,
