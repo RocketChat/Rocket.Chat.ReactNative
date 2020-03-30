@@ -163,6 +163,7 @@ class RoomView extends React.Component {
 		const selectedMessage = props.navigation.getParam('message');
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
+		const search = props.navigation.getParam('search');
 		this.state = {
 			joined: true,
 			room: room || {
@@ -192,6 +193,10 @@ class RoomView extends React.Component {
 		}
 
 		this.setReadOnly();
+
+		if (search) {
+			this.updateRoom();
+		}
 
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
@@ -338,6 +343,25 @@ class RoomView extends React.Component {
 		const { user } = this.props;
 		const readOnly = await isReadOnly(room, user);
 		this.setState({ readOnly });
+	}
+
+	updateRoom = async() => {
+		const db = database.active;
+
+		try {
+			const subCollection = db.collections.get('subscriptions');
+			const sub = await subCollection.find(this.rid);
+
+			const { room } = await RocketChat.getRoomInfo(this.rid);
+
+			await db.action(async() => {
+				await sub.update((s) => {
+					Object.assign(s, room);
+				});
+			});
+		} catch {
+			// do nothing
+		}
 	}
 
 	init = async() => {

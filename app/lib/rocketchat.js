@@ -556,6 +556,19 @@ const RocketChat = {
 		}
 		data = data.slice(0, 7);
 
+		data = data.map((sub) => {
+			if (sub.t !== 'd') {
+				return ({
+					rid: sub.rid,
+					name: sub.name,
+					fname: sub.fname,
+					t: sub.t,
+					search: true
+				});
+			}
+			return sub;
+		});
+
 		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
