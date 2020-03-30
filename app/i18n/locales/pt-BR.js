@@ -288,6 +288,8 @@ export default {
 	Onboarding_title: 'Bem vindo ao Rocket.Chat',
 	Onboarding_join_open_description: 'Entre na nossa workspace pública para conversar com o time da Rocket.Chat e nossa comunidade.',
 	Onboarding_agree_terms: 'Ao continuar, você aceita nossos ',
+	Onboarding_less_options: 'Menos opções',
+	Onboarding_more_options: 'Mais opções',
 	Online: 'Online',
 	Only_authorized_users_can_write_new_messages: 'Somente usuários autorizados podem escrever novas mensagens',
 	Open_emoji_selector: 'Abrir seletor de emoji',

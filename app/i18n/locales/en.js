@@ -314,6 +314,8 @@ export default {
 	Onboarding_title: 'Welcome to Rocket.Chat',
 	Onboarding_join_open_description: 'Join our open workspace to chat with the Rocket.Chat team and community.',
 	Onboarding_agree_terms: 'By continuing, you agree to Rocket.Chat',
+	Onboarding_less_options: 'Less options',
+	Onboarding_more_options: 'More options',
 	Online: 'Online',
 	Only_authorized_users_can_write_new_messages: 'Only authorized users can write new messages',
 	Open_emoji_selector: 'Open emoji selector',

@@ -14,7 +14,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import Button from './Button';
 import OnboardingSeparator from './OnboardingSeparator';
 import Touch from '../utils/touch';
-import i18n from '../i18n';
+import I18n from '../i18n';
 import random from '../utils/random';
 
 const SERVICE_HEIGHT = 58;
@@ -242,7 +242,7 @@ class LoginServices extends React.PureComponent {
 			return (
 				<>
 					<Button
-						title={collapsed ? 'More options' : 'Less options'}
+						title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 						type='secondary'
 						onPress={this.toggleServices}
 						theme={theme}
@@ -294,7 +294,7 @@ class LoginServices extends React.PureComponent {
 		} else {
 			buttonText = (
 				<>
-					{i18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
+					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
 				</>
 			);
 		}

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../utils/deviceInfo';
+import I18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 
 const AppVersion = React.memo(({ theme }) => (
 	<View style={styles.container}>
-		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>App Version: <Text style={styles.bold}>{getReadableVersion}</Text></Text>
+		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{I18n.t('Version_no', { version: '' })}<Text style={styles.bold}>{getReadableVersion}</Text></Text>
 	</View>
 ));
 
