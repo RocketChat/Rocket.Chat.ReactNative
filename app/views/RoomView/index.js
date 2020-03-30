@@ -384,7 +384,7 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		const { rid, t } = room;
 
-		if (t === 'd') {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			const { user } = this.props;
 
 			try {

@@ -192,6 +192,7 @@ class RoomActionsView extends React.Component {
 		const {
 			rid, t, blocker
 		} = room;
+		const isGroupChat = RocketChat.isGroupChat(room);
 
 		const notificationsAction = {
 			icon: 'bell',
@@ -225,6 +226,7 @@ class RoomActionsView extends React.Component {
 				params: {
 					rid, t, room, member
 				},
+				disabled: isGroupChat,
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
@@ -288,7 +290,18 @@ class RoomActionsView extends React.Component {
 			});
 		}
 
-		if (t === 'd' && !RocketChat.isGroupChat(room)) {
+		if (isGroupChat) {
+			sections[2].data.unshift({
+				icon: 'team',
+				name: I18n.t('Members'),
+				description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
+				route: 'RoomMembersView',
+				params: { rid, room },
+				testID: 'room-actions-members'
+			});
+		}
+
+		if (t === 'd' && !isGroupChat) {
 			sections.push({
 				data: [
 					{
@@ -451,40 +464,42 @@ class RoomActionsView extends React.Component {
 		const { baseUrl, user, theme } = this.props;
 
 		return (
-			this.renderTouchableItem([
-				<Avatar
-					key='avatar'
-					text={name}
-					size={50}
-					style={styles.avatar}
-					type={t}
-					baseUrl={baseUrl}
-					userId={user.id}
-					token={user.token}
-				>
-					{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
-				</Avatar>,
-				<View key='name' style={styles.roomTitleContainer}>
-					{room.t === 'd'
-						? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
-						: (
-							<View style={styles.roomTitleRow}>
-								<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
-								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.prid ? room.fname : room.name}</Text>
-							</View>
-						)
-					}
-					<Markdown
-						preview
-						msg={t === 'd' ? `@${ name }` : topic}
-						style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-						numberOfLines={1}
-						theme={theme}
-					/>
-					{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
-				</View>,
-				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
-			], item)
+			this.renderTouchableItem((
+				<>
+					<Avatar
+						key='avatar'
+						text={name}
+						size={50}
+						style={styles.avatar}
+						type={t}
+						baseUrl={baseUrl}
+						userId={user.id}
+						token={user.token}
+					>
+						{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
+					</Avatar>
+					<View key='name' style={styles.roomTitleContainer}>
+						{room.t === 'd'
+							? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
+							: (
+								<View style={styles.roomTitleRow}>
+									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
+									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.prid ? room.fname : room.name}</Text>
+								</View>
+							)
+						}
+						<Markdown
+							preview
+							msg={t === 'd' ? `@${ name }` : topic}
+							style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+							numberOfLines={1}
+							theme={theme}
+						/>
+						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
+					</View>
+					{!item.disabled && <DisclosureIndicator theme={theme} key='disclosure-indicator' />}
+				</>
+			), item)
 		);
 	}
 
@@ -496,10 +511,11 @@ class RoomActionsView extends React.Component {
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				accessibilityLabel={item.name}
 				accessibilityTraits='button'
+				enabled={!item.disabled}
 				testID={item.testID}
 				theme={theme}
 			>
-				<View style={[styles.sectionItem, item.disabled && styles.sectionItemDisabled]}>
+				<View style={styles.sectionItem}>
 					{subview}
 				</View>
 			</Touch>
@@ -509,15 +525,19 @@ class RoomActionsView extends React.Component {
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
 		const colorDanger = { color: themes[theme].dangerColor };
-		const subview = item.type === 'danger' ? [
-			<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, colorDanger]} />,
-			<Text key='name' style={[styles.sectionItemName, colorDanger]}>{ item.name }</Text>
-		] : [
-			<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />,
-			<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>,
-			item.description ? <Text key='description' style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null,
-			<DisclosureIndicator theme={theme} key='disclosure-indicator' />
-		];
+		const subview = item.type === 'danger' ? (
+			<>
+				<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, colorDanger]} />
+				<Text key='name' style={[styles.sectionItemName, colorDanger]}>{ item.name }</Text>
+			</>
+		) : (
+			<>
+				<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />
+				<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>
+				{item.description ? <Text key='description' style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null}
+				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
+			</>
+		);
 		return this.renderTouchableItem(subview, item);
 	}
 
