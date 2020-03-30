@@ -45,7 +45,8 @@ class DirectoryView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		directoryDefaultView: PropTypes.string
 	};
 
 	constructor(props) {
@@ -57,7 +58,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: 'channels'
+			type: props.directoryDefaultView
 		};
 	}
 
@@ -256,7 +257,8 @@ class DirectoryView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	isFederationEnabled: state.settings.FEDERATION_Enabled
+	isFederationEnabled: state.settings.FEDERATION_Enabled,
+	directoryDefaultView: state.settings.Accounts_Directory_DefaultView
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));

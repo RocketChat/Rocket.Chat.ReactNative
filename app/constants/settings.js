@@ -50,6 +50,9 @@ export default {
 	DirectMesssage_maxUsers: {
 		type: 'valueAsNumber'
 	},
+	Accounts_Directory_DefaultView: {
+		type: 'valueAsString'
+	},
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
