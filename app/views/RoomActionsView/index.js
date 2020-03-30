@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import _ from 'lodash';
 
 import Touch from '../../utils/touch';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
@@ -25,6 +26,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
+import Markdown from '../../containers/markdown';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -54,12 +56,13 @@ class RoomActionsView extends React.Component {
 		super(props);
 		this.mounted = false;
 		const room = props.navigation.getParam('room');
+		const member = props.navigation.getParam('member');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
-			member: {},
+			member: member || {},
 			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
@@ -81,7 +84,7 @@ class RoomActionsView extends React.Component {
 
 	async componentDidMount() {
 		this.mounted = true;
-		const { room } = this.state;
+		const { room, member } = this.state;
 		if (!room.id) {
 			try {
 				const result = await RocketChat.getChannelInfo(room.rid);
@@ -102,7 +105,7 @@ class RoomActionsView extends React.Component {
 			} catch (e) {
 				log(e);
 			}
-		} else if (room.t === 'd') {
+		} else if (room.t === 'd' && _.isEmpty(member)) {
 			this.updateRoomMember();
 		}
 
@@ -181,7 +184,7 @@ class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate
+			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
@@ -217,7 +220,9 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Room_Info'),
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
-				params: { rid, t, room },
+				params: {
+					rid, t, room, member
+				},
 				testID: 'room-actions-info'
 			}],
 			renderItem: this.renderRoomInfo
@@ -451,7 +456,14 @@ class RoomActionsView extends React.Component {
 							</View>
 						)
 					}
-					<Text style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>{t === 'd' ? `@${ name }` : topic}</Text>
+					<Markdown
+						preview
+						msg={t === 'd' ? `@${ name }` : topic}
+						style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+						numberOfLines={1}
+						theme={theme}
+					/>
+					{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
 				</View>,
 				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
 			], item)

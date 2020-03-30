@@ -101,6 +101,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			name: user.name,
 			language: user.language,
 			status: user.status,
+			statusText: user.statusText,
 			roles: user.roles
 		};
 		yield serversDB.action(async() => {
