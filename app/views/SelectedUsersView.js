@@ -7,9 +7,6 @@ import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
-import {
-	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
-} from '../actions/selectedUsers';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
@@ -26,10 +23,11 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
-import { createChannelRequest } from '../actions/createChannel';
-
-const CREATE_CHANNEL = 'CREATE_CHANNEL';
-const CREATE_GROUP_CHAT = 'CREATE_GROUP_CHAT';
+import {
+	reset as resetAction,
+	addUser as addUserAction,
+	removeUser as removeUserAction
+} from '../actions/selectedUsers';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -42,30 +40,27 @@ const styles = StyleSheet.create({
 
 class SelectedUsersView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title');
+		const title = navigation.getParam('title', I18n.t('Select_Users'));
+		const buttonText = navigation.getParam('buttonText', I18n.t('Next'));
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
 			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
 				<CustomHeaderButtons>
-					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
+					<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
 				</CustomHeaderButtons>
 			)
 		};
 	}
 
 	static propTypes = {
-		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
 		loading: PropTypes.bool,
-		setLoadingInvite: PropTypes.func,
-		createChannel: PropTypes.func,
-		maxUsers: PropTypes.number,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -76,17 +71,10 @@ class SelectedUsersView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		const nextActionID = props.navigation.getParam('nextActionID');
 		this.state = {
-			nextActionID,
 			search: [],
 			chats: []
 		};
-	}
-
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ nextAction: this.nextAction });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -140,29 +128,6 @@ class SelectedUsersView extends React.Component {
 		this.search(text);
 	}
 
-	nextAction = async() => {
-		const {
-			navigation, setLoadingInvite, users, createChannel
-		} = this.props;
-		const nextActionID = navigation.getParam('nextActionID');
-		if (nextActionID === CREATE_CHANNEL) {
-			navigation.navigate('CreateChannelView');
-		} else if (nextActionID === CREATE_GROUP_CHAT) {
-			createChannel({ users: users.map(user => user.name), group: true });
-		} else {
-			const rid = navigation.getParam('rid');
-			try {
-				setLoadingInvite(true);
-				await RocketChat.addUsersToRoom(rid);
-				navigation.pop();
-			} catch (e) {
-				log(e);
-			} finally {
-				setLoadingInvite(false);
-			}
-		}
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	updateState = debounce(() => {
 		this.forceUpdate();
@@ -192,13 +157,6 @@ class SelectedUsersView extends React.Component {
 	}
 
 	_onPressItem = (id, item = {}) => {
-		const { nextActionID } = this.state;
-		const { maxUsers, users } = this.props;
-
-		if (nextActionID === CREATE_GROUP_CHAT && maxUsers === users.length) {
-			return;
-		}
-
 		if (item.search) {
 			this.toggleUser({ _id: item._id, name: item.username, fname: item.name });
 		} else {
@@ -335,9 +293,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	addUser: user => dispatch(addUserAction(user)),
 	removeUser: user => dispatch(removeUserAction(user)),
-	reset: () => dispatch(resetAction()),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading)),
-	createChannel: data => dispatch(createChannelRequest(data))
+	reset: () => dispatch(resetAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));

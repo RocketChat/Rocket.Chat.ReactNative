@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';
+import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import { leaveRoom as leaveRoomAction } from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
@@ -49,6 +50,7 @@ class RoomActionsView extends React.Component {
 		}),
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
+		setLoadingInvite: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -320,9 +322,9 @@ class RoomActionsView extends React.Component {
 					name: I18n.t('Add_users'),
 					route: 'SelectedUsersView',
 					params: {
-						nextActionID: 'ADD_USER',
 						rid,
-						title: I18n.t('Add_users')
+						title: I18n.t('Add_users'),
+						nextAction: this.addUser
 					},
 					testID: 'room-actions-add-user'
 				});
@@ -382,6 +384,21 @@ class RoomActionsView extends React.Component {
 		} catch (e) {
 			log(e);
 			this.setState({ member: {} });
+		}
+	}
+
+	addUser = async() => {
+		const { room } = this.state;
+		const { setLoadingInvite, navigation } = this.props;
+		const { rid } = room;
+		try {
+			setLoadingInvite(true);
+			await RocketChat.addUsersToRoom(rid);
+			navigation.pop();
+		} catch (e) {
+			log(e);
+		} finally {
+			setLoadingInvite(false);
 		}
 	}
 
@@ -543,7 +560,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
+	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomActionsView));

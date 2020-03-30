@@ -25,6 +25,7 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
+import { createChannelRequest } from '../actions/createChannel';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -65,6 +66,7 @@ class NewMessageView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
+		createChannel: PropTypes.func,
 		theme: PropTypes.string
 	};
 
@@ -140,12 +142,12 @@ class NewMessageView extends React.Component {
 
 	createChannel = () => {
 		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
 	createGroupChat = () => {
-		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_GROUP_CHAT', title: I18n.t('Select_Users') });
+		const { createChannel, navigation } = this.props;
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => createChannel({ group: true }), buttonText: I18n.t('Submit') });
 	}
 
 	renderButton = ({
@@ -271,4 +273,8 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(NewMessageView));
+const mapDispatchToProps = dispatch => ({
+	createChannel: params => dispatch(createChannelRequest(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));

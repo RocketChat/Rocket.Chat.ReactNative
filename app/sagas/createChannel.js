@@ -15,8 +15,8 @@ const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
 };
 
-const createGroupChat = function createGroupChat(data) {
-	return RocketChat.createGroupChat(data);
+const createGroupChat = function createGroupChat() {
+	return RocketChat.createGroupChat();
 };
 
 const handleRequest = function* handleRequest({ data }) {
@@ -28,7 +28,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 		let sub;
 		if (data.group) {
-			sub = yield call(createGroupChat, data.users);
+			sub = yield call(createGroupChat);
 		} else {
 			sub = yield call(createChannel, data);
 		}
