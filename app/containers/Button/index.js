@@ -9,15 +9,19 @@ import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 15,
+		paddingHorizontal: 14,
 		justifyContent: 'center',
 		height: 48,
 		borderRadius: 2,
-		marginBottom: 10
+		marginBottom: 12
 	},
 	text: {
-		fontSize: 18,
-		textAlign: 'center'
+		fontSize: 16,
+		textAlign: 'center',
+		...sharedStyles.textMedium
+	},
+	disabled: {
+		opacity: 0.3
 	}
 });
 
@@ -30,6 +34,8 @@ export default class Button extends React.PureComponent {
 		backgroundColor: PropTypes.string,
 		loading: PropTypes.bool,
 		theme: PropTypes.string,
+		color: PropTypes.string,
+		fontSize: PropTypes.string,
 		style: PropTypes.any
 	}
 
@@ -43,9 +49,15 @@ export default class Button extends React.PureComponent {
 
 	render() {
 		const {
-			title, type, onPress, disabled, backgroundColor, loading, style, theme, ...otherProps
+			title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, ...otherProps
 		} = this.props;
 		const isPrimary = type === 'primary';
+
+		let textColor = isPrimary ? themes[theme].buttonText : themes[theme].bodyText;
+		if (color) {
+			textColor = color;
+		}
+
 		return (
 			<Touchable
 				onPress={onPress}
@@ -55,20 +67,20 @@ export default class Button extends React.PureComponent {
 					backgroundColor
 						? { backgroundColor }
 						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor },
-					disabled && { backgroundColor: themes[theme].borderColor },
+					disabled && styles.disabled,
 					style
 				]}
 				{...otherProps}
 			>
 				{
 					loading
-						? <ActivityIndicator color={isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor} />
+						? <ActivityIndicator color={textColor} />
 						: (
 							<Text
 								style={[
 									styles.text,
-									isPrimary ? sharedStyles.textMedium : sharedStyles.textBold,
-									{ color: isPrimary ? themes[theme].buttonText : themes[theme].actionTintColor }
+									{ color: textColor },
+									fontSize && { fontSize }
 								]}
 							>
 								{title}
