@@ -20,14 +20,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Check = React.memo(({ theme }) => (
+const AppVersion = React.memo(({ theme }) => (
 	<View style={styles.container}>
 		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>App Version: <Text style={styles.bold}>{getReadableVersion}</Text></Text>
 	</View>
 ));
 
-Check.propTypes = {
+AppVersion.propTypes = {
 	theme: PropTypes.string
 };
 
-export default Check;
+export default AppVersion;
