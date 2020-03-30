@@ -463,12 +463,14 @@ class RoomActionsView extends React.Component {
 		const { name, t, topic } = room;
 		const { baseUrl, user, theme } = this.props;
 
+		const avatar = RocketChat.getRoomAvatar(room);
+
 		return (
 			this.renderTouchableItem((
 				<>
 					<Avatar
 						key='avatar'
-						text={name}
+						text={avatar}
 						size={50}
 						style={styles.avatar}
 						type={t}
