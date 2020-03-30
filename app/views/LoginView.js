@@ -259,11 +259,11 @@ class LoginView extends React.Component {
 
 	render() {
 		const { showTOTP } = this.state;
-		const { theme } = this.props;
+		const { Accounts_ShowFormLogin, theme } = this.props;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
-					{!showTOTP ? <LoginServices /> : null}
+					{!showTOTP ? <LoginServices separator={Accounts_ShowFormLogin} /> : null}
 					{!showTOTP ? this.renderUserForm() : null}
 					{showTOTP ? this.renderTOTP() : null}
 				</FormContainerInner>

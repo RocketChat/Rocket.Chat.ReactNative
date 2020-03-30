@@ -58,9 +58,12 @@ class LoginServices extends React.PureComponent {
 		Gitlab_URL: PropTypes.string,
 		CAS_enabled: PropTypes.bool,
 		CAS_login_url: PropTypes.string,
-		Accounts_ShowFormLogin: PropTypes.bool,
-		Accounts_RegistrationForm: PropTypes.string,
+		separator: PropTypes.bool,
 		theme: PropTypes.string
+	}
+
+	static defaultProps = {
+		separator: true
 	}
 
 	state = {
@@ -232,12 +235,10 @@ class LoginServices extends React.PureComponent {
 
 	renderServicesSeparator = () => {
 		const { collapsed } = this.state;
-		const {
-			services, theme, Accounts_ShowFormLogin, Accounts_RegistrationForm
-		} = this.props;
+		const { services, separator, theme } = this.props;
 		const { length } = Object.values(services);
 
-		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
+		if (length > 3 && separator) {
 			return (
 				<>
 					<Button
@@ -252,7 +253,7 @@ class LoginServices extends React.PureComponent {
 				</>
 			);
 		}
-		if (length > 0) {
+		if (length > 0 && separator) {
 			return <OnboardingSeparator theme={theme} />;
 		}
 		return null;
@@ -319,14 +320,14 @@ class LoginServices extends React.PureComponent {
 
 	render() {
 		const { servicesHeight } = this.state;
-		const { services, Accounts_ShowFormLogin, Accounts_RegistrationForm } = this.props;
+		const { services, separator } = this.props;
 		const { length } = Object.values(services);
 		const style = {
 			overflow: 'hidden',
 			height: servicesHeight
 		};
 
-		if (length > 3 && Accounts_ShowFormLogin && Accounts_RegistrationForm) {
+		if (length > 3 && separator) {
 			return (
 				<>
 					<Animated.View style={style}>
@@ -347,20 +348,10 @@ class LoginServices extends React.PureComponent {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
-	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
-	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
-	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
-	services: state.login.services,
-	isFetching: state.login.isFetching,
-	failure: state.login.failure,
-	error: state.login.error && state.login.error.data,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
+	services: state.login.services
 });
 
 const mapDispatchToProps = dispatch => ({

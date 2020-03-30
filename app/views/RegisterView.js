@@ -326,16 +326,6 @@ const mapStateToProps = state => ({
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
-	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
-	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
-	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
-	services: state.login.services,
-	isFetching: state.login.isFetching,
-	failure: state.login.failure,
-	error: state.login.error && state.login.error.data,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_PasswordReset: state.settings.Accounts_PasswordReset,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
 });
