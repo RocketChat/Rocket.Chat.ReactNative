@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
+import FastImage from 'react-native-fast-image';
 
 import { themes } from '../../../constants/colors';
 import { textParser } from '../utils';
@@ -19,7 +20,7 @@ const Chip = ({ item, onSelect, theme }) => (
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		<>
-			{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
+			{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
 			<Text numberOfLines={1} style={[styles.chipText, { color: themes[theme].titleText }]}>{textParser([item.text])}</Text>
 			<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryText} />
 		</>
