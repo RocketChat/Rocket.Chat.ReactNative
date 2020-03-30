@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		...sharedStyles.textRegular
 	},
-	swithContainer: {
+	switchContainer: {
 		height: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -217,7 +217,7 @@ class CreateChannelView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.swithContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 				<Switch
 					value={value}
