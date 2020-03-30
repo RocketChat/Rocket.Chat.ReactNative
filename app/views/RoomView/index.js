@@ -67,6 +67,7 @@ const stateAttrsUpdate = [
 	'editing',
 	'replying',
 	'reacting',
+	'readOnly',
 	'showAnnouncementModal'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'roles'];
@@ -179,6 +180,7 @@ class RoomView extends React.Component {
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false,
+			readOnly: false,
 			showAnnouncementModal: false,
 			announcement: null
 		};
@@ -324,6 +326,13 @@ class RoomView extends React.Component {
 		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 	}
 
+	setReadOnly = async() => {
+		const { room } = this.state;
+		const { user } = this.props;
+		const readOnly = await isReadOnly(room, user);
+		this.setState({ readOnly });
+	}
+
 	init = async() => {
 		try {
 			this.setState({ loading: true });
@@ -406,6 +415,10 @@ class RoomView extends React.Component {
 		const observable = room.observe();
 		this.subSubscription = observable
 			.subscribe((changes) => {
+				// room roles was changed
+				if (changes.roles) {
+					this.setReadOnly();
+				}
 				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
 					ret[attr] = changes[attr];
 					return ret;
@@ -714,12 +727,6 @@ class RoomView extends React.Component {
 		}
 	}
 
-	get isReadOnly() {
-		const { room } = this.state;
-		const { user } = this.props;
-		return isReadOnly(room, user);
-	}
-
 	blockAction = ({
 		actionId, appId, value, blockId, rid, mid
 	}) => RocketChat.triggerBlockAction({
@@ -855,7 +862,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention
+			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly
 		} = this.state;
 		const { navigation, theme } = this.props;
 
@@ -876,7 +883,7 @@ class RoomView extends React.Component {
 				</View>
 			);
 		}
-		if (this.isReadOnly) {
+		if (readOnly) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].titleText }]} accessibilityLabel={I18n.t('This_room_is_read_only')}>{I18n.t('This_room_is_read_only')}</Text>
@@ -914,7 +921,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const {
-			room, selectedMessage, showActions, showErrorActions, joined
+			room, selectedMessage, showActions, showErrorActions, joined, readOnly
 		} = this.state;
 		const {
 			user, navigation
@@ -935,7 +942,7 @@ class RoomView extends React.Component {
 							editInit={this.onEditInit}
 							replyInit={this.onReplyInit}
 							reactionInit={this.onReactionInit}
-							isReadOnly={this.isReadOnly}
+							isReadOnly={readOnly}
 						/>
 					)
 					: null
