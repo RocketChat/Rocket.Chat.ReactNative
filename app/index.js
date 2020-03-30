@@ -289,11 +289,21 @@ const ModalBlockStack = createStackNavigator({
 	cardStyle
 });
 
+const CreateDiscussionStack = createStackNavigator({
+	CreateDiscussionView: {
+		getScreen: () => require('./views/CreateDiscussionView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
 	ModalBlockStack,
+	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -438,6 +448,7 @@ const ModalSwitch = createSwitchNavigator({
 	RoomActionsStack,
 	SettingsStack,
 	ModalBlockStack,
+	CreateDiscussionStack,
 	AuthLoading: () => null
 },
 {
