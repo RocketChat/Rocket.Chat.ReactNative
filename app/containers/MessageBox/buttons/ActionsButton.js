@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
 
-const FileButton = React.memo(({ theme, onPress }) => (
+const ActionsButton = React.memo(({ theme, onPress }) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-actions'
@@ -13,9 +13,9 @@ const FileButton = React.memo(({ theme, onPress }) => (
 	/>
 ));
 
-FileButton.propTypes = {
+ActionsButton.propTypes = {
 	theme: PropTypes.string,
 	onPress: PropTypes.func.isRequired
 };
 
-export default FileButton;
+export default ActionsButton;

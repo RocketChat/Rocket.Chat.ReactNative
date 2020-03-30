@@ -63,6 +63,10 @@ class MessageActions extends React.Component {
 			this.EDIT_INDEX = this.options.length - 1;
 		}
 
+		// Create Discussion
+		this.options.push(I18n.t('Create_Discussion'));
+		this.CREATE_DISCUSSION_INDEX = this.options.length - 1;
+
 		// Mark as unread
 		if (message.u && message.u._id !== user.id) {
 			this.options.push(I18n.t('Mark_unread'));
@@ -371,6 +375,11 @@ class MessageActions extends React.Component {
 		}
 	}
 
+	handleCreateDiscussion = () => {
+		const { message, room: channel } = this.props;
+		Navigation.navigate('CreateDiscussionView', { message, channel });
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -412,6 +421,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.READ_RECEIPT_INDEX:
 					this.handleReadReceipt();
+					break;
+				case this.CREATE_DISCUSSION_INDEX:
+					this.handleCreateDiscussion();
 					break;
 				case this.TOGGLE_TRANSLATION_INDEX:
 					this.handleToggleTranslation();
