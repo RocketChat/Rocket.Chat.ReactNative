@@ -88,8 +88,11 @@ class CreateChannelView extends React.Component {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 					showErrorAlert(msg);
 				} else {
-					const { rid, name, t } = result;
-					Navigation.navigate('RoomView', { rid, name, t });
+					const { rid, t } = result;
+					if (this.channel) {
+						Navigation.navigate('RoomsListView');
+					}
+					Navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(result), t });
 				}
 			}, 300);
 		}
