@@ -191,6 +191,7 @@ class RegisterView extends React.Component {
 					<TextInput
 						inputRef={(e) => { this[key] = e; }}
 						key={key}
+						label={key}
 						placeholder={key}
 						value={customFields[key]}
 						onChangeText={(value) => {
@@ -204,6 +205,7 @@ class RegisterView extends React.Component {
 							}
 							this.avatarUrl.focus();
 						}}
+						containerStyle={styles.inputContainer}
 						theme={theme}
 					/>
 				);
