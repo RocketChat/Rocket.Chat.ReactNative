@@ -16,7 +16,6 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
-import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
@@ -100,7 +99,6 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		result: PropTypes.object,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -125,9 +123,7 @@ class CreateChannelView extends React.Component {
 		const {
 			channelName, type, readOnly, broadcast
 		} = this.state;
-		const {
-			error, failure, isFetching, result, users, theme
-		} = this.props;
+		const { users, isFetching, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -143,41 +139,13 @@ class CreateChannelView extends React.Component {
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
-		if (nextProps.failure !== failure) {
-			return true;
-		}
 		if (nextProps.isFetching !== isFetching) {
-			return true;
-		}
-		if (!equal(nextProps.error, error)) {
-			return true;
-		}
-		if (!equal(nextProps.result, result)) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
-	}
-
-	componentDidUpdate(prevProps) {
-		const {
-			isFetching, failure, error, result, navigation
-		} = this.props;
-
-		if (!isFetching && isFetching !== prevProps.isFetching) {
-			setTimeout(() => {
-				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-					showErrorAlert(msg);
-				} else {
-					const { type } = this.state;
-					const { rid, name } = result;
-					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
-				}
-			}, 300);
-		}
 	}
 
 	onChangeText = (channelName) => {
@@ -365,10 +333,7 @@ class CreateChannelView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	error: state.createChannel.error,
-	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,
-	result: state.createChannel.result,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });

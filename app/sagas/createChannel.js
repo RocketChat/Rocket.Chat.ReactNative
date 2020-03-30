@@ -5,8 +5,11 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
+import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
+import Navigation from '../lib/Navigation';
 import database from '../lib/database';
+import I18n from '../i18n';
 
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
@@ -49,8 +52,22 @@ const handleRequest = function* handleRequest({ data }) {
 	}
 };
 
+const handleSuccess = function handleSuccess({ data }) {
+	const { rid, t, name } = data;
+	Navigation.navigate('RoomView', { rid, t, name });
+};
+
+const handleFailure = function handleFailure({ err }) {
+	setTimeout(() => {
+		const msg = err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+		showErrorAlert(msg);
+	}, 300);
+};
+
 const root = function* root() {
 	yield takeLatest(CREATE_CHANNEL.REQUEST, handleRequest);
+	yield takeLatest(CREATE_CHANNEL.SUCCESS, handleSuccess);
+	yield takeLatest(CREATE_CHANNEL.FAILURE, handleFailure);
 };
 
 export default root;
