@@ -341,7 +341,7 @@ class RoomView extends React.Component {
 					} else {
 						this.setLastOpen(null);
 					}
-					RocketChat.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					RocketChat.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
 					this.sub.subscribe();
 				}
 			}
