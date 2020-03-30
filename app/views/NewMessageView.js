@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 	},
 	createChannelIcon: {
 		marginLeft: 18,
-		marginRight: 15
+		marginRight: 16
 	},
 	createChannelText: {
 		fontSize: 17,
@@ -162,7 +162,7 @@ class NewMessageView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='hashtag' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
 					</View>
 				</Touch>
@@ -173,7 +173,7 @@ class NewMessageView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorBottom, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='chat' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Discussion')}</Text>
 					</View>
 				</Touch>
