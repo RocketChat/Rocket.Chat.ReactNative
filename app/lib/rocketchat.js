@@ -241,12 +241,12 @@ const RocketChat = {
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id,, status] = userStatus;
-					this.activeUsers[id] = STATUSES[status];
+					const [id,, status, statusText] = userStatus;
+					this.activeUsers[id] = { status: STATUSES[status], statusText };
 
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						reduxStore.dispatch(setUser({ status: STATUSES[status] }));
+						reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
 					}
 				}
 			}));
@@ -378,6 +378,7 @@ const RocketChat = {
 				name: result.me.name,
 				language: result.me.language,
 				status: result.me.status,
+				statusText: result.me.statusText,
 				customFields: result.me.customFields,
 				emails: result.me.emails,
 				roles: result.me.roles
@@ -741,6 +742,10 @@ const RocketChat = {
 	setUserPresenceDefaultStatus(status) {
 		return this.sdk.methodCall('UserPresence:setDefaultStatus', status);
 	},
+	setUserStatus(message) {
+		// RC 1.2.0
+		return this.sdk.post('users.setStatus', { message });
+	},
 	setReaction(emoji, messageId) {
 		// RC 0.62.2
 		return this.sdk.post('chat.react', { emoji, messageId });
@@ -1056,7 +1061,7 @@ const RocketChat = {
 		}
 
 		if (ddpMessage.cleared && user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status: 'offline' }));
+			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
 		if (!this._setUserTimer) {
@@ -1071,9 +1076,9 @@ const RocketChat = {
 		}
 
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = 'offline';
+			this.activeUsers[ddpMessage.id] = { status: 'offline' };
 		} else if (ddpMessage.fields.status) {
-			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
+			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
 	getUsersPresence,

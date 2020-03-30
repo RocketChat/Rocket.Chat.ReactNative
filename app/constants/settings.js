@@ -14,6 +14,9 @@ export default {
 	Accounts_AllowUserProfileChange: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_AllowUserStatusMessageChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_AllowUsernameChange: {
 		type: 'valueAsBoolean'
 	},

@@ -34,6 +34,10 @@ describe('Profile screen', () => {
 			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
 		});
 
+		it('should have custom status', async() => {
+			await expect(element(by.id('profile-view-custom-status'))).toExist();
+		});
+
 		it('should have name', async() => {
 			await expect(element(by.id('profile-view-name'))).toExist();
 		});
@@ -76,6 +80,16 @@ describe('Profile screen', () => {
 	});
 
 	describe('Usage', async() => {
+		it('should change custom status', async() => {
+			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			await element(by.id('profile-view-custom-status')).replaceText(`${ data.user }new`);
+			await sleep(1000);
+			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await sleep(1000);
+			await element(by.id('profile-view-submit')).tap();
+			await waitForToast();
+		});
+
 		it('should change name and username', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ data.user }new`);

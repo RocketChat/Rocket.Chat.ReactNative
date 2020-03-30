@@ -45,7 +45,10 @@ export default async function getUsersPresence() {
 		const result = await this.sdk.get('users.presence', params);
 		if (result.success) {
 			const activeUsers = result.users.reduce((ret, item) => {
-				ret[item._id] = item.status;
+				ret[item._id] = {
+					status: item.status,
+					statusText: item.statusText
+				};
 				return ret;
 			}, {});
 			InteractionManager.runAfterInteractions(() => {
