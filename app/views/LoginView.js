@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, StyleSheet, Keyboard
+	Text, View, StyleSheet, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-// import equal from 'deep-equal';
+import equal from 'deep-equal';
 
 import { analytics } from '../utils/log';
 import sharedStyles from './Styles';
@@ -16,7 +16,7 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
-
+import { animateNextTransition } from '../utils/layoutAnimation';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
 
@@ -68,6 +68,8 @@ class LoginView extends React.Component {
 		Accounts_PasswordReset: PropTypes.bool,
 		Accounts_ShowFormLogin: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		error: PropTypes.object,
+		failure: PropTypes.bool,
 		theme: PropTypes.string,
 		loginRequest: PropTypes.func
 	}
@@ -82,6 +84,18 @@ class LoginView extends React.Component {
 		};
 		const { Site_Name } = this.props;
 		this.setTitle(Site_Name);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		const { error } = this.props;
+		if (nextProps.failure && !equal(error, nextProps.error)) {
+			if (nextProps.error && nextProps.error.error === 'totp-required') {
+				animateNextTransition();
+				this.setState({ showTOTP: true });
+				return;
+			}
+			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -208,6 +222,41 @@ class LoginView extends React.Component {
 		);
 	}
 
+	renderTOTP = () => {
+		const { isFetching, theme } = this.props;
+		return (
+			<>
+				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Two_Factor_Authentication')}</Text>
+				<Text
+					style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}
+				>
+					{I18n.t('Whats_your_2fa')}
+				</Text>
+				<TextInput
+					inputRef={ref => this.codeInput = ref}
+					autoFocus
+					onChangeText={value => this.setState({ code: value })}
+					keyboardType='numeric'
+					returnKeyType='send'
+					autoCapitalize='none'
+					onSubmitEditing={this.submit}
+					testID='login-view-totp'
+					containerStyle={sharedStyles.inputLastChild}
+					theme={theme}
+				/>
+				<Button
+					title={I18n.t('Confirm')}
+					type='primary'
+					onPress={this.submit}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!this.valid()}
+					theme={theme}
+				/>
+			</>
+		);
+	}
+
 	render() {
 		const { showTOTP } = this.state;
 		const { theme } = this.props;
@@ -230,6 +279,8 @@ const mapStateToProps = state => ({
 	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
 	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	isFetching: state.login.isFetching,
+	failure: state.login.failure,
+	error: state.login.error && state.login.error.data,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
 	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
