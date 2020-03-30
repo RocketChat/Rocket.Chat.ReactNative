@@ -36,10 +36,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UIViewController *rootViewController = [UIViewController new];
     rootViewController.view = rootView;
+    [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
-  
-    [RNBootSplash show:@"LaunchScreen" inView:rootView];
     [RNNotifications startMonitorNotifications];
 
     return YES;

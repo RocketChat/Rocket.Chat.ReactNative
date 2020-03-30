@@ -605,6 +605,16 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('im.create', { username });
 	},
+
+	createDiscussion({
+		prid, pmid, t_name, reply, users
+	}) {
+		// RC 1.0.0
+		return this.sdk.post('rooms.createDiscussion', {
+			prid, pmid, t_name, reply, users
+		});
+	},
+
 	joinRoom(roomId, type) {
 		// TODO: join code
 		// RC 0.48.0

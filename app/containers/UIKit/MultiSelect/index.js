@@ -10,6 +10,7 @@ import TextInput from '../../TextInput';
 
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
+import I18n from '../../../i18n';
 
 import Chips from './Chips';
 import Items from './Items';
@@ -33,6 +34,10 @@ export const MultiSelect = React.memo(({
 	loading,
 	value: values,
 	multiselect = false,
+	onSearch,
+	onClose,
+	disabled,
+	inputStyle,
 	theme
 }) => {
 	const [selected, select] = useState(values || []);
@@ -51,6 +56,12 @@ export const MultiSelect = React.memo(({
 		setOpen(showContent);
 	}, [showContent]);
 
+	useEffect(() => {
+		if (values && values.length && !multiselect) {
+			setCurrentValue(values[0].text);
+		}
+	}, []);
+
 	const onShow = () => {
 		Animated.timing(
 			animatedValue,
@@ -63,6 +74,7 @@ export const MultiSelect = React.memo(({
 	};
 
 	const onHide = () => {
+		onClose();
 		Animated.timing(
 			animatedValue,
 			{
@@ -73,7 +85,7 @@ export const MultiSelect = React.memo(({
 	};
 
 	const onSelect = (item) => {
-		const { value } = item;
+		const { value, text: { text } } = item;
 		if (multiselect) {
 			let newSelect = [];
 			if (!selected.includes(value)) {
@@ -85,20 +97,20 @@ export const MultiSelect = React.memo(({
 			onChange({ value: newSelect });
 		} else {
 			onChange({ value });
-			setCurrentValue(value);
-			setOpen(false);
+			setCurrentValue(text);
+			onHide();
 		}
 	};
 
 	const renderContent = () => {
-		const items = options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
+		const items = onSearch ? options : options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
 		return (
 			<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
-						onChangeText={onSearchChange}
-						placeholder={placeholder.text}
+						onChangeText={onSearch || onSearchChange}
+						placeholder={I18n.t('Search')}
 						theme={theme}
 					/>
 					<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
@@ -124,19 +136,24 @@ export const MultiSelect = React.memo(({
 			open={onShow}
 			theme={theme}
 			loading={loading}
+			disabled={disabled}
+			inputStyle={inputStyle}
 		>
-			<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{currentValue}</Text>
+			<Text style={[styles.pickerText, { color: currentValue ? themes[theme].titleText : themes[theme].auxiliaryText }]}>{currentValue || placeholder.text}</Text>
 		</Input>
 	);
 
 	if (context === BLOCK_CONTEXT.FORM) {
+		const items = options.filter(option => selected.includes(option.value));
 		button = (
 			<Input
 				open={onShow}
 				theme={theme}
 				loading={loading}
+				disabled={disabled}
+				inputStyle={inputStyle}
 			>
-				<Chips items={options.filter(option => selected.includes(option.value))} onSelect={onSelect} theme={theme} />
+				{items.length ? <Chips items={items} onSelect={onSelect} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
 		);
 	}
@@ -172,6 +189,13 @@ MultiSelect.propTypes = {
 	context: PropTypes.number,
 	loading: PropTypes.bool,
 	multiselect: PropTypes.bool,
+	onSearch: PropTypes.func,
+	onClose: PropTypes.func,
+	inputStyle: PropTypes.object,
 	value: PropTypes.array,
+	disabled: PropTypes.bool,
 	theme: PropTypes.string
+};
+MultiSelect.defaultProps = {
+	onClose: () => {}
 };

@@ -1,21 +1,18 @@
 import React from 'react';
-import { Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import KeyboardView from '../presentation/KeyboardView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import sharedStyles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { themedHeader } from '../utils/navigation';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 
 class ForgotPasswordView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -88,39 +85,31 @@ class ForgotPasswordView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
-				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='forgot-password-view' forceInset={{ vertical: 'never' }}>
-						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Forgot_password')}</Text>
-						<TextInput
-							autoFocus
-							placeholder={I18n.t('Email')}
-							keyboardType='email-address'
-							iconLeft='mail'
-							returnKeyType='send'
-							onChangeText={email => this.validate(email)}
-							onSubmitEditing={this.resetPassword}
-							testID='forgot-password-view-email'
-							containerStyle={sharedStyles.inputLastChild}
-							theme={theme}
-						/>
-						<Button
-							title={I18n.t('Reset_password')}
-							type='primary'
-							onPress={this.resetPassword}
-							testID='forgot-password-view-submit'
-							loading={isFetching}
-							disabled={invalidEmail}
-							theme={theme}
-						/>
-					</SafeAreaView>
-				</ScrollView>
-			</KeyboardView>
+			<FormContainer theme={theme}>
+				<FormContainerInner>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Forgot_password')}</Text>
+					<TextInput
+						autoFocus
+						placeholder={I18n.t('Email')}
+						keyboardType='email-address'
+						returnKeyType='send'
+						onChangeText={email => this.validate(email)}
+						onSubmitEditing={this.resetPassword}
+						testID='forgot-password-view-email'
+						containerStyle={sharedStyles.inputLastChild}
+						theme={theme}
+					/>
+					<Button
+						title={I18n.t('Reset_password')}
+						type='primary'
+						onPress={this.resetPassword}
+						testID='forgot-password-view-submit'
+						loading={isFetching}
+						disabled={invalidEmail}
+						theme={theme}
+					/>
+				</FormContainerInner>
+			</FormContainer>
 		);
 	}
 }
