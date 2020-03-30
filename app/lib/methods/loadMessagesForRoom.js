@@ -1,5 +1,3 @@
-import { InteractionManager } from 'react-native';
-
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
@@ -22,10 +20,8 @@ export default function loadMessagesForRoom(args) {
 			const data = await load.call(this, args);
 
 			if (data && data.length) {
-				InteractionManager.runAfterInteractions(async() => {
-					await updateMessages({ rid: args.rid, update: data });
-					return resolve(data);
-				});
+				await updateMessages({ rid: args.rid, update: data });
+				return resolve(data);
 			} else {
 				return resolve([]);
 			}
