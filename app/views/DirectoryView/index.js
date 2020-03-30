@@ -58,7 +58,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: this.directoryDefaultView
+			type: props.directoryDefaultView
 		};
 	}
 
