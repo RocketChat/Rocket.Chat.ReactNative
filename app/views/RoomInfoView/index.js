@@ -4,6 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { SafeAreaView } from 'react-navigation';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
@@ -24,11 +25,12 @@ import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-const getRoomTitle = (room, type, name, username, theme) => (type === 'd'
+const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{ name }</Text>
 			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{`@${ username }`}</Text>}
+			{!!statusText && <View testID='room-info-view-custom-status'><Markdown msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} preview theme={theme} /></View>}
 		</>
 	)
 	: (
@@ -71,16 +73,22 @@ class RoomInfoView extends React.Component {
 	constructor(props) {
 		super(props);
 		const room = props.navigation.getParam('room');
+		const roomUser = props.navigation.getParam('member');
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
 			room: room || {},
-			roomUser: {},
+			roomUser: roomUser || {},
 			parsedRoles: []
 		};
 	}
 
 	async componentDidMount() {
+		const { roomUser } = this.state;
+		if (this.t === 'd' && !_.isEmpty(roomUser)) {
+			return;
+		}
+
 		if (this.t === 'd') {
 			const { user } = this.props;
 			const roomUserId = RocketChat.getRoomMemberId(this.rid, user.id);
@@ -342,7 +350,7 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, theme) }</View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, roomUser && roomUser.statusText, theme) }</View>
 						{isDirect ? this.renderButtons() : null}
 					</View>
 					{isDirect ? this.renderDirect() : this.renderChannel()}

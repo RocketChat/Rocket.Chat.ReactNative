@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
-import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import Modal from 'react-native-modal';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -53,7 +51,7 @@ import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
-import Markdown from '../../containers/markdown';
+import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 
 const stateAttrsUpdate = [
@@ -67,15 +65,16 @@ const stateAttrsUpdate = [
 	'editing',
 	'replying',
 	'reacting',
-	'showAnnouncementModal'
+	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const rid = navigation.getParam('rid', null);
 		const prid = navigation.getParam('prid');
 		const title = navigation.getParam('name');
+		const subtitle = navigation.getParam('subtitle');
 		const t = navigation.getParam('t');
 		const tmid = navigation.getParam('tmid');
 		const baseUrl = navigation.getParam('baseUrl');
@@ -98,6 +97,7 @@ class RoomView extends React.Component {
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					subtitle={subtitle}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
 					goRoomActionsView={goRoomActionsView}
@@ -168,6 +168,7 @@ class RoomView extends React.Component {
 				rid: this.rid, t: this.t, name, fname
 			},
 			roomUpdate: {},
+			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
@@ -179,7 +180,6 @@ class RoomView extends React.Component {
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			reacting: false,
-			showAnnouncementModal: false,
 			announcement: null
 		};
 
@@ -207,6 +207,7 @@ class RoomView extends React.Component {
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
 					token: user.token,
@@ -236,12 +237,15 @@ class RoomView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
-		const { roomUpdate } = state;
+		const { roomUpdate, member } = state;
 		const { appState, theme } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
 		if (appState !== nextProps.appState) {
+			return true;
+		}
+		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -251,8 +255,9 @@ class RoomView extends React.Component {
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
-	componentDidUpdate(prevProps) {
-		const { appState } = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		const { roomUpdate, room } = this.state;
+		const { appState, navigation } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
@@ -261,6 +266,15 @@ class RoomView extends React.Component {
 					this.list.current.init();
 				}
 			});
+		}
+		// If it's not direct message
+		if (this.t !== 'd') {
+			if (roomUpdate.topic !== prevState.roomUpdate.topic) {
+				navigation.setParams({ subtitle: roomUpdate.topic });
+			}
+		}
+		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
+			navigation.setParams({ name: this.getRoomTitle(room) });
 		}
 	}
 
@@ -319,9 +333,11 @@ class RoomView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	goRoomActionsView = () => {
-		const { room } = this.state;
+		const { room, member } = this.state;
 		const { navigation } = this.props;
-		navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+		navigation.navigate('RoomActionsView', {
+			rid: this.rid, t: this.t, room, member
+		});
 	}
 
 	init = async() => {
@@ -349,7 +365,10 @@ class RoomView extends React.Component {
 			// We run `canAutoTranslate` again in order to refetch auto translate permission
 			// in case of a missing connection or poor connection on room open
 			const canAutoTranslate = await RocketChat.canAutoTranslate();
-			this.setState({ canAutoTranslate, loading: false });
+
+			const member = await this.getRoomMember();
+
+			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
 			this.retryInit = this.retryInit + 1 || 1;
@@ -359,6 +378,27 @@ class RoomView extends React.Component {
 				}, 300);
 			}
 		}
+	}
+
+	getRoomMember = async() => {
+		const { room } = this.state;
+		const { rid, t } = room;
+
+		if (t === 'd') {
+			const { user } = this.props;
+
+			try {
+				const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				if (result.success) {
+					return result.user;
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		return {};
 	}
 
 	findAndObserveRoom = async(rid) => {
@@ -371,6 +411,7 @@ class RoomView extends React.Component {
 			if (!this.tmid) {
 				navigation.setParams({
 					name: this.getRoomTitle(room),
+					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t
 				});
@@ -805,54 +846,6 @@ class RoomView extends React.Component {
 		return message;
 	}
 
-	toggleAnnouncementModal = (showModal) => {
-		this.setState({ showAnnouncementModal: showModal });
-	}
-
-	renderAnnouncement = () => {
-		const { theme } = this.props;
-		const { room } = this.state;
-		if (room.announcement) {
-			return (
-				<BorderlessButton style={[styles.announcementTextContainer, { backgroundColor: themes[theme].bannerBackground }]} key='room-user-status' testID='room-user-status' onPress={() => this.toggleAnnouncementModal(true)}>
-					<Markdown
-						msg={room.announcement}
-						theme={theme}
-						numberOfLines={1}
-						preview
-					/>
-				</BorderlessButton>
-			);
-		} else {
-			return null;
-		}
-	}
-
-	renderAnnouncementModal = () => {
-		const { room, showAnnouncementModal } = this.state;
-		const { theme } = this.props;
-		return (
-			<Modal
-				onBackdropPress={() => this.toggleAnnouncementModal(false)}
-				onBackButtonPress={() => this.toggleAnnouncementModal(false)}
-				useNativeDriver
-				isVisible={showAnnouncementModal}
-				animationIn='fadeIn'
-				animationOut='fadeOut'
-			>
-				<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
-					<Text style={[styles.announcementTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t('Announcement')}</Text>
-					<ScrollView style={styles.modalScrollView}>
-						<Markdown
-							msg={room.announcement}
-							theme={theme}
-						/>
-					</ScrollView>
-				</View>
-			</Modal>
-		);
-	}
-
 	renderFooter = () => {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention
@@ -973,7 +966,12 @@ class RoomView extends React.Component {
 				forceInset={{ vertical: 'never' }}
 			>
 				<StatusBar theme={theme} />
-				{this.renderAnnouncement()}
+				<Banner
+					rid={rid}
+					title={I18n.t('Announcement')}
+					text={room.announcement}
+					theme={theme}
+				/>
 				<List
 					ref={this.list}
 					listRef={this.setListRef}
@@ -987,7 +985,6 @@ class RoomView extends React.Component {
 					navigation={navigation}
 					hideSystemMessages={sysMes || Hide_System_Messages}
 				/>
-				{this.renderAnnouncementModal()}
 				{this.renderFooter()}
 				{this.renderActions()}
 				<ReactionPicker
