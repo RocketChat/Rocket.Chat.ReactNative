@@ -14,8 +14,14 @@ export const isReadOnly = async(room, user) => {
 	if (isOwner(room)) {
 		return false;
 	}
-	const permission = await RocketChat.hasPermission(['post-readonly'], room.rid);
-	return (permission && !permission['post-readonly']) || (room && room.ro) || isMuted(room, user);
+	let canPost = !(room && room.ro);
+	try {
+		const permission = await RocketChat.hasPermission(['post-readonly'], room.rid);
+		canPost = permission && permission['post-readonly'];
+	} catch {
+		// do nothing
+	}
+	return !canPost || isMuted(room, user);
 };
 
 export const isBlocked = (room) => {
