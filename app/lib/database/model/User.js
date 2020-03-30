@@ -16,5 +16,7 @@ export default class User extends Model {
 
 	@field('status') status;
 
+	@field('statusText') statusText;
+
 	@json('roles', sanitizer) roles;
 }

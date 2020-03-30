@@ -24,6 +24,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
+import Navigation from '../lib/Navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
 	},
 	buttonIcon: {
 		marginLeft: 18,
-		marginRight: 15
+		marginRight: 16
 	},
 	buttonText: {
 		fontSize: 17,
@@ -166,6 +167,10 @@ class NewMessageView extends React.Component {
 		);
 	}
 
+	createDiscussion = () => {
+		Navigation.navigate('CreateDiscussionView');
+	}
+
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
@@ -181,9 +186,15 @@ class NewMessageView extends React.Component {
 					})}
 					{this.renderButton({
 						onPress: this.createGroupChat,
-						title: I18n.t('Create_Direct_Message'),
+						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
 						testID: 'new-message-view-create-direct-message'
+					})}
+					{this.renderButton({
+						onPress: this.createDiscussion,
+						title: I18n.t('Create_Discussion'),
+						icon: 'chat',
+						testID: 'new-message-view-create-discussion'
 					})}
 				</View>
 			</View>

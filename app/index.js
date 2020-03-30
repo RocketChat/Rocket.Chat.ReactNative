@@ -74,8 +74,8 @@ const OutsideStack = createStackNavigator({
 	NewServerView: {
 		getScreen: () => require('./views/NewServerView').default
 	},
-	LoginSignupView: {
-		getScreen: () => require('./views/LoginSignupView').default
+	WorkspaceView: {
+		getScreen: () => require('./views/WorkspaceView').default
 	},
 	LoginView: {
 		getScreen: () => require('./views/LoginView').default
@@ -289,11 +289,31 @@ const ModalBlockStack = createStackNavigator({
 	cardStyle
 });
 
+const CreateDiscussionStack = createStackNavigator({
+	CreateDiscussionView: {
+		getScreen: () => require('./views/CreateDiscussionView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+const StatusStack = createStackNavigator({
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
 	ModalBlockStack,
+	StatusStack,
+	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -385,6 +405,9 @@ const SidebarStack = createStackNavigator({
 	},
 	AdminPanelView: {
 		getScreen: () => require('./views/AdminPanelView').default
+	},
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -438,6 +461,7 @@ const ModalSwitch = createSwitchNavigator({
 	RoomActionsStack,
 	SettingsStack,
 	ModalBlockStack,
+	CreateDiscussionStack,
 	AuthLoading: () => null
 },
 {
