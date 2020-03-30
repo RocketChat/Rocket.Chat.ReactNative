@@ -264,6 +264,7 @@ export default {
 	Logging_out: 'Logging out.',
 	Logout: 'Logout',
 	Max_number_of_uses: 'Max number of uses',
+	Max_number_of_users_allowed_is_number: 'Max number of users allowed is {{maxUsers}}',
 	members: 'members',
 	Members: 'Members',
 	Mentioned_Messages: 'Mentioned Messages',

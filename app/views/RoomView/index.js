@@ -382,13 +382,13 @@ class RoomView extends React.Component {
 
 	getRoomMember = async() => {
 		const { room } = this.state;
-		const { rid, t } = room;
+		const { t } = room;
 
 		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			const { user } = this.props;
 
 			try {
-				const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;

@@ -67,6 +67,7 @@ class NewMessageView extends React.Component {
 			token: PropTypes.string
 		}),
 		createChannel: PropTypes.func,
+		maxUsers: PropTypes.number,
 		theme: PropTypes.string
 	};
 
@@ -146,8 +147,12 @@ class NewMessageView extends React.Component {
 	}
 
 	createGroupChat = () => {
-		const { createChannel, navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => createChannel({ group: true }), buttonText: I18n.t('Submit') });
+		const { createChannel, maxUsers, navigation } = this.props;
+		navigation.navigate('SelectedUsersViewCreateChannel', {
+			nextAction: () => createChannel({ group: true }),
+			buttonText: I18n.t('Submit'),
+			maxUsers
+		});
 	}
 
 	renderButton = ({
@@ -270,6 +275,7 @@ class NewMessageView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
+	maxUsers: state.settings.DirectMesssage_maxUsers,
 	user: getUserSelector(state)
 });
 

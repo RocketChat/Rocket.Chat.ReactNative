@@ -28,6 +28,7 @@ import {
 	addUser as addUserAction,
 	removeUser as removeUserAction
 } from '../actions/selectedUsers';
+import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -65,13 +66,17 @@ class SelectedUsersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
+		navigation: PropTypes.object,
 		theme: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 		this.init();
+
+		const maxUsers = props.navigation.getParam('maxUsers');
 		this.state = {
+			maxUsers,
 			search: [],
 			chats: []
 		};
@@ -150,6 +155,13 @@ class SelectedUsersView extends React.Component {
 
 		animateNextTransition();
 		if (!this.isChecked(user.name)) {
+			const { maxUsers } = this.state;
+			const { users } = this.props;
+
+			if (maxUsers && users.length === maxUsers) {
+				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
+			}
+
 			addUser(user);
 		} else {
 			removeUser(user);
@@ -251,9 +263,14 @@ class SelectedUsersView extends React.Component {
 	renderList = () => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
+
+		const data = (search.length > 0 ? search : chats)
+			// filter DM between multiple users
+			.filter(sub => !RocketChat.isGroupChat(sub));
+
 		return (
 			<FlatList
-				data={search.length > 0 ? search : chats}
+				data={data}
 				extraData={this.props}
 				keyExtractor={item => item._id}
 				renderItem={this.renderItem}
@@ -286,7 +303,6 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
-	maxUsers: state.settings.DirectMesssage_maxUsers,
 	user: getUserSelector(state)
 });
 

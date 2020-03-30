@@ -809,9 +809,10 @@ const RocketChat = {
 			return false;
 		}
 
+		const me = room && room.uids.find(uid => uid === userId);
 		const other = room && room.uids.filter(uid => uid !== userId);
 
-		return other && other[0];
+		return other.length ? other[0] : me;
 	},
 
 	isGroupChat(room) {
