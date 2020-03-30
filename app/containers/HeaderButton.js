@@ -36,14 +36,11 @@ export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) =
 	</CustomHeaderButtons>
 ));
 
-export const CloseModalButton = React.memo(({ navigation, testID, onPress }) => {
-	onPress = onPress || navigation.pop;
-	return (
-		<CustomHeaderButtons left>
-			<Item title='close' iconName='cross' onPress={onPress} testID={testID} />
-		</CustomHeaderButtons>
-	);
-});
+export const CloseModalButton = React.memo(({ navigation, testID, onPress = () => navigation.pop() }) => (
+	<CustomHeaderButtons left>
+		<Item title='close' iconName='cross' onPress={onPress} testID={testID} />
+	</CustomHeaderButtons>
+));
 
 export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons left>
