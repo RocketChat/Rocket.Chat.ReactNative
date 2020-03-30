@@ -3,7 +3,15 @@ import moment from 'moment';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 
-export const isOwner = room => room && room.roles && room.roles.length && !!room.roles.find(role => role === 'owner');
+export const canPost = async({ rid }) => {
+	try {
+		const permission = await RocketChat.hasPermission(['post-readonly'], rid);
+		return permission && permission['post-readonly'];
+	} catch {
+		// do nothing
+	}
+	return false;
+};
 
 export const isMuted = (room, user) => room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
 
@@ -11,17 +19,11 @@ export const isReadOnly = async(room, user) => {
 	if (room.archived) {
 		return true;
 	}
-	if (isOwner(room)) {
+	const allowPost = await canPost(room);
+	if (allowPost) {
 		return false;
 	}
-	let canPost = !(room && room.ro);
-	try {
-		const permission = await RocketChat.hasPermission(['post-readonly'], room.rid);
-		canPost = permission && permission['post-readonly'];
-	} catch {
-		// do nothing
-	}
-	return !canPost || isMuted(room, user);
+	return (room && room.ro) || isMuted(room, user);
 };
 
 export const isBlocked = (room) => {

@@ -191,6 +191,8 @@ class RoomView extends React.Component {
 			this.findAndObserveRoom(this.rid);
 		}
 
+		this.setReadOnly();
+
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.mounted = false;
@@ -253,7 +255,8 @@ class RoomView extends React.Component {
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
+		const { roomUpdate } = this.state;
 		const { appState } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
@@ -263,6 +266,10 @@ class RoomView extends React.Component {
 					this.list.current.init();
 				}
 			});
+		}
+
+		if (!isEqual(prevState.roomUpdate, roomUpdate)) {
+			this.setReadOnly();
 		}
 	}
 
@@ -415,10 +422,6 @@ class RoomView extends React.Component {
 		const observable = room.observe();
 		this.subSubscription = observable
 			.subscribe((changes) => {
-				// room roles was changed
-				if (changes.roles) {
-					this.setReadOnly();
-				}
 				const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
 					ret[attr] = changes[attr];
 					return ret;

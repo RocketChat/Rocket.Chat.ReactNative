@@ -865,9 +865,10 @@ const RocketChat = {
 		// get permissions from database
 		try {
 			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
-			const user = reduxStore.getState().share.user || reduxStore.getState().login.user;
+			const shareUser = reduxStore.getState().share.user;
+			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (user && user.roles) || [];
+			const userRoles = (shareUser.roles || loginUser.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
