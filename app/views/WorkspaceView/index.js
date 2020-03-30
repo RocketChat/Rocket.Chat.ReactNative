@@ -24,7 +24,9 @@ class WorkspaceView extends React.Component {
 		Site_Name: PropTypes.string,
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
-		Assets_favicon_512: PropTypes.object
+		Assets_favicon_512: PropTypes.object,
+		registrationEnabled: PropTypes.bool,
+		registrationText: PropTypes.string
 	}
 
 	login = () => {
@@ -39,7 +41,7 @@ class WorkspaceView extends React.Component {
 
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText
 		} = this.props;
 		return (
 			<FormContainer theme={theme}>
@@ -55,13 +57,19 @@ class WorkspaceView extends React.Component {
 						onPress={this.login}
 						theme={theme}
 					/>
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.register}
-						theme={theme}
-					/>
+					{
+						registrationEnabled ? (
+							<Button
+								title={I18n.t('Create_account')}
+								type='secondary'
+								backgroundColor={themes[theme].chatComponentBackground}
+								onPress={this.register}
+								theme={theme}
+							/>
+						) : (
+							<Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>
+						)
+					}
 				</FormContainerInner>
 			</FormContainer>
 		);
@@ -73,7 +81,9 @@ const mapStateToProps = state => ({
 	adding: state.server.adding,
 	Site_Name: state.settings.Site_Name,
 	Site_Url: state.settings.Site_Url,
-	Assets_favicon_512: state.settings.Assets_favicon_512
+	Assets_favicon_512: state.settings.Assets_favicon_512,
+	registrationEnabled: state.settings.Accounts_RegistrationForm === 'Public',
+	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText
 });
 
 export default connect(mapStateToProps)(withTheme(WorkspaceView));

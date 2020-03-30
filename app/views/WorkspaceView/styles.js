@@ -12,5 +12,10 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 14,
 		marginBottom: 24
+	},
+	registrationText: {
+		fontSize: 14,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textRegular
 	}
 });
