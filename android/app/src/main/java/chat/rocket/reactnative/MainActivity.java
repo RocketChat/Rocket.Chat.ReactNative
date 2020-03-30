@@ -14,7 +14,7 @@ public class MainActivity extends ReactFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RNBootSplash.show(R.drawable.launch_screen, MainActivity.this);
+        RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
     }
 
     /**

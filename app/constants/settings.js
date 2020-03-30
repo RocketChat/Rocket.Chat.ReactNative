@@ -47,6 +47,9 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_Directory_DefaultView: {
+		type: 'valueAsString'
+	},
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
