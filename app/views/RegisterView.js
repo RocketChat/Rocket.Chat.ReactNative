@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
 	bottomContainerTextBold: {
 		...sharedStyles.textSemibold,
 		fontSize: 13
+	},
+	registerButton: {
+		marginTop: 16,
+		marginBottom: 32
 	}
 });
 
@@ -91,25 +95,11 @@ class RegisterView extends React.Component {
 			saving: false,
 			customFields
 		};
-		const { Site_Name } = this.props;
-		this.setTitle(Site_Name);
-	}
-
-	componentDidUpdate(prevProps) {
-		const { Site_Name } = this.props;
-		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(Site_Name);
-		}
-	}
-
-	setTitle = (title) => {
-		const { navigation } = this.props;
-		navigation.setParams({ title });
 	}
 
 	login = () => {
-		const { navigation } = this.props;
-		navigation.navigate('LoginView');
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
 	valid = () => {
@@ -287,7 +277,7 @@ class RegisterView extends React.Component {
 						disabled={!this.valid()}
 						loading={saving}
 						theme={theme}
-						style={{ marginTop: 16, marginBottom: 32 }}
+						style={styles.registerButton}
 					/>
 
 					<View style={styles.bottomContainer}>

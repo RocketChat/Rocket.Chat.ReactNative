@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
 	},
 	serviceName: {
 		...sharedStyles.textSemibold
+	},
+	options: {
+		marginBottom: 0
 	}
 });
 
@@ -246,7 +249,7 @@ class LoginServices extends React.PureComponent {
 						type='secondary'
 						onPress={this.toggleServices}
 						theme={theme}
-						style={{ marginBottom: 0 }}
+						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>
 					<OnboardingSeparator theme={theme} />

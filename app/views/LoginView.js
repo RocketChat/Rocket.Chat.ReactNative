@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
 	bottomContainerTextBold: {
 		...sharedStyles.textSemibold,
 		fontSize: 13
+	},
+	loginButton: {
+		marginTop: 16
 	}
 });
 
@@ -82,8 +85,6 @@ class LoginView extends React.Component {
 			code: '',
 			showTOTP: false
 		};
-		const { Site_Name } = this.props;
-		this.setTitle(Site_Name);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -96,18 +97,6 @@ class LoginView extends React.Component {
 			}
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
-	}
-
-	componentDidUpdate(prevProps) {
-		const { Site_Name } = this.props;
-		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(Site_Name);
-		}
-	}
-
-	setTitle = (title) => {
-		const { navigation } = this.props;
-		navigation.setParams({ title });
 	}
 
 	login = () => {
@@ -194,7 +183,7 @@ class LoginView extends React.Component {
 					loading={isFetching}
 					disabled={!this.valid()}
 					theme={theme}
-					style={{ marginTop: 16 }}
+					style={styles.loginButton}
 				/>
 				{Accounts_PasswordReset && (
 					<Button

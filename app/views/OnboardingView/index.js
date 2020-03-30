@@ -74,7 +74,7 @@ class OnboardingView extends React.Component {
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
 					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>
-					<View style={[styles.buttonsContainer]}>
+					<View style={styles.buttonsContainer}>
 						<Button
 							title={I18n.t('Onboarding_join_workspace')}
 							type='primary'

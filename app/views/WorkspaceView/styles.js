@@ -17,5 +17,8 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
+	},
+	alignItemsCenter: {
+		alignItems: 'center'
 	}
 });

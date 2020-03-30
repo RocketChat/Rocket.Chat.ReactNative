@@ -30,13 +30,13 @@ class WorkspaceView extends React.Component {
 	}
 
 	login = () => {
-		const { navigation } = this.props;
-		navigation.navigate('LoginView');
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
 	register = () => {
-		const { navigation } = this.props;
-		navigation.navigate('RegisterView');
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
 	render() {
@@ -46,7 +46,7 @@ class WorkspaceView extends React.Component {
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
-					<View style={{ alignItems: 'center' }}>
+					<View style={styles.alignItemsCenter}>
 						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
 						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>

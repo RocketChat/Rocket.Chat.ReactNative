@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		textAlign: 'left',
 		marginBottom: 24
+	},
+	connectButton: {
+		marginBottom: 0
 	}
 });
 
@@ -306,7 +309,7 @@ class NewServerView extends React.Component {
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={{ marginBottom: 0 }}
+						style={styles.connectButton}
 						testID='new-server-view-button'
 						theme={theme}
 					/>

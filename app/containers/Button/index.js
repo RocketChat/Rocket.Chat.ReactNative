@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		textAlign: 'center',
 		...sharedStyles.textMedium
+	},
+	disabled: {
+		opacity: 0.3
 	}
 });
 
@@ -64,7 +67,7 @@ export default class Button extends React.PureComponent {
 					backgroundColor
 						? { backgroundColor }
 						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor },
-					disabled && { opacity: 0.3 },
+					disabled && styles.disabled,
 					style
 				]}
 				{...otherProps}
