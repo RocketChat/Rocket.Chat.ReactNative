@@ -77,24 +77,21 @@ class RoomInfoView extends React.Component {
 		this.rid = props.navigation.getParam('rid');
 		this.t = props.navigation.getParam('t');
 		this.state = {
-			room: room || { rid: this.rid, t: this.t },
+			room: room || {},
 			roomUser: roomUser || {},
 			parsedRoles: []
 		};
 	}
 
 	async componentDidMount() {
-		const { roomUser, room: roomState } = this.state;
+		const { roomUser } = this.state;
 		if (this.t === 'd' && !_.isEmpty(roomUser)) {
 			return;
 		}
 
 		if (this.t === 'd') {
-			const { user } = this.props;
-			// TODO: No use legacy method
-			const roomUserId = RocketChat.getUidDirectMessage(roomState, user.id);
 			try {
-				const result = await RocketChat.getUserInfo(roomUserId);
+				const result = await RocketChat.getUserInfo(this.rid);
 				if (result.success) {
 					const { roles } = result.user;
 					let parsedRoles = [];
