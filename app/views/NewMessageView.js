@@ -191,7 +191,7 @@ class NewMessageView extends React.Component {
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}
-					{maxUsers ? this.renderButton({
+					{maxUsers > 1 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
@@ -275,7 +275,7 @@ class NewMessageView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	maxUsers: state.settings.DirectMesssage_maxUsers,
+	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
 	user: getUserSelector(state)
 });
 

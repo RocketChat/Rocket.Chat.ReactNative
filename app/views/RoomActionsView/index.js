@@ -469,7 +469,6 @@ class RoomActionsView extends React.Component {
 			this.renderTouchableItem((
 				<>
 					<Avatar
-						key='avatar'
 						text={avatar}
 						size={50}
 						style={styles.avatar}
@@ -480,7 +479,7 @@ class RoomActionsView extends React.Component {
 					>
 						{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 					</Avatar>
-					<View key='name' style={styles.roomTitleContainer}>
+					<View style={styles.roomTitleContainer}>
 						{room.t === 'd'
 							? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 							: (
@@ -499,7 +498,7 @@ class RoomActionsView extends React.Component {
 						/>
 						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
 					</View>
-					{!item.disabled && <DisclosureIndicator theme={theme} key='disclosure-indicator' />}
+					{!item.disabled && <DisclosureIndicator theme={theme} />}
 				</>
 			), item)
 		);
@@ -529,15 +528,15 @@ class RoomActionsView extends React.Component {
 		const colorDanger = { color: themes[theme].dangerColor };
 		const subview = item.type === 'danger' ? (
 			<>
-				<CustomIcon key='icon' name={item.icon} size={24} style={[styles.sectionItemIcon, colorDanger]} />
-				<Text key='name' style={[styles.sectionItemName, colorDanger]}>{ item.name }</Text>
+				<CustomIcon name={item.icon} size={24} style={[styles.sectionItemIcon, colorDanger]} />
+				<Text style={[styles.sectionItemName, colorDanger]}>{ item.name }</Text>
 			</>
 		) : (
 			<>
-				<CustomIcon key='left-icon' name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />
-				<Text key='name' style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>
-				{item.description ? <Text key='description' style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null}
-				<DisclosureIndicator theme={theme} key='disclosure-indicator' />
+				<CustomIcon name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />
+				<Text style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>
+				{item.description ? <Text style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null}
+				<DisclosureIndicator theme={theme} />
 			</>
 		);
 		return this.renderTouchableItem(subview, item);
