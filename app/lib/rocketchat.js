@@ -1,9 +1,10 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
+import prompt from 'react-native-prompt-android';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -829,9 +830,43 @@ const RocketChat = {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);
 	},
+	async post(...args) {
+		try {
+			const result = await this.sdk.post(...args);
+			return result;
+		} catch (e) {
+			if (e.data && e.data.errorType === 'totp-required') {
+				const { details } = e.data;
+				prompt(
+					'title',
+					'totp',
+					[
+						{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
+						{
+							text: 'Verify',
+							onPress: (code) => {
+								RocketChatSettings.customHeaders = {
+									...RocketChatSettings.customHeaders,
+									'x-2fa-code': code,
+									'x-2fa-method': details && details.method
+								};
+								this.post(...args);
+							}
+						}
+					],
+					{
+						type: 'plain-text',
+						cancelable: false
+					}
+				);
+			} else {
+				throw e;
+			}
+		}
+	},
 	saveUserProfile(data, customFields) {
 		// RC 0.62.2
-		return this.sdk.post('users.updateOwnBasicInfo', { data, customFields });
+		return this.post('users.updateOwnBasicInfo', { data, customFields });
 	},
 	saveUserPreferences(params) {
 		// RC 0.51.0
