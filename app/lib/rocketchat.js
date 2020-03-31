@@ -846,6 +846,11 @@ const RocketChat = {
 			}
 		});
 	},
+	sendEmailCode() {
+		const { username } = reduxStore.getState().login.user;
+		// RC 3.1.0
+		return this.sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
+	},
 	saveUserProfile(data, customFields) {
 		// RC 0.62.2
 		return this.post('users.updateOwnBasicInfo', { data, customFields });
