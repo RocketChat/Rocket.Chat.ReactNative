@@ -3,7 +3,7 @@ import { settings } from '@rocket.chat/sdk';
 
 import I18n from '../i18n';
 
-export const totp = ({ method }) => new Promise((resolve, reject) => {
+export const twoFactor = ({ method }) => new Promise((resolve, reject) => {
 	const isEmail = method === 'email';
 	prompt(
 		I18n.t('Two_Factor_Authentication'),

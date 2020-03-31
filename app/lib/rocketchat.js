@@ -48,7 +48,7 @@ import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
-import { totp } from '../utils/totp';
+import { twoFactor } from '../utils/twoFactor';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -839,10 +839,10 @@ const RocketChat = {
 				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await totp({ method: details?.method });
+						await twoFactor({ method: details?.method });
 						return resolve(this.post(...args));
 					} catch {
-						// totp was canceled
+						// twoFactor was canceled
 						return resolve({});
 					}
 				} else {
