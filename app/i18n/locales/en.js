@@ -328,6 +328,7 @@ export default {
 	Only_authorized_users_can_write_new_messages: 'Only authorized users can write new messages',
 	Open_emoji_selector: 'Open emoji selector',
 	Open_Source_Communication: 'Open Source Communication',
+	Open_your_authentication_app_and_enter_the_code: 'Open your authentication app and enter the code.',
 	OR: 'OR',
 	Overwrites_the_server_configuration_and_use_room_config: 'Overwrites the server configuration and use room config',
 	Password: 'Password',

@@ -300,6 +300,7 @@ export default {
 	Only_authorized_users_can_write_new_messages: 'Somente usuários autorizados podem escrever novas mensagens',
 	Open_emoji_selector: 'Abrir seletor de emoji',
 	Open_Source_Communication: 'Comunicação Open Source',
+	Open_your_authentication_app_and_enter_the_code: 'Abra seu aplicativo de autenticação e digite o código.',
 	OR: 'OU',
 	Overwrites_the_server_configuration_and_use_room_config: 'Substituir a configuração do servidor e usar a configuração da sala',
 	Password: 'Senha',

@@ -2,21 +2,16 @@ import prompt from 'react-native-prompt-android';
 import { settings } from '@rocket.chat/sdk';
 
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 
 export const totp = ({ method }) => new Promise((resolve, reject) => {
 	prompt(
-		'title',
-		'totp',
+		I18n.t('Two_Factor_Authentication'),
+		I18n.t('Open_your_authentication_app_and_enter_the_code'),
 		[
 			{
 				text: I18n.t('Cancel'),
 				onPress: () => reject(),
 				style: 'cancel'
-			},
-			{
-				text: I18n.t('Email'),
-				onPress: () => RocketChat.sendEmailCode()
 			},
 			{
 				text: 'Verify',
