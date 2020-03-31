@@ -43,14 +43,18 @@ class SelectedUsersView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', I18n.t('Select_Users'));
 		const buttonText = navigation.getParam('buttonText', I18n.t('Next'));
+		const showButton = navigation.getParam('showButton', false);
+		const maxUsers = navigation.getParam('maxUsers');
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
 			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
-				<CustomHeaderButtons>
-					<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
-				</CustomHeaderButtons>
+				(!maxUsers || showButton) && (
+					<CustomHeaderButtons>
+						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+					</CustomHeaderButtons>
+				)
 			)
 		};
 	}
@@ -103,6 +107,20 @@ class SelectedUsersView extends React.Component {
 		return false;
 	}
 
+	componentDidUpdate(prevProps) {
+		const { maxUsers } = this.state;
+		if (maxUsers) {
+			const { users, navigation } = this.props;
+			if (prevProps.users.length !== users.length) {
+				if (users.length) {
+					navigation.setParams({ showButton: true });
+				} else {
+					navigation.setParams({ showButton: false });
+				}
+			}
+		}
+	}
+
 	componentWillUnmount() {
 		const { reset } = this.props;
 		reset();
@@ -133,11 +151,6 @@ class SelectedUsersView extends React.Component {
 		this.search(text);
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.forceUpdate();
-	}, 1000);
-
 	search = async(text) => {
 		const result = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
@@ -151,13 +164,11 @@ class SelectedUsersView extends React.Component {
 	}
 
 	toggleUser = (user) => {
-		const { addUser, removeUser } = this.props;
+		const { maxUsers } = this.state;
+		const { addUser, removeUser, users } = this.props;
 
 		animateNextTransition();
 		if (!this.isChecked(user.name)) {
-			const { maxUsers } = this.state;
-			const { users } = this.props;
-
 			if (maxUsers && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
