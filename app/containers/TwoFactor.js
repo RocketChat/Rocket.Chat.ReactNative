@@ -101,12 +101,13 @@ const TwoFactor = React.memo(({ theme, split }) => {
 		setData({});
 	};
 
+	const color = themes[theme].titleText;
 	return (
 		<Modal visible={visible} transparent>
 			<View style={[styles.container, { backgroundColor: `${ themes[theme].backdropColor }30` }]}>
 				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
-					<Text style={styles.title}>{I18n.t('Two_Factor_Authentication')}</Text>
-					<Text style={styles.subtitle}>
+					<Text style={[styles.title, { color }]}>{I18n.t('Two_Factor_Authentication')}</Text>
+					<Text style={[styles.subtitle, { color }]}>
 						{I18n.t(
 							isEmail
 								? 'Verify_your_email_for_the_code_we_sent'
@@ -114,7 +115,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 						)}
 					</Text>
 					<TextInput value={code} onChangeText={setCode} />
-					{isEmail && <Text style={styles.sendEmail} onPress={sendEmail}>{I18n.t('Send_me_the_code_again')}</Text>}
+					{isEmail && <Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>{I18n.t('Send_me_the_code_again')}</Text>}
 					<View style={styles.buttonContainer}>
 						<Button
 							title={I18n.t('Cancel')}
