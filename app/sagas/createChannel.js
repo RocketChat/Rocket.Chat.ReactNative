@@ -53,8 +53,8 @@ const handleRequest = function* handleRequest({ data }) {
 };
 
 const handleSuccess = function handleSuccess({ data }) {
-	const { rid, t, name } = data;
-	Navigation.navigate('RoomView', { rid, t, name });
+	const { rid, t } = data;
+	Navigation.navigate('RoomView', { rid, t, name: RocketChat.getRoomTitle(data) });
 };
 
 const handleFailure = function handleFailure({ err }) {

@@ -810,7 +810,7 @@ const RocketChat = {
 	},
 
 	isGroupChat(room) {
-		return room.uids && room.uids.length > 2;
+		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
 	},
 
 	toggleBlockUser(rid, blocked, block) {
@@ -1144,6 +1144,10 @@ const RocketChat = {
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		const { username } = reduxStore.getState().login.user;
+		if (RocketChat.isGroupChat(room) && !(room.name && room.name.length)) {
+			return room.usernames.filter(u => u !== username).sort((u1, u2) => u1.localeCompare(u2)).join(', ');
+		}
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
