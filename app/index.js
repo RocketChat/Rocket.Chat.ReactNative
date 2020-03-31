@@ -42,6 +42,7 @@ import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
+import TwoFactor from './containers/TwoFactor';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
@@ -348,6 +349,7 @@ class CustomInsideStack extends React.Component {
 				<InsideStackModal navigation={navigation} screenProps={screenProps} />
 				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
 				{ !isTablet ? <Toast /> : null }
+				<TwoFactor />
 			</>
 		);
 	}
