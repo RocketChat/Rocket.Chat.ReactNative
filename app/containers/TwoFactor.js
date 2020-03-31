@@ -12,6 +12,7 @@ import TextInput from './TextInput';
 import I18n from '../i18n';
 import EventEmitter from '../utils/events';
 import { withTheme } from '../theme';
+import { withSplit } from '../split';
 import { themes } from '../constants/colors';
 import Button from './Button';
 import sharedStyles from '../views/Styles';
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const TwoFactor = React.memo(({ theme }) => {
+const TwoFactor = React.memo(({ theme, split }) => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
 	const [code, setCode] = useState('');
@@ -103,7 +104,7 @@ const TwoFactor = React.memo(({ theme }) => {
 	return (
 		<Modal visible={visible} transparent>
 			<View style={[styles.container, { backgroundColor: `${ themes[theme].backdropColor }30` }]}>
-				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={styles.title}>{I18n.t('Two_Factor_Authentication')}</Text>
 					<Text style={styles.subtitle}>
 						{I18n.t(
@@ -137,7 +138,8 @@ const TwoFactor = React.memo(({ theme }) => {
 	);
 });
 TwoFactor.propTypes = {
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	split: PropTypes.bool
 };
 
-export default withTheme(TwoFactor);
+export default withSplit(withTheme(TwoFactor));
