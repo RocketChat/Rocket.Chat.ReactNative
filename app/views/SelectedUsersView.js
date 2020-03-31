@@ -11,7 +11,6 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
-import debounce from '../utils/debounce';
 import I18n from '../i18n';
 import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
@@ -68,7 +67,9 @@ class SelectedUsersView extends React.Component {
 		loading: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			username: PropTypes.string,
+			name: PropTypes.string
 		}),
 		navigation: PropTypes.object,
 		theme: PropTypes.string
@@ -84,6 +85,10 @@ class SelectedUsersView extends React.Component {
 			search: [],
 			chats: []
 		};
+		const { user } = this.props;
+		if (this.isGroupChat()) {
+			props.addUser({ _id: user.id, name: user.username, fname: user.name });
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -108,8 +113,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { maxUsers } = this.state;
-		if (maxUsers) {
+		if (this.isGroupChat()) {
 			const { users, navigation } = this.props;
 			if (prevProps.users.length !== users.length) {
 				if (users.length) {
@@ -158,6 +162,11 @@ class SelectedUsersView extends React.Component {
 		});
 	}
 
+	isGroupChat = () => {
+		const { maxUsers } = this.state;
+		return maxUsers > 2;
+	}
+
 	isChecked = (username) => {
 		const { users } = this.props;
 		return users.findIndex(el => el.name === username) !== -1;
@@ -165,11 +174,18 @@ class SelectedUsersView extends React.Component {
 
 	toggleUser = (user) => {
 		const { maxUsers } = this.state;
-		const { addUser, removeUser, users } = this.props;
+		const {
+			addUser, removeUser, users, user: { username }
+		} = this.props;
+
+		// Disallow removing self user from the direct message group
+		if (this.isGroupChat() && username === user.name) {
+			return;
+		}
 
 		animateNextTransition();
 		if (!this.isChecked(user.name)) {
-			if (maxUsers && users.length === maxUsers) {
+			if (this.isGroupChat() && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
 

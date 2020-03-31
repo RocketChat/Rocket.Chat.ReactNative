@@ -191,7 +191,7 @@ class NewMessageView extends React.Component {
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}
-					{maxUsers > 1 ? this.renderButton({
+					{maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
