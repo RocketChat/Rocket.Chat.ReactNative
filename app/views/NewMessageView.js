@@ -179,7 +179,7 @@ class NewMessageView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { theme } = this.props;
+		const { maxUsers, theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
@@ -191,12 +191,12 @@ class NewMessageView extends React.Component {
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}
-					{this.renderButton({
+					{maxUsers ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
 						testID: 'new-message-view-create-direct-message'
-					})}
+					}) : null}
 					{this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
