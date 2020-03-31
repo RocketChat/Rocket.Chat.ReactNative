@@ -500,6 +500,7 @@ export default {
 	Validating: 'Validating',
 	Verify_email_title: 'Registration Succeeded!',
 	Verify_email_desc: 'We have sent you an email to confirm your registration. If you do not receive an email shortly, please come back and try again.',
+	Verify_your_email_for_the_code_we_sent: 'Verify your email for the code we sent',
 	Video_call: 'Video call',
 	View_Original: 'View Original',
 	Voice_call: 'Voice call',

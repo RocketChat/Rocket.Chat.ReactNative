@@ -838,8 +838,13 @@ const RocketChat = {
 			} catch (e) {
 				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
 					const { details } = e.data;
-					await totp({ method: details?.method });
-					return resolve(this.post(...args));
+					try {
+						await totp({ method: details?.method });
+						return resolve(this.post(...args));
+					} catch {
+						// totp was canceled
+						return resolve({});
+					}
 				} else {
 					reject(e);
 				}
