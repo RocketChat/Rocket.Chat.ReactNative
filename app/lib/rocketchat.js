@@ -805,7 +805,7 @@ const RocketChat = {
 			return room.rid.replace(userId, '').trim();
 		}
 
-		if (!room.uids || room.uids.length > 2) {
+		if (RocketChat.isGroupChat(room)) {
 			return false;
 		}
 
