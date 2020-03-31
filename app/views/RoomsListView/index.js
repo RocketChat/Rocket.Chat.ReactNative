@@ -773,6 +773,7 @@ class RoomsListView extends React.Component {
 			split
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
+		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
@@ -805,6 +806,7 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
+				isGroupChat={isGroupChat}
 			/>
 		);
 	};

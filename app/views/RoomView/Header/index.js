@@ -23,6 +23,7 @@ class RoomHeaderView extends Component {
 		statusText: PropTypes.string,
 		connecting: PropTypes.bool,
 		theme: PropTypes.string,
+		roomUserId: PropTypes.string,
 		widthOffset: PropTypes.number,
 		goRoomActionsView: PropTypes.func
 	};
@@ -69,7 +70,7 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			window, title, subtitle, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, usersTyping, goRoomActionsView, theme
+			window, title, subtitle, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, usersTyping, goRoomActionsView, roomUserId, theme
 		} = this.props;
 
 		return (
@@ -85,6 +86,7 @@ class RoomHeaderView extends Component {
 				theme={theme}
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
+				roomUserId={roomUserId}
 				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 			/>
