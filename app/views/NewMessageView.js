@@ -150,7 +150,7 @@ class NewMessageView extends React.Component {
 		const { createChannel, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => createChannel({ group: true }),
-			buttonText: I18n.t('Submit'),
+			buttonText: I18n.t('Create'),
 			maxUsers
 		});
 	}
