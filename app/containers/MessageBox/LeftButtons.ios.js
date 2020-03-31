@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CancelEditingButton, FileButton } from './buttons';
+import { CancelEditingButton, ActionsButton } from './buttons';
 
 const LeftButtons = React.memo(({
-	theme, showFileActions, editing, editCancel
+	theme, showMessageBoxActions, editing, editCancel
 }) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;
 	}
-	return <FileButton onPress={showFileActions} theme={theme} />;
+	return <ActionsButton onPress={showMessageBoxActions} theme={theme} />;
 });
 
 LeftButtons.propTypes = {
 	theme: PropTypes.string,
-	showFileActions: PropTypes.func.isRequired,
+	showMessageBoxActions: PropTypes.func.isRequired,
 	editing: PropTypes.bool,
 	editCancel: PropTypes.func.isRequired
 };

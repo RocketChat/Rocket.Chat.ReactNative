@@ -24,6 +24,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
+import Navigation from '../lib/Navigation';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -33,7 +34,10 @@ const styles = StyleSheet.create({
 		marginLeft: 60
 	},
 	createChannelButton: {
-		marginVertical: 25
+		marginTop: 25
+	},
+	createDiscussionButton: {
+		marginBottom: 25
 	},
 	createChannelContainer: {
 		height: 46,
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
 	},
 	createChannelIcon: {
 		marginLeft: 18,
-		marginRight: 15
+		marginRight: 16
 	},
 	createChannelText: {
 		fontSize: 17,
@@ -142,6 +146,10 @@ class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
 	}
 
+	createDiscussion = () => {
+		Navigation.navigate('CreateDiscussionView');
+	}
+
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
@@ -154,8 +162,19 @@ class NewMessageView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='plus' />
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='hashtag' />
 						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
+					</View>
+				</Touch>
+				<Touch
+					onPress={this.createDiscussion}
+					style={[styles.createDiscussionButton, { backgroundColor: themes[theme].backgroundColor }]}
+					testID='new-message-view-create-discussion'
+					theme={theme}
+				>
+					<View style={[sharedStyles.separatorBottom, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
+						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='chat' />
+						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Discussion')}</Text>
 					</View>
 				</Touch>
 			</View>
