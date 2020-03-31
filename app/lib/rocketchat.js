@@ -1,10 +1,9 @@
 import { AsyncStorage, InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
-import prompt from 'react-native-prompt-android';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -49,6 +48,7 @@ import { getDeviceToken } from '../notifications/push';
 import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
+import { totp } from '../utils/totp';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -830,39 +830,21 @@ const RocketChat = {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);
 	},
-	async post(...args) {
-		try {
-			const result = await this.sdk.post(...args);
-			return result;
-		} catch (e) {
-			if (e.data && e.data.errorType === 'totp-required') {
-				const { details } = e.data;
-				prompt(
-					'title',
-					'totp',
-					[
-						{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
-						{
-							text: 'Verify',
-							onPress: (code) => {
-								RocketChatSettings.customHeaders = {
-									...RocketChatSettings.customHeaders,
-									'x-2fa-code': code,
-									'x-2fa-method': details && details.method
-								};
-								this.post(...args);
-							}
-						}
-					],
-					{
-						type: 'plain-text',
-						cancelable: false
-					}
-				);
-			} else {
-				throw e;
+	post(...args) {
+		return new Promise(async(resolve, reject) => {
+			try {
+				const result = await this.sdk.post(...args);
+				return resolve(result);
+			} catch (e) {
+				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
+					const { details } = e.data;
+					await totp({ method: details?.method });
+					return resolve(this.post(...args));
+				} else {
+					reject(e);
+				}
 			}
-		}
+		});
 	},
 	saveUserProfile(data, customFields) {
 		// RC 0.62.2
