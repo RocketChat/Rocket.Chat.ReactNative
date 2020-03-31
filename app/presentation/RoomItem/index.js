@@ -43,9 +43,8 @@ const RoomItem = React.memo(({
 	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, theme
 }) => {
 	useEffect(() => {
-		if (type === 'd' && rid) {
-			const uid = rid.replace(userId, '');
-			getUserPresence(uid);
+		if (type === 'd') {
+			getUserPresence(id);
 		}
 	}, []);
 

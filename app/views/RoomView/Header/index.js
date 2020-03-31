@@ -95,13 +95,12 @@ class RoomHeaderView extends Component {
 const mapStateToProps = (state, ownProps) => {
 	let status;
 	let statusText;
-	const { rid, type } = ownProps;
+	const { roomUserId, type } = ownProps;
 	if (type === 'd') {
 		const user = getUserSelector(state);
 		if (user.id) {
-			const userId = rid.replace(user.id, '').trim();
-			if (state.activeUsers[userId]) {
-				({ status, statusText } = state.activeUsers[userId]);
+			if (state.activeUsers[roomUserId]) {
+				({ status, statusText } = state.activeUsers[roomUserId]);
 			}
 		}
 	}

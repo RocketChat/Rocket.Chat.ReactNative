@@ -84,6 +84,7 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
+		const roomUserId = navigation.getParam('roomUserId');
 		if (!rid) {
 			return {
 				...themedHeader(screenProps.theme)
@@ -100,6 +101,7 @@ class RoomView extends React.Component {
 					subtitle={subtitle}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
+					roomUserId={roomUserId}
 					goRoomActionsView={goRoomActionsView}
 				/>
 			),
@@ -385,10 +387,13 @@ class RoomView extends React.Component {
 		const { t } = room;
 
 		if (t === 'd' && !RocketChat.isGroupChat(room)) {
-			const { user } = this.props;
+			const { user, navigation } = this.props;
 
 			try {
 				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+
+				navigation.setParams({ roomUserId });
+
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;

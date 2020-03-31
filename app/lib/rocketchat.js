@@ -792,12 +792,6 @@ const RocketChat = {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
 	},
-	getRoomMemberId(rid, currentUserId) {
-		if (rid === `${ currentUserId }${ currentUserId }`) {
-			return currentUserId;
-		}
-		return rid.replace(currentUserId, '').trim();
-	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method
@@ -809,10 +803,10 @@ const RocketChat = {
 			return false;
 		}
 
-		const me = room && room.uids.find(uid => uid === userId);
-		const other = room && room.uids.filter(uid => uid !== userId);
+		const me = room && room.uids && room.uids.find(uid => uid === userId);
+		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
 
-		return other.length ? other[0] : me;
+		return other && other.length ? other[0] : me;
 	},
 
 	isGroupChat(room) {
