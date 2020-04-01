@@ -607,6 +607,14 @@ const RocketChat = {
 		return this.sdk.post('im.create', { username });
 	},
 
+	createGroupChat() {
+		let { users } = reduxStore.getState().selectedUsers;
+		users = users.map(u => u.name);
+
+		// RC 3.1.0
+		return this.sdk.methodCall('createDirectMessage', ...users);
+	},
+
 	createDiscussion({
 		prid, pmid, t_name, reply, users
 	}) {
@@ -784,12 +792,27 @@ const RocketChat = {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
 	},
-	getRoomMemberId(rid, currentUserId) {
-		if (rid === `${ currentUserId }${ currentUserId }`) {
-			return currentUserId;
+
+	getUidDirectMessage(room, userId) {
+		// legacy method
+		if (!room.uids && room.rid && room.t === 'd') {
+			return room.rid.replace(userId, '').trim();
 		}
-		return rid.replace(currentUserId, '').trim();
+
+		if (RocketChat.isGroupChat(room)) {
+			return false;
+		}
+
+		const me = room && room.uids && room.uids.find(uid => uid === userId);
+		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
+
+		return other && other.length ? other[0] : me;
 	},
+
+	isGroupChat(room) {
+		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
+	},
+
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			// RC 0.49.0
@@ -1121,9 +1144,16 @@ const RocketChat = {
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		const { username } = reduxStore.getState().login.user;
+		if (RocketChat.isGroupChat(room) && !(room.name && room.name.length)) {
+			return room.usernames.filter(u => u !== username).sort((u1, u2) => u1.localeCompare(u2)).join(', ');
+		}
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
+		if (RocketChat.isGroupChat(room)) {
+			return room.uids.length + room.usernames.join();
+		}
 		return room.prid ? room.fname : room.name;
 	},
 

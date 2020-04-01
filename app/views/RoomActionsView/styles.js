@@ -14,9 +14,6 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	sectionItemDisabled: {
-		opacity: 0.3
-	},
 	sectionItemIcon: {
 		width: 56,
 		textAlign: 'center'
