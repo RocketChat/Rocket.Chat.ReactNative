@@ -10,6 +10,7 @@ import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 
 import styles from './styles';
+import { themes } from '../../constants/colors';
 
 const SelectUsers = ({
 	server, token, userId, selected, onUserSelect, theme
@@ -31,7 +32,7 @@ const SelectUsers = ({
 
 	return (
 		<>
-			<Text style={styles.label}>{I18n.t('Invite_users')}</Text>
+			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				theme={theme}
 				inputStyle={styles.inputStyle}
