@@ -4,9 +4,10 @@ import I18n from '../i18n';
 import EventEmitter from './events';
 import { TWO_FACTOR } from '../containers/TwoFactor';
 
-export const twoFactor = ({ method }) => new Promise((resolve, reject) => {
+export const twoFactor = ({ method, invalid }) => new Promise((resolve, reject) => {
 	EventEmitter.emit(TWO_FACTOR, {
 		method,
+		invalid,
 		cancel: {
 			text: I18n.t('Cancel'),
 			onPress: () => reject()
@@ -19,7 +20,7 @@ export const twoFactor = ({ method }) => new Promise((resolve, reject) => {
 					'x-2fa-code': code,
 					'x-2fa-method': method
 				};
-				resolve({ code, method });
+				resolve({ twoFactorCode: code, twoFactorMethod: method });
 			}
 		}
 	});

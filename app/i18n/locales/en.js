@@ -138,6 +138,7 @@ export default {
 	Choose_file: 'Choose file',
 	Choose_where_you_want_links_be_opened: 'Choose where you want links be opened',
 	Code: 'Code',
+	Code_or_password_invalid: 'Code or password invalid',
 	Collaborative: 'Collaborative',
 	Confirm: 'Confirm',
 	Connect: 'Connect',

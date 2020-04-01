@@ -87,7 +87,12 @@ const TwoFactor = React.memo(({ theme, split }) => {
 				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					<Text style={[styles.subtitle, { color }]}>{I18n.t(method?.text)}</Text>
-					<TextInput value={code} onChangeText={setCode} secureTextEntry={method?.secureTextEntry} />
+					<TextInput
+						value={code}
+						onChangeText={setCode}
+						secureTextEntry={method?.secureTextEntry}
+						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
+					/>
 					{isEmail && <Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>{I18n.t('Send_me_the_code_again')}</Text>}
 					<View style={styles.buttonContainer}>
 						<Button

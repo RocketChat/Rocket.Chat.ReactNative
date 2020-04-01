@@ -140,6 +140,7 @@ export default {
 	Choose_file: 'Enviar arquivo',
 	Choose_where_you_want_links_be_opened: 'Escolha onde deseja que os links sejam abertos',
 	Code: 'Código',
+	Code_or_password_invalid: 'Código ou senha inválido',
 	Collaborative: 'Colaborativo',
 	Confirm: 'Confirmar',
 	Connect: 'Conectar',

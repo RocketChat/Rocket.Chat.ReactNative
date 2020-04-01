@@ -830,17 +830,43 @@ const RocketChat = {
 		// RC 0.55.0
 		return this.sdk.methodCall('saveRoomSettings', rid, params);
 	},
-	post(...args) {
+	withTwoFactor(fn) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.post(...args);
+				const result = await fn();
 				return resolve(result);
 			} catch (e) {
 				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await twoFactor({ method: details?.method });
-						return resolve(this.post(...args));
+						await twoFactor({ method: details?.method, invalid: e.data.errorType === 'totp-invalid' });
+						return resolve(this.withTwoFactor(fn));
+					} catch {
+						// twoFactor was canceled
+						return resolve({});
+					}
+				} else {
+					reject(e);
+				}
+			}
+		});
+	},
+	methodCall2fa(...args) {
+		return new Promise(async(resolve, reject) => {
+			try {
+				const result = await this.sdk.methodCall(...args);
+				return resolve(result);
+			} catch (e) {
+				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
+					const { details } = e;
+					try {
+						const code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
+
+						if (args[args.length - 1].twoFactorCode) {
+							args.pop();
+						}
+
+						return resolve(this.methodCall2fa(...args, code));
 					} catch {
 						// twoFactor was canceled
 						return resolve({});
@@ -858,7 +884,7 @@ const RocketChat = {
 	},
 	saveUserProfile(data, customFields) {
 		// RC 0.62.2
-		return this.post('users.updateOwnBasicInfo', { data, customFields });
+		return this.withTwoFactor(() => this.sdk.post('users.updateOwnBasicInfo', { data, customFields }));
 	},
 	saveUserPreferences(params) {
 		// RC 0.51.0
