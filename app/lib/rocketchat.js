@@ -196,6 +196,10 @@ const RocketChat = {
 				this.sdk = null;
 			}
 
+			if (this.code) {
+				this.code = null;
+			}
+
 			// Use useSsl: false only if server url starts with http://
 			const useSsl = !/http:\/\//.test(server);
 
@@ -891,22 +895,14 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args);
+				const result = await this.sdk.methodCall(...args, this.code);
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 					const { details } = e;
 					try {
-						const code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-
-						const lastArg = args.pop();
-						// if last arg is not a code
-						if (!lastArg.twoFactorCode) {
-							// push it again
-							args.push(lastArg);
-						}
-
-						return resolve(this.methodCall(...args, code));
+						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
+						return resolve(this.methodCall(...args));
 					} catch {
 						// twoFactor was canceled
 						return resolve({});
