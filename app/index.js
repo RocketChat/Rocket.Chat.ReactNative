@@ -42,6 +42,7 @@ import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
+import TwoFactor from './containers/TwoFactor';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
@@ -721,6 +722,7 @@ export default class Root extends React.Component {
 						}}
 					>
 						{content}
+						<TwoFactor />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>
