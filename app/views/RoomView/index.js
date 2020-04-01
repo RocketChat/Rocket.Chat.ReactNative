@@ -164,10 +164,11 @@ class RoomView extends React.Component {
 		const selectedMessage = props.navigation.getParam('message');
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
+		const prid = props.navigation.getParam('prid');
 		this.state = {
 			joined: true,
 			room: room || {
-				rid: this.rid, t: this.t, name, fname
+				rid: this.rid, t: this.t, name, fname, prid
 			},
 			roomUpdate: {},
 			member: {},
