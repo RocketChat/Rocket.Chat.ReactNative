@@ -11,6 +11,7 @@ import TextInput from '../../TextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
+import { isIOS } from '../../../utils/deviceInfo';
 
 import Chips from './Chips';
 import Items from './Items';
@@ -25,6 +26,8 @@ const ANIMATION_PROPS = {
 	useNativeDriver: true
 };
 const animatedValue = new Animated.Value(0);
+
+const behavior = isIOS ? 'padding' : null;
 
 export const MultiSelect = React.memo(({
 	options = [],
@@ -170,7 +173,7 @@ export const MultiSelect = React.memo(({
 				<TouchableWithoutFeedback onPress={onHide}>
 					<View style={styles.container}>
 						<View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor }]} />
-						<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
+						<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
 							<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
 								{showContent ? renderContent() : null}
 							</Animated.View>
