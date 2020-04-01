@@ -9,7 +9,7 @@ async function open({ type, rid, name }) {
 		const params = rid ? { roomId: rid } : { roomName: name };
 
 		// if it's a direct link without rid we'll create a new dm
-		// if the dm alread exists it'll return the existent
+		// if the dm already exists it'll return the existent
 		if (type === 'direct' && !rid) {
 			const result = await this.createDirectMessage(name);
 			if (result.success) {
