@@ -80,7 +80,7 @@ Readme will guide you on how to config.
 |---------------------------------------------------------------	|--------	|
 | Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
-| Discussions                                                     | ❌    	|
+| Discussions                                                     | ✅    	|
 | Omnichannel                                                     | ❌    	|
 | Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|

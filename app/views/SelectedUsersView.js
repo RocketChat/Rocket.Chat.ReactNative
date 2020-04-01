@@ -7,14 +7,10 @@ import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
-import {
-	addUser as addUserAction, removeUser as removeUserAction, reset as resetAction, setLoading as setLoadingAction
-} from '../actions/selectedUsers';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
-import debounce from '../utils/debounce';
 import I18n from '../i18n';
 import log from '../utils/log';
 import SearchBox from '../containers/SearchBox';
@@ -26,6 +22,12 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
+import {
+	reset as resetAction,
+	addUser as addUserAction,
+	removeUser as removeUserAction
+} from '../actions/selectedUsers';
+import { showErrorAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -38,47 +40,55 @@ const styles = StyleSheet.create({
 
 class SelectedUsersView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title');
+		const title = navigation.getParam('title', I18n.t('Select_Users'));
+		const buttonText = navigation.getParam('buttonText', I18n.t('Next'));
+		const showButton = navigation.getParam('showButton', false);
+		const maxUsers = navigation.getParam('maxUsers');
 		const nextAction = navigation.getParam('nextAction', () => {});
 		return {
 			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
-				<CustomHeaderButtons>
-					<Item title={I18n.t('Next')} onPress={nextAction} testID='selected-users-view-submit' />
-				</CustomHeaderButtons>
+				(!maxUsers || showButton) && (
+					<CustomHeaderButtons>
+						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+					</CustomHeaderButtons>
+				)
 			)
 		};
 	}
 
 	static propTypes = {
-		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		reset: PropTypes.func.isRequired,
 		users: PropTypes.array,
 		loading: PropTypes.bool,
-		setLoadingInvite: PropTypes.func,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			username: PropTypes.string,
+			name: PropTypes.string
 		}),
+		navigation: PropTypes.object,
 		theme: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 		this.init();
+
+		const maxUsers = props.navigation.getParam('maxUsers');
 		this.state = {
+			maxUsers,
 			search: [],
 			chats: []
 		};
-	}
-
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ nextAction: this.nextAction });
+		const { user } = this.props;
+		if (this.isGroupChat()) {
+			props.addUser({ _id: user.id, name: user.username, fname: user.name });
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -100,6 +110,19 @@ class SelectedUsersView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.isGroupChat()) {
+			const { users, navigation } = this.props;
+			if (prevProps.users.length !== users.length) {
+				if (users.length) {
+					navigation.setParams({ showButton: true });
+				} else {
+					navigation.setParams({ showButton: false });
+				}
+			}
+		}
 	}
 
 	componentWillUnmount() {
@@ -132,35 +155,16 @@ class SelectedUsersView extends React.Component {
 		this.search(text);
 	}
 
-	nextAction = async() => {
-		const { navigation, setLoadingInvite } = this.props;
-		const nextActionID = navigation.getParam('nextActionID');
-		if (nextActionID === 'CREATE_CHANNEL') {
-			navigation.navigate('CreateChannelView');
-		} else {
-			const rid = navigation.getParam('rid');
-			try {
-				setLoadingInvite(true);
-				await RocketChat.addUsersToRoom(rid);
-				navigation.pop();
-			} catch (e) {
-				log(e);
-			} finally {
-				setLoadingInvite(false);
-			}
-		}
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	updateState = debounce(() => {
-		this.forceUpdate();
-	}, 1000);
-
 	search = async(text) => {
 		const result = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
+	}
+
+	isGroupChat = () => {
+		const { maxUsers } = this.state;
+		return maxUsers > 2;
 	}
 
 	isChecked = (username) => {
@@ -169,10 +173,22 @@ class SelectedUsersView extends React.Component {
 	}
 
 	toggleUser = (user) => {
-		const { addUser, removeUser } = this.props;
+		const { maxUsers } = this.state;
+		const {
+			addUser, removeUser, users, user: { username }
+		} = this.props;
+
+		// Disallow removing self user from the direct message group
+		if (this.isGroupChat() && username === user.name) {
+			return;
+		}
 
 		animateNextTransition();
 		if (!this.isChecked(user.name)) {
+			if (this.isGroupChat() && users.length === maxUsers) {
+				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
+			}
+
 			addUser(user);
 		} else {
 			removeUser(user);
@@ -274,9 +290,14 @@ class SelectedUsersView extends React.Component {
 	renderList = () => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
+
+		const data = (search.length > 0 ? search : chats)
+			// filter DM between multiple users
+			.filter(sub => !RocketChat.isGroupChat(sub));
+
 		return (
 			<FlatList
-				data={search.length > 0 ? search : chats}
+				data={data}
 				extraData={this.props}
 				keyExtractor={item => item._id}
 				renderItem={this.renderItem}
@@ -315,8 +336,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	addUser: user => dispatch(addUserAction(user)),
 	removeUser: user => dispatch(removeUserAction(user)),
-	reset: () => dispatch(resetAction()),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
+	reset: () => dispatch(resetAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));

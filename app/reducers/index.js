@@ -16,6 +16,7 @@ import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
+import createDiscussion from './createDiscussion';
 
 export default combineReducers({
 	settings,
@@ -34,5 +35,6 @@ export default combineReducers({
 	customEmojis,
 	activeUsers,
 	usersTyping,
-	inviteLinks
+	inviteLinks,
+	createDiscussion
 });

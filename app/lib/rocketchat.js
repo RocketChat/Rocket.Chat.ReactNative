@@ -241,12 +241,12 @@ const RocketChat = {
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id,, status] = userStatus;
-					this.activeUsers[id] = STATUSES[status];
+					const [id,, status, statusText] = userStatus;
+					this.activeUsers[id] = { status: STATUSES[status], statusText };
 
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						reduxStore.dispatch(setUser({ status: STATUSES[status] }));
+						reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
 					}
 				}
 			}));
@@ -378,6 +378,7 @@ const RocketChat = {
 				name: result.me.name,
 				language: result.me.language,
 				status: result.me.status,
+				statusText: result.me.statusText,
 				customFields: result.me.customFields,
 				emails: result.me.emails,
 				roles: result.me.roles
@@ -605,6 +606,24 @@ const RocketChat = {
 		// RC 0.59.0
 		return this.sdk.post('im.create', { username });
 	},
+
+	createGroupChat() {
+		let { users } = reduxStore.getState().selectedUsers;
+		users = users.map(u => u.name);
+
+		// RC 3.1.0
+		return this.sdk.methodCall('createDirectMessage', ...users);
+	},
+
+	createDiscussion({
+		prid, pmid, t_name, reply, users
+	}) {
+		// RC 1.0.0
+		return this.sdk.post('rooms.createDiscussion', {
+			prid, pmid, t_name, reply, users
+		});
+	},
+
 	joinRoom(roomId, type) {
 		// TODO: join code
 		// RC 0.48.0
@@ -731,6 +750,10 @@ const RocketChat = {
 	setUserPresenceDefaultStatus(status) {
 		return this.sdk.methodCall('UserPresence:setDefaultStatus', status);
 	},
+	setUserStatus(message) {
+		// RC 1.2.0
+		return this.sdk.post('users.setStatus', { message });
+	},
 	setReaction(emoji, messageId) {
 		// RC 0.62.2
 		return this.sdk.post('chat.react', { emoji, messageId });
@@ -769,12 +792,27 @@ const RocketChat = {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
 	},
-	getRoomMemberId(rid, currentUserId) {
-		if (rid === `${ currentUserId }${ currentUserId }`) {
-			return currentUserId;
+
+	getUidDirectMessage(room, userId) {
+		// legacy method
+		if (!room.uids && room.rid && room.t === 'd') {
+			return room.rid.replace(userId, '').trim();
 		}
-		return rid.replace(currentUserId, '').trim();
+
+		if (RocketChat.isGroupChat(room)) {
+			return false;
+		}
+
+		const me = room && room.uids && room.uids.find(uid => uid === userId);
+		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
+
+		return other && other.length ? other[0] : me;
 	},
+
+	isGroupChat(room) {
+		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
+	},
+
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			// RC 0.49.0
@@ -927,11 +965,12 @@ const RocketChat = {
 					return ret;
 				}, {});
 				reduxStore.dispatch(setLoginServices(loginServicesReducer));
+			} else {
+				reduxStore.dispatch(setLoginServices({}));
 			}
-			return Promise.resolve(loginServices.length);
 		} catch (error) {
-			console.warn(error);
-			return Promise.reject();
+			console.log(error);
+			reduxStore.dispatch(setLoginServices({}));
 		}
 	},
 	_determineAuthType(services) {
@@ -1046,7 +1085,7 @@ const RocketChat = {
 		}
 
 		if (ddpMessage.cleared && user && user.id === ddpMessage.id) {
-			reduxStore.dispatch(setUser({ status: 'offline' }));
+			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
 		if (!this._setUserTimer) {
@@ -1061,9 +1100,9 @@ const RocketChat = {
 		}
 
 		if (!ddpMessage.fields) {
-			this.activeUsers[ddpMessage.id] = 'offline';
+			this.activeUsers[ddpMessage.id] = { status: 'offline' };
 		} else if (ddpMessage.fields.status) {
-			this.activeUsers[ddpMessage.id] = ddpMessage.fields.status;
+			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
 	getUsersPresence,
@@ -1106,9 +1145,16 @@ const RocketChat = {
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		const { username } = reduxStore.getState().login.user;
+		if (RocketChat.isGroupChat(room) && !(room.name && room.name.length)) {
+			return room.usernames.filter(u => u !== username).sort((u1, u2) => u1.localeCompare(u2)).join(', ');
+		}
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
+		if (RocketChat.isGroupChat(room)) {
+			return room.uids.length + room.usernames.join();
+		}
 		return room.prid ? room.fname : room.name;
 	},
 

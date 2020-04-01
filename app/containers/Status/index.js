@@ -26,7 +26,7 @@ class StatusContainer extends React.PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	status: state.meteor.connected ? state.activeUsers[ownProps.id] : 'offline'
+	status: state.meteor.connected ? (state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status) : 'offline'
 });
 
 export default connect(mapStateToProps)(withTheme(StatusContainer));

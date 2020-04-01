@@ -42,7 +42,7 @@ export const CloseModalButton = React.memo(({ navigation, testID, onPress = () =
 	</CustomHeaderButtons>
 ));
 
-export const CloseShareExtensionButton = React.memo(({ onPress, testID }) => (
+export const CancelModalButton = React.memo(({ onPress, testID }) => (
 	<CustomHeaderButtons left>
 		{isIOS
 			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
@@ -79,7 +79,7 @@ CloseModalButton.propTypes = {
 	testID: PropTypes.string.isRequired,
 	onPress: PropTypes.func
 };
-CloseShareExtensionButton.propTypes = {
+CancelModalButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired
 };
