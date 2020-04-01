@@ -125,7 +125,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, theme
+	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -146,7 +146,7 @@ const Header = React.memo(({
 			disabled={tmid}
 		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
-				<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
+				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
 				<HeaderTitle
 					title={title}
 					tmid={tmid}
@@ -174,6 +174,7 @@ Header.propTypes = {
 	usersTyping: PropTypes.array,
 	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool,
+	roomUserId: PropTypes.string,
 	goRoomActionsView: PropTypes.func
 };
 

@@ -7,6 +7,7 @@ import { avatarURL } from '../../utils/avatar';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
@@ -30,7 +31,7 @@ const SelectChannel = ({
 
 	return (
 		<>
-			<Text style={styles.label}>{I18n.t('Parent_channel_or_group')}</Text>
+			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
 				theme={theme}
 				inputStyle={styles.inputStyle}
