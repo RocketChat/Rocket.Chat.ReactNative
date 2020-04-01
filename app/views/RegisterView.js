@@ -22,6 +22,7 @@ import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
+import { getShowLoginButton } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	title: {
@@ -68,7 +69,8 @@ class RegisterView extends React.Component {
 		Accounts_EmailVerification: PropTypes.bool,
 		theme: PropTypes.string,
 		Site_Name: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		showLoginButton: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -217,7 +219,7 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme } = this.props;
+		const { theme, showLoginButton } = this.props;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
@@ -298,14 +300,17 @@ class RegisterView extends React.Component {
 						</Text>
 					</View>
 
-					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
-						<Text
-							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-							onPress={this.login}
-						>{I18n.t('Login')}
-						</Text>
-					</View>
+					{showLoginButton
+						? (
+							<View style={styles.bottomContainer}>
+								<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
+								<Text
+									style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+									onPress={this.login}
+								>{I18n.t('Login')}
+								</Text>
+							</View>
+						) : null}
 				</FormContainerInner>
 			</FormContainer>
 		);
@@ -319,7 +324,8 @@ const mapStateToProps = state => ({
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
+	showLoginButton: getShowLoginButton(state)
 });
 
 const mapDispatchToProps = dispatch => ({

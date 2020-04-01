@@ -72,7 +72,9 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					autoTranslate: s.autoTranslate,
 					autoTranslateLanguage: s.autoTranslateLanguage,
 					lastMessage: s.lastMessage,
-					roles: s.roles
+					roles: s.roles,
+					usernames: s.usernames,
+					uids: s.uids
 				};
 			} catch (error) {
 				try {

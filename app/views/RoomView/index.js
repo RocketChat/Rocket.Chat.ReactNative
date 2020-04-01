@@ -85,6 +85,7 @@ class RoomView extends React.Component {
 		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
+		const roomUserId = navigation.getParam('roomUserId');
 		if (!rid) {
 			return {
 				...themedHeader(screenProps.theme)
@@ -101,6 +102,7 @@ class RoomView extends React.Component {
 					subtitle={subtitle}
 					type={t}
 					widthOffset={tmid ? 95 : 130}
+					roomUserId={roomUserId}
 					goRoomActionsView={goRoomActionsView}
 				/>
 			),
@@ -164,10 +166,11 @@ class RoomView extends React.Component {
 		const name = props.navigation.getParam('name');
 		const fname = props.navigation.getParam('fname');
 		const search = props.navigation.getParam('search');
+		const prid = props.navigation.getParam('prid');
 		this.state = {
 			joined: true,
 			room: room || {
-				rid: this.rid, t: this.t, name, fname
+				rid: this.rid, t: this.t, name, fname, prid
 			},
 			roomUpdate: {},
 			member: {},
@@ -419,13 +422,16 @@ class RoomView extends React.Component {
 
 	getRoomMember = async() => {
 		const { room } = this.state;
-		const { rid, t } = room;
+		const { t } = room;
 
-		if (t === 'd') {
-			const { user } = this.props;
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
+			const { user, navigation } = this.props;
 
 			try {
-				const roomUserId = RocketChat.getRoomMemberId(rid, user.id);
+				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+
+				navigation.setParams({ roomUserId });
+
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;

@@ -412,7 +412,9 @@ class RoomsListView extends React.Component {
 				key: item._id,
 				rid: item.rid,
 				type: item.t,
-				prid: item.prid
+				prid: item.prid,
+				uids: item.uids,
+				usernames: item.usernames
 			}));
 
 			// unread
@@ -526,6 +528,11 @@ class RoomsListView extends React.Component {
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
+	getUidDirectMessage = (room) => {
+		const { user: { id } } = this.props;
+		return RocketChat.getUidDirectMessage(room, id);
+	}
+
 	goRoom = (item) => {
 		const { navigation } = this.props;
 		this.cancelSearch();
@@ -536,7 +543,8 @@ class RoomsListView extends React.Component {
 			t: item.t,
 			prid: item.prid,
 			room: item,
-			search: item.search
+			search: item.search,
+			roomUserId: this.getUidDirectMessage(item)
 		});
 	}
 
@@ -765,7 +773,8 @@ class RoomsListView extends React.Component {
 			theme,
 			split
 		} = this.props;
-		const id = item.rid.replace(userId, '').trim();
+		const id = this.getUidDirectMessage(item);
+		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
@@ -798,6 +807,7 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
+				isGroupChat={isGroupChat}
 			/>
 		);
 	};

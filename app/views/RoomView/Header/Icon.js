@@ -21,13 +21,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Icon = React.memo(({ type, status, theme }) => {
-	if (type === 'd') {
+const Icon = React.memo(({
+	roomUserId, type, status, theme
+}) => {
+	if (type === 'd' && roomUserId) {
 		return <Status size={10} style={styles.status} status={status} />;
 	}
 
 	let colorStyle = {};
-	if (type === 'd') {
+	if (type === 'd' && roomUserId) {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
 		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
@@ -42,6 +44,8 @@ const Icon = React.memo(({ type, status, theme }) => {
 		icon = 'hashtag';
 	} else if (type === 'l') {
 		icon = 'livechat';
+	} else if (type === 'd') {
+		icon = 'team';
 	} else {
 		icon = 'lock';
 	}
@@ -62,6 +66,7 @@ const Icon = React.memo(({ type, status, theme }) => {
 });
 
 Icon.propTypes = {
+	roomUserId: PropTypes.string,
 	type: PropTypes.string,
 	status: PropTypes.string,
 	theme: PropTypes.string
