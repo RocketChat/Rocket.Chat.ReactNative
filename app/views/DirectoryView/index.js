@@ -170,25 +170,24 @@ class DirectoryView extends React.Component {
 	}
 
 	renderSeparator = () => {
+		const { data } = this.state;
 		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+		if (data.length > 0) {
+			return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+		} else {
+			return null;
+		}
 	}
 
-	renderItem = ({ item, index }) => {
-		const { data, type } = this.state;
+	renderItem = ({ item }) => {
+		const { type } = this.state;
 		const { baseUrl, user, theme } = this.props;
-
-		let style;
-		if (index === data.length - 1) {
-			style = sharedStyles.separatorBottom;
-		}
 
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
 			testID: `federation-view-item-${ item.name }`,
-			style,
 			user,
 			theme
 		};
@@ -233,7 +232,7 @@ class DirectoryView extends React.Component {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : this.renderSeparator}
 					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown
