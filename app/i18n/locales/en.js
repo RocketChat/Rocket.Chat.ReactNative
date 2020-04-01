@@ -502,6 +502,7 @@ export default {
 	Uses_server_configuration: 'Uses server configuration',
 	Usually_a_discussion_starts_with_a_question_like_How_do_I_upload_a_picture: 'Usually, a discussion starts with a question, like "How do I upload a picture?"',
 	Validating: 'Validating',
+	Registration_Succeeded: 'Registration Succeeded!',
 	Verify: 'Verify',
 	Verify_email_title: 'Registration Succeeded!',
 	Verify_email_desc: 'We have sent you an email to confirm your registration. If you do not receive an email shortly, please come back and try again.',
@@ -557,5 +558,6 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
-	Mark_unread: 'Mark Unread'
+	Mark_unread: 'Mark Unread',
+	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.'
 };
