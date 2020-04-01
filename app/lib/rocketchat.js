@@ -613,7 +613,7 @@ const RocketChat = {
 		users = users.map(u => u.name);
 
 		// RC 3.1.0
-		return this.sdk.methodCall('createDirectMessage', ...users);
+		return this.methodCall('createDirectMessage', ...users);
 	},
 
 	createDiscussion({
