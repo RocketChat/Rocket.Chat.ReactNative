@@ -965,11 +965,12 @@ const RocketChat = {
 					return ret;
 				}, {});
 				reduxStore.dispatch(setLoginServices(loginServicesReducer));
+			} else {
+				reduxStore.dispatch(setLoginServices({}));
 			}
-			return Promise.resolve(loginServices.length);
 		} catch (error) {
-			console.warn(error);
-			return Promise.reject();
+			console.log(error);
+			reduxStore.dispatch(setLoginServices({}));
 		}
 	},
 	_determineAuthType(services) {
