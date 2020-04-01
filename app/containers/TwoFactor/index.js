@@ -72,7 +72,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 		const { submit } = data;
 		if (submit?.onPress) {
 			if (data.method === 'password') {
-				submit.onPress(sha256(method));
+				submit.onPress(sha256(code));
 			} else {
 				submit.onPress(code);
 			}
