@@ -91,4 +91,8 @@ export default class Subscription extends Model {
 	@field('hide_unread_status') hideUnreadStatus;
 
 	@json('sys_mes', sanitizer) sysMes;
+
+	@json('uids', sanitizer) uids;
+
+	@json('usernames', sanitizer) usernames;
 }

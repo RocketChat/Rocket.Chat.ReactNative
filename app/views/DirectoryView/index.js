@@ -180,7 +180,10 @@ class DirectoryView extends React.Component {
 
 		let style;
 		if (index === data.length - 1) {
-			style = sharedStyles.separatorBottom;
+			style = {
+				...sharedStyles.separatorBottom,
+				borderColor: themes[theme].separatorColor
+			};
 		}
 
 		const commonProps = {
