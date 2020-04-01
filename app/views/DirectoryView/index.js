@@ -172,11 +172,8 @@ class DirectoryView extends React.Component {
 	renderSeparator = () => {
 		const { data } = this.state;
 		const { theme } = this.props;
-		if (data.length > 0) {
-			return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-		} else {
-			return null;
-		}
+
+		return data.length > 0 ? <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} /> : null;
 	}
 
 	renderItem = ({ item }) => {
