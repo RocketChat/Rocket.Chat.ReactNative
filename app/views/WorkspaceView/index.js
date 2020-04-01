@@ -11,6 +11,7 @@ import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { themedHeader } from '../../utils/navigation';
 import ServerAvatar from './ServerAvatar';
+import { getShowLoginButton } from '../../selectors/login';
 
 class WorkspaceView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -26,7 +27,8 @@ class WorkspaceView extends React.Component {
 		server: PropTypes.string,
 		Assets_favicon_512: PropTypes.object,
 		registrationEnabled: PropTypes.bool,
-		registrationText: PropTypes.string
+		registrationText: PropTypes.string,
+		showLoginButton: PropTypes.bool
 	}
 
 	login = () => {
@@ -41,7 +43,7 @@ class WorkspaceView extends React.Component {
 
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton
 		} = this.props;
 		return (
 			<FormContainer theme={theme}>
@@ -51,12 +53,15 @@ class WorkspaceView extends React.Component {
 						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
 					</View>
-					<Button
-						title={I18n.t('Login')}
-						type='primary'
-						onPress={this.login}
-						theme={theme}
-					/>
+					{showLoginButton
+						? (
+							<Button
+								title={I18n.t('Login')}
+								type='primary'
+								onPress={this.login}
+								theme={theme}
+							/>
+						) : null}
 					{
 						registrationEnabled ? (
 							<Button
@@ -83,7 +88,8 @@ const mapStateToProps = state => ({
 	Site_Url: state.settings.Site_Url,
 	Assets_favicon_512: state.settings.Assets_favicon_512,
 	registrationEnabled: state.settings.Accounts_RegistrationForm === 'Public',
-	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText
+	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
+	showLoginButton: getShowLoginButton(state)
 });
 
 export default connect(mapStateToProps)(withTheme(WorkspaceView));
