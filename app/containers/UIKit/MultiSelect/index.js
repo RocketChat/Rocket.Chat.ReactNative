@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing
+	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing, Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -25,6 +25,8 @@ const ANIMATION_PROPS = {
 	useNativeDriver: true
 };
 const animatedValue = new Animated.Value(0);
+
+const behavior = Platform.OS === 'ios' ? 'padding' : null;
 
 export const MultiSelect = React.memo(({
 	options = [],
@@ -170,7 +172,7 @@ export const MultiSelect = React.memo(({
 				<TouchableWithoutFeedback onPress={onHide}>
 					<View style={styles.container}>
 						<View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor }]} />
-						<KeyboardAvoidingView style={styles.keyboardView} behavior='padding'>
+						<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
 							<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
 								{showContent ? renderContent() : null}
 							</Animated.View>
