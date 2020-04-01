@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -36,10 +35,7 @@ class AdminPanelView extends React.Component {
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='terms-view'>
 				<StatusBar theme={theme} />
 				<WebView
-					source={{
-						uri: `${ baseUrl }/admin/info?layout=embedded`,
-						headers: RocketChatSettings.customHeaders
-					}}
+					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ token }', function() { })`}
 				/>
 			</SafeAreaView>
