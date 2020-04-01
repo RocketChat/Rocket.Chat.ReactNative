@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, Text } from 'react-native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { sha256 } from 'js-sha256';
 
 import TextInput from '../TextInput';
 import I18n from '../../i18n';
@@ -70,7 +71,11 @@ const TwoFactor = React.memo(({ theme, split }) => {
 	const onSubmit = () => {
 		const { submit } = data;
 		if (submit?.onPress) {
-			submit.onPress(code);
+			if (data.method === 'password') {
+				submit.onPress(sha256(method));
+			} else {
+				submit.onPress(code);
+			}
 		}
 		setData({});
 	};
