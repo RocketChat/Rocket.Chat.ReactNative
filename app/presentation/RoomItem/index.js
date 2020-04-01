@@ -41,10 +41,10 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, connected, theme
+	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, isGroupChat, connected, theme
 }) => {
 	useEffect(() => {
-		if (connected && type === 'd' && id) {
+		if (connected && type === 'd') {
 			getUserPresence(id);
 		}
 	}, [connected]);
@@ -104,9 +104,9 @@ const RoomItem = React.memo(({
 					<View style={styles.titleContainer}>
 						<TypeIcon
 							type={type}
-							id={id}
 							prid={prid}
 							status={status}
+							isGroupChat={isGroupChat}
 							theme={theme}
 						/>
 						<Text
@@ -199,6 +199,7 @@ RoomItem.propTypes = {
 	useRealName: PropTypes.bool,
 	getUserPresence: PropTypes.func,
 	connected: PropTypes.bool,
+	isGroupChat: PropTypes.bool,
 	theme: PropTypes.string
 };
 

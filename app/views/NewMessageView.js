@@ -25,6 +25,7 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
+import { createChannelRequest } from '../actions/createChannel';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -33,24 +34,21 @@ const styles = StyleSheet.create({
 	separator: {
 		marginLeft: 60
 	},
-	createChannelButton: {
-		marginTop: 25
-	},
-	createDiscussionButton: {
-		marginBottom: 25
-	},
-	createChannelContainer: {
+	button: {
 		height: 46,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	createChannelIcon: {
+	buttonIcon: {
 		marginLeft: 18,
 		marginRight: 16
 	},
-	createChannelText: {
+	buttonText: {
 		fontSize: 17,
 		...sharedStyles.textRegular
+	},
+	buttonContainer: {
+		paddingVertical: 25
 	}
 });
 
@@ -68,6 +66,8 @@ class NewMessageView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
+		createChannel: PropTypes.func,
+		maxUsers: PropTypes.number,
 		theme: PropTypes.string
 	};
 
@@ -143,7 +143,35 @@ class NewMessageView extends React.Component {
 
 	createChannel = () => {
 		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextActionID: 'CREATE_CHANNEL', title: I18n.t('Select_Users') });
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
+	}
+
+	createGroupChat = () => {
+		const { createChannel, maxUsers, navigation } = this.props;
+		navigation.navigate('SelectedUsersViewCreateChannel', {
+			nextAction: () => createChannel({ group: true }),
+			buttonText: I18n.t('Create'),
+			maxUsers
+		});
+	}
+
+	renderButton = ({
+		onPress, testID, title, icon, first
+	}) => {
+		const { theme } = this.props;
+		return (
+			<Touch
+				onPress={onPress}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				testID={testID}
+				theme={theme}
+			>
+				<View style={[first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom, styles.button, { borderColor: themes[theme].separatorColor }]}>
+					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />
+					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
+				</View>
+			</Touch>
+		);
 	}
 
 	createDiscussion = () => {
@@ -151,32 +179,31 @@ class NewMessageView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { theme } = this.props;
+		const { maxUsers, theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
-				<Touch
-					onPress={this.createChannel}
-					style={[styles.createChannelButton, { backgroundColor: themes[theme].backgroundColor }]}
-					testID='new-message-view-create-channel'
-					theme={theme}
-				>
-					<View style={[sharedStyles.separatorVertical, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='hashtag' />
-						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Channel')}</Text>
-					</View>
-				</Touch>
-				<Touch
-					onPress={this.createDiscussion}
-					style={[styles.createDiscussionButton, { backgroundColor: themes[theme].backgroundColor }]}
-					testID='new-message-view-create-discussion'
-					theme={theme}
-				>
-					<View style={[sharedStyles.separatorBottom, styles.createChannelContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.createChannelIcon, { color: themes[theme].tintColor }]} size={24} name='chat' />
-						<Text style={[styles.createChannelText, { color: themes[theme].tintColor }]}>{I18n.t('Create_Discussion')}</Text>
-					</View>
-				</Touch>
+				<View style={styles.buttonContainer}>
+					{this.renderButton({
+						onPress: this.createChannel,
+						title: I18n.t('Create_Channel'),
+						icon: 'hashtag',
+						testID: 'new-message-view-create-channel',
+						first: true
+					})}
+					{maxUsers > 2 ? this.renderButton({
+						onPress: this.createGroupChat,
+						title: I18n.t('Create_Direct_Messages'),
+						icon: 'team',
+						testID: 'new-message-view-create-direct-message'
+					}) : null}
+					{this.renderButton({
+						onPress: this.createDiscussion,
+						title: I18n.t('Create_Discussion'),
+						icon: 'chat',
+						testID: 'new-message-view-create-discussion'
+					})}
+				</View>
 			</View>
 		);
 	}
@@ -248,7 +275,12 @@ class NewMessageView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
+	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(NewMessageView));
+const mapDispatchToProps = dispatch => ({
+	createChannel: params => dispatch(createChannelRequest(params))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));

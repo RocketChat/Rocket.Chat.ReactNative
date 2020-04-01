@@ -71,7 +71,9 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					jitsiTimeout: s.jitsiTimeout,
 					autoTranslate: s.autoTranslate,
 					autoTranslateLanguage: s.autoTranslateLanguage,
-					lastMessage: s.lastMessage
+					lastMessage: s.lastMessage,
+					usernames: s.usernames,
+					uids: s.uids
 				};
 			} catch (error) {
 				try {
