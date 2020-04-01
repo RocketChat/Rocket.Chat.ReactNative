@@ -10,7 +10,7 @@ export default StyleSheet.create({
 	},
 	content: {
 		padding: 16,
-		width: '90%',
+		width: '100%',
 		borderRadius: 4
 	},
 	title: {

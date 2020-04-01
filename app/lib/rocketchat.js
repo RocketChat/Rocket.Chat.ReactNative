@@ -880,13 +880,16 @@ const RocketChat = {
 				const result = await this.sdk.methodCall(...args);
 				return resolve(result);
 			} catch (e) {
-				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
+				if (e.error && (e.error === 'totp-invalid' || e.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
 						const code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
 
-						if (args[args.length - 1].twoFactorCode) {
-							args.pop();
+						const lastArg = args.pop();
+						// if last arg is not a code
+						if (!lastArg.twoFactorCode) {
+							// push it again
+							args.push(lastArg);
 						}
 
 						return resolve(this.methodCall(...args, code));

@@ -349,7 +349,6 @@ class CustomInsideStack extends React.Component {
 				<InsideStackModal navigation={navigation} screenProps={screenProps} />
 				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
 				{ !isTablet ? <Toast /> : null }
-				<TwoFactor />
 			</>
 		);
 	}
@@ -723,6 +722,7 @@ export default class Root extends React.Component {
 						}}
 					>
 						{content}
+						<TwoFactor />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>

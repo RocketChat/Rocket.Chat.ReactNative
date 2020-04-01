@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { sha256 } from 'js-sha256';
+import Modal from 'react-native-modal';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import TextInput from '../TextInput';
 import I18n from '../../i18n';
@@ -19,15 +21,18 @@ export const TWO_FACTOR = 'TWO_FACTOR';
 
 const methods = {
 	totp: {
-		text: 'Open_your_authentication_app_and_enter_the_code'
+		text: 'Open_your_authentication_app_and_enter_the_code',
+		keyboardType: 'numeric'
 	},
 	email: {
-		text: 'Verify_your_email_for_the_code_we_sent'
+		text: 'Verify_your_email_for_the_code_we_sent',
+		keyboardType: 'numeric'
 	},
 	password: {
 		title: 'Please_enter_your_password',
 		text: 'For_your_security_you_must_enter_your_current_password_to_continue',
-		secureTextEntry: true
+		secureTextEntry: true,
+		keyboardType: 'default'
 	}
 };
 
@@ -41,11 +46,8 @@ const TwoFactor = React.memo(({ theme, split }) => {
 
 	const sendEmail = () => RocketChat.sendEmailCode();
 
-	useEffect(() => {
+	useDeepCompareEffect(() => {
 		if (!_.isEmpty(data)) {
-			if (isEmail) {
-				sendEmail();
-			}
 			setVisible(true);
 		} else {
 			setVisible(false);
@@ -62,19 +64,19 @@ const TwoFactor = React.memo(({ theme, split }) => {
 
 	const onCancel = () => {
 		const { cancel } = data;
-		if (cancel?.onPress) {
-			cancel.onPress();
+		if (cancel) {
+			cancel();
 		}
 		setData({});
 	};
 
 	const onSubmit = () => {
 		const { submit } = data;
-		if (submit?.onPress) {
+		if (submit) {
 			if (data.method === 'password') {
-				submit.onPress(sha256(code));
+				submit(sha256(code));
 			} else {
-				submit.onPress(code);
+				submit(code);
 			}
 		}
 		setData({});
@@ -82,14 +84,25 @@ const TwoFactor = React.memo(({ theme, split }) => {
 
 	const color = themes[theme].titleText;
 	return (
-		<Modal visible={visible} transparent>
-			<View style={[styles.container, { backgroundColor: `${ themes[theme].backdropColor }30` }]}>
+		<Modal
+			transparent
+			avoidKeyboard
+			useNativeDriver
+			isVisible={visible}
+			hideModalContentWhileAnimating
+		>
+			<View style={styles.container}>
 				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					<Text style={[styles.subtitle, { color }]}>{I18n.t(method?.text)}</Text>
 					<TextInput
 						value={code}
+						theme={theme}
+						returnKeyType='send'
+						autoCapitalize='none'
 						onChangeText={setCode}
+						onSubmitEditing={onSubmit}
+						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
 						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
 					/>
