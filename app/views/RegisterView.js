@@ -69,7 +69,8 @@ class RegisterView extends React.Component {
 		Accounts_EmailVerification: PropTypes.bool,
 		theme: PropTypes.string,
 		Site_Name: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		showLoginButton: PropTypes.bool
 	}
 
 	constructor(props) {
