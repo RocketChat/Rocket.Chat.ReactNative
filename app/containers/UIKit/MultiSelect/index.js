@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing, Platform
+	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -11,6 +11,7 @@ import TextInput from '../../TextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
+import { isIOS } from '../../../utils/deviceInfo';
 
 import Chips from './Chips';
 import Items from './Items';
@@ -26,7 +27,7 @@ const ANIMATION_PROPS = {
 };
 const animatedValue = new Animated.Value(0);
 
-const behavior = Platform.OS === 'ios' ? 'padding' : null;
+const behavior = isIOS ? 'padding' : null;
 
 export const MultiSelect = React.memo(({
 	options = [],
