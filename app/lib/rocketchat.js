@@ -323,7 +323,29 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	async loginWithPassword({ user, password, code }) {
+	loginTOTP(params) {
+		return new Promise(async(resolve, reject) => {
+			try {
+				const result = await this.login(params);
+				return resolve(result);
+			} catch (e) {
+				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
+					const { details } = e.data;
+					try {
+						await twoFactor({ method: details?.method, invalid: e.data.error === 'totp-invalid' });
+						return resolve(this.loginTOTP(params));
+					} catch {
+						// twoFactor was canceled
+						return reject();
+					}
+				} else {
+					reject(e);
+				}
+			}
+		});
+	},
+
+	loginWithPassword({ user, password }) {
 		let params = { user, password };
 		const state = reduxStore.getState();
 
@@ -342,16 +364,8 @@ const RocketChat = {
 			};
 		}
 
-		if (code) {
-			params = {
-				user,
-				password,
-				code
-			};
-		}
-
 		try {
-			return await this.login(params);
+			return this.loginTOTP(params);
 		} catch (error) {
 			throw error;
 		}
@@ -880,8 +894,8 @@ const RocketChat = {
 				const result = await this.sdk.methodCall(...args);
 				return resolve(result);
 			} catch (e) {
-				if (e.error && (e.error === 'totp-invalid' || e.error === 'totp-invalid')) {
-					const { details } = e.data;
+				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
+					const { details } = e;
 					try {
 						const code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
 
