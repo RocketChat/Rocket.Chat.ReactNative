@@ -44,7 +44,7 @@ const RoomItem = React.memo(({
 	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, isGroupChat, connected, theme
 }) => {
 	useEffect(() => {
-		if (connected && type === 'd') {
+		if (connected && type === 'd' && id) {
 			getUserPresence(id);
 		}
 	}, [connected]);
