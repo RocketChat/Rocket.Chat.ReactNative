@@ -359,7 +359,7 @@ PODS:
     - React-Core
   - RNAudio (4.3.0):
     - React
-  - RNBootSplash (1.1.0):
+  - RNBootSplash (2.1.0):
     - React
   - RNDateTimePicker (2.1.0):
     - React
@@ -775,7 +775,7 @@ SPEC CHECKSUMS:
   rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
-  RNBootSplash: 73aabec1fc8f968798b655e7271760b17909648e
+  RNBootSplash: fbf76a4bf1c03e9acd1dd08ce064847f26d6d8bf
   RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
   RNDeviceInfo: 17e34f6dd902f08d88cbe2c0b7a01be948d43641
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2

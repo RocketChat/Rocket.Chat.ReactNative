@@ -210,7 +210,7 @@ RoomItem.defaultProps = {
 const mapStateToProps = (state, ownProps) => ({
 	status:
 		state.meteor.connected && ownProps.type === 'd'
-			? state.activeUsers[ownProps.id]
+			? state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status
 			: 'offline'
 });
 

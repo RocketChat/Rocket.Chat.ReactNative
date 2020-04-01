@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
 	type: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-		marginRight: 8
+		marginRight: 4,
+		marginLeft: -4
 	},
 	status: {
-		marginLeft: 4,
-		marginRight: 12
+		marginRight: 8
 	}
 });
 
