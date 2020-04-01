@@ -50,6 +50,9 @@ export default {
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
+	DirectMesssage_maxUsers: {
+		type: 'valueAsNumber'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
