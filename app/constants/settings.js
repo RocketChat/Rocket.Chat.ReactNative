@@ -47,6 +47,9 @@ export default {
 	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_ManuallyApproveNewUsers: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
