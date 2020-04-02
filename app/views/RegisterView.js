@@ -67,6 +67,7 @@ class RegisterView extends React.Component {
 		server: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
 		Accounts_EmailVerification: PropTypes.bool,
+		Accounts_ManuallyApproveNewUsers: PropTypes.bool,
 		theme: PropTypes.string,
 		Site_Name: PropTypes.string,
 		loginRequest: PropTypes.func,
@@ -127,7 +128,12 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
+		const {
+			loginRequest,
+			Accounts_EmailVerification,
+			navigation,
+			Accounts_ManuallyApproveNewUsers
+		} = this.props;
 
 		try {
 			await RocketChat.register({
@@ -136,7 +142,10 @@ class RegisterView extends React.Component {
 
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
-				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
+			} else if (Accounts_ManuallyApproveNewUsers) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 			} else {
 				await loginRequest({ user: email, password });
 			}
@@ -325,6 +334,7 @@ const mapStateToProps = state => ({
 	CAS_login_url: state.settings.CAS_login_url,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
+	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers,
 	showLoginButton: getShowLoginButton(state)
 });
 
