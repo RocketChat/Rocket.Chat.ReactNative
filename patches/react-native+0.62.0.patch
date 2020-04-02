@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index e72e943..ee0c7a1 100644
+index 274f381..1fe2686 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -10,6 +10,7 @@
@@ -7,10 +7,10 @@ index e72e943..ee0c7a1 100644
  
  #import <React/RCTNetworking.h>
 +#import "RNUserDefaults.h"
+ #import <ReactCommon/RCTTurboModule.h>
  
- @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate>
- 
-@@ -55,6 +56,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+ #import "RCTNetworkPlugins.h"
+@@ -58,6 +59,75 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -50,30 +50,23 @@ index e72e943..ee0c7a1 100644
 +    if ((status == errSecSuccess) && ([items count]>0)) {
 +        firstItem = items[0];
 +    }
-+    
++
 +    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
 +    SecCertificateRef certificate = NULL;
 +    if (identity) {
 +        SecIdentityCopyCertificate(identity, &certificate);
 +        if (certificate) { CFRelease(certificate); }
 +    }
-+    
++
 +    NSMutableArray *certificates = [[NSMutableArray alloc] init];
 +    [certificates addObject:CFBridgingRelease(certificate)];
-+    
++
 +    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 +  }
-+    
++
 +  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +}
 +
- - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
-                          withDelegate:(id<RCTURLRequestDelegate>)delegate
- {
-@@ -171,4 +225,20 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
-   [delegate URLRequest:task didCompleteWithError:error];
- }
- 
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
@@ -90,12 +83,14 @@ index e72e943..ee0c7a1 100644
 +  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 +}
 +
- @end
+ - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
+                          withDelegate:(id<RCTURLRequestDelegate>)delegate
+ {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index a134d2e..1526d60 100644
+index b967c14..3c9a28b 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -27,6 +27,8 @@
+@@ -24,6 +24,8 @@
  #import <React/RCTAssert.h>
  #import <React/RCTLog.h>
  
@@ -104,7 +99,7 @@ index a134d2e..1526d60 100644
  typedef NS_ENUM(NSInteger, RCTSROpCode)  {
    RCTSROpCodeTextFrame = 0x1,
    RCTSROpCodeBinaryFrame = 0x2,
-@@ -481,6 +483,29 @@ - (void)didConnect
+@@ -478,6 +480,29 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
@@ -131,10 +126,10 @@ index a134d2e..1526d60 100644
 +    }
 +}
 +
- - (void)_initializeStreams;
+ - (void)_initializeStreams
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -518,6 +543,15 @@ - (void)_initializeStreams;
+@@ -515,6 +540,15 @@ - (void)_initializeStreams
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
@@ -150,7 +145,7 @@ index a134d2e..1526d60 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -597,6 +631,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
+@@ -594,6 +628,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
        }
      }
  
@@ -159,15 +154,10 @@ index a134d2e..1526d60 100644
    });
  }
 diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.h b/node_modules/react-native/React/Base/RCTKeyCommands.h
-index 4c9c1fe..8c0ebc3 100644
+index 572ee83..245493f 100644
 --- a/node_modules/react-native/React/Base/RCTKeyCommands.h
 +++ b/node_modules/react-native/React/Base/RCTKeyCommands.h
-@@ -14,10 +14,15 @@
- /**
-  * Register a single-press keyboard command.
-  */
--- (void)registerKeyCommandWithInput:(NSString *)input
-+ - (void)registerKeyCommandWithInput:(NSString *)input
+@@ -18,6 +18,11 @@
                        modifierFlags:(UIKeyModifierFlags)flags
                               action:(void (^)(UIKeyCommand *command))block;
  
@@ -180,7 +170,7 @@ index 4c9c1fe..8c0ebc3 100644
   * Unregister a single-press keyboard command.
   */
 diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.m b/node_modules/react-native/React/Base/RCTKeyCommands.m
-index 8f8f19b..150bcfe 100644
+index c5c1ec3..1bf60b6 100644
 --- a/node_modules/react-native/React/Base/RCTKeyCommands.m
 +++ b/node_modules/react-native/React/Base/RCTKeyCommands.m
 @@ -12,8 +12,6 @@
@@ -198,8 +188,8 @@ index 8f8f19b..150bcfe 100644
    static NSTimeInterval lastCommand = 0;
 -  if (CACurrentMediaTime() - lastCommand > 0.5) {
 +  if (CACurrentMediaTime() - lastCommand > 0.5 ||
-+      [key.input isEqualToString:@"UIKeyInputUpArrow"] || // repeat command if is scroll
-+      [key.input isEqualToString:@"UIKeyInputDownArrow"]) {
++    [key.input isEqualToString:@"UIKeyInputUpArrow"] || // repeat command if is scroll
++    [key.input isEqualToString:@"UIKeyInputDownArrow"]) {
      for (RCTKeyCommand *command in [RCTKeyCommands sharedInstance].commands) {
        if ([command.keyCommand.input isEqualToString:key.input] &&
            command.keyCommand.modifierFlags == key.modifierFlags) {
@@ -291,7 +281,7 @@ index 8f8f19b..150bcfe 100644
  
  - (void)unregisterKeyCommandWithInput:(NSString *)input
 -                        modifierFlags:(UIKeyModifierFlags)flags {}
-+                        modifierFlags:(UIKeyModifierFlags)flags
++                      modifierFlags:(UIKeyModifierFlags)flags
 +{
 +  RCTAssertMainQueue();
 +
@@ -305,16 +295,3 @@ index 8f8f19b..150bcfe 100644
  
  - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
                           modifierFlags:(UIKeyModifierFlags)flags
-diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
-index ef2ae93..2795802 100644
---- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
-+++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
-@@ -92,7 +92,7 @@ public class AndroidInfoModule extends ReactContextBaseJavaModule implements Tur
- 
-   private Boolean isRunningScreenshotTest() {
-     try {
--      Class.forName("android.support.test.rule.ActivityTestRule");
-+      Class.forName("androidx.test.rule.ActivityTestRule");
-       return true;
-     } catch (ClassNotFoundException ignored) {
-       return false;
