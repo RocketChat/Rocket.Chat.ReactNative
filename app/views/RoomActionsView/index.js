@@ -407,7 +407,7 @@ class RoomActionsView extends React.Component {
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: room.t === 'd' ? room.fname : room.name }),
+			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			[
 				{
 					text: I18n.t('Cancel'),
