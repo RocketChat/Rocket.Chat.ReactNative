@@ -134,7 +134,7 @@ class ServerDropdown extends Component {
 		const {
 			server: currentServer, selectServerRequest, navigation, split
 		} = this.props;
-
+		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (split) {
