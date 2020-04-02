@@ -92,11 +92,10 @@ class ThreadMessagesView extends React.Component {
 	subscribeData = async() => {
 		try {
 			const db = database.active;
-			const subscription = await db.collections
+			this.record = await db.collections
 				.get('subscriptions')
 				.find(this.rid);
-			this.subObservable = subscription.observe();
-			this.subSubscription = this.subObservable
+			this.subSubscription = this.record.observe()
 				.subscribe((data) => {
 					this.subscription = data;
 				});
