@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
 import moment from 'moment';
 
 import { themes } from '../../constants/colors';
@@ -33,21 +35,30 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, ...props
+	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, user, ...props
 }) => {
 	if (isHeader || hasError) {
+		const navParam = {
+			t: 'd',
+			rid: author._id
+		};
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.titleContainer}>
-					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-						{alias || username}
-						{aliasUsername}
-					</Text>
-				</View>
+				<TouchableOpacity
+					onPress={() => navToRoomInfo(navParam)}
+					disabled={author._id === user.id}
+				>
+					<View style={styles.titleContainer}>
+						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+							{alias || username}
+							{aliasUsername}
+						</Text>
+					</View>
+				</TouchableOpacity>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				{ hasError && <MessageError hasError={hasError} theme={theme} {...props} /> }
 			</View>
@@ -64,7 +75,9 @@ User.propTypes = {
 	alias: PropTypes.string,
 	ts: PropTypes.instanceOf(Date),
 	timeFormat: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	user: PropTypes.obj,
+	navToRoomInfo: PropTypes.func
 };
 User.displayName = 'MessageUser';
 

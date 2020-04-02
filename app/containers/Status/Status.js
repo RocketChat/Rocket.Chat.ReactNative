@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { STATUS_COLORS, themes } from '../../constants/colors';
 
 const Status = React.memo(({
-	status, size, style, theme
+	status, size, style, theme, ...props
 }) => (
 	<View
 		style={
@@ -18,6 +18,7 @@ const Status = React.memo(({
 					borderColor: themes[theme].backgroundColor
 				}
 			]}
+		{...props}
 	/>
 ));
 Status.propTypes = {

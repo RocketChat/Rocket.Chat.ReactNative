@@ -45,6 +45,7 @@ import {
 import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
+import Navigation from '../../lib/Navigation';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -65,6 +66,7 @@ const FILE_PHOTO_INDEX = 1;
 const FILE_VIDEO_INDEX = 2;
 const FILE_LIBRARY_INDEX = 3;
 const FILE_DOCUMENT_INDEX = 4;
+const CREATE_DISCUSSION_INDEX = 5;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -113,12 +115,13 @@ class MessageBox extends Component {
 		};
 		this.text = '';
 		this.focused = false;
-		this.fileOptions = [
+		this.messageBoxActions = [
 			I18n.t('Cancel'),
 			I18n.t('Take_a_photo'),
 			I18n.t('Take_a_video'),
 			I18n.t('Choose_from_library'),
-			I18n.t('Choose_files')
+			I18n.t('Choose_file'),
+			I18n.t('Create_Discussion')
 		];
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -157,8 +160,8 @@ class MessageBox extends Component {
 				}
 			} else {
 				try {
-					const room = await subsCollection.find(rid);
-					msg = room.draftMessage;
+					this.room = await subsCollection.find(rid);
+					msg = this.room.draftMessage;
 				} catch (error) {
 					console.log('Messagebox.didMount: Room not found');
 				}
@@ -512,29 +515,26 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	sendMediaMessage = ({ files, description }) => {
+	sendMediaMessage = async(file) => {
 		const {
 			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
-		files.map(async(file) => {
-			this.setState({ file: { isVisible: false } });
-			const fileInfo = {
-				name: file.filename,
-				description,
-				size: file.size,
-				type: file.mime,
-				store: 'Uploads',
-				path: file.path
-			};
-
-			try {
-				replyCancel();
-				await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
-				Review.pushPositiveEvent();
-			} catch (e) {
-				log(e);
-			}
-		});
+		this.setState({ file: { isVisible: false } });
+		const fileInfo = {
+			name: file.name,
+			description: file.description,
+			size: file.size,
+			type: file.mime,
+			store: 'Uploads',
+			path: file.path
+		};
+		try {
+			replyCancel();
+			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
+			Review.pushPositiveEvent();
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	takePhoto = async() => {
@@ -572,20 +572,18 @@ class MessageBox extends Component {
 
 	chooseFile = async() => {
 		try {
-			const results = await DocumentPicker.pickMultiple({
+			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
 			});
-			results.forEach((file) => {
-				file = {
-					filename: file.name,
-					size: file.size,
-					mime: file.type,
-					path: file.uri
-				};
-				if (this.canUploadFile(file)) {
-					this.showUploadModal(file);
-				}
-			});
+			const file = {
+				filename: res.name,
+				size: res.size,
+				mime: res.type,
+				path: res.uri
+			};
+			if (this.canUploadFile(file)) {
+				this.showUploadModal(file);
+			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
@@ -593,20 +591,24 @@ class MessageBox extends Component {
 		}
 	}
 
+	createDiscussion = () => {
+		Navigation.navigate('CreateDiscussionView', { channel: this.room });
+	}
+
 	showUploadModal = (file) => {
 		this.setState({ file: { ...file, isVisible: true } });
 	}
 
-	showFileActions = () => {
+	showMessageBoxActions = () => {
 		ActionSheet.showActionSheetWithOptions({
-			options: this.fileOptions,
+			options: this.messageBoxActions,
 			cancelButtonIndex: FILE_CANCEL_INDEX
 		}, (actionIndex) => {
-			this.handleFileActionPress(actionIndex);
+			this.handleMessageBoxActions(actionIndex);
 		});
 	}
 
-	handleFileActionPress = (actionIndex) => {
+	handleMessageBoxActions = (actionIndex) => {
 		switch (actionIndex) {
 			case FILE_PHOTO_INDEX:
 				this.takePhoto();
@@ -619,6 +621,9 @@ class MessageBox extends Component {
 				break;
 			case FILE_DOCUMENT_INDEX:
 				this.chooseFile();
+				break;
+			case CREATE_DISCUSSION_INDEX:
+				this.createDiscussion();
 				break;
 			default:
 				break;
@@ -788,7 +793,7 @@ class MessageBox extends Component {
 		} else if (handleCommandSubmit(event)) {
 			this.submit();
 		} else if (handleCommandShowUpload(event)) {
-			this.showFileActions();
+			this.showMessageBoxActions();
 		}
 	}
 
@@ -833,7 +838,7 @@ class MessageBox extends Component {
 							theme={theme}
 							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
-							showFileActions={this.showFileActions}
+							showMessageBoxActions={this.showMessageBoxActions}
 							editCancel={this.editCancel}
 							openEmoji={this.openEmoji}
 							closeEmoji={this.closeEmoji}
@@ -859,7 +864,7 @@ class MessageBox extends Component {
 							submit={this.submit}
 							recordAudioMessage={this.recordAudioMessage}
 							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showFileActions={this.showFileActions}
+							showMessageBoxActions={this.showMessageBoxActions}
 						/>
 					</View>
 				</View>
