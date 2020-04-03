@@ -4,7 +4,9 @@ import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import _ from 'lodash';
 
+import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -84,7 +86,70 @@ class RoomInfoView extends React.Component {
 		};
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		if (!this.isDirect && !this.isLivechat) {
+			this.loadRoom();
+		} else if (this.isDirect) {
+			this.loadUser();
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.subscription && this.subscription.unsubscribe) {
+			this.subscription.unsubscribe();
+		}
+	}
+
+	get isDirect() {
+		return this.t === 'd';
+	}
+
+	get isLivechat() {
+		return this.t === 't';
+	}
+
+	getRoleDescription = async(id) => {
+		const db = database.active;
+		try {
+			const rolesCollection = db.collections.get('roles');
+			const role = await rolesCollection.find(id);
+			if (role) {
+				return role.description;
+			}
+			return null;
+		} catch (e) {
+			return null;
+		}
+	};
+
+	loadUser = async() => {
+		const { room: roomState, roomUser } = this.state;
+
+		if (_.isEmpty(roomUser)) {
+			try {
+				const roomUserId = RocketChat.getUidDirectMessage(roomState);
+				const result = await RocketChat.getUserInfo(roomUserId);
+				if (result.success) {
+					const { user } = result;
+					const { roles } = user;
+					if (roles && roles.length) {
+						user.parsedRoles = await Promise.all(roles.map(async(role) => {
+							const description = await this.getRoleDescription(role);
+							return description;
+						}));
+					}
+
+					const room = await this.getDirect(user.username);
+
+					this.setState({ roomUser: user, room: { ...roomState, rid: room.rid } });
+				}
+			} catch {
+				// do nothing
+			}
+		}
+	}
+
+	loadRoom = async() => {
 		const { navigation } = this.props;
 		let room = navigation.getParam('room');
 		if (room && room.observe) {
@@ -104,39 +169,41 @@ class RoomInfoView extends React.Component {
 				log(e);
 			}
 		}
+
 		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid && this.t !== 'l') {
 			navigation.setParams({ showEdit: true });
 		}
 	}
 
-	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
-		}
-	}
-
-	get isDirect() {
-		return this.t === 'd';
-	}
-
-	goRoom = async() => {
-		const { roomUser } = this.state;
-		const { username } = roomUser;
-		const { navigation } = this.props;
+	getDirect = async(username) => {
 		try {
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
+				return result.room;
+			}
+		} catch {
+			// do nothing
+		}
+	}
+
+	goRoom = async() => {
+		const { roomUser, room } = this.state;
+		const { navigation } = this.props;
+		try {
+			if (room.rid) {
 				await navigation.navigate('RoomsListView');
-				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
+				navigation.navigate('RoomView', { rid: room.rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
 			}
 		} catch (e) {
 			// do nothing
 		}
 	}
 
-	videoCall = () => RocketChat.callJitsi(this.rid)
+	videoCall = () => {
+		const { room } = this.state;
+		RocketChat.callJitsi(room.rid);
+	}
 
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
@@ -185,7 +252,7 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 
 		if (this.isDirect) {
-			return <Direct room={room} initial={roomUser} theme={theme} />;
+			return <Direct roomUser={roomUser} theme={theme} />;
 		} else if (this.t === 'l') {
 			return <Livechat rid={room.rid} theme={theme} />;
 		}
