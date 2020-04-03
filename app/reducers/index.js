@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import settings from './reducers';
+import settings from './settings';
 import login from './login';
 import meteor from './connect';
 import room from './room';
