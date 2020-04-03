@@ -165,6 +165,15 @@ const RocketChat = {
 	stopListener(listener) {
 		return listener && listener.stop();
 	},
+	abort() {
+		if (this.controller) {
+			this.controller.abort();
+			if (this.sdk) {
+				this.sdk.abort();
+			}
+		}
+		this.controller = new AbortController();
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (!this.sdk || this.sdk.client.host !== server) {

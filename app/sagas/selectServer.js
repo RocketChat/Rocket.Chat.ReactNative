@@ -95,11 +95,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		yield put(clearSettings());
 
-		if (RocketChat.controller) {
-			RocketChat.controller.abort();
-		}
-
-		RocketChat.controller = new AbortController();
+		RocketChat.abort();
 
 		if (user) {
 			yield RocketChat.connect({ server, user, logoutOnError: true });
