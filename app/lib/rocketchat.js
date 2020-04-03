@@ -827,6 +827,9 @@ const RocketChat = {
 	fowardLivechat(transferData) {
 		return this.methodCall('livechat:transfer', transferData);
 	},
+	getPagesLivechat(rid, offset) {
+		return this.sdk.get(`livechat/visitors.pagesVisited/${ rid }?count=50&offset=${ offset }`);
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method

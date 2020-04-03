@@ -196,6 +196,7 @@ export default {
 	Email: 'Email',
 	EMAIL: 'EMAIL',
 	email: 'e-mail',
+	Empty_title: 'Empty title',
 	Enable_Auto_Translate: 'Enable Auto-Translate',
 	Enable_notifications: 'Enable notifications',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',

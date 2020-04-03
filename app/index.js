@@ -166,6 +166,9 @@ const ChatsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
+	VisitorNavigationView: {
+		getScreen: () => require('./views/VisitorNavigationView').default
+	},
 	...RoomRoutes
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -448,9 +451,6 @@ const RoomActionsStack = createStackNavigator({
 	},
 	AttachmentView: {
 		getScreen: () => require('./views/AttachmentView').default
-	},
-	VisitorNavigationView: {
-		getScreen: () => require('./views/VisitorNavigationView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
