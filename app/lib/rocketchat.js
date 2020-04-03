@@ -49,6 +49,7 @@ import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
+import { selectServerFailure } from '../actions/server';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -113,6 +114,14 @@ const RocketChat = {
 		};
 	},
 	async getServerInfo(server) {
+		if (this.controller) {
+			this.controller.abort();
+			this.controller = null;
+		}
+
+		this.controller = new AbortController();
+		const { signal } = this.controller;
+
 		const notRCServer = {
 			success: false,
 			message: 'Not_RC_Server',
@@ -121,7 +130,7 @@ const RocketChat = {
 			}
 		};
 		try {
-			const result = await fetch(`${ server }/api/info`).then(async(response) => {
+			const result = await fetch(`${ server }/api/info`, { signal }).then(async(response) => {
 				let res = notRCServer;
 				try {
 					res = await response.json();
@@ -147,6 +156,10 @@ const RocketChat = {
 			}
 			return result;
 		} catch (e) {
+			if (e.message === 'Aborted') {
+				reduxStore.dispatch(selectServerFailure());
+				throw e;
+			}
 			log(e);
 		}
 		return {
@@ -208,7 +221,8 @@ const RocketChat = {
 
 			this.sdk.connect()
 				.then(() => {
-					if (user && user.token) {
+					const { server: currentServer } = reduxStore.getState().server;
+					if (user && user.token && server === currentServer) {
 						reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 					}
 				})
