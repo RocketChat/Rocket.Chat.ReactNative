@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import _ from 'lodash';
-import UAParser from 'ua-parser-js';
 import { SafeAreaView } from 'react-navigation';
 
 import { CustomIcon } from '../../lib/Icons';
@@ -13,11 +10,10 @@ import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import sharedStyles from '../Styles';
-import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import { CustomHeaderButtons } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
@@ -25,6 +21,11 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
+
+import Livechat from './Livechat';
+import Channel from './Channel';
+import Item from './Item';
+import Direct from './Direct';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
@@ -38,7 +39,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	: (
 		<View style={styles.roomTitleRow}>
 			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{room.prid ? room.fname : room.name}</Text>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)
 );
@@ -68,7 +69,6 @@ class RoomInfoView extends React.Component {
 			token: PropTypes.string
 		}),
 		baseUrl: PropTypes.string,
-		Message_TimeFormat: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -80,43 +80,11 @@ class RoomInfoView extends React.Component {
 		this.t = props.navigation.getParam('t');
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
-			roomUser: roomUser || {},
-			parsedRoles: [],
-			visitor: {}
+			roomUser: roomUser || {}
 		};
 	}
 
 	async componentDidMount() {
-		const { roomUser, room: roomState } = this.state;
-		if (this.t === 'd' && !_.isEmpty(roomUser)) {
-			return;
-		}
-
-		if (this.t === 'l') {
-			this.getLivechatInfo();
-		}
-
-		if (this.t === 'd') {
-			try {
-				const roomUserId = RocketChat.getUidDirectMessage(roomState);
-				const result = await RocketChat.getUserInfo(roomUserId);
-				if (result.success) {
-					const { roles } = result.user;
-					let parsedRoles = [];
-					if (roles && roles.length) {
-						parsedRoles = await Promise.all(roles.map(async(role) => {
-							const description = await this.getRoleDescription(role);
-							return description;
-						}));
-					}
-					this.setState({ roomUser: result.user, parsedRoles });
-				}
-			} catch (e) {
-				log(e);
-			}
-			return;
-		}
-
 		const { navigation } = this.props;
 		let room = navigation.getParam('room');
 		if (room && room.observe) {
@@ -129,8 +97,7 @@ class RoomInfoView extends React.Component {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);
 				if (result.success) {
-					// eslint-disable-next-line prefer-destructuring
-					room = result.room;
+					({ room } = result);
 					this.setState({ room });
 				}
 			} catch (e) {
@@ -149,43 +116,8 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	getLivechatInfo = async() => {
-		try {
-			const result = await RocketChat.getRoomInfo(this.rid);
-			if (result.success) {
-				const { room } = result;
-				const { v: { _id } } = room;
-				const vInfo = await RocketChat.getVisitorInfo(_id);
-				if (vInfo.success) {
-					const { visitor } = vInfo;
-					const ua = new UAParser();
-					ua.setUA(visitor.userAgent);
-
-					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
-					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
-					visitor.customFields = room.livechatData;
-					visitor.agent = room.servedBy.username;
-
-					this.setState({ visitor });
-				}
-			}
-		} catch (e) {
-			log(e);
-		}
-	}
-
-	getRoleDescription = async(id) => {
-		const db = database.active;
-		try {
-			const rolesCollection = db.collections.get('roles');
-			const role = await rolesCollection.find(id);
-			if (role) {
-				return role.description;
-			}
-			return null;
-		} catch (e) {
-			return null;
-		}
+	get isDirect() {
+		return this.t === 'd';
 	}
 
 	goRoom = async() => {
@@ -206,68 +138,6 @@ class RoomInfoView extends React.Component {
 
 	videoCall = () => RocketChat.callJitsi(this.rid)
 
-	isDirect = () => this.t === 'd'
-
-	renderItem = ({ label, content }) => {
-		const { theme } = this.props;
-		return (
-			<View style={styles.item}>
-				<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
-				<Markdown
-					style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-					msg={content || `__${ I18n.t('No_label_provided', { label: label.toLowerCase() }) }__`}
-					theme={theme}
-				/>
-			</View>
-		);
-	}
-
-	renderRole = (description) => {
-		const { theme } = this.props;
-		if (description) {
-			return (
-				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={description}>
-					<Text style={styles.role}>{ description }</Text>
-				</View>
-			);
-		}
-		return null;
-	}
-
-	renderRoles = () => {
-		const { parsedRoles } = this.state;
-		const { theme } = this.props;
-		if (parsedRoles && parsedRoles.length) {
-			return (
-				<View style={styles.item}>
-					<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
-					<View style={styles.rolesContainer}>
-						{parsedRoles.map(role => this.renderRole(role))}
-					</View>
-				</View>
-			);
-		}
-		return null;
-	}
-
-	renderTimezone = () => {
-		const { roomUser } = this.state;
-		const { Message_TimeFormat } = this.props;
-
-		if (roomUser) {
-			const { utcOffset } = roomUser;
-
-			if (!utcOffset) {
-				return null;
-			}
-			return this.renderItem({
-				label: I18n.t('Timezone'),
-				content: `${ moment().utcOffset(utcOffset).format(Message_TimeFormat) } (UTC ${ utcOffset })`
-			});
-		}
-		return null;
-	}
-
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
 
@@ -283,28 +153,6 @@ class RoomInfoView extends React.Component {
 			>
 				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
-		);
-	}
-
-	renderBroadcast = () => this.renderItem({
-		label: I18n.t('Broadcast_Channel'),
-		content: I18n.t('Broadcast_channel_Description')
-	});
-
-	renderCustomFields = (room) => {
-		const { theme } = this.props;
-		return room?.customFields && (
-			Object.keys(room.customFields).map((title) => {
-				if (!room.customFields[title]) {
-					return;
-				}
-				return (
-					<View style={styles.item} key={title}>
-						<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{title}</Text>
-						<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{room.customFields[title]}</Text>
-					</View>
-				);
-			})
 		);
 	}
 
@@ -332,63 +180,21 @@ class RoomInfoView extends React.Component {
 		</View>
 	)
 
-	renderChannel = () => {
-		const { room } = this.state;
-		const { description, topic, announcement } = room;
-		return (
-			<>
-				{this.renderItem({ label: I18n.t('Description'), content: description })}
-				{this.renderItem({ label: I18n.t('Topic'), content: topic })}
-				{this.renderItem({ label: I18n.t('Announcement'), content: announcement })}
-				{room.broadcast ? this.renderBroadcast() : null}
-			</>
-		);
-	}
+	renderContent = () => {
+		const { room, roomUser } = this.state;
+		const { theme } = this.props;
 
-	renderDirect = () => {
-		const { roomUser } = this.state;
-		return (
-			<>
-				{this.renderRoles()}
-				{this.renderTimezone()}
-				{this.renderCustomFields(roomUser)}
-			</>
-		);
-	}
-
-	renderVisitor = () => {
-		const { visitor } = this.state;
-
-		return (
-			<>
-				{this.renderItem({
-					label: I18n.t('IP'),
-					content: visitor.ip
-				})}
-				{this.renderItem({
-					label: I18n.t('OS'),
-					content: visitor.os
-				})}
-				{this.renderItem({
-					label: I18n.t('Browser'),
-					content: visitor.browser
-				})}
-				{this.renderItem({
-					label: I18n.t('Agent'),
-					content: visitor.agent
-				})}
-				{this.renderCustomFields(visitor)}
-			</>
-		);
+		if (this.isDirect) {
+			return <Direct room={room} initial={roomUser} theme={theme} />;
+		} else if (this.t === 'l') {
+			return <Livechat rid={room.rid} theme={theme} />;
+		}
+		return <Channel room={room} theme={theme} />;
 	}
 
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
-		const isDirect = this.isDirect();
-		if (!room) {
-			return <View />;
-		}
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar theme={theme} />
@@ -397,13 +203,12 @@ class RoomInfoView extends React.Component {
 					forceInset={{ vertical: 'never' }}
 					testID='room-info-view'
 				>
-					<View style={[styles.avatarContainer, isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, roomUser && roomUser.statusText, theme) }</View>
-						{isDirect ? this.renderButtons() : null}
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser?.name, roomUser?.username, roomUser?.statusText, theme) }</View>
+						{this.isDirect ? this.renderButtons() : null}
 					</View>
-					{/* {isDirect ? this.renderDirect() : this.renderChannel()} */}
-					{this.renderVisitor()}
+					{this.renderContent()}
 				</SafeAreaView>
 			</ScrollView>
 		);
@@ -412,8 +217,7 @@ class RoomInfoView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
