@@ -63,13 +63,12 @@ const RocketChat = {
 	TOKEN_KEY,
 	callJitsi,
 	async subscribeRooms() {
-		if (this.roomsSub) {
-			this.roomsSub.stop();
-		}
-		try {
-			this.roomsSub = await subscribeRooms.call(this);
-		} catch (e) {
-			log(e);
+		if (!this.roomsSub) {
+			try {
+				this.roomsSub = await subscribeRooms.call(this);
+			} catch (e) {
+				log(e);
+			}
 		}
 	},
 	canOpenRoom,
@@ -189,6 +188,7 @@ const RocketChat = {
 
 			if (this.roomsSub) {
 				this.roomsSub.stop();
+				this.roomsSub = null;
 			}
 
 			if (this.sdk) {
@@ -206,7 +206,7 @@ const RocketChat = {
 			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
 			this.getSettings();
 
-			this.sdk.connect()
+			const sdkConnect = () => this.sdk.connect()
 				.then(() => {
 					if (user && user.token) {
 						reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
@@ -217,9 +217,11 @@ const RocketChat = {
 
 					// when `connect` raises an error, we try again in 10 seconds
 					this.connectTimeout = setTimeout(() => {
-						this.connect({ server, user });
+						sdkConnect();
 					}, 10000);
 				});
+
+			sdkConnect();
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
@@ -410,6 +412,7 @@ const RocketChat = {
 	async logout({ server }) {
 		if (this.roomsSub) {
 			this.roomsSub.stop();
+			this.roomsSub = null;
 		}
 
 		if (this.activeUsersSubTimeout) {

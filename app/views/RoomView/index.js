@@ -222,10 +222,13 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				navigation.setParams({ toggleFollowThread: this.toggleFollowThread, goRoomActionsView: this.goRoomActionsView });
 			}
-			if (isAuthenticated && this.rid) {
-				this.init();
-			} else if (this.rid) {
-				EventEmitter.addEventListener('connected', this.handleConnected);
+			if (this.rid) {
+				this.sub.subscribe();
+				if (isAuthenticated) {
+					this.init();
+				} else {
+					EventEmitter.addEventListener('connected', this.handleConnected);
+				}
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
@@ -361,7 +364,6 @@ class RoomView extends React.Component {
 						this.setLastOpen(null);
 					}
 					RocketChat.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
-					this.sub.subscribe();
 				}
 			}
 

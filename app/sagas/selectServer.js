@@ -38,7 +38,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		let serverVersion = semver.valid(serverInfo.version);
+		if (!serverVersion) {
+			({ version: serverVersion } = semver.coerce(serverInfo.version));
+		}
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
@@ -46,12 +49,12 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			}
 		});

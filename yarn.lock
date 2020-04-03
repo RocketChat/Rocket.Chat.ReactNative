@@ -1915,10 +1915,9 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/sdk@1.0.0-alpha.41":
-  version "1.0.0-alpha.41"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.41.tgz#8fcae2885786bec56a56b6d9a8cccaa365b77364"
-  integrity sha512-jQ+/exEQMOv+bwH+yzPTC0oJGIKj/AlMc95IvWAn/vHDLjjS3aGzpIpZhBwsMOBVvb/5N8rnq6kEleCkEJk28g==
+"@rocket.chat/sdk@djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp":
+  version "1.0.0-dj.15"
+  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/216de62f7e52dd4a9f73d7989d6943ced550a92a"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
@@ -9965,7 +9964,7 @@ react-native-localize@1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.1.tgz#d0b7046acd4214ac2bcb61102317374351400c76"
   integrity sha512-Y3LzTHyrgsIsDYvjWSRguARBKjiLaahcbJg663ZqP1Tcpan4LYn/f3iusM+Oh6qYvClnlo9AlBkLdCZbWwe7Tw==
 
-react-native-mime-types@^2.2.1:
+react-native-mime-types@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-mime-types/-/react-native-mime-types-2.2.1.tgz#a9760e9916e4e7df03512c60516668f23543f2c0"
   integrity sha512-2H0jjW5l2driXiiKx9PZsJDCFgS8LeMaVLVZPy3iRkBrNcstpQosEr6+YJfihLbW3WvFtmS2qcyFKB7mYw/iJg==
