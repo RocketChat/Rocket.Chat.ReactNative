@@ -32,8 +32,8 @@ const formatMsg = ({
 	if (isLastMessageSentByMe) {
 		prefix = I18n.t('You_colon');
 	}	else if (type !== 'd') {
-		const { u: { name } } = lastMessage;
-		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
+		const { u: { username } } = lastMessage;
+		prefix = `${ useRealName ? username : lastMessage.u.username }: `;
 	}
 
 	return `${ prefix }${ lastMessage.msg }`;
