@@ -830,6 +830,9 @@ const RocketChat = {
 	getPagesLivechat(rid, offset) {
 		return this.sdk.get(`livechat/visitors.pagesVisited/${ rid }?count=50&offset=${ offset }`);
 	},
+	getDepartamentInfo(departmentId) {
+		return this.sdk.get(`livechat/department/${ departmentId }?includeAgents=false`);
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method
