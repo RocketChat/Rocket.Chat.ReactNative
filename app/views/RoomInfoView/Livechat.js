@@ -7,6 +7,7 @@ import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Item from './Item';
+import Timezone from './Timezone';
 
 const Livechat = ({ rid, theme }) => {
 	const [user, setUser] = useState({});
@@ -55,6 +56,10 @@ const Livechat = ({ rid, theme }) => {
 
 	return (
 		<>
+			<Timezone
+				utcOffset={user.utc}
+				theme={theme}
+			/>
 			{user.visitorEmails?.map(email => (
 				<Item
 					label='email'
@@ -64,11 +69,21 @@ const Livechat = ({ rid, theme }) => {
 			))}
 			{user.phone?.map(phone => (
 				<Item
-					label='email'
+					label='phone'
 					content={phone.phoneNumber}
 					theme={theme}
 				/>
 			))}
+			<Item
+				label='created_at'
+				content={user.lastLogin && user.createdAt}
+				theme={theme}
+			/>
+			<Item
+				label='last_login'
+				content={user.lastLogin}
+				theme={theme}
+			/>
 			<Item
 				label='ip'
 				content={user.ip}
@@ -112,6 +127,11 @@ const Livechat = ({ rid, theme }) => {
 			<Item
 				label='tags'
 				content={room.joinTags}
+				theme={theme}
+			/>
+			<Item
+				label='last_login'
+				content={room.roomClosedDateTime}
 				theme={theme}
 			/>
 			<Item
