@@ -9,6 +9,7 @@ import Separator from '../containers/Separator';
 import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
+import sharedStyles from './Styles';
 
 const Item = ({ item }) => (
 	<Text onPress={() => openLink(item.navigation.page.location.href)}>{item.navigation.page.title || I18n.t('Empty_title')}</Text>
@@ -51,7 +52,13 @@ const VisitorNavigationView = ({ navigation, theme }) => {
 			data={pages}
 			renderItem={Item}
 			ItemSeparatorComponent={() => <Separator theme={theme} />}
-			contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+			contentContainerStyle={[
+				sharedStyles.separatorBottom,
+				{
+					backgroundColor: themes[theme].backgroundColor,
+					borderColor: themes[theme].separatorColor
+				}
+			]}
 			style={{ backgroundColor: themes[theme].backgroundColor }}
 			onEndReached={onEndReached}
 			onEndReachedThreshold={5}
