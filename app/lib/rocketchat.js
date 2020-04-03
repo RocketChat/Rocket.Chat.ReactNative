@@ -811,11 +811,21 @@ const RocketChat = {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
 	},
+
 	getVisitorInfo(visitorId) {
 		return this.sdk.get('livechat/visitors.info', { visitorId });
 	},
-	closeLivechatRoom(rid, comment) {
+	closeLivechat(rid, comment) {
 		return this.methodCall('livechat:closeRoom', rid, comment, { clientAction: true });
+	},
+	editLivechat(userData, roomData) {
+		return this.methodCall('livechat:saveInfo', userData, roomData);
+	},
+	returnLivechat(rid) {
+		return this.methodCall('livechat:returnAsInquiry', rid);
+	},
+	fowardLivechat(transferData) {
+		return this.methodCall('livechat:transfer', transferData);
 	},
 
 	getUidDirectMessage(room, userId) {
