@@ -92,13 +92,6 @@ class ThreadMessagesView extends React.Component {
 	subscribeData = async() => {
 		try {
 			const db = database.active;
-			this.subscriptionRecord = await db.collections
-				.get('subscriptions')
-				.find(this.rid);
-			this.subSubscription = this.subscriptionRecord.observe()
-				.subscribe((data) => {
-					this.subscription = data;
-				});
 			this.messagesObservable = db.collections
 				.get('threads')
 				.query(
@@ -115,6 +108,13 @@ class ThreadMessagesView extends React.Component {
 						this.state.messages = messages;
 					}
 				});
+			this.subscriptionRecord = await db.collections
+				.get('subscriptions')
+				.find(this.rid);
+			this.subSubscription = this.subscriptionRecord.observe()
+				.subscribe((data) => {
+					this.subscription = data;
+				});
 		} catch (e) {
 			log(e);
 		}
@@ -122,15 +122,16 @@ class ThreadMessagesView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
-		if (!this.subscription) {
-			return;
-		}
 		try {
-			const lastThreadSync = new Date();
-			if (this.subscription.lastThreadSync) {
-				this.sync(this.subscription.lastThreadSync);
+			if (this.subscription) {
+				const lastThreadSync = new Date();
+				if (this.subscription.lastThreadSync) {
+					this.sync(this.subscription.lastThreadSync);
+				} else {
+					this.load(lastThreadSync);
+				}
 			} else {
-				this.load(lastThreadSync);
+				this.load();
 			}
 		} catch (e) {
 			log(e);
@@ -139,9 +140,23 @@ class ThreadMessagesView extends React.Component {
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
 		try {
+			let messagesIds = [];
+			if (update && update.length) {
+				messagesIds = [...update.map(m => m._id)];
+			}
+			if (remove && remove.length) {
+				messagesIds = [...messagesIds, ...remove.map(m => m._id)];
+			}
 			const db = database.active;
 			const threadsCollection = db.collections.get('threads');
-			const allThreadsRecords = await this.subscription.threads.fetch();
+			let allThreadsRecords;
+			if (this.subscription) {
+				allThreadsRecords = await this.subscription.threads.fetch();
+			} else {
+				allThreadsRecords = await threadsCollection
+					.query(Q.where('rid', this.rid), Q.where('id', Q.oneOf(messagesIds)))
+					.fetch();
+			}
 			let threadsToCreate = [];
 			let threadsToUpdate = [];
 			let threadsToDelete = [];
@@ -153,7 +168,11 @@ class ThreadMessagesView extends React.Component {
 				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
 				threadsToCreate = threadsToCreate.map(thread => threadsCollection.prepareCreate(protectedFunction((t) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadsCollection.schema);
-					t.subscription.set(this.subscription);
+					if (this.subscription) {
+						t.subscription.set(this.subscription);
+					} else {
+						t.subscription.id = this.rid;
+					}
 					Object.assign(t, thread);
 				})));
 				threadsToUpdate = threadsToUpdate.map((thread) => {
@@ -170,14 +189,22 @@ class ThreadMessagesView extends React.Component {
 			}
 
 			await db.action(async() => {
-				await db.batch(
-					...threadsToCreate,
-					...threadsToUpdate,
-					...threadsToDelete,
-					this.subscription.prepareUpdate((s) => {
-						s.lastThreadSync = lastThreadSync;
-					})
-				);
+				if (this.subscription) {
+					await db.batch(
+						...threadsToCreate,
+						...threadsToUpdate,
+						...threadsToDelete,
+						this.subscription.prepareUpdate((s) => {
+							s.lastThreadSync = lastThreadSync;
+						})
+					);
+				} else {
+					await db.batch(
+						...threadsToCreate,
+						...threadsToUpdate,
+						...threadsToDelete
+					);
+				}
 			});
 		} catch (e) {
 			log(e);
