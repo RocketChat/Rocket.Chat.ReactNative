@@ -448,6 +448,9 @@ const RoomActionsStack = createStackNavigator({
 	},
 	AttachmentView: {
 		getScreen: () => require('./views/AttachmentView').default
+	},
+	VisitorNavigationView: {
+		getScreen: () => require('./views/VisitorNavigationView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

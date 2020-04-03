@@ -371,7 +371,35 @@ class RoomActionsView extends React.Component {
 				});
 			}
 		} else if (t === 'l') {
-			sections[2].data = [notificationsAction];
+			sections[2].data = [];
+			sections[2].data.push({
+				icon: 'edit',
+				name: I18n.t('Edit'),
+				event: () => console.log('edit')
+			});
+			sections[2].data.push({
+				icon: 'close',
+				name: I18n.t('Close'),
+				event: () => RocketChat.closeLivechatRoom(rid)
+			});
+			sections[2].data.push({
+				icon: 'forward',
+				name: I18n.t('Forward'),
+				event: () => console.log('forward')
+			});
+			sections[2].data.push({
+				icon: 'return',
+				name: I18n.t('Return'),
+				event: () => console.log('return')
+			});
+			sections[2].data.push({
+				icon: 'nav',
+				name: I18n.t('Navigation_history'),
+				route: 'VisitorNavigationView',
+				params: { rid }
+			});
+
+			sections[2].data.push(notificationsAction);
 		}
 
 		return sections;

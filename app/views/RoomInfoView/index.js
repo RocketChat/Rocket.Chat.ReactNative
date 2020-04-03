@@ -5,7 +5,9 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import UAParser from 'ua-parser-js';
 import { SafeAreaView } from 'react-navigation';
+
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -79,7 +81,8 @@ class RoomInfoView extends React.Component {
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {},
-			parsedRoles: []
+			parsedRoles: [],
+			visitor: {}
 		};
 	}
 
@@ -87,6 +90,10 @@ class RoomInfoView extends React.Component {
 		const { roomUser, room: roomState } = this.state;
 		if (this.t === 'd' && !_.isEmpty(roomUser)) {
 			return;
+		}
+
+		if (this.t === 'l') {
+			this.getLivechatInfo();
 		}
 
 		if (this.t === 'd') {
@@ -139,6 +146,31 @@ class RoomInfoView extends React.Component {
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+	}
+
+	getLivechatInfo = async() => {
+		try {
+			const result = await RocketChat.getRoomInfo(this.rid);
+			if (result.success) {
+				const { room } = result;
+				const { v: { _id } } = room;
+				const vInfo = await RocketChat.getVisitorInfo(_id);
+				if (vInfo.success) {
+					const { visitor } = vInfo;
+					const ua = new UAParser();
+					ua.setUA(visitor.userAgent);
+
+					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
+					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+					visitor.customFields = room.livechatData;
+					visitor.agent = room.servedBy.username;
+
+					this.setState({ visitor });
+				}
+			}
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -259,30 +291,21 @@ class RoomInfoView extends React.Component {
 		content: I18n.t('Broadcast_channel_Description')
 	});
 
-	renderCustomFields = () => {
-		const { roomUser } = this.state;
-		if (roomUser) {
-			const { customFields } = roomUser;
-
-			if (!roomUser.customFields) {
-				return null;
-			}
-
-			return (
-				Object.keys(customFields).map((title) => {
-					if (!customFields[title]) {
-						return;
-					}
-					return (
-						<View style={styles.item} key={title}>
-							<Text style={styles.itemLabel}>{title}</Text>
-							<Text style={styles.itemContent}>{customFields[title]}</Text>
-						</View>
-					);
-				})
-			);
-		}
-		return null;
+	renderCustomFields = (room) => {
+		const { theme } = this.props;
+		return room?.customFields && (
+			Object.keys(room.customFields).map((title) => {
+				if (!room.customFields[title]) {
+					return;
+				}
+				return (
+					<View style={styles.item} key={title}>
+						<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{title}</Text>
+						<Text style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}>{room.customFields[title]}</Text>
+					</View>
+				);
+			})
+		);
 	}
 
 	renderButton = (onPress, iconName, text) => {
@@ -328,7 +351,33 @@ class RoomInfoView extends React.Component {
 			<>
 				{this.renderRoles()}
 				{this.renderTimezone()}
-				{this.renderCustomFields(roomUser._id)}
+				{this.renderCustomFields(roomUser)}
+			</>
+		);
+	}
+
+	renderVisitor = () => {
+		const { visitor } = this.state;
+
+		return (
+			<>
+				{this.renderItem({
+					label: I18n.t('IP'),
+					content: visitor.ip
+				})}
+				{this.renderItem({
+					label: I18n.t('OS'),
+					content: visitor.os
+				})}
+				{this.renderItem({
+					label: I18n.t('Browser'),
+					content: visitor.browser
+				})}
+				{this.renderItem({
+					label: I18n.t('Agent'),
+					content: visitor.agent
+				})}
+				{this.renderCustomFields(visitor)}
 			</>
 		);
 	}
@@ -353,7 +402,8 @@ class RoomInfoView extends React.Component {
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser && roomUser.name, roomUser && roomUser.username, roomUser && roomUser.statusText, theme) }</View>
 						{isDirect ? this.renderButtons() : null}
 					</View>
-					{isDirect ? this.renderDirect() : this.renderChannel()}
+					{/* {isDirect ? this.renderDirect() : this.renderChannel()} */}
+					{this.renderVisitor()}
 				</SafeAreaView>
 			</ScrollView>
 		);
