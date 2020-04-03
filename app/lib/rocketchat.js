@@ -627,11 +627,11 @@ const RocketChat = {
 	},
 
 	createGroupChat() {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
+		const { users } = reduxStore.getState().selectedUsers;
+		const usernames = users.map(u => u.name).join(',');
 
 		// RC 3.1.0
-		return this.methodCall('createDirectMessage', ...users);
+		return this.post('im.create', { usernames });
 	},
 
 	createDiscussion({
