@@ -229,10 +229,13 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					// when `connect` raises an error, we try again in 10 seconds
-					this.connectTimeout = setTimeout(() => {
-						this.connect({ server, user });
-					}, 10000);
+					const { server: currentServer } = reduxStore.getState().server;
+					if (server === currentServer) {
+						// when `connect` raises an error, we try again in 10 seconds
+						this.connectTimeout = setTimeout(() => {
+							this.connect({ server, user });
+						}, 10000);
+					}
 				});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
