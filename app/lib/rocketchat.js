@@ -114,14 +114,6 @@ const RocketChat = {
 		};
 	},
 	async getServerInfo(server) {
-		if (this.controller) {
-			this.controller.abort();
-			this.controller = null;
-		}
-
-		this.controller = new AbortController();
-		const { signal } = this.controller;
-
 		const notRCServer = {
 			success: false,
 			message: 'Not_RC_Server',
@@ -130,7 +122,7 @@ const RocketChat = {
 			}
 		};
 		try {
-			const result = await fetch(`${ server }/api/info`, { signal }).then(async(response) => {
+			const result = await fetch(`${ server }/api/info`).then(async(response) => {
 				let res = notRCServer;
 				try {
 					res = await response.json();
