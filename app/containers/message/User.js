@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, user, ...props
+	isHeader, useRealName, author, ts, timeFormat, hasError, theme, navToRoomInfo, user, ...props
 }) => {
 	if (isHeader || hasError) {
 		const navParam = {
@@ -43,7 +43,7 @@ const User = React.memo(({
 			rid: author._id
 		};
 		const username = (useRealName && author.name) || author.username;
-		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
+		const aliasUsername = useRealName ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{author.username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
 		return (
@@ -54,7 +54,7 @@ const User = React.memo(({
 				>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-							{alias || username}
+							{username}
 							{aliasUsername}
 						</Text>
 					</View>
