@@ -27,6 +27,7 @@ const attrs = [
 	'isRead',
 	'favorite',
 	'status',
+	'connected',
 	'theme'
 ];
 
@@ -40,13 +41,13 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, isGroupChat, theme
+	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, isGroupChat, connected, theme
 }) => {
 	useEffect(() => {
-		if (type === 'd') {
+		if (connected && type === 'd' && id) {
 			getUserPresence(id);
 		}
-	}, []);
+	}, [connected]);
 
 	const date = formatDate(_updatedAt);
 
@@ -197,6 +198,7 @@ RoomItem.propTypes = {
 	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	getUserPresence: PropTypes.func,
+	connected: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	theme: PropTypes.string
 };
@@ -208,6 +210,7 @@ RoomItem.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
+	connected: state.meteor.connected,
 	status:
 		state.meteor.connected && ownProps.type === 'd'
 			? state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status
