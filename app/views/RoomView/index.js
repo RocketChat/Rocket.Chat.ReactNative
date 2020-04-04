@@ -202,8 +202,10 @@ class RoomView extends React.Component {
 	componentDidMount() {
 		this.mounted = true;
 		this.offset = 0;
+		const { room } = this.state;
+		const counters = await RocketChat.getRoomCounters(room.rid, room.t);
+		this.setState({joined:counters.joined})
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { room } = this.state;
 			const {
 				navigation, isAuthenticated, user, baseUrl
 			} = this.props;
