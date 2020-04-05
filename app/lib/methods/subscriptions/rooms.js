@@ -140,8 +140,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 			if (tmp.lastMessage) {
 				const lastMessage = buildMessage(tmp.lastMessage);
-				// This last Message have a different format when merge two streams results in a error caused by the urls object
-				delete lastMessage.urls;
 				const messagesCollection = db.collections.get('messages');
 				let messageRecord;
 				try {

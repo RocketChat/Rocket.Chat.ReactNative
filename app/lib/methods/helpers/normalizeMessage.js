@@ -21,6 +21,11 @@ export default (msg) => {
 	if (!msg) {
 		return null;
 	}
+
+	if (msg.urlParsed) {
+		return msg;
+	}
+
 	msg = normalizeAttachments(msg);
 	msg.reactions = msg.reactions || [];
 	msg.unread = msg.unread || false;
@@ -42,5 +47,6 @@ export default (msg) => {
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array
 	msg.starred = msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred);
+	msg.urlParsed = true;
 	return msg;
 };
