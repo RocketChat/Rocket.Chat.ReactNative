@@ -414,6 +414,7 @@ export default {
 	Select_Server: 'Select Server',
 	Select_Users: 'Select Users',
 	Select_a_Channel: 'Select a Channel',
+	Select_an_option: 'Select an option',
 	Send: 'Send',
 	Send_audio_message: 'Send audio message',
 	Send_crash_report: 'Send crash report',
