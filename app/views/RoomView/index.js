@@ -670,7 +670,6 @@ class RoomView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid, messageId) => {
 		try {
-			const { room } = this.state;
 			const db = database.active;
 			const threadCollection = db.collections.get('threads');
 			const messageCollection = db.collections.get('messages');
@@ -693,7 +692,7 @@ class RoomView extends React.Component {
 					await db.batch(
 						threadCollection.prepareCreate((t) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-							t.subscription.set(room);
+							t.subscription.id = this.rid;
 							Object.assign(t, thread);
 						}),
 						messageRecord.prepareUpdate((m) => {
@@ -703,7 +702,7 @@ class RoomView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log(e);
+			// log(e);
 		}
 	}
 

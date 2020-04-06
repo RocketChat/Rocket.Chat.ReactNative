@@ -769,12 +769,9 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
-	setUserPresenceDefaultStatus(status) {
-		return this.methodCall('UserPresence:setDefaultStatus', status);
-	},
-	setUserStatus(message) {
+	setUserStatus(status, message) {
 		// RC 1.2.0
-		return this.post('users.setStatus', { message });
+		return this.post('users.setStatus', { status, message });
 	},
 	setReaction(emoji, messageId) {
 		// RC 0.62.2
