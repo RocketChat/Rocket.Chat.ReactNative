@@ -74,7 +74,7 @@ class PickerView extends React.PureComponent {
 					<Item
 						item={item}
 						theme={theme}
-						selected={(value || data[0].value) === item.value}
+						selected={(value || data[0]?.value) === item.value}
 						onItemPress={() => this.onChangeValue(item.value)}
 					/>
 				)}
