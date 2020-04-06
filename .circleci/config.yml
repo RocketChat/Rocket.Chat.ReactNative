@@ -195,6 +195,13 @@ jobs:
           command: |
             yarn
 
+      - run:
+          name: Update Fastlane
+          command: |
+            echo "ruby-2.6.4" > ~/.ruby-version
+            bundle install
+          working_directory: android
+
       - restore_cache:
           name: Restore gradle cache
           key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
@@ -235,9 +242,9 @@ jobs:
           command: |
             if [[ $KEYSTORE ]]; then
               # TODO: enable app bundle again
-              ./gradlew assembleRelease
+              bundle exec fastlane android release
             else
-              ./gradlew assembleDebug
+              bundle exec fastlane android build
             fi
 
             mkdir -p /tmp/build
@@ -272,6 +279,10 @@ jobs:
           key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/fastlane/report.xml
 
   ios-build:
     macos:

@@ -16,12 +16,12 @@
 default_platform(:android)
 
 platform :android do
-  desc "Assemble a debug apk"
+  desc "Build App for development"
   lane :build do
     gradle(task: "assembleDebug")
   end
 
-  desc "Build App for release and Upload to PlayStore"
+  desc "Build App for release"
   lane :release do
     gradle(task: "assembleRelease")
   end
