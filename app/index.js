@@ -166,6 +166,9 @@ const ChatsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
+	PickerView: {
+		getScreen: () => require('./views/PickerView').default
+	},
 	...RoomRoutes
 }, {
 	defaultNavigationOptions: defaultHeader,

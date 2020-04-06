@@ -10,7 +10,6 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
-import Picker from '../../containers/Picker';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
@@ -214,15 +213,12 @@ class NotificationPreferencesView extends React.Component {
 
 	renderPicker = (key) => {
 		const { room } = this.state;
-		const { theme } = this.props;
-		return (
-			<Picker
-				data={OPTIONS[key]}
-				value={room[key]}
-				onChangeValue={value => this.onValueChangePicker(key, value)}
-				theme={theme}
-			/>
-		);
+		const { navigation } = this.props;
+		navigation.navigate('PickerView', {
+			data: OPTIONS[key],
+			value: room[key],
+			onChangeValue: value => this.onValueChangePicker(key, value)
+		});
 	}
 
 	renderSwitch = (key) => {
@@ -283,48 +279,68 @@ class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} theme={theme} />
-
-					<SectionTitle title={I18n.t('Alert')} theme={theme} />
 					<Separator theme={theme} />
-					{this.renderPicker('desktopNotifications')}
 
+					<ListItem
+						title={I18n.t('Alert')}
+						testID='notification-preference-view-alert'
+						onPress={() => this.renderPicker('desktopNotifications')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
 					<Info info={I18n.t('In_App_and_Desktop_Alert_info')} theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('PUSH_NOTIFICATIONS')} theme={theme} />
-
-					<SectionTitle title={I18n.t('Alert')} theme={theme} />
 					<Separator theme={theme} />
-					{this.renderPicker('mobilePushNotifications')}
 
+					<ListItem
+						title={I18n.t('Alert')}
+						testID='notification-preference-view-push-notification'
+						onPress={() => this.renderPicker('mobilePushNotifications')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
 					<Info info={I18n.t('Push_Notifications_Alert_Info')} theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('DESKTOP_OPTIONS')} theme={theme} />
-
-					<SectionTitle title={I18n.t('Audio')} theme={theme} />
-					<Separator theme={theme} />
-					{this.renderPicker('audioNotifications')}
 					<Separator theme={theme} />
 
-					<SectionTitle title={I18n.t('Sound')} theme={theme} />
+					<ListItem
+						title={I18n.t('Audio')}
+						testID='notification-preference-view-audio'
+						onPress={() => this.renderPicker('audioNotifications')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
-					{this.renderPicker('audioNotificationValue')}
+					<ListItem
+						title={I18n.t('Sound')}
+						testID='notification-preference-view-sound'
+						onPress={() => this.renderPicker('audioNotificationValue')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
-
-					<SectionTitle title={I18n.t('Notification_Duration')} theme={theme} />
-					<Separator theme={theme} />
-					{this.renderPicker('desktopNotificationDuration')}
+					<ListItem
+						title={I18n.t('Notification_Duration')}
+						testID='notification-preference-view-notification-duration'
+						onPress={() => this.renderPicker('desktopNotificationDuration')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('EMAIL')} theme={theme} />
 					<Separator theme={theme} />
-					{this.renderPicker('emailNotifications')}
 
+					<ListItem
+						title={I18n.t('Alert')}
+						testID='notification-preference-view-email-alert'
+						onPress={() => this.renderPicker('emailNotifications')}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
+
 					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
 				</ScrollView>
 			</SafeAreaView>
