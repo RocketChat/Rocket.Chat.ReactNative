@@ -38,8 +38,8 @@ Item.propTypes = {
 };
 
 class PickerView extends React.PureComponent {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Select_an_option'),
+	static navigationOptions = ({ navigation, screenProps }) => ({
+		title: navigation.getParam('title', I18n.t('Select_an_option')),
 		...themedHeader(screenProps.theme)
 	})
 
