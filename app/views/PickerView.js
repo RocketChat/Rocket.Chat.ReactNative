@@ -6,6 +6,7 @@ import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
+import sharedStyles from './Styles';
 
 import ListItem from '../containers/ListItem';
 import Check from '../containers/Check';
@@ -79,8 +80,14 @@ class PickerView extends React.PureComponent {
 					/>
 				)}
 				ItemSeparatorComponent={() => <Separator theme={theme} />}
-				ListFooterComponent={() => <Separator theme={theme} />}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={[
+					sharedStyles.listContentContainer,
+					{
+						backgroundColor: themes[theme].auxiliaryBackground,
+						borderColor: themes[theme].separatorColor
+					}
+				]}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			/>
 		);
 	}
