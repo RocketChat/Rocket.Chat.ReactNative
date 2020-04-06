@@ -49,7 +49,7 @@ const RoomItem = React.memo(({
 		}
 	}, [connected]);
 
-	const date = formatDate(_updatedAt);
+	const date = lastMessage && formatDate(lastMessage.ts);
 
 	let accessibilityLabel = name;
 	if (unread === 1) {
