@@ -243,10 +243,10 @@ class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				this.setState({ saving: false });
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
+			this.setState({ saving: false });
 		} catch (e) {
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');

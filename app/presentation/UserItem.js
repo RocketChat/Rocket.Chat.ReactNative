@@ -64,8 +64,8 @@ const UserItem = ({
 				<View style={[styles.container, styles.button, style]}>
 					<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>{name}</Text>
-						<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>@{username}</Text>
+						<Text style={[styles.name, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
+						<Text style={[styles.username, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>@{username}</Text>
 					</View>
 					{icon ? <CustomIcon name={icon} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
 				</View>

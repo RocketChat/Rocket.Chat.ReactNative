@@ -65,6 +65,7 @@ export default class RCTextInput extends React.PureComponent {
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
 		placeholder: PropTypes.string,
+		left: PropTypes.element,
 		theme: PropTypes.string
 	}
 
@@ -116,7 +117,7 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
+			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
 		return (
@@ -166,6 +167,7 @@ export default class RCTextInput extends React.PureComponent {
 					{iconLeft ? this.iconLeft : null}
 					{secureTextEntry ? this.iconPassword : null}
 					{loading ? this.loading : null}
+					{left}
 				</View>
 				{error && error.reason ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>

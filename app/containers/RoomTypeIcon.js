@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 const RoomTypeIcon = React.memo(({
-	type, size, style, theme
+	type, size, isGroupChat, style, theme
 }) => {
 	if (!type) {
 		return null;
@@ -31,6 +31,9 @@ const RoomTypeIcon = React.memo(({
 	if (type === 'c') {
 		return <Image source={{ uri: 'hashtag' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;
 	} if (type === 'd') {
+		if (isGroupChat) {
+			return <CustomIcon name='team' size={13} style={[styles.style, styles.discussion, { color }]} />;
+		}
 		return <CustomIcon name='at' size={13} style={[styles.style, styles.discussion, { color }]} />;
 	} if (type === 'l') {
 		return <CustomIcon name='livechat' size={13} style={[styles.style, styles.discussion, { color }]} />;
@@ -41,6 +44,7 @@ const RoomTypeIcon = React.memo(({
 RoomTypeIcon.propTypes = {
 	theme: PropTypes.string,
 	type: PropTypes.string,
+	isGroupChat: PropTypes.bool,
 	size: PropTypes.number,
 	style: PropTypes.object
 };

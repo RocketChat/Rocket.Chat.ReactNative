@@ -29,12 +29,12 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 
 const navigate = function* navigate({ params }) {
 	yield put(appStart('inside'));
-	if (params.rid) {
-		const canOpenRoom = yield RocketChat.canOpenRoom(params);
-		if (canOpenRoom) {
-			const [type, name] = params.path.split('/');
+	if (params.path) {
+		const room = yield RocketChat.canOpenRoom(params);
+		const [type, name] = params.path.split('/');
+		if (room) {
 			yield Navigation.navigate('RoomsListView');
-			Navigation.navigate('RoomView', { rid: params.rid, name, t: roomTypes[type] });
+			Navigation.navigate('RoomView', { name, t: roomTypes[type], ...room });
 		}
 	} else {
 		yield handleInviteLink({ params });
@@ -89,7 +89,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!result.success) {
 			return;
 		}
-		Navigation.navigate('OnboardingView', { previousServer: server });
+		Navigation.navigate('NewServerView', { previousServer: server });
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 
