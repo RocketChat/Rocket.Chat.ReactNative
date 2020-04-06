@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 
-import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -13,7 +12,7 @@ export const merge = (subscription, room) => {
 	if (room) {
 		if (room._updatedAt) {
 			subscription.roomUpdatedAt = room._updatedAt;
-			subscription.lastMessage = normalizeMessage(room.lastMessage);
+			subscription.lastMessage = room.lastMessage;
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
