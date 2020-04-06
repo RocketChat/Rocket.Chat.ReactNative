@@ -79,6 +79,7 @@ class PickerView extends React.PureComponent {
 					/>
 				)}
 				ItemSeparatorComponent={() => <Separator theme={theme} />}
+				ListFooterComponent={() => <Separator theme={theme} />}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 			/>
 		);
