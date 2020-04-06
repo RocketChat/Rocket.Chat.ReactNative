@@ -211,10 +211,11 @@ class NotificationPreferencesView extends React.Component {
 
 	onValueChangePicker = (key, value) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
 
-	pickerSelection = (key) => {
+	pickerSelection = (title, key) => {
 		const { room } = this.state;
 		const { navigation } = this.props;
 		navigation.navigate('PickerView', {
+			title,
 			data: OPTIONS[key],
 			value: room[key],
 			onChangeValue: value => this.onValueChangePicker(key, value)
@@ -291,7 +292,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Alert')}
 						testID='notification-preference-view-alert'
-						onPress={() => this.pickerSelection('desktopNotifications')}
+						onPress={title => this.pickerSelection(title, 'desktopNotifications')}
 						right={() => this.renderPickerOption('desktopNotifications')}
 						theme={theme}
 					/>
@@ -305,7 +306,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Alert')}
 						testID='notification-preference-view-push-notification'
-						onPress={() => this.pickerSelection('mobilePushNotifications')}
+						onPress={title => this.pickerSelection(title, 'mobilePushNotifications')}
 						right={() => this.renderPickerOption('mobilePushNotifications')}
 						theme={theme}
 					/>
@@ -319,7 +320,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Audio')}
 						testID='notification-preference-view-audio'
-						onPress={() => this.pickerSelection('audioNotifications')}
+						onPress={title => this.pickerSelection(title, 'audioNotifications')}
 						right={() => this.renderPickerOption('audioNotifications')}
 						theme={theme}
 					/>
@@ -327,7 +328,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Sound')}
 						testID='notification-preference-view-sound'
-						onPress={() => this.pickerSelection('audioNotificationValue')}
+						onPress={title => this.pickerSelection(title, 'audioNotificationValue')}
 						right={() => this.renderPickerOption('audioNotificationValue')}
 						theme={theme}
 					/>
@@ -335,7 +336,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Notification_Duration')}
 						testID='notification-preference-view-notification-duration'
-						onPress={() => this.pickerSelection('desktopNotificationDuration')}
+						onPress={title => this.pickerSelection(title, 'desktopNotificationDuration')}
 						right={() => this.renderPickerOption('desktopNotificationDuration')}
 						theme={theme}
 					/>
@@ -348,7 +349,7 @@ class NotificationPreferencesView extends React.Component {
 					<ListItem
 						title={I18n.t('Alert')}
 						testID='notification-preference-view-email-alert'
-						onPress={() => this.pickerSelection('emailNotifications')}
+						onPress={title => this.pickerSelection(title, 'emailNotifications')}
 						right={() => this.renderPickerOption('emailNotifications')}
 						theme={theme}
 					/>
