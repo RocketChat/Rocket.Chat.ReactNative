@@ -21,12 +21,16 @@ platform :android do
     gradle(task: "assembleDebug")
   end
 
-  desc "Build App for release and upload to Play store"
+  desc "Build App for release"
   lane :release do
     gradle(task: "assembleRelease")
+  end
+
+  desc "Upload App to Play store"
+  lane :beta do
     upload_to_play_store(
-    track: 'production', #<Enter the name of track>
-    apk: 'app/build/outputs/apk/release/app-release.apk'
-  )
+      track: 'beta', 
+      apk: 'app/build/outputs/apk/release/app-release.apk'
+    )
   end
 end

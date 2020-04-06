@@ -284,6 +284,46 @@ jobs:
           paths:
             - android/fastlane/report.xml
 
+  upload-google-play-beta:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    steps:
+      - checkout
+
+      - run:
+          name: Update Fastlane
+          command: |
+            echo "ruby-2.6.4" > ~/.ruby-version
+            bundle install
+          working_directory: android
+
+      - restore_cache:
+          name: Restore gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
+      - run:
+          name: Fastlane Play Store Upload
+          command: |
+            bundle exec fastlane android beta
+          working_directory: android
+
+      - store_artifacts:
+          path: /tmp/build/outputs
+
+      - save_cache:
+          name: Save NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
+      - save_cache:
+          name: Save gradle cache
+          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          paths:
+            - ~/.gradle
+
   ios-build:
     macos:
       xcode: "11.2.1"
@@ -444,3 +484,10 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
+      - android-hold-google-play-beta:
+          type: approval
+          requires:
+            - android-build
+      - upload-google-play-beta:
+          requires:
+            - android-hold-google-play-beta
