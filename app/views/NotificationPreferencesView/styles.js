@@ -23,5 +23,9 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		fontSize: 14
+	},
+	pickerText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
 	}
 });

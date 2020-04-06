@@ -51,7 +51,7 @@ class PickerView extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		const data = props.navigation.getParam('data', []);
-		const value = props.navigation.getParam('value', data[0].value);
+		const value = props.navigation.getParam('value');
 		this.state = { data, value };
 	}
 
@@ -74,7 +74,7 @@ class PickerView extends React.PureComponent {
 					<Item
 						item={item}
 						theme={theme}
-						selected={value === item.value}
+						selected={(value || data[0].value) === item.value}
 						onItemPress={() => this.onChangeValue(item.value)}
 					/>
 				)}
