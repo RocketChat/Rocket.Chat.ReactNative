@@ -3,21 +3,22 @@ import {
 	View, ScrollView, Switch, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
-import RNPickerSelect from 'react-native-picker-select';
 import { SafeAreaView } from 'react-navigation';
 
+import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
+import Picker from '../../containers/Picker';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 
 const SectionTitle = React.memo(({ title, theme }) => (
 	<Text
@@ -181,41 +182,45 @@ class NotificationPreferencesView extends React.Component {
 		}
 	}
 
-	onValueChangeSwitch = async(key, value) => {
-		const params = {
-			[key]: value ? '1' : '0'
-		};
+	saveNotificationSettings = async(key, value, params) => {
+		const { room } = this.state;
+		const db = database.active;
+
+		await db.action(async() => {
+			await room.update(protectedFunction((r) => {
+				r[key] = value;
+			}));
+		});
+
 		try {
-			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (e) {
-			log(e);
+			const result = await RocketChat.saveNotificationSettings(this.rid, params);
+			if (result.success) {
+				return;
+			}
+		} catch {
+			// do nothing
 		}
+
+		await db.action(async() => {
+			await room.update(protectedFunction((r) => {
+				r[key] = room[key];
+			}));
+		});
 	}
 
-	onValueChangePicker = async(key, value) => {
-		const params = {
-			[key]: value.toString()
-		};
-		try {
-			await RocketChat.saveNotificationSettings(this.rid, params);
-		} catch (e) {
-			log(e);
-		}
-	}
+	onValueChangeSwitch = (key, value) => this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
+
+	onValueChangePicker = (key, value) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
 
 	renderPicker = (key) => {
 		const { room } = this.state;
 		const { theme } = this.props;
 		return (
-			<RNPickerSelect
-				testID={key}
-				style={{ viewContainer: styles.viewContainer }}
+			<Picker
+				data={OPTIONS[key]}
 				value={room[key]}
-				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
-				useNativeAndroidPickerStyle={false}
-				placeholder={{}}
-				onValueChange={value => this.onValueChangePicker(key, value)}
-				items={OPTIONS[key]}
+				onChangeValue={value => this.onValueChangePicker(key, value)}
+				theme={theme}
 			/>
 		);
 	}
@@ -278,68 +283,48 @@ class NotificationPreferencesView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} theme={theme} />
-					<Separator theme={theme} />
 
-					<ListItem
-						title={I18n.t('Alert')}
-						testID='notification-preference-view-alert'
-						right={() => this.renderPicker('desktopNotifications')}
-						theme={theme}
-					/>
+					<SectionTitle title={I18n.t('Alert')} theme={theme} />
+					<Separator theme={theme} />
+					{this.renderPicker('desktopNotifications')}
+
 					<Separator theme={theme} />
 					<Info info={I18n.t('In_App_and_Desktop_Alert_info')} theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('PUSH_NOTIFICATIONS')} theme={theme} />
-					<Separator theme={theme} />
 
-					<ListItem
-						title={I18n.t('Alert')}
-						testID='notification-preference-view-push-notification'
-						right={() => this.renderPicker('mobilePushNotifications')}
-						theme={theme}
-					/>
+					<SectionTitle title={I18n.t('Alert')} theme={theme} />
+					<Separator theme={theme} />
+					{this.renderPicker('mobilePushNotifications')}
+
 					<Separator theme={theme} />
 					<Info info={I18n.t('Push_Notifications_Alert_Info')} theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('DESKTOP_OPTIONS')} theme={theme} />
+
+					<SectionTitle title={I18n.t('Audio')} theme={theme} />
+					<Separator theme={theme} />
+					{this.renderPicker('audioNotifications')}
 					<Separator theme={theme} />
 
-					<ListItem
-						title={I18n.t('Audio')}
-						testID='notification-preference-view-audio'
-						right={() => this.renderPicker('audioNotifications')}
-						theme={theme}
-					/>
+					<SectionTitle title={I18n.t('Sound')} theme={theme} />
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Sound')}
-						testID='notification-preference-view-sound'
-						right={() => this.renderPicker('audioNotificationValue')}
-						theme={theme}
-					/>
+					{this.renderPicker('audioNotificationValue')}
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Notification_Duration')}
-						testID='notification-preference-view-notification-duration'
-						right={() => this.renderPicker('desktopNotificationDuration')}
-						theme={theme}
-					/>
+
+					<SectionTitle title={I18n.t('Notification_Duration')} theme={theme} />
+					<Separator theme={theme} />
+					{this.renderPicker('desktopNotificationDuration')}
 					<Separator theme={theme} />
 
 					<SectionSeparator theme={theme} />
 					<SectionTitle title={I18n.t('EMAIL')} theme={theme} />
 					<Separator theme={theme} />
+					{this.renderPicker('emailNotifications')}
 
-					<ListItem
-						title={I18n.t('Alert')}
-						testID='notification-preference-view-email-alert'
-						right={() => this.renderPicker('emailNotifications')}
-						theme={theme}
-					/>
 					<Separator theme={theme} />
-
 					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
 				</ScrollView>
 			</SafeAreaView>

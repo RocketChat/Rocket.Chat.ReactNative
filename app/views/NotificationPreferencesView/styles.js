@@ -23,12 +23,5 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		fontSize: 14
-	},
-	viewContainer: {
-		justifyContent: 'center'
-	},
-	pickerText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
 	}
 });
