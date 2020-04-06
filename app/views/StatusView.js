@@ -23,7 +23,6 @@ import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
 import store from '../lib/createStore';
 import { setUser } from '../actions/login';
-import { setActiveUsers } from '../actions/activeUsers';
 
 const STATUS = [{
 	id: 'online',
@@ -180,7 +179,6 @@ class StatusView extends React.Component {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
 								store.dispatch(setUser({ status: item.id }));
-								store.dispatch(setActiveUsers({ [user.id]: { status: item.id, statusText } }));
 							}
 						} catch (e) {
 							log(e);
