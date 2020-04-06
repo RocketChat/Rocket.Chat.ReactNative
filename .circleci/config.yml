@@ -313,12 +313,6 @@ jobs:
           path: /tmp/build/outputs
 
       - save_cache:
-          name: Save NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
-
-      - save_cache:
           name: Save gradle cache
           key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
