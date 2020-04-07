@@ -836,6 +836,9 @@ const RocketChat = {
 	getDepartments() {
 		return this.sdk.get('livechat/department');
 	},
+	usersAutoComplete(selector) {
+		return this.sdk.get('users.autocomplete', { selector });
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method

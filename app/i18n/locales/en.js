@@ -328,6 +328,7 @@ export default {
 	Notifications: 'Notifications',
 	Notification_Duration: 'Notification Duration',
 	Notification_Preferences: 'Notification Preferences',
+	No_available_agents_to_transfer: 'No available agents to transfer',
 	Offline: 'Offline',
 	Oops: 'Oops!',
 	Onboarding_description: 'A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.',
