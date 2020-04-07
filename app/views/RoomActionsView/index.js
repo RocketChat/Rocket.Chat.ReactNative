@@ -374,7 +374,8 @@ class RoomActionsView extends React.Component {
 			sections[2].data = [];
 			sections[2].data.push({
 				icon: 'close',
-				name: I18n.t('Close')
+				name: I18n.t('Close'),
+				event: this.closeLivechat
 			});
 			sections[2].data.push({
 				icon: 'forward',
@@ -403,6 +404,11 @@ class RoomActionsView extends React.Component {
 	renderSeparator = () => {
 		const { theme } = this.props;
 		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
+
+	closeLivechat = () => {
+		const { room: { rid } } = this.state;
+		return RocketChat.closeLivechat(rid, '');
 	}
 
 	updateRoomMember = async() => {
