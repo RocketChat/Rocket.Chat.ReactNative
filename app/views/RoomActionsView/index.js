@@ -124,9 +124,12 @@ class RoomActionsView extends React.Component {
 		this.canAddUser();
 		this.canInviteUser();
 
-		this.canCloseRoom();
-		this.canForwardGuest();
-		this.canReturnQueue();
+		// livechat permissions
+		if (room.t === 'l') {
+			this.canCloseRoom();
+			this.canForwardGuest();
+			this.canReturnQueue();
+		}
 	}
 
 	componentWillUnmount() {
@@ -207,20 +210,6 @@ class RoomActionsView extends React.Component {
 		}
 
 		this.setState({ canCloseRoom: result });
-	}
-
-	canEditRoom = async() => {
-		const { room } = this.state;
-		const { rid } = room;
-		// let result = true;
-
-		const saveOthersLivechatRoomInfo = 'save-others-livechat-room-info';
-		const permissions = await RocketChat.hasPermission([saveOthersLivechatRoomInfo], rid);
-		if (!permissions[saveOthersLivechatRoomInfo]) {
-			// result = false;
-		}
-
-		// this.setState({ canEditRoom: result });
 	}
 
 	canForwardGuest = async() => {
