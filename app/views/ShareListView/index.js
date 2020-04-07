@@ -20,7 +20,7 @@ import log from '../../utils/log';
 import { canUploadFile } from '../../utils/media';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
-import { CloseShareExtensionButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import { CancelModalButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 
@@ -66,7 +66,7 @@ class ShareListView extends React.Component {
 					</CustomHeaderButtons>
 				)
 				: (
-					<CloseShareExtensionButton
+					<CancelModalButton
 						onPress={ShareExtension.close}
 						testID='share-extension-close'
 					/>

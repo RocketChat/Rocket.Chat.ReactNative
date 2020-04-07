@@ -23,6 +23,8 @@ import appSchema from './schema/app';
 
 import migrations from './model/migrations';
 
+import serversMigrations from './model/serversMigrations';
+
 import { isIOS } from '../../utils/deviceInfo';
 import appConfig from '../../../app.json';
 
@@ -37,7 +39,8 @@ class DB {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: `${ appGroupPath }default.db`,
-				schema: serversSchema
+				schema: serversSchema,
+				migrations: serversMigrations
 			}),
 			modelClasses: [Server, User],
 			actionsEnabled: true
