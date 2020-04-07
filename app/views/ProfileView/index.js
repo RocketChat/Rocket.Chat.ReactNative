@@ -155,7 +155,7 @@ class ProfileView extends React.Component {
 	}
 
 	handleError = (e, func, action) => {
-		if (e.data && e.data.errorType === 'error-too-many-requests') {
+		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
@@ -243,10 +243,10 @@ class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				this.setState({ saving: false });
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
+			this.setState({ saving: false });
 		} catch (e) {
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');

@@ -135,7 +135,6 @@ class SetUsernameView extends React.Component {
 							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
-							iconLeft='at'
 							onChangeText={value => this.setState({ username: value })}
 							value={username}
 							onSubmitEditing={this.submit}

@@ -51,11 +51,11 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
+		reduxStore.dispatch(clearUserTyping());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
-		reduxStore.dispatch(clearUserTyping());
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
@@ -73,6 +73,7 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
+		reduxStore.dispatch(clearUserTyping());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
@@ -82,11 +83,14 @@ export default class RoomSubscription {
 			return;
 		}
 		if (ev === 'typing') {
+			const { user } = reduxStore.getState().login;
 			const [username, typing] = ddpMessage.fields.args;
-			if (typing) {
-				reduxStore.dispatch(addUserTyping(username));
-			} else {
-				reduxStore.dispatch(removeUserTyping(username));
+			if (username !== user.username) {
+				if (typing) {
+					reduxStore.dispatch(addUserTyping(username));
+				} else {
+					reduxStore.dispatch(removeUserTyping(username));
+				}
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async() => {

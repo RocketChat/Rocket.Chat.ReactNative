@@ -62,6 +62,18 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'uids', type: 'string', isOptional: true },
+						{ name: 'usernames', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
