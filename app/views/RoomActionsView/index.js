@@ -379,7 +379,9 @@ class RoomActionsView extends React.Component {
 			});
 			sections[2].data.push({
 				icon: 'forward',
-				name: I18n.t('Forward')
+				name: I18n.t('Forward'),
+				route: 'ForwardLivechatView',
+				params: { rid }
 			});
 			sections[2].data.push({
 				icon: 'return',

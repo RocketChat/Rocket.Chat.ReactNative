@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '../theme';
@@ -10,12 +10,18 @@ import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
+import ListItem from '../containers/ListItem';
 
-const Item = ({ item }) => (
-	<Text onPress={() => openLink(item.navigation.page.location.href)}>{item.navigation.page.title || I18n.t('Empty_title')}</Text>
+const Item = ({ item, theme }) => (
+	<ListItem
+		title={item.navigation?.page?.title || I18n.t('Empty_title')}
+		onPress={() => openLink(item.navigation?.page?.location?.href)}
+		theme={theme}
+	/>
 );
 Item.propTypes = {
-	item: PropTypes.object
+	item: PropTypes.object,
+	theme: PropTypes.string
 };
 
 const VisitorNavigationView = ({ navigation, theme }) => {
@@ -50,16 +56,17 @@ const VisitorNavigationView = ({ navigation, theme }) => {
 	return (
 		<FlatList
 			data={pages}
-			renderItem={Item}
+			renderItem={({ item }) => <Item item={item} theme={theme} />}
 			ItemSeparatorComponent={() => <Separator theme={theme} />}
 			contentContainerStyle={[
-				sharedStyles.separatorBottom,
+				sharedStyles.listContentContainer,
 				{
-					backgroundColor: themes[theme].backgroundColor,
+					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].separatorColor
 				}
 			]}
-			style={{ backgroundColor: themes[theme].backgroundColor }}
+			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			keyExtractor={item => item}
 			onEndReached={onEndReached}
 			onEndReachedThreshold={5}
 		/>
@@ -68,6 +75,9 @@ const VisitorNavigationView = ({ navigation, theme }) => {
 VisitorNavigationView.propTypes = {
 	theme: PropTypes.string,
 	navigation: PropTypes.object
+};
+VisitorNavigationView.navigationOptions = {
+	title: I18n.t('Navigation_history')
 };
 
 export default withTheme(VisitorNavigationView);

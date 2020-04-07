@@ -824,14 +824,17 @@ const RocketChat = {
 	returnLivechat(rid) {
 		return this.methodCall('livechat:returnAsInquiry', rid);
 	},
-	fowardLivechat(transferData) {
+	forwardLivechat(transferData) {
 		return this.methodCall('livechat:transfer', transferData);
 	},
 	getPagesLivechat(rid, offset) {
 		return this.sdk.get(`livechat/visitors.pagesVisited/${ rid }?count=50&offset=${ offset }`);
 	},
-	getDepartamentInfo(departmentId) {
+	getDepartmentInfo(departmentId) {
 		return this.sdk.get(`livechat/department/${ departmentId }?includeAgents=false`);
+	},
+	getDepartments() {
+		return this.sdk.get('livechat/department');
 	},
 
 	getUidDirectMessage(room, userId) {

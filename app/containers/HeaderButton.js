@@ -63,6 +63,12 @@ export const SaveButton = React.memo(({ onPress, testID }) => (
 	</CustomHeaderButtons>
 ));
 
+export const SubmitButton = React.memo(({ onPress, testID }) => (
+	<CustomHeaderButtons>
+		<Item title={I18n.t('Submit')} onPress={onPress} testID={testID} />
+	</CustomHeaderButtons>
+));
+
 export const LegalButton = React.memo(({ navigation, testID }) => (
 	<MoreButton onPress={() => navigation.navigate('LegalView')} testID={testID} />
 ));
@@ -88,6 +94,10 @@ MoreButton.propTypes = {
 	testID: PropTypes.string.isRequired
 };
 SaveButton.propTypes = {
+	onPress: PropTypes.func.isRequired,
+	testID: PropTypes.string.isRequired
+};
+SubmitButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired
 };
