@@ -24,7 +24,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 	const [departmentId, setDepartment] = useState();
 	const [users, setUsers] = useState([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState({});
+	const [room, setRoom] = useState();
 
 	const rid = navigation.getParam('rid');
 

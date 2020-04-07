@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList, StyleSheet } from 'react-native';
+import {
+	View, FlatList, StyleSheet, Text
+} from 'react-native';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -21,6 +23,16 @@ const styles = StyleSheet.create({
 	search: {
 		width: '100%',
 		height: 56
+	},
+	noResult: {
+		fontSize: 16,
+		paddingVertical: 56,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textSemibold
+	},
+	withoutBorder: {
+		borderBottomWidth: 0,
+		borderTopWidth: 0
 	}
 });
 
@@ -109,12 +121,14 @@ class PickerView extends React.PureComponent {
 						/>
 					)}
 					ItemSeparatorComponent={() => <Separator theme={theme} />}
+					ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
 					contentContainerStyle={[
 						sharedStyles.listContentContainer,
 						{
 							backgroundColor: themes[theme].auxiliaryBackground,
 							borderColor: themes[theme].separatorColor
-						}
+						},
+						!data.length && styles.withoutBorder
 					]}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				/>
