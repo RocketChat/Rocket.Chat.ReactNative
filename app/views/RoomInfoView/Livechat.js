@@ -82,12 +82,12 @@ const Livechat = ({ rid, theme }) => {
 				theme={theme}
 			/>
 			<Item
-				label='email'
-				content={user.visitorEmails}
+				label={I18n.t('Email')}
+				content={user.visitorEmails.reduce(email => email.address)}
 				theme={theme}
 			/>
 			<Item
-				label='phone'
+				label={I18n.t('Phone')}
 				content={user.phone}
 				theme={theme}
 			/>
@@ -102,17 +102,17 @@ const Livechat = ({ rid, theme }) => {
 				theme={theme}
 			/>
 			<Item
-				label='ip'
+				label={I18n.t('IP')}
 				content={user.ip}
 				theme={theme}
 			/>
 			<Item
-				label='os'
+				label={I18n.t('OS')}
 				content={user.os}
 				theme={theme}
 			/>
 			<Item
-				label='browser'
+				label={I18n.t('Browser')}
 				content={user.browser}
 				theme={theme}
 			/>
@@ -125,27 +125,27 @@ const Livechat = ({ rid, theme }) => {
 				theme={theme}
 			/>
 			<Item
-				label='agent'
+				label={I18n.t('Agent')}
 				content={room.servedBy?.username}
 				theme={theme}
 			/>
 			<Item
-				label='facebook'
+				label={I18n.t('Facebook')}
 				content={room.facebook?.page.name}
 				theme={theme}
 			/>
 			<Item
-				label='sms'
+				label={I18n.t('SMS')}
 				content={room.sms && 'SMS Enabled'}
 				theme={theme}
 			/>
 			<Item
-				label='topic'
+				label={I18n.t('Topic')}
 				content={room.topic}
 				theme={theme}
 			/>
 			<Item
-				label='tags'
+				label={I18n.t('Tags')}
 				content={room.joinTags}
 				theme={theme}
 			/>
@@ -155,7 +155,7 @@ const Livechat = ({ rid, theme }) => {
 				theme={theme}
 			/>
 			<Item
-				label='department'
+				label={I18n.t('Department')}
 				content={department.name}
 				theme={theme}
 			/>

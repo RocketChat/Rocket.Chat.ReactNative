@@ -350,6 +350,7 @@ export default {
 	Password: 'Password',
 	Parent_channel_or_group: 'Parent channel or group',
 	Permalink_copied_to_clipboard: 'Permalink copied to clipboard!',
+	Phone: 'Phone',
 	Pin: 'Pin',
 	Pinned_Messages: 'Pinned Messages',
 	pinned: 'pinned',
