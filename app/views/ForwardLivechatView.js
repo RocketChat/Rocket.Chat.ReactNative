@@ -109,6 +109,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 	const onPressDepartment = (title) => {
 		navigation.navigate('PickerView', {
 			title,
+			value: 1,
 			data: departments,
 			onChangeValue: setDepartment
 		});
