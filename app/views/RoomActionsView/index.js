@@ -28,6 +28,8 @@ import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
+import { showConfirmationAlert } from '../../utils/info';
+import Navigation from '../../lib/Navigation';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -385,7 +387,8 @@ class RoomActionsView extends React.Component {
 			});
 			sections[2].data.push({
 				icon: 'return',
-				name: I18n.t('Return')
+				name: I18n.t('Return'),
+				event: this.returnLivechat
 			});
 			sections[2].data.push({
 				icon: 'nav',
@@ -411,6 +414,22 @@ class RoomActionsView extends React.Component {
 	closeLivechat = () => {
 		const { room: { rid } } = this.state;
 		return RocketChat.closeLivechat(rid, '');
+	}
+
+	returnLivechat = () => {
+		const { room: { rid } } = this.state;
+		showConfirmationAlert({
+			message: I18n.t('Would_you_like_to_return_the_inquiry'),
+			callToAction: I18n.t('Yes'),
+			onPress: async() => {
+				try {
+					await RocketChat.returnLivechat(rid);
+					Navigation.navigate('RoomsListView');
+				} catch {
+					// do nothing
+				}
+			}
+		});
 	}
 
 	updateRoomMember = async() => {
