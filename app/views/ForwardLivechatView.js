@@ -135,7 +135,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 				<OnboardingSeparator theme={theme} />
 				<ListItem
 					title={I18n.t('Forward_to_user')}
-					onPress={title => onPressUser(title, true)}
+					onPress={title => onPressUser(title)}
 					theme={theme}
 				/>
 			</ScrollView>
