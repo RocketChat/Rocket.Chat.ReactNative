@@ -12,7 +12,7 @@ const Item = ({ label, content, theme }) => (
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 			<Markdown
 				style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
-				msg={JSON.stringify(content)}
+				msg={content}
 				theme={theme}
 			/>
 		</View>

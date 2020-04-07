@@ -481,7 +481,7 @@ class RoomActionsView extends React.Component {
 			return closeRoom(comment);
 		}
 
-		return prompt(
+		prompt(
 			I18n.t('Closing_chat'),
 			I18n.t('Please_add_a_comment'),
 			[
@@ -490,7 +490,10 @@ class RoomActionsView extends React.Component {
 					text: I18n.t('Submit'),
 					onPress: comment => closeRoom(comment)
 				}
-			]
+			],
+			{
+				cancelable: true
+			}
 		);
 	}
 

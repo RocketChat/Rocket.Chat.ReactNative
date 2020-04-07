@@ -36,11 +36,13 @@ const Livechat = ({ rid, theme }) => {
 			const result = await RocketChat.getVisitorInfo(id);
 			if (result.success) {
 				const { visitor } = result;
-				const ua = new UAParser();
-				ua.setUA(visitor.userAgent);
 
-				visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
-				visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+				if (visitor.userAgent) {
+					const ua = new UAParser();
+					ua.setUA(visitor.userAgent);
+					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
+					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+				}
 
 				setUser(visitor);
 			}
@@ -49,7 +51,7 @@ const Livechat = ({ rid, theme }) => {
 
 	const getDepartment = async(id) => {
 		if (id) {
-			const result = await RocketChat.getDepartamentInfo(id);
+			const result = await RocketChat.getDepartmentInfo(id);
 			if (result.success) {
 				setDepartment(result.department);
 			}
@@ -83,22 +85,12 @@ const Livechat = ({ rid, theme }) => {
 			/>
 			<Item
 				label={I18n.t('Email')}
-				content={user.visitorEmails.reduce(email => email.address)}
+				content={user.visitorEmails?.map(email => email.address).reduce((ret, item) => `${ ret }${ item }\n`)}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('Phone')}
-				content={user.phone}
-				theme={theme}
-			/>
-			<Item
-				label='created_at'
-				content={user.lastLogin && user.createdAt}
-				theme={theme}
-			/>
-			<Item
-				label='last_login'
-				content={user.lastLogin}
+				content={user.phone?.map(phone => phone.phoneNumber).reduce((ret, item) => `${ ret }${ item }\n`)}
 				theme={theme}
 			/>
 			<Item
@@ -146,12 +138,7 @@ const Livechat = ({ rid, theme }) => {
 			/>
 			<Item
 				label={I18n.t('Tags')}
-				content={room.joinTags}
-				theme={theme}
-			/>
-			<Item
-				label='last_login'
-				content={room.roomClosedDateTime}
+				content={room.tags?.join(', ')}
 				theme={theme}
 			/>
 			<Item

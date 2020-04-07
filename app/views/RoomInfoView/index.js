@@ -30,7 +30,6 @@ import Item from './Item';
 import Direct from './Direct';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-const PERMISSION_EDIT_LIVECHAT = 'save-others-livechat-room-info';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
 		<>
@@ -171,9 +170,8 @@ class RoomInfoView extends React.Component {
 			}
 		}
 
-		const editPermission = room.t === 'l' ? PERMISSION_EDIT_LIVECHAT : PERMISSION_EDIT_ROOM;
-		const permissions = await RocketChat.hasPermission([editPermission], room.rid);
-		if (permissions[editPermission] && !room.prid) {
+		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
+		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
 			navigation.setParams({ showEdit: true });
 		}
 	}
