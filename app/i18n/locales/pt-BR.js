@@ -377,6 +377,7 @@ export default {
 	Select_Server: 'Selecionar Servidor',
 	Select_Users: 'Selecionar Usuários',
 	Select_a_Channel: 'Selecione um canal',
+	Select_an_option: 'Selecione uma opção',
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',

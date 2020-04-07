@@ -169,6 +169,9 @@ const ChatsStack = createStackNavigator({
 	VisitorNavigationView: {
 		getScreen: () => require('./views/VisitorNavigationView').default
 	},
+	PickerView: {
+		getScreen: () => require('./views/PickerView').default
+	},
 	...RoomRoutes
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -451,6 +454,9 @@ const RoomActionsStack = createStackNavigator({
 	},
 	AttachmentView: {
 		getScreen: () => require('./views/AttachmentView').default
+	},
+	PickerView: {
+		getScreen: () => require('./views/PickerView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
