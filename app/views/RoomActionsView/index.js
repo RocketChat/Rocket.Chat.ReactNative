@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import prompt from 'react-native-prompt-android';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';
@@ -53,6 +54,7 @@ class RoomActionsView extends React.Component {
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
+		livechatComment: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -413,7 +415,26 @@ class RoomActionsView extends React.Component {
 
 	closeLivechat = () => {
 		const { room: { rid } } = this.state;
-		return RocketChat.closeLivechat(rid, '');
+		const { livechatComment } = this.props;
+
+		const closeRoom = (comment = '') => RocketChat.closeLivechat(rid, comment);
+
+		if (!livechatComment) {
+			const comment = I18n.t('Chat_closed_by_agent');
+			return closeRoom(comment);
+		}
+
+		return prompt(
+			I18n.t('Closing_chat'),
+			I18n.t('Please_add_a_comment'),
+			[
+				{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
+				{
+					text: I18n.t('Submit'),
+					onPress: comment => closeRoom(comment)
+				}
+			]
+		);
 	}
 
 	returnLivechat = () => {
@@ -627,7 +648,8 @@ class RoomActionsView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
-	jitsiEnabled: state.settings.Jitsi_Enabled || false
+	jitsiEnabled: state.settings.Jitsi_Enabled || false,
+	livechatComment: state.settings.Livechat_request_comment_when_closing_conversation
 });
 
 const mapDispatchToProps = dispatch => ({

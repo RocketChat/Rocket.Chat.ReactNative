@@ -68,6 +68,9 @@ export default {
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Livechat_request_comment_when_closing_conversation: {
+		type: 'valueAsBoolean'
+	},
 	Jitsi_Enabled: {
 		type: 'valueAsBoolean'
 	},
