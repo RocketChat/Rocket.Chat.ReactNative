@@ -41,7 +41,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
 
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), Arrays.<SingletonModule>asList());
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -60,7 +60,11 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
-      packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      // packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+        new ModuleRegistryAdapter(mModuleRegistryProvider)
+      );
+      packages.addAll(unimodules);
       return packages;
     }
 
