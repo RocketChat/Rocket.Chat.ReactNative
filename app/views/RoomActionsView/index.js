@@ -73,7 +73,10 @@ class RoomActionsView extends React.Component {
 			canViewMembers: false,
 			canAutoTranslate: false,
 			canAddUser: false,
-			canInviteUser: false
+			canInviteUser: false,
+			canCloseRoom: false,
+			canForwardGuest: false,
+			canReturnQueue: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -120,6 +123,10 @@ class RoomActionsView extends React.Component {
 
 		this.canAddUser();
 		this.canInviteUser();
+
+		this.canCloseRoom();
+		this.canForwardGuest();
+		this.canReturnQueue();
 	}
 
 	componentWillUnmount() {
@@ -188,9 +195,60 @@ class RoomActionsView extends React.Component {
 		return result;
 	}
 
+	canCloseRoom = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		let result = true;
+
+		const closeOthersLivechatRoom = 'close-others-livechat-room';
+		const permissions = await RocketChat.hasPermission([closeOthersLivechatRoom], rid);
+		if (!permissions[closeOthersLivechatRoom]) {
+			result = false;
+		}
+
+		this.setState({ canCloseRoom: result });
+	}
+
+	canEditRoom = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		// let result = true;
+
+		const saveOthersLivechatRoomInfo = 'save-others-livechat-room-info';
+		const permissions = await RocketChat.hasPermission([saveOthersLivechatRoomInfo], rid);
+		if (!permissions[saveOthersLivechatRoomInfo]) {
+			// result = false;
+		}
+
+		// this.setState({ canEditRoom: result });
+	}
+
+	canForwardGuest = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		let result = true;
+
+		const transferLivechatGuest = 'transfer-livechat-guest';
+		const permissions = await RocketChat.hasPermission([transferLivechatGuest], rid);
+		if (!permissions[transferLivechatGuest]) {
+			result = false;
+		}
+
+		this.setState({ canForwardGuest: result });
+	}
+
+	canReturnQueue = async() => {
+		try {
+			const { returnQueue } = await RocketChat.getRoutingConfig();
+			this.setState({ canReturnQueue: returnQueue });
+		} catch {
+			// do nothing
+		}
+	}
+
 	get sections() {
 		const {
-			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate
+			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canCloseRoom, canForwardGuest, canReturnQueue
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
@@ -376,22 +434,32 @@ class RoomActionsView extends React.Component {
 			}
 		} else if (t === 'l') {
 			sections[2].data = [];
-			sections[2].data.push({
-				icon: 'close',
-				name: I18n.t('Close'),
-				event: this.closeLivechat
-			});
-			sections[2].data.push({
-				icon: 'forward',
-				name: I18n.t('Forward'),
-				route: 'ForwardLivechatView',
-				params: { rid }
-			});
-			sections[2].data.push({
-				icon: 'return',
-				name: I18n.t('Return'),
-				event: this.returnLivechat
-			});
+
+			if (canCloseRoom) {
+				sections[2].data.push({
+					icon: 'close',
+					name: I18n.t('Close'),
+					event: this.closeLivechat
+				});
+			}
+
+			if (canForwardGuest) {
+				sections[2].data.push({
+					icon: 'forward',
+					name: I18n.t('Forward'),
+					route: 'ForwardLivechatView',
+					params: { rid }
+				});
+			}
+
+			if (canReturnQueue) {
+				sections[2].data.push({
+					icon: 'return',
+					name: I18n.t('Return'),
+					event: this.returnLivechat
+				});
+			}
+
 			sections[2].data.push({
 				icon: 'nav',
 				name: I18n.t('Navigation_history'),

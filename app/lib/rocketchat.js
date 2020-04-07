@@ -839,6 +839,9 @@ const RocketChat = {
 	usersAutoComplete(selector) {
 		return this.sdk.get('users.autocomplete', { selector });
 	},
+	getRoutingConfig() {
+		return this.methodCall('livechat:getRoutingConfig');
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method
