@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import UAParser from 'ua-parser-js';
 
@@ -8,6 +8,23 @@ import { withTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
+import sharedStyles from '../Styles';
+import { themes } from '../../constants/colors';
+import I18n from '../../i18n';
+
+const styles = StyleSheet.create({
+	title: {
+		fontSize: 16,
+		paddingHorizontal: 20,
+		...sharedStyles.textMedium
+	}
+});
+
+const Title = ({ title, theme }) => <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>;
+Title.propTypes = {
+	title: PropTypes.string,
+	theme: PropTypes.string
+};
 
 const Livechat = ({ rid, theme }) => {
 	const [user, setUser] = useState({});
@@ -56,24 +73,24 @@ const Livechat = ({ rid, theme }) => {
 
 	return (
 		<>
+			<Title
+				title={I18n.t('User')}
+				theme={theme}
+			/>
 			<Timezone
 				utcOffset={user.utc}
 				theme={theme}
 			/>
-			{user.visitorEmails?.map(email => (
-				<Item
-					label='email'
-					content={email.address}
-					theme={theme}
-				/>
-			))}
-			{user.phone?.map(phone => (
-				<Item
-					label='phone'
-					content={phone.phoneNumber}
-					theme={theme}
-				/>
-			))}
+			<Item
+				label='email'
+				content={user.visitorEmails}
+				theme={theme}
+			/>
+			<Item
+				label='phone'
+				content={user.phone}
+				theme={theme}
+			/>
 			<Item
 				label='created_at'
 				content={user.lastLogin && user.createdAt}
@@ -103,7 +120,10 @@ const Livechat = ({ rid, theme }) => {
 				customFields={user.livechatData}
 				theme={theme}
 			/>
-			<Text>Conversation</Text>
+			<Title
+				title={I18n.t('Conversation')}
+				theme={theme}
+			/>
 			<Item
 				label='agent'
 				content={room.servedBy?.username}
