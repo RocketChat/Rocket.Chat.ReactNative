@@ -270,6 +270,7 @@ export default {
 	Light: 'Light',
 	License: 'License',
 	Livechat: 'Livechat',
+	Livechat_edit: 'Livechat edit',
 	Login: 'Login',
 	Login_error: 'Your credentials were rejected! Please try again.',
 	Login_with: 'Login with',

@@ -26,7 +26,7 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const Livechat = ({ rid, theme }) => {
+const Livechat = ({ rid, navigation, theme }) => {
 	const [user, setUser] = useState({});
 	const [room, setRoom] = useState({});
 	const [department, setDepartment] = useState({});
@@ -45,6 +45,7 @@ const Livechat = ({ rid, theme }) => {
 				}
 
 				setUser(visitor);
+				navigation.setParams({ visitor });
 			}
 		}
 	};
@@ -63,6 +64,7 @@ const Livechat = ({ rid, theme }) => {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
 				setRoom(result.room);
+				navigation.setParams({ livechat: result.room });
 				getVisitor(result.room.v._id);
 				getDepartment(result.room.departmentId);
 			}
@@ -155,6 +157,7 @@ const Livechat = ({ rid, theme }) => {
 };
 Livechat.propTypes = {
 	rid: PropTypes.string,
+	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
 

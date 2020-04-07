@@ -172,6 +172,9 @@ const ChatsStack = createStackNavigator({
 	ForwardLivechatView: {
 		getScreen: () => require('./views/ForwardLivechatView').default
 	},
+	LivechatEditView: {
+		getScreen: () => require('./views/LivechatEditView').default
+	},
 	PickerView: {
 		getScreen: () => require('./views/PickerView').default
 	},

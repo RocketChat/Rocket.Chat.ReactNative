@@ -49,6 +49,8 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const showEdit = navigation.getParam('showEdit');
+		const livechat = navigation.getParam('livechat');
+		const visitor = navigation.getParam('visitor');
 		const rid = navigation.getParam('rid');
 		const t = navigation.getParam('t');
 		return {
@@ -57,7 +59,11 @@ class RoomInfoView extends React.Component {
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
-						<Item iconName='edit' onPress={() => navigation.navigate('RoomInfoEditView', { rid })} testID='room-info-view-edit-button' />
+						<Item
+							iconName='edit'
+							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, visitor, livechat })}
+							testID='room-info-view-edit-button'
+						/>
 					</CustomHeaderButtons>
 				)
 				: null
@@ -249,12 +255,12 @@ class RoomInfoView extends React.Component {
 
 	renderContent = () => {
 		const { room, roomUser } = this.state;
-		const { theme } = this.props;
+		const { navigation, theme } = this.props;
 
 		if (this.isDirect) {
 			return <Direct roomUser={roomUser} theme={theme} />;
 		} else if (this.t === 'l') {
-			return <Livechat rid={room.rid} theme={theme} />;
+			return <Livechat rid={room.rid} navigation={navigation} theme={theme} />;
 		}
 		return <Channel room={room} theme={theme} />;
 	}
