@@ -52,9 +52,23 @@ const LivechatEditView = ({ navigation, theme }) => {
 			userData.phone = params.phone;
 		}
 
+		userData.livechatData = {};
+		Object.entries(visitor.livechatData).forEach(([key]) => {
+			if (params[key]) {
+				userData.livechatData[key] = params[key];
+			}
+		});
+
 		if (params.topic) {
 			roomData.topic = params.topic;
 		}
+
+		roomData.livechatData = {};
+		Object.entries(livechat.livechatData).forEach(([key]) => {
+			if (params[key]) {
+				roomData.livechatData[key] = params[key];
+			}
+		});
 
 		if (sms) {
 			delete userData.phone;
@@ -123,6 +137,7 @@ const LivechatEditView = ({ navigation, theme }) => {
 						<TextInput
 							label={key}
 							defaultValue={value}
+							onChangeText={text => onChangeText(key, text)}
 							theme={theme}
 						/>
 					))}
