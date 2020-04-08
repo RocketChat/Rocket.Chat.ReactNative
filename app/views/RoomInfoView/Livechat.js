@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet } from 'react-native';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import PropTypes from 'prop-types';
 import UAParser from 'ua-parser-js';
+import _ from 'lodash';
 
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
@@ -31,6 +33,29 @@ const Livechat = ({ rid, navigation, theme }) => {
 	const [room, setRoom] = useState({});
 	const [department, setDepartment] = useState({});
 
+	const getCustomFields = async() => {
+		const result = await RocketChat.getCustomFields();
+		if (result.success) {
+			const { customFields } = result;
+
+			const visitorCustomFields = customFields
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+				.map(field => ({ [field._id]: user.livechatData[field._id] || '' }))
+				.reduce((ret, field) => ({ [field]: field, ...ret }));
+
+			const livechatCustomFields = customFields
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+				.map(field => ({ [field._id]: room.livechatData[field._id] || '' }))
+				.reduce((ret, field) => ({ [field]: field, ...ret }));
+
+			setUser({ ...user, livechatData: visitorCustomFields });
+			setRoom({ ...room, livechatData: livechatCustomFields });
+
+			navigation.setParams({ visitor: { ...user, livechatData: visitorCustomFields } });
+			navigation.setParams({ livechat: { ...room, livechatData: livechatCustomFields } });
+		}
+	};
+
 	const getVisitor = async(id) => {
 		if (id) {
 			const result = await RocketChat.getVisitorInfo(id);
@@ -45,7 +70,6 @@ const Livechat = ({ rid, navigation, theme }) => {
 				}
 
 				setUser(visitor);
-				navigation.setParams({ visitor });
 			}
 		}
 	};
@@ -64,7 +88,6 @@ const Livechat = ({ rid, navigation, theme }) => {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
 				setRoom(result.room);
-				navigation.setParams({ livechat: result.room });
 				getVisitor(result.room.v._id);
 				getDepartment(result.room.departmentId);
 			}
@@ -74,6 +97,11 @@ const Livechat = ({ rid, navigation, theme }) => {
 	};
 
 	useEffect(() => { getRoom(); }, []);
+	useDeepCompareEffect(() => {
+		if (!_.isEmpty(room) && !_.isEmpty(user)) {
+			getCustomFields();
+		}
+	}, [room, user]);
 
 	return (
 		<>

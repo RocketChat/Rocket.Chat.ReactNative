@@ -848,6 +848,9 @@ const RocketChat = {
 	getAgentDepartments(uid) {
 		return this.sdk.get(`livechat/agents/${ uid }/departments`);
 	},
+	getCustomFields() {
+		return this.sdk.get('livechat/custom-fields');
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method

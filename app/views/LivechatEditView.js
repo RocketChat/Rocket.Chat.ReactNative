@@ -54,7 +54,7 @@ const LivechatEditView = ({ navigation, theme }) => {
 
 		userData.livechatData = {};
 		Object.entries(visitor.livechatData).forEach(([key]) => {
-			if (params[key]) {
+			if (params[key] || params[key] === '') {
 				userData.livechatData[key] = params[key];
 			}
 		});
@@ -65,7 +65,7 @@ const LivechatEditView = ({ navigation, theme }) => {
 
 		roomData.livechatData = {};
 		Object.entries(livechat.livechatData).forEach(([key]) => {
-			if (params[key]) {
+			if (params[key] || params[key] === '') {
 				roomData.livechatData[key] = params[key];
 			}
 		});
