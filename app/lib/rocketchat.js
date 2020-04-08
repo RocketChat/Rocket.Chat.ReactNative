@@ -842,6 +842,9 @@ const RocketChat = {
 	getRoutingConfig() {
 		return this.methodCall('livechat:getRoutingConfig');
 	},
+	getTagsList() {
+		return this.methodCall('livechat:getTagsList');
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method
