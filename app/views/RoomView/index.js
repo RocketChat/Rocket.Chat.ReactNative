@@ -421,7 +421,6 @@ class RoomView extends React.Component {
 					name: this.getRoomTitle(room),
 					subtitle: room.topic,
 					avatar: room.name,
-					visitor: room.visitor,
 					t: room.t
 				});
 			}
