@@ -1943,10 +1943,10 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-community/slider@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-2.0.5.tgz#2efd009ff083e4321fc9f0ebf380a3d3f5d8121f"
-  integrity sha512-cvi3ZexD2nAWesoTVPHH1AlaR8ccOIhVfoDV79JeCSKIq1NSVXDgynclYlcNNTbI5nls0FstZjGj1jJVcSsB1Q==
+"@react-native-community/slider@2.0.9":
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-2.0.9.tgz#bf74045c96f1fb22e3ec961e321300c230c63990"
+  integrity sha512-6GHUKXxiDSs75VZQRa6B+nxo8rqpIEcegZ1iCSQG4aW2oSVepceqDol+0y3/KaBt5WMpD4KybLw8ZZqkT6olaQ==
 
 "@react-native-community/viewpager@^2.0.1":
   version "2.0.1"
@@ -3408,10 +3408,10 @@ buffer@^5.2.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
 
-bugsnag-react-native@2.23.2:
-  version "2.23.2"
-  resolved "https://registry.yarnpkg.com/bugsnag-react-native/-/bugsnag-react-native-2.23.2.tgz#36143187b67605934e3441a7d8562f60666f5919"
-  integrity sha512-nCvYswyr43GGlE4LEdD5p7XR2NvkVKmSxF7+i//ONWszS/cHnO0D1h57LlPo2elzcDpK9NHGcz3h6WkZVxkf0Q==
+bugsnag-react-native@2.23.7:
+  version "2.23.7"
+  resolved "https://registry.yarnpkg.com/bugsnag-react-native/-/bugsnag-react-native-2.23.7.tgz#39b890831e1f61616d43caeb4e595a36cf6b9e72"
+  integrity sha512-C6pBHccDK1p8fTvEYinnbc7QYdpe+aF4j58/WuAymWhCVUHGv2DsQQ6gAbY/VgM+xaLI8jOGw4DLpiDK9mZgng==
   dependencies:
     iserror "^0.0.2"
     promise "^7"
@@ -5910,6 +5910,13 @@ hoek@4.x.x:
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
   integrity sha512-QLg82fGkfnJ/4iy1xZ81/9SIJiq1NGFUMGs6ParyjBZr6jW2Ufj/snDqTHixNlHdPNwN2RLVD0Pi3igeK9+JfA==
 
+hoist-non-react-statics@3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
 hoist-non-react-statics@^2.3.1:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
@@ -5999,10 +6006,10 @@ husky@3.0.9:
     run-node "^1.0.0"
     slash "^3.0.0"
 
-i18n-js@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.5.0.tgz#e2c41e1f90405d691d33ddce260f3dff9743215e"
-  integrity sha512-XosH7plfEisWo5XEYxkdlwONsDVQ3sYI3ZoKXcjXdyq+9eVNIJg2h2oPsgadfqcXxpPHMVMNBgmiyW3aEJXg1g==
+i18n-js@3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.5.1.tgz#9787450894059bec1af791123231e59898eb97c1"
+  integrity sha512-nJgbE5Vj9qzOQfjdVd/uoMoO8ppVaB/3LB6KOmMfD8IQ1vNNh307iHyQLK8ZnLYWkAszfPvVpYmUt1Le/RuHMQ==
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -7571,10 +7578,10 @@ jpeg-js@^0.3.4:
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.3.7.tgz#471a89d06011640592d314158608690172b1028d"
   integrity sha512-9IXdWudL61npZjvLuVe/ktHiA41iE8qFyLB+4VDTblEsWBzeg8WQTlktdUK4CdncUqtUgUg0bbOmTE2bKBKaBQ==
 
-js-base64@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
-  integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
+js-base64@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.2.tgz#313b6274dda718f714d00b3330bbae6e38e90209"
+  integrity sha512-Vg8czh0Q7sFBSUMWWArX/miJeBWYBPpdU/3M/DKSaekLMqrqVPaedp+5mZhie/r0lgrcaYBfwXatEew6gwgiQQ==
 
 js-sha256@^0.9.0:
   version "0.9.0"
@@ -10117,24 +10124,12 @@ react-native-image-crop-picker@RocketChat/react-native-image-crop-picker:
   version "0.28.0"
   resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/d97520ee4f48ab90dfc40c4ef0e9f9031ad55375"
 
-react-native-image-pan-zoom@^2.1.9:
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.11.tgz#61bcb69219d95e76a9797d23e4a2e8e0bd654ae9"
-  integrity sha512-ZCisGUFpPchHXsjT7ZI0anlSLPgcTmjRKXqpVnPu3RDWFXfKjuL4zpY57DX4Y8YgGZCpbf9fApN7KjVYody2Mw==
-
 react-native-image-progress@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-image-progress/-/react-native-image-progress-1.1.1.tgz#95bbe0875c7ebd54286df69cb37b598b94c54eb0"
   integrity sha512-5rI2UjUo1bJoggU3lZAa+Wv29bm+N322XVR49mxfczfhaOyFdoXMIRgd5x2eXG+RQi9PcLleD6wxVDxGAPPO9Q==
   dependencies:
     prop-types "^15.5.10"
-
-react-native-image-zoom-viewer@^2.2.26:
-  version "2.2.26"
-  resolved "https://registry.yarnpkg.com/react-native-image-zoom-viewer/-/react-native-image-zoom-viewer-2.2.26.tgz#c6f070abb094cfbe1b3b7d8a38ad979a5facbdc5"
-  integrity sha512-Mh4+CJQCDcAumLFXLlDk8nQ5iMxNnupc9HwktsZ3I/v4HULcFPmTLDQ0HGAxjLa5foZRPnKDN06iKGsEb9raoA==
-  dependencies:
-    react-native-image-pan-zoom "^2.1.9"
 
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
@@ -10172,10 +10167,10 @@ react-native-keycommands@2.0.3:
   resolved "https://registry.yarnpkg.com/react-native-keycommands/-/react-native-keycommands-2.0.3.tgz#09b799c1f70832e5cd9fbdb712ddaa3ee683f70e"
   integrity sha512-s03K8JvCnfLhBg10Y2aRH3Bp9Uw9QOEr0uzuIj9OkgjjTB8/b+T4K5LSCxGuIAD30IxsEZvGZKjP1DzEMxaRhQ==
 
-react-native-localize@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.1.tgz#d0b7046acd4214ac2bcb61102317374351400c76"
-  integrity sha512-Y3LzTHyrgsIsDYvjWSRguARBKjiLaahcbJg663ZqP1Tcpan4LYn/f3iusM+Oh6qYvClnlo9AlBkLdCZbWwe7Tw==
+react-native-localize@1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.4.tgz#7d5c7b7ea30548d777a641457434d363cfac48db"
+  integrity sha512-ZVdapfTIcizCQ6nfbkTzjN/+D1eFb3aRtmOSC6d4LtjYRovUnv0QmNSg35CI/Q8Jy3nx4bHg6M9QyQ75MHzf7Q==
 
 react-native-mime-types@^2.2.1:
   version "2.2.1"
@@ -10184,10 +10179,10 @@ react-native-mime-types@^2.2.1:
   dependencies:
     mime-db "~1.25.0"
 
-react-native-modal@11.5.3:
-  version "11.5.3"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.3.tgz#28b4c761680a165eaf1d2c0fb08e272c0191b39f"
-  integrity sha512-U6RghSkZUZ6c0LHMbwAnVscEwGoI58eXfBstVs18t50miV0GmLcJhIOu5OND+SDGVkBQFiGFRu/pTUJaA7wfGw==
+react-native-modal@11.5.6:
+  version "11.5.6"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
+  integrity sha512-APGNfbvgC4hXbJqcSADu79GLoMKIHUmgR3fDQ7rCGZNBypkStSP8imZ4PKK/OzIZZfjGU9aP49jhMgGbhY9KHA==
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
@@ -10210,10 +10205,10 @@ react-native-notifications@2.1.7:
     core-js "^1.0.0"
     uuid "^2.0.3"
 
-react-native-orientation-locker@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.6.tgz#7d66a62cdbf4dd1548522efe69a4e04af5daf929"
-  integrity sha512-yXTC8KmKfhuEAh+gCOcehx0v4IjYapV0lJ6W1muafoISvxMsT+Cizzy+Iz78hQywVZTJNB/Xusl7WMXev7OxDQ==
+react-native-orientation-locker@1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.8.tgz#45d1c9e002496b8d286ec8932d6e3e7d341f9c85"
+  integrity sha512-+Vd7x6O/3zGqYIMXpeDlaw3ma074Dtnocm8ryT9v5SvaiEcWSzII4frPgXaUcc/MiCq4OWZ1JtVoyw75mdomQw==
 
 react-native-picker-select@6.3.3:
   version "6.3.3"
@@ -10227,17 +10222,17 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-popover-view@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-2.0.5.tgz#402767a7ef791cb5ec5c035f51755e579b0eaee3"
-  integrity sha512-F/GJxaRdmpHPX/rXBgeGkKRB3t7v8rS5ysEclSNcXtBe00rkhCNq74h0WKomQDPM1LYPETZ76mXIfHylEU7Awg==
+react-native-popover-view@2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-2.0.7.tgz#f740403e18719df833eeaf47d1b942704270c6b6"
+  integrity sha512-1GMFvueNE1xhi0zzCAYptWIkIWiPVdN8EwYRSL5kyug/VFwmdowZYWq4LekFQlFCj9WHLrHe7awCgTXUC/4E6Q==
   dependencies:
     react-native-safe-area-view "^0.14.6"
 
-react-native-progress@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.0.tgz#38ec27153861580d59765fdc5b4024c328677f96"
-  integrity sha512-6aZgClVBLCMpixOE04iGicARQINKNi02z2uRqLG4RtxdOJPL3GkHoH82+TrnwFBMvs/5ImasSr9s8n4SML//cQ==
+react-native-progress@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
+  integrity sha512-sFHs6k6npWDOyvQoL2NeyOyHb+q1s8iOAOeyzoObN77zkxOAsgJt9FcSJLRq70Mw7qSGNJMFDqCgvYR1huYRwQ==
   dependencies:
     "@react-native-community/art" "^1.1.2"
     prop-types "^15.7.2"
@@ -10402,10 +10397,10 @@ react-navigation-drawer@1.4.0:
   dependencies:
     react-native-tab-view "^1.2.0"
 
-react-navigation-header-buttons@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-3.0.4.tgz#63480ae356745549ede8b0232fda9c23c8526ea1"
-  integrity sha512-9wXSciaY1bxGxJQMhzVoPrVR20DQd487Re3119crVYZbAvQpugTznAc4VKc4rY4Z68LR//V7x7a00uEGAiZQDA==
+react-navigation-header-buttons@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-3.0.5.tgz#5b8c0fc32bc59382f02015e4b2f19a135b99dca4"
+  integrity sha512-b1AsL9k6Klp72CnAq4IF0xgw94FClBIsUr/pGUKa1PI+mStdF0AYZzi9qtYgqQNDIOpqxQ2xYUM9azL2VmPUeQ==
   dependencies:
     react-native-platform-touchable "^1.1.1"
 
@@ -10716,7 +10711,15 @@ redux-saga@1.1.3:
   dependencies:
     "@redux-saga/core" "^1.1.3"
 
-redux@4.0.4, redux@^4.0.4:
+redux@4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
+  integrity sha512-VSz1uMAH24DM6MF72vcojpYPtrTUu3ByVWfPL1nPfVRb5mZVTve5GnNCUV53QM/BZ66xfWrm0CTWoM+Xlz8V1w==
+  dependencies:
+    loose-envify "^1.4.0"
+    symbol-observable "^1.2.0"
+
+redux@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.4.tgz#4ee1aeb164b63d6a1bcc57ae4aa0b6e6fa7a3796"
   integrity sha512-vKv4WdiJxOWKxK0yRoaK3Y4pxxB0ilzVx6dszU2W8wLxlb2yikRph4iV/ymtdJ6ZxpBLFbyrxklnT5yBbQSl3Q==
