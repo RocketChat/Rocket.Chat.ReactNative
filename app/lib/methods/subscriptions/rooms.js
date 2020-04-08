@@ -73,7 +73,11 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					autoTranslateLanguage: s.autoTranslateLanguage,
 					lastMessage: s.lastMessage,
 					usernames: s.usernames,
-					uids: s.uids
+					uids: s.uids,
+					visitor: s.visitor,
+					departmentId: s.departmentId,
+					servedBy: s.servedBy,
+					livechatData: s.livechatData
 				};
 			} catch (error) {
 				try {

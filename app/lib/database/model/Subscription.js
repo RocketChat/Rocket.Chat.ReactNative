@@ -95,4 +95,12 @@ export default class Subscription extends Model {
 	@json('uids', sanitizer) uids;
 
 	@json('usernames', sanitizer) usernames;
+
+	@json('visitor', sanitizer) visitor;
+
+	@field('department_id') departmentId;
+
+	@json('served_by', sanitizer) servedBy;
+
+	@json('livechat_data', sanitizer) livechatData;
 }

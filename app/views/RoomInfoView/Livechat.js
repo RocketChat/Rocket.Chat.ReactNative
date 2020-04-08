@@ -28,9 +28,8 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const Livechat = ({ rid, navigation, theme }) => {
+const Livechat = ({ room, navigation, theme }) => {
 	const [user, setUser] = useState({});
-	const [room, setRoom] = useState({});
 	const [department, setDepartment] = useState({});
 
 	const getCustomFields = async() => {
@@ -48,11 +47,8 @@ const Livechat = ({ rid, navigation, theme }) => {
 				.map(field => ({ [field._id]: room.livechatData[field._id] || '' }))
 				.reduce((ret, field) => ({ [field]: field, ...ret }));
 
-			setUser({ ...user, livechatData: visitorCustomFields });
-			setRoom({ ...room, livechatData: livechatCustomFields });
-
 			navigation.setParams({ visitor: { ...user, livechatData: visitorCustomFields } });
-			navigation.setParams({ livechat: { ...room, livechatData: livechatCustomFields } });
+			navigation.setParams({ livechat: { topic: room.topic, livechatData: livechatCustomFields } });
 		}
 	};
 
@@ -83,23 +79,18 @@ const Livechat = ({ rid, navigation, theme }) => {
 		}
 	};
 
-	const getRoom = async() => {
-		try {
-			const result = await RocketChat.getRoomInfo(rid);
-			if (result.success) {
-				setRoom(result.room);
-				getVisitor(result.room.v._id);
-				getDepartment(result.room.departmentId);
-			}
-		} catch {
-			// do nothing
-		}
+	const getRoom = () => {
+		getVisitor(room.visitor._id);
+		getDepartment(room.departmentId);
 	};
 
 	useEffect(() => { getRoom(); }, []);
 	useDeepCompareEffect(() => {
-		if (!_.isEmpty(room) && !_.isEmpty(user)) {
-			getCustomFields();
+		if (!_.isEmpty(room)) {
+			getRoom();
+			if (!_.isEmpty(user)) {
+				getCustomFields();
+			}
 		}
 	}, [room, user]);
 
@@ -184,7 +175,7 @@ const Livechat = ({ rid, navigation, theme }) => {
 	);
 };
 Livechat.propTypes = {
-	rid: PropTypes.string,
+	room: PropTypes.object,
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };

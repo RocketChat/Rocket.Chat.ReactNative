@@ -40,7 +40,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	)
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' theme={theme} />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} theme={theme} />
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)
@@ -260,7 +260,7 @@ class RoomInfoView extends React.Component {
 		if (this.isDirect) {
 			return <Direct roomUser={roomUser} theme={theme} />;
 		} else if (this.t === 'l') {
-			return <Livechat rid={room.rid} navigation={navigation} theme={theme} />;
+			return <Livechat room={room} navigation={navigation} theme={theme} />;
 		}
 		return <Channel room={room} theme={theme} />;
 	}

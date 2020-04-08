@@ -74,6 +74,20 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 8,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'visitor', type: 'string', isOptional: true },
+						{ name: 'department_id', type: 'string', isOptional: true },
+						{ name: 'served_by', type: 'string', isOptional: true },
+						{ name: 'livechat_data', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

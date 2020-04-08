@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 7,
+	version: 8,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -42,7 +42,11 @@ export default appSchema({
 				{ name: 'hide_unread_status', type: 'boolean', isOptional: true },
 				{ name: 'sys_mes', type: 'string', isOptional: true },
 				{ name: 'uids', type: 'string', isOptional: true },
-				{ name: 'usernames', type: 'string', isOptional: true }
+				{ name: 'usernames', type: 'string', isOptional: true },
+				{ name: 'visitor', type: 'string', isOptional: true },
+				{ name: 'department_id', type: 'string', isOptional: true },
+				{ name: 'served_by', type: 'string', isOptional: true },
+				{ name: 'livechat_data', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
