@@ -206,6 +206,7 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
