@@ -119,6 +119,7 @@ export default {
 	Broadcast_Channel: 'Broadcast Channel',
 	Busy: 'Busy',
 	By_proceeding_you_are_agreeing: 'By proceeding you are agreeing to our',
+	Cant_read_public_settings: 'Can\'t read public settings.\n{{contact}}',
 	Cancel_editing: 'Cancel editing',
 	Cancel_recording: 'Cancel recording',
 	Cancel: 'Cancel',
