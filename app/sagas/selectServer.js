@@ -21,7 +21,6 @@ import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
-import { showErrorAlert } from '../utils/info';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -147,7 +146,6 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
-		showErrorAlert(I18n.t('Couldnt_read_public_server_settings', { contact: I18n.t('Contact_your_server_admin') }), I18n.t('Oops'));
 		yield put(serverFailure());
 		log(e);
 	}

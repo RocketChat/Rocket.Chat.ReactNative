@@ -10,6 +10,8 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
+import { showErrorAlert } from '../../utils/info';
+import I18n from '../../i18n';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
@@ -53,12 +55,17 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 };
 
 export async function getLoginSettings({ server }) {
-	const settingsParams = JSON.stringify(['Accounts_ShowFormLogin', 'Accounts_RegistrationForm']);
-	const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
+	try {
+		const settingsParams = JSON.stringify(['Accounts_ShowFormLogin', 'Accounts_RegistrationForm']);
+		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
-	if (result.success && result.settings.length) {
-		reduxStore.dispatch(clearSettings());
-		reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
+		if (result.success && result.settings.length) {
+			reduxStore.dispatch(clearSettings());
+			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
+		}
+	} catch (e) {
+		showErrorAlert(I18n.t('Couldnt_read_public_server_settings', { contact: I18n.t('Contact_your_server_admin') }), I18n.t('Oops'));
+		throw e;
 	}
 }
 
