@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '../theme';
@@ -11,6 +11,19 @@ import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import ListItem from '../containers/ListItem';
+
+const styles = StyleSheet.create({
+	noResult: {
+		fontSize: 16,
+		paddingVertical: 56,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textSemibold
+	},
+	withoutBorder: {
+		borderBottomWidth: 0,
+		borderTopWidth: 0
+	}
+});
 
 const Item = ({ item, theme }) => (
 	<ListItem
@@ -63,9 +76,11 @@ const VisitorNavigationView = ({ navigation, theme }) => {
 				{
 					backgroundColor: themes[theme].auxiliaryBackground,
 					borderColor: themes[theme].separatorColor
-				}
+				},
+				!pages.length && styles.withoutBorder
 			]}
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
 			keyExtractor={item => item}
 			onEndReached={onEndReached}
 			onEndReachedThreshold={5}
