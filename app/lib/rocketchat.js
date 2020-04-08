@@ -845,6 +845,9 @@ const RocketChat = {
 	getTagsList() {
 		return this.methodCall('livechat:getTagsList');
 	},
+	getAgentDepartments(uid) {
+		return this.sdk.get(`livechat/agents/${ uid }/departments`);
+	},
 
 	getUidDirectMessage(room, userId) {
 		// legacy method

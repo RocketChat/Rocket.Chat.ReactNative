@@ -418,6 +418,7 @@ export default {
 	SAVE: 'SAVE',
 	Save_Changes: 'Save Changes',
 	Save: 'Save',
+	Saved: 'Saved',
 	saving_preferences: 'saving preferences',
 	saving_profile: 'saving profile',
 	saving_settings: 'saving settings',
