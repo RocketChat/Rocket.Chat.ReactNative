@@ -862,6 +862,10 @@ const RocketChat = {
 			return false;
 		}
 
+		if (room.t === 'l' && room.visitor) {
+			return room.visitor._id;
+		}
+
 		const me = room && room.uids && room.uids.find(uid => uid === userId);
 		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
 

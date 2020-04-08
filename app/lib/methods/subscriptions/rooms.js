@@ -15,6 +15,7 @@ import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
 import EventEmmiter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
+import { setActiveUsers } from '../../../actions/activeUsers';
 
 const removeListener = listener => listener.stop();
 
@@ -108,6 +109,10 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			} catch (error) {
 				// Do nothing
 			}
+		}
+
+		if (room?.v) {
+			store.dispatch(setActiveUsers({ [room.v._id]: { status: room.v.status } }));
 		}
 
 		const tmp = merge(subscription, room);

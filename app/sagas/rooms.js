@@ -13,6 +13,8 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { setActiveUsers } from '../actions/activeUsers';
+import store from '../lib/createStore';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -46,6 +48,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		const messagesCollection = db.collections.get('messages');
+
+		subscriptions.forEach((sub) => {
+			if (sub?.visitor) {
+				store.dispatch(setActiveUsers({ [sub.visitor._id]: { status: sub.visitor.status } }));
+			}
+		});
 
 		if (subscriptions.length) {
 			const subsIds = subscriptions.map(sub => sub.rid);

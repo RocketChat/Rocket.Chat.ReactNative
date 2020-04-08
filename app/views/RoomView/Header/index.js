@@ -98,7 +98,7 @@ const mapStateToProps = (state, ownProps) => {
 	let status;
 	let statusText;
 	const { roomUserId, type } = ownProps;
-	if (type === 'd') {
+	if (type === 'd' || type === 'l') {
 		const user = getUserSelector(state);
 		if (user.id) {
 			if (state.activeUsers[roomUserId] && state.meteor.connected) {
