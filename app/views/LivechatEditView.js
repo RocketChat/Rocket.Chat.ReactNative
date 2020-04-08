@@ -31,6 +31,7 @@ Title.propTypes = {
 };
 
 const LivechatEditView = ({ navigation, theme }) => {
+	const inputs = {};
 	const params = {};
 
 	const livechat = navigation.getParam('livechat', {});
@@ -101,25 +102,45 @@ const LivechatEditView = ({ navigation, theme }) => {
 						label={I18n.t('Name')}
 						defaultValue={visitor.name}
 						onChangeText={text => onChangeText('name', text)}
+						onSubmitEditing={() => { inputs.name.focus(); }}
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Email')}
+						inputRef={(e) => { inputs.name = e; }}
 						defaultValue={visitor.visitorEmails[0]?.address}
 						onChangeText={text => onChangeText('email', text)}
+						onSubmitEditing={() => { inputs.phone.focus(); }}
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Phone')}
+						inputRef={(e) => { inputs.phone = e; }}
 						defaultValue={visitor.phone[0]?.phoneNumber}
 						onChangeText={text => onChangeText('phone', text)}
+						onSubmitEditing={() => {
+							const keys = Object.keys(visitor.livechatData);
+							if (keys.length > 0) {
+								const key = keys.pop();
+								inputs[key].focus();
+							} else {
+								inputs.topic.focus();
+							}
+						}}
 						theme={theme}
 					/>
-					{Object.entries(visitor.livechatData).map(([key, value]) => (
+					{Object.entries(visitor.livechatData).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}
+							inputRef={(e) => { inputs[key] = e; }}
 							onChangeText={text => onChangeText(key, text)}
+							onSubmitEditing={() => {
+								if (array.length - 1 > index) {
+									return inputs[array[index + 1]].focus();
+								}
+								inputs.topic.focus();
+							}}
 							theme={theme}
 						/>
 					))}
@@ -129,15 +150,30 @@ const LivechatEditView = ({ navigation, theme }) => {
 					/>
 					<TextInput
 						label={I18n.t('Topic')}
+						inputRef={(e) => { inputs.topic = e; }}
 						defaultValue={livechat.topic}
 						onChangeText={text => onChangeText('topic', text)}
+						onSubmitEditing={() => {
+							const keys = Object.keys(livechat.livechatData);
+							if (keys.length > 0) {
+								const key = keys.pop();
+								inputs[key].focus();
+							}
+						}}
 						theme={theme}
 					/>
-					{Object.entries(livechat.livechatData).map(([key, value]) => (
+					{Object.entries(livechat.livechatData).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}
+							inputRef={(e) => { inputs[key] = e; }}
 							onChangeText={text => onChangeText(key, text)}
+							onSubmitEditing={() => {
+								if (array.length - 1 > index) {
+									return inputs[array[index + 1]].focus();
+								}
+								submit();
+							}}
 							theme={theme}
 						/>
 					))}
