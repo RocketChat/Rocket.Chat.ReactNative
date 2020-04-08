@@ -44,6 +44,10 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	const [tagParam, setTags] = useState(livechat.tags || []);
 
+	useEffect(() => {
+		setTags([...tagParam, ...availableUserTags]);
+	}, [availableUserTags]);
+
 	const getTagsList = async(agentDepartments) => {
 		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
@@ -89,6 +93,8 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		if (params.topic) {
 			roomData.topic = params.topic;
 		}
+
+		roomData.tags = tagParam;
 
 		roomData.livechatData = {};
 		Object.entries(livechat.livechatData).forEach(([key]) => {
@@ -179,27 +185,24 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						inputRef={(e) => { inputs.topic = e; }}
 						defaultValue={livechat.topic}
 						onChangeText={text => onChangeText('topic', text)}
-						onSubmitEditing={() => {
-							const keys = Object.keys(livechat.livechatData);
-							if (keys.length > 0) {
-								const key = keys.pop();
-								inputs[key].focus();
-							}
-						}}
+						onSubmitEditing={() => inputs.tags.focus()}
 						theme={theme}
 					/>
 
 					<TextInput
+						inputRef={(e) => { inputs.tags = e; }}
 						label={I18n.t('Tags')}
 						iconLeft='edit'
+						returnKeyType='done'
+						onSubmitEditing={({ nativeEvent: { text } }) => {
+							setTags([...tagParam.filter(t => t !== text), text]);
+							inputs.tags.clear();
+						}}
 						theme={theme}
 					/>
 					<Chips
 						items={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
-						onSelect={(tag) => {
-							setTags(tagParam.filter(t => t !== tag.value) || []);
-							console.log(tag.value, tagParam, tagParam.filter(t => t !== tag.value));
-						}}
+						onSelect={tag => setTags(tagParam.filter(t => t !== tag.value) || [])}
 						theme={theme}
 					/>
 

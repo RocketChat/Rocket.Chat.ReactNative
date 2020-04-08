@@ -48,7 +48,11 @@ const Livechat = ({ room, navigation, theme }) => {
 				.reduce((ret, field) => ({ [field]: field, ...ret }));
 
 			navigation.setParams({ visitor: { ...user, livechatData: visitorCustomFields } });
-			navigation.setParams({ livechat: { topic: room.topic, tags: room.tags, livechatData: livechatCustomFields } });
+			navigation.setParams({
+				livechat: {
+					_id: room.rid, topic: room.topic, tags: room.tags, livechatData: livechatCustomFields
+				}
+			});
 		}
 	};
 
