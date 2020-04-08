@@ -41,7 +41,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			({ roomsUpdatedAt } = serverRecord);
 		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
-		const { subscriptions } = mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
+		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
