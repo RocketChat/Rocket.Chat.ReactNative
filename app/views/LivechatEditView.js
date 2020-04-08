@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import TextInput from '../containers/TextInput';
-// import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
@@ -13,6 +14,7 @@ import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	title: {
@@ -70,66 +72,68 @@ const LivechatEditView = ({ navigation, theme }) => {
 	const onChangeText = (key, text) => { params[key] = text; };
 
 	return (
-		<ScrollView
+		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
-			<View style={styles.content}>
-				<Title
-					title={visitor.username}
-					theme={theme}
-				/>
-				<TextInput
-					label={I18n.t('Name')}
-					defaultValue={visitor.name}
-					onChangeText={text => onChangeText('name', text)}
-					theme={theme}
-				/>
-				<TextInput
-					label={I18n.t('Email')}
-					defaultValue={visitor.visitorEmails[0]?.address}
-					onChangeText={text => onChangeText('email', text)}
-					theme={theme}
-				/>
-				<TextInput
-					label={I18n.t('Phone')}
-					defaultValue={visitor.phone[0]?.phoneNumber}
-					onChangeText={text => onChangeText('phone', text)}
-					theme={theme}
-				/>
-				{Object.entries(visitor.livechatData).map(([key, value]) => (
-					<TextInput
-						label={key}
-						defaultValue={value}
-						onChangeText={text => onChangeText(key, text)}
+			<ScrollView style={sharedStyles.containerScrollView} {...scrollPersistTaps}>
+				<SafeAreaView style={sharedStyles.container} forceInset={{ vertical: 'never' }}>
+					<Title
+						title={visitor.username}
 						theme={theme}
 					/>
-				))}
-				<Title
-					title={I18n.t('Conversation')}
-					theme={theme}
-				/>
-				<TextInput
-					label={I18n.t('Topic')}
-					defaultValue={livechat.topic}
-					onChangeText={text => onChangeText('topic', text)}
-					theme={theme}
-				/>
-				{Object.entries(livechat.livechatData).map(([key, value]) => (
 					<TextInput
-						label={key}
-						defaultValue={value}
+						label={I18n.t('Name')}
+						defaultValue={visitor.name}
+						onChangeText={text => onChangeText('name', text)}
 						theme={theme}
 					/>
-				))}
-				<Button
-					title={I18n.t('Save')}
-					onPress={submit}
-					theme={theme}
-				/>
-			</View>
-		</ScrollView>
+					<TextInput
+						label={I18n.t('Email')}
+						defaultValue={visitor.visitorEmails[0]?.address}
+						onChangeText={text => onChangeText('email', text)}
+						theme={theme}
+					/>
+					<TextInput
+						label={I18n.t('Phone')}
+						defaultValue={visitor.phone[0]?.phoneNumber}
+						onChangeText={text => onChangeText('phone', text)}
+						theme={theme}
+					/>
+					{Object.entries(visitor.livechatData).map(([key, value]) => (
+						<TextInput
+							label={key}
+							defaultValue={value}
+							onChangeText={text => onChangeText(key, text)}
+							theme={theme}
+						/>
+					))}
+					<Title
+						title={I18n.t('Conversation')}
+						theme={theme}
+					/>
+					<TextInput
+						label={I18n.t('Topic')}
+						defaultValue={livechat.topic}
+						onChangeText={text => onChangeText('topic', text)}
+						theme={theme}
+					/>
+					{Object.entries(livechat.livechatData).map(([key, value]) => (
+						<TextInput
+							label={key}
+							defaultValue={value}
+							theme={theme}
+						/>
+					))}
+					<Button
+						title={I18n.t('Save')}
+						onPress={submit}
+						theme={theme}
+					/>
+				</SafeAreaView>
+			</ScrollView>
+		</KeyboardView>
 	);
 };
 LivechatEditView.propTypes = {
