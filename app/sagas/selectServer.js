@@ -147,7 +147,7 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
-		showErrorAlert(I18n.t('Cant_read_public_settings', { contact: I18n.t('Contact_your_server_admin') }), I18n.t('Oops'));
+		showErrorAlert(I18n.t('Couldnt_read_public_server_settings', { contact: I18n.t('Contact_your_server_admin') }), I18n.t('Oops'));
 		yield put(serverFailure());
 		log(e);
 	}

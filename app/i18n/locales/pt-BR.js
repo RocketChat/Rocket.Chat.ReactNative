@@ -120,6 +120,7 @@ export default {
 	Broadcast_Channel: 'Canal de Transmissão',
 	Busy: 'Ocupado',
 	By_proceeding_you_are_agreeing: 'Ao prosseguir você está aceitando',
+	Couldnt_read_public_server_settings: 'Não foi possível ler as configurações públicas do servidor.\n{{contact}}',
 	Cancel_editing: 'Cancelar edição',
 	Cancel_recording: 'Cancelar gravação',
 	Cancel: 'Cancelar',
