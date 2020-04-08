@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -15,6 +16,8 @@ import Button from '../containers/Button';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
+import { getUserSelector } from '../selectors/login';
+import Chips from '../containers/UIKit/MultiSelect/Chips';
 
 const styles = StyleSheet.create({
 	title: {
@@ -30,12 +33,35 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const LivechatEditView = ({ navigation, theme }) => {
+const LivechatEditView = ({ user, navigation, theme }) => {
+	const [availableUserTags, setAvailableUserTags] = useState([]);
+
 	const inputs = {};
 	const params = {};
 
 	const livechat = navigation.getParam('livechat', {});
 	const visitor = navigation.getParam('visitor', {});
+
+	const [tagParam, setTags] = useState(livechat.tags || []);
+
+	const getTagsList = async(agentDepartments) => {
+		const tags = await RocketChat.getTagsList();
+		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
+		const availableTags = tags
+			.filter(({ departments }) => isAdmin || (departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1)))
+			.map(({ name }) => name);
+		setAvailableUserTags(availableTags);
+	};
+
+	const getAgentDepartments = async() => {
+		const result = await RocketChat.getAgentDepartments(visitor._id);
+		if (result.success) {
+			const agentDepartments = result.departments.map(dept => dept.departmentId);
+			getTagsList(agentDepartments);
+		}
+	};
+
+	useEffect(() => { getAgentDepartments(); }, []);
 
 	const submit = async() => {
 		const userData = { _id: visitor._id };
@@ -88,7 +114,7 @@ const LivechatEditView = ({ navigation, theme }) => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			style={{ backgroundColor: themes[theme].backgroundColor }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
@@ -162,6 +188,21 @@ const LivechatEditView = ({ navigation, theme }) => {
 						}}
 						theme={theme}
 					/>
+
+					<TextInput
+						label={I18n.t('Tags')}
+						iconLeft='edit'
+						theme={theme}
+					/>
+					<Chips
+						items={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
+						onSelect={(tag) => {
+							setTags(tagParam.filter(t => t !== tag.value) || []);
+							console.log(tag.value, tagParam, tagParam.filter(t => t !== tag.value));
+						}}
+						theme={theme}
+					/>
+
 					{Object.entries(livechat.livechatData).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
@@ -188,6 +229,7 @@ const LivechatEditView = ({ navigation, theme }) => {
 	);
 };
 LivechatEditView.propTypes = {
+	user: PropTypes.object,
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
@@ -195,4 +237,9 @@ LivechatEditView.navigationOptions = {
 	title: I18n.t('Livechat_edit')
 };
 
-export default withTheme(LivechatEditView);
+const mapStateToProps = state => ({
+	server: state.server.server,
+	user: getUserSelector(state)
+});
+
+export default connect(mapStateToProps)(withTheme(LivechatEditView));

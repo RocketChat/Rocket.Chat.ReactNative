@@ -47,7 +47,8 @@ export default async(subscriptions = [], rooms = []) => {
 			visitor: s.visitor,
 			departmentId: s.departmentId,
 			servedBy: s.servedBy,
-			livechatData: s.livechatData
+			livechatData: s.livechatData,
+			tags: s.tags
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 
@@ -72,7 +73,8 @@ export default async(subscriptions = [], rooms = []) => {
 			v: r.v,
 			departmentId: r.departmentId,
 			servedBy: r.servedBy,
-			livechatData: r.livechatData
+			livechatData: r.livechatData,
+			tags: r.tags
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

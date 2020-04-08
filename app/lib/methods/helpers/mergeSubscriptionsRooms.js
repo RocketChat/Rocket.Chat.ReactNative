@@ -47,6 +47,9 @@ export const merge = (subscription, room) => {
 		if (room.livechatData) {
 			subscription.livechatData = room.livechatData;
 		}
+		if (room.tags) {
+			subscription.tags = room.tags;
+		}
 		subscription.sysMes = room.sysMes;
 	}
 

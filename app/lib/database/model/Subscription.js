@@ -103,4 +103,6 @@ export default class Subscription extends Model {
 	@json('served_by', sanitizer) servedBy;
 
 	@json('livechat_data', sanitizer) livechatData;
+
+	@json('tags', sanitizer) tags;
 }
