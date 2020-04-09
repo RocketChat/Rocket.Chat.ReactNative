@@ -35,7 +35,12 @@ const navigate = function* navigate({ params }) {
 			const room = yield RocketChat.canOpenRoom(params);
 			if (room) {
 				yield Navigation.navigate('RoomsListView');
-				Navigation.navigate('RoomView', { name, t: roomTypes[type], ...room });
+				Navigation.navigate('RoomView', {
+					name,
+					t: roomTypes[type],
+					roomUserId: RocketChat.getUidDirectMessage(room),
+					...room
+				});
 			}
 		} else {
 			yield handleInviteLink({ params });
