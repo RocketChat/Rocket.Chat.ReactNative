@@ -140,7 +140,6 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
-			// we need to set login settings before navigate to workspace
 			yield RocketChat.getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 			yield put(selectServerRequest(server, serverInfo.version, false));
