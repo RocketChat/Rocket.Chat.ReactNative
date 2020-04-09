@@ -852,7 +852,9 @@ const RocketChat = {
 		return this.sdk.get('livechat/custom-fields');
 	},
 
-	getUidDirectMessage(room, userId) {
+	getUidDirectMessage(room) {
+		const { id: userId } = reduxStore.getState().login.user;
+
 		// legacy method
 		if (!room.uids && room.rid && room.t === 'd') {
 			return room.rid.replace(userId, '').trim();
