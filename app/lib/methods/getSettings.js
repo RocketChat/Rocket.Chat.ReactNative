@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import { addSettings, clearSettings } from '../../actions/settings';
+import { addSettings } from '../../actions/settings';
 import RocketChat from '../rocketchat';
 import reduxStore from '../createStore';
 import settings from '../../constants/settings';
@@ -94,7 +94,6 @@ export async function setSettings() {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
-	reduxStore.dispatch(clearSettings());
 	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
