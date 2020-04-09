@@ -29,8 +29,7 @@ import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
-import { showConfirmationAlert } from '../../utils/info';
-import Navigation from '../../lib/Navigation';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -487,9 +486,8 @@ class RoomActionsView extends React.Component {
 			onPress: async() => {
 				try {
 					await RocketChat.returnLivechat(rid);
-					Navigation.navigate('RoomsListView');
-				} catch {
-					// do nothing
+				} catch (e) {
+					showErrorAlert(e.reason, I18n.t('Oops'));
 				}
 			}
 		});
