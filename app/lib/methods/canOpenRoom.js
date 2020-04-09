@@ -61,8 +61,15 @@ export default async function canOpenRoom({ rid, path }) {
 
 		if (rid) {
 			try {
-				await subsCollection.find(rid);
-				return { rid };
+				const room = await subsCollection.find(rid);
+				return {
+					rid,
+					t: room.t,
+					name: room.name,
+					fname: room.fname,
+					prid: room.prid,
+					uids: room.uids
+				};
 			} catch (e) {
 				// Do nothing
 			}
