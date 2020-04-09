@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import { addSettings } from '../../actions/settings';
+import { addSettings, clearSettings } from '../../actions/settings';
 import RocketChat from '../rocketchat';
 import reduxStore from '../createStore';
 import settings from '../../constants/settings';
@@ -75,6 +75,7 @@ export async function getLoginSettings({ server }) {
 		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
 		if (result.success && result.settings.length) {
+			reduxStore.dispatch(clearSettings());
 			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
 		}
 	} catch (e) {

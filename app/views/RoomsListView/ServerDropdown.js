@@ -10,7 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { clearSettings as clearSettingsAction } from '../../actions/settings';
+import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -34,9 +34,9 @@ class ServerDropdown extends Component {
 		split: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
-		clearSettings: PropTypes.func,
 		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func
+		selectServerRequest: PropTypes.func,
+		appStart: PropTypes.func
 	}
 
 	constructor(props) {
@@ -122,10 +122,9 @@ class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
-		const { server, clearSettings, navigation } = this.props;
+		const { server, navigation } = this.props;
 
 		this.close();
-		clearSettings();
 		setTimeout(() => {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}, ANIMATION_DURATION);
@@ -133,7 +132,7 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, clearSettings, navigation, split
+			server: currentServer, selectServerRequest, appStart, navigation, split
 		} = this.props;
 
 		this.close();
@@ -142,14 +141,11 @@ class ServerDropdown extends Component {
 			if (split) {
 				navigation.navigate('RoomView');
 			}
-			clearSettings();
 			if (!userId) {
-				setTimeout(() => {
-					navigation.navigate('NewServerView', { previousServer: currentServer });
-					this.newServerTimeout = setTimeout(() => {
-						EventEmitter.emit('NewServer', { server });
-					}, ANIMATION_DURATION);
-				}, ANIMATION_DURATION);
+				appStart();
+				this.newServerTimeout = setTimeout(() => {
+					EventEmitter.emit('NewServer', { server });
+				}, 1000);
 			} else {
 				selectServerRequest(server);
 			}
@@ -270,9 +266,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	clearSettings: () => dispatch(clearSettingsAction()),
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	appStart: () => dispatch(appStartAction('outside'))
 });
 
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));
